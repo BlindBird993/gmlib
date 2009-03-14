@@ -1,0 +1,18 @@
+########################
+## Globaly ignored files
+*~
+*.save
+*.bak
+*.backup
+*.o
+*.layout
+*.user
+*.suo
+*.ncb
+*.swp
+
+##############################
+## Ignored project directories
+dist/*
+doc/*
+work/*

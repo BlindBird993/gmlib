@@ -1,0 +1,1951 @@
+
+Changelog
+=========
+
+Here will every change except TYPO FIXES and FORMATTING be recorded.
+
+2009-03-09 T.Sang Tran
+
+        * Correct IOStream operators in gmDVector.
+        * Undefined GM_STREAM in gmDSurf.
+        * Includes necessary headers in gmEvaluatorERBS.
+
+
+2009-03-09 Jostein Bratlie
+
+        * Colors
+          - Color class extracted from the GLColor class
+          - functions glSet() and glSetInverse() is left in GLColor which is now an derived class of Color.
+          - Color is accessed from the header(s) gmColor*, and GLColor, which is removed from gmOpenGL, is now located in gmGLColor*
+
+        * Arrow3D/Sphere3D
+          - extracted from the gmOpenGL* headers and moved to gmArrow3D and gmSphere3D respectively.
+
+        * Visualizers/(D)Parametrics/Light/Material/Texture/OpenGL
+          - Adjusted according to the Color implementation change
+
+
+2009-03-01 Jostein Bratlie
+
+        * PSphere/DPSphere
+          - Added functions to set and retreave the radius
+
+
+2009-02-26 Jostein Bratlie
+
+        * DSurf
+          - isClosestPoint is now virtual, therfore reimplementable
+
+
+2009-02-26 T.Sang Tran
+
+        * Add clearScene() in gmWindow_GMWindow. This will clear all objects int he scene.
+
+
+2009-02-25 Jostein Bratlie
+
+        * Global
+          - Removed all GLfloat and and GLuint from the source and replaced them with float and unsigned int resepctivly.
+            This fixed some issues with overloaded operators. Quite sever in matrix multiplication of Points and Vectors.
+        * Arrow3D
+          - Changed the look of the displayed Arrow
+        * DSurf/PSurf
+          - Fixed dir/side/pos/up data fetching.
+          - Fixed isClosestPoint(), now exists in DSurf and not in PSurf
+        * DSurf
+          - added an evaluation function, evaluate( T u, T v, int d1, int d2 ) which evaluates the surface at mapping u/v and return in scene coords.
+        * PSurf
+          - added a function _evalNormal(), which computes the normal at the last evaluated u/v mapping.
+        * AffineSpace/DParametrics
+          - getPos/Dir/Side/Up now returns local variables, and are mapped to global in DParametrics
+
+
+2009-02-24 T.Sang Tran
+
+        * Fixed mismatch function name in setZ of gmTriangle_Vertex.
+          - setPos() ==> setPosition()
+
+        * gmSelector
+          - New funtion update(), make this Selector update its self, according to current scene position.
+
+
+2009-02-21 T.Sang Tran
+
+        * Add support for Visual Studio 2008 Express Edition.
+
+
+
+2009-02-19 T.Sang Tran
+
+        * gmTriangle
+          - Fixed wrong index in initRender().
+
+
+2009-02-18 Jostein Bratlie
+
+        * Changed return type of Triangle<T>::getNormal()
+        * Minor fixes to normals and computeNormals in Vertex
+
+
+2009-02-18 T.Sang Tran
+
+        * Update msvs-project files to current version
+
+        * gmArrayLX
+          - Fixed error in strip() function, wrong initiate of _no_elements
+          - Change alwaysInsert -> insertAlways
+
+        * gmTriangle
+          - Fixed major mismatch function names, pls. see commitdiff for more information
+
+
+2009-02-11 Jostein Bratlie
+
+        * gmSceneObject
+          - Added a function to return the parent:
+            SceneObject* getParent()
+
+
+2009-02-09 Jostein Bratlie
+
+        * gmPERBS
+          - Fixed some constructor issues for both curves and surfaces.
+
+
+2009-02-06 Jostein Bratlie
+
+        * gmPPlane
+          - Fixed a missmatch in the first derivative
+
+
+2009-02-05 T.Sang Tran
+
+        * Correct inplementation error in gmTriangle, gmArray and gmPERBSSurf.
+        * Uncomment 'bool isClosestPoint(...)' in gmPSurf.
+
+
+2009-02-03 Jostein Bratlie
+        * DParametrics
+          - Adde function which returns visualizers
+        * PERBS
+          - Renamed functions i *Curve and *Surf which return local patches
+          - getLocalPatches() <= getLocalCurves()
+          - getLocalPatches() <= getLocalSurfaces()
+        * P-classes
+          - Made all classes 100% reimplementable, as there is only public and protected members.
+
+
+2009-02-03 Jostein Bratlie
+
+        * Made adjustments to the DParametrics/Parametrics tree to accomodate the OpenGL matix in AffineSpace.
+          ( this will be re-adjusted when the OpenGL Matrix is swaped for the HQMatrix )
+        * Other minor fixes.
+
+
+2009-02-02 T.Sang Tran
+
+        * gmRandom
+          - Add void set( T vLow, T vHigh )
+          - Rename T getValue() ==> T get()
+
+        * gmArrayT
+          - Correct implementation error of stream overloaded operators.
+
+        * gmOpenGL_Color
+          - Correct implementation error of stream overloaded operators.
+          - Name changes:
+            = istream& _prIn( istream& in )         ==> istream& _printIn( istream& in )
+            = ostream& _prOut( ostream& out ) const ==> ostream& _printOut( ostream& out ) const
+
+        * gmOpenGL_Matrix
+          - Correct implementation error of stream overloaded operators.
+          - Name changes:
+            = istream& _prIn( istream& in )         ==> istream& _printIn( istream& in )
+            = ostream& _prOut( ostream& out ) const ==> ostream& _printOut( ostream& out ) const
+
+
+2009-02-01 Jostein Bratlie
+
+        * ERBSSurf
+          - Both inline- and pre-evaluation is now working correctly.
+
+        * DERBS/DBezier Curv and Surf
+          - Selectors and Local Patches work
+
+        * Selector
+          - Fixed an error in the destructor, which destroyed the display list.
+
+        * DPArc
+          - Fixed the destructor
+
+        * DCurve/DSurf
+          - Cleaned up replot(...)
+          - Surrounding Sphere is now generated by its own virtual reimplementable function; void setSurroundingSphere( ... )
+
+        * gmVisualizer(s)
+          - Minor internal adjustment.
+          - Generated Surrounding Sphere is no longer sendt to visualizes via replot.
+          - Get it from _d_ref's getSurroundingSphere() or getSurroundingSphereClean()
+
+
+2009-01-29 Jostein Bratlie
+
+        * DParametrics
+          - Created a layer for Displayable Parametrics which will work as the superclass of DCurve/DSurf/etc.
+          - DCurve/DSurf are now special cases of DParametrics.
+          - Global/Local transformations fixed. BasisChange implemented.
+
+        * Visualizers (gmV* )
+          - Visualizers now redesigned and reimplemented to fitt the new DParametrics setup.
+          - All old Visualizers removed and are reimplemented as Joined Visualizers.
+          - To distinguish visualization for Curves and Surfaces now run check agains a parameteric value ( int n ).
+            0 - Point, 1 - Curve, 2 - Surface, 3 - Flow, etc...
+            An enumerator is also Provided for the first four: GM_POINT, GM_CURVE, GM_SURFACE, GM_FLOW
+
+        * General Fixes and Features
+          - All DParameterics sub classes are now template Skells... containing only virtual functions and protected memebers.
+          - Added a class for displaying of Arrows. ( Arrow3D ).
+
+
+2009-01-23 Jostein Bratlie
+
+        * gmTorus
+          - Fixed a syntax error.
+        * gmSelector gmSelectorGrid gmDPBezierSurf
+          - Selectors and SelectorGrid now work on BezierSurfaces by using the DPBezierSurf class
+
+
+2009-01-22 Jostein Bratlie
+
+        * Added Graphical Versions of PointLight and SpotLight
+          - gmLightG (gmLightG.h) HEADER
+          - classes: PointLightG and SpotLightG
+        * Fixed a bug in DPPlane: defining init position
+        * Fixed PreEvaluation of Bezier Surfaces.
+
+
+2009-01-09 Jostein Bratlie
+
+        * DSurf:
+          - _display_list not set. Now Fixed.
+        * BezierSurf:
+          - _fixed an index error which made it crash when dimensions in either parameteric direction exeded 4.
+
+
+2009-01-08 T.Sang Tran
+
+        * Update MSVS to current version
+        * Add support for 3D Studio Max
+          - gm3DSObject
+          - gm3DSObject.h
+          - gm3DSObject.cpp
+          - gmLoad3DS
+          - gmLoad3DS.h
+          - gmMesh3DS
+          - gmMesh3DS.h
+          - gmMesh3DS.cpp
+        * Add old support for 3DS
+        * Correct inplementation error in gmArrayLX.c
+          - void ArrayLX<T>::operator += ( const ArrayLX<T>& array)
+            :: alwaysInsert( array ) ==> insertAlways( array )
+          - void ArrayLX<T>::operator += ( const T& obj )
+            :: alwaysInsert( obj ) ==> insertAlways( obj )
+          - void ArrayLX<T>::setSize( int n )
+            :: while( n > 0 ) ==> while( idx > 0 )
+
+
+2008-11-26 T.Sang Tran
+
+        * Update MSVS to current version
+        * Add transformable PCurve
+          - gmDPTCurve
+          - gmDPTCurve.h
+          - gmDPTCurve.c
+          - gmPTCurve
+          - gmPTCurve.h
+          - gmPTCurve.c
+
+2008-11-11 T.Sang Tran
+
+        * Update MSVS to current version
+        * Correct namespace endings in gmPSurf.c
+
+
+2008-11-04 T.Sang Tran
+
+        * Add Visual Studio 2008 project of GMlib
+        * Add QtTemplate003
+        * Update Visual Studio 2005 (make debug and release version)
+        * Disable warnings about double to float in MSVS
+
+
+2008-10-31 Jostein Bratlie
+        * Added transformation suport in PCurve
+
+        * when implementing PCurve/PSurf now call init() in the constructor instead of
+          _p_ref = dynamic_cast< PCurve<T, 3>* > ( this );
+          _p_ref = dynamic_cast< PSurf<T, 3>* > ( this );
+          resepectivly
+
+
+2008-10-31 T.Sang Tran
+        * Update msvs_2005 solution to current version
+        * Fixed bug in TriangleFacets
+          - int TriangleFacets<T>::TriangleFacets<T>::initRender() ==> int TriangleFacets<T>::initRender()
+
+
+2008-10-30 T.Sang Tran
+
+        * Fixes bugs in SArray
+          - In function void SArray<T>::sort()
+            - if(i != k) { swap(i, k); }  ==> if(i != k) { this->swap(i, k); }
+
+          - In function SArray<T>& SArray<T>::operator = ( const SArray<T>& ar )
+            - return Array<T>::operator=(ar);  ==> return SArray<T>::operator=(ar);
+
+
+2008-10-29 Jostein Bratlie !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        * RETAGED VERSIONS.
+          - Version changed from 1.0* -> 0.2*
+
+          - Retags:
+            - v1.0_pre1   -> v0.2.0
+            - v1.0_alpha1 -> v0.2.1
+            - v1.0_alpha2 -> v0.2.2
+            - v1.0_alpha3 -> v0.2.3
+
+
+2008-10-29 Jostein Bratlie
+
+        * Added DPBezierCurve, and fixed bugs in PBezierCurve
+        * Added DPBSplineCurve and PBSplineCurve
+
+
+2008-10-28 Jostein Bratlie
+
+        * Fixed bugs in PCurve/PSurf
+        * Added PBezierCurve, NB!! not complete...
+
+        * PCurve/PSurf - Explicit definition of derivation algorithms
+          - The function evalDerExplicit( ... ) const; has been removed.
+          - The way to define explicit rules of derivation algorithms of formulas should now be
+            defined in the eval( ... ) function of the respective PObject, enclosed in the following
+            block:
+
+            if( this->_derivation_method == this->EXPLICIT ) {
+              ...
+            }
+          - The function preEval( ... ) again removed :P
+
+        * Fixed missing #endif in gmMatrix.h
+
+
+2008-10-25 Jostein Bratlie
+
+        * Fixed namespace matter: everything in GMlib now defined inside a namespace GMlib {} block.
+          The GMlib namespace is no longer enabled with using namespace GMlib anywhere in the library.
+
+
+2008-10-08 Jostein Bratlie
+
+        * OpenGL::GLColor
+          - Renamed function GLColor interpolatedHSV(...) const to GLColor getInterpolatedHSV(...) const
+
+        * .gitignore
+          - .swp files are now ignored
+
+
+2008-10-06 Jostein Bratlie
+
+        * Camera:
+          - Fixed an error in drawActiveCam, which made the camera draw the Coord Axis of the camera completely wrong.
+            - Multeplied with the wrong matrix.
+          - Added a function "bool isCulling() const", wich returns whether or not culling is activated for the camera.
+
+        * SceneObject
+          - Fixed an error; the _selected var were never initiated, returned various results
+          - Added a function wich returns wheather or not the object is selected "bool isSelected() const"
+
+        * Texture
+          - Addd functions which returns the depth/height/width of the texture:
+            "GMint getDepth/Height/Width() const"
+
+        * Fixed a bunch of Visualizers
+          - General bugs ( Normals/SurroundingSphere/LevelCurves/Default ) Surf.
+
+          - Normals
+            - Option to select color
+
+          - Surrounding Sphere
+            - Option to select color
+            - Option to wheter render as flat or wireframe
+
+        * DSurf/DCurve
+          - Fixed general bugs
+
+
+2008-10-05 T.Sang Tran
+        * Create GMlibQt Template Wizard for Visual Studio 2005
+
+
+2008-10-02 T.Sang Tran
+
+        * Change class names in QtTemplate001:
+          - GLApplication.h	--> GMQtApp.h
+          - GLApplication.c	--> GMQtApp.c
+
+        * Make DEBUG mode works properly in Visual Studio 2005
+
+        * Add libGMlib solution in Visual Studio 2005
+
+
+2008-10-01 Jostein Bratlie
+
+        * Fixed bug in GMWindow:
+          - Crashes when double clicking a border. Index error in GMWindow::display()
+
+        * gmCamera:
+          - Added option to enable or disable culling.
+
+        * gmOpenGL/gmTexture:
+          - Removed 3D texture option as of a lack of support in windows.
+
+        * gmOpenGL: glColor
+          - Added More standard colors: Cyan, Magenta, Orange and Yellow.
+
+        * Added new Visualizer:
+          - gmVDSDerivatives:
+            - Shows derivatives on the surface
+
+        * gmDSurf
+          - Made private vars and functions protected, so that DSurf can be reimplemented.
+
+        * gmPApple/gmPSphere
+          - Changed both to open( not closed ) in v-direction (bug)
+
+        * gmPSurf
+          - Added a way to differenciate between methods of handling automatic generation of derivatives in the case of edges.
+          - Available enumerated values is SYMETRIC, enumerator is called DERIVATION_BOUNDARY_METHOD
+
+
+2008-09-27 Jostein Bratlie
+
+        * Added functionality to DCurve and DSurf for automatic generation of derivatives.
+          - Using the Divided Difference method.
+
+        * PCurve/PSurf
+          - For explicit derivation generation reimplement evalDerExplicit(...) in subclases and set derivation method with
+            setDerivationMethod( DERIVATION_METHOD );
+          - DERIVATION_METHOD => enumerator of DSURF and DCURV classes.
+          - The evalDerExplicit( ... ) methods aren't yet fully implemented.
+
+
+2008-09-25 Jostein Bratlie
+
+        * gmTexture
+          - Internal redesign; removed the mapping type option, and replaced it with a gen_mode option equivilent with
+            the one of OpenGL.
+          - Introduced the use of GM_* constant vars, defined in gmOpenGL.h
+
+        * gmOpenGL
+          - Added GM_* constant vars and GM* defined types wich corresponds to the OGL equivelants
+          - GMuint, GMfloat
+          - GM_OBJECT_LINEAR, GM_EYE_LINEAR, GM_SPHERE_MAP
+          - GM_TEXTURE_1D, GM_TEXTURE_2D, GM_TEXTURE_3D
+
+        * Fixed the problem of localSimulate not being called.
+          - gmTimer allways returned a result of time interger divided by 1000.
+          - gmScene never called simulate on the display hiearchy, error in status variable.
+
+        * Added another Parameterized Object:
+          - Steiners' Roman Surface
+
+
+2008-09-19 Jostein Bratlie
+
+        * Fixed the "uncalled localSimulate" bug. Timer division by integer, resulting in a constant 0 value returned.
+
+        * QtTemplate #1 changes:
+          - Inserting GLWindow in layout in QWidget and then set as central widget.
+          - QGLWidget can not be inserted directly into a Central Widget position in QMainWindow.
+
+        * QtTemplate #2 changes:
+          - Added Makefile and friends. (makefile not yet distributed in the rest of GMlib)
+
+
+2008-09-15 Jostein Bratlie
+
+        * Renamed the Visualization classes of the DSurf Hiearchy and friends:
+          - Removed the P in the name to make it shorter and more cohesive towards the DSurf class.
+
+        * Added similar classes for the DCurve Hiearchy.
+
+        * Changed the design of the DSurf and DCurve classes towards the Visualization class design.
+          No more direct access via pointers, as this was flawed.
+          The DSurf/DCurve classes now runs the default resample and draws the basic select,
+          but all displaying of parametric surfaces and curves are done by Visualizers.
+          A default one is inserted via the constructor, can be toggled by the toggleDefaulVisualizer() function
+
+
+2008-09-11 Jostein Bratlie
+
+        * Added classes for mathematical paremeterized Curves.
+          - Added some default curves; Circle and Butterfly
+
+        * Cleaned up names in PSurf class
+
+        * Added Visualization classes for the DPSurf hiearky...
+          - Two default visualization classes added, one for showing normals and one for showing the surrounding Sphere.
+
+2008-09-07 Jostein Bratlie
+
+        * Added classes for mathematical Paremeterized Surfaces.
+        * Added classes to display the mathematical Paremeterized Surfaces
+        * Added three classes of spesific psurfaces; Apple, Plane and Sphere
+
+        * Texture class rewrite.
+          - All filehandling stripped from the Texture class
+          - Class redesigned... See the source and doxy-documentation for a complete understanding.
+        * Material classes rewritten to fitt the new Texture-class
+
+
+2008-09-05 T.Sang Tran
+
+        * Add Qt Template Project (Visual Studio 2005)
+          - Clean Qt Template wich intializes a OpenGL context
+          - Use Qt-Designer to create the GUI (use of UI-file)
+
+
+2008-09-04 T.Sang Tran
+
+        * Add temp-files of Visual Studio 2005 to .gitignore
+        * Add GMlib Project (Visual Studio 2005)
+        * Add Qt Template Project (Visual Studio 2005)
+          - Clean Qt Template wich intializes a OpenGL context
+
+
+2008-09-03 Jostein Bratlie
+
+        * Separators placed under a separat namespace: GMseparator
+        * Separator default classes renamed
+          - Element <= element_separator
+          - Object  <= object_separator
+          - Group   <= group_separator
+
+        * Stream operators deactivated by default:
+          - Dontrolled by the #define GM_STREAM directive.
+          - Define it for stream compilation support
+
+
+2008-08-31 Jostein Bratlie
+
+        * GMlib v1.0 Alpha #3 released
+        * Template 001 deleted
+        * Template 002 renamed template 001
+        * Template 001 beta canidate
+
+
+2008-08-28 Jostein Bratlie
+
+        * Point class
+          - function: Point<T,n> operator * ( double d ) <= now returns a copy of the calculated value, and not a static variable...
+            problems coused by the template recursive basic calculations
+            This fix influences two other functions as well:
+              Point<T, n> operator / ( double d )
+              Point<T, n> operator * ( double d, const Point<T, n> &p )
+
+
+2008-08-27 Jostein Bratlie
+
+        * ViewSet class
+          - function scope fix
+            public: void prepare( int w, int h )    <=    private: void _prepare( int w, int h )
+
+
+2008-08-26 Jostein Bratlie
+
+        * Namespaces
+          - Added the subnamespaces Color and Material so that default colors and materails can
+            be resloved by enabling the GMlib::Color and GMlib::Material namespace, respectivly
+
+2008-08-25 Jostein Bratlie
+
+        * GMWindow class
+          - variable name fix
+            - int _active_cam   <= int _i
+          - variable scop fix
+            - protected: Array<ViewSet> _view_set_stack  <= private: Array<ViewSet> _activ
+          - function scope fix
+            - protected: bool find( ... )         <= private: bool _find( ... )
+            - protected: void moveBorder( ... )   <= private: void _moveBorder( ... )
+
+        * ViewSet class
+          - function scope fix
+            - public: int getSize()                 <= private: int _getSize()
+            - public: void removeCamera( Camera* )  <= private: void _removeCamera( Camera* )
+
+        * Camera class function name fix.
+          - void getViewport( ... ) <= void getViewPort( ... )
+          - int getViewportH() <= int getViewPort()
+          - int getViewportW() <= int getViewPort()
+
+
+2008-08-09 Jostein Bratlie
+
+        * Fixes: ticket:77
+
+        * Added a Qt Project Template:
+          - Clean Qt Template wich intializes a OpenGL context.
+          - No Keybindings
+
+        * Added help_print_vars target to the Makefile:
+          - Prints the config vars used in the Makefile.
+
+
+2008-08-04 Jostein Bratlie
+
+        * Fixed: ticket:72
+        * Fixed: ticket:75
+        * Fixed: ticket:76
+        * Fixed: ticket:73
+        * Fixed: ticket:74
+
+        * File splitting; seperating inline functions (ticket:72)
+          - gmAngle/gmString/gmTimer
+            - %.cpp replaced by %.c (only inline functions)
+          - gmCamera/gmCameraIso/gmDisplayObject/gmScene/gmSceneObject
+            - %.cpp splitted into %.c and %.cpp
+          - gmLight/gmStream/gmWindow
+            - All subcomponent class implementation %_CLASS.cpp files
+              splitted into %_CLASS.c and %_CLASS.cpp files
+          - gmMaterial
+            - For subcomponent classes Material and MaterialObjectList;
+              %_CLASS.cpp splitted into %_CLASS.c and %_CLASS.cpp files.
+            - For subcomponent class MaterialObject;
+              %_MaterialObject.cpp replaced by %_MaterialObject.c (only inline functions)
+          - gmOpenGL
+            - GMlib Namespace functions extracted and put into gmOpenGL.c
+            - For subcomponent class GLMatrix;
+              %_GLMatrix.cpp splitted into %_GLMatrix.c and %_GLMatrix.cpp
+            - For subcomponent classes: Frustum, GLColor, ScaleObj and Sphere3D;
+              %_CLASS.cpp replaced by %_CLASS.c (only inline functions)
+
+        * Fixed the inline keywords in the base template code. This is for optimalization (ticket:72)
+
+        * Replaced number constants for SceneObject _id_type in the code with enumerated CONSTANT VALUES (ticket:)
+
+        * gmSelector
+          - Old file structure
+            - GM_Selector.h
+            - GM_Selector.c
+          - New file structure
+            - gmSelector.h
+            - gmSelector.c
+
+        * gmSelector; class Selector
+          - Renamed protected vars:
+            - bool			_enabled  <=  bool _on;
+          - Renamed protected functions:
+            - void allEnable()    <=  void _allOn()
+            - void allDisable()   <=  void _allOff()
+          - Renamed public functions:
+            - std::string	getIdentity() const <=  const   char*	identity() const
+            - void enableAll()    <=  void allOn()
+            - void disableAll()   <=  void allOff()
+            - bool	toggle() <= bool	onOff()
+            - void enable() <= void on()
+            - void disable() <= void off()
+            - bool isEnabled() const <= bool isOn()
+            - void update() <= void myUpdate()
+
+        * gmSelectorGrid
+          - Old file structure:
+            - GM_Selectorgrid.h
+          - New file structure:
+            - gmSelectorGrid.h
+            - gmSelectorGrid.c
+
+        * gmSelectorGrid; class SelectorGrid
+          - Cosmetics;
+
+        * gmArray, gmArrayT, gmArrayLX (ticket:75)
+          - Renamed public functions:
+            - void makeUnique <= void stripEquals
+
+        * Moved predefined colors from gmMaterial (gmMaterial_Material.cpp) to gmOpenGL (gmOpenGL_GLColor.cpp)
+
+
+2008-07-31 Jostein Bratlie
+
+        * Release Version 1.0_alpha1 (v1.0_alpha1; changeset:67500335bb4ab3ce3bc590f975506c930bec49a1)
+
+        * Qt Template project 001 added. A clean template with a GLWindow class and no keybindings.
+
+
+2008-07-29 Jostein Bratlie
+
+        * fixes: ticket:55
+
+        * gmWindow
+          - Old file structure
+            - GM_Window.h
+            - GM_Window.cpp
+					- New file structure
+						- gmWindow.h
+						- gmWindow_GMWindow.h
+						- gmWindow_ViewSet.h
+						- gmWindow_ViewBorder.h
+						- gmWindow_View.h
+
+          - Key and mouse config has been removed and should not be implemented inside the library.
+            It should be implemented in the interface implementation itself. E.g.: QT or GLUT
+
+				* gmWindow; class ViewSet (former: ActiveSet)
+					- Renamed private vars:
+						- int									_vp_w							<=  int									w
+						- int 								_vp_h							<=  int 								h
+						- Array<Camera*>			_cameras					<=  Array<Camera*>			c
+						- Array<ViewBorder*>	_borders					<= 	Array<ViewBorder*>	b
+						- GLColor							_border_color 		<=  GLColor							border_color;
+						- View								_root 						<= 	View								root
+						- Array<ViewBorder*>	_selected_borders	<=	Array<ViewBorder*>	_selected
+					- Renamed private functions:
+						- void _setBorderColor(const GLColor& bc)						<=	void setBorderColor(const GLColor& bc)
+						- void _prepare(int w, int h)												<=  void prepare(int w, int h)
+						- void _drawBorder()																<=  void drawBorder()
+						- void _drawCamera(bool stereo)											<=  void drawCamera(bool stereo)
+						- bool _insertCamera(Camera, Camera, bool , double)	<=	bool insertCamera(Camera, Camera, bool , double)
+						- void _removeCamera(Camera)												<= 	void removeCamera(Camera)
+						- void _removeCamera(int)														<=	void removeCamera(int)
+						- void _moveBorder(int, int)												<=	void moveBorder(int, int)
+						- int  _getSize()																		<=	int  size()
+						- bool _find(int, int, Camera*&)										<=	bool find(int, int, Camera*&)
+						- void _reset()																			<=	void reset()
+
+				* gmWindow; class View (former: ActiveTree)
+					- Renamed private vars:
+						- Camera*			_camera	<=	Camera*			c
+						- ViewBorder*	_border	<=	ViewBorder*	b
+					- Renamed private functions:
+						- void 	_split(Camera*, bool, double)													<=  void 	split(Camera*, bool, double)
+						- void	_prepare(int, int, int, int, Array<ViewBorder*>&)			<=	void 	prepare(int, int, int, int, Array<ViewBorder*>&)
+						- void	_corr(Array<ViewBorder*>&, const Array<ViewBorder*>&)	<=	void	corr(Array<ViewBorder*>&, const Array<ViewBorder*>&)
+						- void 	_find(int, int, Camera*&, Array<ViewBorder*>&)				<=	void 	find(int, int, Camera*&, Array<ViewBorder*>&)
+						- bool 	_isCamera(Camera*)																		<=  bool 	isCamera(Camera*)
+						- void 	_removeCamera(Camera*)																<=  void 	removeCamera(Camera*)
+						- int  	_getSize(bool)																				<=  int  	size(bool)
+						- void 	_splitCamera(Camera*, Camera*, bool, double)					<=  void 	splitCamera(Camera*, Camera*, bool, double)
+
+				* gmWindow; class ViewBorder (former: WinBorder)
+					- Renamed private vars:
+						- bool		_vertical							<=	bool		vertical
+						- double	_displacement 				<=	double	d
+						- int			_x1, _x2, _y1, _y2		<= 	int			x1, x2, y1, y2
+						- View		_child_lt							<=	View		l
+						- View		_child_rb							<=	View		r
+					- Renamed private functions
+						- void 		_corr(Array<ViewBorder*>&, const Array<ViewBorder*>&)	<=	void 		corr(Array<ViewBorder*>&, const Array<ViewBorder*>&)
+						- void 		_display()																						<=	void 		display()
+						- void 		_find(int, int, Camera*&, Array<ViewBorder*>&)				<=	void 		find(int, int, Camera*&, Array<ViewBorder*>&)
+						- int  		_getSize(bool)																				<=	int  		size(bool)
+						- View*		_hasCamera(Camera*)																		<=	View*		hasCamera(Camera*)
+						- bool 		_isVertical()																					<=	bool 		isVertical()
+						- void 		_move(int, int)																				<=	void 		move(int, int)
+						- void 		_prepare(int, int, int, int, Array<ViewBorder*>&)			<=	void 		prepare(int, int, int, int, Array<ViewBorder*>&)
+						- void 		_removeCamera(Camera*)																<=	void 		removeCamera(Camera*)
+						- void 		_splitCamera(Camera*, Camera*, bool, double)					<=	void 		splitCamera(Camera*, Camera*, bool, double)
+
+        * gmWindow; class GMWindow (former: GM_Window)
+          - Renamed private vars:
+            - Array<ViewSet>    _view_set_stack                 <=  Array<ViewSet>    _activ
+          - Renamed protected vars:
+            - Array<Camera*>	      _cameras                    <=  Array<Camera*>	      _camera
+            - Array<Light*>	        _lights                     <=  Array<Light*>	        _light
+            - Array<SceneObject *>  _selected_objects           <=  Array<SceneObject *>  _SelArr;
+          - Renamed private functions:
+            - bool _find(int x, int y, int& index)              <=  bool _findWindow(int x, int y, int& index)
+          - Renamed protected functions:
+            - virtual void init()                               <=  virtual void _init()
+            - virtual void swapBuffers()                        <=  virtual void _swapBuffers()
+            - virtual bool toggleRun()                          <=  virtual bool _toggleRun()
+            - void mouseDoubleClick(int button, int x, int y)   <=  void _mouseDoubleClick(int button, int x, int y)
+            - void mouseButtonDown(int button, int x, int y)    <=  void _mouseButtonDown(int button, int x, int y)
+            - void mouseButtonUp(int button, int x, int y)      <=  void _mouseButtonUp(int button, int x, int y)
+            - void mouseMotion(int x, int y)                    <=  void _mouseMotion(int x, int y)
+            - bool keyboard (unsigned char key, int x, int y)   <=  bool _keyboard (unsigned char key, int x, int y)
+            - bool specKeyboard( int speckey, int x, int y)     <=  bool _specKeyboard( int speckey, int x, int y)
+            - void setModKey(int mk)                            <=  void _setModKey(int mk)
+            - void display(void)                                <=  void _display(void)
+            - void reshape(int w, int h)                        <=  void _reshape(int w, int h)
+            - virtual void message( const std::string& str)     <=  virtual void _message( const std::string& str)
+            - virtual void message( SceneObject* d)             <=  virtual void _message( SceneObject* d)
+            - virtual void message( Point<float,3>& p)          <=  virtual void _message( Point<float,3>& p)
+            - virtual void keyDef_PLUSS(int x, int y)           <=  virtual void _keyDef_PLUSS(int x, int y
+            - virtual void keyDef_MINUS(int x, int y)           <=  virtual void _keyDef_MINUS(int x, int y)
+            - virtual void keyDef_NULL(int x, int y)            <=  virtual void _keyDef_NULL(int x, int y)
+            - virtual void keyDef_a(int x, int y)               <=  virtual void _keyDef_a(int x, int y)
+            - virtual void keyDef_A(int x, int y)               <=  virtual void _keyDef_A(int x, int y)
+            - virtual void keyDef_b(int x, int y)               <=  virtual void _keyDef_b(int x, int y)
+            - virtual void keyDef_B(int x, int y)               <=  virtual void _keyDef_B(int x, int y)
+            - virtual void keyDef_c(int x, int y)               <=  virtual void _keyDef_c(int x, int y)
+            - virtual void keyDef_C(int x, int y)               <=  virtual void _keyDef_C(int x, int y)
+            - virtual void keyDef_d(int x, int y)               <=  virtual void _keyDef_d(int x, int y)
+            - virtual void keyDef_D(int x, int y)               <=  virtual void _keyDef_D(int x, int y)
+            - virtual void keyDef_e(int x, int y)               <=  virtual void _keyDef_e(int x, int y)
+            - virtual void keyDef_E(int x, int y)               <=  virtual void _keyDef_E(int x, int y)
+            - virtual void keyDef_f(int x, int y)               <=  virtual void _keyDef_f(int x, int y)
+            - virtual void keyDef_F(int x, int y)               <=  virtual void _keyDef_F(int x, int y)
+            - virtual void keyDef_g(int x, int y)               <=  virtual void _keyDef_g(int x, int y)
+            - virtual void keyDef_G(int x, int y)               <=  virtual void _keyDef_G(int x, int y)
+            - virtual void keyDef_h(int x, int y)               <=  virtual void _keyDef_h(int x, int y)
+            - virtual void keyDef_H(int x, int y)               <=  virtual void _keyDef_H(int x, int y)
+            - virtual void keyDef_i(int x, int y)               <=  virtual void _keyDef_i(int x, int y)
+            - virtual void keyDef_I(int x, int y)               <=  virtual void _keyDef_I(int x, int y)
+            - virtual void keyDef_j(int x, int y)               <=  virtual void _keyDef_j(int x, int y)
+            - virtual void keyDef_J(int x, int y)               <=  virtual void _keyDef_J(int x, int y)
+            - virtual void keyDef_k(int x, int y)               <=  virtual void _keyDef_k(int x, int y)
+            - virtual void keyDef_K(int x, int y)               <=  virtual void _keyDef_K(int x, int y)
+            - virtual void keyDef_l(int x, int y)               <=  virtual void _keyDef_l(int x, int y)
+            - virtual void keyDef_L(int x, int y)               <=  virtual void _keyDef_L(int x, int y)
+            - virtual void keyDef_m(int x, int y)               <=  virtual void _keyDef_m(int x, int y)
+            - virtual void keyDef_M(int x, int y)               <=  virtual void _keyDef_M(int x, int y)
+            - virtual void keyDef_n(int x, int y)               <=  virtual void _keyDef_n(int x, int y)
+            - virtual void keyDef_N(int x, int y)               <=  virtual void _keyDef_N(int x, int y)
+            - virtual void keyDef_o(int x, int y)               <=  virtual void _keyDef_o(int x, int y)
+            - virtual void keyDef_O(int x, int y)               <=  virtual void _keyDef_O(int x, int y)
+            - virtual void keyDef_p(int x, int y)               <=  virtual void _keyDef_p(int x, int y)
+            - virtual void keyDef_P(int x, int y)               <=  virtual void _keyDef_P(int x, int y)
+            - virtual void keyDef_q(int x, int y)               <=  virtual void _keyDef_q(int x, int y)
+            - virtual void keyDef_Q(int x, int y)               <=  virtual void _keyDef_Q(int x, int y)
+            - virtual void keyDef_r(int x, int y)               <=  virtual void _keyDef_r(int x, int y)
+            - virtual void keyDef_R(int x, int y)               <=  virtual void _keyDef_R(int x, int y)
+            - virtual void keyDef_s(int x, int y)               <=  virtual void _keyDef_s(int x, int y)
+            - virtual void keyDef_S(int x, int y)               <=  virtual void _keyDef_S(int x, int y)
+            - virtual void keyDef_t(int x, int y)               <=  virtual void _keyDef_t(int x, int y)
+            - virtual void keyDef_T(int x, int y)               <=  virtual void _keyDef_T(int x, int y)
+            - virtual void keyDef_u(int x, int y)               <=  virtual void _keyDef_u(int x, int y)
+            - virtual void keyDef_U(int x, int y)               <=  virtual void _keyDef_U(int x, int y)
+            - virtual void keyDef_v(int x, int y)               <=  virtual void _keyDef_v(int x, int y)
+            - virtual void keyDef_V(int x, int y)               <=  virtual void _keyDef_V(int x, int y)
+            - virtual void keyDef_w(int x, int y)               <=  virtual void _keyDef_w(int x, int y)
+            - virtual void keyDef_W(int x, int y)               <=  virtual void _keyDef_W(int x, int y)
+            - virtual void keyDef_x(int x, int y)               <=  virtual void _keyDef_x(int x, int y)
+            - virtual void keyDef_X(int x, int y)               <=  virtual void _keyDef_X(int x, int y)
+            - virtual void keyDef_y(int x, int y)               <=  virtual void _keyDef_y(int x, int y)
+            - virtual void keyDef_Y(int x, int y)               <=  virtual void _keyDef_Y(int x, int y)
+            - virtual void keyDef_z(int x, int y)               <=  virtual void _keyDef_z(int x, int y)
+            - virtual void keyDef_Z(int x, int y)               <=  virtual void _keyDef_Z(int x, int y)
+            - virtual void keyDef_F1(int x, int y)              <=  virtual void _keyDef_F1(int x, int y)
+            - virtual void keyDef_F2(int x, int y)              <=  virtual void _keyDef_F2(int x, int y)
+            - virtual void keyDef_F3(int x, int y)              <=  virtual void _keyDef_F3(int x, int y)
+            - virtual void keyDef_F4(int x, int y)              <=  virtual void _keyDef_F4(int x, int y)
+            - virtual void keyDef_F5(int x, int y)              <=  virtual void _keyDef_F5(int x, int y)
+            - virtual void keyDef_F6(int x, int y)              <=  virtual void _keyDef_F6(int x, int y)
+            - virtual void keyDef_F7(int x, int y)              <=  virtual void _keyDef_F7(int x, int y)
+            - virtual void keyDef_F8(int x, int y)              <=  virtual void _keyDef_F8(int x, int y)
+            - virtual void keyDef_F9(int x, int y)              <=  virtual void _keyDef_F9(int x, int y)
+            - virtual void keyDef_F10(int x, int y)             <=  virtual void _keyDef_F10(int x, int y)
+            - virtual void keyDef_F11(int x, int y)             <=  virtual void _keyDef_F11(int x, int y)
+            - virtual void keyDef_F12(int x, int y)             <=  virtual void _keyDef_F12(int x, int y)
+            - virtual void keyDef_LEFT(int x, int y)            <=  virtual void _keyDef_LEFT(int x, int y)
+            - virtual void keyDef_UP(int x, int y)              <=  virtual void _keyDef_UP(int x, int y)
+            - virtual void keyDef_RIGHT(int x, int y)           <=  virtual void _keyDef_RIGHT(int x, int y)
+            - virtual void keyDef_DOWN(int x, int y)            <=  virtual void _keyDef_DOWN(int x, int y)
+            - virtual void keyDef_PAGE_UP(int x, int y)         <=  virtual void _keyDef_PAGE_UP(int x, int y)
+            - virtual void keyDef_PAGE_DOWN(int x, int y)       <=  virtual void _keyDef_PAGE_DOWN(int x, int y)
+            - virtual void keyDef_HOME(int x, int y)            <=  virtual void _keyDef_HOME(int x, int y)
+            - virtual void keyDef_END(int x, int y)             <=  virtual void _keyDef_END(int x, int y)
+            - virtual void keyDef_INSERT(int x, int y)          <=  virtual void _keyDef_INSERT(int x, int y)
+          - Renamed public functions:
+            - void      setViewSet(int, int, bool, double)      <=  void setActive(int, int, bool, double)
+            - Camera*   getCam()                                <=  Camera* getCam()
+            - void      popViewSet(int i)                       <=  void removeActiv(int i)
+            - void      setSunDirection( Angle d )              <=  void setDirSun( Angle d )
+            - bool      toggleStereo()                          <=  bool stereoToggle()
+            - bool      isStereoEnabled()                       <=  bool isStereo()
+
+
+2008-07-27 Jostein Bratlie
+
+				* fixes: ticket:70
+				* gmCameraIso
+					- Old file structure
+						- GM_CameraIso.h
+						- GM_CameraIso.cpp
+					- new file structure
+						- gmCameraIso
+						- gmCameraIso.h
+						- gmCameraIso.cpp
+
+				* gmCameraIso; class CameraIso
+					- Renamed public functions:
+						-	void					lockTarget(SceneObject* obj) 						<= 	void					lockAtTarget(SceneObject* obj)
+						-	void					lockTarget(const Point<GLfloat,3>& p)		<=	void					lockAtTarget(const Point<GLfloat,3>& p)
+						-	void					lockTarget(double d)										<=  void					lockAtTarget(double d)
+						-	SceneObject*	lockTargetAtPixel(int,int)							<=  SceneObject*	lockAtTargetAtPixel(int,int)
+						- std::string 	getIdentity() const											<=  char* 				identity()
+					- Renamed proteced functions:
+						- void			setPerspective() 														<=	void					_setPerspective()
+					- Renamed private functions:
+						- void					drawActivCam()													<= 	void					_drawActivCam()					// Inherited from Camera
+						- SceneObject*	find(GLuint name)												<= 	SceneObject*	_find(GLuint name)			// Inherited from Camera
+						- void					resetC(GLfloat z=1)											<=	void					_reset(GLfloat z=1)			// Inherited from Camera
+
+
+2008-07-26 Jostein Bratlie
+
+				* fixes: ticket:68
+				* gmCamera
+					- Old file structure
+						- GM_Camera.h
+						- GM_Camera.cpp
+					- New file structure
+						- gmCamera
+						- gmCamera.h
+						- gmCamera.cpp
+
+				* gmCamera; class Camera
+					- Renamed private vars:
+						- static Scene	_default_scene 	<= 	static Scene	def
+						- static GLuint	_display_list		<=	static GLuint	display_list
+						- bool _frustum_visible					<= 	bool _frustrum_on
+						- bool _coord_sys_visible				<=  bool _coord_sys
+					- Renamed proteced vars:
+						- GLMatrix		_frustum_matrix		<= 	GLMatrix		_frustum_mat
+					- Renamed public functions:
+						- void	setScene(Scene& s) <= void	changeScene(Scene& s)
+						- void	setScene(Scene *s) <= void	setScene(Scene *s)
+						- void	getViewPort(int& w1, int& w2, int& h1, int& h2) const <= void viewPort(int& w1, int& w2, int& h1, int& h2)
+						- int		getViewPortW() const	<= int		viewPortW()
+						- int		getViewPortH() const	<= int		viewPortH()
+						- void					setCuttingPlanes(GLfloat, GLfloat ) 		<= 	void					setCutPlane(GLfloat, GLfloat)
+						- SceneObject* 	lockTargetAtPixel(int,int) 						<= 	SceneObject* 	lockAtTargetAtPixel(int,int)
+						- double				getDistanceToObject(int, int)					<= 	double				distanceToObject(int, int)
+						- double				getDistanceToObject(SceneObject*)			<=	double				distanceToObject(SceneObject*)
+						- bool 					isCoordSysVisible() const							<=	bool isFrustrumOn()
+						- bool 					isFrustumVisible() const							<=	bool isCoordSysOn()
+						- void 					setCoordSysVisible(bool visible=true)	<=  void coordSys( bool on=true)
+						- void 					setFrustumVisible(bool visible=true)	<=  void frustrumOn(bool on=true)
+						- std::string 	getIdentity() const 									<=  const char* identity() const
+					-	Renamed protected functions:
+						- void					setPerspective()			<= void					_setPerspective()
+						- void					reset(GLfloat z = 1)	<= void					_reset(GLfloat z = 1)
+						- void					select(int type_id) 	<= void					_select(int type_id)
+						- void					display()							<= void					_display()
+						- SceneObject*	find(GLuint name)			<= SceneObject*	_find(GLuint name)
+						- void					drawActiveCam() 				<= void					_drawActivCam()
+						- void					makeGraphics()				<= void					makeGraphic()
+						- GLMatrix&			_getMatrix()					<= GL_Matrix&		matrix()			// Is inherited from SceneObject, where it was private
+
+
+2008-07-25 Jostein Bratlie
+
+        * fixes: ticket:66
+        * gmLight
+          - Old file structure:
+            - GM_Light.h
+            - GM_Light.cpp
+            - GM_PointLight.h
+            - GM_PointLight.cpp
+            - GM_SpotLight.h
+            - GM_SpotLight.cpp
+            - GM_Sun.h
+            - GM_Sun.cpp
+          - New file structure:
+            - gmLight.h
+            - gmLight_Light.cpp
+            - gmLight_PointLight.cpp
+            - gmLight_SpotLight.cpp
+            - gmLight_Sun.cpp
+
+        * gmLight; class Light
+          - Renamed private vars:
+            - bool _cullable <= bool _disableculling
+          - Renamed protected functions:
+            - const GL_Color&   getAmbient()    <=  const GL_Color&   _getAmbient()
+            - const GL_Color&   getDiffuse()    <=  const GL_Color&   _getDiffuse()
+            - const GL_Color&   getSpecular()   <=  const GL_Color&   _getSpecular()
+            - GLuint	          getLightName()  <=  GLuint	          _getLightName()
+          - Renamed public functions:
+            - bool isCullable()     <= bool cullable()
+            - void setCullable()    <= void cullingOn() && void cullingOff
+            - void enable()         <= void on()
+            - void disable()        <= void off()
+            - bool isEnabled()      <= bool isOn()
+
+				* gmLight; class PointLight
+					- Renamed public functions:
+						- const std::string getIdentity() const <= const char* identity() const
+					- Renamed protected functions:
+						- void calculateRadius( GLfloat constant, GLfloat linear, GLfloat quadratic ) <= void _calculateRadius(GLfloat constant, GLfloat linear, GLfloat quadratic)
+
+				* gmLight; class SpotLight
+					- Renamed public functions:
+						- std::string getIdentity() const <= const char* identity() const
+
+				*	gmLight; class Sun
+					- Renamed public functinos:
+						- std::string getIdentity() const <= char* identity()
+
+
+2008-07-24 Jostein Bratlie
+
+        * fixed: ticket:61
+        * gmMaterial
+          - Old file structure:
+            - GM_Material.h
+            - GM_Material.cpp
+          - New file structure:
+            - gmMaterial.h
+            - gmMaterial_Material.cpp
+            - gmMaterial_MaterialObject.cpp
+            - gmMaterial_MaterialObjectList.cpp
+
+        * gmMaterial; class Material
+          - Renamed Private vars:
+            - GLenum			_source_blend_factor        <=  GLenum			__source_blend_factor
+            - GLenum			_destination_blend_factor   <=  GLenum			__destination_blend_factor
+            - GLenum			_sided                      <=  GLenum			__sided
+          - Renamed Private vars:
+            - GLuint		  _texname                    <=  GLuint		  __texname
+            - GLColor     _amb                        <=  GLColor     __amb
+            - GLColor		  _dif                        <=  GLColor     __dif
+            - GLColor		  _spc                        <=  GLColor		  __spc
+            - float				_shininess                  <=  float				__shininess
+            - float				_transparancy               <=  float				__transparancy
+          - Renamed public functions:
+            -  int        getTextureID()              <=  int  texture()
+					- Removed functions:
+					  - bool operator<(const Material& m)const // This dummy no longer needed.
+
+				* gmMaterial; class MaterialObject
+					- Renamed public functions:
+						- const String&			getName() const				<=	const String&			name() const
+						- const char*				getNameC() const			<=	const char*				nameC() const
+						- const Material& 	getMaterial() const		<=	const Material& 	material() const
+
+				* gmMaterial; class gmMaterialObjectList
+					- Only Cosmetics
+
+        * fixed: ticket:65
+        * gmTexture
+          - Old file structure:
+            - GM_Texture.h
+            - GM_Texture.cpp
+          - New file structure:
+            - gmTexture.h
+            - gmTexture.cpp
+
+        * gmTexture; class Texture
+          - Has been implemented raw... no changes made...
+            This is becaus, this subcomponent should be redesigned together with fileloading, and resource-management.
+          - This will be done at a later time...
+
+
+2008-07-23 Jostein Bratlie
+
+        * Renamed GMlib namespace from GM_lib to GMlib
+
+        * fixes: ticket:56
+
+        * gmScene
+          - Old file structure:
+            - GM_Scene.h
+            - GM_Scene.cpp
+          - New file structure:
+            - gmScene
+            - gmScene.h
+            - gmScene.cpp
+
+        * gmScene; class Scene  // This class is most litely subject to changes in the future.
+          - Renamed private vars:
+            - GMTimer			          _timer                  <=  Tid			              tiden
+            - double		            _timer_elapsed          <=  double                time_logg
+            - double		            _timer_scale            <=  double                time_scale
+            - bool		              _timer_active           <=  bool                  is_stopped
+            - Array<SceneObject*>   _disp_obj               <=  Array<SceneObject*>   _obj
+            - Array<Light*>			    _lights                 <=  Array<Light*>			    _light
+            - Array<GLMatrix>		    _matrix_stack            <=  Array<GLMatrix>		    _mat
+          - Renamed public functions
+            - int                 getSize()                 <=  int size()
+            - int                 getSizeTotal()            <=  int totalSize()
+            - Sphere<GLfloat,3>   getSphere(void)           <=  Sphere<GLfloat,3>	sphere(void)
+            - Sphere<GLfloat,3>   getSphereClean() const    <=  Sphere<GLfloat,3>	cleanSphere() const
+            - bool                isRunning()               <=  bool   isStopped()                         // Inverted the meaning. NB!!!
+            - void                stop()                    <=  void   stopTime()750
+            - void                start()                   <=  void   startTime()
+            - double              getElapsedTime()          <=  double timeLogg()
+            - void                resetTime()               <=  void resetTimeLogg()
+          - Renamed protected functions
+            - bool isVisible(SceneObject* obj) <= bool visible( SceneObject* obj )
+          - Renamed private functions
+            - void            _lighting()                   <=  void            lighting()
+            - void            _display()                    <=  void            display()
+            - void            _select( int type_id )        <=  void            select( int type_id )
+            - virtual void    _culling( const Frustum& f )  <=  virtual void    culling( const Frustum& f )
+
+
+2008-07-22 T.Sang Tran
+
+        * Correct implementation error in the gmPoint_Arrow class
+        * Create test application for the gmPoint_Arrow class
+
+
+2008-07-22 Jostein Bratlie
+
+        * Reimplementation of GM_LA_DisplayObject and the parrent GM_DisplayObject.
+          They've been reimplemented as gmDisplayObject and gmSceneObject, respectably.
+
+        * fixes:  ticket:57
+                  ticket:58
+
+        * gmDisplayObject (ticket:58)
+          - Old file structure
+            - GM_LA_DisplayObject.h
+            - GM_LA_DisplayObject.cpp
+          - New file structure
+            - gmDisplayObject
+            - gmDisplayObject.h
+            - gmDisplayObject.cpp
+
+        * gmDisplayObject; class DisplayObject (former: LA_DisplayObject)
+          - Renamed protected vars
+            - GLMatrix            _matrix_scene       <= GLMatrix           _mat
+            - GLMatrix            _matrix_scene_inv   <= GLMatrix           _mat_inv
+            - Point3D<GLfloat>    _lock_pos           <= Point3D<GLfloat>   _lock_at_pos
+            - SceneObject*			  _lock_object        <= SceneObject*			  _lock_at_object
+            - bool					      _locked             <= bool					      _keep_lock_at
+          - Renamed protected functions
+            - Point<GLfloat,3>    getSceneLockPos()        <= Point<GLfloat,3>   _keepLockAt()
+          - Renamed public functions
+            - string          getIdentity() const <= const char* identity() const
+            - virtual void		lock(SceneObject* obj);           <= virtual void		lockAtTarget(SceneObject* obj);
+            - virtual void		lock(const Point<GLfloat,3>& p)   <= virtual void		lockAtTarget(const Point<GLfloat,3>& p)
+            - virtual void		lock(double d)                    <= virtual void		lockAtTarget(double d)
+            - void				    unLock()                                <= void				    unLockTarget()
+
+        * gmSceneObject (ticket:57)
+          - Old file structure
+            - GM_DisplayObject.h
+            - GM_DisplayObject.cpp
+          - New file structure
+            - gmSceneObject
+            - gmSceneObject.h
+            - gmSceneObject.cpp
+
+        * gmSceneObject; class SceneObject (former: DisplayObject)
+          - Renamed private vars:
+            - bool _active                                          <=  bool _aktiv
+            - Array<SceneObject*>   _children                       <=  Array<SceneObject*>   _object
+          - Renamed private functions:
+            - virtual GL_Matrix& _getMatrix()                       <=  virtual GLMatrix& matrix()
+            - virtual void _prepareDisplay(const GLMatrix& m)       <=  virtual void prepareDisplay(const GLMatrix& m)
+            - int _prepare(Array<Light*>& obj, Array<GLMatrix>& mat, Scene* s, SceneObject* mother=0)
+                  <= int prepare(Array<Light*>& obj, Array<GLMatrix>& mat, Scene* s, SceneObject* mother=0)
+            - void	_simulate(double dt)                            <=  void	simulate(double dt)
+            - void	_display()                                      <=  void	display()
+            - void	_select(int what=-1)                            <=  void	select( int what=-1 )
+          - Renamed protected functions:
+            - virtual void displayCollapsed()                       <=  virtual void imposter()
+          - Renamed public functions:
+            - Array<SceneObject*>& getChildren()                    <=  Array<SceneObject*>& children()
+            - int getTypeId()                                       <=  int typeId()
+            - virtual void enableChildren( bool enable = true )
+                  <= virtual void childrenOn()
+                  <= virtual void childrenOff()
+            - virtual void toggleCollapsed()                        <=  virtual void toggleSelector()
+            - virtual string getIdentity() const                    <=  virtual const char* identity() const
+            - Point<GLfloat,3>	getCenterPos() const                <=  Point<GLfloat,3>	centerPos() const
+            - const GLMatrix&	getMatrixGlobal() const               <=  const GLMatrix&	globalMatrix() const
+            - Sphere<GLfloat,3>	getSurroundingSphere() const        <=  Sphere<GLfloat,3>	surroundingSphere() const
+            - Sphere<GLfloat,3>	getSurroundingSphereClean() const   <=  Sphere<GLfloat,3>	cleanSurroundingSphere() const
+
+
+2008-07-21 Jostein Bratlie
+
+        * fixes: ticket:59
+        * gmOpenGL
+          - Old file structure:
+            - GM_OpenGL.h
+          - New file structure:
+            - gmOpenGL
+            - gmOpenGL.h
+            - gmOpenGL_Frustum.cpp
+            - gmOpenGL_GLColor.cpp
+            - gmOpenGL_GLMatrix.cpp
+            - gmOpenGL_ScaleObj.cpp
+            - gmOpenGL_Sphere3D.cpp
+
+        * gmOpenGL; class Frustum
+          - Renamed public functions:
+            - Point<float,3>    getPos(int i) const       <= Point<float,3>    pos(int i) const
+            - Vector<float,3>   getNormal(int i) const    <= Vector<float,3>   normal(int i) const
+
+        * gmOpenGL; class GLColor
+          - Renamed private vars:
+            - union{ GLuint name; GLubyte rgba[4]; } _color    <=  union{ GLuint name; GLubyte rgba[4]; } c
+          - Renamed public functions:
+            - GLclampd    getClampd(int i)const   <=  GLclampd    getd(int i)const
+            - GLubyte     getAlpha()const         <=  GLubyte     getA()const
+            - GLclampd    getAlphaC()const        <=  GLclampd    getAd()const
+            - GLubyte     getBlue()const          <=  GLubyte     getB()const
+            - GLclampd    getBlueC()const         <=  GLclampd    getBd()const
+            - GLubyte     getGreen()const         <=  GLubyte     getG()const
+            - GLclampd    getGreenC()const        <=  GLclampd    getGd()const
+            - GLubyte     getRed()const           <=  GLubyte     getR()const
+            - GLclampd    getRedC()const          <=  GLclampd    getRd()const
+            - GLColor     getInverse() const      <=  GLColor     inverse() const
+            - void        setAlpha(GLubyte a)     <=  void        setA(GLubyte a)
+            - void        setAlpha(GLclampd a)    <=  void        setA(GLclampd a)
+            - void        setBlue(GLubyte b)      <=  void        setB(GLubyte b)
+            - void        setBlue(GLclampd b)     <=  void        setB(GLclampd b)
+            - void        setGreen(GLubyte g)     <=  void        setG(GLubyte g)
+            - void        setGreen(GLclampd g)    <=  void        setG(GLclampd g)
+            - void        setRed(GLubyte r)       <=  void        setR(GLubyte r)
+            - void        setRed(GLclampd r)      <=  void        setR(GLclampd r)
+
+        * gmOpenGL; class GLMatrix
+          - Renamed private vars:
+            - GLmatrix _matrix[16]  <= GMmatrix matrix[16]
+          - Renamed private functions:
+            - void _cpy()                     <= void cpy()
+            - void _cpy(const GLfloat* m)     <= void cpy(const GLfloat* m)
+            - void _makeOrtho(const UnitVector<GLfloat,3>& d, Vector3D<GLfloat>& x, Vector3D<GLfloat>& y, Vector3D<GLfloat>& z)
+                <= makeOrtho(const UnitVector<GLfloat,3>& d, Vector3D<GLfloat>& x, Vector3D<GLfloat>& y, Vector3D<GLfloat>& z)
+            - void _mult(const GL_Matrix& m1,const GLMatrix& m2)     <= void mult(const GLMatrix& m1,const GL_Matrix& m2)
+            - void _mult2(GL_Matrix& m1,const GLMatrix& m2) const    <= void mult2(GLMatrix& m1,const GL_Matrix& m2) const
+          - Renamed public functions:
+            - GLfloat*  getPtr() const              <= GLfloat* pt() const
+            - GLMatrix& multRev(const GLMatrix& m)  <= GLMatrix& reverseMult(const GLMatrix& m)
+            - GLMatrix&   getInverse() const        <= GLMatrix&   inverse() const
+            - GLMatrix&   getInverseOrtho() const   <= GLMatrix&   inverse2() const
+            - void        invertOrtho()             <= void        invert2()
+
+        * gmOpenGL; class ScaleObj
+          - Renamed private vars:
+            - bool			        _scaled   <= bool			        scaled
+            - Point<float,3>    _s        <= Point<float,3>   s
+            - float			        _max      <= float			      max
+          - Renamed private functions:
+            - void  _updateMax()          <= void   updateMax()
+          - Renamed public functions:
+            - float getMax() const                                          <= float  maxScale() const
+            - bool  isActive()  const                                       <= bool   isActiv()  const
+            - Sphere<float,3> scaleSphere(const Sphere<float,3>& sp) const  <= Sphere<float,3> scaleSphere(const Sphere<float,3>& sp) const
+
+        * gmOpenGL; class Sphere3D
+          - Cosmetics
+
+
+2008-07-21 T.Sang Tran
+
+        * Correct implementation error in the gmAngle class
+        * Create test application for the gmAngle class
+
+
+2008-07-18 Jostein Bratlie
+
+        * fixes: ticket:43
+        * gmDMatrix
+          -Old file structure:
+            -GM_DMatrix.h
+            -GM_DMatrix.c
+          -New file structure:
+            -gmDMatrix
+            -gmDMatrix.h
+            -gmDMatrix.c
+
+        * gmDMatrix; class DMatrix
+          - Renamed private vars:
+            - int   _n        <= int    n
+            - T*    _p        <= T*     pt
+            - T	    _init[4]  <= T	    a[4]
+
+          - Replaced public functions:
+            - T     getDeterminant() const    <=  T     determinant() const;
+            - int   getDim1() const           <= int   dim1() const
+            - int   getDim2() const           <= int   dim2() const
+            - DVector<T> toDVector()          <= DVector<T> flat()
+
+          -Replaced private functions:
+            - void _cpy(const DMatrix<T>& v)  <= _cpy(const DMatrix<T>& v)
+            - void _cpy(const T p[])          <= void copy(const T p[])
+
+
+2008-07-17 Jostein Bratlie
+
+        * fixes: ticket:42
+        * gmDVector
+          - Old file structure:
+            - GM_DVector
+            - GM_DVector.h
+            - GM_DVector.c
+          - New file structure:
+            - gmDVector.h
+            - gmDVector.c
+
+        * gmDVector; class DVector
+          - Renamed private vars:
+            - int   _n        <= int    n
+            - T*    _p        <= T*     pt
+            - T	    _init[4]  <= T	    a[4]
+
+          - Replaced public functions:
+            - T getLength() const <= T length() const
+            - T* getPtr() const <= T* ptr() const
+            - T&	getSum() const                      <= T&			sum() const
+            - T&  getSum(int start, int end) const    <= T&			sum(int start, int end) const
+
+          - Replaced private functions:
+            - void _cpy(const DVector<T>& v)  <= void copy(const DVector<T>& v)
+            - void _cpy(const T p[])          <= void copy(const T p[])
+
+          - Removed functions
+            - void		sort();  // Maby implementing this later...
+
+
+2008-07-17 T.Sang Tran
+
+        * Correct implementation fail in the gmTimer class
+        * gmTimer
+          - void setTimer() => void update()
+
+        * gmCodeCompExample => gmCodeExample
+          - Make this class more genereic for both example and testing
+
+        * Fixes: ticket:54
+        * Update gmPSurf to makeconf.mak
+        * Create C++ interface for the GMlib geometry and PSurf header and classes
+        * gmPSurf
+          - Origin file structure:
+            - PSurf.h
+            - PSurf.c
+          - New file structure:
+            - gmPSurf.h
+            - gmPSurf.c
+
+
+2008-07-16 T.Sang Tran
+
+        * Fixes: ticket:53
+        * Add gmString to makeconf.mak
+        * Create C++ interface for the gmString header and class
+        * gmString
+          - Origin file structure:
+            - GM_String.h
+          - New file structure:
+            - gmString.h
+            - gmString.cpp
+
+          - New replaced public constructors and function:
+           - GM_String()                            =>  String()
+           - GM_String(const char* c)               =>  String(const char* c)
+           - GM_String(const std::string& s)        =>  String(const string& str)
+           - GM_String(int i)                       =>  String(int num)
+           - GM_String(double d)                    =>  String(double num)
+           - GM_String(const Point<double,2>& d)    =>  String(const Point<double, 2>& p)
+           - GM_String(const Point<double,3>& d)    =>  String(const Point<double, 3>& p)
+           - GM_String(const Point<float,2>& d)     =>  String(const Point<float, 2>& p)
+           - GM_String(const Point<float,3>& d)     =>  String(const Point<float, 3>& p)
+           - GM_String(const Point<int,2>& d)       =>  String(const Point<int, 2>& p)
+           - GM_String(const Point<int,3>& d)       =>  String(const Point<int, 3>& p)
+           - void setDes(int d=2)                   =>  void getPrecision(int p = 2)
+
+          - New replaced private variables:
+            - static char a[32]     =>  static char _data[32]
+            - static int _des       =>  static int  _precision
+
+
+        * Fixes: ticket:51
+        * Add gmTimer to makeconf.mak
+        * Create C++ interface for the gmTimer header and class
+        * gmGMTimer
+          - Origin file structure:
+            - GM_Tid.h
+          - New file structure:
+            - gmTimer.h
+            - gmTimer.cpp
+          - New replace public contructor:
+            - Tid()     =>  GMTimer()
+
+          - New replaced public functions:
+            - int     millisec()    =>  int     getMilli(bool set)
+            - double  sec()         =>  double  getSec(bool set)
+            - void    set()         =>  void    setTimer()
+
+          - New replaced private variable:
+            - timeb   _tid          =>  timeb   _time
+
+          - Remove public functions:
+            - int millisecAndSet()
+            - double secAndSet()
+
+
+        * Fixes: ticket:52
+        * Create C++ interface for the gmRandom class
+        * Add gmRandom into gmUtils
+        * gmRandom
+          - Origin file structure:
+            - GM_Random.h
+          - New file structure:
+            - gmRandom.h
+            - gmRandom.c
+
+          - New replaced public constructors:
+            - GM_Random()             => Random()
+            - GM_Random(T mn, T mx)   => Random(T vLow, T vHigh)
+
+          - New replaced public function:
+            - T draw()    =>  T getValue()
+
+          - Mew replaced private variables:
+            - T low         =>  T _low
+            - T high        =>  T _high
+
+
+2008-07-15 Jostein Bratlie
+
+        * Fixes: ticket:41
+        * gmArrayLX; class ArrayLX
+          - Added gmArrayLX into gmContainer
+
+          - Old file structure:
+            - GM_LX_Array.h
+            - GM_LX_Array.c
+          - New file structure:
+            - gmArrayLX (c++ header)
+            - gmArrayLX.h
+            - gmArrayLX.c
+
+          - New Renamed Public Functions:
+            - T&    back()                                                        <= T& last()
+            - bool  empty() const                                                 <= bool isEmpty() const
+            - void  insertAlways( const ArrayLX<T>& array, bool front = false )   <= void insertAlways( const ArrayLX<T>& array, bool front = false )
+            - void  insertAlways( const T& obj, bool front = false )              <= void insertAlways( const T& obj, bool front = false )
+            - int   max_size() const                                              <= int maxSize() const
+            - bool  removeBack()                                                  <= bool removeLast()
+            - bool  removeFront()                                                 <= bool removeFirst()
+            - void  reverse()                                                     <= void turn()
+            - void  setMaxSize( int n , int incr = 0 )                            <= void setMax( int n , int incr = 0 )
+            - void  stripEquals()                                                 <= void stripElements()
+
+          - New Public Functions:
+            - T& front();
+
+          - Pulblic Alias Functions:
+            - T&  getBack()                         // Alias: back()
+            - T&  getFront()                        // Alias: front()
+            - int getIndex( const T& obj ) const    // Alias: index( const T& obj )
+            - int getMaxSize() const                // Alias: max_size()
+            - int getSize() const                   // Alias: size()
+
+          - New Renamed Protected Functions:
+            - T& getElement( int i ) const      <= T& elem( int i ) const;
+
+
+2008-07-14 Jostein Bratlie
+
+        * gmMatrix; class Matix:
+          - New Public Renamed Functions:
+            - T*		          ptr() const           => T*		            getPtr() const
+            - Point<T,m>*		  pr() const            => Point<T,m>*		  getPtrP() const
+            - Matrix<T,m,n>   transposed() const    => Matrix<T,m,n>    getTransposed() const
+            - Matrix<T,n,n>   multMeTrans()         => Matrix<T,n,n>    getMultTrans()
+            - Matrix<T,m,m>   multTransMe()         => Matrix<T,m,m>    getTransMult()
+          - New Protected Renamed Functions:
+            - const Vector<T,n>&   col( int j ) const                                             =>  const Vector<T,n>&  getStatCol( int j ) const
+            - const Vector<T,m>&   row( int i ) const                                             =>  const Vector<T,m>&  getStatRow( int i ) const
+            - void                 makeMeOrtho( const Vector<T,m>& u )                            =>  void                setOrtho( const Vector<T,m>& u )
+            - void                 makeMeOrtho( const Vector<T,m>& u, const Vector<T,m>& v )      => void                 setOrtho( const Vector<T,m>& u, const Vector<T,m>& v )
+        * gmMatrix: class SqMatrix
+          - New Public Renamed Functions:
+            - Point<T,n> const&   getDia(int i) const                                             => Point<T,n> const&    getDiagonal(int i) const
+            - void                rotation(Angle a, const Vector<T,n>& u, const Vector<T,n>& v)   => void                 rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v)
+          - New Protected Renamed Functions:
+            - const Point<T,n>&   dia(int i)const       => const Point<T,n>& getStatDiagonal(int i) const
+          - Still Not implemented Functions:
+            - T	                      determinant()     =>  T	                      getDeterminant()
+            - Matrix<T,n,n> const&    inverse() const   =>  Matrix<T,n,n> const&    getInverse() const
+            - Matrix<T,n,n> const&    inverse2() const  =>  Matrix<T,n,n> const&    getInverse2() const
+
+        * gmMatrix: class HqMatrix
+          - New Public Renamed Functions:
+            - void rotation(Angle a, const Vector<T,n>& u, const Vector<T,n>& v)                        => void rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v)
+            - void rotation(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p)   => void rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p)
+          - Still not implemented Functions:
+            - HqMatrix<T,n> const&  inverse2() const => HqMatrix<T,n> const&   getInverse2() const
+
+
+2008-07-10 Jostein Bratlie
+
+        * Added an example for the UnitVector class in gmPoint
+          - example005: Testing the UnitVector class
+
+
+2008-07-10 Jostein Bratlie
+
+        * Makefile now creates dependencies which checks all files it's dependent on, even global vice.
+        * Added examples for the Point class in gmPoint.
+          - example003: Tests the external operators.
+        * Added an example for the Vector class in gmPoint.
+          - example004: Tests the Vector class.
+
+
+2008-07-10 Dag Erlend Kvarme
+
+        * Added cpp header for the Matrix class (gmMatrix)
+        * Split up the Matrix class (GM_Matrix.h) into:
+          - gmMatrix.h
+          - gmMatrix_Matrix.c
+
+
+2008-07-10 T.Sang Tran
+
+        * Fixes: ticket:40
+        * gmArray, fixed alias functions:
+          - pop_back()                  // Alias: removeBack()
+          - pop_front()                 // Alias: removeFront()
+          - push_back(const T&)         // Alias: insertBack(const T&)
+          - push_back(const Array<T>&)  // Alias: insertBack(const Array<T>&)
+          - push_front(const T&)        // Alias: insertFront(const T&)
+          - push_front(const Array<T>&) // Alias: inserFront(const Array<T>&)
+
+        * gmArrayT
+          - Origin file structure:
+            - GM_T_Array.h
+            - GM_T_ArraY.c
+          - New file structure:
+            - gmArrayT.h
+            - gmArrayT.c
+          - New replaced public functions:
+            - void  alwaysInsert(const T&, bool first)          =>  void  insertAlways(const T&, bool first)
+            - void  alwaysInsert(const ArrayT<T>&, bool first)  =>  void  insertAlways(const ArrayT<T>&, bool first)
+            - bool  isEmpty()                                   =>  bool  empty()
+            - T&    last()                                      =>  T&    back()
+            - int   maxSize() const                             =>  int   max_size() const
+            - bool  removeFirst()                               =>  bool  removeFront()
+            - bool  removeLast()                                =>  bool  removeBack()
+            - void  setMax(int)                                 =>  void  setMaxSize(int)
+            - void  stripElements()                             =>  void  stripEquals()
+            - void  turn()                                      =>  void  reverse()
+          - New replaced private variables and functions:
+            - T*          p                         =>  T           *_ptr
+            - short	      no_elem                   =>  short       _no_elements
+            - short	      max_elem                  =>  short       _max_elements
+            - static int  incr                      =>  static int  _size_incr
+            - ostream&    _prOut(ostream&) const    =>  ostream&    _printOut(ostream&) const
+            - istream&    _prIn(istream&)           =>  istream&    _printIn(istream&)
+
+          - Remove the private function T& elem(int)
+
+          - New added public functions:
+            - T&    front()
+            - T&    getBack()
+            - T&    getFront()
+            - int   getIndex(const T&)
+            - int   getMazSize() const
+            - int   getSize() const
+            - void  insertBack(const T&)
+            - void  insertBack(const ArrayT<T>&)
+            - void  insertFront(const T&)
+            - void  insertFront(const ArrayT<T>&)
+            - bool  isEmpty() const;
+            - bool  isExisting() const;
+            - void  pop_back();
+            - void  pop_front();
+            - void  push_back(const T&)
+            - void  push_back(const ArrayT<T>&)
+            - void  push_front(const T&)
+            - void  push_front(const ArrayT<T>&)
+
+
+2008-07-09 Jostein Bratlie
+
+        * Added examples for the Point class in gmPoint.
+          - example001: Tests and shows the use of constructors and functions.
+          - example002: Tests and shows the use of operators.
+
+
+2008-07-09 T.Sang Tran
+
+        * Fixes: ticket:33
+        * gmArrayS
+          - New replaced public functions:
+            - Array<int> sortArray()    =>  Array<int> getSortedIndex()
+
+          - Implemented public functions and private variables:
+            - ArrayS( int n = 6 );
+            - ArrayS( int n, T t);
+            - ArrayS( int n, const T* p );
+            - ArrayS( const Array<T>& ar );
+            - ArrayS( const ArrayS<T>& ar );
+            - ArrayS( const ArrayT<T>& ar );
+            - void          clear();
+            - void          insertAlways( const T& t, bool first = false );
+            - Array<int>    getSortedIndex();
+            - bool          removeIndex( int index );
+            - void          setSorted( bool sort = true );
+            - void          sort();
+            - ArrayS<T>& operator  = ( const Array<T>& ar );
+            - ArrayS<T>& operator  = ( const ArrayT<T>& ar );
+            - ArrayS<T>& operator  = ( const ArrayS<T>& ar );
+            - bool _sorted
+
+        * gmArray
+          - New replaced public funtions (make compatible with Array Sortable):
+            - void    clear()                                         =>  virtual void    clear()
+            - void    insertAlways( const T& t, bool first = false )  =>  virtual void    insertAlways( const T& t, bool first = false )
+            - bool    removeIndex( int index )                        =>  virtual bool    removeIndex( int index )
+
+          - Make all private variables to protected
+          - Add new protected function:
+            - void    expand();
+          - Split the public function void insertAlways(const T& t, bool first = false)
+            - Some of the implementation are allocated in the protected function expand()
+
+
+2008-07-08 Dag Erlend Kvarme
+
+        * Fixes: ticket: 2
+
+        * Added cpp header for the Point2D class (gmPoint2D)
+
+        * Split up the Point2D class (GM_Point2D.h) into:
+          - gmPoint2D.h
+          - gmPoint2D_Point2D.c
+          - gmPoint2D_Vector2D.c
+          - gmPoint2D_UnitVector2D.c
+
+
+2008-07-08 T.Sang Tran
+
+        * Fixes: ticket:11
+        * Add C++ interface for the gmSubSpace classes
+        * Add gmSubSpace classes to makeconf.mak
+        * gmSubSpace<t,n,m>
+          - Origin file structure:
+            - GM_SubSpace.h
+          - New file structure:
+            - gmSubSpace.h
+            - gmSubSpace_Cube.c
+            - gmSubSpace_Line.c
+            - gmSubSpace_Plane.c
+            - gmSubSpace_SubSpace.c
+
+          - New replaced public functions:
+            - Point<T,n>            closestPoint(const Point<T,n>& p) const               =>  Point<T,n>              getClosestPoint( const Point<T,n>& p ) const
+            - Vector<T,n>&          dir(int i = 0)                                        =>  Vector<T,n>&            getDirRef( int i = 0 )
+            - Vector<T,n>const&     dirC(int i = 0) const                                 =>  Vector<T,n> const&      getDir( int i = 0 ) const
+            - T                     distanceAlong(const Point<T,n>& p, int i = 0) const   =>  T                       getDistanceAlong( const Point<T,n>& p, int i = 0 ) const
+            - T                     distanceTo(const Point<T,n>& p) const                 =>  T                       getDistanceTo( const Point<T,n>& p ) const
+            - Vector<T,n>           distanceVector(const Point<T,n>& p) const             =>  Vector<T,n>             getDistanceVector( const Point<T,n>& p ) const
+            - Matrix<T,m,n>&		    mat()                                                 =>  Matrix<T,m,n>&		      getMatRef()
+            - Matrix<T,m,n>const&   matC() const                                          =>  Matrix<T,m,n> const&    getMat() const
+            - Point<T,n>&			      pos()                                                 =>  Point<T,n>&			        getPosRef()
+            - Point<T,n>const&	    posC() const                                          =>  Point<T,n> const&	      getPos() const
+
+          - New replaced protected variable:
+            - Matrix<T,m,n>   _v    =>  Matrix<T,m,n>   _matrix
+
+        * gmSubSpace<t,n,0>
+          - New replaced public functions:
+            - Point<T,n>            closestPoint(const Point<T,n>& p) const               =>  Point<T,n>              getClosestPoint( const Point<T,n>& p ) const
+            - Vector<T,n>&          dir(int i = 0)                                        =>  Vector<T,n>&            getDir( int i = 0 )
+            - Vector<T,n>const      dirC(int i = 0) const                                 =>  Vector<T,n> const       getDir( int i = 0 ) const
+            - T                     distanceAlong(const Point<T,n>& p, int i = 0) const   =>  T                       getDistanceAlong( const Point<T,n>& p, int i = 0 ) const
+            - T                     distanceTo(const Point<T,n>& p) const                 =>  T                       getDistanceTo( const Point<T,n>& p ) const
+            - Vector<T,n>           distanceVector(const Point<T,n>& p) const             =>  Vector<T,n>             getDistanceVector( const Point<T,n>& p ) const
+            - Point<T,n>&			      pos()                                                 =>  Point<T,n>&			        getPosRef()
+            - Point<T,n>const&	    posC() const                                          =>  Point<T,n> const&	      getPos() const
+
+
+2008-07-07 Jostein Bratlie
+
+        * gmPoint
+          - Changed internal private variable
+            int _type => int _sortType
+          - Changed internal private functions
+            void cpy(...) => int void _cpy(...)
+
+
+2008-07-04 Dag Erlend Kvarme
+
+        * Fixes: ticket: 21
+
+        * Added cpp header for the Point3D class (gmPoint3D)
+
+        * Added cpp header for the StaticProc2 class (gmStaticProc2)
+
+        * Split ut the StaticProc2 class (GM_StaticProc2.h) into:
+
+          - gmStaticProc2.h
+          - gmStaticProc2_GM_Static_P_.c
+          - gmStaticProc2_GM_Static_P2_.c
+
+
+2008-07-04 T.Sang Tran
+
+        * Fixes: ticket:15
+
+        * Rename GM_Array.h to gmArray.h
+        * Rename GM_Array.c to gmArray.c
+        * Add C++ interface for the gmContainer and gmArray classes
+        * Split gmArray into Array (gmArray) and Array Sortable (gmArrayS)
+
+        * gmArray
+          - New replaced private variables:
+            - T pt[6]       =>  T _data[6]
+            - T* array      =>  T *_data_ptr
+            - int	no_elem   =>  int _no_elements
+            - int	max_elem  =>  int _max_elements
+            - int numb      =>  int _numb
+
+          - New replaced public functions:
+            - void  alwaysInsert(const T&, bool first=false)           =>  void   insertAlways(const T& t, bool first = false)
+            - void  alwaysInsert(const Array<T>&, bool first=false)    =>  void   insertAlways(const Array<T>& ar, bool first = false)
+            - bool  isEmpty() const                                    =>  bool   empty() const
+            - T&    last()                                             =>  T&     back()
+            - int   maxSize() const	                                   =>  int    max_size() const
+            - bool  removeFirst()                                      =>  bool   removeFront()
+            - bool  removeLast()                                       =>  bool   removeBack()
+            - void  setMax(int)                                        =>  void   setMaxSize(int size)
+            - void  stripElements                                      =>  void   stripEquals()
+            - void  turn()                                             =>  void   reverse()
+
+          - Add new public functions:
+            - T&    front()
+            - T&    getBack()
+            - T&    getFront()
+            - int   getIndex(const T& t) const
+            - int   getMaxSize() const
+            - T*    getPtr()
+            - int   getSize() const
+            - void  insertBack(const T& t)
+            - void  insertBack(const Array<T>& ar)
+            - void  insertFront(const T& t)
+            - void  insertFront(const Array<T>& ar)
+            - bool  isEmpty() const
+            - bool  isExisting(const T& t) const
+            - bool  removeBack()
+            - bool  removeFront()
+            - void  pop_back()
+            - void  pop_front()
+            - void  push_back(const T& t)
+            - void  push_back(const Array<T>& ar)
+            - void  push_front(const T& t)
+            - void  push_front(const Array<T>& ar)
+
+          - Removed variable:
+            - int sorted
+
+          - Removed functions:
+            - void		    setSorted(bool s=true)
+            - void        sort()
+            - Array<int>  sortArray() const
+            - These will be available in the Array Sortable class
+
+
+2008-07-04 Jostein Bratlie
+
+        * Fixes: ticket:19
+
+        * Documentation
+          - Created target in makefile for doxygen documentation generation
+          - Created Doxyfile which holds the documentation settings
+
+        * Git
+          - The path doc/doxygen has been added to the .gitignore file
+            Generated documentation, should not be tracked!! ;)
+
+        * gmStaticProc
+          - Original file structure:
+            - GM_Static_Proc.h
+          - New file structure:
+            - gmStaticProc.h
+            - gmStaticProc_GM_Static_.c
+            - gmStaticProc_GM_Static1_.c
+            - gmStaticProc_GM_Static2_.c
+            - gmStaticProc_GM_Static3_.c
+            - gmStaticProc_GM_Std_.c
+
+          - General Changes
+            - File and structure splitting
+            - Cosmetic Changes
+
+
+2008-07-03 Dag Erlend Kvarme
+
+        * Fixes: ticket: 13
+
+        * class Plane
+          - New replaced functions:
+            Vector<T,3>         getDistanceVector(const Point<T,3>& p) const	<= Vector<T,3> distanceVector(const Point<T,3>& p) const
+            Point<T,3>          getClosestPoint(const Point<T,3>& p) const 	  <= Point<T,3> closestPoint(const Point<T,3>& p) const
+            T                   getDistanceTo(const Point<T,3>& p) const		  <= T distanceTo(const Point<T,3>& p) const
+            const Vector<T,3>&  getNormal() const  			                      <= const Vector<T,3>& normal() const
+
+        * Split up the Point3D class (GM_Point3D.h) into:
+          - gmPoint3D.h
+          - gmPoint3D_Point3D.c
+          - gmPoint3D_Vector3D.c
+          - gmPoint3D_UnitVector3D.c
+          - gmPoint3D_Plane.c
+
+        * Added some, but not complete documentation to the files
+
+
+2008-07-02  Dag Erlend Kvarme
+
+        * Fixes: ticket: 4
+
+        * Split up the Simplex class (GM_Simplex.h) into:
+          - gmSimplex.h
+          - gmSimplex_Linesegment.c
+          - gmSimplex_Simplex.c
+          - gmSimplex_Tetrahedron.c
+          - gmSimplex_Triangle.c
+
+        * Added some, but not complete documentation to the files
+
+        * Fixed wrong include names
+
+
+2008-07-02  T.Sang Tran
+
+        * Fixed: Ticket #16
+        * Add C++ interface the for the Stream classes (gmUtils)
+
+        * gmStream
+          - Origin file structure:
+            - GM_Stream.h
+          - New file structure:
+            - gmStream.h
+            - gmStream_Separator.cpp
+
+        * Update makeconf.mak
+          - add to the gmStream
+
+
+2008-07-02  Jostein Bratlie
+
+        * Fixes: ticket:1
+
+        * gmPoint
+          - Original file structure:
+            - GM_Point.h
+            - GM_Point.c
+          - New file structure:
+            - gmPoint ( C++ header )
+            - gmPoint.h
+            - gmPoint_Point.c
+            - gmPoint_Vector.c
+            - gmPoint_UnitVector.c
+            - gmPoint_ScalarPoint.c
+            - gmPoint_Sphere.c
+            - gmPoint_Arrow.c
+            - gmPoint_Box.c
+            - gmPoint_M_I_.c
+
+        - general changes
+          - Internaly the typename keyword has been used instead of the class keyword for templates.
+
+        - class Point
+          - New replaced functions:
+            Angle getAngle( Point<T, n> p ) const <= Angle angle( Point<T,n> v ) const
+            T     getLength() const               <= T length() const
+            T     getMaxIndex() const             <= T maxIndex() const
+            T     getMaxAbsIndex() const          <= T maxAbsIndex() const
+            T*    getPtr() const                  <= T* ptr() const
+            Internal changes
+          - New replaced variables:
+            static Arrow<T, n> *_arrow  <= static Arrow<T, n> *_a
+            T                   _pt[n]  <= T pt[n];
+
+        - class Vector
+          - New replaced functions:
+            Point<T, n>& getNormalized()  <= Point<T, n>& normalized()
+
+        - class UnitVector
+          Only file structuring and cosmetic changes
+
+        - class Arrow
+          - New replaced functions:
+            const Vector<T, n>&  getDir() const  <= const Vector<T, n>& dir() const
+            const Point<T, n>&   getPos() const  <= const Point<T, n>& pos() const
+
+        - class ScalarPoint
+          - New replaced functions:
+            Point<T, n>  getPos() const    <= Point<T, n> pos() const
+            T*           getPtr() const    <= T* ptr() const
+            T            getValue() const  <= T value() const
+
+        - class Sphere
+          - New replaced functions:
+            T     getRadius()                                 <= T radius()
+            bool  isValid()                                   <= bool valid()
+            bool  isIntersecting(const Sphere<T,n>& p) const  <= bool intersect(const Sphere<T,n>& p) const
+
+        - class Box
+          - New replaced functions:
+            Point<T, n>   getPointMin() const;                        <= Point<T, n> minPoint() const
+            Point<T, n>   getPointMax() const;                        <= Point<T, n> maxPoint() const
+            Point<T, n>   getPointCenter() const;                     <= Point<T, n> centerPoint() const
+            Vector<T, n>  getPointDelta() const;                      <= Vector<T, n> delta() const
+            T*            getPtr() const;                             <= T* ptr() const
+            T&            getValueAt( int i, int j );                 <= T& p( int i, int j )
+            T             getValueMin( int i ) const;                 <= T minValue( int i ) const
+            T             getValueMax( int i ) const;                 <= T maxValue( int i ) const
+            T             getValueCenter( int i ) const;              <= T centerValue( int i ) const
+            T             getValueDelta( int i ) const;               <= T delta( int i ) const
+            void          insert( const Point<T, n>& );               <= void insert( const Point<T, n>& )
+            void          insert( const Box<T, n>& );                 <= void insert( const Box<T, n>& )
+            bool          isIntersecting( const Box<T,n>& b ) const   <= bool intersect( const Box<T,n>& b ) const
+            bool          isSurrounding( const Point<T,n>& p ) const  <= bool surround( const Point<T,n>& p ) const
+            bool          isSurrounding( const Box<T,n>& b ) const    <= bool surround( const Box<T,n>& b ) const
+
+        - class M_I_
+          - New replaced functions:
+            T* getPtr() const  <= T* ptr() const;
+
+
+2008-07-01  T.Sang Tran
+
+        * Create gmAngle_example001, contains example of contructors and functions
+        * Update makeconf.mak
+          - add to the gmAngle
+
+
+2008-06-20  T.Sang Tran
+
+        * Fixed: Ticket #3
+
+        * Update the .gitignore file
+          - add *.save and *.bak
+
+        * gmAngle
+          - Origin file structure:
+            - GM_Angle.h
+          - New file structure:
+            - gmAngle.h
+            - gmAngle.cpp
+
+          - New replaced private variable:
+            - double a                  => double _angle
+
+          - New replaced public functions:
+            - int deg() const           => int getDeg() const
+            - double rad() const        => double getRad() const
+
+
+2008-06-16  Jostein Bratlie
+
+        * Reversion file added to keep track of changes made from reversion to reversion
+        * Initial commit in git taged with v0.1_pre1
+
+
+2008-06-13  Jostein Bratlie
+
+        * Initial git setup.
+        * Readme with coding conventions created
+        * Basic template files for different header and source files created, and put in /doc/templates

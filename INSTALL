@@ -1,0 +1,38 @@
+
+INSTALL
+=======
+
+
+##############
+## BINARIES ##
+##############
+
+Info on how to fetch binaries including header files and linkable libraries for both linux and windows can be found at:
+http://episteme.hin.no 
+(https://episteme.hin.no/index.php/Download_GMlib)
+
+
+
+#################
+## FROM SOURCE ##
+#################
+
+#######
+# Linux
+
+# Compile
+run 'make'
+
+# Link
+headers located in subdirectory "dist/include"
+
+static library located in subdirectory "dist/lib":
+"dist/lib/libGMlib.a"
+
+
+
+
+#########
+# Windows
+
+...

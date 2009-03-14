@@ -1,0 +1,37 @@
+
+Release Log
+===========
+
+v0.3.0:
+
+	* Everything not the source has been removed
+	* A bunch of bugfixes
+	* Visualization System for Displayable Parametrics
+	* Released under GNU LGPL (GNU Lesser General Public License)
+
+
+v0.2.3:
+
+        * A bunch of bugfixes: view the changlog
+        * A template added, containing all the keybindings from the original GM_lib
+
+
+v0.2.2:
+
+        * A couple more subcomponents
+        * Mostly bugfixes from Alpha1
+        * Optimalization; hence inline function fixes
+
+
+v0.2.1:
+
+        * GMlib, with almost all base components implemented
+        * GMlib reborn a fully fledged library:
+          - No editing nessasarry inside the library.
+          - A Qt Template provided.
+
+
+v0.2.0:
+
+        * The Old GMlib (GM_lib) no code implemented.
+          - The Old source located under src_old

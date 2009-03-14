@@ -1,0 +1,59 @@
+/**********************************************************************************
+**
+** Copyright (C) 1994 Narvik University College
+** Contact: GMlib Online Portal at http://episteme.hin.no
+**
+** This file is part of the Geometric Modeling Library, GMlib.
+**
+** GMlib is free software: you can redistribute it and/or modify
+** it under the terms of the GNU Lesser General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** GMlib is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU Lesser General Public License for more details.
+**
+** You should have received a copy of the GNU Lesser General Public License
+** along with GMlib.  If not, see <http://www.gnu.org/licenses/>.
+**
+**********************************************************************************/
+
+
+
+/*! \file gmDParametrics
+ *
+ *  C++ interface for the GMlib Displayable Parametrics headers and the relative classes
+ *
+ *  \date   2008-09-07
+ */
+
+
+// The base class of all subclasses of Displayable Parameterized Curvss, Surfaces, Volumes, Flows, ..., ..., etc.
+#include "gmDParametrics.h"
+
+
+// Direct subclasses of Displayable Parametrics
+#include "gmDCurve"          // Curve
+#include "gmDSurf"           // Surface
+
+// Displayable Parametric Curves
+#include "gmDPCircle"         // Circle
+#include "gmDPArc"            // An Arc
+#include "gmDPBezierCurve"    // Bezier Curve
+#include "gmDPBSplineCurve"   // BSpline Curve
+#include "gmDPButterfly"      // The so called "Butterfly" curve
+#include "gmDPERBSCurve"      // Expo Rational BSpline Curve
+#include "gmDPRoseCurve"      // Rose Curve
+#include "gmDPTCurve"         // Transformable TCurve (special curve)
+
+// Displayable Parametric Tensor Product Surfaces
+#include "gmDPApple"          // Apple
+#include "gmDPBezierSurf"     // Bezier Surface
+#include "gmDPCylinder"       // Cylinder
+#include "gmDPERBSSurf"       // Expo Rational BSpline Surface
+#include "gmDPPlane"          // Plane
+#include "gmDPSphere"         // Sphere
+#include "gmDPSteinerSurf"    // The Steiner Surface
+#include "gmDPTorus"          // Torus Surface
