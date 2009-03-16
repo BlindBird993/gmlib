@@ -31,6 +31,10 @@
  */
 
 
+// GMlib includes
+#include "gmOpenGL.h"
+
+
 namespace GMlib {
 
 

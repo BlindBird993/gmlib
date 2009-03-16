@@ -35,7 +35,6 @@
 
 // GMlib includes
 #include "gmColor.h"
-#include "gmOpenGL.h"
 
 
 namespace GMlib {

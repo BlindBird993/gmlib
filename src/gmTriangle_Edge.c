@@ -467,7 +467,7 @@ namespace GMlib {
   inline
   Vector<T,3> Edge<T>::getVector() {
 
-    return _vertex[1]->position() - _vertex[0]->position();
+    return _vertex[1]->getPosition() - _vertex[0]->getPosition();
   }
 
 

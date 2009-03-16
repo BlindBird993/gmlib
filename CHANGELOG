@@ -7,13 +7,14 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 2009-03-20 Arnt R Kristoffersen
+
         * Corrected syntax error in the following files:
           gmMatrix_HqMatrix.c, gmMatrix_Matrix.c, gmMatrix_SqMatrix.c, gmSimplex.h,
           gmSimplex_LineSegment.c, gmSimplex_Simplex.c, gmSimplex_Tetrahedron.c, gmSimplex_Triangle.c,
           gmStaticProc2.h, gmSubSpace.h, gmSubSpace_Cube.c, gmSubSpace_Line.c, gmSubSpace_Plane.c
 
 
-2009-03-09 Jostein Bratlie
+2009-03-19 Jostein Bratlie
 
         * gmArray - Array
           - empty() now checks for <= to 0 instead of == 0
@@ -23,6 +24,12 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
         * gmPPlane*
           - get/set functions
+
+
+2009-03-16 T.Sang Tran
+
+        * Fiexed mismatch function name in getVector() of gmTriangle_Edge.
+        * Move include gmOpenGL.h from gmGLColor.h to gmGLColor.c.
 
 
 2009-03-09 T.Sang Tran
