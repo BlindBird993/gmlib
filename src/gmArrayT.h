@@ -33,6 +33,11 @@
 #define __gmARRAYT_H__
 
 #include <stddef.h>
+#include <iostream>
+using std::ostream;
+using std::istream;
+using std::cout;
+using std::endl;
 
 
 namespace GMlib {

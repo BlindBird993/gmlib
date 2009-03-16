@@ -35,9 +35,8 @@
 #define __gmSELECTOR_H__
 
 
+#include "gmDisplayObject.h"
 
-
-#include <gmDisplayObject.h>
 
 namespace GMlib{
 

@@ -30,6 +30,9 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
         * Fiexed mismatch function name in getVector() of gmTriangle_Edge.
         * Move include gmOpenGL.h from gmGLColor.h to gmGLColor.c.
+        * Temparary include iostream in gmArrayT for using ostream and istream.
+          - Should later change to T_Stream.
+        * Fixed includes in gmSelector.
 
 
 2009-03-09 T.Sang Tran
