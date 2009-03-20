@@ -4,6 +4,19 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+2009-03-09 Jostein Bratlie
+
+        * gmArray - Array
+          - empty() now checks for <= to 0 instead of == 0
+
+        * gmArrow3D
+          - Include fixes
+
+        * gmPPlane*
+          - get/set functions
+
+
 2009-03-09 T.Sang Tran
 
         * Correct IOStream operators in gmDVector.

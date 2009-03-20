@@ -31,6 +31,9 @@
  */
 
 
+#include "gmPoint3D.h"
+#include "gmOpenGL.h"
+
 namespace GMlib {
 
 

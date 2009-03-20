@@ -168,6 +168,22 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  const Vector<T,n>& PPlane<T,n>::getU() const {
+
+    return _u;
+  }
+
+
+  template <typename T, int n>
+  inline
+  const Vector<T,n>& PPlane<T,n>::getV() const {
+
+    return _v;
+  }
+
+
+  template <typename T, int n>
+  inline
   bool PPlane<T,n>::isClosedU() const {
 
     return false;
@@ -179,6 +195,22 @@ namespace GMlib {
   bool PPlane<T,n>::isClosedV() const {
 
     return false;
+  }
+
+
+  template <typename T, int n>
+  inline
+  void PPlane<T,n>::setU( const Vector<T,n>& u ) {
+
+    _u = u;
+  }
+
+
+  template <typename T, int n>
+  inline
+  void PPlane<T,n>::setV( const Vector<T,n>& v ) {
+
+    _v = v;
   }
 
 }

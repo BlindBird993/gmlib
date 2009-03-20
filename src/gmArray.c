@@ -131,7 +131,7 @@ namespace GMlib {
   inline
   bool Array<T>::empty() const {
 
-    return _no_elements == 0;
+    return _no_elements <= 0;
   }
 
 

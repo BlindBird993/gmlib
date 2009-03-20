@@ -108,11 +108,11 @@ namespace GMlib {
 		Array<SceneObject* >		findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
 		double									getDistanceToObject(int, int);
 		double									getDistanceToObject(SceneObject* obj);
-		float									getFarPlane() const;
-		float									getFocalLength() const;
+		float									  getFarPlane() const;
+		float									  getFocalLength() const;
 		std::string 						getIdentity() const;
-		float									getNearPlane() const;
-		float									getRatio() const;
+		float									  getNearPlane() const;
+		float									  getRatio() const;
 		void										getViewport(int& w1, int& w2, int& h1, int& h2) const;
 		int											getViewportW() const;
 		int											getViewportH() const;

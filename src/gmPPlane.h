@@ -51,9 +51,14 @@ namespace GMlib{
 
     std::string               getIdentity() const;
     const UnitVector<T,n>&    getNormal() const;
+    const Vector<T,n>&        getU() const;
+    const Vector<T,n>&        getV() const;
 
     bool                      isClosedU() const;
     bool                      isClosedV() const;
+
+    void                      setU( const Vector<T,n>& u );
+    void                      setV( const Vector<T,n>& v );
 
 
   protected:

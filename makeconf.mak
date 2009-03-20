@@ -261,7 +261,6 @@ HEADER_EXTS = \
   gmDPArc.c \
   gmDPBezierCurve.c \
   gmDPBezierSurf.c \
-  gmDPBorg.c \
   gmDPBSplineCurve.c \
   gmDPButterfly.c \
   gmDPCircle.c \
@@ -314,7 +313,6 @@ HEADER_EXTS = \
   gmPArc.c \
   gmPBezierCurve.c \
   gmPBezierSurf.c \
-  gmPBorg.c \
   gmPBSplineCurve.c \
   gmPButterfly.c \
   gmPCircle.c \
