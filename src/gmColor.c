@@ -411,8 +411,8 @@ namespace GMlib {
 
     double r=getRedC(),g=getGreenC(),b=getBlueC();
     double h,s,v,mx,mn;
-    mx = std::max( std::max(r,g), b );
-    mn = std::min( std::min(r,g), b );
+    mx = std::max<double>( std::max<double>(r,g), b );
+    mn = std::min<double>( std::min<double>(r,g), b );
     v=mx;
     if(mx > 1e-6) s = (mx-mn)/mx;
     else		  s = 0.0;
