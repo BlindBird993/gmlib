@@ -31,6 +31,10 @@
  */
 
 
+#include "GMPoint.h"
+//#include "GMVector.h"
+
+
 namespace GMlib {
 
 
@@ -40,7 +44,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,3>::Cube() : SubSpace<T,n,3>() {
+  Cube<T,n>::Cube() : SubSpace<T,n,3>() {
   }
 
 
@@ -49,7 +53,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,3>::Cube( const Point<T,n>& p ) : SubSpace<T,n,3>(p) {
+  Cube<T,n>::Cube( const Point<T,n>& p ) : SubSpace<T,n,3>(p) {
   }
 
 
@@ -58,7 +62,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,3>::Cube( const Point<T,n>& p, const Vector<T,n>& v ) : SubSpace<T,n,3>(p,v) {
+  Cube<T,n>::Cube( const Point<T,n>& p, const Vector<T,n>& v ) : SubSpace<T,n,3>(p,v) {
   }
 
 
@@ -67,7 +71,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,3>::Cube( const Arrow<T,n>& a ) :  SubSpace<T,n,3>(a) {
+  Cube<T,n>::Cube( const Arrow<T,n>& a ) :  SubSpace<T,n,3>(a) {
   }
 
 
@@ -76,7 +80,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,3>::Cube( const SubSpace<T,n,3>& s ) : SubSpace<T,n,3>(s) {
+  Cube<T,n>::Cube( const SubSpace<T,n,3>& s ) : SubSpace<T,n,3>(s) {
   }
 
 }

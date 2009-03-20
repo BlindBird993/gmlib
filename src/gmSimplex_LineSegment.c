@@ -40,7 +40,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  LineSegment<T,n,2>::LineSegment() : Simplex<T,n,2>() {
+  LineSegment<T,n>::LineSegment() : Simplex<T,n,2>() {
   }
 
   /*! LineSegment<T,n,2>::LineSegment(const Point<T,n>& p)
@@ -52,7 +52,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  LineSegment<T,n,2>::LineSegment(const Point<T,n>& p) : Simplex<T,n,2>(p) {
+  LineSegment<T,n>::LineSegment(const Point<T,n>& p) : Simplex<T,n,2>(p) {
   }
 
     /*! LineSegment<T,n,2>::LineSegment(const Point<T,n>& p1 ,const Point<T,n>& p2)
@@ -63,7 +63,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  LineSegment<T,n,2>::LineSegment(const Point<T,n>& p1 ,const Point<T,n>& p2) : Simplex<T,n,2>(p1,p2) {
+  LineSegment<T,n>::LineSegment(const Point<T,n>& p1 ,const Point<T,n>& p2) : Simplex<T,n,2>(p1,p2) {
   }
 
     /*! LineSegment<T,n,2>::LineSegment(const Arrow<T,n>& a)
@@ -74,7 +74,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  LineSegment<T,n,2>::LineSegment(const Arrow<T,n>& a) :  Simplex<T,n,2>(a) {
+  LineSegment<T,n>::LineSegment(const Arrow<T,n>& a) :  Simplex<T,n,2>(a) {
   }
 
     /*! LineSegment<T,n,2>::LineSegment(const SubSpace<T,n,1>& s)
@@ -85,7 +85,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  LineSegment<T,n,2>::LineSegment(const SubSpace<T,n,1>& s) :  Simplex<T,n,2>(s) {
+  LineSegment<T,n>::LineSegment(const SubSpace<T,n,1>& s) :  Simplex<T,n,2>(s) {
   }
 
     /*! LineSegment<T,n,2>::LineSegment(const Vector<Point<T,n>,1>& s)
@@ -96,6 +96,6 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  LineSegment<T,n,2>::LineSegment(const Vector<Point<T,n>,1>& s) :  Simplex<T,n,2>(s)	{}
+  LineSegment<T,n>::LineSegment(const Vector<Point<T,n>,1>& s) :  Simplex<T,n,2>(s)	{}
 
 }

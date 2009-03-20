@@ -64,7 +64,7 @@ class Cube;
 	 *  The temlate m denote the SubSpace dimention, i.e. m=1 is a line , m=2 is a plane etc.
    */
   template <typename T, int n, int m>
-  class SubSpace : public public Point<T,n> {
+  class SubSpace : public Point<T,n> {
   public:
     SubSpace( const Point<T,n>& p = Point<T,n>(T(0)) );
     SubSpace( const Vector<Vector<T,n>,m>& v );

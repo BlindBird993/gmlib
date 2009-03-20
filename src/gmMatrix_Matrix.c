@@ -331,7 +331,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>	Matrix<T,n,m>::getTransposed() const	{
+  Matrix<T,m,n>	Matrix<T,n,m>::getTransposed() const	{
     return Matrix<T,m,n>(*this,true);
   }
 
@@ -697,7 +697,7 @@ namespace GMlib {
    *  \param[in] v The second start Vector
    */
   template <class T, int n, int m>
-  void Matrix<T,n,m>::makeMeOrtho(const Vector<T,m>& u, const Vector<T,m>& v) {
+  void Matrix<T,n,m>::setOrtho(const Vector<T,m>& u, const Vector<T,m>& v) {
     int i, j, k, ku, kv;
 
     GM_Static_<T,m>::sc_r(getPtr(), u.getPtr(), (1/u.getLength()));

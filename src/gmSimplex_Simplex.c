@@ -39,7 +39,7 @@ namespace GMlib {
    *  Detailed description of
    *  the default constructor
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
   Simplex<T,n,m>::Simplex(const Point<T,n>& p) {
     (*this)[0] = p;
@@ -51,7 +51,7 @@ namespace GMlib {
    *  Detailed description of
    *  the default constructor
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
   Simplex<T,n,m>::Simplex(const Point<T,n>& p1, const Point<T,n>& p2) {
     (*this)[0] = p1;
@@ -64,7 +64,7 @@ namespace GMlib {
    *  Detailed description of
    *  the default constructor
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
   Simplex<T,n,m>::Simplex(const Point<T,n>& p1, const Point<T,n>& p2, const Point<T,n>& p3) {
     (*this)[0] = p1;
@@ -78,7 +78,7 @@ namespace GMlib {
    *  Detailed description of
    *  the default constructor
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
   Simplex<T,n,m>::Simplex(const Arrow<T,n>& a) {
     (*this)[0] = a.pos();
@@ -91,7 +91,7 @@ namespace GMlib {
    *  Detailed description of
    *  the default constructor
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
   Simplex<T,n,m>::Simplex(const SubSpace<T,n,m-1>& s) {
     (*this)[0] = s.posC();
@@ -104,21 +104,21 @@ namespace GMlib {
    *  Detailed description of the default
    *  copy constructor
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
-  Simplex<T,n,m>::Simplex<T,n,m>::Simplex(const Vector<Point<T,n>,m>& s) :  Vector<Point<T,n>,m>(s){}
+  Simplex<T,n,m>::Simplex(const Vector<Point<T,n>,m>& s) :  Vector<Point<T,n>,m>(s) {}
 
-  /*! Simplex<T,n,m>::Point<T,n>	closestPoint(const Point<T,n>& p)
-   *  \brief  Returns the state set
-   *
-   *  Detailed description
-   *
-   *  \return returns an int representing the state set
-   */
-  template <template T, int n, int m>
-  inline
-  Simplex<T,n,m>::Point<T,n>	closestPoint(const Point<T,n>& p) const {
-  }
+  ///*! Simplex<T,n,m>::Point<T,n>	closestPoint(const Point<T,n>& p)
+  // *  \brief  Returns the state set
+  // *
+  // *  Detailed description
+  // *
+  // *  \return returns an int representing the state set
+  // */
+  //template <typename T, int n, int m>
+  //inline
+  //Point<T,n> Simplex<T,n,m>::closestPoint(const Point<T,n>& p) const {
+  //}
 
   /*! Simplex<T,n,m>::Vector<T,n> distanceVector(const Point<T,n>& p) const
    *  \brief  Returns the state set
@@ -127,9 +127,9 @@ namespace GMlib {
    *
    *  \return returns an int representing the state set
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
-  Simplex<T,n,m>::Vector<T,n> distanceVector(const Point<T,n>& p) const {
+  Vector<T,n> Simplex<T,n,m>::distanceVector(const Point<T,n>& p) const {
     return (p-closestPoint(p)).toVector();
   }
 
@@ -140,9 +140,9 @@ namespace GMlib {
    *
    *  \return returns an int representing the state set
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
-  Simplex<T,n,m>::T distanceTo(const Point<T,n>& p) const {
+  T Simplex<T,n,m>::distanceTo(const Point<T,n>& p) const {
     return distanceVector(p).length();
   }
 
@@ -153,9 +153,9 @@ namespace GMlib {
    *
    *  \return returns an int representing the state set
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
-  Simplex<T,n,m>::T distanceAlong(const Point<T,n>& p, int i=0) const {
+  T Simplex<T,n,m>::distanceAlong(const Point<T,n>& p, int i=0) const {
     return (p-pos())*dir(i)/(dir(i).length());
   }
 
@@ -166,9 +166,9 @@ namespace GMlib {
    *
    *  \return returns an int representing the state set
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
-  Simplex<T,n,m>::Vector<Simplex<T,n,m-1>,m+2> sub() {
+  Vector<Simplex<T,n,m-1>,m+2> Simplex<T,n,m>::sub() {
   }
 
   /*! Point<T,n> Simplex<T,n,m>::closestPoint(const Point<T,n>& p) const
@@ -178,9 +178,9 @@ namespace GMlib {
    *
    *  \return returns an int representing the state set
    */
-  template <template T, int n, int m>
+  template <typename T, int n, int m>
   inline
-  Point<T,n> Simplex<T,n,m>::closestPoint(const Point<T,n>& p) const{
+  Point<T,n> Simplex<T,n,m>::closestPoint(const Point<T,n>& p) const {
     /*
     Matrix<T,m-1,n> v;
     for(int i=1; i<m; i++) v[i-1] = (*this)(i)-(*this)(0);atu

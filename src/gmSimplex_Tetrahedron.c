@@ -41,7 +41,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Tetrahedron<T,n,4>::Tetrahedron() : Simplex<T,n,4>() {
+  Tetrahedron<T,n>::Tetrahedron() : Simplex<T,n,4>() {
   }
 
   /*! Tetrahedron<T,n,4>::Tetrahedron(const Point<T,n>& p)
@@ -52,7 +52,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Tetrahedron<T,n,4>::Tetrahedron(const Point<T,n>& p) : Simplex<T,n,4>(p) {
+  Tetrahedron<T,n>::Tetrahedron(const Point<T,n>& p) : Simplex<T,n,4>(p) {
   }
 
   /*! Tetrahedron<T,n,4>::Tetrahedron(const Point<T,n>& p ,const Vector<T,n>& v)
@@ -63,7 +63,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Tetrahedron<T,n,4>::Tetrahedron(const Point<T,n>& p ,const Vector<T,n>& v) : Simplex<T,n,4>(p,v) {
+  Tetrahedron<T,n>::Tetrahedron(const Point<T,n>& p ,const Vector<T,n>& v) : Simplex<T,n,4>(p,v) {
   }
 
   /*! Tetrahedron<T,n,4>::Tetrahedron(const SubSpace<T,n,3>& s)
@@ -74,7 +74,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Tetrahedron<T,n,4>::Tetrahedron(const Arrow<T,n>& a) :  Simplex<T,n,4>(a)	{
+  Tetrahedron<T,n>::Tetrahedron(const Arrow<T,n>& a) :  Simplex<T,n,4>(a)	{
   }
 
   /*! Tetrahedron<T,n,4>::Tetrahedron(const SubSpace<T,n,3>& s)
@@ -85,7 +85,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Tetrahedron<T,n,4>::Tetrahedron(const SubSpace<T,n,3>& s): Simplex<T,n,4>(s) {
+  Tetrahedron<T,n>::Tetrahedron(const SubSpace<T,n,3>& s): Simplex<T,n,4>(s) {
   }
 
   /*! Tetrahedron<T,n,4>::Tetrahedron(const Vector<Point<T,n>,4>& s)
@@ -96,6 +96,6 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Tetrahedron<T,n,4>::Tetrahedron(const Vector<Point<T,n>,4>& s) :  Simplex<T,n,4>(s)	{}
+  Tetrahedron<T,n>::Tetrahedron(const Vector<Point<T,n>,4>& s) :  Simplex<T,n,4>(s)	{}
 
 }

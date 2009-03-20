@@ -41,7 +41,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Triangle<T,n,3>::Triangle() : Simplex<T,n,3>() {
+  Triangle<T,n>::Triangle() : Simplex<T,n,3>() {
   }
 
   /*! Triangle<T,n,3>::Triangle(const Point<T,n>& p)
@@ -52,7 +52,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Triangle<T,n,3>::Triangle(const Point<T,n>& p) : Simplex<T,n,3>(p) {
+  Triangle<T,n>::Triangle(const Point<T,n>& p) : Simplex<T,n,3>(p) {
   }
 
   /*! Triangle<T,n,3>::Triangle(const Arrow<T,n>& a)
@@ -63,7 +63,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Triangle<T,n,3>::Triangle(const Point<T,n>& p ,const Vector<T,n>& v) : Simplex<T,n,3>(p,v) {
+  Triangle<T,n>::Triangle(const Point<T,n>& p ,const Vector<T,n>& v) : Simplex<T,n,3>(p,v) {
   }
 
   /*! Triangle<T,n,3>::Triangle(const Arrow<T,n>& a)
@@ -74,7 +74,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Triangle<T,n,3>::Triangle(const Arrow<T,n>& a) :  Simplex<T,n,3>(a) {
+  Triangle<T,n>::Triangle(const Arrow<T,n>& a) :  Simplex<T,n,3>(a) {
   }
 
   /*! Triangle<T,n,3>::Triangle(const SubSpace<T,n,2>& s)
@@ -85,7 +85,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Triangle<T,n,3>::Triangle(const SubSpace<T,n,2>& s): Simplex<T,n,3>(s) {
+  Triangle<T,n>::Triangle(const SubSpace<T,n,2>& s): Simplex<T,n,3>(s) {
   }
 
   /*! Triangle<T,n,3>::Triangle(const Vector<Point<T,n>,3>& s)
@@ -96,7 +96,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Triangle<T,n,3>::Triangle(const Vector<Point<T,n>,3>& s) :  Simplex<T,n,3>(s)	{
+  Triangle<T,n>::Triangle(const Vector<Point<T,n>,3>& s) :  Simplex<T,n,3>(s)	{
   }
 
 }

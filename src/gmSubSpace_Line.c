@@ -40,7 +40,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,1>::Line() : SubSpace<T,n,1>() {}
+  Line<T,n>::Line() : SubSpace<T,n,1> () {}
 
 
   /*!
@@ -48,7 +48,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,1>::Line( const Point<T,n>& p ) : SubSpace<T,n,1>(p) {}
+  Line<T,n>::Line( const Point<T,n>& p ) : SubSpace<T,n,1>(p) {}
 
 
   /*!
@@ -56,7 +56,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,1>::Line( const Point<T,n>& p, const Vector<T,n>& v) : SubSpace<T,n,1>(p,v) {}
+  Line<T,n>::Line( const Point<T,n>& p, const Vector<T,n>& v) : SubSpace<T,n,1>(p,v) {}
 
 
   /*!
@@ -64,7 +64,7 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,1>::Line( const Arrow<T,n>& a ) : SubSpace<T,n,1>(a) {}
+  Line<T,n>::Line( const Arrow<T,n>& a ) : SubSpace<T,n,1>(a) {}
 
 
   /*!
@@ -72,6 +72,6 @@ namespace GMlib {
    */
   template <class T, int n>
   inline
-  SubSpace<T,n,1>::Line( const SubSpace<T,n,1>& s) :  SubSpace<T,n,1>(s) {}
+  Line<T,n>::Line( const SubSpace<T,n,1>& s) :  SubSpace<T,n,1>(s) {}
 
 }

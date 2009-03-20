@@ -31,6 +31,8 @@
 #ifndef __gmSIMPLEX_H__
 #define __gmSIMPLEX_H__
 
+#include "GMSubSpace.h"
+
 namespace GMlib {
 
   template <typename T, int n, int m>
@@ -68,7 +70,7 @@ namespace GMlib {
     Simplex(const SubSpace<T,n,m-1>& s);
 
     // Copy constructor
-    Simplex(const Vector<Point<T,n>,m>& s) :  Vector<Point<T,n>,m>(s)
+	Simplex(const Vector<Point<T,n>,m>& s);// :  Vector<Point<T,n>,m>(s)
 
     Point<T,n>	closestPoint(const Point<T,n>& p) const;
     Vector<T,n> distanceVector(const Point<T,n>& p) const;

@@ -37,7 +37,7 @@ namespace GMlib {
    *
    *  The constructer gives an I-matrix
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix():SqMatrix<T,n+1>()				{}
 
@@ -47,7 +47,7 @@ namespace GMlib {
    *
    *  The constructer gives random contents, there will be no initializing
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix(bool i):SqMatrix<T,n+1>(i)			{}
 
@@ -57,7 +57,7 @@ namespace GMlib {
    *
    *  The constructer gives a copy of the input (homogenious) matrix
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix(const Matrix<T,n+1,n+1>& v):SqMatrix<T,n+1>(v)	{}
 
@@ -67,7 +67,7 @@ namespace GMlib {
    *
    *  The constructer gives a transposed copy of the input (homogenious) matrix if "trans" is true.
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix(const Matrix<T,n+1,n+1>& v, bool trans):SqMatrix<T,n+1>(v,trans)	{}
 
@@ -80,7 +80,7 @@ namespace GMlib {
    *  The rightmost and lowermost vectors are set to 0 exept
    *  for the right lower corner value that is 1.
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix( const Matrix<T,n,n>& v, bool trans=false) : SqMatrix<T,n+1>(false)	{}
 
@@ -90,7 +90,7 @@ namespace GMlib {
    *
    *  The constructer gives an homogenious translation matrix.
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix( const Vector<T,n>& d  ){
     GM_Static2_<T,n,n+1>::eq2(d.ptr(),ptr()+n);
@@ -105,7 +105,7 @@ namespace GMlib {
    *  i.e. the default (0,1) - is the xy-plane. Remark the for example (0,1) and (1,0)
    *  is rotation in opposit direction.
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix(Angle a,  int x, int y){
     T sina = T(sin(a)), cosa = T(cos(a));
@@ -119,7 +119,7 @@ namespace GMlib {
    *  The constructer gives a rotation matrix rotating in the plane
    *  spanned by the two vectors u and v, but located in origin.
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
     makeOrtho(u, v, *this);
@@ -135,7 +135,7 @@ namespace GMlib {
    *  The constructer gives a rotation matrix rotating in the plane
    *  spanned by the two vectors u and v and that is located in the point p.
    */
-  template <typename T, n>
+  template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p) {
     Vector<T,n> r;

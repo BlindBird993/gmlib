@@ -40,7 +40,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  SqMatrix<T, n>::nSqMatrix(): Matrix<T,n,n>() {
+  SqMatrix<T, n>::SqMatrix() : Matrix<T,n,n>() {
   }
 
 
@@ -312,7 +312,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void SqMatrix<T, n>::rotation(Angle a, const Vector<T,n>& u, const Vector<T,n>& v) {
+  void SqMatrix<T, n>::rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v) {
     Matrix<T,n,n> x;
     makeOrtho(u,v,x);
     basisChangeInv(x);

@@ -34,6 +34,8 @@
 #ifndef __gmSTATICPROC_H__
 #define __gmSTATICPROC_H__
 
+#include "GMPoint.h"
+
 namespace GMlib {
 
   /*! \class  GM_Static_P_ gmStaticProc2.h <gmStaticProc2.h>
@@ -45,15 +47,15 @@ namespace GMlib {
   class GM_Static_P_ {
   public:
     static void mv_x(T *a, Point<T,m>* b, const Point<T,m>& c);				// vec = mat x vec
-    static void mv_xq(T *a, T* b, const Point<T,m>& c)								// vec = HqMat x vec
-    static void mv_xqP(T *a, T* b, const Point<T,m>& c, T* d)					// vec = HqMat x vec + h(homogen col)
+    static void mv_xq(T *a, T* b, const Point<T,m>& c);								// vec = HqMat x vec
+    static void mv_xqP(T *a, T* b, const Point<T,m>& c, T* d);					// vec = HqMat x vec + h(homogen col)
 
-    static void eq_t(Point<T,m> *a, T *b)															// a = b^T	matrix transposeing
-    static void sc(Point<T,m>* a, T *b)																// scaling of matrix (row by row)
-    static void vv_ox(Point<T,m> *a, const Point<T,m> *b, T *c)											// a = b x c tensor (outer) product
+    static void eq_t(Point<T,m> *a, T *b);															// a = b^T	matrix transposeing
+    static void sc(Point<T,m>* a, T *b);																// scaling of matrix (row by row)
+    static void vv_ox(Point<T,m> *a, const Point<T,m> *b, T *c);											// a = b x c tensor (outer) product
 
-    static void cm_x(T *a, T* b, T* c)																// vec = col x mat
-    static void mc_x(T *a, T *b, T *c)																// a = b(col)*c	matrix multiplication, but b is transposed
+    static void cm_x(T *a, T* b, T* c);																// vec = col x mat
+    static void mc_x(T *a, T *b, T *c);																// a = b(col)*c	matrix multiplication, but b is transposed
 
     static void   hq_2x(T *a, T* b, const Point<T,m>& c);							// vec = HqMat x vec
     static void   hq_3x(T *a, T* b, const Vector<T,m>& r, T* p);			// col = vec - vec x HqMat
@@ -113,19 +115,19 @@ namespace GMlib {
   class GM_Static_P2_
   {
   public:
-    static void vm_x(T *a, Point<T,m>* b, T* c)											// vec = vec x mat
-    static void vm_xHT(T *a, Point<T,m+1>* b, T* c)									// vec =  mat x vec (a = c x b)
-    static void vm_xH(T *a, Point<T,m+1>* b, T* c)									// vec(a) = vec(c) x mat(b) (b homogen)
-    static void vm_xT(T *a, Point<T,m>* b, T* c)										// vec =  mat x vec (a = c x b)
-    static void vm_xTT(T *a, T* b, T* c)														// a(vec) = b(col) x mat
+    static void vm_x(T *a, Point<T,m>* b, T* c);											// vec = vec x mat
+    static void vm_xHT(T *a, Point<T,m+1>* b, T* c);									// vec =  mat x vec (a = c x b)
+    static void vm_xH(T *a, Point<T,m+1>* b, T* c);									// vec(a) = vec(c) x mat(b) (b homogen)
+    static void vm_xT(T *a, Point<T,m>* b, T* c);										// vec =  mat x vec (a = c x b)
+    static void vm_xTT(T *a, T* b, T* c);														// a(vec) = b(col) x mat
 
-    static void mm_xT(Point<T,k> *a, Point<T,m> *b, T *c)						// a = b*c	matrix multiplication (c transposed)
-    static void mm_xTT(Point<T,k> *a, T *b, T *c)										// a = b*c	matrix multiplication (b transposed)
-    static void mm_xH(Point<T,k> *a, Point<T,m+1> *b, T *c)					// a = Hb * c	matrix multiplication (b homogen)
-    static void mm_x(Point<T,k> *a, Point<T,m> *b, T *c)						// a = b*c	matrix multiplication
-    static void mm_xHT(T *a, Point<T,m+1> *b, T *c)									// a = b*c	matrix multiplication (c transposed)
+    static void mm_xT(Point<T,k> *a, Point<T,m> *b, T *c);						// a = b*c	matrix multiplication (c transposed)
+    static void mm_xTT(Point<T,k> *a, T *b, T *c);										// a = b*c	matrix multiplication (b transposed)
+    static void mm_xH(Point<T,k> *a, Point<T,m+1> *b, T *c);					// a = Hb * c	matrix multiplication (b homogen)
+    static void mm_x(Point<T,k> *a, Point<T,m> *b, T *c);						// a = b*c	matrix multiplication
+    static void mm_xHT(T *a, Point<T,m+1> *b, T *c);									// a = b*c	matrix multiplication (c transposed)
 
-    static void eq_t(Point<T,m> *a, T *b)														// a = b^T	matrix transposeing (a = n x m)
+    static void eq_t(Point<T,m> *a, T *b);														// a = b^T	matrix transposeing (a = n x m)
 
   }; // END class GM_Static_P2_
 
