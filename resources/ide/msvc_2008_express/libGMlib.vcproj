@@ -149,10 +149,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\..\src\gm3DSObject.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\gmCamera.cpp"
 				>
 			</File>
@@ -165,11 +161,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\gmDisplayObject.cpp"
+				RelativePath="..\..\..\src\gmColor.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\gmDParametrics.cpp"
+				RelativePath="..\..\..\src\gmDisplayObject.cpp"
 				>
 			</File>
 			<File
@@ -202,14 +198,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmMaterial_MaterialObjectList.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmMesh3DS.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmOpenGL_GLColor.cpp"
 				>
 			</File>
 			<File
@@ -255,14 +243,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\src\gm3DSObject"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gm3DSObject.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\gmAffineSpace"
 				>
 			</File>
@@ -303,6 +283,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\gmArrow3D"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmArrow3D.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\gmCamera"
 				>
 			</File>
@@ -324,6 +312,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmCodeExample.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmColor"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmColor.h"
 				>
 			</File>
 			<File
@@ -404,14 +400,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmDPBezierSurf.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmDPBorg"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmDPBorg.h"
 				>
 			</File>
 			<File
@@ -543,6 +531,22 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\gmGLColor"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmGLColor.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmGlobal"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmGlobal.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\gmLight"
 				>
 			</File>
@@ -559,14 +563,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\gmLoad3DS"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmLoad3DS.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\gmMaterial"
 				>
 			</File>
@@ -580,14 +576,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmMatrix.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmMesh3DS"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmMesh3DS.h"
 				>
 			</File>
 			<File
@@ -627,14 +615,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\src\gmPAsteroidalSphere"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmPAsteroidalSphere.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\..\src\gmPBezierCurve"
 				>
 			</File>
@@ -648,14 +628,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmPBezierSurf.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmPBorg"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\src\gmPBorg.h"
 				>
 			</File>
 			<File
@@ -848,6 +820,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmSimplex.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmSphere3D"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmSphere3D.h"
 				>
 			</File>
 			<File
