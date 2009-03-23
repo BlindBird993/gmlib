@@ -30,6 +30,7 @@
  *  \date   2008-06-19
  */
 
+#include <iostream>
 
 namespace GMlib {
 
@@ -98,7 +99,7 @@ namespace GMlib {
     return Point<T,n>::operator/=( Point<T,n>::getLength() );
   }
 
-  #include <iostream>
+
 
   template <typename T, int n>
   inline
