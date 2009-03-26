@@ -319,6 +319,22 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  DVector<T>& PERBSSurf<T,n>::getKnotsU() {
+
+    return _u;
+  }
+
+
+  template <typename T, int n>
+  inline
+  DVector<T>& PERBSSurf<T,n>::getKnotsV() {
+
+    return _v;
+  }
+
+
+  template <typename T, int n>
+  inline
   DMatrix< PSurf<T,n>* >& PERBSSurf<T,n>::getLocalPatches() {
     return _c;
   }

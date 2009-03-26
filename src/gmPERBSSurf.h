@@ -56,6 +56,8 @@ namespace GMlib {
 
     void                      generateKnotVector( PSurf<T,n>* g );
     std::string               getIdentity() const;
+    DVector< T>&              getKnotsU();
+    DVector< T>&              getKnotsV();
     DMatrix< PSurf<T,n>* >&   getLocalPatches();
     bool                      isClosedU() const;
     bool                      isClosedV() const;

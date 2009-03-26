@@ -4,6 +4,13 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-03-26 Jostein Bratlie
+
+        * gmPERBSSurf
+          - Added functions to retreive the knot vectors getKnotsU() and getKnotsV()
+        * gmDSurf
+          - Added STL (StereoLithography) file format export functionality through the functions
+          exportSTL( ... ) and exportSTLascii( ... )
 
 
 2009-03-20 Arnt R Kristoffersen
@@ -16,8 +23,8 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 2009-03-20 T.Sang Tran
 
-	* Fixed missing template parameter in gmColor.
-	* Update MSVC-2008, MSVC-2005 and MSVC-Express.
+        * Fixed missing template parameter in gmColor.
+        * Update MSVC-2008, MSVC-2005 and MSVC-Express.
 
 
 2009-03-19 Jostein Bratlie

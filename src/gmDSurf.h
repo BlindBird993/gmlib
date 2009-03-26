@@ -32,7 +32,10 @@
 #ifndef __gmDSURF_H__
 #define __gmDSURF_H__
 
+// STL
+#include <fstream>
 
+// Local
 #include "gmArray.h"
 #include "gmDParametrics.h"
 
@@ -53,33 +56,35 @@ namespace GMlib {
 
 
     DMatrix< Vector<T, 3> >   evaluate( T u, T v, int du, int dv );
-    int                 getNoDerU() const;
-    int                 getNoDerV() const;
-    int                 getNoSampU() const;
-    int                 getNoSampV() const;
-    PSurf<T,3>*         getPSurf();
-    virtual bool        isClosestPoint( const Point<T,3>& q, T& u, T& v );
-    void                replot( int m1 = 0, int m2 = 0 , bool dynamic = false, int d1 = 1, int d2 = 1 );
-    void                setPSurf( PSurf<T,3>* psurf );
-    virtual void        setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p );
+    void                      exportSTL( std::ofstream& stream, int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
+    void                      exportSTLascii( std::ofstream& stream, int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
+    int                       getNoDerU() const;
+    int                       getNoDerV() const;
+    int                       getNoSampU() const;
+    int                       getNoSampV() const;
+    PSurf<T,3>*               getPSurf();
+    virtual bool              isClosestPoint( const Point<T,3>& q, T& u, T& v );
+    void                      replot( int m1 = 0, int m2 = 0 , bool dynamic = false, int d1 = 1, int d2 = 1 );
+    void                      setPSurf( PSurf<T,3>* psurf );
+    virtual void              setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p );
 
   protected:
 
-    PSurf<T, 3>         *_p_ref;
+    PSurf<T, 3>               *_p_ref;
 
-    int                 _no_der_u;
-    int                 _no_der_v;
+    int                       _no_der_u;
+    int                       _no_der_v;
 
-    int                 _no_samp_u;
-    int                 _no_samp_v;
+    int                       _no_samp_u;
+    int                       _no_samp_v;
 
-    void                localDisplay();
-    void                localSelect();
+    void                      localDisplay();
+    void                      localSelect();
 
 
   private:
 
-    void                _init();
+    void                      _init();
 
   };
 
