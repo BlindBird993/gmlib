@@ -83,47 +83,47 @@ namespace GMlib {
 
     virtual Vector<float,3>	  getDir();
     Point<float,3>	          getLockPos();
-    double				              getLockDist();
+    double				            getLockDist();
     virtual Point<float,3>	  getPos();
     virtual Vector<float,3>   getSide();
-    virtual Vector<float,3>	  getUp();
-    bool				                isLocked();
-    virtual void		            lock(SceneObject* obj);
-    virtual void		            lock(const Point<float,3>& pos);
-    virtual void		            lock(double d);
-    virtual void                move(float d);
-    virtual void                move(const Vector<float,3>& t);
-    virtual void                move(char,double);
-    virtual void                move(const Vector<float,2>& t);
-    virtual void                roll(Angle a);
-    void                        set(
-                                  const Point<float,3>&  pos,
-                                  const Vector<float,3>& dir,
-                                  const Vector<float,3>& up
-                                );
-    virtual void                tilt(Angle a);
-    virtual void                turn(Angle a);
-    void				                unLock();
+    virtual Vector<float,3>   getUp();
+    bool				              isLocked();
+    virtual void		          lock(SceneObject* obj);
+    virtual void		          lock(const Point<float,3>& pos);
+    virtual void		          lock(double d);
+    virtual void              move(float d);
+    virtual void              move(const Vector<float,3>& t);
+    virtual void              move(char,double);
+    virtual void              move(const Vector<float,2>& t);
+    virtual void              roll(Angle a);
+    void                      set(
+                                const Point<float,3>&  pos,
+                                const Vector<float,3>& dir,
+                                const Vector<float,3>& up
+                              );
+    virtual void              tilt(Angle a);
+    virtual void              turn(Angle a);
+    void				              unLock();
 
 
 
     // *****************
     // Virtual functions
     // from SceneObject
-    virtual std::string         getIdentity() const;
-    virtual void                rotate(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                translate(const Vector<float,3>& trans_vector);
-    virtual void                translateGlobal(const Vector<float,3>& trans_vector);
+    virtual std::string       getIdentity() const;
+    virtual void              rotate(Angle a, const Vector<float,3>& rot_axel);
+    virtual void              rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void              rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
+    virtual void              rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void              translate(const Vector<float,3>& trans_vector);
+    virtual void              translateGlobal(const Vector<float,3>& trans_vector);
 
 
 
   protected:
     // Matrices from Scene to this
-    GLMatrix				            _matrix_scene;
-    GLMatrix				            _matrix_scene_inv;
+    GLMatrix				          _matrix_scene;
+    GLMatrix				          _matrix_scene_inv;
 
     Point3D<float>		        _pos;
     UnitVector3D<float>	      _dir;
@@ -131,24 +131,24 @@ namespace GMlib {
     UnitVector3D<float>	      _up;
 
     Point3D<float>		        _lock_pos;
-    SceneObject*			          _lock_object;
-    bool					              _locked;
+    SceneObject*			        _lock_object;
+    bool					            _locked;
 
-    virtual void                basisChange(
-                                  const Vector<float,3>& dir,
-                                  const Vector<float,3>& side,
-                                  const Vector<float,3>& up,
-                                  const Vector<float,3>& pos
-                                );
+    virtual void              basisChange(
+                                const Vector<float,3>& dir,
+                                const Vector<float,3>& side,
+                                const Vector<float,3>& up,
+                                const Vector<float,3>& pos
+                              );
 
     Point<float,3>	          getSceneLockPos();
-    void				                updateOrientation(const Point<float,3>& lock_at_p);
+    void				              updateOrientation(const Point<float,3>& lock_at_p);
 
     // *****************
     // Virtual functions
     // from SceneObject
-    void			                  _prepareDisplay(const GLMatrix& m);
-    void			                  localSimulate(double dt);
+    void			                _prepareDisplay(const GLMatrix& m);
+    void			                localSimulate(double dt);
 
 
     #ifdef GM_STREAM

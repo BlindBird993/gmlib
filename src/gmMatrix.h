@@ -309,7 +309,7 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
     //Matrix<T,n,n> const&    getInverse2() const ;// NOT IMPLEMENTED
 
     void                    invert();
-    void                    invert2();	// Use only for orthonormal matrices (rotation matrices)
+    virtual void            invertOrthoNormal();	// Use only for orthonormal matrices (rotation matrices)
 
     Matrix<T,n,n> const&    reverseMult(const Matrix<T,n,n>& m);			// Changing this ( is a kind of *= operator): *this = m * *this
 
@@ -365,7 +365,7 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
 
     //HqMatrix<T,n> const&    getInverse2() const; // NOT IMPLEMENTED
 
-    void                      invert2();		// overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
+    void                      invertOrthoNormal();		// overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
     void                      rotateXY(Angle a, int x=0, int y=1);
     void                      rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
     void                      rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p);

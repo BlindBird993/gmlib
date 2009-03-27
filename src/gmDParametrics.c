@@ -182,57 +182,6 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Vector<T,3> DParametrics<T,n>::getTDir() {
-
-    Vector<float,3> tmp = getDir();
-    Vector<T,3> tmp2;
-    for( int i = 0; i < 3; i++ )
-      tmp2[i] = tmp[i];
-    return tmp2;
-//    return _ref->getDir();
-  }
-
-
-  template <typename T, int n>
-  inline
-  Point<T,3> DParametrics<T,n>::getTPos() {
-
-    Point<float,3> tmp = getPos();
-    Point<T,3> tmp2;
-    for( int i = 0; i < 3; i++ )
-      tmp2[i] = tmp[i];
-    return tmp2;
-//    return _ref->getPos();
-  }
-
-
-  template <typename T, int n>
-  inline
-  Vector<T,3> DParametrics<T,n>::getTSide() {
-
-    Vector<float,3> tmp = getSide();
-    Vector<T,3> tmp2;
-    for( int i = 0; i < 3; i++ )
-      tmp2[i] = tmp[i];
-    return tmp2;
-//    return _ref->getSide();
-  }
-
-
-  template <typename T, int n>
-  Vector<T,3> DParametrics<T,n>::getTUp() {
-
-    Vector<float,3> tmp = getUp();
-    Vector<T,3> tmp2;
-    for( int i = 0; i < 3; i++ )
-      tmp2[i] = tmp[i];
-    return tmp2;
-//    return _ref->getUp();
-  }
-
-
-  template <typename T, int n>
-  inline
   const DMatrix<Point<float,2> >& DParametrics<T,n>::getTextureCoords() const {
 
     return _texture_coords;
@@ -368,9 +317,11 @@ namespace GMlib {
     if(!_ref)
       return;
 
+    UnitVector<float,3> tmp_rot_axel = _matrix_scene_inv * rot_axel;
+
     Vector<T,3> tmp(0.0);
     for( int i = 0; i < 3; i++ )
-      tmp[i] = rot_axel(i);
+      tmp[i] = tmp_rot_axel(i);
 
     _ref->rotateGlobal( a, tmp );
   }
@@ -383,13 +334,16 @@ namespace GMlib {
     if(!_ref)
       return;
 
+    Point<float,3> tmp_p = _matrix_scene_inv * p;
+    UnitVector<float,3> tmp_d = _matrix_scene_inv * d;
+
     Point<T,3> tmp1(0.0);
     for( int i = 0; i < 3; i++ )
-      tmp1[i] = p(i);
+      tmp1[i] = tmp_p(i);
 
     Vector<T,3> tmp2(0.0);
     for( int i = 0; i < 3; i++ )
-      tmp2[i] = d(i);
+      tmp2[i] = tmp_d(i);
 
     _ref->rotateGlobal( a, tmp1, tmp2 );
   }
@@ -460,9 +414,11 @@ namespace GMlib {
     if(!_ref)
       return;
 
+    Vector<float,3> tmp_vec = this->_matrix_scene_inv * trans_vector;
+
     Vector<T,3> tmp(0.0);
     for( int i = 0; i < 3; i++ )
-      tmp[i] = trans_vector(i);
+      tmp[i] = tmp_vec(i);
 
     _ref->translateGlobal( tmp );
   }

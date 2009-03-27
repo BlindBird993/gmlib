@@ -235,7 +235,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void HqMatrix<T, n>::invert2() {		// overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
+  void HqMatrix<T, n>::invertOrthoNormal() {		// overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
     T v[n];
     GM_Static3_<T,n,n>::eq1(v,ptr()+n);
     GM_Static3_<T,n-1,n+1>::trn(ptr()+n+1, ptr()+1);

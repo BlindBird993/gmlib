@@ -72,14 +72,10 @@ namespace GMlib {
     Parametrics<T,3>*                     getParametrics();
     Point<float,3>	                      getPos();
     Vector<float,3>	                      getSide();
-    Vector<T,3>	                          getTDir();
-    Point<T,3>	                          getTPos();
-    Vector<T,3>	                          getTSide();
-    Vector<T,3>	                          getTUp();
-    const DMatrix<Point<float,2> >&     getTextureCoords() const;
+    const DMatrix<Point<float,2> >&       getTextureCoords() const;
     Vector<float,3>                       getUp();
     const DVector<Vector<float,3> >&      getVerticesN1() const;
-    const DMatrix<Arrow<float,3> >&     getVerticesN2() const;
+    const DMatrix<Arrow<float,3> >&       getVerticesN2() const;
     Visualizer<T,n>*                      getVisualizer( const std::string& str );
     Array< Visualizer<T,n>* >&            getVisualizers();
 

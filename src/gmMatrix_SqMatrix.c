@@ -288,7 +288,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void SqMatrix<T, n>::invert2() {
+  void SqMatrix<T, n>::invertOrthoNormal() {
     transpose();
   }	// Use only for orthonormal matrices (rotation matrices)
 

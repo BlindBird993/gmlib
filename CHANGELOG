@@ -4,6 +4,15 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-03-27 Jostein Bratlie
+
+        * HqMatrix/SqMatrix
+          - Name fix: the otho normal invertion function invert2(), renamed to invertOrthoNormal()
+        * DParametrics
+          - Removed the getT*(...) functions (Pos/Dir/Side/Up), use get*(Pos/Dir/Side/Up) instead
+          - Fixed rotate global and translate global. Now translates globaly according to scene coords.
+
+
 2009-03-26 Jostein Bratlie
 
         * gmPERBSSurf
