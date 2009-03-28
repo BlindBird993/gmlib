@@ -64,7 +64,7 @@ namespace GMlib {
     int                       getNoSampV() const;
     PSurf<T,3>*               getPSurf();
     virtual bool              isClosestPoint( const Point<T,3>& q, T& u, T& v );
-    void                      replot( int m1 = 0, int m2 = 0 , bool dynamic = false, int d1 = 1, int d2 = 1 );
+    void                      replot( int m1 = 0, int m2 = 0 , bool dynamic = false, int d1 = 2, int d2 = 2 );
     void                      setPSurf( PSurf<T,3>* psurf );
     virtual void              setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p );
 

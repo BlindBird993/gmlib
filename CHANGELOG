@@ -4,6 +4,15 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+2009-03-28 Jostein Bratlie
+
+        * gmDCurve/gmDSurf
+          - Changed default number of derivatives from 1 to 2 for reploting.
+        * gmPBezierCurve/gmPBezierSurf
+          - ERBS Constructor: translates globally instead of locally
+
 2009-03-27 Jostein Bratlie
 
         * HqMatrix/SqMatrix

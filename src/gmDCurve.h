@@ -57,7 +57,7 @@ namespace GMlib {
     int             getNoDer() const;
     int             getNoSamp() const;
     PCurve<T,3>*    getPCurve();
-    void            replot( int m = 0, bool dynamic = false, int d = 1 );
+    void            replot( int m = 0, bool dynamic = false, int d = 2 );
     void            setLineWidth( float width = 1.0 );
     void            setPCurve( PCurve<T,3>* pcurve );
     virtual void    setSurroundingSphere( const DVector< DVector< Vector<T, 3> > >& p );

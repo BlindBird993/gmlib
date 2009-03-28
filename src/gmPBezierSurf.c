@@ -78,7 +78,7 @@ namespace GMlib {
       for( int j = 0; j < c.getDim2(); j++ )
         _c[i][j] -= c(0)(0);
 
-    this->translate( c(0)(0) );
+    this->translateGlobal( c(0)(0) );
   }
 
 
