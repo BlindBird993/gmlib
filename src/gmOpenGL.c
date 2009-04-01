@@ -32,6 +32,7 @@
 
 
 #include "gmGLColor.h"
+#include "gmMatrix.h"
 
 
 namespace GMlib {
@@ -196,6 +197,34 @@ namespace GMlib {
   void glMultMatrix(const GLMatrix& m)
   {
     glMultMatrixf(m.getPtr());
+  }
+
+
+  inline
+  void glLoadMatrix(const HqMatrix<float,3>& m) {
+
+    glLoadMatrixf(m.getTransposed().getPtr());
+  }
+
+
+  inline
+  void glMultMatrix(const HqMatrix<float,3>& m) {
+
+    glMultMatrixf(m.getTransposed().getPtr());
+  }
+
+
+  inline
+  void glLoadMatrix(const HqMatrix<double,3>& m) {
+
+    glLoadMatrixd(m.getTransposed().getPtr());
+  }
+
+
+  inline
+  void glMultMatrix(const HqMatrix<double,3>& m) {
+
+    glMultMatrixd(m.getTransposed().getPtr());
   }
 
 

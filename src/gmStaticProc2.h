@@ -31,10 +31,10 @@
  * \date   2008-07-04
  */
 
-#ifndef __gmSTATICPROC_H__
-#define __gmSTATICPROC_H__
+#ifndef __gmSTATICPROC2_H__
+#define __gmSTATICPROC2_H__
 
-#include "GMPoint.h"
+#include "gmPoint.h"
 
 namespace GMlib {
 
@@ -71,8 +71,7 @@ namespace GMlib {
    *  Detailed Description of class
    */
   template <typename T,int m>
-  class GM_Static_P_<T,1,m>
-  {
+  class GM_Static_P_<T,1,m> {
   public:
     static void mv_x(T *a, Point<T,m>* b, const Point<T,m>& c);
     static void mv_xq(T *a, T* b, const Point<T,m>& c);
@@ -112,8 +111,7 @@ namespace GMlib {
    *  Detailed Description of class
    */
   template <typename T, int n, int m, int k>
-  class GM_Static_P2_
-  {
+  class GM_Static_P2_ {
   public:
     static void vm_x(T *a, Point<T,m>* b, T* c);											// vec = vec x mat
     static void vm_xHT(T *a, Point<T,m+1>* b, T* c);									// vec =  mat x vec (a = c x b)
@@ -138,8 +136,7 @@ namespace GMlib {
    *  Detailed Description of class
    */
   template <class T, int m, int k>
-  class GM_Static_P2_<T,1,m,k>
-  {
+  class GM_Static_P2_<T,1,m,k> {
   public:
     static void vm_x(T *a, Point<T,m>* b, T* c);
     static void vm_xT(T *a, Point<T,m>* b, T* c);
@@ -162,8 +159,7 @@ namespace GMlib {
    *  Detailed Description of class
    */
   template <class T, int n, int m>
-  class GM_Static_P2_<T,n,m,1>
-  {
+  class GM_Static_P2_<T,n,m,1> {
   public:
     static void eq_t(Point<T,m> *a, T *b);
 

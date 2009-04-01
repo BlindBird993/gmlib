@@ -133,7 +133,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   SqMatrix<T, n>::SqMatrix(Angle a, int x, int y) {
-    T sina = T(sin(a)), cosa = T(cos(a));
+    T sina = T(sin(a.getRad())), cosa = T(cos(a.getRad()));
     (*this)[x][x]=cosa; (*this)[y][x]=-sina; (*this)[x][y]=sina; (*this)[y][y]=cosa;
   }
 
@@ -146,7 +146,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Matrix<T,n,n> const& SqMatrix<T, n>::transpose() {
-    GM_Static3_<T,n-1,n>::trn(( getPtrP()+1)->getPtr(), getPtr()+1);
+    GM_Static3_<T,n-1,n>::trn(( this->getPtrP()+1)->getPtr(), this->getPtr()+1);
     return(*this);
   }//Matrix<T,n,n> v(*this,true); *this = v; return(*this);}
 
@@ -160,7 +160,7 @@ namespace GMlib {
   inline
   Matrix<T,n,n> const& SqMatrix<T, n>::transposeMult(const Matrix<T,n,n>& m) const {	// Not changing this: a = this->transpose * m
     static Matrix<T,n,n> r;
-    GM_Static_P_<T,n,n>::mc_x(r.getPtr(),getPtr(),m.getPtr());
+    GM_Static_P_<T,n,n>::mc_x(r.getPtr(), this->getPtr(),m.getPtr());
     return r;
   }
 
@@ -301,7 +301,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void SqMatrix<T, n>::rotateXY(Angle a, int x, int y) {
-    GM_Static_<T,n>::rot_xy(getPtr()+x*n,getPtr()+y*n, T(sin(a)), T(cos(a)));
+    GM_Static_<T,n>::rot_xy(this->getPtr()+x*n,this->getPtr()+y*n, T(sin(a.getRad())), T(cos(a.getRad())));
   }
 
 
@@ -358,8 +358,9 @@ namespace GMlib {
   template <typename T, int n>
   inline
   const Point<T,n>& SqMatrix<T, n>::getStatDiagonal(int i) const {
-      GM_Static3_::eq1(_c.getPtr(),getPtr());
-      return _c;
+
+      GM_Static3_<T,n,n>::eq1( this->_c.getPtr(), this->getPtr() );
+      return this->_c;
   }
 
 
@@ -371,7 +372,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void  SqMatrix<T, n>::cpy_d(const Point<T,n>& p) {
-    GM_Static3_::eq2(p.getPtr(),getPtr());
+
+    GM_Static3_<T,n,n>::eq2( p.getPtr(), this->getPtr() );
   }
 
 

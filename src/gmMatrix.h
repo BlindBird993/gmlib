@@ -40,18 +40,18 @@
 
 namespace GMlib {
 
-//********************************************************************
-//*** The three matrix classes in the linear and homogenius system ***
-//********************************************************************
+  //********************************************************************
+  //*** The three matrix classes in the linear and homogenius system ***
+  //********************************************************************
 
-template <typename T, int n, int m>
-class Matrix;							// The general (n x m) matrix
+  template <typename T, int n, int m>
+  class Matrix;							// The general (n x m) matrix
 
-template <typename T, int n>
-class SqMatrix;							// The squere  (n x n) matrix
+  template <typename T, int n>
+  class SqMatrix;							// The squere  (n x n) matrix
 
-template <typename T, int n>
-class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
+  template <typename T, int n>
+  class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
 
 
 
@@ -68,7 +68,6 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
    */
   template <typename T, int n, int m>
   class Matrix : public Vector<Vector<T,m>,n>  {
-
   public:
 
     Matrix();
@@ -156,7 +155,10 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
 
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& operator*(double d, const Matrix<T,n,m>& p) { return p*d;}
+  Matrix<T,n,m>& operator*(double d, const Matrix<T,n,m>& p) {
+
+    return p*d;
+  }
 
   //*************************************
   //***  Matrix multiplication a * b  ***
@@ -170,26 +172,26 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
   Matrix<typeof(T()*G()),n,k>& operator*(const Matrix<T,n,m>& a, const Matrix<G,m,k>& b)
   {
     static Matrix<typeof(T()*G()),n,k> r;
-    GM_Static_P2_<T,n,m,k>::mm_x(r.pr(),a.pr(),b.ptr());
+    GM_Static_P2_<T,n,m,k>::mm_x(r.getPtrP(),a.getPtrP(),b.getPtr);
     return r;
   }
   */
 
   template <typename T, int n, int m, int k>
   inline
-  Matrix<T,n,k> operator*(const Matrix<T,n,m>& a, const Matrix<T,m,k>& b)
-  {
+  Matrix<T,n,k> operator*(const Matrix<T,n,m>& a, const Matrix<T,m,k>& b) {
+
     Matrix<T,n,k> r;
-    GM_Static_P2_<T,n,m,k>::mm_x(r.pr(),a.pr(),b.ptr());
+    GM_Static_P2_<T,n,m,k>::mm_x( r.getPtrP(),a.getPtrP(),b.getPtr());
     return r;
   }
 
   template <typename T, int n, int m, int k>
   inline
-  Matrix<T,n,k> multTrans(const Matrix<T,n,m>& a, const Matrix<T,k,m>& b)
-  {
+  Matrix<T,n,k> multTrans(const Matrix<T,n,m>& a, const Matrix<T,k,m>& b) {
+
     Matrix<T,n,k> r;
-    GM_Static_P2_<T,n,m,k>::mm_xT(r.pr(),a.pr(),b.ptr());
+    GM_Static_P2_<T,n,m,k>::mm_xT(r.getPtrP(),a.getPtrP(),b.getPtr());
     return r;
   }
 
@@ -198,38 +200,38 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
   //***************************************************************************************
   template <typename T, int n, int m, int k, int r>
   inline
-  Matrix<Point<T,r>,n,k> operator*(const Matrix<Point<T,r>,n,m>& a, const Matrix<T,m,k>& b)
-  {
-    Matrix<Point<T,r>,n,k> r;
-    GM_Static_P2_<T,n,m,k>::mm_x(r.pr(),a.pr(),b.ptr());
-    return r;
+  Matrix<Point<T,r>,n,k> operator*(const Matrix<Point<T,r>,n,m>& a, const Matrix<T,m,k>& b) {
+
+    Matrix<Point<T,r>,n,k> mat;
+    GM_Static_P2_<T,n,m,k>::mm_x(mat.getPtrP(),a.getPtrP(),b.getPtr());
+    return mat;
   }
 
   template <typename T, int n, int m, int k, int r>
   inline
-  Matrix<Point<T,r>,n,k> operator*(const Matrix<T,n,m>& a, const Matrix<Point<T,r>,m,k>& b)
-  {
-    Matrix<Point<T,r>,n,k> r;
-    GM_Static_P2_<T,n,m,k>::mm_x(r.pr(),a.pr(),b.ptr());
-    return r;
+  Matrix<Point<T,r>,n,k> operator*(const Matrix<T,n,m>& a, const Matrix<Point<T,r>,m,k>& b) {
+
+    Matrix<Point<T,r>,n,k> mat;
+    GM_Static_P2_<T,n,m,k>::mm_x(mat.getPtrP(),a.getPtrP(),b.getPtr());
+    return mat;
   }
 
   template <typename T, int n, int m, int k, int r>
   inline
-  Matrix<T,n,k> operator*(const Matrix<Point<T,r>,n,m>& a, const Matrix<Point<T,r>,m,k>& b)
-  {
-    Matrix<T,n,k> r;
-    GM_Static_P2_<T,n,m,k>::mm_x(r.pr(),a.pr(),b.ptr());
-    return r;
+  Matrix<T,n,k> operator*(const Matrix<Point<T,r>,n,m>& a, const Matrix<Point<T,r>,m,k>& b) {
+
+    Matrix<T,n,k> mat;
+    GM_Static_P2_<T,n,m,k>::mm_x(mat.getPtrP(),a.getPtrP(),b.getPtr());
+    return mat;
   }
 
 
   template <typename T, int n, int m>
   inline
-  Point<T,m> operator*(const Point<T,n>& p, const Matrix<T,n,m>& b)
-  {
+  Point<T,m> operator*(const Point<T,n>& p, const Matrix<T,n,m>& b) {
+
     Point<T,m> r;
-    GM_Static_P2_<T,n,m,n>::vm_x(r.ptr(),&p,b.ptr());
+    GM_Static_P2_<T,n,m,n>::vm_x(r.getPtr(),&p,b.getPtr());
     return r;
   }
 
@@ -240,24 +242,24 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
 
     template <typename T_Stream, class T, int n, int m>
     inline
-    T_Stream &operator<<(T_Stream& out, const Matrix<T,n,m>& v)
-    {
+    T_Stream &operator<<(T_Stream& out, const Matrix<T,n,m>& v) {
+
       for(int i=0;i<n;i++) out << v(i) << GMseparator::Group;
       return out;
     }
 
     template <typename T_Stream, class T, int n, int m>
     inline
-    T_Stream& operator<<(T_Stream& out, const Matrix<T,n,m>* v)
-    {
+    T_Stream& operator<<(T_Stream& out, const Matrix<T,n,m>* v) {
+
       for(int i=0;i<n;i++) out << (*v)(i) << GMseparator::Group;
       return out;
     }
 
     template <typename T_Stream, class T, int n, int m>
     inline
-    T_Stream& operator>>(T_Stream& in, Matrix<T,n,m>& v)
-    {
+    T_Stream& operator>>(T_Stream& in, Matrix<T,n,m>& v) {
+
       Separator gs(GMseparator::Group);
       for(int i=0;i<n;i++) in >> v[i] >> gs;
       return in;
@@ -265,8 +267,8 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
 
     template <typename T_Stream, class T, int n, int m>
     inline
-    T_Stream& operator>>(T_Stream& in, Matrix<T,n,m>* v)
-    {
+    T_Stream& operator>>(T_Stream& in, Matrix<T,n,m>* v) {
+
       Separator gs(GMseparator::Group);
       for(int i=0;i<n;i++) in >> (*v)[i] >> gs;
       return in;
@@ -309,7 +311,7 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
     //Matrix<T,n,n> const&    getInverse2() const ;// NOT IMPLEMENTED
 
     void                    invert();
-    virtual void            invertOrthoNormal();	// Use only for orthonormal matrices (rotation matrices)
+    void                    invertOrthoNormal();	// Use only for orthonormal matrices (rotation matrices)
 
     Matrix<T,n,n> const&    reverseMult(const Matrix<T,n,n>& m);			// Changing this ( is a kind of *= operator): *this = m * *this
 
@@ -382,7 +384,7 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
     Sphere<T,n>		            operator*(const Sphere<T,n>& v)		const;
     Arrow<T,n>		            operator*(const Arrow<T,n>& v)		const;
     Box<T,n>		              operator*(const Box<T,n>& v)		const;
-    Matrix<T,n+1,n+1>const&   operator*(const HqMatrix<T,n>& v)	const;
+    Matrix<T,n+1,n+1>         operator*(const HqMatrix<T,n>& v)	const;
 
   private:
     void                      hq_cpy(const Matrix<T,n,n>& v);
@@ -409,8 +411,8 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
 
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m> operator*(const HqMatrix<T,n>& a, const Matrix<T,n,m>& b)
-  {
+  Matrix<T,n,m> operator*(const HqMatrix<T,n>& a, const Matrix<T,n,m>& b) {
+
     Matrix<T,n,m> r;
     GM_Static_P2_<T,n,n,m>::mm_xH(r.getPtrP(),a.getPtrP(),b.getPtr());
     return r;
@@ -418,8 +420,8 @@ class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
 
   template <typename T, int n, int m>
   inline
-  Matrix<T,m,n> multTrans(const HqMatrix<T,n>& a, const Matrix<T,m,n>& b)
-  {
+  Matrix<T,m,n> multTrans(const HqMatrix<T,n>& a, const Matrix<T,m,n>& b) {
+
     Matrix<T,m,n> r;
     GM_Static_P2_<T,n,n,m>::mm_xHT(r.getPtr(),a.getPtrP(),b.getPtr());
     return r;

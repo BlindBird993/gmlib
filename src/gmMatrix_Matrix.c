@@ -48,6 +48,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   const Vector<T,n>& Matrix<T,n,m>::getStatCol(int j)const {
+
     GM_Static2_<T,n,m>::eq1(_c.getPtr(),getPtr()+j); return _c;
   }
 
@@ -61,6 +62,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   const Vector<T,m>& Matrix<T,n,m>::getStatRow(int i)const {
+
     return (*this)(i);
   }
 
@@ -74,6 +76,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::cpy() {
+
     memcpy(getPtr(),_I.getPtr(),sizeof(Matrix<T,n,m>));
   }
 
@@ -87,6 +90,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::cpy(const T* v) {
+
     memcpy(getPtr(), v, sizeof(Matrix<T,n,m>));
   }
 
@@ -100,6 +104,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::cpy(const Vector<Vector<T,m>,n>& v)	{
+
     memcpy(getPtr(), v.getPtr(),sizeof(Matrix<T,n,m>));
   }
 
@@ -113,6 +118,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::cpy_t(const T* v) {
+
     GM_Static_P_<T,n,m>::eq_t(getPtrP(),v);
   }
 
@@ -126,7 +132,8 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::cpy_t(const Vector<Vector<T,n>,m>& v)	{
-    GM_Static_P_<T,n,m>::eq_t(getPtrP(),v.getPtr());
+
+    GM_Static_P_<T,n,m>::eq_t( getPtrP(), (T*)v.getPtr() );
   }
 
 
@@ -139,6 +146,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::cpy_r(const Point<T,m>& p,int i) {
+
     (*this)[i] = p;
   }
 
@@ -152,6 +160,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::cpy_c(const Point<T,n>& p,int j) {
+
     GM_Static2_<T,n,m>::eq2(p.getPtr(),getPtr()+j);
   }
 
@@ -165,6 +174,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>::Matrix() {
+
     cpy();
   }
 
@@ -190,6 +200,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>::Matrix(const Point<T,m>& r,const Point<T,n>& c) {
+
     GM_Static_P_<T,n,m>::vv_ox(getPtrP(), &r, c.getPtr());
   }
 
@@ -204,6 +215,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>::Matrix(const Vector<T,m>& u) {
+
     setOrtho(u);
   }
 
@@ -218,6 +230,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>::Matrix(const Vector<T,m>& u, const Vector<T,m>& v)	{
+
     setOrtho(u,v);
   }
 
@@ -229,7 +242,8 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>::Matrix(const Vector<Vector<T,m>,n>& v)	{
+  Matrix<T,n,m>::Matrix( const Vector<Vector<T,m>,n>& v )	{
+
     cpy(v);
   }
 
@@ -242,6 +256,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>::Matrix(const Vector<Vector<T,n>,m>& v, bool trans)	{
+
     if(trans) cpy_t(v); else (n == m?cpy(v):cpy_t(v));
   }
 
@@ -254,6 +269,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>::Matrix(const T* v, bool trans)	{
+
     if(trans) cpy_t(v); else cpy(v);
   }
 
@@ -267,6 +283,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::reset() {
+
     cpy();
   }
 
@@ -279,6 +296,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   T* Matrix<T,n,m>::getPtr() const	{
+
     return (T*)this;
   }
 
@@ -292,6 +310,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Point<T,m>* Matrix<T,n,m>::getPtrP() const	{
+
     return (Point<T,m>*)this;
   }
 
@@ -304,8 +323,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>&	Matrix<T,n,m>::operator=(const Vector<Vector<T,m>,n>& m)	{
-    cpy(m);   return(*this);
+  Matrix<T,n,m>&	Matrix<T,n,m>::operator=(const Vector<Vector<T,m>,n>& mat)	{
+
+    cpy(mat);   return(*this);
   }
 
 
@@ -318,8 +338,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>&	Matrix<T,n,m>::setTranspose(const Vector<Vector<T,m>,n>& m) {
-    cpy_t(m); return(*this);
+  Matrix<T,n,m>&	Matrix<T,n,m>::setTranspose(const Vector<Vector<T,m>,n>& mat) {
+
+    cpy_t(mat); return(*this);
   }
 
 
@@ -332,6 +353,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,m,n>	Matrix<T,n,m>::getTransposed() const	{
+
     return Matrix<T,m,n>(*this,true);
   }
 
@@ -346,6 +368,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::setCol(const Point<T,m>& c, int i) {
+
     cpy_c(c,i);
   }
 
@@ -359,6 +382,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::setRow(const Point<T,n>& r, int j) {
+
     cpy_r(r,j);
   }
 
@@ -374,6 +398,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::initCol(int i, int j)	{
+
     GM_Static2_<T,n,m>::eq3(this+i, _I+j);
   }
 
@@ -390,6 +415,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::initRow(int i, int j)	{
+
     memcpy((*this)[i].getPtr(), _I.getPtr()+j*m, sizeof(Vector<T,m>));
   }
 
@@ -405,7 +431,8 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Point<T,n>const& Matrix<T,n,m>::getCol(int i) const	{
-    return col(i);
+
+    return getStatCol(i);
   }
 
 
@@ -420,7 +447,8 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Point<T,m>const& Matrix<T,n,m>::getRow(int j) const	{
-    return row(j);
+
+    return getStatRow(j);
   }
 
 
@@ -434,6 +462,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::scale(const Point<T,n>& s) {
+
     GM_Static_P_<T,n,m>::sc(getPtrP(),s.getPtr());
   }
 
@@ -450,8 +479,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator+=(const Matrix<T,n,m>& m) {
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +=(m));
+  Matrix<T,n,m>& Matrix<T,n,m>::operator+=(const Matrix<T,n,m>& mat) {
+
+    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +=(mat));
   }
 
 
@@ -468,8 +498,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator-=(const Matrix<T,n,m>& m) {
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -=(m));
+  Matrix<T,n,m>& Matrix<T,n,m>::operator-=(const Matrix<T,n,m>& mat) {
+
+    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -=(mat));
   }
 
 
@@ -483,8 +514,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator+(const Matrix<T,n,m>& m) const	{
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +(m));
+  Matrix<T,n,m>& Matrix<T,n,m>::operator+(const Matrix<T,n,m>& mat) const	{
+
+    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +(mat));
   }
 
 
@@ -498,8 +530,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator-(const Matrix<T,n,m>& m) const	{
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -(m));
+  Matrix<T,n,m>& Matrix<T,n,m>::operator-(const Matrix<T,n,m>& mat) const	{
+
+    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -(mat));
   }
 
 
@@ -514,6 +547,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>& Matrix<T,n,m>::operator-() const	{
+
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -());
   }
 
@@ -529,6 +563,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Point<T,n>&  Matrix<T,n,m>::operator*(const Point<T,m>& v) const {
+
     GM_Static_P_<T,n,m>::mv_x(_c.getPtr(),getPtrP(),v); return _c;
   }
 
@@ -544,6 +579,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>& Matrix<T,n,m>::operator*=(const double d) {
+
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *=(d));
   }
 
@@ -557,6 +593,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>& Matrix<T,n,m>::operator*(const double d) const	{
+
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *(d));
   }
 
@@ -572,6 +609,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>& Matrix<T,n,m>::operator/=(double d) {
+
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /=(d));
   }
 
@@ -586,6 +624,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,m>& Matrix<T,n,m>::operator/(double d) const {
+
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /(d));
   }
 
@@ -600,6 +639,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::swap(int i,int j)	{
+
     T tmp = (*this)[i][j]; (*this)[i][j] = (*this)[j][i]; (*this)[j][i] = tmp;
   }
 
@@ -615,6 +655,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   void Matrix<T,n,m>::swap(int i,int j,int a,int b)	{
+
     T tmp = (*this)[i][j]; (*this)[i][j] = (*this)[a][b]; (*this)[a][b] = tmp;
   }
 
@@ -634,6 +675,7 @@ namespace GMlib {
   template <typename T, int n, int m>
   inline
   Matrix<T,n,n> Matrix<T,n,m>::getMultTrans() {
+
     Matrix<T,n,n> r;
     GM_Static_P2_<T,n,m,n>::mm_xT(r.getPtrP(),getPtrP(),getPtr());
     return r;
@@ -649,8 +691,8 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,m,m> Matrix<T,n,m>::getTransMult()
-  {
+  Matrix<T,m,m> Matrix<T,n,m>::getTransMult() {
+
     Matrix<T,m,m> r;
     GM_Static_P2_<T,m,n,m>::mm_xTT(r.getPtrP(),getPtr(),getPtr());
     return r;
@@ -666,6 +708,7 @@ namespace GMlib {
    */
   template <class T, int n, int m>
   void Matrix<T,n,m>::setOrtho(const Vector<T,m>& u) {
+
     int i, j, k, ku = u.getMaxAbsIndex();
 
     GM_Static_<T,m>::sc_r(getPtr(), u.getPtr(), (1/u.getLength()));
@@ -698,6 +741,7 @@ namespace GMlib {
    */
   template <class T, int n, int m>
   void Matrix<T,n,m>::setOrtho(const Vector<T,m>& u, const Vector<T,m>& v) {
+
     int i, j, k, ku, kv;
 
     GM_Static_<T,m>::sc_r(getPtr(), u.getPtr(), (1/u.getLength()));

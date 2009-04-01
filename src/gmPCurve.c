@@ -128,15 +128,12 @@ namespace GMlib {
     static DVector< Vector<T,n> > p(d+1);
 
     _eval(t,d);
-    Vector<float,n> tmp= this->_matrix*((Point<T,n>)_p[0]).toFloat();
-    for( int i = 0; i < 3; i++ )
-      p[0][i] = tmp[i];
 
-    for( int i = 1; i <= d; i++ ) {
-      tmp = this->_matrix * (_p[i]).toFloat();
-      for( int j = 0; j < 3; j++ )
-        p[i][j] = tmp[j];
-    }
+    p[0] = this->_matrix*((Point<T,n>)_p[0]);
+
+    for( int i = 1; i <= d; i++ )
+      p[i] = this->_matrix * (Vector<T,n>)_p[i];
+
     return p;
   }
 

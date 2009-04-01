@@ -37,7 +37,9 @@
 #include <iostream>
 
 // GMlib
-#include "gmOpenGL.h" // Needs to be swapped with the include for the HqMatrix.
+#include "gmOpenGL.h"
+#include "gmMatrix.h"
+//#include "gmOpenGL.h" // Needs to be swapped with the include for the HqMatrix.
 
 namespace GMlib {
 
@@ -66,7 +68,8 @@ namespace GMlib {
 
 
   protected:
-    GLMatrix              _matrix;            // Needs to be swaped with HqMatrix
+    HqMatrix<T,n>         _matrix;
+    GLMatrix              _matrix_old;            // Needs to be swaped with HqMatrix
 
     Point<T,n>		        _pos;
     UnitVector<T,n>       _dir;

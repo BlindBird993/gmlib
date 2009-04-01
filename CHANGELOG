@@ -5,6 +5,19 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-04-01 Jostein Bratlie
+
+        * gmStaticProc2
+          - Fixed a header #define error and some syntax errors.
+        * gmMatrix
+          - Fixed a bunch of syntax errors.
+        * gmOpenGL
+          - Added overloaded glMatrix* functions for HqMatrix
+        * gmPCurve/gmPSurf
+          - evaluate(...) optimization.
+        * gmAffineSpace (Parametrics "tree")
+          - Took the first step in replacing the old GLMatrix with the new template HqMatrix.
+
 
 2009-03-28 Jostein Bratlie
 

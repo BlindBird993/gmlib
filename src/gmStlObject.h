@@ -42,11 +42,6 @@ using std::string;
 #include "gmDPSphere.h"
 #include "gmTriangle.h"
 
-//
-//#include <GM_Sphere.h>
-//#include <GM_PSurf.h>
-//#include <GM_Triangle.h>
-
 
 
 namespace GMlib {
@@ -71,7 +66,7 @@ namespace GMlib {
 
 
   private:
-    unsigned int                          _dlist_name;
+    unsigned int                    _dlist_name;
     DPSphere<float>                 *_sphere;          // Debug
 
     string                          _fname;						 // I put the filename in here,

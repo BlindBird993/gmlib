@@ -463,22 +463,19 @@ namespace GMlib {
     static DMatrix<Vector<T,n> > p( d1+1, d2+1 );
 
     eval(u,v,d1,d2);
-    Vector<float,n> tmp;
 
-    for( int i = 0; i < p.getDim1(); i++ ) {
-      for( int j = 0; j < p.getDim2(); j++ ) {
+    p[0][0] = this->_matrix * (Point<T,n>)_p[0][0];
 
-        if( i==0 && j==0 )
-          tmp = this->_matrix * (Point<float,n>)_p[0][0].toFloat();
-        else
-          tmp = this->_matrix * (Vector<float,n>)_p[i][j].toFloat();
+    for( int j = 1; j < p.getDim2(); j++ )
+      p[0][j] = this->_matrix * (Vector<T,n>)_p[0][j];
 
-        for( int k = 0; k < 3; k++ )
-          p[i][j][k] = tmp[k];
-      }
-    }
+    for( int i = 1; i < p.getDim1(); i++ )
+      for( int j = 0; j < p.getDim2(); j++ )
+        p[i][j] = this->_matrix * (Vector<T,n>)_p[i][j];
 
     return p;
+
+
   }
 
 

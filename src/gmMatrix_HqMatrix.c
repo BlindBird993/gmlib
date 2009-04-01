@@ -82,7 +82,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  HqMatrix<T, n>::HqMatrix( const Matrix<T,n,n>& v, bool trans=false) : SqMatrix<T,n+1>(false)	{}
+  HqMatrix<T, n>::HqMatrix( const Matrix<T,n,n>& v, bool trans) : SqMatrix<T,n+1>(trans)	{}
 
 
   /*! HqMatrix<T, n>::HqMatrix(const Vector<T,n>& d)
@@ -93,7 +93,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix( const Vector<T,n>& d  ){
-    GM_Static2_<T,n,n+1>::eq2(d.ptr(),ptr()+n);
+
+    GM_Static2_<T,n,n+1>::eq2( d.getPtr(), this->getPtr()+n );
   }
 
 
@@ -108,7 +109,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix(Angle a,  int x, int y){
-    T sina = T(sin(a)), cosa = T(cos(a));
+
+    T sina = T(sin(a.getRad())), cosa = T(cos(a.getRad()));
     (*this)[x][x]=cosa; (*this)[y][x]=-sina; (*this)[x][y]=sina; (*this)[y][y]=cosa;
   }
 
@@ -138,12 +140,13 @@ namespace GMlib {
   template <typename T, int n>
   inline
   HqMatrix<T, n>::HqMatrix(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p) {
+
     Vector<T,n> r;
-    T sina = sin(a);
-    T cosa = cos(a);
+    T sina = sin(a.getRad());
+    T cosa = cos(a.getRad());
     makeOrtho(u, v, *this);
     SqMatrix<T,n+1> x(*this);
-    GM_Static_<T,n>::rot_xy(getPtr(),getPtr()+(n+1), sina, cosa);
+    GM_Static_<T,n>::rot_xy( this->getPtr(), this->getPtr()+(n+1), sina, cosa);
     basisChange(x);
 
     T x0 = GM_Static_<T,n>::dpr(p.getPtr(),x.getPtr());
@@ -151,7 +154,7 @@ namespace GMlib {
     r[0] = (x0*cosa-x1*sina);
     r[1] = (x0*sina+x1*cosa);
     GM_Static_P_<T,n-2,n>::hq_2x(r.getPtr()+2,x[2].getPtr(),p);
-    GM_Static_P_<T,n,n>::hq_3x(getPtr()+n,x.getPtr(),r,p.getPtr());
+    GM_Static_P_<T,n,n>::hq_3x(this->getPtr()+n,x.getPtr(),r,p.getPtr());
   }
 
 
@@ -181,7 +184,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void HqMatrix<T, n>::rotateXY(Angle a, int x , int y ) {
-    GM_Static_<T,n>::rot_xy(ptr()+x*(n+1),ptr()+y*(n+1), T(sin(a)), T(cos(a)));
+
+    GM_Static_<T,n>::rot_xy(this->getPtr()+x*(n+1),this->getPtr()+y*(n+1), T(sin(a.getRad())), T(cos(a.getRad())));
   }
 
 
@@ -219,8 +223,31 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void HqMatrix<T, n>::translate(const Vector<T,n> d) {
+
+    cout << "Translates:" << endl;
     HqMatrix<T,n> m(d);
+    cout << "Matrix:" << endl;
+    T *matptr = (*this).getPtr();
+    for( int i = 0; i < 4; i++ ) {
+      for( int j = 0; j < 4; j++ )
+        cout << " " << (*matptr++);
+      cout << endl;
+    }
+    cout << "Translation matrix:" << endl;
+    T *ptr = m.getPtr();
+    for( int i = 0; i < 4; i++ ) {
+      for( int j = 0; j < 4; j++ )
+        cout << " " << (*ptr++);
+      cout << endl;
+    }
     (*this) = (*this)*m;
+    cout << "Matrix after trans:" << endl;
+    matptr = (*this).getPtr();
+    for( int i = 0; i < 4; i++ ) {
+      for( int j = 0; j < 4; j++ )
+        cout << " " << (*matptr++);
+      cout << endl;
+    }
   }
 
 
@@ -236,10 +263,11 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void HqMatrix<T, n>::invertOrthoNormal() {		// overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
+
     T v[n];
-    GM_Static3_<T,n,n>::eq1(v,ptr()+n);
-    GM_Static3_<T,n-1,n+1>::trn(ptr()+n+1, ptr()+1);
-    GM_Static3_<T,n,n>::cm_x(ptr()+n,ptr(),v);
+    GM_Static3_<T,n,n>::eq1(v, this->getPtr()+n);
+    GM_Static3_<T,n-1,n+1>::trn(this->getPtr()+n+1, this->getPtr()+1);
+    GM_Static3_<T,n,n>::cm_x( this->getPtr()+n, this->getPtr(),v);
   }
 
 
@@ -266,9 +294,10 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Point<T,n>		HqMatrix<T, n>::operator*(const Point<T,n>& v)		const {
+  Point<T,n>		HqMatrix<T, n>::operator*(const Point<T,n>& p)		const {
+
     Point<T,n> r;
-    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr(), getPtr(), p, getPtr()+n);
+    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr(), this->getPtr(), p, this->getPtr()+n);
     return r;
   }
 
@@ -282,8 +311,9 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Vector<T,n>		HqMatrix<T, n>::operator*(const Vector<T,n>& v)		const {
+
     Vector<T,n> r;
-    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), getPtr(), v);
+    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), this->getPtr(), v);
     return r;
   }
 
@@ -295,9 +325,10 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  ScalarPoint<T,n> HqMatrix<T, n>::operator*(const ScalarPoint<T,n>& v) const {
-    ScalarPoint<T,n> r
-    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), getPtr(), p.getPos());
+  ScalarPoint<T,n> HqMatrix<T, n>::operator*(const ScalarPoint<T,n>& p) const {
+
+    ScalarPoint<T,n> r;
+    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), this->getPtr(), p.getPos());
     return r;
   }
 
@@ -309,9 +340,10 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Sphere<T,n>		HqMatrix<T, n>::operator*(const Sphere<T,n>& v)		const{
-    Sphere<T,n> r
-    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), getPtr(), s.getPos());
+  Sphere<T,n>		HqMatrix<T, n>::operator*(const Sphere<T,n>& s)		const{
+
+    Sphere<T,n> r;
+    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), this->getPtr(), s.getPos());
     return r;
   }
 
@@ -323,11 +355,12 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Arrow<T,n>		HqMatrix<T, n>::operator*(const Arrow<T,n>& v)		const{
+  Arrow<T,n>		HqMatrix<T, n>::operator*(const Arrow<T,n>& a)		const{
+
     Arrow<T,n> r;
-    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr(),  getPtr(), a.getPos(), getPtr()+n);
-    GM_Static_P_<T,n,n>::mv_xq(r.getPtr()+n, getPtr(), a.getDir());
-    return _r;
+    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr(),  this->getPtr(), a.getPos(), this->getPtr()+n);
+    GM_Static_P_<T,n,n>::mv_xq(r.getPtr()+n, this->getPtr(), a.getDir());
+    return r;
   }
 
   /*! Box<T,n>		HqMatrix<T, n>::operator*(const Box<T,n>& v)		const
@@ -337,11 +370,12 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Box<T,n>		HqMatrix<T, n>::operator*(const Box<T,n>& v)		const {
+  Box<T,n>		HqMatrix<T, n>::operator*(const Box<T,n>& b)		const {
+
     Box<T,n> r;
-    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr(),   getPtr(), v.getPtr(),   getPtr()+n);
-    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr()+n, getPtr(), v.getPtr()+n, getPtr()+n);
-    return _r;
+    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr(),   this->getPtr(), b.getPtr(),   this->getPtr()+n);
+    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr()+n, this->getPtr(), b.getPtr()+n, this->getPtr()+n);
+    return r;
   }
 
 
@@ -352,7 +386,8 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Matrix<T,n+1,n+1>const&	HqMatrix<T, n>::operator*(const HqMatrix<T,n>& v)	const {
+  Matrix<T,n+1,n+1>	HqMatrix<T, n>::operator*(const HqMatrix<T,n>& v)	const {
+
     return (*reinterpret_cast<Matrix<T,n+1,n+1>const*>(this)) *
       (reinterpret_cast<const Matrix<T,n+1,n+1>&>(v));
   }
@@ -373,7 +408,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void HqMatrix<T, n>::hq_cpy(const Matrix<T,n,n>& v) {
-    memcpy(getPtr(), v.getPtr(),sizeof(Matrix<T,n,m>));
+
+    memcpy( this->getPtr(), v.getPtr(), sizeof(Matrix<T,n,n>) );
   }
 
 
@@ -385,7 +421,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void HqMatrix<T, n>::hq_cpy_t(const Matrix<T,n,n>& v) {
-    GM_Static_P_<T,n,n>::eq_t(getPtrP(),v.getPtr());
+
+    GM_Static_P_<T,n,n>::eq_t( this->getPtrP(), v.getPtr() );
   }
 
 
@@ -397,6 +434,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void HqMatrix<T, n>::hq_cpy_r(const Point<T,n>& p,int i) {
+
     memcpy((*this)[i].getPtr(),p.getPtr(),sizeof(Point<T,n>));
   }
 
@@ -409,7 +447,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void HqMatrix<T, n>::hq_cpy_c(const Point<T,n>& p,int j) {
-    GM_Static3_<T,n,n>::eq2(p.getPtr(),getPtr()+j);
+
+    GM_Static3_<T,n,n>::eq2(p.getPtr(),this->getPtr()+j);
   }
 
 
@@ -421,13 +460,14 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void HqMatrix<T, n>::makeOrtho(const Vector<T,n>& u, const Vector<T,n>& v, Matrix<T,n+1,n+1>& x) {
+
     int i,j,k,ku,kv;
-    GM_Static_<T,n>::sc_r(x.ptr(), u.ptr(), (1/u.length()));
+    GM_Static_<T,n>::sc_r(x.getPtr(), u.getPtr(), (1/u.getLength()));
     x[0][n]=T(0);
-    GM_Std_<T,n>::ortoNormal(x[1].ptr(),v.ptr(), x.ptr());
+    GM_Std_<T,n>::ortoNormal(x[1].getPtr(),v.getPtr(), x.getPtr());
     x[1][n]=T(0);
-    ku = u.maxAbsIndex();
-    kv = x[1].maxAbsIndex();
+    ku = u.getMaxAbsIndex();
+    kv = x[1].getMaxAbsIndex();
 
     for(k=0,i=2; i<n; i++,k++)
     {
@@ -444,8 +484,8 @@ namespace GMlib {
     {
       for(j=0; j<i; j++)
       {
-        T tmp = GM_Static_<T,n>::dpr(x[i].ptr(),x[j].ptr());
-        GM_Static_<T,n>::decomp(x[i].ptr(),x[j].ptr(),tmp);
+        T tmp = GM_Static_<T,n>::dpr(x[i].getPtr(),x[j].getPtr());
+        GM_Static_<T,n>::decomp(x[i].getPtr(),x[j].getPtr(),tmp);
       }
       x[i].normalize();
     }
