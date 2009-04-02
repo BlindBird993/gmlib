@@ -371,8 +371,11 @@ namespace GMlib {
     void                      rotateXY(Angle a, int x=0, int y=1);
     void                      rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
     void                      rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p);
+    void                      rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
+    void                      rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p);
     Matrix<T,n+1,n+1>&        setTranspose(const Matrix<T,n+1,n+1>& v);
     void                      translate(const Vector<T,n> d);
+    void                      translateGlobal(const Vector<T,n> d);
 
 
     Matrix<T,n+1,n+1>&        operator=(const Matrix<T,n+1,n+1>& v);

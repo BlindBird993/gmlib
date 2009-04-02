@@ -215,6 +215,32 @@ namespace GMlib {
   }
 
 
+  /*! void HqMatrix<T, n>::rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v)
+   *  \brief Add a rotation to this matrix: (*this) = SqMatrix<T,n>(a,u,v)* (*this)
+   *
+   *  Add a rotation to this matrix: (*this) = SqMatrix<T,n>(a,u,v)* (*this)
+   */
+  template <typename T, int n>
+  inline
+  void HqMatrix<T, n>::rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
+    HqMatrix<T,n> x(a,u,v);
+    reverseMult( x );
+  }
+
+
+  /*! HqMatrix<T, n>::rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p)
+   *  \brief Add a rotation to this matrix: (*this) = SqMatrix<T,n>(a,u,v)* (*this)
+   *
+   *  Add a rotation to this matrix: (*this) = SqMatrix<T,n>(a,u,v)* (*this)
+   */
+  template <typename T, int n>
+  inline
+  void HqMatrix<T, n>::rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p){
+    HqMatrix<T,n> x(a,u,v,p);
+    reverseMult( x );
+  }
+
+
   /*! void HqMatrix<T, n>::translate(const Vector<T,n> d)
    *  \brief Add a rotation to this matrix: (*this) = SqMatrix<T,n>(a,u,v)* (*this)
    *
@@ -224,30 +250,22 @@ namespace GMlib {
   inline
   void HqMatrix<T, n>::translate(const Vector<T,n> d) {
 
-    cout << "Translates:" << endl;
     HqMatrix<T,n> m(d);
-    cout << "Matrix:" << endl;
-    T *matptr = (*this).getPtr();
-    for( int i = 0; i < 4; i++ ) {
-      for( int j = 0; j < 4; j++ )
-        cout << " " << (*matptr++);
-      cout << endl;
-    }
-    cout << "Translation matrix:" << endl;
-    T *ptr = m.getPtr();
-    for( int i = 0; i < 4; i++ ) {
-      for( int j = 0; j < 4; j++ )
-        cout << " " << (*ptr++);
-      cout << endl;
-    }
     (*this) = (*this)*m;
-    cout << "Matrix after trans:" << endl;
-    matptr = (*this).getPtr();
-    for( int i = 0; i < 4; i++ ) {
-      for( int j = 0; j < 4; j++ )
-        cout << " " << (*matptr++);
-      cout << endl;
-    }
+  }
+
+
+  /*! void HqMatrix<T, n>::translateGlobal(const Vector<T,n> d)
+   *  \brief Add a rotation to this matrix: (*this) = SqMatrix<T,n>(a,u,v)* (*this)
+   *
+   *  Add a rotation to this matrix: (*this) = SqMatrix<T,n>(a,u,v)* (*this)
+   */
+  template <typename T, int n>
+  inline
+  void HqMatrix<T, n>::translateGlobal(const Vector<T,n> d) {
+
+    HqMatrix<T,n> m(d);
+    reverseMult( m );
   }
 
 

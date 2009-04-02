@@ -5,6 +5,11 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-04-02 Jostein Bratlie
+        * gmMatrix
+          - Added rotate/translate Global functionality to the HqMatrix'
+
+
 2009-04-01 Jostein Bratlie
 
         * gmStaticProc2
