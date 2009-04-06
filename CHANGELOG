@@ -4,8 +4,19 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-04-05 Jostein Bratlie
+
+        * gmMatrix - HqMatrix
+          - Fixed the operator * ( Sphere )
+            The operator now also updates the radius of the sphere.
+        * GLMatrix -> HqMatrix
+          - Replaced the GLMatrix in mosed of the code.
+          - Only the basis change functions in Camera and Display Object still uses the GLMatrix.
+          - Plus a couple of rendering specific functions uses the GLMatrix.
+
 
 2009-04-02 Jostein Bratlie
+
         * gmMatrix
           - Added rotate/translate Global functionality to the HqMatrix'
 

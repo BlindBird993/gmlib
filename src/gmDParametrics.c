@@ -146,7 +146,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  GLMatrix& DParametrics<T,n>::getMatrix() {
+  HqMatrix<float,3>& DParametrics<T,n>::getMatrix() {
 
     return _ref->getMatrix();
   }

@@ -51,7 +51,7 @@ namespace GMlib {
    */
   inline
   Frustum::Frustum(
-        const GLMatrix& m,
+        const HqMatrix<float,3>& m,
         const Point<float,3>& p,
         const Vector<float,3>& d,
         const Vector<float,3>& u,
@@ -73,7 +73,7 @@ namespace GMlib {
    */
   inline
   Frustum::Frustum(
-    const GLMatrix& m,
+    const HqMatrix<float,3>& m,
     const Point<float,3>& p,
     float width,
     float ratio,
@@ -107,7 +107,7 @@ namespace GMlib {
    */
   inline
   void Frustum::set(
-    const GLMatrix& m,
+    const HqMatrix<float,3>& m,
     const Point<float,3>& po,
     const Vector<float,3>& d,
     const Vector<float,3>& u,
@@ -145,7 +145,7 @@ namespace GMlib {
    */
   inline
   void Frustum::set(
-    const GLMatrix& m,
+    const HqMatrix<float,3>& m,
     const Point<float,3>& po,
     float w,
     float r,

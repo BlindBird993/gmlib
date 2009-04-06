@@ -117,7 +117,7 @@ namespace GMlib{
     Array<SceneObject*>	  _disp_objs;
 
     Array<Light*>			    _lights;
-    Array<GLMatrix>		    _matrix_stack;
+    Array<HqMatrix<float,3> >		    _matrix_stack;
 
     GMTimer			          _timer;
     bool		              _timer_active;

@@ -182,7 +182,7 @@ namespace GMlib {
 
     glPushMatrix();
     // _present.inverse2().mult();
-    _present.mult();
+    glMultMatrix(_present);
     glLightPos(_pos);
     glPopMatrix();
   }

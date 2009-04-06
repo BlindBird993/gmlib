@@ -205,19 +205,25 @@ namespace GMlib {
    */
   double Camera::getDistanceToObject(SceneObject* obj) {
 
-    if(obj)	return (_matrix*_matrix_scene_inv*obj->getCenterPos()).getLength();
-    else	return 0.0;
+    if(obj)
+      return(_matrix*_matrix_scene_inv*obj->getCenterPos()).getLength();
+    else
+      return 0.0;
   }
 
 
-  /*! GL_Matrix& Camera::getMatrix()
+  /*! HqMatrix<float,3>& Camera::getMatrix()
    *	\brief Pending Documentation
    *
    *	Pending Documentation
    */
-  GLMatrix& Camera::getMatrix() {
+  HqMatrix<float,3>& Camera::getMatrix() {
 
-    return _matrix.getInverseOrtho();
+    /*! \todo fix how the matrix is returned */
+    static HqMatrix<float,3> retmat;
+    retmat = _matrix;
+    retmat.invertOrthoNormal();
+    return retmat;
   }
 
 
@@ -318,7 +324,8 @@ namespace GMlib {
       glGetBooleanv(GL_LIGHTING,&lg);
       if(lg) glDisable(GL_LIGHTING);
       glPushMatrix();
-      glTranslate(_present.getInverseOrtho()*_lock_pos);
+      HqMatrix<float,3> invmat = _present; _present.invertOrthoNormal();
+      glTranslate(invmat*_lock_pos);
       GLColor(GMcolor::Green).glSet();
       glCallList(_display_list+8);
       glPopMatrix();
@@ -396,8 +403,12 @@ namespace GMlib {
 
     float hh = -1.5*_near_plane*_angle_tan;
     Point3D<float> cp(_ratio*hh, hh, -_near_plane-1.0);
-    cp*=_matrix_scene;
-    cp*= getMatrix();
+
+
+    /*! \todo check if this is correct and fix if not */
+    cp = _matrix_scene * cp;
+    cp = getMatrix() * cp;
+
   //	GLboolean lg;
   //	glGetBooleanv(GL_LIGHTING,&lg);
   //	if(lg) glDisable(GL_LIGHTING);
@@ -621,8 +632,8 @@ namespace GMlib {
     setPerspective();
     glViewport(_x,_y,_w,_h);
     glPushMatrix();
-      _matrix.mult();
-      _matrix_scene_inv.mult();
+      glMultMatrix(_matrix);
+      glMultMatrix(_matrix_scene_inv);
       _scene->_culling(_frustum);
       _scene->_select(type_id);
     glPopMatrix();

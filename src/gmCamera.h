@@ -159,7 +159,7 @@ namespace GMlib {
 		// *****************
 		// Virtual functions
 		// from SceneObject
-		GLMatrix&								getMatrix();
+		HqMatrix<float,3>&			getMatrix();
 		void										localDisplay();
 		void										localSelect();
 

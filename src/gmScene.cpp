@@ -49,7 +49,7 @@ namespace GMlib {
     _timer_active   = true;
     _timer_time_scale    = 1;
     _timer_time_elapsed  = 0;
-    _matrix_stack    += GLMatrix();
+    _matrix_stack    += HqMatrix<float,3>();
   }
 
 
@@ -63,7 +63,7 @@ namespace GMlib {
     _timer_active = true;
     _timer_time_scale = 1;
     _timer_time_elapsed  = 0;
-    _matrix_stack += GLMatrix();
+    _matrix_stack += HqMatrix<float,3>();
   }
 
 

@@ -146,7 +146,7 @@ namespace GMlib {
   void SpotLight::lighting() {
 
     glPushMatrix();
-      _present.mult();
+      glMultMatrix(_present);
       glLightPos(_pos);
       glLightDir(_dir);
     glPopMatrix();

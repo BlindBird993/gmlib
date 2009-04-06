@@ -637,7 +637,7 @@ namespace GMlib {
   template <typename T, int n>
   class Sphere : public ScalarPoint<T, n> {
   public:
-    Sphere();
+    Sphere( bool sphere = false );
     Sphere( const Point<T, n>& p, T v = T(0) );
     Sphere( const ScalarPoint<T, n>& s );
     Sphere( const Sphere<T, n>& s );

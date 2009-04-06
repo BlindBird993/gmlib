@@ -273,9 +273,15 @@ namespace GMlib {
    *  Pending Documentation
    */
   void DisplayObject::roll(Angle a) {
-    GLMatrix m(a,_dir);
-    _up   *= m;
-    _side *= m;
+
+    Vector3D<float> ra = _dir;
+    Vector3D<float> lu = ra.getLinIndVec();
+    Vector<float,3> u = lu ^ ra;
+    Vector<float,3> v = ra ^ u;
+
+    HqMatrix<float,3> m( a, u, v );
+    _up   = m * _up;
+    _side = m * _side;
     basisChange(_side, _up, _dir, _pos);
   }
 
@@ -312,9 +318,14 @@ namespace GMlib {
 
     if(!_locked) {
 
-      GLMatrix m( a, _side );
-      _up   *= m;
-      _dir  *= m;
+      Vector3D<float> ra = _side;
+      Vector3D<float> lu = ra.getLinIndVec();
+      Vector<float,3> u = lu ^ ra;
+      Vector<float,3> v = ra ^ u;
+
+      HqMatrix<float,3> m( a, u, v );
+      _up   = m * _up;
+      _dir  = m * _dir;
       basisChange(_side, _up, _dir, _pos);
     }
   }
@@ -329,9 +340,14 @@ namespace GMlib {
 
     if(!_locked) {
 
-      GLMatrix m(a,_up);
-      _dir  *= m;
-      _side *= m;
+      Vector3D<float> ra = _up;
+      Vector3D<float> lu = ra.getLinIndVec();
+      Vector<float,3> u = lu ^ ra;
+      Vector<float,3> v = ra ^ u;
+
+      HqMatrix<float,3> m( a, u, v );
+      _dir  = m * _dir;
+      _side = m * _side;
       basisChange(_side, _up, _dir, _pos);
     }
   }
@@ -377,10 +393,15 @@ namespace GMlib {
     }
     else
     {
-      GLMatrix m( a,rot_axel );
-      _up   *= m;
-      _dir  *= m;
-      _side *= m;
+      Vector3D<float> ra = rot_axel;
+      Vector3D<float> lu = ra.getLinIndVec();
+      Vector<float,3> u = lu ^ ra;
+      Vector<float,3> v = ra ^ u;
+
+      HqMatrix<float,3> m( a, u, v );
+      _up   = m * _up;
+      _dir  = m * _dir;
+      _side = m * _side;
     }
     basisChange(_side, _up, _dir, _pos);
   }
@@ -395,11 +416,16 @@ namespace GMlib {
    */
   void DisplayObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
 
-    GLMatrix m(a,p,d);
-    _pos  *= m;
-    _up   *= m;
-    _dir  *= m;
-    _side *= m;
+    Vector3D<float> ra = d;
+    Vector3D<float> lu = ra.getLinIndVec();
+    Vector<float,3> u = lu ^ ra;
+    Vector<float,3> v = ra ^ u;
+
+    HqMatrix<float,3> m( a, u, v, p );
+    _pos  = m * _pos;
+    _up   = m * _up;
+    _dir  = m * _dir;
+    _side = m * _side;
 
     if(_locked)
     {
@@ -463,16 +489,18 @@ namespace GMlib {
   }
 
 
-  /*! void DisplayObject::_prepareDisplay(const GLMatrix& m)
+  /*! void DisplayObject::_prepareDisplay(const HqMatrix<float,3>& m)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    *  Virtual SceneObject function
    */
-  void DisplayObject::_prepareDisplay(const GLMatrix& m) {
+  void DisplayObject::_prepareDisplay( const HqMatrix<float,3>& m ) {
 
+    /*! \todo fix the way the matrix is handled */
     _matrix_scene = m;
-    _matrix_scene_inv = m.getInverseOrtho();
+    _matrix_scene_inv = m;
+    _matrix_scene_inv.invertOrthoNormal();
   }
 
 

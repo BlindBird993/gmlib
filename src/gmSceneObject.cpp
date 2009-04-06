@@ -53,13 +53,20 @@ namespace GMlib {
   SceneObject::SceneObject (
     const Vector<float,3>& trans_vector,
     const Point<float,3>&  scale,
-    const Vector<float,3>& rot_axel,
+    const Vector<float,3>& ra,
     Angle a
   ) :_scale(scale) {
 
     _parent = 0;
     _matrix.translate(trans_vector);
-    _matrix.rotate(a,rot_axel);
+
+
+
+    Vector<float,3> lu = ra.getLinIndVec();
+    Vector<float,3> u = Vector3D<float>( lu[0], lu[1], lu[2] ) ^ ra;
+    Vector<float,3> v = Vector3D<float>( u[0], u[1], u[2] ) ^ ra;
+    _matrix.rotateGlobal(a, u, v);
+
     _name	= _free_name++;
     _active	= false;
     _local_cs = true;
@@ -184,9 +191,12 @@ namespace GMlib {
    *  Pending Documentation
    *  ** In local coordinates.**
    */
-  void SceneObject::rotate(Angle a, const Vector<float,3>& rot_axel) {
+  void SceneObject::rotate(Angle a, const Vector<float,3>& ra) {
 
-    _matrix.rotate(a,rot_axel);
+    Vector<float,3> lu = ra.getLinIndVec();
+    Vector<float,3> u = Vector3D<float>( lu[0], lu[1], lu[2] ) ^ ra;
+    Vector<float,3> v = Vector3D<float>( u[0], u[1], u[2] ) ^ ra;
+    _matrix.rotateGlobal(a, u, v);
   }
 
 
@@ -198,7 +208,10 @@ namespace GMlib {
    */
   void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
 
-    _matrix.rotate(a,p,d);
+    Vector<float,3> lu = d.getLinIndVec();
+    Vector<float,3> u = Vector3D<float>( lu[0], lu[1], lu[2] ) ^ d;
+    Vector<float,3> v = Vector3D<float>( u[0], u[1], u[2] ) ^ d;
+    _matrix.rotateGlobal(a, u, v, p);
   }
 
 
@@ -208,9 +221,12 @@ namespace GMlib {
    *  Pending Documentation
    *  ** In Scene Coordinates **
    */
-  void SceneObject::rotateGlobal(Angle a, const Vector<float,3>& rot_axel) {
+  void SceneObject::rotateGlobal(Angle a, const Vector<float,3>& ra) {
 
-    _matrix.rotateGlobal(a,rot_axel);
+    Vector<float,3> lu = ra.getLinIndVec();
+    Vector<float,3> u = Vector3D<float>( lu[0], lu[1], lu[2] ) ^ ra;
+    Vector<float,3> v = Vector3D<float>( u[0], u[1], u[2] ) ^ ra;
+    _matrix.rotateGlobal(a, u, v);
   }
 
 
@@ -222,7 +238,10 @@ namespace GMlib {
    */
   void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
 
-    _matrix.rotateGlobal(a,p,d);
+    Vector<float,3> lu = d.getLinIndVec();
+    Vector<float,3> u = Vector3D<float>( lu[0], lu[1], lu[2] ) ^ d;
+    Vector<float,3> v = Vector3D<float>( u[0], u[1], u[2] ) ^ d;
+    _matrix.rotateGlobal(a, u, v, p);
   }
 
 
@@ -350,12 +369,13 @@ namespace GMlib {
   void SceneObject::localSimulate(double dt) {}
 
 
-  /*! GLMatrix& SceneObject::getMatrix()
+  /*! HqMatrix<flaot,3>& SceneObject::getMatrix()
    *  \brief Pending Documentation
    *
    *  Made specially for Cameras
    */
-  GLMatrix& SceneObject::getMatrix()	{
+  HqMatrix<float,3>& SceneObject::getMatrix()	{
+
     return _matrix;
   }
 
@@ -365,7 +385,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  const	GLMatrix& SceneObject::getMatrixParentGlobal() const {
+  const	HqMatrix<float,3>& SceneObject::getMatrixParentGlobal() const {
 
     return _parent->getMatrixGlobal();
   }
@@ -418,12 +438,12 @@ namespace GMlib {
   }
 
 
-  /*! int SceneObject::_prepare(Array<Light*>& obj, Array<GLMatrix>& mat, Scene* s, SceneObject* mother=0)
+  /*! int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother=0)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  int SceneObject::_prepare(Array<Light*>& obj, Array<GLMatrix>& mat, Scene* s, SceneObject* parent) {
+  int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
 
     int nr = 1;
     _scene  = s;
@@ -434,7 +454,7 @@ namespace GMlib {
 
     mat.push();
     _prepareDisplay(mat.back());
-    mat.back() *= getMatrix();
+    mat.back() = mat.back() * getMatrix();
     _present = mat.back();
     _global_total_sphere = _global_sphere = _present*_sphere;
     if(_scale.isActive())
@@ -454,12 +474,12 @@ namespace GMlib {
   }
 
 
-  /*! void SceneObject::_prepareDisplay(const GLMatrix& m)
+  /*! void SceneObject::_prepareDisplay(const HqMatrix<float,3>& m)
    *  \brief Pending Documentation
    *
    *  Made specially for DisplayObject's
    */
-  void SceneObject::_prepareDisplay(const GLMatrix& m) {}
+  void SceneObject::_prepareDisplay(const HqMatrix<float,3>& m) {}
 
 
   /*! void SceneObject::_simulate( double dt )

@@ -141,9 +141,9 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  const GLMatrix& SceneObject::getMatrixGlobal() const {
+  const HqMatrix<float,3>& SceneObject::getMatrixGlobal() const {
 
-    return  _present;
+    return _present;
   }
 
 
@@ -351,7 +351,8 @@ namespace GMlib {
       }
     */
       glPushMatrix();
-        if(_local_cs) _present.mult();
+        if(_local_cs)
+          glMultMatrix(_present);
         _scale.glScaling();
 
 
@@ -395,7 +396,7 @@ namespace GMlib {
       glPushMatrix(); {
 
         if( _local_cs )
-          _present.mult();
+          glMultMatrix( _present );
 
         _scale.glScaling();
         GLColor name(getName());

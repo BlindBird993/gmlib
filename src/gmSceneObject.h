@@ -122,15 +122,15 @@ namespace GMlib{
     virtual void                enableChildren( bool enable = true );
     SceneObject*		            find(unsigned int name);
     bool                        flipSelected();
-    Point<float,3>	          getCenterPos() const;
+    Point<float,3>	            getCenterPos() const;
     Array<SceneObject*>&        getChildren();
     virtual std::string         getIdentity() const;
-    const GLMatrix&	            getMatrixGlobal() const;
-    unsigned int	                    getName() const;
+    const HqMatrix<float,3>&	  getMatrixGlobal() const;
+    unsigned int	              getName() const;
     SceneObject*                getParent();
     bool                        getSelected();
-    Sphere<float,3>	          getSurroundingSphere() const;
-    Sphere<float,3>     	    getSurroundingSphereClean() const;
+    Sphere<float,3>	            getSurroundingSphere() const;
+    Sphere<float,3>     	      getSurroundingSphereClean() const;
     int                         getTypeId();
     void                        insert(SceneObject* obj);
     bool                        isCollapsed() const;
@@ -163,13 +163,13 @@ namespace GMlib{
     Array<SceneObject*>	        _children;
     Scene*					            _scene;		//! Den aktuelle scenen til displayhierarkiet
     SceneObject*			          _parent;	//! the mother in the hierarchy (tree). moved here from private
-    GLMatrix				            _matrix;	//! The difference matrix from mother to this.
-    GLMatrix				            _present;	//! The difference matrix from global to this.
+    HqMatrix<float,3>				    _matrix;	//! The difference matrix from mother to this.
+    HqMatrix<float,3>        		_present;	//! The difference matrix from global to this.
     ScaleObj				            _scale;		//! The scaling for this and the children.
     bool					              _local_cs;	//! Using local coordinate system, default is true
     bool					              _active;		//! This variable is only for camera.
-    Sphere<float,3>		        _global_sphere;			//! for this object
-    Sphere<float,3>		        _global_total_sphere;	//! included all children
+    Sphere<float,3>		          _global_sphere;			//! for this object
+    Sphere<float,3>		          _global_total_sphere;	//! included all children
     float					              _ir;					//! Size of cube (collapsed object)
     GLColor				              _default;
     GLColor				              _marked;
@@ -182,8 +182,8 @@ namespace GMlib{
     virtual void                localDisplay();
     virtual void                localSelect();
     virtual void                localSimulate(double dt);
-    virtual GLMatrix&           getMatrix();
-    const	GLMatrix&             getMatrixParentGlobal() const;
+    virtual HqMatrix<float,3>&  getMatrix();
+    const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
     void	                      reset();
     void	                      setSurroundingSphere( const Sphere<float,3>& b );
     void                        updateSurroundingSphere( const Point<float,3>& p );
@@ -199,8 +199,8 @@ namespace GMlib{
 
     void	                      _display();
     void                        _fillObj( Array<SceneObject*>& );
-    int		                      _prepare(Array<Light*>& obj, Array<GLMatrix>& mat, Scene* s, SceneObject* mother = 0);
-    virtual void                _prepareDisplay(const GLMatrix& m);
+    int		                      _prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
+    virtual void                _prepareDisplay(const HqMatrix<float,3>& m);
     void	                      _select(int what = -1);
 
 

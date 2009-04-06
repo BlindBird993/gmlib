@@ -150,7 +150,27 @@ namespace GMlib {
   inline
   void DisplayObject::basisChange( const Vector<float,3>& x, const Vector<float,3>& y, const Vector<float,3>& z, const Vector<float,3>& p ) {
 
-    _matrix.basisChange(z,x,y,p);
+    GLMatrix glmat = _matrix.getTransposed().getPtr();
+    glmat.basisChange( z,x,y,p );
+    for( int i = 0; i < 4; i++ )
+      for( int j = 0; j < 4; j++ )
+        _matrix[i][j] = glmat.get(j,i);
+
+
+//    HqMatrix<float,3> mat;
+//    for( int i = 0; i < 3; i++ ) {
+//      mat[i][0] = z(i);
+//      mat[i][1] = x(i);
+//      mat[i][2] = 0;y(i);
+//      mat[i][3] = p(i);
+//    }
+//    mat[3][0] = 0;
+//    mat[3][1] = 0;
+//    mat[3][2] = 0;
+//    mat[3][3] = 1;
+//
+//    _matrix.basisChange( mat );
+//    _matrix.basisChange(z,x,y,p);
   }
 
 

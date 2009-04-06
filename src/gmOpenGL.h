@@ -87,6 +87,8 @@ using namespace std;
 #include "gmPoint3D.h"
 #include "gmStream.h"
 
+#include "gmMatrix.h"
+
 
 namespace GMlib {
 
@@ -317,7 +319,7 @@ namespace GMlib {
   public:
     Frustum();													          // Default constructor
     Frustum(
-      const GLMatrix& m,								// Standar perspective constructor
+      const HqMatrix<float,3>& m,								// Standar perspective constructor
       const Point<float,3>& p,
       const Vector<float,3>& d,
       const Vector<float,3>& u,
@@ -328,7 +330,7 @@ namespace GMlib {
       float farplane);
 
     Frustum(
-      const GLMatrix& m,								// Iso constructor constructor
+      const HqMatrix<float,3>& m,								// Iso constructor constructor
       const Point<float,3>& p,
       float width,
       float ratio,
@@ -341,7 +343,7 @@ namespace GMlib {
     Frustum(const Frustum&  v);
 
     void              set(
-                        const GLMatrix& m,			// Perspective
+                        const HqMatrix<float,3>& m,			// Perspective
                         const Point<float,3>& p,
                         const Vector<float,3>& d,
                         const Vector<float,3>& u,
@@ -352,7 +354,7 @@ namespace GMlib {
                         float farplane);
 
     void              set(
-                        const GLMatrix& m,			// Iso
+                        const HqMatrix<float,3>& m,			// Iso
                         const Point<float,3>& p,
                         float width,
                         float ratio,

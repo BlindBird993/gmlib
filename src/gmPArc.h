@@ -68,7 +68,7 @@ namespace GMlib {
     T         _start;   // Start
     T         _end;     // End
 
-    GLMatrix  _matrix;  // Temporary a GLMatrix
+    HqMatrix<float,3>  _matrix;
 
 
     void	    eval(T t, int d, bool l);

@@ -307,7 +307,11 @@ namespace GMlib {
 
     T a11, a12, a21, a22, b1, b2;
     T du, dv, det;
-    Point<T,3> p = this->_present.getInverse() * q;  // Egentlig _present
+
+    /*! \todo fix matrix */
+    HqMatrix<float,3> invmat = this->_present;
+    invmat.invertOrthoNormal();
+    Point<T,3> p = invmat * q;  // Egentlig _present
 
 
     for(int i = 0; i < 20; i++ ) {

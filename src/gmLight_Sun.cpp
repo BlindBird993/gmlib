@@ -81,7 +81,7 @@ namespace GMlib {
   void Sun::lighting() {
 
     glPushMatrix();
-      _present.mult();
+      glMultMatrix(_present);
       glLightSun(_dir);
     glPopMatrix();
   }

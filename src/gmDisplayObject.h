@@ -122,8 +122,8 @@ namespace GMlib {
 
   protected:
     // Matrices from Scene to this
-    GLMatrix				          _matrix_scene;
-    GLMatrix				          _matrix_scene_inv;
+    HqMatrix<float,3>				  _matrix_scene;
+    HqMatrix<float,3>				  _matrix_scene_inv;
 
     Point3D<float>		        _pos;
     UnitVector3D<float>	      _dir;
@@ -147,7 +147,7 @@ namespace GMlib {
     // *****************
     // Virtual functions
     // from SceneObject
-    void			                _prepareDisplay(const GLMatrix& m);
+    void			                _prepareDisplay(const HqMatrix<float,3>& m);
     void			                localSimulate(double dt);
 
 

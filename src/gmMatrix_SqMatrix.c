@@ -117,8 +117,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  SqMatrix<T, n>::SqMatrix(const T* m, bool trans): Matrix<T,n,n>(m,trans) {
-  }
+  SqMatrix<T, n>::SqMatrix(const T* m, bool trans): Matrix<T,n,n>(m,trans) {}
 
 
   /*! SqMatrix<T, n>::SqMatrix(Angle a, int x = 0, int y=1)

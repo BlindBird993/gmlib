@@ -360,8 +360,20 @@ namespace GMlib {
   inline
   Sphere<T,n>		HqMatrix<T, n>::operator*(const Sphere<T,n>& s)		const{
 
-    Sphere<T,n> r;
-    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), this->getPtr(), s.getPos());
+    Sphere<T,n> r( s.isValid() );
+
+    if( s.isValid()) {
+
+      GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), this->getPtr(), s.getPos());
+
+      Vector<T,n> v;
+      v[0]= s.getRadius();
+      for( int i = 1; i < n; i++ )
+        v[i] = T(0);
+      v = (*this) * v;
+      r.resetRadius( v.getLength() );
+    }
+
     return r;
   }
 

@@ -118,7 +118,7 @@ namespace GMlib {
     DMatrix< Arrow<float,3> >           _vertices_n2;		// Vertex-arrays for dynamic display
 
 
-    GLMatrix&                             getMatrix();
+    HqMatrix<float,3>&                  getMatrix();
 
 
   private:

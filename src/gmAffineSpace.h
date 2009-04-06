@@ -39,7 +39,6 @@
 // GMlib
 #include "gmOpenGL.h"
 #include "gmMatrix.h"
-//#include "gmOpenGL.h" // Needs to be swapped with the include for the HqMatrix.
 
 namespace GMlib {
 
@@ -52,7 +51,7 @@ namespace GMlib {
 
     Vector<T,n>	          getDir();
     virtual std::string   getIdentity() const;
-    GLMatrix&             getMatrix();
+    HqMatrix<float,3>&    getMatrix();
     Point<T,n>	          getPos();
     Vector<T,n>	          getSide();
     Vector<T,n>	          getUp();
@@ -69,7 +68,6 @@ namespace GMlib {
 
   protected:
     HqMatrix<T,n>         _matrix;
-    GLMatrix              _matrix_old;            // Needs to be swaped with HqMatrix
 
     Point<T,n>		        _pos;
     UnitVector<T,n>       _dir;

@@ -36,8 +36,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Sphere<T, n>::Sphere() : ScalarPoint<T,n>() {
-    _valid = false;
+  Sphere<T, n>::Sphere( bool valid ) : ScalarPoint<T,n>() {
+    _valid = valid;
   }
 
   template <typename T, int n>
