@@ -33,10 +33,23 @@
 namespace GMlib {
 
 
+
+//  template <typename T>
+//  inline
+//  DPCircle<T>::DPCircle( T radius ) : DCurve<T>( new PCircle<T, 3>( radius ) ) {
+//
+//    _r = radius;
+//    this->_dm = GM_DERIVATION_EXPLICIT;
+//    init();
+//  }
+
+
   template <typename T>
   inline
-  DPCircle<T>::DPCircle( T radius ) : DCurve<T>( new PCircle<T, 3>( radius ) ) {
+  DPCircle<T>::DPCircle( T radius ) {
 
+    _r = radius;
+    this->_dm = GM_DERIVATION_EXPLICIT;
     init();
   }
 
@@ -49,20 +62,20 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  DPCircle<T>::DPCircle( const PCircle<T,3>& copy ) : DCurve<T>(copy) {
-
-    init();
-  }
-
-
-  template <typename T>
-  inline
-  DPCircle<T>::DPCircle( PCircle<T,3>* copy ) : DCurve<T>(copy) {
-
-    _l_ref = copy;
-  }
+//  template <typename T>
+//  inline
+//  DPCircle<T>::DPCircle( const PCircle<T,3>& copy ) : DCurve<T>(copy) {
+//
+//    init();
+//  }
+//
+//
+//  template <typename T>
+//  inline
+//  DPCircle<T>::DPCircle( PCircle<T,3>* copy ) : DCurve<T>(copy) {
+//
+//    _l_ref = copy;
+//  }
 
 
   template <typename T>
@@ -77,18 +90,92 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  PCircle<T,3>* DPCircle<T>::getPCircle() {
-
-    return _l_ref;
-  }
+//  template <typename T>
+//  inline
+//  PCircle<T,3>* DPCircle<T>::getPCircle() {
+//
+//    return _l_ref;
+//  }
 
 
   template <typename T>
   void DPCircle<T>::init() {
 
-    _l_ref = dynamic_cast<PCircle<T,3>*>( this->_p_ref );
+//    _l_ref = dynamic_cast<PCircle<T,3>*>( this->_p_ref );
   }
 
+
+
+  //////////////////////// DPCircle !!!!!!!!!!!!!! DPCircle ////////////////////////
+  //////////////////////// DPCircle !!!!!!!!!!!!!! DPCircle ////////////////////////
+  //////////////////////// DPCircle !!!!!!!!!!!!!! DPCircle ////////////////////////
+
+
+  template <typename T>
+  inline
+  void DPCircle<T>::eval( T t, int d, bool l ) {
+
+    this->_p.setDim( d + 1 );
+
+    this->_p[0][0] = _r * cos( t );
+    this->_p[0][1] = _r * sin( t );
+    this->_p[0][2] = T(0);
+
+    if( this->_dm == GM_DERIVATION_EXPLICIT ) {
+
+      if( d > 0 ) {
+
+        this->_p[1][0] = - _r *  sin( t );
+        this->_p[1][1] =   _r *  cos( t );
+        this->_p[1][2] =   T(0);
+      }
+
+      if( d > 1 ) {
+
+        this->_p[2][0] = - _r *  cos( t );
+        this->_p[2][1] = - _r *  sin( t );
+        this->_p[2][2] =   T(0);
+      }
+    }
+  }
+
+
+  template <typename T>
+  inline
+  T DPCircle<T>::getEndP() {
+
+    return T( M_2PI );
+  }
+
+
+  template <typename T>
+  inline
+  T DPCircle<T>::getStartP() {
+
+    return T(0);
+  }
+
+
+  template <typename T>
+  inline
+  T DPCircle<T>::getRadius() {
+
+    return _r;
+  }
+
+
+  template <typename T>
+  inline
+  bool DPCircle<T>::isClosed() const {
+
+    return true;
+  }
+
+
+  template <typename T>
+  inline
+  void DPCircle<T>::setRadius( T radius ) {
+
+      _r = radius;
+  }
 }

@@ -444,31 +444,65 @@ namespace GMlib {
    *  Pending Documentation
    */
   int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
-
+//
+//    std::string identity = getIdentity();
+//    cout << "Preparing: " << identity << endl;
     int nr = 1;
     _scene  = s;
 
     _parent=parent;
+
+//    cout << "::parent:  " << ( _parent ? parent->getIdentity() : "non" ) << endl;
+
+//    HqMatrix<float,3> matrix = getMatrix();
+//    cout << "::matrix:" << endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      cout << "  ";
+//      for( int j = 0; j < 4; j++ )
+//        cout << matrix[i][j] << " ";
+//      cout << endl;
+//    }
+
     Light * pl  = dynamic_cast<Light *>(this);
     if(pl) obj += pl;
 
     mat.push();
+
+//    cout << "::mat.back() pre:" << endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      cout << "  ";
+//      for( int j = 0; j < 4; j++ )
+//        cout << mat.back()[i][j] << " ";
+//      cout << endl;
+//    }
+
     _prepareDisplay(mat.back());
     mat.back() = mat.back() * getMatrix();
+
+
+//    cout << "::mat.back() post:" << endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      cout << "  ";
+//      for( int j = 0; j < 4; j++ )
+//        cout << mat.back()[i][j] << " ";
+//      cout << endl;
+//    }
+
     _present = mat.back();
     _global_total_sphere = _global_sphere = _present*_sphere;
-    if(_scale.isActive())
-    {
+    if(_scale.isActive()) {
+
       _global_sphere *= _scale.getMax();
       _global_sphere %= _scale.getScale();
       _global_total_sphere *= _scale.getMax();
       _global_total_sphere %= _scale.getScale();
     }
-    for(int i=0; i< _children.getSize(); i++)
-    {
+    for( int i = 0; i < _children.getSize(); i++ ) {
+
       nr += _children[i]->_prepare(obj,mat,s,this);
       _global_total_sphere += _children[i]->getSurroundingSphere();
     }
+
     mat.pop();
     return nr;
   }

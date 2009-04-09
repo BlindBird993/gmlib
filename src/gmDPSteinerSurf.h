@@ -46,16 +46,36 @@ namespace GMlib {
   public:
     DPSteinerSurf( T radius = T(20) );
     DPSteinerSurf( const DPSteinerSurf<T>& dpss );
-    DPSteinerSurf( const PSteinerSurf<T,3>& dpss );
+//    DPSteinerSurf( const PSteinerSurf<T,3>& dpss );
     virtual ~DPSteinerSurf();
 
-    virtual PSteinerSurf<T,3>*    getPSteinerSurf();
+//    virtual PSteinerSurf<T,3>*    getPSteinerSurf();
 
   protected:
-    PSteinerSurf<T,3>             *_l_ref;
+//    PSteinerSurf<T,3>             *_l_ref;
 
     std::string                   getIdentity() const;
     virtual void                  init();
+
+
+  //////////////////////// PSteinerSurf !!!!!!!!!!!!!! PSteinerSurf ////////////////////////
+  //////////////////////// PSteinerSurf !!!!!!!!!!!!!! PSteinerSurf ////////////////////////
+  //////////////////////// PSteinerSurf !!!!!!!!!!!!!! PSteinerSurf ////////////////////////
+  //////////////////////// PSteinerSurf !!!!!!!!!!!!!! PSteinerSurf ////////////////////////
+
+    bool              isClosedU() const;
+    bool              isClosedV() const;
+
+
+  protected:
+    T                 _r;   //! Radius/Size
+
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    T                 getStartPU();
+    T                 getStartPV();
+
   };
 
 

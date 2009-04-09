@@ -56,33 +56,12 @@ namespace GMlib {
     const Vector<float,3>& p
   ) {
 
-    GLMatrix glmat = _matrix.getTransposed().getPtr();
+    static GLMatrix glmat;
+    glmat = _matrix.getTransposed().getPtr();
     glmat.basisChangeCam( x,y,z,p );
     for( int i = 0; i < 4; i++ )
       for( int j = 0; j < 4; j++ )
         _matrix[i][j] = glmat.get(j,i);
-
-//    Matrix<float,3+1,3+1> mat;
-//    for( int i = 0; i < 3; i++ ) {
-//      mat[0][i] = -x(i);
-//      mat[1][i] = y(i);
-//      mat[2][i] =-z(i);
-//      mat[3][i] = p(i);
-//    }
-//    mat[0][3] = x*p;
-//    mat[1][3] = -(y*p);
-//    mat[2][3] = z*p;
-//    mat[3][3] = 1;
-//
-//    _matrix.basisChange( mat );
-
-//    _matrix.basisChangeCam(x,y,z,p);
-//
-//
-//    _matrix[0] = -x(0);	_matrix[4] = -x(1);	_matrix[8] = -x(2);	_matrix[12] =  x*p;
-//    _matrix[1] =  y(0);	_matrix[5] =  y(1);	_matrix[9] =  y(2);	_matrix[13] =-(y*p);
-//    _matrix[2] = -z(0);	_matrix[6] = -z(1);	_matrix[10]= -z(2);	_matrix[14] =  z*p;
-//    _matrix[3] =   0.0;	_matrix[7] =   0.0;	_matrix[11]=   0.0;	_matrix[15] =  1.0;
   }
 
 

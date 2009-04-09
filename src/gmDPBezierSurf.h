@@ -49,33 +49,74 @@ namespace GMlib {
     DPBezierSurf( const DMatrix< Vector<T,3> >& cp );
     DPBezierSurf( const DMatrix< Vector<T,3> >& cp, T u_s, T u, T u_e, T v_s, T v, T v_e  );
     DPBezierSurf( const DPBezierSurf<T>& dpbs );
-    DPBezierSurf( const PBezierSurf<T,3>& pbs );
-    DPBezierSurf( PBezierSurf<T,3>* pbs );
+//    DPBezierSurf( const PBezierSurf<T,3>& pbs );
+//    DPBezierSurf( PBezierSurf<T,3>* pbs );
     virtual ~DPBezierSurf();
 
     virtual void                edit( int selector );
-    virtual PBezierSurf<T,3>*   getPBezierSurf();
+//    virtual PBezierSurf<T,3>*   getPBezierSurf();
     virtual void                hideSelectors();
-    void                        rotate( Angle a, const Vector<float,3>& rot_axel );
-    void                        rotate( Angle a, const Point<float,3>& p,const UnitVector<float,3>& d );
+    void                        rotate(Angle a, const Vector<float,3>& rot_axel);
+    void                        rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     void                        rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
     void                        rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
 
-    virtual void                setResampleMode( GM_RESAMPLE_MODE mode );
+//    virtual void                setResampleMode( GM_RESAMPLE_MODE mode );
     virtual void                showSelectors( bool grid = false, const GLColor& _selector_color = GMcolor::DarkBlue, const GLColor& grid_color = GMcolor::LightGreen );
-    void                        translate( const Vector<float,3>& trans_vector );
-    void                        translateGlobal( const Vector<float,3>& trans_vector );
+    void                        translate(const Vector<float,3>& trans_vector);
+    void                        translateGlobal(const Vector<float,3>& trans_vector);
 
   protected:
     bool                        _selectors;
     SelectorGrid<T,3>*			    _sg;
     DMatrix< Selector<T,3>* >   _s;
-    PBezierSurf<T,3>*           _l_ref;
+//    PBezierSurf<T,3>*           _l_ref;
 
     string                      getIdentity() const;
     virtual void                init();
     void                        localDisplay();
 
+
+
+  //////////////////////// PBezierSurf !!!!!!!!!!!!!! PBezierSurf ////////////////////////
+  //////////////////////// PBezierSurf !!!!!!!!!!!!!! PBezierSurf ////////////////////////
+  //////////////////////// PBezierSurf !!!!!!!!!!!!!! PBezierSurf ////////////////////////
+  //////////////////////// PBezierSurf !!!!!!!!!!!!!! PBezierSurf ////////////////////////
+
+  public:
+    DMatrix< Vector<T,3> >&   getControlPoints();
+    int                       getDegreeU() const;
+    int                       getDegreeV() const;
+    T                         getLocalMapping( T t, T ts, T tt, T te );
+    bool                      isClosedU() const;
+    bool                      isClosedV() const;
+    void                      setClosed( bool closed_u, bool closed_v );
+    void                      setControlPoints( const DMatrix< Vector<T,3> >& cp );
+    void                      setResampleMode( GM_RESAMPLE_MODE mode );
+    void                      setScale( T du, T dv );
+
+
+  protected:
+    DMatrix< Vector<T,3> >    _c;
+    T                         _su;
+    T                         _sv;
+    DMatrix< DMatrix< T > >   _u;
+    DMatrix< DMatrix< T > >   _v;
+    bool                      _cu;
+    bool                      _cv;
+
+    GM_RESAMPLE_MODE          _resamp_mode;
+    bool                      _pre_eval;
+
+    void	                    eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
+    T                         getEndPU();
+    T                         getEndPV();
+    T                         getStartPU();
+    T                         getStartPV();
+
+    void                      resample( DMatrix<DMatrix <Vector<T,3> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
+    void                      resampleInline( DMatrix< DMatrix< Vector<T,3> > >& p, int m1, int m2, T du, T dv );
+    void                      resamplePreEval( DMatrix< DMatrix< Vector<T,3> > >& p, int m1, int m2, T du, T dv );
   };
 
 

@@ -4,6 +4,15 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+2009-04-09 Jostein Bratlie
+
+        * Displayable Parametrics / Parametrics
+          - merged the parametrics tree into the displayable parametrics...
+          - nothing changed in the parametrics tree but it has temporarily been disabled awaiting chaining to the Scene.
+
+
 2009-04-05 Jostein Bratlie
 
         * gmMatrix - HqMatrix

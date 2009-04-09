@@ -44,30 +44,86 @@ namespace GMlib {
   template <typename T>
   class DPERBSSurf : public DSurf<T> {
   public:
-    DPERBSSurf( PSurf<T,3>* g, int no_locals_u, int no_locals_v, int d1, int d2 );
+    DPERBSSurf( DSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 );
     DPERBSSurf( const DPERBSSurf<T>& copy );
-    DPERBSSurf( const PERBSSurf<T,3>& copy );
-    DPERBSSurf( PERBSSurf<T,3>* copy );
+//    DPERBSSurf( const PERBSSurf<T,3>& copy );
+//    DPERBSSurf( PERBSSurf<T,3>* copy );
     virtual ~DPERBSSurf();
 
 
     void                      edit( SceneObject *obj );
     string                    getIdentity() const;
-    virtual PERBSSurf<T,3>*   getPERBSSurf();
+//    virtual PERBSSurf<T,3>*   getPERBSSurf();
     virtual void              hideLocalPatches();
     bool                      isLocalPatchesVisible() const;
     virtual void              showLocalPatches( bool collapsed = true );
 
   protected:
-    PERBSSurf<T,3>            *_l_ref;
-    DMatrix< DSurf<T>* >      _p;
-    bool                      _p_visible;
+//    PERBSSurf<T,3>            *_l_ref;
+//    DMatrix< DSurf<T>* >      _patches;
+//    bool                      _patches_visible;
 
     virtual void              init();
+    void                      insertPatch( DSurf<T> *patch );
     void                      localDisplay();
     virtual void              visualizeLocalPatch( PSurf<T,3>* p, int i, int j, int n, int m, bool collapsed );
     virtual void              visualizeLocalPatchInit( int i, int j, int n, int m, bool collapsed );
 
+
+
+  //////////////////////// PERBSSurf !!!!!!!!!!!!!! PERBSSurf ////////////////////////
+  //////////////////////// PERBSSurf !!!!!!!!!!!!!! PERBSSurf ////////////////////////
+  //////////////////////// PERBSSurf !!!!!!!!!!!!!! PERBSSurf ////////////////////////
+  //////////////////////// PERBSSurf !!!!!!!!!!!!!! PERBSSurf ////////////////////////
+
+  public:
+    void                      generateKnotVector( DSurf<T>* g );
+    DVector<T>&               getKnotsU();
+    DVector<T>&               getKnotsV();
+    DMatrix<DSurf<T>* >&      getLocalPatches();
+    bool                      isClosedU() const;
+    bool                      isClosedV() const;
+    void                      setResampleMode( GM_RESAMPLE_MODE mode );
+//    void                      setScale( T d );
+
+  protected:
+    bool                      _closed_u;
+    bool                      _closed_v;
+
+    EvaluatorERBS<T>          *_evaluator;
+
+
+    DMatrix< DVector<T> >     _Bu;
+    DMatrix< DVector<T> >     _Bv;
+    DVector< DVector<T> >     _Bc;
+    DMatrix< DMatrix< Vector<T,3> > >     _c0;
+    DMatrix< DMatrix< Vector<T,3> > >     _c1;
+
+
+
+    DMatrix< int >            _uk;
+    DMatrix< int >            _vk;
+    DVector<T>                _u;
+    DVector<T>                _v;
+//
+    GM_RESAMPLE_MODE          _resamp_mode;
+    bool                      _pre_eval;
+
+    DMatrix< DSurf<T>* >      _c;
+
+
+    void	                    eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
+    void                      generateKnotVector( DVector<T>& kv, const T s, const T d, int kvd, bool closed );
+    void                      getB( DVector<T>& B, const DVector<T>& kv, int tk, T t, int d );
+    DMatrix< Vector<T,3> >    getC( T u, T v, int uk, int vk, T du, T dv );
+    DMatrix< Vector<T,3> >    getCPre( T u, T v, int uk, int vk, T du, T dv, int i, int j );
+    T                         getEndPU();
+    T                         getEndPV();
+    T                         getStartPU();
+    T                         getStartPV();
+    void                      resample( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
+    void                      resampleInline( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, T du, T dv );
+    void                      resamplePreEval( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, T du, T dv );
   };
 
 

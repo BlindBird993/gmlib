@@ -46,19 +46,56 @@ namespace GMlib {
   public:
     DPArc( T speed, T curvature );
     DPArc( T speed, T curvature, T start, T end );
+    DPArc( DVector< Vector<T,3> >& p, T s, T t, T e );
     DPArc( const DPArc<T>& copy );
-    DPArc( const PArc<T,3>& copy );
-    DPArc( PArc<T,3>* copy );
+//    DPArc( const PArc<T,3>& copy );
+//    DPArc( PArc<T,3>* copy );
     virtual ~DPArc();
 
 
-    virtual PArc<T,3>*    getPArc();
+//    virtual PArc<T,3>*    getPArc();
 
   protected:
-    PArc<T,3>             *_l_ref;
+//    PArc<T,3>             *_l_ref;
 
     string                getIdentity() const;
     virtual void          init();
+
+
+
+
+
+  //////////////////////// PArc !!!!!!!!!!!!!! PArc ////////////////////////
+  //////////////////////// PArc !!!!!!!!!!!!!! PArc ////////////////////////
+  //////////////////////// PArc !!!!!!!!!!!!!! PArc ////////////////////////
+  //////////////////////// PArc !!!!!!!!!!!!!! PArc ////////////////////////
+
+
+  public:
+    T         getCurvature() const;
+    T         getLocalMapping( T t, T ts, T ti, T te );
+    T         getSpeed() const;
+    bool      isClosed() const;
+    void      setCurvature( T curvature );
+    void      setEnd( T end );
+    void      setSpeed( T speed );
+    void      setStart( T start );
+
+
+  protected:
+    T         _delta;   // Speed, but not speed
+    T         _s;       // Speed
+    T         _c;       // Curvature
+    T         _start;   // Start
+    T         _end;     // End
+
+    HqMatrix<float,3>  _matrix_arc;
+
+
+    void	    eval(T t, int d, bool l);
+    T         getCurvature( DVector< Vector<T,3> >& p );
+    T         getEndP();
+    T         getStartP();
   };
 
 

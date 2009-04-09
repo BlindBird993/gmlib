@@ -46,17 +46,61 @@ namespace GMlib {
   public:
     DPBSplineCurve( const DVector< Vector<T, 3> >& cv, int d  );
     DPBSplineCurve( const DPBSplineCurve<T>& dpbsc );
-    DPBSplineCurve( const PBSplineCurve<T,3>& pbsc );
-    DPBSplineCurve( PBSplineCurve<T,3>* pbsc );
+//    DPBSplineCurve( const PBSplineCurve<T,3>& pbsc );
+//    DPBSplineCurve( PBSplineCurve<T,3>* pbsc );
     virtual ~DPBSplineCurve();
 
-    virtual PBSplineCurve<T,3>*   getPBSplineCurve();
+//    virtual PBSplineCurve<T,3>*   getPBSplineCurve();
 
   protected:
-    PBSplineCurve<T,3>            *_l_ref;
+//    PBSplineCurve<T,3>            *_l_ref;
 
     string                        getIdentity() const;
     virtual void                  init();
+
+
+  //////////////////////// PBSplineCurve !!!!!!!!!!!!!! PBSplineCurve ////////////////////////
+  //////////////////////// PBSplineCurve !!!!!!!!!!!!!! PBSplineCurve ////////////////////////
+  //////////////////////// PBSplineCurve !!!!!!!!!!!!!! PBSplineCurve ////////////////////////
+  //////////////////////// PBSplineCurve !!!!!!!!!!!!!! PBSplineCurve ////////////////////////
+
+  public:
+    int                       getDegree() const;
+    void                      generateKnotVector();
+    bool                      isClosed() const;
+    void                      setControlPoints( const DVector< Vector<T,3> >& cv, bool gen_kv = true );
+    void                      setDegree( int d );
+    void                      setKnotVector( const DVector<T>& kv );
+    void                      setResampleMode( GM_RESAMPLE_MODE mode );
+    void                      setScale( T d );
+
+
+  protected:
+    DVector< Vector<T,3> >   _cp;
+    T                         _scale;
+
+    DVector< DMatrix< T > >   _bhps;
+    DVector< int >            _indices;
+    DVector<T>                _kv;
+    int                       _degree;
+
+    GM_RESAMPLE_MODE          _resamp_mode;
+    bool                      _pre_eval;
+
+
+    void	                    eval( T t, int d = 0, bool l = false );
+    void                      evalBernsteinHermite( DMatrix<T>& bp_mat, T t, int idx ) const;
+    T                         getEndP();
+    int                       getIndex( T t, int m ) const;
+    T                         getStartP();
+    T                         getW( T t, int idx, int d ) const;
+    T                         getWder( T t, int idx, int d ) const;
+    void                      resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
+    void                      resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
+    void                      resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
+
+
+
   };
 
 

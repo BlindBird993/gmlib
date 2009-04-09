@@ -46,8 +46,21 @@ namespace GMlib {
   inline
   DSurf<T>::DSurf() {
 
-    _p_ref = 0;
+//    _p_ref = 0;
     _init();
+
+
+
+
+    ////////////// PSURF ///////////////////
+
+    _d1                             = -1;
+    _d2                             = -1;
+    _tr_u                           = T(0);
+    _sc_u                           = T(1);
+    _tr_v                           = T(0);
+    _sc_v                           = T(1);
+    //_setSam( s1, s2 );
   }
 
 
@@ -55,30 +68,51 @@ namespace GMlib {
   inline
   DSurf<T>::DSurf( const DSurf<T>& copy ) : DParametrics<T,2>( copy ) {
 
-    _p_ref        = copy._p_ref;
+//    _p_ref        = copy._p_ref;
     _no_der_u     = copy._no_der_u;
     _no_der_v     = copy._no_der_v;
     _no_samp_u    = copy._no_samp_u;
     _no_samp_v    = copy._no_samp_v;
+
+
+
+
+    ////////////// PSURF ///////////////////
+
+    _p                              = copy._p;
+    _n                              = copy._n;
+    _u                              = copy._u;
+    _v                              = copy._v;
+    _d1                             = copy._d1;
+    _d2                             = copy._d2;
+    _tr_u                           = copy._tr_u;
+    _sc_u                           = copy._sc_u;
+    _tr_v                           = copy._tr_v;
+    _sc_v                           = copy._sc_v;
+    _sam_p_u                        = copy._sam_p_u;
+    _sam_p_v                        = copy._sam_p_v;
+    _sam1                           = copy._sam1;
+    _sam2                           = copy._sam2;
+    _default_d                      = copy._default_d;
   }
 
 
-  template <typename T>
-  inline
-  DSurf<T>::DSurf( const PSurf<T,3>& copy ) : DParametrics<T,2>( copy ), _p_ref(copy) {
-
-    _init();
-  }
-
-
-  template <typename T>
-  inline
-  DSurf<T>::DSurf( PSurf<T,3>* copy ) : DParametrics<T,2>( copy ) {
-
-    _p_ref = copy;
-
-    _init();
-  }
+//  template <typename T>
+//  inline
+//  DSurf<T>::DSurf( const PSurf<T,3>& copy ) : DParametrics<T,2>( copy ), _p_ref(copy) {
+//
+//    _init();
+//  }
+//
+//
+//  template <typename T>
+//  inline
+//  DSurf<T>::DSurf( PSurf<T,3>* copy ) : DParametrics<T,2>( copy ) {
+//
+//    _p_ref = copy;
+//
+//    _init();
+//  }
 
 
   template <typename T>
@@ -95,98 +129,68 @@ namespace GMlib {
 
   template <typename T>
   inline
-  DMatrix< Vector<T, 3> > DSurf<T>::evaluate( T u, T v, int d1, int d2 ) {
-
-    DMatrix<Vector<T,3> > q = _p_ref->evaluateLocal( u, v, d1, d2 );
-
-    DMatrix<Vector<T,3> > p( d1+1, d2+1 );
-
-    Vector<float,3> tmp;
-
-    for( int i = 0; i < p.getDim1(); i++ ) {
-      for( int j = 0; j < p.getDim2(); j++ ) {
-
-        if( i==0 && j==0 ) {
-          tmp = this->_present * (Point<float,3>)q[0][0].toFloat();
-          for( int k = 0; k < 3; k++ )
-            p[i][j][k] = tmp[k];
-        }
-        else {
-          tmp = this->_present * (Vector<float,3>)q[i][j].toFloat();
-
-          for( int k = 0; k < 3; k++ )
-            p[i][j][k] = tmp[k];
-        }
-      }
-    }
-    return p;
-  }
-
-
-  template <typename T>
-  inline
   void DSurf<T>::exportSTL( std::ofstream& stream, int m1, int m2, int d1, int d2 ) {
-
-    std::stringstream header;
-    header << "GMlib STL: " << this->getIdentity();
-
-    char hbuff[80]; for( int i = 0; i < 80; i++ ) hbuff[i] = ' ';
-    memcpy( hbuff, header.str().c_str(), header.str().length() );
-    stream.write( hbuff, 80 );
-
-    // Determine settings
-    if( m1 < 2 )
-      m1 = _p_ref->_sam1.getDim();
-
-    if( m2 < 2 )
-      m2 = _p_ref->_sam2.getDim();
-
-
-    // Evaluate Surface
-    DMatrix< DMatrix< Vector<T, 3> > > p;
-    _p_ref->resample(
-      p, m1, m2, d1, d2,
-      _p_ref->getStartPU(),
-      _p_ref->getStartPV(),
-      _p_ref->getEndPU(),
-      _p_ref->getEndPV()
-    );
-
-    // Create Triangulation
-    DMatrix< Vector<float,3> > tri;
-    tri.setDim( p.getDim1()-1, p.getDim2()*2 );
-    for( int i = 0; i < p.getDim1()-1; i++ ) {
-      for( int j = 0; j < p.getDim2(); j++ ) {
-
-        tri[i][ 2*j   ] = p[ i   ][j][0][0].toFloat();
-        tri[i][ 2*j+1 ] = p[ i+1 ][j][0][0].toFloat();
-      }
-    }
-
-    uint32_t facets = tri.getDim1() * (tri.getDim2() - 2);
-    stream.write( (char*)&facets, sizeof( uint32_t ) );
-
-
-
-    for( int i = 0; i < tri.getDim1(); i++ ) {
-      for( int j = 0; j < tri.getDim2() - 2; j++ ) {
 //
-//        float *ptr = tri(i)(j).getPtr();
-
-        // Normal
-        UnitVector<float,3> n = Vector3D<float>( tri(i)(j+1) - tri(i)(j) ) ^ Vector3D<float>( tri(i)(j+2) - tri(i)(j) );
-        if( j % 2 != 0 )
-          n *= -1;
-        stream.write( (char*)&n, 3*sizeof( uint32_t ) );
-
-        // Vertices
-        stream.write( (char*)tri(i)(j).getPtr(), 9 * sizeof( uint32_t ) );
-
-        // Attribute
-        uint16_t attrib = 0;
-        stream.write( (char*)&attrib, sizeof( uint16_t ) );
-      }
-    }
+//    std::stringstream header;
+//    header << "GMlib STL: " << this->getIdentity();
+//
+//    char hbuff[80]; for( int i = 0; i < 80; i++ ) hbuff[i] = ' ';
+//    memcpy( hbuff, header.str().c_str(), header.str().length() );
+//    stream.write( hbuff, 80 );
+//
+//    // Determine settings
+//    if( m1 < 2 )
+//      m1 = _p_ref->_sam1.getDim();
+//
+//    if( m2 < 2 )
+//      m2 = _p_ref->_sam2.getDim();
+//
+//
+//    // Evaluate Surface
+//    DMatrix< DMatrix< Vector<T, 3> > > p;
+//    _p_ref->resample(
+//      p, m1, m2, d1, d2,
+//      _p_ref->getStartPU(),
+//      _p_ref->getStartPV(),
+//      _p_ref->getEndPU(),
+//      _p_ref->getEndPV()
+//    );
+//
+//    // Create Triangulation
+//    DMatrix< Vector<float,3> > tri;
+//    tri.setDim( p.getDim1()-1, p.getDim2()*2 );
+//    for( int i = 0; i < p.getDim1()-1; i++ ) {
+//      for( int j = 0; j < p.getDim2(); j++ ) {
+//
+//        tri[i][ 2*j   ] = p[ i   ][j][0][0].toFloat();
+//        tri[i][ 2*j+1 ] = p[ i+1 ][j][0][0].toFloat();
+//      }
+//    }
+//
+//    uint32_t facets = tri.getDim1() * (tri.getDim2() - 2);
+//    stream.write( (char*)&facets, sizeof( uint32_t ) );
+//
+//
+//
+//    for( int i = 0; i < tri.getDim1(); i++ ) {
+//      for( int j = 0; j < tri.getDim2() - 2; j++ ) {
+////
+////        float *ptr = tri(i)(j).getPtr();
+//
+//        // Normal
+//        UnitVector<float,3> n = Vector3D<float>( tri(i)(j+1) - tri(i)(j) ) ^ Vector3D<float>( tri(i)(j+2) - tri(i)(j) );
+//        if( j % 2 != 0 )
+//          n *= -1;
+//        stream.write( (char*)&n, 3*sizeof( uint32_t ) );
+//
+//        // Vertices
+//        stream.write( (char*)tri(i)(j).getPtr(), 9 * sizeof( uint32_t ) );
+//
+//        // Attribute
+//        uint16_t attrib = 0;
+//        stream.write( (char*)&attrib, sizeof( uint16_t ) );
+//      }
+//    }
 
   }
 
@@ -194,70 +198,70 @@ namespace GMlib {
   template <typename T>
   inline
   void DSurf<T>::exportSTLascii( std::ofstream& stream, int m1, int m2, int d1, int d2 ) {
-
-    std::stringstream content;
-    content << "solid " << this->getIdentity() << endl;
-
-    // Determine settings
-    if( m1 < 2 )
-      m1 = _p_ref->_sam1.getDim();
-
-    if( m2 < 2 )
-      m2 = _p_ref->_sam2.getDim();
-
-
-    // Evaluate Surface
-    DMatrix< DMatrix< Vector<T, 3> > > p;
-    _p_ref->resample(
-      p, m1, m2, d1, d2,
-      _p_ref->getStartPU(),
-      _p_ref->getStartPV(),
-      _p_ref->getEndPU(),
-      _p_ref->getEndPV()
-    );
-
-    // Create Triangulation
-    DMatrix< Vector<float,3> > tri;
-    tri.setDim( p.getDim1()-1, p.getDim2()*2 );
-    for( int i = 0; i < p.getDim1()-1; i++ ) {
-      for( int j = 0; j < p.getDim2(); j++ ) {
-
-        tri[i][ 2*j   ] = p[ i   ][j][0][0].toFloat();
-        tri[i][ 2*j+1 ] = p[ i+1 ][j][0][0].toFloat();
-      }
-    }
-
-    for( int i = 0; i < tri.getDim1(); i++ ) {
-      for( int j = 0; j < tri.getDim2() - 2; j++ ) {
-
-        const Vector<float,3> &v0 = tri(i)(j);
-        const Vector<float,3> &v1 = tri(i)(j+1);
-        const Vector<float,3> &v2 = tri(i)(j+2);
-
-        // Normal
-        const UnitVector<float,3> n = Vector3D<float>( v1 - v0 ) ^ Vector3D<float>( v2 - v0 );
-        if( j % 2 != 0 )
-          n *= -1;
-
-        content << "  facet normal " << n(0) << " " << n(1) << " " << n(2) << endl;
-
-          content << "    outer loop" << endl;
-
-
-            // Vertices
-            content << "      vertex " << v0(0) << " " << v0(1) << " " << v0(2) << endl;
-            content << "      vertex " << v1(0) << " " << v1(1) << " " << v1(2) << endl;
-            content << "      vertex " << v2(0) << " " << v2(1) << " " << v2(2) << endl;
-
-          content << "    endloop" << endl;
-
-        content << "  endfacet" <<endl;
-      }
-    }
-
-    content << "endsolid " << this->getIdentity() << endl;
-
-    stream.write( content.str().c_str(), content.str().length() * sizeof( char ) );
+//
+//    std::stringstream content;
+//    content << "solid " << this->getIdentity() << endl;
+//
+//    // Determine settings
+//    if( m1 < 2 )
+//      m1 = _p_ref->_sam1.getDim();
+//
+//    if( m2 < 2 )
+//      m2 = _p_ref->_sam2.getDim();
+//
+//
+//    // Evaluate Surface
+//    DMatrix< DMatrix< Vector<T, 3> > > p;
+//    _p_ref->resample(
+//      p, m1, m2, d1, d2,
+//      _p_ref->getStartPU(),
+//      _p_ref->getStartPV(),
+//      _p_ref->getEndPU(),
+//      _p_ref->getEndPV()
+//    );
+//
+//    // Create Triangulation
+//    DMatrix< Vector<float,3> > tri;
+//    tri.setDim( p.getDim1()-1, p.getDim2()*2 );
+//    for( int i = 0; i < p.getDim1()-1; i++ ) {
+//      for( int j = 0; j < p.getDim2(); j++ ) {
+//
+//        tri[i][ 2*j   ] = p[ i   ][j][0][0].toFloat();
+//        tri[i][ 2*j+1 ] = p[ i+1 ][j][0][0].toFloat();
+//      }
+//    }
+//
+//    for( int i = 0; i < tri.getDim1(); i++ ) {
+//      for( int j = 0; j < tri.getDim2() - 2; j++ ) {
+//
+//        const Vector<float,3> &v0 = tri(i)(j);
+//        const Vector<float,3> &v1 = tri(i)(j+1);
+//        const Vector<float,3> &v2 = tri(i)(j+2);
+//
+//        // Normal
+//        const UnitVector<float,3> n = Vector3D<float>( v1 - v0 ) ^ Vector3D<float>( v2 - v0 );
+//        if( j % 2 != 0 )
+//          n *= -1;
+//
+//        content << "  facet normal " << n(0) << " " << n(1) << " " << n(2) << endl;
+//
+//          content << "    outer loop" << endl;
+//
+//
+//            // Vertices
+//            content << "      vertex " << v0(0) << " " << v0(1) << " " << v0(2) << endl;
+//            content << "      vertex " << v1(0) << " " << v1(1) << " " << v1(2) << endl;
+//            content << "      vertex " << v2(0) << " " << v2(1) << " " << v2(2) << endl;
+//
+//          content << "    endloop" << endl;
+//
+//        content << "  endfacet" <<endl;
+//      }
+//    }
+//
+//    content << "endsolid " << this->getIdentity() << endl;
+//
+//    stream.write( content.str().c_str(), content.str().length() * sizeof( char ) );
   }
 
 
@@ -293,12 +297,12 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  PSurf<T,3>* DSurf<T>::getPSurf() {
-
-    return _p_ref;
-  }
+//  template <typename T>
+//  inline
+//  PSurf<T,3>* DSurf<T>::getPSurf() {
+//
+//    return _p_ref;
+//  }
 
 
   template <typename T>
@@ -317,7 +321,8 @@ namespace GMlib {
     for(int i = 0; i < 20; i++ ) {
 
 //      eval(u, v, 2, 2);
-      DMatrix< Vector<T,3> > &r = _p_ref->evaluateLocal( u, v, 2, 2 );
+//      DMatrix< Vector<T,3> > &r = _p_ref->evaluateLocal( u, v, 2, 2 );
+      DMatrix< Vector<T,3> > &r = evaluateLocal( u, v, 2, 2 );
       Vector<T,3> d = p-r[0][0];
 
       a11 = d*r[2][0] - r[1][0] * r[1][0];
@@ -377,19 +382,19 @@ namespace GMlib {
   void DSurf<T>::replot( int m1, int m2, bool dynamic, int d1, int d2 ) {
 
     // Check wheather or not PSurf is valid
-    if( !_p_ref )
-      return;
+//    if( !_p_ref )
+//      return;
 
     // Correct sample domain
     if( m1 < 2 )
-      m1 = _p_ref->_sam1.getDim();
+      m1 = _sam1.getDim();
     else
-      _p_ref->_sam1.setDim( m1 );
+      _sam1.setDim( m1 );
 
     if( m2 < 2 )
-      m2 = _p_ref->_sam2.getDim();
+      m2 = _sam2.getDim();
     else
-      _p_ref->_sam2.setDim( m2 );
+      _sam2.setDim( m2 );
 
     // Set Properties
     this->_dynamic = dynamic;
@@ -400,17 +405,17 @@ namespace GMlib {
 
     // Sample Positions and related Derivatives
     DMatrix< DMatrix< Vector<T, 3> > > p;
-    _p_ref->resample(
+    resample(
       p, m1, m2, d1, d2,
-      _p_ref->getStartPU(),
-      _p_ref->getStartPV(),
-      _p_ref->getEndPU(),
-      _p_ref->getEndPV()
+      getStartPU(),
+      getStartPV(),
+      getEndPU(),
+      getEndPV()
     );
 
     // Sample Normals
     DMatrix< Vector<T, 3> > normals;
-    _p_ref->resampleNormals( p, normals );
+    resampleNormals( p, normals );
 
 
     // Set The Surrounding Sphere
@@ -516,13 +521,157 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  void DSurf<T>::setPSurf( PSurf<T,3>* psurf ) {
+//  template <typename T>
+//  inline
+//  void DSurf<T>::replot( int m1, int m2, bool dynamic, int d1, int d2 ) {
+//
+//    // Check wheather or not PSurf is valid
+//    if( !_p_ref )
+//      return;
+//
+//    // Correct sample domain
+//    if( m1 < 2 )
+//      m1 = _p_ref->_sam1.getDim();
+//    else
+//      _p_ref->_sam1.setDim( m1 );
+//
+//    if( m2 < 2 )
+//      m2 = _p_ref->_sam2.getDim();
+//    else
+//      _p_ref->_sam2.setDim( m2 );
+//
+//    // Set Properties
+//    this->_dynamic = dynamic;
+//    _no_der_u = d1;
+//    _no_der_v = d2;
+//    _no_samp_u = m1;
+//    _no_samp_v = m2;
+//
+//    // Sample Positions and related Derivatives
+//    DMatrix< DMatrix< Vector<T, 3> > > p;
+//    _p_ref->resample(
+//      p, m1, m2, d1, d2,
+//      _p_ref->getStartPU(),
+//      _p_ref->getStartPV(),
+//      _p_ref->getEndPU(),
+//      _p_ref->getEndPV()
+//    );
+//
+//    // Sample Normals
+//    DMatrix< Vector<T, 3> > normals;
+//    _p_ref->resampleNormals( p, normals );
+//
+//
+//    // Set The Surrounding Sphere
+//    setSurroundingSphere( p );
+//
+//    // Clean up Display Lists
+//    if( this->_dlist ) {
+//
+//      glDeleteLists( this->_dlist, 2 );
+//      this->_dlist = 0;
+//    }
+//
+//
+//    // Create Display lists or input data into vertex arrays...
+//    // Dependent on wheather or not the Surface is dynamic
+//    if( this->_dynamic ) {
+//
+//      this->_vertices_n2.setDim( p.getDim1()-1, p.getDim2()*2 );
+//
+//      for( int i = 0; i < p.getDim1()-1; i++ ) {
+//        for( int j = 0; j < p.getDim2(); j++ ) {
+//
+//          this->_vertices_n2[i][ 2*j   ].setPos( p[ i   ][j][0][0].toFloat() );
+//          this->_vertices_n2[i][ 2*j   ].setDir( ( normals[i][j] ).getNormalized().toFloat() );
+//
+//          this->_vertices_n2[i][ 2*j+1 ].setPos( p[ i+1 ][j][0][0].toFloat() );
+//          this->_vertices_n2[i][ 2*j+1 ].setDir( ( normals[i+1][j] ).getNormalized().toFloat() );
+//        }
+//      }
+//
+//
+//      if( this->_material.getTextureID() ) {
+//
+//        this->_texture_coords.setDim( p.getDim1() - 1, p.getDim2() * 2 );
+//
+//        for( int i = 0; i < p.getDim1() - 1; i++ ) {
+//          for( int j = 0; j < p.getDim2(); j++ ) {
+//
+//            this->_texture_coords[i][ 2 * j       ] = Point2D<float>( i / float( p.getDim1() - 1 ), j / float( p.getDim2() - 1 ) );
+//            this->_texture_coords[i][ (2 * j) + 1 ] = Point2D<float>( (i+1) / float( p.getDim1()- 1 ), j / float( p.getDim2() - 1 ) );
+//          }
+//        }
+//      }
+//
+//    }
+//    else {
+//
+//      this->_dlist = glGenLists(2);
+//
+//
+//      // Create display list for Display
+//      // Display list no. 0 main list
+//      glNewList( this->_dlist, GL_COMPILE ); {
+//
+//        if( this->_material.getTextureID() )
+//          this->_material.glSet();
+//
+//        for( int i = 0; i < p.getDim1() - 1; i++ ) {
+//
+//          glBegin(GL_TRIANGLE_STRIP); {
+//
+//            for( int j = 0; j < p.getDim2(); j++ ) {
+//
+//              glTexCoord( Point2D<float>( (i) / float( p.getDim1() - 1 ), j / float( p.getDim2() - 1 ) ) );
+//              glVertex( Arrow<float, 3>(
+//                Point3D<float>( ( p[i][j][0][0] ).toFloat() ),
+//                ( normals[i][j] ).getNormalized().toFloat()
+//              ) );
+//
+//              glTexCoord( Point2D<float>( (i+1) / float( p.getDim1() - 1 ), j / float( p.getDim2() - 1 ) ) );
+//              glVertex( Arrow<float, 3>(
+//                Point3D<float>( ( p[i+1][j][0][0] ).toFloat() ),
+//                ( normals[i+1][j] ).getNormalized().toFloat()
+//              ) );
+//            }
+//          } glEnd();
+//        }
+//      } glEndList();
+//
+//      // Create display list for Select
+//      // Display list no. 1
+//      glNewList(this->_dlist+1, GL_COMPILE); {
+//
+//        for( int i = 0; i < p.getDim1() - 1 ; i++ ) {
+//
+//          glBegin(GL_TRIANGLE_STRIP); {
+//
+//            for( int j = 0; j < p.getDim2(); j++ ) {
+//
+//
+//              glPoint( Point3D<float>( ( p[i][j][0][0] ).toFloat() ) );
+//              glPoint( Point3D<float>( ( p[i+1][j][0][0] ).toFloat() ) );
+//            }
+//          } glEnd();
+//        }
+//      } glEndList();
+//    }
+//
+//
+//    // Replot Visaulizers
+//    for( int i = 0; i < this->_visualizers.getSize(); i++ )
+//      this->_visualizers[i]->replot( p, normals, m1, m2, d1, d2 );
+//  }
 
-    _p_ref = psurf;
-    DParametrics<T,2>::setParametrics( _p_ref );
-  }
+
+//  template <typename T>
+//  inline
+//  void DSurf<T>::setPSurf( PSurf<T,3>* psurf ) {
+//
+//    _p_ref = psurf;
+//    DParametrics<T,2>::setParametrics( _p_ref );
+//  }
 
 
   template <typename T>
@@ -541,4 +690,724 @@ namespace GMlib {
     DParametrics<T,2>::setSurroundingSphere(s);
   }
 
+
+
+
+
+
+
+
+
+
+
+
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+  //////////////////////// PSurf !!!!!!!!!!!!!! PSurf ////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::_eval( T u, T v, int d1, int d2 ) {
+
+    if( !(d1 <= _d1 && d2 <=_d2 && u == _u && v == _v) ) {
+
+      _u  = u;
+      _v  = v;
+      _d1 = d1;
+      _d2 = d2;
+
+      eval( shiftU(u), shiftV(v), d1, d2 );
+    }
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::_evalDerDD( DMatrix<DMatrix <Vector<T,3> > >& a, int d1, int d2, T du, T dv ) const {
+
+    T one_over_du;
+    T one_over_dv;
+
+
+
+    // Handle all singular patial derivatives in v direction;
+    // the case of v == 0
+    for( int u = 1, v = 0; u <= d1; u++ ) {
+
+      one_over_du = T(1) / ( pow( T(2) * du, T(u) ) );
+  //    T one_over_du = T(1);
+
+      // Handle all partial derivatives in v direction.
+      for( int i = 1; i < a.getDim1() - 1; i++ ) {
+        for( int j = 0; j < a.getDim2(); j++ ) {
+
+          // Iterate throug each component of the "point"
+          for( int k = 0; k < 3; k++ )
+            a[i][j][u][v][k] = a[i+1][j][u-1][v][k] - a[i-1][j][u-1][v][k];
+
+          a[i][j][u][v] *= one_over_du;
+        }
+      }
+
+
+
+
+      if( isClosedU() ) {
+
+        // Handle the edges, for partial derivatives of the dataset; i1 = 0, i2 = a.getDim1()-1
+        for( int i1 = 0, i2 = a.getDim1() - 1, j = 0; j < a.getDim2(); j++ ) {
+
+          // Iterate throug each component of the "point"
+          for( int k = 0; k < 3; k++ ) {
+
+            a[i1][j][u][v][k] = a[i2][j][u][v][k] = ( a[i1+1][j][u-1][v][k] - a[i2-1][j][u-1][v][k]   );
+          }
+          a[i1][j][u][v] = a[i2][j][u][v] *= one_over_du;
+        }
+      }
+      else {
+        // Handle the edges, for partial derivatives of the dataset; i1 = 0, i2 = a.getDim1()-1
+        for( int i1 = 0, i2 = a.getDim1() - 1, j = 0; j < a.getDim2(); j++ ) {
+
+          // Iterate throug each component of the "point"
+          for( int k = 0; k < 3; k++ ) {
+
+            a[i1][j][u][v][k] = a[i1+1][j][u-1][v][k] - ( a[i1][j][u-1][v][k] + ( a[i1][j][u-1][v][k] - a[i1+1][j][u-1][v][k] ) );
+            a[i2][j][u][v][k] = ( a[i2][j][u-1][v][k] + ( a[i2][j][u-1][v][k] - a[i2-1][j][u-1][v][k] ) ) - a[i2][j][u-1][v][k];
+          }
+          a[i1][j][u][v] *= one_over_du;
+          a[i2][j][u][v] *= one_over_du;
+        }
+      }
+    }
+
+
+
+
+    for( int u = 0; u <= d1; u++ ) {
+      for( int v = 1; v <= d2; v++ ) {
+
+        one_over_dv = T(1) / ( pow( T(2) * dv, T(v) ) );
+  //      T one_over_dv = T(1);
+
+        // Handle all partial derivatives in v direction.
+        for( int i = 0; i < a.getDim1(); i++ ) {
+          for( int j = 1; j < a.getDim2() - 1; j++ ) {
+
+            // Iterate throug each component of the "point"
+            for( int k = 0; k < 3; k++ )
+              a[i][j][u][v][k] = a[i][j+1][u][v-1][k] - a[i][j-1][u][v-1][k];
+
+            a[i][j][u][v] *= one_over_dv;
+          }
+        }
+
+        if( isClosedV() ) {
+
+          // Handle the edges, for partial derivatives of the dataset; j1 = 0, j2 = a.getDim2()-1
+          for( int i = 0, j1 = 0, j2 = a.getDim2() - 1; i < a.getDim1(); i++ ) {
+
+            // Iterate throug each component of the "point"
+            for( int k = 0; k < 3; k++ ) {
+
+              a[i][j1][u][v][k] = a[i][j2][u][v][k] = ( a[i][j1+1][u][v-1][k] - a[i][j2-1][u][v-1][k] );
+            }
+            a[i][j1][u][v] = a[i][j2][u][v] *= one_over_dv;
+          }
+        }
+        else {
+
+          // Handle the edges, for partial derivatives of the dataset; j1 = 0, j2 = a.getDim2()-1
+          for( int i = 0, j1 = 0, j2 = a.getDim2() - 1; i < a.getDim1(); i++ ) {
+
+            // Iterate throug each component of the "point"
+            for( int k = 0; k < 3; k++ ) {
+
+              a[i][j1][u][v][k] = a[i][j1+1][u][v-1][k] - ( a[i][j1][u][v-1][k] + ( a[i][j1][u][v-1][k] - a[i][j1+1][u][v-1][k] )   );
+              a[i][j2][u][v][k] = ( a[i][j2][u][v-1][k] + ( a[i][j2][u][v-1][k] - a[i][j2-1][u][v-1][k] )  ) - a[i][j2-1][u][v-1][k];
+            }
+            a[i][j1][u][v] *= one_over_dv;
+            a[i][j2][u][v] *= one_over_dv;
+          }
+        }
+      }
+    }
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::_evalNormal() {
+
+    _n = Vector3D<T>( _p(1)(0) ) ^ Vector3D<T>( _p(0)(1) );
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::setDomainU( T start, T end ) {
+
+    _sc_u  = (end - start) / (getEndPU() - getStartPU());
+    _tr_u  = start - getStartPU();
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::setDomainUScale( T sc ) {
+
+    _sc_u = sc;
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::setDomainUTrans( T tr ) {
+
+    _tr_u = tr;
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::setDomainV( T start, T end ) {
+
+    _sc_v  = (end - start) / (getEndPV() - getStartPV());
+    _tr_v  = start - getStartPV();
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::setDomainVScale( T sc ) {
+
+    _sc_v = sc;
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::setDomainVTrans( T tr ) {
+
+    _tr_v = tr;
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::getParDeltaU() {
+
+    return _sc_u * (getEndPU() - getStartPU());
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::getParDeltaV() {
+
+    return _sc_v * (getEndPV() - getStartPV());
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::getParEndU() {
+
+    return getParStartU() + getParDeltaU();
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::getParEndV() {
+
+    return getParStartV() + getParDeltaV();
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::getParStartU() {
+
+    return getStartPU() + _tr_u;
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::getParStartV() {
+
+    return getStartPV() + _tr_v;
+  }
+
+
+  template <typename T>
+  inline
+  int DSurf<T>::getSamU( int i ) {
+
+    return _sam1[i];
+  }
+
+
+  template <typename T>
+  inline
+  int DSurf<T>::getSamV( int i ) {
+
+    return _sam2[i];
+  }
+
+  template <typename T>
+  inline
+  int DSurf<T>::getDerU() {
+
+    return _d1;
+  }
+
+
+  template <typename T>
+  inline
+  int DSurf<T>::getDerV() {
+
+    return _d2;
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::setEval( int d ) {
+
+     _default_d  = d;
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::shiftU( T u ) {
+
+    return getStartPU() + _sc_u * ( u - getParStartU() );
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::shiftV( T v ) {
+
+    return getStartPV() + _sc_v * ( v - getParStartV() );
+  }
+
+
+  template <typename T>
+  inline
+  Point<T,3>& DSurf<T>::operator () ( T u, T v ) {
+
+    _eval(u, v, _default_d, _default_d);
+    return static_cast<Point<T,3> >(_p[0][0]);
+  }
+
+
+  template <typename T>
+  inline
+  Vector<T,3>& DSurf<T>::getDerU( T u, T v ) {
+
+    _eval(u, v, 1, 0);
+    return _p[1][0];
+  }
+
+
+  template <typename T>
+  inline
+  Vector<T,3>& DSurf<T>::getDerV( T u, T v ) {
+
+    _eval(u, v, 0, 1);
+    return _p[0][1];
+  }
+
+
+  template <typename T>
+  inline
+  Vector<T,3>& DSurf<T>::getDerUU( T u, T v ) {
+
+    _eval(u, v, 2, 0);
+    return _p[2][0];
+  }
+
+
+  template <typename T>
+  inline
+  Vector<T,3>& DSurf<T>::getDerVV( T u, T v ) {
+
+    _eval(u, v, 0, 2);
+    return _p[0][2];
+  }
+
+
+  template <typename T>
+  inline
+  Vector<T,3>& DSurf<T>::getDerUV( T u, T v ) {
+
+    _eval(u, v, 2, 2);
+    return _p[1][1];
+  }
+
+
+  template <typename T>
+  inline
+  std::string DSurf<T>::getIdentity() const {
+
+    return "PSurf";
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::getLocalMapping( T t, T ts, T tt, T te ) {
+
+    return t;
+  }
+
+
+  template <typename T>
+  inline
+  Vector<T,3>& DSurf<T>::getNormal() {
+
+    return _n;
+  }
+
+
+  template <typename T>
+  inline
+  DMatrix<Vector<T,3> >& DSurf<T>::evaluate( Point<T,2> p, int d ) {
+
+    return evaluate( p[0], p[1], d, d);
+  }
+
+
+  template <typename T>
+  inline
+  DMatrix<Vector<T,3> >& DSurf<T>::evaluate( T u, T v, int d1, int d2 ) {
+
+    static DMatrix<Vector<T,3> > p;
+    p.setDim( d1+1, d2+1 );
+
+    eval(u,v,d1,d2);
+
+    p[0][0] = this->_present * (Point<T,3>)_p[0][0];
+
+    for( int j = 1; j < p.getDim2(); j++ )
+      p[0][j] = this->_present * (Vector<T,3>)_p[0][j];
+
+    for( int i = 1; i < p.getDim1(); i++ )
+      for( int j = 0; j < p.getDim2(); j++ )
+        p[i][j] = this->_present * (Vector<T,3>)_p[i][j];
+
+    return p;
+  }
+
+
+  template <typename T>
+  inline
+  DVector<Vector<T,3> > DSurf<T>::evaluateD( Point<T,2> p, int d ) {
+
+    return evaluateD(p[0], p[1], d, d);
+  }
+
+
+  template <typename T>
+  inline
+  DVector<Vector<T,3> > DSurf<T>::evaluateD( T u, T v, int d1, int d2 ) {
+
+    // Here we are coopying diagonal wise the matrix into an vector
+    // One problem is if d1 is not equal d2.
+    _eval(u, v, d1, d2);
+    DVector<Vector<T,3> > p(_sum(d1, d2));
+    int i,j;
+
+    for(i = 0; i <= d1; i++) {
+      for(j = 0; j<= min(i, d2); j++)	{
+        p += _p[i-j][j];
+      }
+    }
+
+    // Origin --> for(;i <= max(d1, d2); i++)
+    for(i = 0; i <= max(d1, d2); i++) {
+      for(j = i-d1; j <= min(i, d2); j++) {
+        p += _p[i-j][j];
+      }
+    }
+
+    return p;
+  }
+
+
+  template <typename T>
+  inline
+  DMatrix<Vector<T,3> >& DSurf<T>::evaluateLocal( Point<T,2> p, int d ) {
+
+    return evaluateLocal( p[0], p[1], d, d);
+  }
+
+
+  template <typename T>
+  inline
+  DMatrix<Vector<T,3> >& DSurf<T>::evaluateLocal( T u, T v, int d1, int d2 ) {
+
+    _eval(u, v, d1, d2);
+    _evalNormal();
+    return _p;
+  }
+
+
+  template <typename T>
+  inline
+  DMatrix<Vector<T,3> >& DSurf<T>::evaluateParent( Point<T,2> p, int d ) {
+
+    return evaluate( p[0], p[1], d, d);
+  }
+
+
+  template <typename T>
+  inline
+  DMatrix<Vector<T,3> >& DSurf<T>::evaluateParent( T u, T v, int d1, int d2 ) {
+
+    static DMatrix<Vector<T,3> > p;
+    p.setDim( d1+1, d2+1 );
+
+    eval(u,v,d1,d2);
+
+    p[0][0] = this->_matrix * (Point<T,3>)_p[0][0];
+
+    for( int j = 1; j < p.getDim2(); j++ )
+      p[0][j] = this->_matrix * (Vector<T,3>)_p[0][j];
+
+    for( int i = 1; i < p.getDim1(); i++ )
+      for( int j = 0; j < p.getDim2(); j++ )
+        p[i][j] = this->_matrix * (Vector<T,3>)_p[i][j];
+
+    return p;
+  }
+
+
+//  template <typename T>
+//  inline
+//  T DSurf<T>::getCurvatureGauss( T u, T v ) {
+//
+//    _eval(u, v, 2, 2);
+//    UnitVector<T,3> N   = normal(u, v);	    // _p[0][1]^_p[1][0];
+//    Vector<T,3>		  du  = getDerU(u, v);	  // _p[0][1];
+//    Vector<T,3>		  dv  = getDerV(u, v);	  // _p[1][0];
+//    Vector<T,3>		  duu = getDerUU(u, v);	  // _p[0][2];
+//    Vector<T,3>		  duv = getDerUV(u, v);	  // _p[1][1];
+//    Vector<T,3>		  dvv = getDerVV(u, v);	  // _p[2][0];
+//
+//    T E = du  * du;
+//    T F = du  * dv;
+//    T G = dv  * dv;
+//    T e = N   * duu;
+//    T f = N   * duv;
+//    T g = N   * dvv;
+//
+//    return (e*g - f*f) / (E*G - F*F);
+//  }
+//
+//
+//  template <typename T>
+//  inline
+//  T DSurf<T>::getCurvatureMean( T u, T v ) {
+//
+//    _eval(u,v,2,2);
+//    UnitVector<T,3> N   = normal(u, v);
+//    Vector<T,3>		  du  = getDerU(u, v);
+//    Vector<T,3>		  dv  = getDerV(u, v);
+//    Vector<T,3>		  duu = getDerUU(u, v);
+//    Vector<T,3>		  duv = getDerUV(u, v);
+//    Vector<T,3>		  dvv = getDerVV(u, v);
+//
+//    T E = du  * du;
+//    T F = du  * dv;
+//    T G = dv  * dv;
+//    T e = N   * duu;
+//    T f = N   * duv;
+//    T g = N   * dvv;
+//
+//    return 0.5 * (e*G - 2 * (f*F) + g*E) / (E*G - F*F);
+//  }
+
+
+//  template <typename T>
+//  inline
+//  void DSurf<T>::estimateClpPar( const Point<T,3>& p, T& u, T& v ) {
+//  }
+
+
+  template <typename T>
+  inline
+  PSurf<T,3>* DSurf<T>::split( T t, int uv ) {
+
+    return 0;
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::resampleNormals( const DMatrix<DMatrix<Vector<T, 3> > > &sample, DMatrix<Vector<T, 3> > &normals ) const {
+
+    normals.setDim( sample.getDim1(), sample.getDim2() );
+
+//    cout << "Generating Normals:" << endl;
+
+    for( int i = 0; i < sample.getDim1(); i++ ) {
+      for( int j = 0; j < sample.getDim2(); j++ ) {
+        normals[i][j] = Vector3D<T>( sample(i)(j)(1)(0) ) ^ sample(i)(j)(0)(1);
+//        normals[i][j] = Vector3D<T>( sample(i)(j)(0)(1) ) ^ sample(i)(j)(1)(0);
+  //
+  //      cout << "\t[" << i << ", " << j << "] (";
+  //      for( int k = 0; k < n; k++ ){
+  //
+  //        cout << setw(3) << sample(i)(j)(1)(0)(k);
+  //        if( k != n-1 )
+  //          cout << ", ";
+  //      }
+  //      cout << ") u'";
+  //      cout << endl;
+  //
+  //      cout << "\t[" << i << ", " << j << "] (";
+  //      for( int k = 0; k < n; k++ ){
+  //
+  //        cout << setw(3) << sample(i)(j)(0)(1)(k);
+  //        if( k != n-1 )
+  //          cout << ", ";
+  //      }
+  //      cout << ") v'";
+  //      cout << endl;
+  //
+  //      cout << "\t[" << i << ", " << j << "] (";
+  //      for( int k = 0; k < n; k++ ){
+  //
+  //        cout << setw(3) << normals[i][j][k];
+  //        if( k != n-1 )
+  //          cout << ", ";
+  //      }
+  //      cout << ") norm";
+  //      cout << endl << endl;
+      }
+  //      cout << endl;
+    }
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::resample(
+    DMatrix< DMatrix < Vector<T,3> > >& a,
+    int m1,
+    int m2,
+    int d1,
+    int d2,
+    T s_u,
+    T s_v,
+    T e_u,
+    T e_v
+  ) {
+
+    T du = (e_u-s_u)/(m1-1);
+    T dv = (e_v-s_v)/(m2-1);
+
+    _p.setDim( d1 + 1, d2 + 1 );
+    a.setDim(m1, m2);
+
+    for(int i=0; i<m1-1; i++) {
+
+      T u = s_u + i*du;
+      for(int j=0;j<m2-1;j++) {
+
+        eval(u, s_v + j*dv, d1, d2 );
+        a[i][j] = _p;
+      }
+
+      eval(u, e_v, d1, d2, false, true);
+      a[i][m2-1] = _p;
+    }
+
+    for(int j=0;j<m2-1;j++) {
+
+      eval(e_u, s_v + j*dv, d1, d2, true, false);
+      a[m1-1][j] = _p;
+    }
+
+    eval(e_u, e_v, d1, d2, true, true);
+    a[m1-1][m2-1] = _p;
+
+    switch( this->_dm ) {
+      case GM_DERIVATION_EXPLICIT:
+        // Do nothing, evaluator algorithms for explicite calculation of derivatives
+        // should be defined in the eval( ... ) function enclosed by
+        // if( this->_derivation_method == this->EXPLICIT ) { ... eval algorithms for derivatives ... }
+        break;
+
+      case GM_DERIVATION_DD:
+      default:
+        _evalDerDD( a, d1, d2, du, dv );
+        break;
+    }
+  }
+
+
+  template <typename T>
+  inline
+  void DSurf<T>::resample(
+    DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a,
+    int m1,
+    int m2,
+    int d1,
+    int d2
+  ) {
+
+//    if(m1>0)
+//    for(int i=0; i< _sam1.getDim(); i++)
+//      _sam1[i]= max(2,int(0.5+(m1*(_sam_p_u[i+1] - _sam_p_u[i]))/(_sam_p_u.back() - _sam_p_u[0])));
+//    if(m2>0)
+//    for(int i=0; i< _sam2.getDim(); i++)
+//      _sam2[i]= max(2,int(0.5+(m2*(_sam_p_v[i+1] - _sam_p_v[i]))/(_sam_p_v.back() - _sam_p_v[0])));
+//
+//    a.setDim(_sam1.getDim(),_sam2.getDim());
+//
+//    for(int i = 0; i < a.getDim1(); i++)
+//      for(int j = 0; j < a.getDim2(); j++)
+//        resample(a[i][j],_sam1[i],_sam2[j], d1, d2, _sam_p_u[i],_sam_p_v[j],_sam_p_u[i+1],_sam_p_v[j+1]);
+  }
 }

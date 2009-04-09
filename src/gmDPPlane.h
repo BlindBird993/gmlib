@@ -47,18 +47,51 @@ namespace GMlib {
   public:
     DPPlane( const Point<T,3>& p, const Vector<T,3>& u, const Vector<T,3>& v );
     DPPlane( const DPPlane<T>& pplane );
-    DPPlane( const PPlane<T,3>& pplane );
+//    DPPlane( const PPlane<T,3>& pplane );
     virtual ~DPPlane();
 
-    virtual const UnitVector<T,3>&    getNormal();
-    virtual PPlane<T,3>*              getPPlane();
+//    virtual const UnitVector<T,3>&    getNormal();
+//    virtual PPlane<T,3>*              getPPlane();
 
 
   protected:
-    PPlane<T,3>                       *_l_ref;
+//    PPlane<T,3>                       *_l_ref;
 
     std::string                       getIdentity() const;
     virtual void                      init();
+
+
+
+
+
+  //////////////////////// PPlane !!!!!!!!!!!!!! PPlane ////////////////////////
+  //////////////////////// PPlane !!!!!!!!!!!!!! PPlane ////////////////////////
+  //////////////////////// PPlane !!!!!!!!!!!!!! PPlane ////////////////////////
+  //////////////////////// PPlane !!!!!!!!!!!!!! PPlane ////////////////////////
+
+
+    const UnitVector<T,3>&    getNormal() const;
+    const Vector<T,3>&        getU() const;
+    const Vector<T,3>&        getV() const;
+
+    bool                      isClosedU() const;
+    bool                      isClosedV() const;
+
+    void                      setU( const Vector<T,3>& u );
+    void                      setV( const Vector<T,3>& v );
+
+
+  protected:
+    Point<T,3>		            _pt;
+    Vector<T,3>		            _u;
+    Vector<T,3>               _v;
+    UnitVector<T,3>           _n;
+
+    void                      eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                         getEndPU();
+    T                         getEndPV();
+    T                         getStartPU();
+    T                         getStartPV();
   };
 
 

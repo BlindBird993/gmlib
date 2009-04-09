@@ -46,18 +46,35 @@ namespace GMlib {
   public:
     DPCircle( T radius = T(20) );
     DPCircle( const DPCircle<T>& copy );
-    DPCircle( const PCircle<T,3>& copy );
-    DPCircle( PCircle<T,3>* copy );
+//    DPCircle( const PCircle<T,3>& copy );
+//    DPCircle( PCircle<T,3>* copy );
     virtual ~DPCircle();
 
-    virtual PCircle<T,3>*   getPCircle();
+//    virtual PCircle<T,3>*   getPCircle();
 
 
   protected:
-    PCircle<T,3>            *_l_ref;
+//    PCircle<T,3>            *_l_ref;
 
     string                  getIdentity() const;
     virtual void            init();
+
+  //////////////////////// DPCircle !!!!!!!!!!!!!! DPCircle ////////////////////////
+  //////////////////////// DPCircle !!!!!!!!!!!!!! DPCircle ////////////////////////
+  //////////////////////// DPCircle !!!!!!!!!!!!!! DPCircle ////////////////////////
+
+  public:
+    T             getRadius();
+    bool          isClosed() const;
+    void          setRadius( T radius = T(20) );
+
+
+  protected:
+    T             _r;
+
+    void	        eval(T t, int d, bool l);
+    T             getEndP();
+    T             getStartP();
   };
 
 

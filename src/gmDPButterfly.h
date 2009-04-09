@@ -46,21 +46,34 @@ namespace GMlib {
   public:
     DPButterfly( T size = T(5) );
     DPButterfly( const DPButterfly<T>& copy );
-    DPButterfly( const PButterfly<T,3>& copy );
-    DPButterfly( PButterfly<T,3>* copy );
+//    DPButterfly( const PButterfly<T,3>& copy );
+//    DPButterfly( PButterfly<T,3>* copy );
     virtual ~DPButterfly();
 
-    virtual PButterfly<T,3>*    getPButterfly();
+//    virtual PButterfly<T,3>*    getPButterfly();
 
   protected:
-    PButterfly<T,3>             *_l_ref;
+//    PButterfly<T,3>             *_l_ref;
 
     string                      getIdentity() const;
     virtual void                init();
+
+
+  //////////////////////// PButterfly !!!!!!!!!!!!!! PButterfly ////////////////////////
+  //////////////////////// PButterfly !!!!!!!!!!!!!! PButterfly ////////////////////////
+  //////////////////////// PButterfly !!!!!!!!!!!!!! PButterfly ////////////////////////
+
+  public:
+    bool          isClosed() const;
+
+
+  protected:
+    T             _size;
+
+    void	        eval(T t, int d, bool l);
+    T             getEndP();
+    T             getStartP();
   };
-
-
-
 
 } // END namepace GMlib
 

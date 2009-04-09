@@ -47,17 +47,41 @@ namespace GMlib {
   public:
     DPTorus( T wheelrad=T(3), T tuberad1=T(1), T tuberad2=T(1) );
     DPTorus( const DPTorus<T>& pshere );
-    DPTorus( const PTorus<T,3>& pshere );
-    DPTorus( PTorus<T,3>* copy );
+//    DPTorus( const PTorus<T,3>& pshere );
+//    DPTorus( PTorus<T,3>* copy );
     virtual ~DPTorus();
 
-    virtual PTorus<T,3>*    getPTorus();
+//    virtual PTorus<T,3>*    getPTorus();
 
   protected:
-    PTorus<T,3>             *_l_ref;
+//    PTorus<T,3>             *_l_ref;
 
     std::string             getIdentity() const;
     virtual void            init();
+
+
+
+  //////////////////////// PTorus !!!!!!!!!!!!!! PTorus ////////////////////////
+  //////////////////////// PTorus !!!!!!!!!!!!!! PTorus ////////////////////////
+  //////////////////////// PTorus !!!!!!!!!!!!!! PTorus ////////////////////////
+  //////////////////////// PTorus !!!!!!!!!!!!!! PTorus ////////////////////////
+
+
+  public:
+		bool          isClosedU() const;
+		bool          isClosedV() const;
+
+
+	protected:
+		T             _a;		//Wheelradius
+		T             _b;		//Tuberadius1
+		T             _c;		//Tuberadius2
+
+		void          eval(T u, T v, int d1, int d2, bool lu, bool lv );
+		T             getEndPU();
+		T             getEndPV();
+		T             getStartPU();
+		T             getStartPV();
   };
 
 

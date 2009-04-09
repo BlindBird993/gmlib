@@ -44,30 +44,74 @@ namespace GMlib {
   template <typename T>
   class DPERBSCurve : public DCurve<T> {
   public:
-    DPERBSCurve( PCurve<T,3>* g, int n, int d );
-    DPERBSCurve( PCurve<T,3>* g, int n );
+    DPERBSCurve( DCurve<T>* g, int no_locals );
+    DPERBSCurve( DCurve<T>* g, int no_locals, int d );
     DPERBSCurve( const DPERBSCurve<T>& copy );
-    DPERBSCurve( const PERBSCurve<T,3>& copy );
-    DPERBSCurve( PERBSCurve<T,3>* copy );
+//    DPERBSCurve( const PERBSCurve<T,3>& copy );
+//    DPERBSCurve( PERBSCurve<T,3>* copy );
     virtual ~DPERBSCurve();
 
     void                        edit( SceneObject *obj );
     string                      getIdentity() const;
-    virtual PERBSCurve<T,3>*    getPERBSCurve();
+//    virtual PERBSCurve<T,3>*    getPERBSCurve();
     virtual void                hideLocalPatches();
     bool                        isLocalPatchesVisible() const;
     virtual void                showLocalPatches( bool collapsed = true );
 
   protected:
-    PERBSCurve<T,3>             *_l_ref;
-    DVector< DCurve<T>* >       _p;
-    bool                        _p_visible;
+//    PERBSCurve<T,3>             *_l_ref;
+//    DVector< DCurve<T>* >       _patches;
+//    bool                        _patches_visible;
 
 
     virtual void                init();
     void                        localDisplay();
     virtual void                visualizeLocalPatch( PCurve<T,3>* p, int i, int m, bool collapsed );
     virtual void                visualizeLocalPatchInit( int i, int m, bool collapsed );
+
+
+
+
+
+
+  //////////////////////// DPERBSCurve !!!!!!!!!!!!!! DPERBSCurve ////////////////////////
+  //////////////////////// DPERBSCurve !!!!!!!!!!!!!! DPERBSCurve ////////////////////////
+  //////////////////////// DPERBSCurve !!!!!!!!!!!!!! DPERBSCurve ////////////////////////
+  //////////////////////// DPERBSCurve !!!!!!!!!!!!!! DPERBSCurve ////////////////////////
+
+
+
+  public:
+    void                        generateKnotVector( DCurve<T>* g );
+    DVector< DCurve<T>* >&      getLocalPatches();
+    bool                        isClosed() const;
+    void                        setResampleMode( GM_RESAMPLE_MODE mode );
+
+  protected:
+
+    bool                        _closed;
+
+    EvaluatorERBS<T>            *_evaluator;
+
+
+    DVector< DVector<T> >       _B;
+    DVector< int >              _tk;
+    DVector<T>                  _t;
+//
+    GM_RESAMPLE_MODE            _resamp_mode;
+    bool                        _pre_eval;
+
+
+    DVector< DCurve<T>* >       _c;
+
+    void	                      eval( T t, int d = 0, bool l = false );
+    void                        getB( DVector<T>& B, int tk, T t, int d );
+    T                           getEndP();
+    T                           getStartP();
+    void                        resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
+    void                        resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
+    void                        resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
+
   };
 
 

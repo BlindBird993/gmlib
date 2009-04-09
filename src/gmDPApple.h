@@ -48,17 +48,35 @@ namespace GMlib {
   public:
     DPApple( T radius = T(1) );
     DPApple( const DPApple<T>& papple );
-    DPApple( const PApple<T,3>& papple );
+//    DPApple( const PApple<T,3>& papple );
     virtual ~DPApple();
 
-    virtual PApple<T,3>*    getPApple();
+//    virtual PApple<T,3>*    getPApple();
 
 
   protected:
-    PApple<T,3>             *_l_ref;
+//    PApple<T,3>             *_l_ref;
 
     string                  getIdentity() const;
     virtual void            init();
+
+
+
+  //////////////////////// PApple !!!!!!!!!!!!!! PApple ////////////////////////
+  //////////////////////// PApple !!!!!!!!!!!!!! PApple ////////////////////////
+  //////////////////////// PApple !!!!!!!!!!!!!! PApple ////////////////////////
+  //////////////////////// PApple !!!!!!!!!!!!!! PApple ////////////////////////
+
+  protected:
+    T                 _r;
+
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    T                 getStartPU();
+    T                 getStartPV();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
   };
 
 

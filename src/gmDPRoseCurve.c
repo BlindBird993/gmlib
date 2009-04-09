@@ -33,10 +33,22 @@
 namespace GMlib {
 
 
+//  template <typename T>
+//  inline
+//  DPRoseCurve<T>::DPRoseCurve( T radius ) : DCurve<T>( new PRoseCurve<T, 3>(radius) ) {
+//
+//    this->_dm = GM_DERIVATION_EXPLICIT;
+//    _r = radius;
+//    init();
+//  }
+
+
   template <typename T>
   inline
-  DPRoseCurve<T>::DPRoseCurve( T radius ) : DCurve<T>( new PRoseCurve<T, 3>(radius) ) {
+  DPRoseCurve<T>::DPRoseCurve( T radius ) {
 
+    this->_dm = GM_DERIVATION_EXPLICIT;
+    _r = radius;
     init();
   }
 
@@ -49,20 +61,20 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  DPRoseCurve<T>::DPRoseCurve( const PRoseCurve<T,3>& copy ) : DCurve<T>( copy ) {
-
-    init();
-  }
-
-
-  template <typename T>
-  inline
-  DPRoseCurve<T>::DPRoseCurve( PRoseCurve<T,3>* copy ) : DCurve<T>( copy ) {
-
-    _l_ref = copy;
-  }
+//  template <typename T>
+//  inline
+//  DPRoseCurve<T>::DPRoseCurve( const PRoseCurve<T,3>& copy ) : DCurve<T>( copy ) {
+//
+//    init();
+//  }
+//
+//
+//  template <typename T>
+//  inline
+//  DPRoseCurve<T>::DPRoseCurve( PRoseCurve<T,3>* copy ) : DCurve<T>( copy ) {
+//
+//    _l_ref = copy;
+//  }
 
 
   template <typename T>
@@ -77,19 +89,96 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  PRoseCurve<T,3>*    DPRoseCurve<T>::getPRoseCurve() {
-
-    return _l_ref;
-  }
+//  template <typename T>
+//  inline
+//  PRoseCurve<T,3>*    DPRoseCurve<T>::getPRoseCurve() {
+//
+//    return _l_ref;
+//  }
 
 
   template <typename T>
   void DPRoseCurve<T>::init() {
 
-    _l_ref  = dynamic_cast<PRoseCurve<T,3>*>( this->_p_ref );
+//    _l_ref  = dynamic_cast<PRoseCurve<T,3>*>( this->_p_ref );
   }
 
+
+
+
+
+
+
+
+
+
+
+  //////////////////////// PRoseCurve !!!!!!!!!!!!!! PRoseCurve ////////////////////////
+  //////////////////////// PRoseCurve !!!!!!!!!!!!!! PRoseCurve ////////////////////////
+  //////////////////////// PRoseCurve !!!!!!!!!!!!!! PRoseCurve ////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  template <typename T>
+  inline
+  void DPRoseCurve<T>::eval( T t, int d, bool l ) {
+
+    this->_p.setDim( d + 1 );
+
+    this->_p[0][0] = _r * cos( T(1.75) * t) * cos(t);
+    this->_p[0][1] = _r * sin( t )*cos( T(1.75) * t );
+    this->_p[0][2] = T(0);
+
+    if( this->_dm == GM_DERIVATION_EXPLICIT ) {
+
+      if(d > 0)
+      {
+        this->_p[1][0] = _r * -1.75*sin(1.75*t)*cos(t)-sin(t)*cos(1.75*t);
+        this->_p[1][1] = _r * -1.75*sin(t)*sin(1.75*t)+cos(1.75*t)*cos(t);
+        this->_p[1][2] = 0.0;
+      }
+      if(d > 1)
+      {
+        this->_p[2][0]= _r * 3.5*sin(t)*sin(1.75*t)-4.0625*cos(1.75*t)*cos(t);
+        this->_p[2][1]= _r * -3.5*sin(1.75*t)*cos(t)-4.0625*sin(t)*cos(1.75*t);
+        this->_p[2][2]= 0.0;
+      }
+    }
+  }
+
+
+  template <typename T>
+  inline
+  T DPRoseCurve<T>::getEndP() {
+
+    return T( 8 * M_PI );
+  }
+
+
+  template <typename T>
+  inline
+  T DPRoseCurve<T>::getStartP() {
+
+    return T(0);
+  }
+
+
+  template <typename T>
+  inline
+  bool DPRoseCurve<T>::isClosed() const {
+
+    return true;
+  }
 }
 

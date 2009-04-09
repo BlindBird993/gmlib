@@ -253,10 +253,10 @@ namespace GMlib {
   inline
   void AffineSpace<T,n>::rotateGlobal( Angle a, const Point<T,n>& p,const UnitVector<T,n>& ra ) {
 
-    Vector<T,n> lu = ra.getLinIndVec();
-    Vector<T,n> u = Vector3D<T>( lu[0], lu[1], lu[2] ) ^ ra;
-    Vector<T,n> v = Vector3D<T>( u[0], u[1], u[2] ) ^ ra;
-    _matrix.rotateGlobal(a, u, v, p.toFloat() );
+//    Vector<T,n> lu = ra.getLinIndVec();
+//    Vector<T,n> u = Vector3D<T>( lu[0], lu[1], lu[2] ) ^ ra;
+//    Vector<T,n> v = Vector3D<T>( u[0], u[1], u[2] ) ^ ra;
+//    _matrix.rotateGlobal(a, u, v, p.toFloat() );
 //    _matrix.rotateGlobal(a,p.toFloat(),d.toFloat());
   }
 
@@ -265,10 +265,10 @@ namespace GMlib {
   inline
   void AffineSpace<T,n>::rotateGlobal( Angle a, const Vector<T,n>& ra ) {
 
-    Vector<T,n> lu = ra.getLinIndVec();
-    Vector<T,n> u = Vector3D<T>( lu[0], lu[1], lu[2] ) ^ ra;
-    Vector<T,n> v = Vector3D<T>( u[0], u[1], u[2] ) ^ ra;
-    _matrix.rotateGlobal(a, u, v);
+//    Vector<T,n> lu = ra.getLinIndVec();
+//    Vector<T,n> u = Vector3D<T>( lu[0], lu[1], lu[2] ) ^ ra;
+//    Vector<T,n> v = Vector3D<T>( u[0], u[1], u[2] ) ^ ra;
+//    _matrix.rotateGlobal(a, u, v);
 //    _matrix.rotateGlobal( a, (Vector<T,n>)rot_axel.toFloat() );
   }
 
@@ -279,7 +279,7 @@ namespace GMlib {
 
     cout << "Translate (AS)" << endl;
 //    move( trans_vector );
-    _matrix.translate(trans_vector);
+//    _matrix.translate(trans_vector);
   }
 
 
@@ -288,7 +288,7 @@ namespace GMlib {
   void AffineSpace<T,n>::translateGlobal( const Vector<T,n>& trans_vector ) {
 
     cout << "Translate Global (AS)" << endl;
-    _matrix.translateGlobal(trans_vector);
+//    _matrix.translateGlobal(trans_vector);
   }
 
 }

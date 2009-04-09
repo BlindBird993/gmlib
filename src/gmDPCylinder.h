@@ -47,18 +47,44 @@ namespace GMlib {
   public:
     DPCylinder( T rx = 4, T ry = 4, T h = 2 );
     DPCylinder( const DPCylinder<T>& copy );
-    DPCylinder( const PCylinder<T,3>& copy );
-    DPCylinder( PCylinder<T,3> *copy );
+//    DPCylinder( const PCylinder<T,3>& copy );
+//    DPCylinder( PCylinder<T,3> *copy );
     virtual ~DPCylinder();
 
-    virtual PCylinder<T,3>*               getPCylinder();
-    virtual const PCylinder<T,3>* const   getPCylinder() const;
+//    virtual PCylinder<T,3>*               getPCylinder();
+//    virtual const PCylinder<T,3>* const   getPCylinder() const;
 
   protected:
-    PCylinder<T,3>                        *_l_ref;
+//    PCylinder<T,3>                        *_l_ref;
 
     std::string                           getIdentity() const;
     void                                  init();
+
+
+
+  //////////////////////// PCylinder !!!!!!!!!!!!!! PCylinder ////////////////////////
+  //////////////////////// PCylinder !!!!!!!!!!!!!! PCylinder ////////////////////////
+  //////////////////////// PCylinder !!!!!!!!!!!!!! PCylinder ////////////////////////
+  //////////////////////// PCylinder !!!!!!!!!!!!!! PCylinder ////////////////////////
+
+  public:
+    T             getHeight() const;
+    T             getRadiusX() const;
+    T             getRadiusY() const;
+    bool          isClosedU() const;
+    bool          isClosedV() const;
+    void          setConstants( T rx, T ry, T h );
+
+  protected:
+    T             _rx;
+    T             _ry;
+    T             _h;
+
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T             getEndPV();
+    T             getEndPU();
+    T             getStartPU();
+    T             getStartPV();
   };
 
 

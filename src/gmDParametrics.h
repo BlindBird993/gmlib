@@ -54,6 +54,20 @@ namespace GMlib {
   };
 
 
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+//
+//  enum GM_RESAMPLE_MODE {
+//    GM_RESAMPLE_INLINE,
+//    GM_RESAMPLE_PREEVAL
+//  };
+//
+//  enum GM_DERIVATION_METHOD {
+//    GM_DERIVATION_EXPLICIT,
+//    GM_DERIVATION_DD
+//  };
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+
+
   template <typename T, int n>
   class DParametrics : public DisplayObject {
   public:
@@ -65,15 +79,15 @@ namespace GMlib {
     void                                  enableDefaultVisualizer( bool enable = true );
     const GLColor&                        getColor() const;
     GLColor&                              getColor();
-    Vector<float,3>                       getDir();
+//    Vector<float,3>                       getDir();
     unsigned int                          getDisplayListIdx() const;
     const Material&                       getMaterial() const;
     Material&                             getMaterial();
     Parametrics<T,3>*                     getParametrics();
-    Point<float,3>	                      getPos();
-    Vector<float,3>	                      getSide();
+//    Point<float,3>	                      getPos();
+//    Vector<float,3>	                      getSide();
     const DMatrix<Point<float,2> >&       getTextureCoords() const;
-    Vector<float,3>                       getUp();
+//    Vector<float,3>                       getUp();
     const DVector<Vector<float,3> >&      getVerticesN1() const;
     const DMatrix<Arrow<float,3> >&       getVerticesN2() const;
     Visualizer<T,n>*                      getVisualizer( const std::string& str );
@@ -84,17 +98,17 @@ namespace GMlib {
     bool                                  isDefaultVisualizerActive();
     bool                                  isLighted() const;
     void                                  removeVisualizer( Visualizer<T,n>* visualizer );
-    void                                  rotate( Angle a, const Vector<float,3>& rot_axel );
-    void                                  rotate( Angle a, const Point<float,3>& p,const UnitVector<float,3>& d );
-    void                                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    void                                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+//    void                                  rotate( Angle a, const Vector<float,3>& rot_axel );
+//    void                                  rotate( Angle a, const Point<float,3>& p,const UnitVector<float,3>& d );
+//    void                                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
+//    void                                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     void                                  setColor( const GLColor& color );
     void                                  setLighted( bool lighted );
     void                                  setMaterial( const Material& material );
     void                                  setParametrics( Parametrics<T,3> *ref );
     void                                  toggleDefaultVisualizer();
-    void                                  translate( const Vector<float,3>& trans_vector );
-    void                                  translateGlobal( const Vector<float,3>& trans_vector );
+//    void                                  translate( const Vector<float,3>& trans_vector );
+//    void                                  translateGlobal( const Vector<float,3>& trans_vector );
 
   protected:
     Array< Visualizer<T,n>* >             _visualizers;
@@ -118,11 +132,33 @@ namespace GMlib {
     DMatrix< Arrow<float,3> >           _vertices_n2;		// Vertex-arrays for dynamic display
 
 
-    HqMatrix<float,3>&                  getMatrix();
+//    HqMatrix<float,3>&                  getMatrix();
 
 
   private:
     void                                  _init();
+
+
+
+
+
+
+
+
+
+
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+
+
+    void                    setDerivationMethod( GM_DERIVATION_METHOD method );
+
+  protected:
+    GM_DERIVATION_METHOD    _dm;
+
 
   };
 }

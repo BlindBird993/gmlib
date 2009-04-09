@@ -110,14 +110,13 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
-  inline
-  Vector<float,3> DParametrics<T,n>::getDir() {
-
-    return (Vector<float,3>)(this->_present * _ref->getDir().toFloat());
-//    const Vector<T,3> tmp = getTDir();
-//    return Vector3D<float>( tmp(0), tmp(1), tmp(2) );
-  }
+//  template <typename T, int n>
+//  inline
+//  Vector<float,3> DParametrics<T,n>::getDir() {
+//
+//    return DisplayObject::getDir();
+////    return (Vector<float,3>)(this->_present * _ref->getDir().toFloat());
+//  }
 
 
   template <typename T, int n>
@@ -144,12 +143,13 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
-  inline
-  HqMatrix<float,3>& DParametrics<T,n>::getMatrix() {
-
-    return _ref->getMatrix();
-  }
+//  template <typename T, int n>
+//  inline
+//  HqMatrix<float,3>& DParametrics<T,n>::getMatrix() {
+//
+//    return DisplayObject::getMatrix();
+////    return _ref->getMatrix();
+//  }
 
 
   template <typename T, int n>
@@ -160,24 +160,22 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
-  inline
-  Point<float,3> DParametrics<T,n>::getPos() {
+//  template <typename T, int n>
+//  inline
+//  Point<float,3> DParametrics<T,n>::getPos() {
+//
+//    return DisplayObject::getPos();
+////    return (Point<float,3>)(this->_present * _ref->getPos().toFloat());
+//  }
 
-    return (Point<float,3>)(this->_present * _ref->getPos().toFloat());
-//    const Point<T,3> tmp = getTPos();
-//    return Point3D<float>( tmp(0), tmp(1), tmp(2) );
-  }
 
-
-  template <typename T, int n>
-  inline
-  Vector<float,3> DParametrics<T,n>::getSide() {
-
-    return (Vector<float,3>)(this->_present * _ref->getSide().toFloat());
-//    const Vector<T,3> tmp = getTSide();
-//    return Vector3D<float>( tmp(0), tmp(1), tmp(2) );
-  }
+//  template <typename T, int n>
+//  inline
+//  Vector<float,3> DParametrics<T,n>::getSide() {
+//
+//    return DisplayObject::getSide();
+////    return (Vector<float,3>)(this->_present * _ref->getSide().toFloat());
+//  }
 
 
   template <typename T, int n>
@@ -188,13 +186,12 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
-  Vector<float,3> DParametrics<T,n>::getUp() {
-
-    return (Vector<float,3>)(this->_present * _ref->getUp().toFloat());
-//    const Vector<T,3> tmp = getTUp();
-//    return Vector3D<float>( tmp(0), tmp(1), tmp(2) );
-  }
+//  template <typename T, int n>
+//  Vector<float,3> DParametrics<T,n>::getUp() {
+//
+//    return DisplayObject::getUp();
+////    return (Vector<float,3>)(this->_present * _ref->getUp().toFloat());
+//  }
 
 
   template <typename T, int n>
@@ -276,77 +273,81 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
-  inline
-  void DParametrics<T,n>::rotate( Angle a, const Vector<float,3>& rot_axel ) {
-
-    if(!_ref)
-      return;
-
-    Vector<T,3> tmp(0.0);
-    for( int i = 0; i < 3; i++ )
-      tmp[i] = rot_axel(i);
-
-    _ref->rotate( a, tmp );
-  }
-
-
-  template <typename T, int n>
-  inline
-  void DParametrics<T,n>::rotate( Angle a, const Point<float,3>& p, const UnitVector<float,3>& d ) {
-
-    if(!_ref)
-      return;
-
-    Point<T,3> tmp1(0.0);
-    for( int i = 0; i < 3; i++ )
-      tmp1[i] = p(i);
-
-    Vector<T,3> tmp2(0.0);
-    for( int i = 0; i < 3; i++ )
-      tmp2[i] = d(i);
-
-    _ref->rotate( a, tmp1, tmp2 );
-  }
+//  template <typename T, int n>
+//  inline
+//  void DParametrics<T,n>::rotate( Angle a, const Vector<float,3>& rot_axel ) {
+//
+//    DisplayObject::rotate( a, rot_axel );
+////    if(!_ref)
+////      return;
+////
+////    Vector<T,3> tmp(0.0);
+////    for( int i = 0; i < 3; i++ )
+////      tmp[i] = rot_axel(i);
+////
+////    _ref->rotate( a, tmp );
+//  }
 
 
-  template <typename T, int n>
-  inline
-  void DParametrics<T,n>::rotateGlobal(Angle a, const Vector<float,3>& rot_axel) {
+//  template <typename T, int n>
+//  inline
+//  void DParametrics<T,n>::rotate( Angle a, const Point<float,3>& p, const UnitVector<float,3>& d ) {
+//
+//    DisplayObject::rotate( a, p, d );
+////    if(!_ref)
+////      return;
+////
+////    Point<T,3> tmp1(0.0);
+////    for( int i = 0; i < 3; i++ )
+////      tmp1[i] = p(i);
+////
+////    Vector<T,3> tmp2(0.0);
+////    for( int i = 0; i < 3; i++ )
+////      tmp2[i] = d(i);
+////
+////    _ref->rotate( a, tmp1, tmp2 );
+//  }
 
-    if(!_ref)
-      return;
 
-    UnitVector<float,3> tmp_rot_axel = _matrix_scene_inv * rot_axel;
+//  template <typename T, int n>
+//  inline
+//  void DParametrics<T,n>::rotateGlobal(Angle a, const Vector<float,3>& rot_axel) {
+//
+//    DisplayObject::rotateGlobal( a, rot_axel );
+////    if(!_ref)
+////      return;
+////
+////    UnitVector<float,3> tmp_rot_axel = _matrix_scene_inv * rot_axel;
+////
+////    Vector<T,3> tmp(0.0);
+////    for( int i = 0; i < 3; i++ )
+////      tmp[i] = tmp_rot_axel(i);
+////
+////    _ref->rotateGlobal( a, tmp );
+//  }
 
-    Vector<T,3> tmp(0.0);
-    for( int i = 0; i < 3; i++ )
-      tmp[i] = tmp_rot_axel(i);
 
-    _ref->rotateGlobal( a, tmp );
-  }
-
-
-  template <typename T, int n>
-  inline
-  void DParametrics<T,n>::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
-
-    if(!_ref)
-      return;
-
-    Point<float,3> tmp_p = _matrix_scene_inv * p;
-    UnitVector<float,3> tmp_d = _matrix_scene_inv * d;
-
-    Point<T,3> tmp1(0.0);
-    for( int i = 0; i < 3; i++ )
-      tmp1[i] = tmp_p(i);
-
-    Vector<T,3> tmp2(0.0);
-    for( int i = 0; i < 3; i++ )
-      tmp2[i] = tmp_d(i);
-
-    _ref->rotateGlobal( a, tmp1, tmp2 );
-  }
+//  template <typename T, int n>
+//  inline
+//  void DParametrics<T,n>::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
+//
+//    DisplayObject::rotateGlobal( a, p, d );
+////    if(!_ref)
+////      return;
+////
+////    Point<float,3> tmp_p = _matrix_scene_inv * p;
+////    UnitVector<float,3> tmp_d = _matrix_scene_inv * d;
+////
+////    Point<T,3> tmp1(0.0);
+////    for( int i = 0; i < 3; i++ )
+////      tmp1[i] = tmp_p(i);
+////
+////    Vector<T,3> tmp2(0.0);
+////    for( int i = 0; i < 3; i++ )
+////      tmp2[i] = tmp_d(i);
+////
+////    _ref->rotateGlobal( a, tmp1, tmp2 );
+//  }
 
 
   template <typename T, int n>
@@ -392,34 +393,58 @@ namespace GMlib {
   }
 
 
+//  template <typename T, int n>
+//  inline
+//  void DParametrics<T,n>::translate( const Vector<float,3>& trans_vector ) {
+//
+//    DisplayObject::translate( trans_vector );
+////    if(!_ref)
+////      return;
+////
+////    Vector<T,3> tmp(0.0);
+////    for( int i = 0; i < 3; i++ )
+////      tmp[i] = trans_vector(i);
+////
+////    _ref->translate( tmp );
+//  }
+
+
+//  template <typename T, int n>
+//  inline
+//  void DParametrics<T,n>::translateGlobal( const Vector<float,3>& trans_vector ) {
+//
+//    DisplayObject::translateGlobal( trans_vector );
+////    if(!_ref)
+////      return;
+////
+////    Vector<float,3> tmp_vec = this->_matrix_scene_inv * trans_vector;
+////
+////    Vector<T,3> tmp(0.0);
+////    for( int i = 0; i < 3; i++ )
+////      tmp[i] = tmp_vec(i);
+////
+////    _ref->translateGlobal( tmp );
+//  }
+
+
+
+
+
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+  //////////////////////// PARAMETRICS !!!!!!!!!!!!!! PARAMETRICS ////////////////////////
+
+
+
+
+
   template <typename T, int n>
-  inline
-  void DParametrics<T,n>::translate( const Vector<float,3>& trans_vector ) {
+  void DParametrics<T,n>::setDerivationMethod( GM_DERIVATION_METHOD method ) {
 
-    if(!_ref)
-      return;
-
-    Vector<T,3> tmp(0.0);
-    for( int i = 0; i < 3; i++ )
-      tmp[i] = trans_vector(i);
-
-    _ref->translate( tmp );
+    _dm = method;
   }
 
-
-  template <typename T, int n>
-  inline
-  void DParametrics<T,n>::translateGlobal( const Vector<float,3>& trans_vector ) {
-
-    if(!_ref)
-      return;
-
-    Vector<float,3> tmp_vec = this->_matrix_scene_inv * trans_vector;
-
-    Vector<T,3> tmp(0.0);
-    for( int i = 0; i < 3; i++ )
-      tmp[i] = tmp_vec(i);
-
-    _ref->translateGlobal( tmp );
-  }
 }

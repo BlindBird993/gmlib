@@ -46,17 +46,33 @@ namespace GMlib {
   public:
     DPRoseCurve( T radius = T(5) );
     DPRoseCurve( const DPRoseCurve<T>& copy );
-    DPRoseCurve( const PRoseCurve<T,3>& copy );
-    DPRoseCurve( PRoseCurve<T,3>* copy );
+//    DPRoseCurve( const PRoseCurve<T,3>& copy );
+//    DPRoseCurve( PRoseCurve<T,3>* copy );
     virtual ~DPRoseCurve();
 
-    virtual PRoseCurve<T,3>*    getPRoseCurve();
+//    virtual PRoseCurve<T,3>*    getPRoseCurve();
 
   protected:
-    PRoseCurve<T,3>*            _l_ref;
+//    PRoseCurve<T,3>*            _l_ref;
 
     string                      getIdentity() const;
     virtual void                init();
+
+
+  //////////////////////// PRoseCurve !!!!!!!!!!!!!! PRoseCurve ////////////////////////
+  //////////////////////// PRoseCurve !!!!!!!!!!!!!! PRoseCurve ////////////////////////
+  //////////////////////// PRoseCurve !!!!!!!!!!!!!! PRoseCurve ////////////////////////
+
+  public:
+    bool          isClosed() const;
+
+
+  protected:
+    T             _r;
+
+    void	        eval(T t, int d, bool l);
+    T             getEndP();
+    T             getStartP();
   };
 
 
