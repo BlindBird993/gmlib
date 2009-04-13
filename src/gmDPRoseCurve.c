@@ -142,17 +142,18 @@ namespace GMlib {
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d > 0)
-      {
-        this->_p[1][0] = _r * -1.75*sin(1.75*t)*cos(t)-sin(t)*cos(1.75*t);
-        this->_p[1][1] = _r * -1.75*sin(t)*sin(1.75*t)+cos(1.75*t)*cos(t);
-        this->_p[1][2] = 0.0;
+      if(d > 0) {
+
+        this->_p[1][0] = _r * -T(1.75)*sin(T(1.75)*t)*cos(t)-sin(t)*cos(T(1.75)*t);
+        this->_p[1][1] = _r * -T(1.75)*sin(t)*sin(T(1.75)*t)+cos(T(1.75)*t)*cos(t);
+        this->_p[1][2] = T(0);
       }
-      if(d > 1)
-      {
-        this->_p[2][0]= _r * 3.5*sin(t)*sin(1.75*t)-4.0625*cos(1.75*t)*cos(t);
-        this->_p[2][1]= _r * -3.5*sin(1.75*t)*cos(t)-4.0625*sin(t)*cos(1.75*t);
-        this->_p[2][2]= 0.0;
+
+      if(d > 1) {
+
+        this->_p[2][0]= _r * T(3.5)*sin(t)*sin(T(1.75)*t)-T(4.0625)*cos(T(1.75)*t)*cos(t);
+        this->_p[2][1]= _r * -T(3.5)*sin(T(1.75)*t)*cos(t)-T(4.0625)*sin(t)*cos(T(1.75)*t);
+        this->_p[2][2]= T(0);
       }
     }
   }

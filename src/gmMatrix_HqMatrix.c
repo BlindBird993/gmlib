@@ -346,7 +346,8 @@ namespace GMlib {
   ScalarPoint<T,n> HqMatrix<T, n>::operator*(const ScalarPoint<T,n>& p) const {
 
     ScalarPoint<T,n> r;
-    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), this->getPtr(), p.getPos());
+//    GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), this->getPtr(), p.getPos());
+    GM_Static_P_<T,n,n>::mv_xqP(r.getPtr(), this->getPtr(), p.getPos(), this->getPtr()+n);
     return r;
   }
 
@@ -364,13 +365,13 @@ namespace GMlib {
 
     if( s.isValid()) {
 
-      GM_Static_P_<T,n,n>::mv_xq(r.getPtr(), this->getPtr(), s.getPos());
+      // Position
+      GM_Static_P_<T,n,n>::mv_xqP(r.getPtr(), this->getPtr(), s.getPos(), this->getPtr()+n);
 
-      Vector<T,n> v;
+      // Radius
+      Vector<T,n> v(T(0));
       v[0]= s.getRadius();
-      for( int i = 1; i < n; i++ )
-        v[i] = T(0);
-      v = (*this) * v;
+      GM_Static_P_<T,n,n>::mv_xq( v.getPtr(), this->getPtr(), v );
       r.resetRadius( v.getLength() );
     }
 

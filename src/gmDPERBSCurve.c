@@ -45,13 +45,10 @@ namespace GMlib {
 
     _c.setDim(no_locals);
 
-
-    cout << "ERBSCurve:  It is " << ( _closed ? "closed" : "not closed" ) << endl;
     generateKnotVector( g );
 
-
     for( int i = 0; i < no_locals-1; i++ ) {
-      _c[i] = new DPArc<T>( g->evaluate( _t[i+1], 2 ), _t[i], _t[i+1], _t[i+2] );
+      _c[i] = new DPArc<T>( g->evaluateParent( _t[i+1], 2 ), _t[i], _t[i+1], _t[i+2] );
       insert( _c[i] );
     }
 
@@ -61,7 +58,7 @@ namespace GMlib {
     if( _closed )
       _c[i] = _c[0];
     else {
-      _c[i] = new DPArc<T>( g->evaluate( _t[i+1], 2 ), _t[i], _t[i+1], _t[i+2] );
+      _c[i] = new DPArc<T>( g->evaluateParent( _t[i+1], 2 ), _t[i], _t[i+1], _t[i+2] );
       insert( _c[i] );
     }
   }
@@ -85,18 +82,7 @@ namespace GMlib {
 //    _tmp.setDim( no_locals );
     for( int i = 0; i < no_locals - 1; i++ ) {
 
-      cout << "Creating Local patch: " << i << endl;
-
-      DVector< Vector<T,3> > er = g->evaluateParent( _t[i+1], d );
-      cout << " - Evaluation Result:" << endl;
-      for( int j = 0; j < er.getDim(); j++ ) {
-        for( int k = 0; k < 3; k++ )
-          cout << er[j][k] << " ";
-        cout << endl;
-      }
-      cout << endl;
-
-      _c[i] = new DPBezierCurve<T>( er, _t[i], _t[i+1], _t[i+2] );
+      _c[i] = new DPBezierCurve<T>( g->evaluateParent( _t[i+1], d ), _t[i], _t[i+1], _t[i+2] );
       insert( _c[i] );
     }
 
@@ -306,7 +292,7 @@ namespace GMlib {
     c1i = tk;
 
     // Evaluating first Local Curve @ k
-    DVector< Vector<T,3> > c0 = _c[c0i]->evaluate( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), 2 );
+    DVector< Vector<T,3> > c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), 2 );
 
 
     // If t == _t[tk], meaning that the sample is at the knot, set the sample value to the sampled value of the first local curve.
@@ -316,7 +302,7 @@ namespace GMlib {
     }
 
     // Evaluating second Local Curve @ k
-    DVector< Vector<T,3> > c1 = _c[c1i]->evaluate( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), 2 );
+    DVector< Vector<T,3> > c1 = _c[c1i]->evaluateParent( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), 2 );
 
     DVector<T> B;
     getB( B, tk, t, 2 );
@@ -349,12 +335,6 @@ namespace GMlib {
     const T dt  = g->getParDelta() / ( _c.getDim()-1 );
     const T kvd = _c.getDim() + 2;
 
-    cout << "Generationg Knot Vector: " << endl;
-    cout << " Input params:" << endl;
-    cout << "  st:  " << st << endl;
-    cout << "  dt:  " << dt << endl;
-    cout << "  kvd: " << kvd << endl;
-
     _t.setDim(kvd);
 
     for( int i = 0; i < kvd - 2; i++ )
@@ -368,11 +348,6 @@ namespace GMlib {
       _t[0] = _t[1];
       _t[kvd-1] = _t[kvd-2];
     }
-
-    cout << " Knot Vector: ";
-    for( int i = 0; i < _t.getDim(); i++ )
-      cout << _t[i] << " ";
-    cout << endl;
   }
 
 
@@ -506,7 +481,7 @@ namespace GMlib {
       const int c1i = tk;
 
       // Evaluate First Local Curve
-      c0 = _c[c0i]->evaluate( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), 2 );
+      c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), 2 );
 
       // Use c0 only if it is at the interpolation point
       if( abs(t - _t[tk]) < 1e-5 )
@@ -514,7 +489,7 @@ namespace GMlib {
       else {
 
         // Evaluate Second Local Curve
-        c1 = _c[c1i]->evaluate( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), 2 );
+        c1 = _c[c1i]->evaluateParent( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), 2 );
 
 
         // Correct c0 with c1

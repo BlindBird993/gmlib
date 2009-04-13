@@ -167,8 +167,6 @@ namespace GMlib {
     GLColor* pixels=new GLColor[dx*dy];
     _select(type_id);
     glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
-    cout << "Select Box: " << xmin << " " << ymin << " " << dx << " " << dy << "\n";
-    cout << "View Port : "	<< _x  << " " << _y   << " " << _w << " " << _h << "\n";
     glPopAttrib(); // reset state
 
     int ct=0;
@@ -289,8 +287,8 @@ namespace GMlib {
   //	GMmaterial::PolishedRed.glSet();
     lins.glSet();
     glCallList(_display_list+4);
-    if(_frustum_visible)
-    {
+    if(_frustum_visible) {
+
       GLColor		col( 1.0f, 1.0f, 1.0f, 1.0f ); // hvit
       Point3D<float> p1(0,0,-_near_plane);
       Point3D<float> p2(0,0,-_far_plane);
@@ -318,13 +316,13 @@ namespace GMlib {
       glEnd();
       if(lg) glEnable(GL_LIGHTING);
     }
-    if(_locked && ! _lock_object)
-    {
+    if(_locked && !_lock_object) {
+
       GLboolean lg;
       glGetBooleanv(GL_LIGHTING,&lg);
       if(lg) glDisable(GL_LIGHTING);
       glPushMatrix();
-      HqMatrix<float,3> invmat = _present; _present.invertOrthoNormal();
+      HqMatrix<float,3> invmat = _present; invmat.invertOrthoNormal();
       glTranslate(invmat*_lock_pos);
       GLColor(GMcolor::Green).glSet();
       glCallList(_display_list+8);

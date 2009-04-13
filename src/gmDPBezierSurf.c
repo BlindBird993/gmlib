@@ -276,10 +276,8 @@ namespace GMlib {
   template <typename T>
   void DPBezierSurf<T>::showSelectors( bool grid, const GLColor& _selector_color, const GLColor& grid_color ) {
 
-    if( _selectors ) {
-      cout << "Selectors already present" << endl;
+    if( _selectors )
       return;
-    }
 
 //    DMatrix< Vector<T, 3> > &c = _l_ref->getControlPoints();
 

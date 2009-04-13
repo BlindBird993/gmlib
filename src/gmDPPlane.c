@@ -44,7 +44,7 @@ namespace GMlib {
   inline
   DPPlane<T>::DPPlane( const Point<T,3>& p, const Vector<T,3>& u, const Vector<T,3>& v ) {
 
-    translate( p.toFloat() );
+//    translate( p.toFloat() );
     init();
 
 

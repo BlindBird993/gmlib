@@ -5,6 +5,18 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-04-13 Jostein Bratlie
+
+        * DParametrics/DCurve/DSurf
+          - Created/corrected evaluat functions of parametric functions
+          - evaluate - evaluates an object in scene coordiantes
+          - evaluateLocal - evaluates an object in object coords without transformations
+          - evaluateParent - evaluates an object in object coords with transformations
+        * gmCamera - Camera
+          - fix an error which fixes locking of camera
+        * gmMatrix - HqMatrix
+          - fixed multiplication operator with Sphere and ScalarPoint
+
 
 2009-04-09 Jostein Bratlie
 

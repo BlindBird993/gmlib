@@ -257,7 +257,6 @@ namespace GMlib {
   }
 
 
-
   /*! void SceneObject::translateGlobal(const Vector<float,3>& trans_vector)
    *  \brief Pending Documentation
    *
@@ -268,7 +267,6 @@ namespace GMlib {
 
     _matrix.translateGlobal(trans_vector);
   }
-
 
 
   /*! void SceneObject::scale(const Point<float,3>& scale_factor)
@@ -296,24 +294,26 @@ namespace GMlib {
   void SceneObject::culling( Array<SceneObject*>& disp_objs, const Frustum& f ) {
 
     //if(!_visible) return;
-    if(!_sphere.isValid()) return;
+    if(!_sphere.isValid())
+      return;
 
     int k = f.isInterfering(getSurroundingSphere());
 
-    if( k < 0 ) {
-
+    if( k < 0 )
       return;	// Outside
-    }
-          // Inside
+
+    // Inside
     if( k > 0 ) {
 
-      if(_visible) disp_objs += this; // added check for visible, children don't automatic follow anymore
+      if(_visible)
+        disp_objs += this; // added check for visible, children don't automatic follow anymore
       for( int i = 0; i < _children.getSize(); i++ )
         _children[i]->_fillObj( disp_objs );
     }
     else { // if(k == 0)     Intersecting
 
-      if( _visible && f.isInterfering( _global_sphere ) >= 0 ) disp_objs += this;
+      if( _visible && f.isInterfering( _global_sphere ) >= 0 )
+        disp_objs += this;
       for( int i = 0; i < _children.getSize(); i++ )
         _children[i]->culling( disp_objs, f );
     }
@@ -444,7 +444,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
-//
+
 //    std::string identity = getIdentity();
 //    cout << "Preparing: " << identity << endl;
     int nr = 1;
@@ -490,6 +490,8 @@ namespace GMlib {
 
     _present = mat.back();
     _global_total_sphere = _global_sphere = _present*_sphere;
+
+
     if(_scale.isActive()) {
 
       _global_sphere *= _scale.getMax();

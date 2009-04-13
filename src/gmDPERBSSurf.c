@@ -61,7 +61,7 @@ namespace GMlib {
       for( j = 0; j < no_locals_v-1; j++ ) {
 
         _c[i][j] = new DPBezierSurf<T>(
-          g->evaluate( _u[i+1], _v[j+1], d1, d2 ),
+          g->evaluateParent( _u[i+1], _v[j+1], d1, d2 ),
           _u[i], _u[i+1], _u[i+2],
           _v[j], _v[j+1], _v[j+2]
         );
@@ -72,7 +72,7 @@ namespace GMlib {
         _c[i][j] = _c[i][0];
       else {
         _c[i][j] = new DPBezierSurf<T>(
-          g->evaluate( _u[i+1], _v[j+1], d1, d2 ),
+          g->evaluateParent( _u[i+1], _v[j+1], d1, d2 ),
           _u[i], _u[i+1], _u[i+2],
           _v[j], _v[j+1], _v[j+2]
         );
@@ -86,7 +86,7 @@ namespace GMlib {
     else{
       for( j = 0; j < no_locals_v; j++ ) {
         _c[i][j] = new DPBezierSurf<T>(
-          g->evaluate( _u[i+1], _v[j+1], d1, d2 ),
+          g->evaluateParent( _u[i+1], _v[j+1], d1, d2 ),
           _u[i], _u[i+1], _u[i+2],
           _v[j], _v[j+1], _v[j+2]
         );
@@ -460,7 +460,7 @@ namespace GMlib {
     const T lv = _c[cu][cv]->getLocalMapping( v, _v[vk-1], _v[vk], _v[vk+1] );
 
     // Evaluate First local patch
-    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluate( lu, lv, du, dv );
+    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lu, lv, du, dv );
 
     // If on a interpolation point return only first patch evaluation
     if( abs(u - _u[uk]) < 1e-5 )
@@ -476,7 +476,7 @@ namespace GMlib {
     const T lv2 = _c[cu2][cv2]->getLocalMapping( v, _v[vk-1], _v[vk], _v[vk+1] );
 
     // Evaluate Second local patch
-    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluate( lu2, lv2, du, dv );
+    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( lu2, lv2, du, dv );
 
     DVector<T> a(du+1);
 

@@ -42,11 +42,13 @@ namespace GMlib {
     Point<T, n>::operator/=(Point<T,n>::getLength());
   }
 
+
   template <typename T, int n>
   inline
   UnitVector<T, n>::UnitVector( const T t[n] ) : Vector<T, n>(t) {
     Point<T, n>::operator/=( Point<T,n>::getLength() );
   }
+
 
   template <typename T, int n>
   inline
@@ -54,9 +56,11 @@ namespace GMlib {
     Point<T, n>::operator/=( Point<T,n>::getLength() );
   }
 
+
   template <typename T, int n>
   inline
   UnitVector<T, n>::UnitVector( const UnitVector<T, n> &uv ) : Vector<T, n>(uv) {}
+
 
   template <typename T, int n>
   inline
@@ -65,12 +69,14 @@ namespace GMlib {
     return Point<T,n>::operator/=( Point<T,n>::getLength() );
   }
 
+
   template <typename T, int n>
   inline
   Point<T, n>& UnitVector<T, n>::operator = ( const T t[n] ) {
     _cpy(t);
     return Point<T,n>::operator/=( Point<T,n>::getLength() );
   }
+
 
   template <typename T, int n>
   inline
@@ -79,6 +85,7 @@ namespace GMlib {
     return Point<T,n>::operator/=( Point<T,n>::getLength() );
   }
 
+
   template <typename T, int n>
   inline
   Point<T, n>& UnitVector<T, n>::operator = ( const UnitVector<T, n>& uv )	{
@@ -86,11 +93,13 @@ namespace GMlib {
     return *this;
   }
 
+
   template <typename T, int n>
   inline
   const T& UnitVector<T, n>::operator [] ( int i ) {
     return Point<T,n>::_pt[i];
   }
+
 
   template <typename T, int n>
   inline
@@ -100,31 +109,35 @@ namespace GMlib {
   }
 
 
-
   template <typename T, int n>
   inline
   Point<T,n>& UnitVector<T, n>::operator -= ( const Point<T, n> &p ) {
-    std::cout << "This: " << *this << ", ";
+
     Point<T,n>::operator-=(p);
-    std::cout << "This: " << *this << ", The lenght: " << ( Point<T,n>::getLength() ) << std::endl;
     return Point<T,n>::operator/=( Point<T,n>::getLength() );
   }
+
 
   template <typename T, int n>
   inline
   Point<T,n>& UnitVector<T, n>::operator %= ( const Point<T, n> &p ) {
+
     Point<T,n>::operator%=(p); return Point<T,n>::operator/=( Point<T,n>::getLength() );
   }
+
 
   template <typename T, int n>
   inline
   Point<T,n>& UnitVector<T, n>::operator *= ( const double d ) {
+
     return *this;
   }
+
 
   template <typename T, int n>
   inline
   Point<T,n>& UnitVector<T, n>::operator /= ( double d ) {
+
     return *this;
   }
 

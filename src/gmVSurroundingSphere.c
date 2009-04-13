@@ -82,7 +82,6 @@ namespace GMlib {
       // Display Clean Surrounding Sphere
       if( (_spheres & GM_VISUALIZER_SS_CLEAN) == GM_VISUALIZER_SS_CLEAN ) {
 
-        cout << "Clean Sphere..." << endl;
         _color_clean.glSet();
         Sphere3D( this->_ref->getSurroundingSphereClean(), 10, 10 ).display();
       }
@@ -90,7 +89,6 @@ namespace GMlib {
       // Display Surrounding Sphere
       if( (_spheres & GM_VISUALIZER_SS_SPHERE) == GM_VISUALIZER_SS_SPHERE ) {
 
-        cout << "Sphere..." << endl;
         _color.glSet();
         Sphere3D( this->_ref->getSurroundingSphere(), 10, 10 ).display();
       }
