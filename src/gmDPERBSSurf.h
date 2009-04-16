@@ -45,6 +45,7 @@ namespace GMlib {
   class DPERBSSurf : public DSurf<T> {
   public:
     DPERBSSurf( DSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 );
+    DPERBSSurf( const DMatrix< DPBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v );
     DPERBSSurf( const DPERBSSurf<T>& copy );
 //    DPERBSSurf( const PERBSSurf<T,3>& copy );
 //    DPERBSSurf( PERBSSurf<T,3>* copy );

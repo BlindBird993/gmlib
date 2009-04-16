@@ -4,6 +4,13 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-04-16 Jostein Bratlie
+
+        * DPERBSSurf
+          - Added a constructor which was missed during the merge from PERBSSurf
+        * DPApple
+          - Divided Differences is set as default resample derivation method.
+
 
 2009-04-13 Jostein Bratlie
 

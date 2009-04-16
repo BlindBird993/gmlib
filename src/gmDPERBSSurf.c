@@ -98,6 +98,25 @@ namespace GMlib {
 
   template <typename T>
   inline
+  DPERBSSurf<T>::DPERBSSurf( const DMatrix< DPBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v ) : _u(u), _v(v) {
+
+    init();
+
+    _c.setDim( c.getDim1(), c.getDim2() );
+    for( int i = 0; i < c.getDim1(); i++ ) {
+      for( int j = 0; j < c.getDim2(); j++ ) {
+        _c[i][j] = c(i)(j);
+        insertPatch( _c[i][j] );
+      }
+    }
+
+    _closed_u = closed_u;
+    _closed_v = closed_v;
+  }
+
+
+  template <typename T>
+  inline
   DPERBSSurf<T>::DPERBSSurf( const DPERBSSurf<T>& copy ) : DSurf<T>( copy ) {
 
     init();

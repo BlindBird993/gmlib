@@ -98,13 +98,17 @@ namespace GMlib {
   inline
   void Camera::display() {
 
+
     //cout << "Rendering camera View of camera with ID: " << getTypeId() << endl;
     setPerspective();
     glViewport(_x,_y,_w,_h);
     glPushMatrix();
       glMultMatrix(_matrix);
       glMultMatrix(_matrix_scene_inv);
-      if(_coord_sys_visible) drawActiveCam();
+
+      if(_coord_sys_visible)
+        drawActiveCam();
+
       _scene->_culling( _frustum, _culling );
       _scene->_lighting();
       _scene->_display();

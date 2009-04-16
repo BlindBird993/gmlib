@@ -125,8 +125,8 @@ namespace GMlib{
     Point<float,3>	            getCenterPos() const;
     Array<SceneObject*>&        getChildren();
     virtual std::string         getIdentity() const;
-    const HqMatrix<float,3>&	  getMatrixGlobal() const;
-    unsigned int	              getName() const;
+    const HqMatrix<float,3>&    getMatrixGlobal() const;
+    unsigned int                getName() const;
     SceneObject*                getParent();
     bool                        getSelected();
     Sphere<float,3>	            getSurroundingSphere() const;
@@ -179,11 +179,11 @@ namespace GMlib{
 
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                displayCollapsed();
+    virtual HqMatrix<float,3>&  getMatrix();
+    const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
     virtual void                localDisplay();
     virtual void                localSelect();
     virtual void                localSimulate(double dt);
-    virtual HqMatrix<float,3>&  getMatrix();
-    const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
     void	                      reset();
     void	                      setSurroundingSphere( const Sphere<float,3>& b );
     void                        updateSurroundingSphere( const Point<float,3>& p );
@@ -193,9 +193,9 @@ namespace GMlib{
 
 
   private:
-    static unsigned int			          _free_name;	//! For automatisk name-generations.
-    unsigned int					            _name;		//! Unic name for this object, used for selecting
-    Sphere<float,3>		        _sphere;	//! Surrounding sphere for this object
+    static unsigned int         _free_name;	//! For automatisk name-generations.
+    unsigned int                _name;		//! Unic name for this object, used for selecting
+    Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
     void	                      _display();
     void                        _fillObj( Array<SceneObject*>& );
