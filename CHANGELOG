@@ -12,6 +12,13 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
           - Divided Differences is set as default resample derivation method.
 
 
+2009-04-16 T.Sang Tran
+
+        * Correct mismatch function name in gnTriangle_Edge.
+          - position()  ==> getPosition()  in getCenterPos()
+          _ parameter() ==> getParameter() in getCenterpos2D()
+
+
 2009-04-13 Jostein Bratlie
 
         * DParametrics/DCurve/DSurf

@@ -425,7 +425,7 @@ namespace GMlib {
   inline
   Point<T,3> Edge<T>::getCenterPos() {
 
-    return (_vertex[1]->position() + _vertex[0]->position()) * 0.5;
+    return (_vertex[1]->getPosition() + _vertex[0]->getPosition()) * 0.5;
   }
 
 
@@ -433,7 +433,7 @@ namespace GMlib {
   inline
   Point<T,2> Edge<T>::getCenterPos2D() {
 
-    return ( _vertex[1]->parameter() + _vertex[0]->parameter() ) * 0.5;
+    return ( _vertex[1]->getParameter() + _vertex[0]->getParameter() ) * 0.5;
   }
 
 
