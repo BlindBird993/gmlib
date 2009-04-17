@@ -4,6 +4,19 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+2009-04-19 T.Sang Tran
+
+        * gmTriangle_Edge
+          - Correct bad code in split().
+
+        * gmTriangle_Vertex
+          - Make unitvector of normals in _computeNormal().
+
+        * gmTriangle_TriangleFacets
+          - Correct mismatch function names, setValues(..) ==> _set(..).
+
+
 2009-04-16 Jostein Bratlie
 
         * DPERBSSurf

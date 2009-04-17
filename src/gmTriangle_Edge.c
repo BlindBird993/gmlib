@@ -212,8 +212,13 @@ namespace GMlib {
     if( _triangle[1] != NULL )
       _triangle[1]->_reverse(this);
 
-    Array<Edge<T>*> edg1 = _triangle[0] == NULL ? NULL : _triangle[0]->getEdges();
-    Array<Edge<T>*> edg2 = _triangle[1] == NULL ? NULL : _triangle[1]->getEdges();
+//    Array<Edge<T>*> edg1 = _triangle[0] == NULL ? NULL : _triangle[0]->getEdges();
+//    Array<Edge<T>*> edg2 = _triangle[1] == NULL ? NULL : _triangle[1]->getEdges();
+
+      Array<Edge<T>*> edg1;
+      Array<Edge<T>*> edg2;
+      if( _triangle[0] != NULL ) edg1 = _triangle[0]->getEdges();
+      if( _triangle[1] != NULL ) edg2 = _triangle[1]->getEdges();
 
     if( _triangle[0] != NULL ) {
       // swap triangles, _triang[0] should be on left
@@ -222,8 +227,8 @@ namespace GMlib {
         Triangle<T>* st = _triangle[0];
         _triangle[0] = _triangle[1];
         _triangle[1] = st;
-        edg1 = _triangle[0] == NULL ? NULL : _triangle[0]->getEdges();
-        edg2 = _triangle[1] == NULL ? NULL : _triangle[1]->getEdges();
+        if( _triangle[0] != NULL ) edg1 = _triangle[0]->getEdges();
+        if( _triangle[1] != NULL ) edg2 = _triangle[1]->getEdges();
       }
     }
     else {
@@ -233,8 +238,8 @@ namespace GMlib {
         Triangle<T>* st = _triangle[0];
         _triangle[0] = _triangle[1];
         _triangle[1] = st;
-        edg1 = _triangle[0] == NULL ? NULL : _triangle[0]->getEdges();
-        edg2 = _triangle[1] == NULL ? NULL : _triangle[1]->getEdges();
+        if( _triangle[0] != NULL ) edg1 = _triangle[0]->getEdges();
+        if( _triangle[1] != NULL ) edg2 = _triangle[1]->getEdges();
       }
     }
 

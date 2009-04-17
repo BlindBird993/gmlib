@@ -610,7 +610,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
     if (!inserted)
     {
-      (*this)[i].setValues(v);			// Vertex is already a vertex
+      (*this)[i]._set(v);			// Vertex is already a vertex
       return inserted;
     }
 
@@ -618,7 +618,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
     if (c)
       (*this)[i].setConst();
 
-    set(i);
+    _set(i);
 
     return inserted;
   }
