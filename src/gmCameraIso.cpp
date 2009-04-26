@@ -44,7 +44,7 @@ namespace GMlib {
    */
   CameraIso::CameraIso(Scene* s) : Camera(s) {
 
-    reset();
+    resetC();
   }
 
 
@@ -105,7 +105,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  void CameraIso::drawActivCam() {
+  void CameraIso::drawActiveCam() {
 
     int i,ih,iw;
     iw = _horisontal/_gw;

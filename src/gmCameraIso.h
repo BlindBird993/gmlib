@@ -109,7 +109,7 @@ namespace GMlib {
 
 		// ***********
 		// From Camera
-		void						drawActivCam();
+		void						drawActiveCam();
 		SceneObject*		find(unsigned int name);				/// \todo ????? NOT IMPLEMENTED !!`????? why??
 		void						resetC(float z=1);
 

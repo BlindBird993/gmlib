@@ -5,6 +5,14 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2009-04-27 Jostein Bratlie
+        * gmCameraIso
+          - drawActivCam() renamed to the correct drawActiveCam(), inherited from Camera.
+          - Constructor taking a Scene pointer now calls the correct init function resetC(...)
+            instead of the function reset(...) intended for camera switching.
+
+
 2009-04-19 T.Sang Tran
 
         * gmTriangle_Edge
