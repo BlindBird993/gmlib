@@ -239,6 +239,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmGLColor.h" />
+		<Unit filename="../../../src/gmGLSL" />
+		<Unit filename="../../../src/gmGLSL.cpp" />
+		<Unit filename="../../../src/gmGLSL.h" />
 		<Unit filename="../../../src/gmGlobal" />
 		<Unit filename="../../../src/gmGlobal.h" />
 		<Unit filename="../../../src/gmLight" />

@@ -31,14 +31,6 @@
  */
 
 
-
-// OpenGL include
-#ifdef _WIN32
-  #include <windows.h>
-#endif
-#include <GL/glu.h>
-
-
 // GMlib includes
 #include "gmOpenGL.h"
 #include "gmTexture.h"

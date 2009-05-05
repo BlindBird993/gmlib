@@ -172,6 +172,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\gmGLSL.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\gmLight_Light.cpp"
 				>
 			</File>
@@ -547,6 +551,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmGlobal.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmGLSL"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmGLSL.h"
 				>
 			</File>
 			<File

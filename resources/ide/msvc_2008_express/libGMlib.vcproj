@@ -168,6 +168,10 @@
 				RelativePath="..\..\..\src\gmDisplayObject.cpp"
 				>
 			</File>
+      <File
+        RelativePath="..\..\..\src\gmGLSL.cpp"
+        >
+      </File>
 			<File
 				RelativePath="..\..\..\src\gmLight_Light.cpp"
 				>
@@ -546,6 +550,14 @@
 				RelativePath="..\..\..\src\gmGlobal.h"
 				>
 			</File>
+      <File
+        RelativePath="..\..\..\src\gmGLSL"
+        >
+      </File>
+      <File
+        RelativePath="..\..\..\src\gmGLSL.h"
+        >
+      </File>
 			<File
 				RelativePath="..\..\..\src\gmLight"
 				>

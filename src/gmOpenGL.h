@@ -76,10 +76,30 @@ typedef unsigned short wchar_t;
 #include <iostream>
 using namespace std;
 
-// OpenGL includes
-#ifndef __glee_h_
-  #include <GL/gl.h>
+// OpenGL and extionsion includes
+//#define GM_GL_EXTENSION
+#ifdef GM_GL_EXTENSION
+  #ifdef _WIN32
+    #include <GL/GLee.h>
+  #endif
 #endif
+
+
+#ifndef __glee_h_
+  #ifdef GM_GL_EXTENSION
+    #define GL_GLEXT_PROTOTYPES
+    #include <GL/gl.h>
+    #include <GL/glext.h>
+    #include <GL/glx.h>
+    #include <GL/glxext.h>
+  #else
+    #include <GL/gl.h>
+  #endif
+#endif
+
+
+#include <GL/glu.h>
+
 
 // GMlib includes
 #include "gmPoint.h"

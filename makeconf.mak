@@ -231,7 +231,13 @@ HEADERS += \
   gmVPoints \
   gmVPoints.h \
   gmVSurroundingSphere \
-  gmVSurroundingSphere.h \
+  gmVSurroundingSphere.h
+
+
+# gmGPU
+HEADERS += \
+  gmGLSL \
+  gmGLSL.h
 
 
 # Undefined TEMPORARY
@@ -370,7 +376,7 @@ HEADER_EXTS = \
   gmWindow_View.c \
   gmWindow_ViewBorder.c \
   gmWindow_ViewSet.c \
-  gmVisualizer.c \
+  gmVisualizer.c
 
 
 
@@ -398,7 +404,8 @@ SOURCES = \
   gmTexture.cpp \
   gmWindow_GMWindow.cpp \
   gmWindow_View.cpp \
-  gmWindow_ViewSet.cpp
+  gmWindow_ViewSet.cpp \
+  gmGLSL.cpp
 
 
 #####################################
