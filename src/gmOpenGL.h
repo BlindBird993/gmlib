@@ -77,7 +77,7 @@ typedef unsigned short wchar_t;
 using namespace std;
 
 // OpenGL and extionsion includes
-//#define GM_GL_EXTENSION
+#define GM_GL_EXTENSION
 #ifdef GM_GL_EXTENSION
   #ifdef _WIN32
     #include <GL/GLee.h>
