@@ -332,7 +332,7 @@ namespace GMlib {
   inline
   bool ArrayT<T>::isExisting( const T& t ) const {
 
-    return exist();
+    return exist( t );
   }
 
 

@@ -141,6 +141,18 @@ namespace GMlib {
   }
 
 
+  /*! float Camera::getAngleTan() const
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  inline
+  float Camera::getAngleTan() const {
+
+    return _angle_tan;
+  }
+
+
   /*! float Camera::getFarPlane() const
    *	\brief Pending Documentation
    *

@@ -31,8 +31,7 @@
  */
 
 
-#include "GMPoint.h"
-//#include "GMVector.h"
+#include "gmPoint.h"
 
 
 namespace GMlib {

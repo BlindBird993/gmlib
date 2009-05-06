@@ -30,17 +30,8 @@
  */
 
 
-// OpenGL includes
-#ifdef _WIN32
-  #include <windows.h>
-#endif
-
-#ifndef __glee_h_
-  #include <GL/gl.h>
-#endif
-
-
 // GMlib includes
+#include "gmOpenGL.h"
 #include "gmPoint3D.h"
 #include "gmCamera.h"
 #include "gmMaterial.h"
@@ -203,8 +194,31 @@ namespace GMlib {
    */
   double Camera::getDistanceToObject(SceneObject* obj) {
 
-    if(obj)
+    if(obj) {
+      cout << "Distance from " << getIdentity() << " to " << obj->getIdentity() << endl;
+      cout << "  obj center pos: " << obj->getCenterPos()[0] << " " << obj->getCenterPos()[1] << " " << obj->getCenterPos()[2] << endl;
+      cout << "  _matrix:" << endl;
+      for( int i = 0; i < 4; i++ ) {
+
+        cout << "    ";
+        for( int j = 0; j < 4; j++ ) {
+          cout << _matrix[i][j] << " ";
+        }
+        cout << endl;
+      }
+      cout << "  _matrix_scene_inv:" << endl;
+      for( int i = 0; i < 4; i++ ) {
+
+        cout << "    ";
+        for( int j = 0; j < 4; j++ ) {
+          cout << _matrix_scene_inv[i][j] << " ";
+        }
+        cout << endl;
+      }
+      cout << "  Dist Vector: " << (_matrix*_matrix_scene_inv*obj->getCenterPos())[0] << " " << (_matrix*_matrix_scene_inv*obj->getCenterPos())[1] << " " << (_matrix*_matrix_scene_inv*obj->getCenterPos())[2] << endl;
+      cout << "  DTO: " << (_matrix*_matrix_scene_inv*obj->getCenterPos()).getLength() << endl;
       return(_matrix*_matrix_scene_inv*obj->getCenterPos()).getLength();
+    }
     else
       return 0.0;
   }

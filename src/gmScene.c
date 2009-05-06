@@ -47,6 +47,21 @@ namespace GMlib {
   }
 
 
+  /*! Array<Light*>& Scene::getLights()
+   *  \brief Returns the scene's light sources.
+   *
+   *  Returns a reference to the Array containing the light sources
+   *  in the scene
+   *
+   *  \return A reference to the scene's light source.
+   */
+  inline
+  Array<Light*>& Scene::getLights() {
+
+    return _lights;
+  }
+
+
   /*! double Scene::getTimeScale()
    *  \brief Pending Documentation
    *

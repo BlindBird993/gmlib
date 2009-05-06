@@ -32,7 +32,10 @@
 #ifndef __gmSUBSPACE_H__
 #define __gmSUBSPACE_H__
 
+
+
 // GMlib includes
+#include "gmPoint.h"
 #include "gmMatrix.h"
 
 
@@ -66,7 +69,7 @@ class Cube;
   template <typename T, int n, int m>
   class SubSpace : public Point<T,n> {
   public:
-    SubSpace( const Point<T,n>& p = Point<T,n>(T(0)) );
+    SubSpace( const Point<T,n>& p );// = Point<T,n>(T(0)) );
     SubSpace( const Vector<Vector<T,n>,m>& v );
     SubSpace( const Arrow<T,n>& a );
     SubSpace( const Point<T,n>& p, const Vector<T,n>& v );
@@ -74,15 +77,15 @@ class Cube;
     SubSpace( const SubSpace<T,n,m>& s );
 
     Point<T,n>	          getClosestPoint( const Point<T,n>& p ) const;
-    Vector<T,n> const&	  getDir( int i = 0 ) const;
-    Vector<T,n>&		      getDirRef( int i = 0 );
+    Vector<T,n>&		      getDir( int i = 0 );
+    Vector<T,n> const&	  getDirC( int i = 0 ) const;
     T                     getDistanceAlong( const Point<T,n>& p, int i = 0 ) const;
     T                     getDistanceTo( const Point<T,n>& p ) const;
     Vector<T,n>           getDistanceVector( const Point<T,n>& p ) const;
-    Matrix<T,m,n> const&  getMat() const;
-    Matrix<T,m,n>&		    getMatRef();
-    Point<T,n> const&	    getPos() const;
-    Point<T,n>&			      getPosRef();
+    Matrix<T,m,n>&        getMat();
+    Matrix<T,m,n> const&	getMatC() const;
+    Point<T,n>&	          getPos();
+    Point<T,n> const&			getPosC() const;
 
 
   protected:
@@ -94,17 +97,17 @@ class Cube;
   template <typename T, int n>
   class SubSpace<T,n,0> : public Point<T,n> {
   public:
-    SubSpace( const Point<T,n>& p = Point<T,n>(T(0)) );
+    SubSpace( const Point<T,n>& p );// = Point<T,n>(T(0)) );
     SubSpace( const SubSpace<T,n,0>& s );
 
     Point<T,n>	        getClosestPoint( const Point<T,n>& p ) const;
-    Point<T,n> const&   getPos() const;
-    Point<T,n>&			    getPosRef();
     Vector<T,n>			    getDir( int i = 0 );
-    Vector<T,n> const   getDir( int i = 0 ) const;
+    Vector<T,n> const   getDirC( int i = 0 ) const;
     T                   getDistanceAlong(const Point<T,n>& p, int i = 0);
     T                   getDistanceTo(const Point<T,n>& p) const;
     Vector<T,n>         getDistanceVector(const Point<T,n>& p) const;
+    Point<T,n>&			    getPos();
+    Point<T,n> const&   getPosC() const;
 
   }; // END class SubSpace<t,n,0> "Terminator"
 
@@ -202,14 +205,14 @@ class Cube;
 
 
   // *******************************************
-  // SubSpace operators for SubSpace multiplying
+  // SubSpace operators for SubSpace multiplication
 
   template <class T, int n, int m, int k>
   inline
   SubSpace<T,n,k> operator * ( const Matrix<T,n,m>& mat, const SubSpace<T,m,k>& s ) {
 
-    SubSpace<T,n,k> r(multTrans(mat, s.getMat()));
-    r.getPosRef() = s.getPos();
+    SubSpace<T,n,k> r( multTrans( mat, s.getMatC() ) );
+    r.getPos() = s.getPosC();
     return r;
   }
 
@@ -218,8 +221,8 @@ class Cube;
   inline
   SubSpace<T,n,k> operator * (const HqMatrix<T,n>& mat, const SubSpace<T,n,k>& s ) {
 
-    SubSpace<T,n,k> r(multTrans(mat, s.getMat()));
-    r.getPosRef() = mat * s.getPos();
+    SubSpace<T,n,k> r( multTrans( mat, s.getMatC() ) );
+    r.getPos() = mat * s.getPosC();
     return r;
   }
 

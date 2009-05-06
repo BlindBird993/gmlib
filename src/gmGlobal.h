@@ -31,12 +31,12 @@
  */
 
 
-namespace GMlib {
+// Version definitions
+#define GM_VERSION 0x000300
+#define GM_VERSION_STR "0.3.0"
+
+#define GM_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 
 
 
 
-
-
-
-}; // END namespace GMlib

@@ -106,6 +106,7 @@ namespace GMlib {
 		void                    enableCulling( bool enable = true );
 		SceneObject*						findSelectObject(int, int, int type_id=0);
 		Array<SceneObject* >		findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
+		float                   getAngleTan() const;
 		double									getDistanceToObject(int, int);
 		double									getDistanceToObject(SceneObject* obj);
 		float									  getFarPlane() const;
@@ -124,7 +125,7 @@ namespace GMlib {
 		bool 										isFrustumVisible() const;
 		virtual SceneObject*		lockTargetAtPixel(int,int);
 		void 										reset();						// To be used when changing Camera.
-		void 										reshape(int w1, int h1, int w2, int h2);		// To be used when changing size of window
+		virtual void 						reshape(int w1, int h1, int w2, int h2);		// To be used when changing size of window
 		void										setCuttingPlanes(float near_plane, float far_plane);
 		void 										setCoordSysVisible(bool visible=true);
 		void										setEyeDist(double eye_dist=0.08);
@@ -148,7 +149,7 @@ namespace GMlib {
 															const Vector<float,3>& z,
 															const Vector<float,3>& p);
 
-		void										display();
+		virtual void						display();
 		virtual	void						drawActiveCam();
 		SceneObject*						find(unsigned int name);
 		virtual void						makeGraphics();
@@ -164,7 +165,7 @@ namespace GMlib {
 		void										localSelect();
 
 
-	private:
+//	private:
 		static Scene						_default_scene;
 		static unsigned int						_display_list;
 

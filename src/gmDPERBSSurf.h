@@ -35,7 +35,9 @@
 
 // GMlib includes+
 #include "gmDSurf.h"
-#include "gmPERBSSurf.h"
+//#include "gmPERBSSurf.h"
+#include "gmDPBezierSurf.h"
+#include "gmEvaluatorERBS.h"
 
 
 namespace GMlib {

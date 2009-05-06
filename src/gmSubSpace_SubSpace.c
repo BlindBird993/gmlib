@@ -49,7 +49,7 @@ namespace GMlib {
 
   template <typename T, int n, int m>
   inline
-  SubSpace<T,n,m>::SubSpace( const Arrow<T,n>& a ) : Point<T,n>(a.getPosRef()), _matrix(a.getDirRef())	 {
+  SubSpace<T,n,m>::SubSpace( const Arrow<T,n>& a ) : Point<T,n>(a.getPos()), _matrix(a.getDir())	 {
   }
 
 
@@ -75,7 +75,7 @@ namespace GMlib {
   inline
   Point<T,n> SubSpace<T,n,m>::getClosestPoint( const Point<T,n>& p ) const {
 
-    Point<T,n>  cp  = getPosRef();
+    Point<T,n>  cp  = getPosC();
     Vector<T,n> d   = p - cp;
 
     for(int i = 0; i < m; i++) {
@@ -87,17 +87,17 @@ namespace GMlib {
 
   template <typename T, int n, int m>
   inline
-  Vector<T,n> const& SubSpace<T,n,m>::getDir( int i ) const {
+  Vector<T,n>& SubSpace<T,n,m>::getDir( int i ){
 
-    return _matrix(i);
+    return _matrix[i];
   }
 
 
   template <typename T, int n, int m>
   inline
-  Vector<T,n>& SubSpace<T,n,m>::getDirRef( int i ) {
+  Vector<T,n> const& SubSpace<T,n,m>::getDirC( int i ) const {
 
-    return _matrix[i];
+    return _matrix(i);
   }
 
 
@@ -127,7 +127,7 @@ namespace GMlib {
 
   template <typename T, int n, int m>
   inline
-  Matrix<T,m,n> const& SubSpace<T,n,m>::getMat() const {
+  Matrix<T,m,n>& SubSpace<T,n,m>::getMat() {
 
     return _matrix;
   }
@@ -135,7 +135,7 @@ namespace GMlib {
 
   template <typename T, int n, int m>
   inline
-  Matrix<T,m,n>& SubSpace<T,n,m>::getMatRef() {
+  Matrix<T,m,n> const& SubSpace<T,n,m>::getMatC() const {
 
     return _matrix;
   }
@@ -143,17 +143,17 @@ namespace GMlib {
 
   template <typename T, int n, int m>
   inline
-  Point<T,n> const& SubSpace<T,n,m>::getPos() const {
-
-    return reinterpret_cast<Point<T,n>const&>(*this);
-  }
-
-
-  template <typename T, int n, int m>
-  inline
-  Point<T,n>& SubSpace<T,n,m>::getPosRef() {
+  Point<T,n>& SubSpace<T,n,m>::getPos() {
 
     return reinterpret_cast<Point<T,n>&>(*this);
+  }
+
+
+  template <typename T, int n, int m>
+  inline
+  Point<T,n> const& SubSpace<T,n,m>::getPosC() const {
+
+    return reinterpret_cast<Point<T,n>const&>(*this);
   }
 
 
@@ -184,7 +184,7 @@ namespace GMlib {
 
   template <class T, int n>
   inline
-  Point<T,n> const& SubSpace<T,n,0>::getPos() const {
+  Point<T,n>& SubSpace<T,n,0>::getPos(){
 
     return reinterpret_cast<Point<T,n>const&>(*this);
   }
@@ -192,7 +192,7 @@ namespace GMlib {
 
   template <class T, int n>
   inline
-  Point<T,n>& SubSpace<T,n,0>::getPosRef() {
+  Point<T,n> const& SubSpace<T,n,0>::getPosC() const {
 
     return reinterpret_cast<Point<T,n>&>(*this);
   }
@@ -208,7 +208,7 @@ namespace GMlib {
 
   template <class T, int n>
   inline
-  Vector<T,n> const SubSpace<T,n,0>:: getDir( int i ) const {
+  Vector<T,n> const SubSpace<T,n,0>:: getDirC( int i ) const {
 
     return Vector<T,n>(0.0);
   }

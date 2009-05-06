@@ -407,8 +407,6 @@ namespace GMlib {
 
 
 
-
-
   // ****************************************
   // Matrix multiplication (special versions)
 

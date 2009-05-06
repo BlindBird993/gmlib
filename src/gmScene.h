@@ -81,6 +81,7 @@ namespace GMlib{
 
     SceneObject*          find(unsigned int name);
     double                getElapsedTime();
+    Array<Light*>&        getLights();
     int                   getSize();
     int                   getSizeTotal();
     Sphere<float,3>	      getSphere();

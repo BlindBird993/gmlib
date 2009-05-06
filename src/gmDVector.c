@@ -347,10 +347,17 @@ namespace GMlib {
   void  DVector<T>::resetDim(int i) {
 
     int j, k = min(i,_n);
-    T* tmp = (i>4 ? new T[i]:_init);
-    for(j=0; j<k; j++) tmp[j] = _p[j];
-    for(; j<i; j++) tmp[j] = T(0);
-    if(_p != _init) delete [] _p;
+    T* tmp = ( i > 4 ? new T[i] : _init );
+
+    for( j = 0; j < k; j++ )
+      tmp[j] = _p[j];
+
+    for(; j < i; j++)
+      tmp[j] = T();
+
+    if( _p != _init )
+      delete [] _p;
+
     _n = i;
     _p = tmp;
   }
@@ -369,7 +376,7 @@ namespace GMlib {
   void  DVector<T>::setDim(int i) {
     if(i>4 && i>_n)
     {
-      if(_p != _init) delete [] _p;
+      if( _p != _init ) delete [] _p;
       _p = new T[i];
     }
     _n = i;

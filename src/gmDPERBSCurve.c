@@ -307,7 +307,7 @@ namespace GMlib {
     DVector<T> B;
     getB( B, tk, t, 2 );
 
-    // Calculate pascals triangle numbers and the compute the sample position data
+    // Calculate pascals triangle numbers and then compute the sample position data
     c0 -= c1;
 
     DVector<T> a(B.getDim());

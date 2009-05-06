@@ -6,6 +6,34 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+
+2009-05-06 Jostein Bratlie
+        * gmSubSpace
+          - Fixed a couple of function miss matches.
+            For all subspace classes, base and overloaded functions getDir(), getDirC(), getMat(), getMatC(), getPos(), and getPosC():
+            The "normal" function returns a reference to the local value of the object, while the function appended a 'C' returns a constant
+            reference.
+        * gmGlobal
+          - Added defines for version, package date
+            GM_VERSION, GM_VERSION_STR
+          - Added a define function for version checking
+            GM_VERSION_CHECK( major, minor, patch )
+            can be used as:
+            if( GM_VERSION >= GM_VERSION_CHECK( major, minor, patch ) )
+          - These are similar to Qt's.
+        * gmCamera, Camera
+          - Added a function to return the Angle tan value: getAngleTan()
+          - Functions reshape(...) and display() made virtual
+        *gmScene, Scene
+          - Added a function to return the Lights in the scene.
+        *gmSceneObject, SceneObject
+          - Made some internal fixes to the rotate*(...) functions.
+        *gmArrayT, ArrayT
+          - Fixed an internal error in bool isExisting( T t ), it now calls bool exist( T t ) witt the correct parameter.
+        *gmDPERBSSurf
+          - Fixed an #include error.
+
+
 2009-04-27 Jostein Bratlie
         * gmCameraIso
           - drawActivCam() renamed to the correct drawActiveCam(), inherited from Camera.
