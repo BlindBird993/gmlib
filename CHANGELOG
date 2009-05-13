@@ -9,13 +9,6 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
         * Add GLShader-visualizer and PhongShader-visualizer.
 
 
-2009-05-05  T.Sang Tran
-
-        * Add support for OpenGL Shading Language.
-        * Correct includes dependencies of OpenGL Extension in gmCamera.cpp, gmTexture.cpp and gmOpenGL.h.
-        * Update MSVC's projects.
-
-
 2009-05-06 Jostein Bratlie
         * gmSubSpace
           - Fixed a couple of function miss matches.
@@ -41,6 +34,13 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
           - Fixed an internal error in bool isExisting( T t ), it now calls bool exist( T t ) witt the correct parameter.
         *gmDPERBSSurf
           - Fixed an #include error.
+
+
+2009-05-05  T.Sang Tran
+
+        * Add support for OpenGL Shading Language.
+        * Correct includes dependencies of OpenGL Extension in gmCamera.cpp, gmTexture.cpp and gmOpenGL.h.
+        * Update MSVC's projects.
 
 
 2009-04-27 Jostein Bratlie
