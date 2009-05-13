@@ -4,12 +4,16 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-05-12  T.Sang Tran
+
+        * Add GLShader-visualizer and PhongShader-visualizer.
+
+
 2009-05-05  T.Sang Tran
 
         * Add support for OpenGL Shading Language.
         * Correct includes dependencies of OpenGL Extension in gmCamera.cpp, gmTexture.cpp and gmOpenGL.h.
-	* Update MSVC's projects.
-
+        * Update MSVC's projects.
 
 
 2009-05-06 Jostein Bratlie

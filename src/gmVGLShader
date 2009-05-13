@@ -22,24 +22,11 @@
 
 
 
-/*! \file gmVisualizers
+/*! \file   gmVGLShader
+ *  \brief  gmVGLShader C++ header
  *
- *  C++ interface for the GMlib Visualizer headers and the relative classes
- *  for Displayable Curves and Surfaces.
- *
- *  \date   2008-09-15
+ *  \date   2009-05-11
  */
 
+#include "gmVGLShader.h"
 
-// The base class of all Visualizers
-#include "gmVisualizer"
-
-// Visualizers
-#include "gmVContours"              // Displays Contours
-#include "gmVDefault"               // Default Visualizer
-#include "gmVDerivatives"           // Displays Derivatives
-#include "gmVGLShader"              // GLSL Shader Visualizer
-#include "gmVGLPhongShader"         // Phong Shader Visualizer
-#include "gmVNormals"               // Displays Normals
-#include "gmVPoints"                // Visualizes the Object as a "cloud" of Points
-#include "gmVSurroundingSphere"     // Displays The Surrounding Sphere of an object

@@ -77,10 +77,7 @@ namespace GMlib
           void          toggleShader( bool force = false );
 
 
-        private:
-          char*         _get_error_info( bool shader, unsigned int v );
-          void          _init();
-
+        protected:
           bool          _active;
           bool          _changed;
           bool          _valid;
@@ -94,6 +91,11 @@ namespace GMlib
 
           const char    *_vs_src;
           const char    *_fs_src;
+
+
+        private:
+          char*         _get_error_info( bool shader, unsigned int v );
+          void          _init();
 
 
       }; // End class Shader

@@ -954,6 +954,22 @@
 				RelativePath="..\..\..\src\gmVisualizers"
 				>
 			</File>
+      <File
+        RelativePath="..\..\..\src\gmVGLShader"
+        >
+      </File>
+      <File
+        RelativePath="..\..\..\src\gmVGLShader.h"
+        >
+      </File>
+      <File
+        RelativePath="..\..\..\src\gmVGLPhongShader"
+        >
+      </File>
+      <File
+        RelativePath="..\..\..\src\gmVGLPhongShader.h"
+        >
+      </File>
 			<File
 				RelativePath="..\..\..\src\gmVNormals"
 				>

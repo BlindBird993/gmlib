@@ -22,24 +22,68 @@
 
 
 
-/*! \file gmVisualizers
+/*! \file gmVGLShader.h
  *
- *  C++ interface for the GMlib Visualizer headers and the relative classes
- *  for Displayable Curves and Surfaces.
+ *  Interface for the VGLShader class.
  *
- *  \date   2008-09-15
+ *  \date   2009-05-10
  */
 
 
-// The base class of all Visualizers
-#include "gmVisualizer"
+#ifndef __gmVGLSHADER_H__
+#define __gmVGLSHADER_H__
 
-// Visualizers
-#include "gmVContours"              // Displays Contours
-#include "gmVDefault"               // Default Visualizer
-#include "gmVDerivatives"           // Displays Derivatives
-#include "gmVGLShader"              // GLSL Shader Visualizer
-#include "gmVGLPhongShader"         // Phong Shader Visualizer
-#include "gmVNormals"               // Displays Normals
-#include "gmVPoints"                // Visualizes the Object as a "cloud" of Points
-#include "gmVSurroundingSphere"     // Displays The Surrounding Sphere of an object
+
+// STL includes
+#include <string>
+
+// GMlib includes
+#include "gmGLSL.h"
+#include "gmVisualizer.h"
+
+
+#ifdef GM_GPU_GLSL
+
+
+namespace GMlib
+{
+
+  namespace GPU
+  {
+
+    namespace GLSL
+    {
+
+      template <typename T, int n>
+      class VGLShader : public Visualizer<T,n>, public GLShader
+      {
+        public:
+          VGLShader();
+          VGLShader( const char* vs, const char* fs );
+          VGLShader( const VGLShader<T,n>& cpy );
+          ~VGLShader();
+
+          void        display();
+          std::string getIdentity() const;
+
+      }; // End VGLShader
+
+    }// End namespace GLSL
+
+  } // End namespace GPU
+
+} // Ene namespace GMlib
+
+
+// Include VGLShader class function implementations
+#include "gmVGLShader.c"
+
+
+#endif // GM_GPU_GLSL
+
+
+#endif // __gmVGLSHADER_H__
+
+
+
+

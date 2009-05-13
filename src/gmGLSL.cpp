@@ -46,8 +46,8 @@ namespace GMlib
 
       GLShader::GLShader()
       {
-        _fs_src = 0x0;
         _vs_src = 0x0;
+        _fs_src = 0x0;
 
         _init();
       }

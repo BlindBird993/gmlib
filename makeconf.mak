@@ -226,6 +226,10 @@ HEADERS += \
   gmVDefault.h \
   gmVDerivatives \
   gmVDerivatives.h \
+  gmVGLShader \
+  gmVGLShader.h \
+  gmVGLPhongShader \
+  gmVGLPhongShader.h \
   gmVNormals \
   gmVNormals.h \
   gmVPoints \
@@ -369,6 +373,8 @@ HEADER_EXTS = \
   gmVContours.c \
   gmVDefault.c \
   gmVDerivatives.c \
+  gmVGLShader.c \
+  gmVGLPhongShader.c \
   gmVNormals.c \
   gmVPoints.c \
   gmVSurroundingSphere.c \
@@ -388,6 +394,7 @@ SOURCES = \
 	gmCodeExample.cpp \
 	gmColor.cpp \
   gmDisplayObject.cpp \
+  gmGLSL.cpp \
   gmLight_Light.cpp \
   gmLight_PointLight.cpp \
   gmLight_SpotLight.cpp \
@@ -404,8 +411,7 @@ SOURCES = \
   gmTexture.cpp \
   gmWindow_GMWindow.cpp \
   gmWindow_View.cpp \
-  gmWindow_ViewSet.cpp \
-  gmGLSL.cpp
+  gmWindow_ViewSet.cpp
 
 
 #####################################

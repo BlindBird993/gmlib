@@ -22,24 +22,64 @@
 
 
 
-/*! \file gmVisualizers
+/*! \file gmVGLPhongShader.h
  *
- *  C++ interface for the GMlib Visualizer headers and the relative classes
- *  for Displayable Curves and Surfaces.
+ *  Interface for the VGLPhongShader class.
  *
- *  \date   2008-09-15
+ *  \date   2009-05-12
  */
 
 
-// The base class of all Visualizers
-#include "gmVisualizer"
+#ifndef __gmVGLPHONGSHADER_H__
+#define __gmVGLPHONGSHADER_H__
 
-// Visualizers
-#include "gmVContours"              // Displays Contours
-#include "gmVDefault"               // Default Visualizer
-#include "gmVDerivatives"           // Displays Derivatives
-#include "gmVGLShader"              // GLSL Shader Visualizer
-#include "gmVGLPhongShader"         // Phong Shader Visualizer
-#include "gmVNormals"               // Displays Normals
-#include "gmVPoints"                // Visualizes the Object as a "cloud" of Points
-#include "gmVSurroundingSphere"     // Displays The Surrounding Sphere of an object
+
+// STL includes
+#include <string>
+
+// GMlib includes
+#include "gmVGLShader.h"
+
+
+#ifdef GM_GPU_GLSL
+
+
+namespace GMlib
+{
+
+  namespace GPU
+  {
+
+    namespace GLSL
+    {
+
+      template <typename T, int n>
+      class VGLPhongShader : public VGLShader<T,n>
+      {
+        public:
+          VGLPhongShader();
+          ~VGLPhongShader();
+
+          std::string getIdentity() const;
+
+      }; // End VGLShader
+
+    }// End namespace GLSL
+
+  } // End namespace GPU
+
+} // Ene namespace GMlib
+
+
+// Include VGLShader class function implementations
+#include "gmVGLPhongShader.c"
+
+
+#endif // GM_GPU_GLSL
+
+
+#endif // __gmVGLPHONGSHADER_H__
+
+
+
+
