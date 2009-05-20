@@ -83,6 +83,34 @@ namespace GMlib {
   inline
   Material::~Material() {}
 
+
+  inline
+  const GLColor& Material::getAmb() const {
+
+    return _amb;
+  }
+
+
+  inline
+  const GLColor& Material::getDif() const {
+
+    return _dif;
+  }
+
+
+  inline
+  const GLColor& Material::getSpc() const {
+
+    return _spc;
+  }
+
+  inline
+  float Material::getShininess() const {
+
+    return _shininess;
+  }
+
+
   /*! int Material::getTextureID()
    *	\brief Pending Documentation
    *

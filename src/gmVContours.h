@@ -39,6 +39,10 @@
 
 namespace GMlib {
 
+  enum GM_VISUALIZER_CONTOURS_TYPE {
+    GM_VISUALIZER_CONTOURS_TYPE_COLOR,
+    GM_VISUALIZER_CONTOURS_TYPE_MATERIAL
+  };
 
   enum GM_VISUALIZER_CONTOURS_MAP {
     GM_VISUALIZER_CONTOURS_MAP_X,
@@ -48,7 +52,9 @@ namespace GMlib {
     GM_VISUALIZER_CONTOURS_MAP_U,
     GM_VISUALIZER_CONTOURS_MAP_V,
     GM_VISUALIZER_CONTOURS_MAP_SPEED,
-    GM_VISUALIZER_CONTOURS_MAP_CURVATURE
+    GM_VISUALIZER_CONTOURS_MAP_CURVATURE,
+    GM_VISUALIZER_CONTOURS_MAP_CURVATURE_GAUSS,
+    GM_VISUALIZER_CONTOURS_MAP_CURVATURE_MEAN
   };
 
   template <typename T, int n>
@@ -60,8 +66,10 @@ namespace GMlib {
 
     void                          display();
     const Array<Color>&           getColors() const;
+    const Array<Material>&        getMaterials() const;
     std::string                   getIdentity() const;
     GM_VISUALIZER_CONTOURS_MAP    getMapping() const;
+    GM_VISUALIZER_CONTOURS_TYPE   getType() const;
     void                          replot(
       DVector< DVector< Vector<T, 3> > >& p,
       int m, int d
@@ -72,17 +80,24 @@ namespace GMlib {
       int m1, int m2, int d1, int d2
     );
     void                          setColors( const Array<Color>& c );
+    void                          setMaterials( const Array<Material>& mat );
     void                          setMapping( GM_VISUALIZER_CONTOURS_MAP );
+    void                          setType( GM_VISUALIZER_CONTOURS_TYPE );
 
   private:
     Array<Color>                  _colors;
+    Array<Material>               _materials;
     GM_VISUALIZER_CONTOURS_MAP    _mapping;
+    GM_VISUALIZER_CONTOURS_TYPE   _type;
     unsigned int                  _dlist;
     DVector<Color>                _color_pointer_n1;
     DMatrix<Color>                _color_pointer_n2;
 
     Color                         _getColor( T d );
-    T                             _getCurvature( DVector< Vector<T, 3> >& p );
+    T                             _getCurvatureCurve( DVector< Vector<T, 3> >& p );
+    T                             _getCurvatureSurfGauss( DMatrix< Vector<T,3> >& p );
+    T                             _getCurvatureSurfMean( DMatrix< Vector<T,3> >& p );
+    Material                      _getMaterial( T d );
     void                          _init();
 
   };

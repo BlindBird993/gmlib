@@ -1222,50 +1222,57 @@ namespace GMlib {
   }
 
 
-//  template <typename T>
-//  inline
-//  T DSurf<T>::getCurvatureGauss( T u, T v ) {
-//
-//    _eval(u, v, 2, 2);
+  template <typename T>
+  inline
+  T DSurf<T>::getCurvatureGauss( T u, T v ) {
+
+    _eval(u, v, 2, 2);
+    UnitVector<T,3> N   = Vector3D<T>(_p[1][0])^_p[0][1];
+    Vector<T,3>		  du  = _p[1][0];
+    Vector<T,3>		  dv  = _p[0][1];
+    Vector<T,3>		  duu = _p[2][0];
+    Vector<T,3>		  duv = _p[1][1];
+    Vector<T,3>		  dvv = _p[0][2];
+
 //    UnitVector<T,3> N   = normal(u, v);	    // _p[0][1]^_p[1][0];
 //    Vector<T,3>		  du  = getDerU(u, v);	  // _p[0][1];
 //    Vector<T,3>		  dv  = getDerV(u, v);	  // _p[1][0];
 //    Vector<T,3>		  duu = getDerUU(u, v);	  // _p[0][2];
 //    Vector<T,3>		  duv = getDerUV(u, v);	  // _p[1][1];
 //    Vector<T,3>		  dvv = getDerVV(u, v);	  // _p[2][0];
-//
-//    T E = du  * du;
-//    T F = du  * dv;
-//    T G = dv  * dv;
-//    T e = N   * duu;
-//    T f = N   * duv;
-//    T g = N   * dvv;
-//
-//    return (e*g - f*f) / (E*G - F*F);
-//  }
-//
-//
-//  template <typename T>
-//  inline
-//  T DSurf<T>::getCurvatureMean( T u, T v ) {
-//
-//    _eval(u,v,2,2);
-//    UnitVector<T,3> N   = normal(u, v);
-//    Vector<T,3>		  du  = getDerU(u, v);
-//    Vector<T,3>		  dv  = getDerV(u, v);
-//    Vector<T,3>		  duu = getDerUU(u, v);
-//    Vector<T,3>		  duv = getDerUV(u, v);
-//    Vector<T,3>		  dvv = getDerVV(u, v);
-//
-//    T E = du  * du;
-//    T F = du  * dv;
-//    T G = dv  * dv;
-//    T e = N   * duu;
-//    T f = N   * duv;
-//    T g = N   * dvv;
-//
-//    return 0.5 * (e*G - 2 * (f*F) + g*E) / (E*G - F*F);
-//  }
+
+    T E = du  * du;
+    T F = du  * dv;
+    T G = dv  * dv;
+    T e = N   * duu;
+    T f = N   * duv;
+    T g = N   * dvv;
+
+    return (e*g - f*f) / (E*G - F*F);
+  }
+
+
+  template <typename T>
+  inline
+  T DSurf<T>::getCurvatureMean( T u, T v ) {
+
+    _eval(u,v,2,2);
+    UnitVector<T,3> N   = Vector3D<T>(_p[1][0])^_p[0][1];
+    Vector<T,3>		  du  = _p[1][0];
+    Vector<T,3>		  dv  = _p[0][1];
+    Vector<T,3>		  duu = _p[2][0];
+    Vector<T,3>		  duv = _p[1][1];
+    Vector<T,3>		  dvv = _p[0][2];
+
+    T E = du  * du;
+    T F = du  * dv;
+    T G = dv  * dv;
+    T e = N   * duu;
+    T f = N   * duv;
+    T g = N   * dvv;
+
+    return 0.5 * (e*G - 2 * (f*F) + g*E) / (E*G - F*F);
+  }
 
 
 //  template <typename T>

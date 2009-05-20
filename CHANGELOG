@@ -4,7 +4,20 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
-2009-05-12  T.Sang Tran
+2009-05-20 Jostein Bratlie
+        * gmDSurf
+          - Functions to fetch the Gaussian and Mean Curvature from Tesor Product Surfaces is added.
+            T getCurvatureMean( T u, T v )
+            T getCurvatureGauss( T u, T v )
+        * gmMaterial
+          - Added functions to extract Ambient, Difuse, Specular and Shininess values.
+            getAmb(), getDif(), getSpc(), getShininess()
+        * gmVContours
+          - Added the posibility to make contours with materials as well as colors.
+            This makes contours on objects and surfaces look mutch better then with plane colors which isn't lighted and therfor has no depth.
+
+
+2009-05-12 T.Sang Tran
 
         * Add GLShader-visualizer and PhongShader-visualizer.
 
@@ -36,7 +49,7 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
           - Fixed an #include error.
 
 
-2009-05-05  T.Sang Tran
+2009-05-05 T.Sang Tran
 
         * Add support for OpenGL Shading Language.
         * Correct includes dependencies of OpenGL Extension in gmCamera.cpp, gmTexture.cpp and gmOpenGL.h.

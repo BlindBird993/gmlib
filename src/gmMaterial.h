@@ -74,34 +74,38 @@ namespace GMlib {
     Material(const Material& copy );
     virtual ~Material();
 
-    int  						getTextureID() const;
-    virtual void		glSet() const;
-    void 						glSetInverse() const;
-    virtual void 		glUnSet() const;
-    bool 						isTransparent() const;
-    void 						set( const GLColor& amb, const GLColor& dif, const GLColor& spc, float shininess, const Texture& texture );
-    void 						set( const GLColor& amb, const GLColor& dif, const GLColor& spc );
-    void 						set( const GLenum sfactor, const GLenum dfactor );
-    void 						set( float shininess );
-    void 						set( Texture texture );
-    void 						setAmb( const GLColor& amb );
-    void 						setDif( const GLColor& dif );
-    void 						setDoubleSided( bool s );
-    void 						setSided( GLenum s );
-    void 						setSpc( const GLColor& spc );
-    void 						setTransparancy( double t );
+    const GLColor&    getAmb() const;
+    const GLColor&    getDif() const;
+    const GLColor&    getSpc() const;
+    float             getShininess() const;
+    int  						  getTextureID() const;
+    virtual void		  glSet() const;
+    void 						  glSetInverse() const;
+    virtual void 		  glUnSet() const;
+    bool 						  isTransparent() const;
+    void 						  set( const GLColor& amb, const GLColor& dif, const GLColor& spc, float shininess, const Texture& texture );
+    void 						  set( const GLColor& amb, const GLColor& dif, const GLColor& spc );
+    void 						  set( const GLenum sfactor, const GLenum dfactor );
+    void 						  set( float shininess );
+    void 						  set( Texture texture );
+    void 						  setAmb( const GLColor& amb );
+    void 						  setDif( const GLColor& dif );
+    void 						  setDoubleSided( bool s );
+    void 						  setSided( GLenum s );
+    void 						  setSpc( const GLColor& spc );
+    void 						  setTransparancy( double t );
 
-    Material& 			operator =  ( const Material& m );
-    bool 						operator == ( const Material& m ) const;
+    Material& 			  operator =  ( const Material& m );
+    bool 						  operator == ( const Material& m ) const;
 
 
   protected:
-    Texture         _texture;
-    GLColor         _amb;
-    GLColor		      _dif;
-    GLColor		      _spc;
-    float				    _shininess;
-    float				    _transparancy;
+    Texture           _texture;
+    GLColor           _amb;
+    GLColor		        _dif;
+    GLColor		        _spc;
+    float				      _shininess;
+    float				      _transparancy;
 
 
   private:

@@ -104,8 +104,8 @@ namespace GMlib {
     DMatrix<Vector<T,3> >&    	  evaluateLocal( T u, T v, int d1, int d2 );
     DMatrix<Vector<T,3> >&    	  evaluateParent( Point<T,2> p, int d );
     DMatrix<Vector<T,3> >&    	  evaluateParent( T u, T v, int d1, int d2 );
-//    virtual T                     getCurvatureGauss( T u, T v );
-//    virtual T                     getCurvatureMean( T u, T v );
+    virtual T                     getCurvatureGauss( T u, T v );
+    virtual T                     getCurvatureMean( T u, T v );
     int                           getDerU();
     Vector<T,3>&                  getDerU( T u, T v );
     int                           getDerV();
