@@ -355,20 +355,24 @@ namespace GMlib {
           glMultMatrix(_present);
         _scale.glScaling();
 
-
+        /// \todo Properly Fix Selection Coloring
         if(_collapsed) {
 
-          glPushAttrib( GL_LIGHTING_BIT );
-            glDisable( GL_LIGHTING );
+//          glPushAttrib( GL_LIGHTING_BIT );
+//            glDisable( GL_LIGHTING );
 
-            if(_selected)
+            if(_selected) {
               _marked.glSet();
-            else
+              _marked_mat.glSet();
+            }
+            else {
               _default.glSet();
+              _default_mat.glSet();
+            }
 
             displayCollapsed();
 
-          glPopAttrib();
+//          glPopAttrib();
         }
         else localDisplay();
       glPopMatrix();

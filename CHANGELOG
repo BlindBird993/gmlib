@@ -4,7 +4,22 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+2009-05-23 Jostein Bratlie
+
+        * gmSceneObject
+          - Made a quick fix for some selection issues. Now both material and color is set. (this should be fixed properly later)
+        * gmDPApple/gmDPSteinerSurf
+          - Added explicit computation of first and second partial derivatives.
+        * gmSelector
+          - Fixed a translate issue in editPos( ... )
+        * gmVContours
+          - Minor fixes.
+
+
 2009-05-20 Jostein Bratlie
+
         * gmDSurf
           - Functions to fetch the Gaussian and Mean Curvature from Tesor Product Surfaces is added.
             T getCurvatureMean( T u, T v )
@@ -23,6 +38,7 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 2009-05-06 Jostein Bratlie
+
         * gmSubSpace
           - Fixed a couple of function miss matches.
             For all subspace classes, base and overloaded functions getDir(), getDirC(), getMat(), getMatC(), getPos(), and getPosC():

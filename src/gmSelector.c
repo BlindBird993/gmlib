@@ -232,7 +232,7 @@ namespace GMlib {
     HqMatrix<float,3> invmat = _present;
     invmat.invertOrthoNormal();
     _position+=Point<T,n>(invmat*dp);
-    translate(invmat*dp);
+    translateGlobal(invmat*dp);
     _parent->edit(_id);
   }
 

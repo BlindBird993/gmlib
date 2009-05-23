@@ -29,11 +29,6 @@
  *  \date   2009-01-27
  */
 
-//
-//#define GM_STREAM 1
-//#include "gmStream.h"
-//#include "gmColor.h"
-
 
 namespace GMlib {
 
@@ -65,7 +60,7 @@ namespace GMlib {
 
     // Find Index
     int idx;
-    idx = d * (_colors.getSize()-1);
+    idx = d * ( _colors.getSize()-1 );
     if( idx == _colors.getSize()-1 ) idx--;
     if( (idx < 0) || (idx > _colors.getSize()-1) ) idx = 0;
 
@@ -194,9 +189,12 @@ namespace GMlib {
 
 
     // Display; dependant on dynamic/static status
-    if( this->_ref->isDynamic() ) {
+    if( this->_ref->isDynamic()  && _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR ) {
 
+      // Switch on parameter value n, roll out during linking.
       switch( n ) {
+
+        // Display if curve
         case 1: {
 
           // Get Vertex data
@@ -218,8 +216,8 @@ namespace GMlib {
         }
         break;
 
-        case 2:
-        default: {
+        // Display if Surface
+        case 2: {
 
           // Get Vertex, Texture and Material Data
           const DMatrix< Arrow<float,3> > &v = this->_ref->getVerticesN2();
@@ -483,15 +481,12 @@ namespace GMlib {
     cmap.setDim( p.getDim1(), p.getDim2() );
     switch( _mapping ) {
 
-
-
       case GM_VISUALIZER_CONTOURS_MAP_T:
       case GM_VISUALIZER_CONTOURS_MAP_U:
       {
         for( int i = 0; i < p.getDim1(); i++ )
           for( int j = 0; j < p.getDim2(); j++ )
             cmap[i][j] = double(i) / double(p.getDim1()-1);
-//            ccs[i][j] = _getColor( double(i) / double(p.getDim1()-1) );
       }
       break;
       case GM_VISUALIZER_CONTOURS_MAP_V:
@@ -499,7 +494,6 @@ namespace GMlib {
         for( int i = 0; i < p.getDim1(); i++ )
           for( int j = 0; j < p.getDim2(); j++ )
             cmap[i][j] = double(j) / double(p.getDim2()-1);
-//            ccs[i][j] = _getColor( double(j) / double(p.getDim2()-1) );
       }
       break;
 
@@ -534,7 +528,6 @@ namespace GMlib {
         // Correct interval
         if( max - min > 0 ) {
           C = 1.0f / (max - min);
-  //        ccs *= ( 1.0 / ( max - min ) );
           min /= (max - min);
         }
         else {
@@ -542,13 +535,12 @@ namespace GMlib {
         }
 
 
-        // Compute colors
+        // Compute map values
         for( int i = 0; i < p.getDim1(); i++ ) {
           for( int j = 0; j < p.getDim2(); j++ ) {
 
             const T value = p[i][j][0][0][coord];
             cmap[i][j] = ( C * value ) - min;
-//            ccs[i][j] = _getColor( ( C * value ) - min );
           }
         }
       }
@@ -559,7 +551,7 @@ namespace GMlib {
         // Init min/max
         min = max = _getCurvatureSurfGauss(p[0][0]);
 
-        // Extract all speed data
+        // Extract all Gaussian Curvature data
         for( int i = 0; i < p.getDim1(); i++ ) {
           for( int j = 0; j < p.getDim2(); j++ ) {
 
@@ -582,7 +574,7 @@ namespace GMlib {
           C = 1.0f / (max-min);
           min /= (max-min);
 
-          // Compute interpolated material values
+          // Compute interpolated map values
           for( int i = 0; i < p.getDim1(); i++ ) {
             for( int j = 0; j < p.getDim2(); j++ ) {
 
@@ -600,7 +592,7 @@ namespace GMlib {
         // Init min/max
         min = max = _getCurvatureSurfGauss(p[0][0]);
 
-        // Extract all speed data
+        // Extract all Mean Curvature data
         for( int i = 0; i < p.getDim1(); i++ ) {
           for( int j = 0; j < p.getDim2(); j++ ) {
 
@@ -623,7 +615,7 @@ namespace GMlib {
           C = 1.0f / (max-min);
           min /= (max-min);
 
-          // Compute interpolated material values
+          // Compute interpolated map values
           for( int i = 0; i < p.getDim1(); i++ ) {
             for( int j = 0; j < p.getDim2(); j++ ) {
 
@@ -639,7 +631,7 @@ namespace GMlib {
       case GM_VISUALIZER_CONTOURS_MAP_SPEED:
       default:
       {
-        // Compute colors
+        // Compute map values
         for( int i = 0; i < p.getDim1(); i++ )
           for( int j = 0; j < p.getDim2(); j++ )
             cmap[i][j] = 0.0;
@@ -671,7 +663,7 @@ namespace GMlib {
 
 
     // Create Vertex arrays ^^
-    if( this->_ref->isDynamic() ) {
+    if( this->_ref->isDynamic() && _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR ) {
 
       _color_pointer_n2.setDim( p.getDim1()-1, p.getDim2()*2 );
 

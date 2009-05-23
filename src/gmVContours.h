@@ -33,6 +33,8 @@
 #define __gmVCONTOURS_H__
 
 
+#include "gmColor.h"
+#include "gmMaterial.h"
 
 #include "gmVisualizer.h"
 
@@ -70,6 +72,7 @@ namespace GMlib {
     std::string                   getIdentity() const;
     GM_VISUALIZER_CONTOURS_MAP    getMapping() const;
     GM_VISUALIZER_CONTOURS_TYPE   getType() const;
+
     void                          replot(
       DVector< DVector< Vector<T, 3> > >& p,
       int m, int d
@@ -79,6 +82,7 @@ namespace GMlib {
       DMatrix< Vector<T, 3> >& normals,
       int m1, int m2, int d1, int d2
     );
+
     void                          setColors( const Array<Color>& c );
     void                          setMaterials( const Array<Material>& mat );
     void                          setMapping( GM_VISUALIZER_CONTOURS_MAP );

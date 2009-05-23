@@ -46,7 +46,6 @@ namespace GMlib {
     init();
 
     _r = radius;
-    this->_dm = GM_DERIVATION_DD;
   }
 
 
@@ -90,11 +89,9 @@ namespace GMlib {
   template <typename T>
   void DPApple<T>::init() {
 
+    this->_dm = GM_DERIVATION_EXPLICIT;
 //    _l_ref = dynamic_cast<PApple<T,3>*>( this->_p_ref );
   }
-
-
-
 
 
 
@@ -150,6 +147,74 @@ namespace GMlib {
     this->_p[0][0][0] =	 cos(u) * ( 4 + 3.8 * cos(v) );
     this->_p[0][0][1] =	 sin(u) * ( 4 + 3.8 * cos(v) );
     this->_p[0][0][2] =	 ( cos(v) + sin(v) - 1 ) * ( 1 + sin(v) ) * log( 1 - M_PI * v / 10 ) + 7.5 * sin( v );
+
+
+    if( this->_dm == GM_DERIVATION_EXPLICIT ) {
+
+      // du
+      if(d1){
+        this->_p[1][0][0] = -sin(u)* (4 + 3.8* cos(v));                                                                                                                                                                      // dx/du
+        this->_p[1][0][1] = cos(u) * (4 + 3.8 * cos(v));                                                                                                                                                                   // d y/du
+        this->_p[1][0][2] = T(0);                                                                                                                                                                                                          //  dz/du
+      }
+
+      //duu
+      if(d1>1){
+        this->_p[2][0][0] =-cos(u)* (4 + 3.8* cos(v));
+        this->_p[2][0][1] =-sin(u) * (4 + 3.8 * cos(v));
+        this->_p[2][0][2] =	 T(0);
+      }
+
+      //dv
+      if(d2){
+        this->_p[0][1][0] =- cos(u)* 3.8* sin(v);                                                                                                                                                                                     // dx/dv
+        this->_p[0][1][1] =-sin(u) * 3.8 * sin(v);                                                                                                                                                                                     //  dy/dv
+        this->_p[0][1][2] =  -(cos(v)* (1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10)+ sin(v) *log(1 - M_PI * v / 10))
+                                +(0.5*(1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10))
+                                +(0.5*(-sin(2*v)*(1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10)+cos(2*v)*2*log(1 - M_PI * v / 10)))
+                                +(0.5*(sin(2*v)*2*log(1 - M_PI * v / 10)+cos(2*v)*(1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10)))
+                                +7.5 * cos(v);
+      }
+
+      //dvv
+      if(d2>1){
+        this->_p[0][2][0] = - cos(u)* 3.8* cos(v);
+        this->_p[0][2][1] = -sin(u) * 3.8 * cos(v);
+        this->_p[0][2][2] = -(( -sin(v)*(1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10) + cos(v) * log(M_E)*(M_PI/10) *(M_PI/10) *(1/((1/(1 - M_PI * v / 10))*(1/(1 - M_PI * v / 10))) ) ) + (-sin(v) * (1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10) +cos(v) *log(1 - M_PI * v / 10) ) )
+                      +(0.5*(M_PI / 10)*(1/((1/(1 - M_PI * v / 10))*(1/(1 - M_PI * v / 10))))*log(M_E)*(M_PI/10))
+                      + ( 0.5* ( (-2*cos(2*v)*(1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10) - sin(2*v)*(M_PI/10)*(1/((1/(1 - M_PI * v / 10))*(1/(1 - M_PI * v / 10)))) *log(M_E)*(M_PI/10))+(-sin(2*v)*4*log(1 - M_PI * v / 10) - cos(2*v)*2* (1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10) )))
+                      +( 0.5* (( -sin(2*v)*2*(1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10) + cos(2*v)*4* log(1 - M_PI * v / 10))+( cos(2*v)*(1/((1/(1 - M_PI * v / 10))*(1/(1 - M_PI * v / 10))) )*log(M_E)*(M_PI/10)*(M_PI/10) - sin(2*v)*2*(1/(1 - M_PI * v / 10))*log(M_E)*(M_PI/10))))
+                      -7.5 * sin(v);
+      }
+
+      //duv/dvu
+      if(d1&d2){
+        this->_p[1][1][0] = sin(u)* 3.8* sin(v);
+        this->_p[1][1][1] =-cos(u) * 3.8 * sin(v);
+        this->_p[1][1][2] =T(0);
+      }
+
+      //duvv
+      if(d1&d2>1){
+        this->_p[1][2][0] =sin(u)* 3.8* cos(v);
+        this->_p[1][2][1] =-cos(u) * 3.8 * cos(v);
+        this->_p[1][2][2] =T(0);
+      }
+
+      //duuv
+      if(d1>1&d2){
+        this->_p[2][1][0] =cos(u)* 3.8* sin(v);
+        this->_p[2][1][1] =sin(u) * 3.8 * sin(v);
+        this->_p[2][1][2] = T(0);
+      }
+
+      //duuvv
+      if(d1>1&d2>1){
+        this->_p[2][2][0] =cos(u)* 3.8* cos(v);
+        this->_p[2][2][1] =sin(u) * 3.8 * cos(v);
+        this->_p[2][2][2] =T(0);
+      }
+    }
   }
 
 

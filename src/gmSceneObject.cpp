@@ -79,6 +79,8 @@ namespace GMlib {
     _collapsed = false;
     _default	= GMcolor::Blue;
     _marked		= _default.getInverse();
+    _default_mat = GMmaterial::Gold;
+    _marked_mat = Material( _default_mat.getAmb().getInverse(), _default_mat.getDif().getInverse(), _default_mat.getSpc().getInverse(), 1.0f - _default_mat.getShininess() );
     _ir = 0.07;
     _children.clear();
   }

@@ -92,6 +92,7 @@ namespace GMlib {
   template <typename T>
   void DPSteinerSurf<T>::init() {
 
+    this->_dm = GM_DERIVATION_EXPLICIT;
 //    _l_ref = dynamic_cast<PSteinerSurf<T,3>*>( this->_p_ref );
   }
 
@@ -131,57 +132,57 @@ namespace GMlib {
     this->_p[0][0][1] =	T(.5)*_r*_r*sin(u)*sin(T(2)*v);
     this->_p[0][0][2] =	T(.5)*_r*_r*cos(u)*sin(T(2)*v);
 
-//    if( this->_dm == GM_DERIVATION_EXPLICIT ) {
-//
-//      if(d1) //u
-//      {
-//        this->_p[1][0][0] =	_r*_r*cos(T(2)*u)*cos(v)*cos(v);
-//        this->_p[1][0][1] =	T(.5)*_r*_r*cos(u)*sin(T(2)*v);
-//        this->_p[1][0][2] =	-T(.5)*_r*_r*sin(u)*sin(T(2)*v);
-//      }
-//      if(d1>1)//uu
-//      {
-//        this->_p[2][0][0] =	-T(2)*_r*_r*sin(T(2)*u)*pow(cos(v),T(2));
-//        this->_p[2][0][1] =	-_r*_r*sin(u)*sin(T(2)*v)/T(2);
-//        this->_p[2][0][2] =	-_r*_r*cos(u)*sin(T(2)*v)/T(2);
-//      }
-//      if(d2) //v
-//      {
-//        this->_p[0][1][0] =	-_r*_r*sin(T(2)*u)*cos(v)*sin(v);
-//        this->_p[0][1][1] =	_r*_r*sin(u)*cos(T(2)*v);
-//        this->_p[0][1][2] =	_r*_r*cos(u)*cos(T(2)*v);
-//      }
-//      if(d2>1) //vv
-//      {
-//        this->_p[0][2][0] =	_r*_r*sin(T(2)*u)*pow(sin(v),T(2))-_r*_r*sin(T(2)*u)*pow(cos(v),T(2));
-//        this->_p[0][2][1] =	-T(2)*_r*_r*sin(u)*sin(T(2)*v);
-//        this->_p[0][2][2] =	-T(2)*_r*_r*cos(u)*sin(T(2)*v);
-//      }
-//      if(d1 && d2) //uv
-//      {
-//        this->_p[1][1][0] =	-T(2)*_r*_r*cos(T(2)*u)*cos(v)*sin(v);
-//        this->_p[1][1][1] =	_r*_r*cos(u)*cos(T(2)*v);
-//        this->_p[1][1][2] =	_r*_r*sin(u)*cos(T(2)*v);
-//      }
-//      if(d1>1 && d2)//uuv
-//      {
-//        this->_p[2][1][0] =	T(4)*_r*_r*sin(T(2)*u)*cos(v)*sin(v);
-//        this->_p[2][1][1] =	-_r*_r*sin(u)*cos(T(2)*v);
-//        this->_p[2][1][2] =	-_r*_r*cos(u)*cos(T(2)*v);
-//      }
-//      if(d1 && d2>1) //uvv
-//      {
-//        this->_p[1][2][0] =	T(2)*_r*_r*cos(T(2)*u)*pow(sin(v),T(2))-T(2)*_r*_r*cos(T(2)*u)*pow(cos(v),T(2));
-//        this->_p[1][2][1] =	-T(2)*_r*_r*cos(u)*sin(T(2)*v);
-//        this->_p[1][2][2] =	T(2)*_r*_r*sin(u)*sin(T(2)*v);
-//      }
-//      if(d1>1 && d2>1) //uuvv
-//      {
-//        this->_p[2][2][0] =	-T(4)*_r*_r*sin(T(2)*u)*pow(sin(v),T(2))+T(4)*_r*_r*sin(T(2)*u)*pow(cos(v),T(2));
-//        this->_p[2][2][1] =	T(2)*_r*_r*sin(u)*sin(T(2)*v);
-//        this->_p[2][2][2] =	T(2)*_r*_r*cos(u)*sin(T(2)*v);
-//      }
-//    }
+    if( this->_dm == GM_DERIVATION_EXPLICIT ) {
+
+      if(d1) //u
+      {
+        this->_p[1][0][0] =	_r*_r*cos(T(2)*u)*cos(v)*cos(v);
+        this->_p[1][0][1] =	T(.5)*_r*_r*cos(u)*sin(T(2)*v);
+        this->_p[1][0][2] =	-T(.5)*_r*_r*sin(u)*sin(T(2)*v);
+      }
+      if(d1>1)//uu
+      {
+        this->_p[2][0][0] =	-T(2)*_r*_r*sin(T(2)*u)*pow(cos(v),T(2));
+        this->_p[2][0][1] =	-_r*_r*sin(u)*sin(T(2)*v)/T(2);
+        this->_p[2][0][2] =	-_r*_r*cos(u)*sin(T(2)*v)/T(2);
+      }
+      if(d2) //v
+      {
+        this->_p[0][1][0] =	-_r*_r*sin(T(2)*u)*cos(v)*sin(v);
+        this->_p[0][1][1] =	_r*_r*sin(u)*cos(T(2)*v);
+        this->_p[0][1][2] =	_r*_r*cos(u)*cos(T(2)*v);
+      }
+      if(d2>1) //vv
+      {
+        this->_p[0][2][0] =	_r*_r*sin(T(2)*u)*pow(sin(v),T(2))-_r*_r*sin(T(2)*u)*pow(cos(v),T(2));
+        this->_p[0][2][1] =	-T(2)*_r*_r*sin(u)*sin(T(2)*v);
+        this->_p[0][2][2] =	-T(2)*_r*_r*cos(u)*sin(T(2)*v);
+      }
+      if(d1 && d2) //uv
+      {
+        this->_p[1][1][0] =	-T(2)*_r*_r*cos(T(2)*u)*cos(v)*sin(v);
+        this->_p[1][1][1] =	_r*_r*cos(u)*cos(T(2)*v);
+        this->_p[1][1][2] =	_r*_r*sin(u)*cos(T(2)*v);
+      }
+      if(d1>1 && d2)//uuv
+      {
+        this->_p[2][1][0] =	T(4)*_r*_r*sin(T(2)*u)*cos(v)*sin(v);
+        this->_p[2][1][1] =	-_r*_r*sin(u)*cos(T(2)*v);
+        this->_p[2][1][2] =	-_r*_r*cos(u)*cos(T(2)*v);
+      }
+      if(d1 && d2>1) //uvv
+      {
+        this->_p[1][2][0] =	T(2)*_r*_r*cos(T(2)*u)*pow(sin(v),T(2))-T(2)*_r*_r*cos(T(2)*u)*pow(cos(v),T(2));
+        this->_p[1][2][1] =	-T(2)*_r*_r*cos(u)*sin(T(2)*v);
+        this->_p[1][2][2] =	T(2)*_r*_r*sin(u)*sin(T(2)*v);
+      }
+      if(d1>1 && d2>1) //uuvv
+      {
+        this->_p[2][2][0] =	-T(4)*_r*_r*sin(T(2)*u)*pow(sin(v),T(2))+T(4)*_r*_r*sin(T(2)*u)*pow(cos(v),T(2));
+        this->_p[2][2][1] =	T(2)*_r*_r*sin(u)*sin(T(2)*v);
+        this->_p[2][2][2] =	T(2)*_r*_r*cos(u)*sin(T(2)*v);
+      }
+    }
   }
 
 

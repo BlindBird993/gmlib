@@ -173,6 +173,8 @@ namespace GMlib{
     float					              _ir;					//! Size of cube (collapsed object)
     GLColor				              _default;
     GLColor				              _marked;
+    Material				            _default_mat;
+    Material				            _marked_mat;
     bool					              _selected;
     bool					              _visible;	//! culling on invisible items
     bool					              _collapsed;	//! represented by a small cube
