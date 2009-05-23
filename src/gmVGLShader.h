@@ -45,26 +45,23 @@
 #ifdef GM_GPU_GLSL
 
 
-namespace GMlib
-{
+namespace GMlib {
 
-  namespace GPU
-  {
+  namespace GPU {
 
-    namespace GLSL
-    {
+    namespace GLSL {
 
       template <typename T, int n>
-      class VGLShader : public Visualizer<T,n>, public GLShader
-      {
-        public:
-          VGLShader();
-          VGLShader( const char* vs, const char* fs );
-          VGLShader( const VGLShader<T,n>& cpy );
-          ~VGLShader();
+      class VGLShader : public Visualizer<T,n>, public GLShader {
+      public:
+        VGLShader();
+        VGLShader( const char* vs, const char* fs, bool compile = false );
+        VGLShader( const VGLShader<T,n>& cpy );
+        ~VGLShader();
 
-          void        display();
-          std::string getIdentity() const;
+        void        display();
+        std::string getIdentity() const;
+
 
       }; // End VGLShader
 

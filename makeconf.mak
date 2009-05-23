@@ -228,6 +228,8 @@ HEADERS += \
   gmVDerivatives.h \
   gmVGLShader \
   gmVGLShader.h \
+  gmVGLContoursPhongShader \
+  gmVGLContoursPhongShader.h \
   gmVGLPhongShader \
   gmVGLPhongShader.h \
   gmVNormals \
@@ -241,7 +243,9 @@ HEADERS += \
 # gmGPU
 HEADERS += \
   gmGLSL \
-  gmGLSL.h
+  gmGLSL.h \
+  gmGLPhongShader \
+  gmGLPhongShader.h
 
 
 # Undefined TEMPORARY
@@ -374,6 +378,7 @@ HEADER_EXTS = \
   gmVDefault.c \
   gmVDerivatives.c \
   gmVGLShader.c \
+  gmVGLContoursPhongShader.c \
   gmVGLPhongShader.c \
   gmVNormals.c \
   gmVPoints.c \
@@ -395,6 +400,7 @@ SOURCES = \
 	gmColor.cpp \
   gmDisplayObject.cpp \
   gmGLSL.cpp \
+  gmGLPhongShader.cpp \
   gmLight_Light.cpp \
   gmLight_PointLight.cpp \
   gmLight_SpotLight.cpp \

@@ -34,44 +34,36 @@
 #ifdef GM_GPU_GLSL
 
 
-namespace GMlib
-{
+namespace GMlib {
 
-  namespace GPU
-  {
+  namespace GPU {
 
-    namespace GLSL
-    {
+    namespace GLSL {
 
       template <typename T, int n>
       inline
-      VGLShader<T,n>::VGLShader() : Visualizer<T,n>(), GLShader()
-      {}
+      VGLShader<T,n>::VGLShader() : Visualizer<T,n>(), GLShader() {}
 
 
       template <typename T, int n>
       inline
-      VGLShader<T,n>::VGLShader( const char* vs, const char* fs ) : Visualizer<T,n>(), GLShader( vs, fs )
-      {}
+      VGLShader<T,n>::VGLShader( const char* vs, const char* fs, bool compile ) : Visualizer<T,n>(), GLShader( vs, fs, compile ) {}
 
 
       template <typename T, int n>
       inline
-      VGLShader<T,n>::VGLShader( const VGLShader<T,n>& cpy ) : Visualizer<T,n>( cpy ), GLShader( cpy )
-      {}
+      VGLShader<T,n>::VGLShader( const VGLShader<T,n>& cpy ) : Visualizer<T,n>( cpy ), GLShader( cpy ) {}
 
 
       template <typename T, int n>
       inline
-      VGLShader<T,n>::~VGLShader()
-      {}
-
+      VGLShader<T,n>::~VGLShader() {}
 
 
       template <typename T, int n>
       inline
-      void VGLShader<T,n>::display()
-      {
+      void VGLShader<T,n>::display() {
+
         glSet();
         glCallList( this->_ref->getDisplayListIdx() );
         glUnSet();
@@ -80,8 +72,8 @@ namespace GMlib
 
       template <typename T, int n>
       inline
-      std::string VGLShader<T,n>::getIdentity() const
-      {
+      std::string VGLShader<T,n>::getIdentity() const {
+
         return "GLShader Visualizer";
       }
 

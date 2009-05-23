@@ -22,54 +22,14 @@
 
 
 
-/*! \file gmVGLPhongShader.c
+/*! \file gmGLPhongShader
+ *  \brief gmGLPhongShader C++ header
  *
+ *  C++ interface for the gmGLPhongShader header and classes.
  *
- *  \date   2009-05-12
+ *  \date   2009-05-23
  */
 
-
-#ifdef GM_GPU_GLSL
-
-
-namespace GMlib {
-
-  namespace GPU {
-
-    namespace GLSL {
-
-      template <typename T, int n>
-      inline
-      VGLPhongShader<T,n>::VGLPhongShader() : Visualizer<T,n>(), GLPhongShader() {}
+#include "gmGLPhongShader.h"
 
 
-      template <typename T, int n>
-      inline
-      VGLPhongShader<T,n>::~VGLPhongShader() {}
-
-
-      template <typename T, int n>
-      inline
-      void VGLPhongShader<T,n>::display() {
-
-        glSet();
-        glCallList( this->_ref->getDisplayListIdx() );
-        glUnSet();
-      }
-
-
-      template <typename T, int n>
-      inline
-      std::string VGLPhongShader<T,n>::getIdentity() const {
-
-        return "PhongShader Visualizer";
-      }
-
-    } // End namespace GLSL
-
-  } // End namespace GPU
-
-} // End namespace GMlib
-
-
-#endif // GM_GPU_GLSL

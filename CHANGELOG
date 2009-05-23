@@ -18,6 +18,18 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
           - Minor fixes.
 
 
+2009-05-23 T.Sang Tran
+
+        * gmGLSL and gmVGLShader
+          - Added the posibility to compile GLSL on creation
+        * gmGLPhongShader
+          - Added a clean PhongShader
+        * gmVGLPhongShader
+          - Reimplement to inherit gmGLPhongShader instead of gmVGLShader
+        * gmVContoursPhongShader
+          - Added VContoursPhongShader ( TODO: Reimplement PhongShader, contour values are overwritten by PhongShader )
+
+
 2009-05-20 Jostein Bratlie
 
         * gmDSurf

@@ -38,31 +38,29 @@
 #include <string>
 
 // GMlib includes
-#include "gmVGLShader.h"
+#include "gmVisualizer.h"
+#include "gmGLPhongShader.h"
 
 
 #ifdef GM_GPU_GLSL
 
 
-namespace GMlib
-{
+namespace GMlib {
 
-  namespace GPU
-  {
+  namespace GPU {
 
-    namespace GLSL
-    {
+    namespace GLSL {
 
       template <typename T, int n>
-      class VGLPhongShader : public VGLShader<T,n>
-      {
-        public:
-          VGLPhongShader();
-          ~VGLPhongShader();
+      class VGLPhongShader : public Visualizer<T,n>, public GLPhongShader {
+      public:
+        VGLPhongShader();
+        ~VGLPhongShader();
 
-          std::string getIdentity() const;
+        void        display();
+        std::string getIdentity() const;
 
-      }; // End VGLShader
+      }; // End VGLPhongShader
 
     }// End namespace GLSL
 
@@ -71,7 +69,7 @@ namespace GMlib
 } // Ene namespace GMlib
 
 
-// Include VGLShader class function implementations
+// Include VGLPhongShader class function implementations
 #include "gmVGLPhongShader.c"
 
 

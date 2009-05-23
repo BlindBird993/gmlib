@@ -22,11 +22,20 @@
 
 
 
-/*! \file gmVGLPhongShader.c
+/*! \file gmGLPhongShader.h
  *
+ *  Pending Documentation.
  *
- *  \date   2009-05-12
+ *  \date   2009-05-23
  */
+
+
+#ifndef __gmGLPHONGSHADER_H__
+#define __gmGLPHONGSHADER_H__
+
+
+// GMlib includes
+#include "gmGLSL.h"
 
 
 #ifdef GM_GPU_GLSL
@@ -38,38 +47,24 @@ namespace GMlib {
 
     namespace GLSL {
 
-      template <typename T, int n>
-      inline
-      VGLPhongShader<T,n>::VGLPhongShader() : Visualizer<T,n>(), GLPhongShader() {}
+      class GLPhongShader : public GLShader {
+      public:
+        GLPhongShader();
+        ~GLPhongShader();
 
 
-      template <typename T, int n>
-      inline
-      VGLPhongShader<T,n>::~VGLPhongShader() {}
+      }; // End GLPhongShader
 
-
-      template <typename T, int n>
-      inline
-      void VGLPhongShader<T,n>::display() {
-
-        glSet();
-        glCallList( this->_ref->getDisplayListIdx() );
-        glUnSet();
-      }
-
-
-      template <typename T, int n>
-      inline
-      std::string VGLPhongShader<T,n>::getIdentity() const {
-
-        return "PhongShader Visualizer";
-      }
 
     } // End namespace GLSL
 
   } // End namespace GPU
 
-} // End namespace GMlib
+} // Ene namespace GMlib
 
 
 #endif // GM_GPU_GLSL
+
+
+#endif // __gmGLPHONGSHADER_H__
+

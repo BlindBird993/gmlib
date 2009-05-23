@@ -239,6 +239,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmGLColor.h" />
+		<Unit filename="../../../src/gmGLPhongShader" />
+		<Unit filename="../../../src/gmGLPhongShader.cpp" />
+		<Unit filename="../../../src/gmGLPhongShader.h" />
 		<Unit filename="../../../src/gmGLSL" />
 		<Unit filename="../../../src/gmGLSL.cpp" />
 		<Unit filename="../../../src/gmGLSL.h" />
@@ -391,10 +394,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmPTCurve.h" />
-		<Unit filename="../../../src/gmPTensorSurf.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmPTensorSurf.h" />
 		<Unit filename="../../../src/gmPTorus" />
 		<Unit filename="../../../src/gmPTorus.c">
 			<Option compilerVar="CC" />
@@ -563,16 +562,6 @@
 		<Unit filename="../../../src/gmSubSpace_SubSpace.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../../src/gmTSurfBasis.h" />
-		<Unit filename="../../../src/gmTSurfBasis_RadialBasis.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmTSurfBasis_TSurfBasis.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmTSurfBasis_TensorBasis.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="../../../src/gmTexture" />
 		<Unit filename="../../../src/gmTexture.cpp" />
 		<Unit filename="../../../src/gmTexture.h" />
@@ -620,6 +609,11 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmVDerivatives.h" />
+		<Unit filename="../../../src/gmVGLContoursPhongShader" />
+		<Unit filename="../../../src/gmVGLContoursPhongShader.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="../../../src/gmVGLContoursPhongShader.h" />
 		<Unit filename="../../../src/gmVGLPhongShader" />
 		<Unit filename="../../../src/gmVGLPhongShader.c">
 			<Option compilerVar="CPP" />

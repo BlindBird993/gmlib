@@ -22,10 +22,10 @@
 
 
 
-/*! \file gmVGLPhongShader.c
+/*! \file gmVGLContoursPhongShader.c
  *
  *
- *  \date   2009-05-12
+ *  \date   2009-05-23
  */
 
 
@@ -40,29 +40,29 @@ namespace GMlib {
 
       template <typename T, int n>
       inline
-      VGLPhongShader<T,n>::VGLPhongShader() : Visualizer<T,n>(), GLPhongShader() {}
+      VGLContoursPhongShader<T,n>::VGLContoursPhongShader() : VContours<T,n>(), GLPhongShader() {}
 
 
       template <typename T, int n>
       inline
-      VGLPhongShader<T,n>::~VGLPhongShader() {}
+      VGLContoursPhongShader<T,n>::~VGLContoursPhongShader() {}
 
 
       template <typename T, int n>
       inline
-      void VGLPhongShader<T,n>::display() {
+      void VGLContoursPhongShader<T,n>::display() {
 
         glSet();
-        glCallList( this->_ref->getDisplayListIdx() );
+        VContours<T,n>::display();
         glUnSet();
       }
 
 
       template <typename T, int n>
       inline
-      std::string VGLPhongShader<T,n>::getIdentity() const {
+      std::string VGLContoursPhongShader<T,n>::getIdentity() const {
 
-        return "PhongShader Visualizer";
+        return "CountoursPhongShader Visualizer";
       }
 
     } // End namespace GLSL

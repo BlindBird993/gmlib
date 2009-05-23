@@ -22,11 +22,24 @@
 
 
 
-/*! \file gmVGLPhongShader.c
+/*! \file gmVGLContoursPhongShader.h
  *
+ *  Interface for the VGLContoursPhongShader class.
  *
- *  \date   2009-05-12
+ *  \date   2009-05-23
  */
+
+
+#ifndef __gmVGLCONTOURSPHONGSHADER_H__
+#define __gmVGLCONTOURSPHONGSHADER_H__
+
+
+// STL includes
+#include <string>
+
+// GMlib includes
+#include "gmVContours.h"
+#include "gmGLPhongShader.h"
 
 
 #ifdef GM_GPU_GLSL
@@ -39,37 +52,34 @@ namespace GMlib {
     namespace GLSL {
 
       template <typename T, int n>
-      inline
-      VGLPhongShader<T,n>::VGLPhongShader() : Visualizer<T,n>(), GLPhongShader() {}
+      class VGLContoursPhongShader : public VContours<T,n>, public GLPhongShader {
+      public:
+        VGLContoursPhongShader();
+        ~VGLContoursPhongShader();
+
+        void display();
+        std::string getIdentity() const;
 
 
-      template <typename T, int n>
-      inline
-      VGLPhongShader<T,n>::~VGLPhongShader() {}
+      }; // End VGLContoursPhongShader
 
-
-      template <typename T, int n>
-      inline
-      void VGLPhongShader<T,n>::display() {
-
-        glSet();
-        glCallList( this->_ref->getDisplayListIdx() );
-        glUnSet();
-      }
-
-
-      template <typename T, int n>
-      inline
-      std::string VGLPhongShader<T,n>::getIdentity() const {
-
-        return "PhongShader Visualizer";
-      }
-
-    } // End namespace GLSL
+    }// End namespace GLSL
 
   } // End namespace GPU
 
-} // End namespace GMlib
+} // Ene namespace GMlib
+
+
+// Include VGLShader class function implementations
+#include "gmVGLContoursPhongShader.c"
 
 
 #endif // GM_GPU_GLSL
+
+
+#endif // __gmVGLCONTOURSPHONGSHADER_H__
+
+
+
+
+

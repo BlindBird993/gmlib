@@ -37,15 +37,14 @@ using namespace std;
 #ifdef GM_GPU_GLSL
 
 
-namespace GMlib
-{
-  namespace GPU
-  {
-    namespace GLSL
-    {
+namespace GMlib {
 
-      GLShader::GLShader()
-      {
+  namespace GPU {
+
+    namespace GLSL {
+
+      GLShader::GLShader() {
+
         _vs_src = 0x0;
         _fs_src = 0x0;
 
@@ -53,17 +52,20 @@ namespace GMlib
       }
 
 
-      GLShader::GLShader( const char* vs, const char* fs )
-      {
+      GLShader::GLShader( const char* vs, const char* fs, bool compile ) {
+
         _vs_src       = vs;
         _fs_src       = fs;
 
         _init();
+
+        if( compile )
+          initShader();
       }
 
 
-      GLShader::GLShader( const GLShader& cpy )
-      {
+      GLShader::GLShader( const GLShader& cpy ) {
+
         _vs_src       = cpy._vs_src;
         _fs_src       = cpy._fs_src;
 
@@ -78,8 +80,8 @@ namespace GMlib
       }
 
 
-      GLShader::GLShader( GLShader* cpy )
-      {
+      GLShader::GLShader( GLShader* cpy ) {
+
         _vs_src       = cpy->_vs_src;
         _fs_src       = cpy->_fs_src;
 
@@ -94,12 +96,11 @@ namespace GMlib
       }
 
 
-      GLShader::~GLShader()
-      {}
+      GLShader::~GLShader() {}
 
 
-      char* GLShader::_get_error_info( bool shader, unsigned int v )
-      {
+      char* GLShader::_get_error_info( bool shader, unsigned int v ) {
+
         int   len  = 0;
         char  *log = 0x0;
 
@@ -130,8 +131,8 @@ namespace GMlib
       }
 
 
-      void GLShader::_init()
-      {
+      void GLShader::_init() {
+
         _prog         = 0;
         _prog_backup  = 0;
         _fs           = 0;
@@ -143,64 +144,76 @@ namespace GMlib
       }
 
 
-      char* GLShader::getFragmentError()
-      {
+      char* GLShader::getFragmentError() {
+
         return _get_error_info( true, _fs );
       }
 
 
-      unsigned int GLShader::getProgramData() const
-      {
+      const char* GLShader::getFragmentSource() {
+
+        return _fs_src;
+      }
+
+
+      unsigned int GLShader::getProgramData() const {
+
         return _prog;
       }
 
 
-      char* GLShader::getProgramError()
-      {
+      char* GLShader::getProgramError() {
+
         return _get_error_info( false, _prog );
       }
 
 
-      char* GLShader::getVertexError()
-      {
+      char* GLShader::getVertexError() {
+
         return _get_error_info( true, _vs );
       }
 
 
-      void GLShader::glSet()
-      {
+      const char* GLShader::getVertexSource() {
+
+        return _vs_src;
+      }
+
+
+      void GLShader::glSet() {
+
         glUseProgram( _prog );
         _active = true;
       }
 
 
-      void GLShader::glUnSet()
-      {
+      void GLShader::glUnSet() {
+
         glUseProgram( 0 );
         _active = false;
       }
 
 
-      bool GLShader::isActive() const
-      {
+      bool GLShader::isActive() const {
+
         return _active;
       }
 
 
-      bool GLShader::isChanged() const
-      {
+      bool GLShader::isChanged() const {
+
         return _changed;
       }
 
 
-      bool GLShader::isValid() const
-      {
+      bool GLShader::isValid() const {
+
         return _valid;
       }
 
 
-      bool GLShader::initShader( bool clean_first )
-      {
+      bool GLShader::initShader( bool clean_first ) {
+
         int success       = 0;
 
         // Reset if neccesary
@@ -264,8 +277,8 @@ namespace GMlib
       }
 
 
-      void GLShader::resetShader()
-      {
+      void GLShader::resetShader() {
+
         // Deactivate program
         glUseProgram( 0 );
 
@@ -301,8 +314,8 @@ namespace GMlib
       }
 
 
-      void GLShader::set( const char* vs, const char* fs)
-      {
+      void GLShader::set( const char* vs, const char* fs) {
+
         _vs_src   = vs;
         _fs_src   = fs;
 
@@ -310,22 +323,22 @@ namespace GMlib
       }
 
 
-      void GLShader::setFragmentShader( const char* fs )
-      {
+      void GLShader::setFragmentShader( const char* fs ) {
+
         _fs_src   = fs;
         _changed  = true;
       }
 
 
-      void GLShader::setVertexShader( const char* vs )
-      {
+      void GLShader::setVertexShader( const char* vs ) {
+
         _vs_src   = vs;
         _changed  = true;
       }
 
 
-      void GLShader::toggleShader( bool force )
-      {
+      void GLShader::toggleShader( bool force ) {
+
         if( force )
         {
           if( _active )

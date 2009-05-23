@@ -43,63 +43,62 @@
 #ifdef  GM_GPU_GLSL
 
 
-namespace GMlib
-{
-  namespace GPU
-  {
-    namespace GLSL
-    {
+namespace GMlib {
+
+  namespace GPU {
+
+    namespace GLSL {
 
 
-      class GLShader
-      {
-        public:
-          GLShader();
-          GLShader( const char* vs, const char* fs );
-          GLShader( const GLShader& cpy );
-          GLShader( GLShader* cpy );
-          ~GLShader();
+      class GLShader {
+      public:
+        GLShader();
+        GLShader( const char* vs, const char* fs, bool compile = false );
+        GLShader( const GLShader& cpy );
+        GLShader( GLShader* cpy );
+        ~GLShader();
 
-          char*         getFragmentError();
-          unsigned int  getProgramData() const;
-          char*         getProgramError();
-          char*         getVertexError();
-          void          glSet();
-          void          glUnSet();
-          bool          isActive() const;
-          bool          isChanged() const;
-          bool          isValid() const;
-          bool          initShader( bool clean_first = false );
-          void          resetShader();
-          void          set( const char* vs, const char* fs );
-          void          setFragmentShader( const char* fs );
-          void          setVertexShader( const char* vs );
-          void          toggleShader( bool force = false );
-
-
-        protected:
-          bool          _active;
-          bool          _changed;
-          bool          _valid;
+        char*         getFragmentError();
+        const char*   getFragmentSource();
+        unsigned int  getProgramData() const;
+        char*         getProgramError();
+        char*         getVertexError();
+        const char*   getVertexSource();
+        void          glSet();
+        void          glUnSet();
+        bool          isActive() const;
+        bool          isChanged() const;
+        bool          isValid() const;
+        bool          initShader( bool clean_first = false );
+        void          resetShader();
+        void          set( const char* vs, const char* fs );
+        void          setFragmentShader( const char* fs );
+        void          setVertexShader( const char* vs );
+        void          toggleShader( bool force = false );
 
 
-          unsigned int  _prog;
-          unsigned int  _prog_backup;
-          unsigned int  _vs;
-          unsigned int  _fs;
+      protected:
+        bool          _active;
+        bool          _changed;
+        bool          _valid;
 
 
-          const char    *_vs_src;
-          const char    *_fs_src;
+        unsigned int  _prog;
+        unsigned int  _prog_backup;
+        unsigned int  _vs;
+        unsigned int  _fs;
 
 
-        private:
-          char*         _get_error_info( bool shader, unsigned int v );
-          void          _init();
+        const char    *_vs_src;
+        const char    *_fs_src;
+
+
+      private:
+        char*         _get_error_info( bool shader, unsigned int v );
+        void          _init();
 
 
       }; // End class Shader
-
 
 
     } // End namespace GLSL
