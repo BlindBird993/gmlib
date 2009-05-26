@@ -35,7 +35,6 @@
 
 
 #include <string>
-using std::string;
 
 #include "gmDisplayObject.h"
 #include "gmArrayLX.h"
@@ -49,6 +48,8 @@ namespace GMlib {
   class StlObject : public DisplayObject {
   public:
     StlObject( const string& filename, const GLColor& color = 5, int flip = 1 ); // From file, in given color
+    StlObject( std::ifstream& stream, bool binary = true, const GLColor& color = GMcolor::Aqua );
+    StlObject( DSurf<float> *obj, int m1 = 20, int m2 = 20 );
     StlObject( float r = 10 );				 // Makes a Sphere, just for debugging
     ~StlObject();
 
@@ -58,6 +59,9 @@ namespace GMlib {
     Array<Point<float,3> >          getVertices();
     ArrayLX< Vertex<float> >        getVertex();
 
+    void                            load( std::ifstream& stream, bool binary = true );
+    void                            replot();
+    void                            save( std::ofstream& stream, bool binary = true );
     void                            setColor( const GLColor& color );
 
   protected:
@@ -66,10 +70,10 @@ namespace GMlib {
 
 
   private:
-    unsigned int                    _dlist_name;
+    unsigned int                    _dlist;
     DPSphere<float>                 *_sphere;          // Debug
 
-    string                          _fname;						 // I put the filename in here,
+    std::string                     _identity;						 // I put the filename in here,
     FILE*                           _stl_file;
     GLColor                         _color;
 
@@ -82,6 +86,9 @@ namespace GMlib {
     unsigned int                    _getUint();
     unsigned long                   _getUli();
     int                             _readStlBinary( const string& filename );
+
+    void                            _updateBounding();
+    void                            _makeList();
 
   };
 

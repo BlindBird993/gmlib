@@ -54,9 +54,6 @@ namespace GMlib {
 //    DSurf( const PSurf<T,3>& copy );
 //    DSurf( PSurf<T,3>* copy );
 
-
-    void                      exportSTL( std::ofstream& stream, int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
-    void                      exportSTLascii( std::ofstream& stream, int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
     int                       getNoDerU() const;
     int                       getNoDerV() const;
     int                       getNoSampU() const;

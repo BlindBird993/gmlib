@@ -98,9 +98,9 @@ namespace GMlib {
 
     Scene::stop();
 
-    for(int i = 0; i < _selected_objects.getSize(); i++)
-      _selected_objects[i]->setSelected( false );
-    _selected_objects.clear();
+    for(int i = 0; i < _sel_objs.getSize(); i++)
+      _sel_objs[i]->setSelected( false );
+    _sel_objs.clear();
 
     //_rotation_object  = 0x0;
     //_locked_object    = 0x0
@@ -276,7 +276,7 @@ namespace GMlib {
     _stereo	= false;
     _running = false;
     _isbig	 = false;
-    _selected_objects.clear();
+    _sel_objs.clear();
     _view_set_stack = gw._view_set_stack;				// Active camera set
     reshape(_w,_h);
     return *this;

@@ -49,19 +49,15 @@ namespace GMlib {
     // Push GL Attributes
     glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT ); {
 
-      // Set material dependant on selection status
+
+      // Handle lighting and set Color/Material accordingly
       if( this->_ref->isLighted() ) {
 
         glEnable( GL_LIGHTING );
 
         // Get Material Data
         const Material &m = this->_ref->getMaterial();
-
-        // Set Material dependant on Selection
-        if( this->_ref->isSelected() )
-          m.glSetInverse();
-        else
-          m.glSet();
+        m.glSet();
       }
       else {
 
@@ -69,12 +65,7 @@ namespace GMlib {
 
         // Get Color Data
         const GLColor &c = this->_ref->getColor();
-
-        // Set Color dependant on Selection
-        if( this->_ref->isSelected() )
-          c.glSetInverse();
-        else
-          c.glSet();
+        c.glSet();
       }
 
 
@@ -93,7 +84,6 @@ namespace GMlib {
         }
         break;
       }
-
 
 
       // Display; dependant on dynamic/static status

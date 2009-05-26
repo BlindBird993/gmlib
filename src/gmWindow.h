@@ -241,7 +241,6 @@ namespace GMlib {
     // index of active camera, old/previous x and y mouse positions
     int				              _active_cam;
 
-    Array<SceneObject *>    _selected_objects;
     double					        _move;
 
 

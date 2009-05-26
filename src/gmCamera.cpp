@@ -631,6 +631,7 @@ namespace GMlib {
     setFrustumVisible();
     _type_id  = GM_SO_TYPE_CAMERA;
     _culling = true;
+    _select_color = GMcolor::Yellow;
   }
 
 
@@ -670,6 +671,12 @@ namespace GMlib {
     glMatrixMode(GL_MODELVIEW);
   }
 
+
+
+  void Camera::setSelectColor( const Color& color ) {
+
+    _select_color = color;
+  }
 
 
 }

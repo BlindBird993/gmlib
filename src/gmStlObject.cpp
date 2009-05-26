@@ -38,7 +38,7 @@ namespace GMlib {
 
 
   StlObject::StlObject(float r) {
-    _fname = string( "STL place holder" );
+    _identity = string( "STL place holder" );
     _sphere = new DPSphere<float>( r );
     _sphere->replot();
     insert( _sphere );
@@ -51,56 +51,86 @@ namespace GMlib {
   }
 
 
+  StlObject::StlObject( DSurf<float> *obj, int m1, int m2 ) {
+
+
+    // Resample DSurf
+    DMatrix< DMatrix< Vector<float, 3> > > p;
+    obj->resample(
+      p, m1, m2, 1, 1,
+      obj->getParStartU(),
+      obj->getParStartV(),
+      obj->getParEndU(),
+      obj->getParEndV()
+    );
+
+    // Generate DSurf Normals
+    DMatrix< Vector<float, 3> > normals;
+    obj->resampleNormals( p, normals );
+
+    // Set Array Max Size (speedup)
+    _normals.setMaxSize( (p.getDim1()-1)*(p.getDim2()-1)*2 );
+    _vertices.setMaxSize( _normals.getMaxSize()*3 );
+
+    for( int i = 0; i < p.getDim1() - 1; i++ ) {
+      for( int j = 1; j < p.getDim2(); j++ ) {
+
+        Point<float,3> v1 = p[i][j-1][0][0].toFloat();
+        Point<float,3> v2 = p[i+1][j-1][0][0].toFloat();
+        Point<float,3> v3 = p[i][j][0][0].toFloat();
+        Point<float,3> v4 = p[i+1][j-1][0][0].toFloat();
+        Point<float,3> v5 = p[i][j][0][0].toFloat();
+        Point<float,3> v6 = p[i+1][j][0][0].toFloat();
+
+        UnitVector<float,3> n1 = Vector3D<float>(v2 - v1) ^ (v3 - v1);
+        UnitVector<float,3> n2 = Vector3D<float>(v5 - v4) ^ (v6 - v4);
+
+
+        _normals.insertAlways( n1 );
+        _vertices.insertAlways( v1 );
+        _vertices.insertAlways( v2 );
+        _vertices.insertAlways( v3 );
+
+        _normals.insertAlways( n1 );
+        _vertices.insertAlways( v4 );
+        _vertices.insertAlways( v5 );
+        _vertices.insertAlways( v6 );
+      }
+    }
+
+    replot();
+  }
+
+
   StlObject::StlObject( const std::string& filename, const GLColor& color, int flip ) {
 
+    _dlist = 0;
+
     _color = color;
-    _fname = filename;
+    _identity = filename;
 
     _readStlBinary( filename );
 
-    // update bounding box
-    _bbox.reset( _vertices[0] );
-    for( int i = 0; i < _vertices.getSize()-1; i++ )
-      _bbox += _vertices[i];
+    replot();
+  }
 
-    // make display lists
-    _dlist_name = glGenLists( 2 );
-    glNewList( _dlist_name, GL_COMPILE ); {
-      glBegin( GL_TRIANGLES ); {
 
-        for( int i = 0; i < _normals.getSize()-1; i++) {
-          glNormal( _normals[i] );                // STL file only carries one normal
-          for( int j = 0; j < 3; j++ )            // for each triangle, makes a facet shading,
-            glPoint( _vertices[ 3*i+j ] );        // they must be averaged for true smooth surfaces.
-        }
-      } glEnd();
-    } glEndList();
+  StlObject::StlObject( std::ifstream& stream, bool binary, const GLColor& color ) {
 
-    // Build a new list for selection
-    glNewList( _dlist_name+1, GL_COMPILE ); {
-      glBegin( GL_TRIANGLES ); {
+    _dlist = 0;
 
-        for( int i = 0; i < _normals.getSize()-1; i++ ) {
-          glNormal( _normals[i] );
-          for( int j = 0;j < 3; j++ )
-            glPoint( _vertices[ 3*i+j ] );
-        }
-      } glEnd();
-    } glEndList();
+    _color = color;
 
-    // update bounding sphere
-    Point3D<float> pos( _bbox.getPointCenter() );          // which can be far from origo
-    Sphere<float,3> s( pos, _bbox.getPointDelta().getLength() * 0.5 );
+    load( stream, binary );
 
-    setSurroundingSphere( s );
-
+    replot();
   }
 
 
 
   StlObject::~StlObject() {
 
-    glDeleteLists( _dlist_name, 2 );
+    glDeleteLists( _dlist, 2 );
   }
 
 
@@ -146,6 +176,46 @@ namespace GMlib {
     return( number );
   }
 
+  void StlObject::_makeList() {
+
+
+
+    if( _dlist ) {
+
+      glDeleteLists( _dlist, 2 );
+      _dlist = 0;
+    }
+
+
+    // make display lists
+    _dlist = glGenLists( 2 );
+
+
+
+    glNewList( _dlist, GL_COMPILE ); {
+      glBegin( GL_TRIANGLES ); {
+
+        for( int i = 0; i < _normals.getSize()-1; i++) {
+          glNormal( _normals[i] );                // STL file only carries one normal
+          for( int j = 0; j < 3; j++ )            // for each triangle, makes a facet shading,
+            glPoint( _vertices[ 3*i+j ] );        // they must be averaged for true smooth surfaces.
+        }
+      } glEnd();
+    } glEndList();
+
+    // Build a new list for selection
+    glNewList( _dlist+1, GL_COMPILE ); {
+      glBegin( GL_TRIANGLES ); {
+
+        for( int i = 0; i < _normals.getSize()-1; i++ ) {
+          glNormal( _normals[i] );
+          for( int j = 0;j < 3; j++ )
+            glPoint( _vertices[ 3*i+j ] );
+        }
+      } glEnd();
+    } glEndList();
+  }
+
 
   int StlObject::_readStlBinary(const string& filename) {
 
@@ -189,4 +259,139 @@ namespace GMlib {
     return 1;
   }
 
+
+  void StlObject::_updateBounding() {
+
+
+    // update bounding box
+    _bbox.reset( _vertices[0] );
+    for( int i = 0; i < _vertices.getSize()-1; i++ )
+      _bbox += _vertices[i];
+
+    // update bounding sphere
+    Point3D<float> pos( _bbox.getPointCenter() );          // which can be far from origo
+    Sphere<float,3> s( pos, _bbox.getPointDelta().getLength() * 0.5 );
+
+    setSurroundingSphere( s );
+  }
+
+
+  void StlObject::load( std::ifstream& stream, bool binary ) {
+
+    // Binary
+    if( binary ) {
+
+      // Read header
+      char hbuff[80];
+      stream.read( hbuff, 80 );
+
+      _identity = hbuff;
+
+      cout << "Loading binary STL file:" << endl;
+      cout << " - Identity: " << _identity << endl;
+
+      uint32_t facets;
+      stream.read( (char*)&facets, sizeof( uint32_t ) );
+
+      cout << " - No. Facets: " << facets << endl;
+
+      // Allocate memory
+      _normals.setMaxSize(facets);
+      _vertices.setMaxSize(_normals.getMaxSize()*3);
+
+      // Read Normal and Vertices and Attribute bit of each face
+      for( int i = 0; i < (int)facets; i++ ) {
+
+        cout << i << ": ";
+        // Normal
+        stream.read( (char*)&_normals[i], 3 * sizeof( uint32_t ) );
+        cout << "(" << _normals[i][0] << ", " << _normals[i][1] << ", " << _normals[i][2] << ") - ";
+
+        // Vertices
+        stream.read( (char*)&_vertices[i*3], 9 * sizeof( uint32_t ) );
+        cout << "(" << _vertices[i*3][0] << ", " << _vertices[i*3][1] << ", " << _vertices[i*3][2];
+        cout << "(" << _vertices[i*3+1][0] << ", " << _vertices[i*3+1][1] << ", " << _vertices[i*3+1][2];
+        cout << "(" << _vertices[i*3+2][0] << ", " << _vertices[i*3+2][1] << ", " << _vertices[i*3+2][2];
+
+        cout << endl;
+
+        // Attribute
+        uint16_t attrib = 0;
+        stream.read( (char*)&attrib, sizeof( uint16_t ) );
+      }
+    }
+  }
+
+  void StlObject::save( std::ofstream& stream, bool binary ) {
+
+
+    // Binary
+    if( binary ) {
+
+      std::stringstream header;
+      header << "GMlib STL: " << this->getIdentity();
+
+      char hbuff[80]; for( int i = 0; i < 80; i++ ) hbuff[i] = ' ';
+      memcpy( hbuff, header.str().c_str(), header.str().length() );
+      stream.write( hbuff, 80 );
+
+
+      uint32_t facets = _normals.getSize();
+      stream.write( (char*)&facets, sizeof( uint32_t ) );
+
+      for( int i = 0; i < _normals.getSize(); i++ ) {
+
+        // Normal
+        stream.write( (char*)&_normals[i], 3 * sizeof( uint32_t ) );
+
+        // Vertices
+        stream.write( (char*)&_vertices[i*3], 9 * sizeof( uint32_t ) );
+
+        // Attribute
+        uint16_t attrib = 0;
+        stream.write( (char*)&attrib, sizeof( uint16_t ) );
+      }
+    }
+    else {
+
+      std::stringstream content;
+      content << "solid " << this->getIdentity() << endl;
+
+      for( int i = 0; i < _normals.getSize(); i++ ) {
+
+        const Vector<float,3> &v0 = _vertices(i*3);
+        const Vector<float,3> &v1 = _vertices(i*3+1);
+        const Vector<float,3> &v2 = _vertices(i*3+2);
+
+        // Normal
+        const UnitVector<float,3> &n = _normals(i);
+
+        content << "  facet normal " << n(0) << " " << n(1) << " " << n(2) << endl;
+
+          content << "    outer loop" << endl;
+
+
+            // Vertices
+            content << "      vertex " << v0(0) << " " << v0(1) << " " << v0(2) << endl;
+            content << "      vertex " << v1(0) << " " << v1(1) << " " << v1(2) << endl;
+            content << "      vertex " << v2(0) << " " << v2(1) << " " << v2(2) << endl;
+
+          content << "    endloop" << endl;
+
+        content << "  endfacet" <<endl;
+      }
+
+      content << "endsolid " << this->getIdentity() << endl;
+
+      stream.write( content.str().c_str(), content.str().length() * sizeof( char ) );
+    }
+  }
+
+
+  void StlObject::replot() {
+
+    _makeList();
+
+    _updateBounding();
+  }
 }

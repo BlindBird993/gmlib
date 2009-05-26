@@ -240,9 +240,6 @@ namespace GMlib {
   }
 
 
-
-
-
   /*! void Scene::simulate()
    *  \brief Pending Documentation
    *
@@ -301,6 +298,13 @@ namespace GMlib {
 
     for( int i = 0; i < _disp_objs.getSize(); i++ )
       _disp_objs[i]->_display();
+  }
+
+
+  void Scene::_displaySelection() {
+
+    for( int i = 0; i < _sel_objs.getSize(); i++ )
+      _sel_objs[i]->_displaySelection();
   }
 
 

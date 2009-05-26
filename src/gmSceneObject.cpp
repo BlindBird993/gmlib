@@ -76,12 +76,11 @@ namespace GMlib {
     _type_id  = GM_SO_TYPE_SCENEOBJECT;
     _visible = true;
     _selected = false;
+
     _collapsed = false;
-    _default	= GMcolor::Blue;
-    _marked		= _default.getInverse();
-    _default_mat = GMmaterial::Gold;
-    _marked_mat = Material( _default_mat.getAmb().getInverse(), _default_mat.getDif().getInverse(), _default_mat.getSpc().getInverse(), 1.0f - _default_mat.getShininess() );
-    _ir = 0.07;
+    _collapsed_dlist = 0;
+    generateCollapsedDList();
+
     _children.clear();
   }
 
@@ -104,10 +103,10 @@ namespace GMlib {
     _type_id  = GM_SO_TYPE_SCENEOBJECT;
     _visible  = d._visible;
     _selected = d._selected;
+
     _collapsed = d._collapsed;
-    _default  = d._default;
-    _marked  = d._marked;
-    _ir = d._ir;
+    _collapsed_dlist = 0;
+    generateCollapsedDList();
   }
 
 
@@ -126,6 +125,9 @@ namespace GMlib {
       //delete _object[i]; ?
       }
     }
+
+    if( _collapsed_dlist )
+      glDeleteLists( _collapsed_dlist, 1 );
   }
 
 
@@ -341,19 +343,7 @@ namespace GMlib {
    */
   void SceneObject::displayCollapsed() {
 
-      glBegin(GL_QUAD_STRIP);
-      glVertex3f( _ir,-_ir,-_ir ); glVertex3f( _ir, _ir,-_ir );
-      glVertex3f( _ir,-_ir, _ir ); glVertex3f( _ir, _ir, _ir );
-      glVertex3f(-_ir,-_ir, _ir ); glVertex3f(-_ir, _ir, _ir );
-      glVertex3f(-_ir,-_ir,-_ir ); glVertex3f(-_ir, _ir,-_ir );
-      glVertex3f( _ir,-_ir,-_ir ); glVertex3f( _ir, _ir,-_ir );
-      glEnd();
-      glBegin(GL_QUADS);
-      glVertex3f(-_ir,-_ir,-_ir ); glVertex3f( _ir,-_ir,-_ir );
-      glVertex3f( _ir,-_ir, _ir ); glVertex3f(-_ir,-_ir, _ir );
-      glVertex3f(-_ir, _ir,-_ir ); glVertex3f(-_ir, _ir, _ir );
-      glVertex3f( _ir, _ir, _ir ); glVertex3f( _ir, _ir,-_ir );
-      glEnd();
+    glCallList( _collapsed_dlist );
   }
 
 
@@ -363,6 +353,12 @@ namespace GMlib {
    *  Pending Documentation
    */
   void SceneObject::localDisplay() {}
+
+
+  void SceneObject::localDisplaySelection() {
+
+    localSelect();
+  }
 
 
   /*! void localSelect()
@@ -380,6 +376,38 @@ namespace GMlib {
    */
   void SceneObject::localSimulate(double dt) {}
 
+
+  void SceneObject::generateCollapsedDList() {
+
+    if( _collapsed_dlist )
+      glDeleteLists( _collapsed_dlist, 1 );
+
+    _collapsed_dlist = glGenLists( 1 );
+
+    float ir = 0.07;
+    glNewList( _collapsed_dlist, GL_COMPILE ); {
+
+
+      glBegin(GL_QUAD_STRIP); {
+
+        glVertex3f( ir,-ir,-ir ); glVertex3f( ir, ir,-ir );
+        glVertex3f( ir,-ir, ir ); glVertex3f( ir, ir, ir );
+        glVertex3f(-ir,-ir, ir ); glVertex3f(-ir, ir, ir );
+        glVertex3f(-ir,-ir,-ir ); glVertex3f(-ir, ir,-ir );
+        glVertex3f( ir,-ir,-ir ); glVertex3f( ir, ir,-ir );
+      } glEnd();
+
+      glBegin(GL_QUADS); {
+
+        glVertex3f(-ir,-ir,-ir ); glVertex3f( ir,-ir,-ir );
+        glVertex3f( ir,-ir, ir ); glVertex3f(-ir,-ir, ir );
+        glVertex3f(-ir, ir,-ir ); glVertex3f(-ir, ir, ir );
+        glVertex3f( ir, ir, ir ); glVertex3f( ir, ir,-ir );
+      } glEnd();
+
+    } glEndList();
+
+  }
 
   /*! HqMatrix<flaot,3>& SceneObject::getMatrix()
    *  \brief Pending Documentation

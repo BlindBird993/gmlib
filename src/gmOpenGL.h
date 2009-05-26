@@ -77,28 +77,35 @@ typedef unsigned short wchar_t;
 using namespace std;
 
 // OpenGL and extionsion includes
-#define GM_GL_EXTENSION
 #ifdef GM_GL_EXTENSION
   #ifdef _WIN32
     #include <GL/GLee.h>
   #endif
 #endif
 
-
+// Handle when Glee is not included
 #ifndef __glee_h_
+
+  // Enable Prototype GL Extensions
   #ifdef GM_GL_EXTENSION
     #define GL_GLEXT_PROTOTYPES
-    #include <GL/gl.h>
+  #endif
+
+  // Include OGL header
+  #include <GL/gl.h>
+
+  // Include GL Extensions
+  #ifdef GM_GL_EXTENSION
     #include <GL/glext.h>
     #include <GL/glx.h>
     #include <GL/glxext.h>
-  #else
-    #include <GL/gl.h>
   #endif
+
+  // Include OGL Utility header
+  #include <GL/glu.h>
 #endif
 
 
-#include <GL/glu.h>
 
 
 // GMlib includes

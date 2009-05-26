@@ -350,31 +350,33 @@ namespace GMlib {
         glPopMatrix();
       }
     */
+      glPushMatrix(); {
+        if(_local_cs)
+          glMultMatrix(_present);
+        _scale.glScaling();
+
+        if(_collapsed)  displayCollapsed();
+        else            localDisplay();
+
+      } glPopMatrix();
+    }
+  }
+
+
+  inline
+  void SceneObject::_displaySelection() {
+
+
+    if(!_active) {
+
       glPushMatrix();
         if(_local_cs)
           glMultMatrix(_present);
         _scale.glScaling();
 
-        /// \todo Properly Fix Selection Coloring
-        if(_collapsed) {
+        if(_collapsed)  displayCollapsed();
+        else            localDisplaySelection();
 
-//          glPushAttrib( GL_LIGHTING_BIT );
-//            glDisable( GL_LIGHTING );
-
-            if(_selected) {
-              _marked.glSet();
-              _marked_mat.glSet();
-            }
-            else {
-              _default.glSet();
-              _default_mat.glSet();
-            }
-
-            displayCollapsed();
-
-//          glPopAttrib();
-        }
-        else localDisplay();
       glPopMatrix();
     }
   }

@@ -441,7 +441,7 @@ ifeq "$(COMPILE_ENV)" "linux"
 
   # Compileflags
   CC = g++
-  CFLAGS = -g -c -Wall
+  CFLAGS = -g -c -Wall -DGM_GL_EXTENSION
 
   # Incpaths
   INCPATHS = \

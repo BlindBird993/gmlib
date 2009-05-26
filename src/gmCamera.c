@@ -113,6 +113,19 @@ namespace GMlib {
       _scene->_lighting();
       _scene->_display();
 
+
+      // Display Selection
+      glPushAttrib( GL_POLYGON_BIT | GL_LINE_BIT | GL_LIGHTING_BIT ); {
+
+        glLineWidth( 1.0f );
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDisable( GL_LIGHTING );
+
+        glColor( _select_color );
+
+        _scene->_displaySelection();
+      } glPopAttrib();
+
     glPopMatrix();
   }
 

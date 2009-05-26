@@ -6,6 +6,29 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2009-05-26 Jostein Bratlie
+
+        * gmOpenGL / makeconf.mak
+          - Removed the GM_GL_EXTENSION definition, this is now passed to the compiler with a compiler flag parameter:
+            g++:  -Dname
+            vc++: /Dname
+            intel: -Dname (linux/mac), /Dname (windows)
+        * gmSceneObject
+          - A collapsed SceneObject is now drawn with the help of a displaylist,
+            this can be changed by reimplementing the generateCollapsedDList() function.
+            Display list is hold by: unsigned int _collapsed_dlist
+        * gmScene/gmSceneObject/gmCamera/gmVDefault/gmWindow
+          - Representation of selected sceneobjects has been moved.
+          - It now draws a "overlay" of the geometry given by localSelect(), to change this representation reimplement localDisplaySelection()
+          - All SceneObjects in the protected _sel_objs array in SceneObject is draw with selection representation. Accessible through inheritance.
+        * gmCamera
+          - Selection representation color can be set in each camera individually through the function setSelectColor( const Color& color )
+        * gmStlObject/gmDSurf
+          - Export of DSurfs to Stereolithography (STL) file format is now enabled through an StlObject.
+          - Pass the DSurf to the object and use the save(...) function.
+          - Removed the exportSTL(...) and exportSTLAscii(...) functions from DSurf.
+
+
 2009-05-23 Jostein Bratlie
 
         * gmSceneObject

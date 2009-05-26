@@ -170,20 +170,18 @@ namespace GMlib{
     bool					              _active;		//! This variable is only for camera.
     Sphere<float,3>		          _global_sphere;			//! for this object
     Sphere<float,3>		          _global_total_sphere;	//! included all children
-    float					              _ir;					//! Size of cube (collapsed object)
-    GLColor				              _default;
-    GLColor				              _marked;
-    Material				            _default_mat;
-    Material				            _marked_mat;
     bool					              _selected;
     bool					              _visible;	//! culling on invisible items
     bool					              _collapsed;	//! represented by a small cube
+    unsigned int                _collapsed_dlist;
 
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                displayCollapsed();
+    virtual void                generateCollapsedDList();
     virtual HqMatrix<float,3>&  getMatrix();
     const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
     virtual void                localDisplay();
+    virtual void                localDisplaySelection();
     virtual void                localSelect();
     virtual void                localSimulate(double dt);
     void	                      reset();
@@ -200,6 +198,7 @@ namespace GMlib{
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
     void	                      _display();
+    void	                      _displaySelection();
     void                        _fillObj( Array<SceneObject*>& );
     int		                      _prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
     virtual void                _prepareDisplay(const HqMatrix<float,3>& m);

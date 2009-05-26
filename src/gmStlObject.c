@@ -37,7 +37,7 @@ namespace GMlib {
   inline
   string StlObject::getIdentity() const {
 
-    return _fname;
+    return _identity;
   }
 
 
@@ -83,15 +83,15 @@ namespace GMlib {
   void StlObject::localDisplay() {
 
     _color.glSet();
-    if( _dlist_name )
-      glCallList( _dlist_name );
+    if( _dlist )
+      glCallList( _dlist );
   }
 
 
   inline
   void StlObject::localSelect() {
 
-    glCallList( _dlist_name+1 );
+    glCallList( _dlist+1 );
   }
 
 

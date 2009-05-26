@@ -103,6 +103,8 @@ namespace GMlib{
 
 
   protected:
+    Array<SceneObject*>   _sel_objs;
+
     bool                  isVisible( SceneObject* obj );
     void                  simulate();
 
@@ -111,6 +113,7 @@ namespace GMlib{
 
     void                  _lighting();
     void                  _display();
+    void                  _displaySelection();
     void                  _select( int type_id );
     virtual void          _culling( const Frustum& f, bool on = true );
 
