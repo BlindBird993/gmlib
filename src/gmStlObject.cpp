@@ -30,7 +30,6 @@
  */
 
 
-
 #include "gmStlObject.h"
 
 
@@ -290,8 +289,8 @@ namespace GMlib {
       cout << "Loading binary STL file:" << endl;
       cout << " - Identity: " << _identity << endl;
 
-      uint32_t facets;
-      stream.read( (char*)&facets, sizeof( uint32_t ) );
+      unsigned int facets;
+      stream.read( (char*)&facets, sizeof( unsigned int ) );
 
       cout << " - No. Facets: " << facets << endl;
 
@@ -304,11 +303,11 @@ namespace GMlib {
 
         cout << i << ": ";
         // Normal
-        stream.read( (char*)&_normals[i], 3 * sizeof( uint32_t ) );
+        stream.read( (char*)&_normals[i], 3 * sizeof( unsigned int ) );
         cout << "(" << _normals[i][0] << ", " << _normals[i][1] << ", " << _normals[i][2] << ") - ";
 
         // Vertices
-        stream.read( (char*)&_vertices[i*3], 9 * sizeof( uint32_t ) );
+        stream.read( (char*)&_vertices[i*3], 9 * sizeof( unsigned int ) );
         cout << "(" << _vertices[i*3][0] << ", " << _vertices[i*3][1] << ", " << _vertices[i*3][2];
         cout << "(" << _vertices[i*3+1][0] << ", " << _vertices[i*3+1][1] << ", " << _vertices[i*3+1][2];
         cout << "(" << _vertices[i*3+2][0] << ", " << _vertices[i*3+2][1] << ", " << _vertices[i*3+2][2];
@@ -316,8 +315,8 @@ namespace GMlib {
         cout << endl;
 
         // Attribute
-        uint16_t attrib = 0;
-        stream.read( (char*)&attrib, sizeof( uint16_t ) );
+        unsigned short attrib = 0;
+        stream.read( (char*)&attrib, sizeof( unsigned short ) );
       }
     }
   }
@@ -336,20 +335,20 @@ namespace GMlib {
       stream.write( hbuff, 80 );
 
 
-      uint32_t facets = _normals.getSize();
-      stream.write( (char*)&facets, sizeof( uint32_t ) );
+      unsigned int facets = _normals.getSize();
+      stream.write( (char*)&facets, sizeof( unsigned int ) );
 
       for( int i = 0; i < _normals.getSize(); i++ ) {
 
         // Normal
-        stream.write( (char*)&_normals[i], 3 * sizeof( uint32_t ) );
+        stream.write( (char*)&_normals[i], 3 * sizeof( unsigned int ) );
 
         // Vertices
-        stream.write( (char*)&_vertices[i*3], 9 * sizeof( uint32_t ) );
+        stream.write( (char*)&_vertices[i*3], 9 * sizeof( unsigned int ) );
 
         // Attribute
-        uint16_t attrib = 0;
-        stream.write( (char*)&attrib, sizeof( uint16_t ) );
+        unsigned short attrib = 0;
+        stream.write( (char*)&attrib, sizeof( unsigned short ) );
       }
     }
     else {

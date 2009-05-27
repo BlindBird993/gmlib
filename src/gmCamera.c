@@ -130,6 +130,44 @@ namespace GMlib {
   }
 
 
+  /*! void Camera::drawActiveCam()
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  inline
+  void Camera::drawActiveCam() {
+
+    float hh = -1.5*_near_plane*_angle_tan;
+    Point3D<float> cp(_ratio*hh, hh, -_near_plane-1.0);
+
+
+    /*! \todo check if this is correct and fix if not */
+    cp = _matrix_scene * cp;
+    cp = getMatrix() * cp;
+
+  //	GLboolean lg;
+  //	glGetBooleanv(GL_LIGHTING,&lg);
+  //	if(lg) glDisable(GL_LIGHTING);
+    glPushAttrib( GL_LIGHTING );
+    glDisable( GL_LIGHTING );
+    glBegin(GL_LINES); // draw Coordsys
+      GLColor( GMcolor::Red ).glSet();	glPoint(cp); glPoint(cp+Vector3D<float>(0.1,0,0));
+      GLColor( GMcolor::Green ).glSet();	glPoint(cp); glPoint(cp+Vector3D<float>(0,0.1,0));
+      GLColor( GMcolor::Blue ).glSet();	glPoint(cp); glPoint(cp+Vector3D<float>(0,0,0.1));
+    glEnd();
+    if(_locked && ! _lock_object)
+    {
+      glPushMatrix();
+      glTranslate(_lock_pos);
+      glCallList(_display_list+8);
+      glPopMatrix();
+    }
+    glPopAttrib();
+  //	if (lg) glEnable(GL_LIGHTING);
+  }
+
+
   /*! void Camera::enableCulling( bool enable )
    *	\brief Enable or disable culling
    *

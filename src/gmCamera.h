@@ -112,6 +112,7 @@ namespace GMlib {
 		float									  getFarPlane() const;
 		float									  getFocalLength() const;
 		std::string 						getIdentity() const;
+		HqMatrix<float,3>&			getMatrix();
 		float									  getNearPlane() const;
 		float									  getRatio() const;
 		void										getViewport(int& w1, int& w2, int& h1, int& h2) const;
@@ -161,7 +162,6 @@ namespace GMlib {
 		// *****************
 		// Virtual functions
 		// from SceneObject
-		HqMatrix<float,3>&			getMatrix();
 		void										localDisplay();
 		void										localSelect();
 

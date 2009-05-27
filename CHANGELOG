@@ -6,6 +6,19 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2009-05-27 Jostein Bratlie
+
+        * gmSceneObject/gmCamera
+          - Redefined the getMatrix() function, which returns the objects local transformation matrix, as public.
+          - Added a function setMatrix() to SceneObject which sets the SceneObject's local trasformation matrix.
+        * gmCamera/gmCameraIso
+          - Redefined the drawActiveCam() function as inline. (moved from *.cpp to *.c).
+        * gmStlObject
+          - Changed type int functions load(...) and save(...) from uint32_t and uint16_t to unsigned int and unsigned short, respectivly.
+        * gmDPBezierSurf
+          - Removed a stray "cout"
+
+
 2009-05-26 Jostein Bratlie
 
         * gmOpenGL / makeconf.mak

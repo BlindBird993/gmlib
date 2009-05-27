@@ -442,6 +442,12 @@ namespace GMlib {
   }
 
 
+  void SceneObject::setMatrix( const HqMatrix<float,3>& mat ) {
+
+    _matrix = mat;
+  }
+
+
   /*! void SceneObject::setSurroundingSphere(const Sphere<float,3>& b)
    *  \brief Pending Documentation
    *

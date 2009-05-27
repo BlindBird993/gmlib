@@ -125,6 +125,7 @@ namespace GMlib{
     Point<float,3>	            getCenterPos() const;
     Array<SceneObject*>&        getChildren();
     virtual std::string         getIdentity() const;
+    virtual HqMatrix<float,3>&  getMatrix();
     const HqMatrix<float,3>&    getMatrixGlobal() const;
     unsigned int                getName() const;
     SceneObject*                getParent();
@@ -143,6 +144,7 @@ namespace GMlib{
     virtual void                rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     virtual void                selectEvent(int selector_id);
     virtual void                setCollapsed(bool c);
+    void                        setMatrix( const HqMatrix<float,3>& mat );
     void                        setParent(SceneObject* obj);
     void                        setSelected(bool s);
     virtual void                setVisible(bool v);
@@ -178,7 +180,6 @@ namespace GMlib{
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                displayCollapsed();
     virtual void                generateCollapsedDList();
-    virtual HqMatrix<float,3>&  getMatrix();
     const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
     virtual void                localDisplay();
     virtual void                localDisplaySelection();

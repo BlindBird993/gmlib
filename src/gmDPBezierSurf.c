@@ -522,7 +522,6 @@ namespace GMlib {
     }
 
     p.setDim( m1, m2 );
-    cout << endl;
     for( int i = 0; i < m1; i++ ) {
       for( int j = 0; j < m2; j++ ) {
 
