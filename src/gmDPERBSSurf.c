@@ -45,6 +45,13 @@ namespace GMlib {
 
   template <typename T>
   inline
+  DPERBSSurf<T>::DPERBSSurf() {
+
+    init();
+  }
+
+  template <typename T>
+  inline
   DPERBSSurf<T>::DPERBSSurf( DSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 ) {
 
     init();

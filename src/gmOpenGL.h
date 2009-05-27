@@ -97,13 +97,16 @@ using namespace std;
   // Include GL Extensions
   #ifdef GM_GL_EXTENSION
     #include <GL/glext.h>
-    #include <GL/glx.h>
-    #include <GL/glxext.h>
-  #endif
 
-  // Include OGL Utility header
-  #include <GL/glu.h>
+    #ifndef _WIN32
+      #include <GL/glx.h>
+      #include <GL/glxext.h>
+    #endif
+  #endif
 #endif
+
+// Include OGL Utility header
+#include <GL/glu.h>
 
 
 

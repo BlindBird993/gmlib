@@ -35,6 +35,15 @@
 namespace GMlib {
 
 
+
+  template <typename T>
+  inline
+  DPERBSCurve<T>::DPERBSCurve() {
+
+    init();
+  }
+
+
   template <typename T>
   inline
   DPERBSCurve<T>::DPERBSCurve( DCurve<T>* g, int no_locals ) {

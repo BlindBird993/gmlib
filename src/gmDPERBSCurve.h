@@ -44,6 +44,7 @@ namespace GMlib {
   template <typename T>
   class DPERBSCurve : public DCurve<T> {
   public:
+    DPERBSCurve(); // Dummy
     DPERBSCurve( DCurve<T>* g, int no_locals );
     DPERBSCurve( DCurve<T>* g, int no_locals, int d );
     DPERBSCurve( const DPERBSCurve<T>& copy );

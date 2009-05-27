@@ -17,6 +17,10 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
           - Changed type int functions load(...) and save(...) from uint32_t and uint16_t to unsigned int and unsigned short, respectivly.
         * gmDPBezierSurf
           - Removed a stray "cout"
+        * gmOpenGL
+          - Fixed an error on on "glee" systems, where "glu.h" did not get included.
+        * gmDPERBCurve/gmDPERBSSurf
+          - Added empty dummy constructors.
 
 
 2009-05-26 Jostein Bratlie
