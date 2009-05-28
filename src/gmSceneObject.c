@@ -293,9 +293,19 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void SceneObject::setVisible(bool v) {
+  void SceneObject::setVisible( bool v, int prop ) {
 
     _visible = v;
+
+    // Propagate Children
+    if( prop != 0 ) {
+
+      if( prop > 0)
+        prop -= 1;
+
+      for( int i = 0; i < _children.getSize(); i++ )
+        _children[i]->setVisible( v, prop );
+    }
   }
 
 

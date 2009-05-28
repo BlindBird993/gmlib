@@ -100,6 +100,14 @@ namespace GMlib {
         insertPatch( _c[i][j] );
       }
     }
+
+    for( int i = 0; i < _c.getDim1(); i++ ) {
+      for( int j = 0; j < _c.getDim2(); j++ ) {
+
+        _c[i][j]->setLighted( true );
+        _c[i][j]->setMaterial( GMmaterial::Ruby );
+      }
+    }
   }
 
 
@@ -182,11 +190,9 @@ namespace GMlib {
   inline
   void DPERBSSurf<T>::hideLocalPatches() {
 
-    for( int i = 0; i < _c.getDim1(); i++ ) {
-      for( int j = 0; j < _c.getDim2(); j++ ) {
-        _c[i][j]->setVisible( false );
-      }
-    }
+    for( int i = 0; i < _c.getDim1(); i++ )
+      for( int j = 0; j < _c.getDim2(); j++ )
+        _c[i][j]->setVisible( false, -1 );
 
 //    if( !_p_visible )
 //      return;
@@ -251,14 +257,11 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSSurf<T>::showLocalPatches( bool collapsed ) {
+  void DPERBSSurf<T>::showLocalPatches() {
 
-    for( int i = 0; i < _c.getDim1(); i++ ) {
-      for( int j = 0; j < _c.getDim2(); j++ ) {
-        _c[i][j]->setVisible( true );
-        _c[i][j]->setCollapsed( collapsed );
-      }
-    }
+    for( int i = 0; i < _c.getDim1(); i++ )
+      for( int j = 0; j < _c.getDim2(); j++ )
+        _c[i][j]->setVisible( true, -1 );
 //
 //    if( _p_visible )
 //      return;

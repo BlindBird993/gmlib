@@ -159,6 +159,13 @@ namespace GMlib {
 
 
   template <typename T>
+  bool DPBezierCurve<T>::isSelectorsVisible() const {
+
+    return _selectors;
+  }
+
+
+  template <typename T>
   inline
   void DPBezierCurve<T>::localDisplay() {
 

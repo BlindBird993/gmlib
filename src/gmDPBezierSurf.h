@@ -56,6 +56,7 @@ namespace GMlib {
     virtual void                edit( int selector );
 //    virtual PBezierSurf<T,3>*   getPBezierSurf();
     virtual void                hideSelectors();
+    bool                        isSelectorsVisible() const;
     void                        rotate(Angle a, const Vector<float,3>& rot_axel);
     void                        rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     void                        rotateGlobal(Angle a, const Vector<float,3>& rot_axel);

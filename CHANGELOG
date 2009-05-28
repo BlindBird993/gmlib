@@ -4,6 +4,26 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-05-28 Jostein Bratlie
+
+        * gmCamera
+          - Added functionality to change the line width of object selection representation
+            setSelectLineWidth( float width )
+        * gmSceneObject
+          - Fixed a culling issue, where children of an interfering object did not get culled.
+          - Changed the setVisible(...) function, now it is possible to propagate through children
+            also render them visible/invisible with a second parameter: setVisible( bool visible, int prop = 0 )
+            values of prop:
+            -1 : propagate
+            0  : do not propagate
+            >0 : propagate no. level of children
+        * gmSelector
+          - Changed the standard representation of a selector.
+        * gmDPERBSCurve/gmDPERBSSurf
+          - showLocalPatches(...) no longer collapses patches. It now preserves last state.
+        * gmDPBezierCurve/gmDPBezierSurf
+          - Added functionality to check whether or not Selectors is visible.
+            isSelectorsVisible(), bool.
 
 
 2009-05-27 Jostein Bratlie

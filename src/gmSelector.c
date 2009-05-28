@@ -31,8 +31,10 @@
  */
 
 
-namespace GMlib {
 
+#include "gmSphere3D.h"
+
+namespace GMlib {
 
 
   template <typename T, int n>
@@ -120,20 +122,22 @@ namespace GMlib {
 
     _display_list = glGenLists(1);
 
+    Sphere3D rep( 0.07, 10, 10 );
     glNewList(_display_list, GL_COMPILE);	// Lager displayliste for en kube
-      glBegin(GL_QUAD_STRIP);
-        glVertex3f( 0.5,-0.5,-0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
-        glVertex3f( 0.5,-0.5, 0.5 ); glVertex3f( 0.5, 0.5, 0.5 );
-        glVertex3f(-0.5,-0.5, 0.5 ); glVertex3f(-0.5, 0.5, 0.5 );
-        glVertex3f(-0.5,-0.5,-0.5 ); glVertex3f(-0.5, 0.5,-0.5 );
-        glVertex3f( 0.5,-0.5,-0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
-      glEnd();
-      glBegin(GL_QUADS);
-        glVertex3f(-0.5,-0.5,-0.5 ); glVertex3f( 0.5,-0.5,-0.5 );
-        glVertex3f( 0.5,-0.5, 0.5 ); glVertex3f(-0.5,-0.5, 0.5 );
-        glVertex3f(-0.5, 0.5,-0.5 ); glVertex3f(-0.5, 0.5, 0.5 );
-        glVertex3f( 0.5, 0.5, 0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
-      glEnd();
+      rep.display();
+//      glBegin(GL_QUAD_STRIP);
+//        glVertex3f( 0.5,-0.5,-0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
+//        glVertex3f( 0.5,-0.5, 0.5 ); glVertex3f( 0.5, 0.5, 0.5 );
+//        glVertex3f(-0.5,-0.5, 0.5 ); glVertex3f(-0.5, 0.5, 0.5 );
+//        glVertex3f(-0.5,-0.5,-0.5 ); glVertex3f(-0.5, 0.5,-0.5 );
+//        glVertex3f( 0.5,-0.5,-0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
+//      glEnd();
+//      glBegin(GL_QUADS);
+//        glVertex3f(-0.5,-0.5,-0.5 ); glVertex3f( 0.5,-0.5,-0.5 );
+//        glVertex3f( 0.5,-0.5, 0.5 ); glVertex3f(-0.5,-0.5, 0.5 );
+//        glVertex3f(-0.5, 0.5,-0.5 ); glVertex3f(-0.5, 0.5, 0.5 );
+//        glVertex3f( 0.5, 0.5, 0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
+//      glEnd();
     glEndList();
   }
 
@@ -232,7 +236,7 @@ namespace GMlib {
     HqMatrix<float,3> invmat = _present;
     invmat.invertOrthoNormal();
     _position+=Point<T,n>(invmat*dp);
-    translateGlobal(invmat*dp);
+    translate(invmat*dp);
     _parent->edit(_id);
   }
 
@@ -312,13 +316,12 @@ namespace GMlib {
 
     if(_enabled) {
 
-      GLboolean lg;
-      glGetBooleanv(GL_LIGHTING,&lg);
-      if(lg) glDisable(GL_LIGHTING);
-      if(_selected)	_marked.glSet();
-      else			_default.glSet();
-      glCallList(_display_list);
-      if(lg) glEnable(GL_LIGHTING);
+      glPushAttrib( GL_LIGHTING_BIT );
+        glDisable(GL_LIGHTING);
+        if(_selected)	_marked.glSet();
+        else			_default.glSet();
+        glCallList(_display_list);
+      glPopAttrib();
     }
   }
 

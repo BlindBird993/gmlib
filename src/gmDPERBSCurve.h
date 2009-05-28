@@ -57,7 +57,7 @@ namespace GMlib {
 //    virtual PERBSCurve<T,3>*    getPERBSCurve();
     virtual void                hideLocalPatches();
     bool                        isLocalPatchesVisible() const;
-    virtual void                showLocalPatches( bool collapsed = true );
+    virtual void                showLocalPatches();
 
   protected:
 //    PERBSCurve<T,3>             *_l_ref;

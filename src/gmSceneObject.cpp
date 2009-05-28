@@ -322,7 +322,8 @@ namespace GMlib {
       if(_visible)
         disp_objs += this; // added check for visible, children don't automatic follow anymore
       for( int i = 0; i < _children.getSize(); i++ )
-        _children[i]->_fillObj( disp_objs );
+        _children[i]->culling( disp_objs, f );
+//        _children[i]->_fillObj( disp_objs );
     }
     else { // if(k == 0)     Intersecting
 
@@ -386,7 +387,6 @@ namespace GMlib {
 
     float ir = 0.07;
     glNewList( _collapsed_dlist, GL_COMPILE ); {
-
 
       glBegin(GL_QUAD_STRIP); {
 

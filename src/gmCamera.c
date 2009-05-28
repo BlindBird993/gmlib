@@ -117,7 +117,7 @@ namespace GMlib {
       // Display Selection
       glPushAttrib( GL_POLYGON_BIT | GL_LINE_BIT | GL_LIGHTING_BIT ); {
 
-        glLineWidth( 1.0f );
+        glLineWidth( _select_linewidth );
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDisable( GL_LIGHTING );
 

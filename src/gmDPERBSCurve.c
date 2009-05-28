@@ -160,6 +160,9 @@ namespace GMlib {
   template <typename T>
   inline
   void DPERBSCurve<T>::hideLocalPatches() {
+
+    for( int i = 0; i < _c.getDim(); i++ )
+      _c[i]->setVisible( false, -1 );
 //
 //    if( !_p_visible )
 //      return;
@@ -205,7 +208,10 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSCurve<T>::showLocalPatches( bool collapsed ) {
+  void DPERBSCurve<T>::showLocalPatches() {
+
+    for( int i = 0; i < _c.getDim(); i++ )
+      _c[i]->setVisible( true, -1 );
 //
 //    if( _p_visible )
 //      return;

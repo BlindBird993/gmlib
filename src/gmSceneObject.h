@@ -147,7 +147,7 @@ namespace GMlib{
     void                        setMatrix( const HqMatrix<float,3>& mat );
     void                        setParent(SceneObject* obj);
     void                        setSelected(bool s);
-    virtual void                setVisible(bool v);
+    virtual void                setVisible( bool v, int prop = 0 );
     virtual bool                toggleCollapsed();
     virtual bool                toggleVisible();
     virtual void                translate(const Vector<float,3>& trans_vector);

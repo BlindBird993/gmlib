@@ -135,6 +135,7 @@ namespace GMlib {
 		void										setScene(Scene& s);
 		void										setScene(Scene *s);
     void                    setSelectColor( const Color& color );
+    void                    setSelectLineWidth( float width );
 		virtual void 						zoom(float z);
 
 
@@ -170,6 +171,7 @@ namespace GMlib {
 		static Scene						_default_scene;
 		static unsigned int						_display_list;
     Color                   _select_color;
+    float                   _select_linewidth;
 
 		Scene*									_scene;
 		int											_x,_y,_w,_h;					// Viewport position and size.

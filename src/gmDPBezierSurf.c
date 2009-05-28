@@ -185,11 +185,19 @@ namespace GMlib {
 
 
   template <typename T>
+  inline
   void DPBezierSurf<T>::init() {
 
 //    _l_ref = dynamic_cast<PBezierSurf<T,3>*>( this->_p_ref );
     _selectors = false;
     _sg = 0;
+  }
+
+
+  template <typename T>
+  bool DPBezierSurf<T>::isSelectorsVisible() const {
+
+    return _selectors;
   }
 
 

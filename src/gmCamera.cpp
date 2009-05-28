@@ -595,6 +595,7 @@ namespace GMlib {
     _type_id  = GM_SO_TYPE_CAMERA;
     _culling = true;
     _select_color = GMcolor::Yellow;
+    _select_linewidth = 1.0f;
   }
 
 
@@ -641,5 +642,8 @@ namespace GMlib {
     _select_color = color;
   }
 
+  void Camera::setSelectLineWidth( float width ) {
 
+    _select_linewidth = width;
+  }
 }
