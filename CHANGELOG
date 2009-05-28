@@ -4,6 +4,13 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+2009-05-28 T.Sang Tran
+
+        * Update msvc-projects to current version.
+
+
 2009-05-28 Jostein Bratlie
 
         * gmCamera

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(QTDIR)\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;GM_GL_EXTENSION"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -106,7 +106,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(QTDIR)\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;GM_GL_EXTENSION"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -169,6 +169,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmDisplayObject.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmGLPhongShader.cpp"
 				>
 			</File>
 			<File
@@ -551,6 +555,14 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\gmGlobal.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmGLPhongShader"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmGLPhongShader.h"
 				>
 			</File>
 			<File
@@ -946,6 +958,30 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\gmVGLContoursPhongShader"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmVGLContoursPhongShader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmVGLPhongShader"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmVGLPhongShader.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmVGLShader"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\gmVGLShader.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\gmVisualizer"
 				>
 			</File>
@@ -956,23 +992,7 @@
 			<File
 				RelativePath="..\..\..\src\gmVisualizers"
 				>
-      </File>
-      <File
-        RelativePath="..\..\..\src\gmVGLShader"
-        >
 			</File>
-      <File
-        RelativePath="..\..\..\src\gmVGLShader.h"
-        >
-      </File>
-      <File
-        RelativePath="..\..\..\src\gmVGLPhongShader"
-        >
-      </File>
-      <File
-        RelativePath="..\..\..\src\gmVGLPhongShader.h"
-        >
-      </File>
 			<File
 				RelativePath="..\..\..\src\gmVNormals"
 				>
