@@ -52,7 +52,6 @@ namespace GMlib {
 
   StlObject::StlObject( DSurf<float> *obj, int m1, int m2 ) {
 
-
     // Resample DSurf
     DMatrix< DMatrix< Vector<float, 3> > > p;
     obj->resample(
@@ -63,10 +62,6 @@ namespace GMlib {
       obj->getParEndV()
     );
 
-    // Generate DSurf Normals
-    DMatrix< Vector<float, 3> > normals;
-    obj->resampleNormals( p, normals );
-
     // Set Array Max Size (speedup)
     _normals.setMaxSize( (p.getDim1()-1)*(p.getDim2()-1)*2 );
     _vertices.setMaxSize( _normals.getMaxSize()*3 );
@@ -74,23 +69,22 @@ namespace GMlib {
     for( int i = 0; i < p.getDim1() - 1; i++ ) {
       for( int j = 1; j < p.getDim2(); j++ ) {
 
-        Point<float,3> v1 = p[i][j-1][0][0].toFloat();
-        Point<float,3> v2 = p[i+1][j-1][0][0].toFloat();
-        Point<float,3> v3 = p[i][j][0][0].toFloat();
-        Point<float,3> v4 = p[i+1][j-1][0][0].toFloat();
-        Point<float,3> v5 = p[i][j][0][0].toFloat();
-        Point<float,3> v6 = p[i+1][j][0][0].toFloat();
+        Vector<float,3> &v1 = p[i][j-1][0][0];
+        Vector<float,3> &v2 = p[i+1][j-1][0][0];
+        Vector<float,3> &v3 = p[i][j][0][0];
+        Vector<float,3> &v4 = p[i+1][j-1][0][0];
+        Vector<float,3> &v5 = p[i+1][j][0][0];
+        Vector<float,3> &v6 = p[i][j][0][0];
 
-        UnitVector<float,3> n1 = Vector3D<float>(v2 - v1) ^ (v3 - v1);
-        UnitVector<float,3> n2 = Vector3D<float>(v5 - v4) ^ (v6 - v4);
-
+        Vector<float,3> n1 = Vector3D<float>(v2 - v1) ^ (v3 - v1);
+        Vector<float,3> n2 = Vector3D<float>(v5 - v4) ^ (v6 - v4);
 
         _normals.insertAlways( n1 );
         _vertices.insertAlways( v1 );
         _vertices.insertAlways( v2 );
         _vertices.insertAlways( v3 );
 
-        _normals.insertAlways( n1 );
+        _normals.insertAlways( n2 );
         _vertices.insertAlways( v4 );
         _vertices.insertAlways( v5 );
         _vertices.insertAlways( v6 );
@@ -320,6 +314,7 @@ namespace GMlib {
       }
     }
   }
+
 
   void StlObject::save( std::ofstream& stream, bool binary ) {
 

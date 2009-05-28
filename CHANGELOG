@@ -24,6 +24,8 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
         * gmDPBezierCurve/gmDPBezierSurf
           - Added functionality to check whether or not Selectors is visible.
             isSelectorsVisible(), bool.
+        * gmStlObject
+          - Fixed issue with computation of normals.
 
 
 2009-05-27 Jostein Bratlie

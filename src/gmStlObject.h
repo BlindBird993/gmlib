@@ -55,9 +55,9 @@ namespace GMlib {
 
     std::string                     getIdentity() const;
     unsigned int                    getNoPoints();
-    Array< UnitVector3D<float> >    getNormals();
-    Array<Point<float,3> >          getVertices();
-    ArrayLX< Vertex<float> >        getVertex();
+    Array< Vector<float,3> >        getNormals();
+    Array<Point<float,3> >          getPoints();
+    ArrayLX< Vertex<float> >        getVertices();
 
     void                            load( std::ifstream& stream, bool binary = true );
     void                            replot();
@@ -71,15 +71,15 @@ namespace GMlib {
 
   private:
     unsigned int                    _dlist;
-    DPSphere<float>                 *_sphere;          // Debug
+    DPSphere<float>                 *_sphere;         // Debug
 
-    std::string                     _identity;						 // I put the filename in here,
+    std::string                     _identity;				// I put the filename in here,
     FILE*                           _stl_file;
     GLColor                         _color;
 
-    Array<Point3D<float> >          _vertices;     // storage, each three makes a triangle
-    Array<UnitVector3D<float> >     _normals; // with one normal for each triangle
-    Box<float,3>                    _bbox;					 // Bounding box, should be an options
+    Array<Point<float,3> >          _vertices;        // storage, each three makes a triangle
+    Array<Vector<float,3> >         _normals;         // with one normal for each triangle
+    Box<float,3>                    _bbox;					  // Bounding box, should be an options
 
     // binary file utility functions to render it.
     float                           _getFloat();

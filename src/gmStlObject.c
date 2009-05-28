@@ -49,14 +49,14 @@ namespace GMlib {
 
 
   inline
-  Array< UnitVector3D<float> > StlObject::getNormals() {
+  Array< Vector<float,3> > StlObject::getNormals() {
 
     return _normals;
   }
 
 
   inline
-  Array< Point<float,3> > StlObject::getVertices() {
+  Array< Point<float,3> > StlObject::getPoints() {
 
     Array< Point<float,3> > v;         // returns copy, no cast between Point3D<float> and Point<float,3>
     v.setSize( _vertices.getSize() );
@@ -68,7 +68,7 @@ namespace GMlib {
 
 
   inline
-  ArrayLX< Vertex<float> > StlObject::getVertex() {
+  ArrayLX< Vertex<float> > StlObject::getVertices() {
 
     ArrayLX< Vertex<float> > v;         // returns copy, no cast between Point3D<float> and Point<float,3>
     v.setSize( _vertices.getSize() );
