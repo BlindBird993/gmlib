@@ -22,109 +22,84 @@
 
 
 
-##########################
-# Compiler/Linker Settings
+################
+# GMlib Features
 
+DEFINES = GM_GL_EXTENSION
+
+
+
+##################################
+# Compiler/Linker && Include Paths
+
+## Win32 spesific options
 win32 {
 
-  ## Compiler
+  # Compiler placement
   QMAKE_CXX = C:/MinGW_tdm/bin/mingw32-g++
 
-  ## Compiler Flags
-  QMAKE_CXXFLAGS_DEBUG = -g -pg -frtti -fexceptions -c -Wall
-  QMAKE_CXXFLAGS_RELEASE = -frtti -fexceptions -c -Wall
-
-  ## Linker Flags
-  QMAKE_LFLAGS_DEBUG = -g -pg -frtti -fexceptions -Wall
-  QMAKE_LFLAGS_RELEASE = -frtti -fexceptions -Wall
+  # Include Paths
+  INCLUDEPATH += \
+    C:/MinGW_tdm/include \
+    C:/MinGW_tdm/include/GL
 }
 
+## Unix Spesific options
 unix {
 
-  ## Compiler
+  # Compiler
   QMAKE_CXX = g++
 
-  ## Compiler Flags
-  QMAKE_CXXFLAGS_DEBUG = -g -frtti -fexceptions -c -Wall
-  QMAKE_CXXFLAGS_RELEASE = -frtti -fexceptions -c -Wall
-
-  ## Linker Flags
-  QMAKE_LFLAGS_DEBUG = -g -frtti -fexceptions -Wall
-  QMAKE_LFLAGS_RELEASE = -frtti -fexceptions -Wall
+  # Include Paths
+  INCLUDEPATH += \
+    -I"/usr/include" \
+    -I"/usr/include/GL"
 }
 
 
 
-##########
-# Settings
+#######################
+# Compiler/Linker Flags
 
-#DEFINES = GM_GL_EXTENSION
+# Compiler
+# Debug / Release
+QMAKE_CXXFLAGS = -g -pg -frtti
+#QMAKE_CXXFLAGS = -frtti
+
+# Linker
+QMAKE_LFLAGS = ${QMAKE_CXXFLAGS}
 
 
-## Defines that it is a library
+
+############################
+# Basic qmake template setup
+
+# Defines that it is a library
 TEMPLATE = lib
-## Adds support for debug and release mode, and tells the qmake it should be a static library
-CONFIG += debug_and_release staticlib static
 
-## Turns off Qt libs
-QT -= core gui
+# Removes stuff specialized for qt applications and libraries
+CONFIG -= qt
 
-
-
-######################
-# Internal Directories
-
-## Defines some internal work directories
-OBJECTS_DIR = ../../work/qmake/tmp
-RCC_DIR = ../../work/qmake/rcc
+# Tells qmake to create a static library
+CONFIG += staticlib
 
 
 
-###############
-# Include paths
+#################
+# GMlib Internals
 
-INCLUDEPATH += ../../src
+# Library Name
+TARGET = GMlib
 
-## Windows include paths
-win32 {
-INCLUDEPATH += \
-  C:/MinGW_tdm/include \
-  C:/MinGW_tdm/include/GL
-}
-
-## Unix include paths
-unix {
-INCLUDEPATH += \
-  -I"/usr/include" \
-  -I"/usr/include/GL" \
-  -I"/usr/include/qt4"
-}
-
-
-###########
-# Libraries
-
-## Windows linkage
-win32 {
-LIBS = \
-  -lopengl32 \
-  -lglu32 \
-  -lglee
-}
-
-## Unix Linkage
-unix {
-LIBS = \
-  -L"/usr/lib" \
-  -lstdc++ \
-  -lGL \
-  -lGLU
-}
+# Defines some internal work directories
+DESTDIR = dist/
+OBJECTS_DIR = work/qmake/tmp
+RCC_DIR = work/qmake/rcc
 
 
 
-##############
-# Header Files
+###################################
+# Header Files (sorted by "module")
 
 # gmContainer
 HEADERS += \
@@ -261,8 +236,6 @@ HEADERS += \
 HEADERS += \
   ../../src/gmGLSL.h \
   ../../src/gmGLPhongShader.h
-
-
 
 
 
