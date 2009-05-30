@@ -4,6 +4,18 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-05-30 Jostein Bratlie
+
+        * gmGLSL
+          - Checking agains the GM_GL_EXTENSION definition instead of the plain OGL header definition
+        * gmMatrix
+          - Changed some shadowing parameter definitions.
+        * gmDPApple
+          - Fixed a derivative issue.
+        * gmWindow
+          - Minor include issue fix.
+        * QMake
+          - Added a QMake file to the project.
 
 
 2009-05-28 T.Sang Tran

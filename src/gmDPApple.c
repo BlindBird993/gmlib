@@ -188,28 +188,28 @@ namespace GMlib {
       }
 
       //duv/dvu
-      if(d1&d2){
+      if(d1 && d2){
         this->_p[1][1][0] = sin(u)* 3.8* sin(v);
         this->_p[1][1][1] =-cos(u) * 3.8 * sin(v);
         this->_p[1][1][2] =T(0);
       }
 
       //duvv
-      if(d1&d2>1){
+      if(d1 && d2>1){
         this->_p[1][2][0] =sin(u)* 3.8* cos(v);
         this->_p[1][2][1] =-cos(u) * 3.8 * cos(v);
         this->_p[1][2][2] =T(0);
       }
 
       //duuv
-      if(d1>1&d2){
+      if(d1>1 && d2){
         this->_p[2][1][0] =cos(u)* 3.8* sin(v);
         this->_p[2][1][1] =sin(u) * 3.8 * sin(v);
         this->_p[2][1][2] = T(0);
       }
 
       //duuvv
-      if(d1>1&d2>1){
+      if(d1>1 && d2>1){
         this->_p[2][2][0] =cos(u)* 3.8* cos(v);
         this->_p[2][2][1] =sin(u) * 3.8 * cos(v);
         this->_p[2][2][2] =T(0);

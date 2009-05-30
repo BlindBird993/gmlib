@@ -35,7 +35,7 @@
 
 #include "gmOpenGL.h"
 
-#ifdef __gl_h_
+#ifdef GM_GL_EXTENSION
   #define GM_GPU_GLSL
 #endif
 

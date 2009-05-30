@@ -31,6 +31,9 @@
  */
 
 
+// STL
+#include <cstdio>
+
 
 // Header
 #include "gmWindow.h"
@@ -316,7 +319,7 @@ namespace GMlib {
     int numberoflights;
     glGetIntegerv(GL_MAX_LIGHTS,&numberoflights);
     char s[32];
-    sprintf( s, "Max number of lights %d\n", numberoflights );
+    std::sprintf( s, "Max number of lights %d\n", numberoflights );
     message(s);
     //char *extensions = NULL;
       //extensions = (char *)glGetString(GL_EXTENSIONS);

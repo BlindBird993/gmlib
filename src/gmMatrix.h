@@ -93,18 +93,18 @@ namespace GMlib {
     void	              reset();
     void	              setCol(const Point<T,m>& c, int i);
     void	              setRow(const Point<T,n>& r, int j);
-    Matrix<T,n,m>&	    setTranspose(const Vector<Vector<T,m>,n>& m);
+    Matrix<T,n,m>&	    setTranspose(const Vector<Vector<T,m>,n>& mat);
     void	              scale(const Point<T,n>& s);
     void                swap(int i,int j);
     void                swap(int i,int j,int a,int b);
 
-    Matrix<T,n,m>&	    operator = (const Vector<Vector<T,m>,n>& m);
+    Matrix<T,n,m>&	    operator = (const Vector<Vector<T,m>,n>& mat);
 
     // ***** Additions and substractions. ******
-    Matrix<T,n,m>&      operator+=(const Matrix<T,n,m>& m);
-    Matrix<T,n,m>&      operator-=(const Matrix<T,n,m>& m);
-    Matrix<T,n,m>&      operator+(const Matrix<T,n,m>& m) const;
-    Matrix<T,n,m>&      operator-(const Matrix<T,n,m>& m) const;
+    Matrix<T,n,m>&      operator+=(const Matrix<T,n,m>& mat);
+    Matrix<T,n,m>&      operator-=(const Matrix<T,n,m>& mat);
+    Matrix<T,n,m>&      operator+(const Matrix<T,n,m>& mat) const;
+    Matrix<T,n,m>&      operator-(const Matrix<T,n,m>& mat) const;
     Matrix<T,n,m>&      operator-() const;
 
     // ******* Multiplication vector ******
