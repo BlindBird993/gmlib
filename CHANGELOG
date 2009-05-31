@@ -6,6 +6,12 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2009-06-01 Jostein Bratlie
+
+        *gmSceneObject
+          - Fixed an issue with some left over variables in an inline GM_STREAM function in gmSceneObject.h
+
+
 2009-05-31 Jostein Bratlie
 
         * Changed the primary way to compile GMlib.

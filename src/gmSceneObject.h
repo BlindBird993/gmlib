@@ -257,9 +257,6 @@ namespace GMlib{
       _local_cs   = true;
       _visible    = true;
       _collapsed  = false;
-      _default	  = GMcolor::Blue;
-      _marked		  = _default.getInverse();
-      _ir = 0.07;
     }
 
     #endif
