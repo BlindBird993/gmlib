@@ -4,6 +4,9 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-06-01 T.Sang Tran
+
+        * Add missing implementation, getMaterials(), in gmVContours.
 
 
 2009-06-01 Jostein Bratlie

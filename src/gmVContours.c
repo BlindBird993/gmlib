@@ -280,6 +280,14 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  const Array<Material>& VContours<T,n>::getMaterials() const {
+
+    return _materials;
+  }
+
+
+  template <typename T, int n>
+  inline
   GM_VISUALIZER_CONTOURS_TYPE VContours<T,n>::getType() const {
 
     return _type;
