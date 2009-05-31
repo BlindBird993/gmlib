@@ -4,6 +4,14 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+2009-05-31 Jostein Bratlie
+
+        * Changed the primary way to compile GMlib.
+          Now utilizes qmake for Makefile building.
+
+
 2009-05-30 Jostein Bratlie
 
         * gmGLSL

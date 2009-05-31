@@ -21,6 +21,7 @@
 ###################################################################################
 
 
+
 ###############################
 # Include the local config file
 ###############################
@@ -226,17 +227,17 @@ endif
 ######
 # Dirs
 ######
-DIR_SRC = src
+DIR_SRC = ../../../src
 DIR_DEP = dep
 DIR_OBJ = obj
 DIR_MOC = moc
 
-DIR_WORK = work
+DIR_WORK = ../../../work
 DIR_WORK_DEP = ${DIR_WORK}/${DIR_DEP}
 DIR_WORK_OBJ = ${DIR_WORK}/${DIR_OBJ}
 DIR_WORK_MOC = ${DIR_WORK}/${DIR_MOC}
 
-DIR_DIST = dist
+DIR_DIST = ../../../dist
 DIR_DIST_BIN = $(DIR_DIST)/bin
 DIR_DIST_INC = $(DIR_DIST)/include
 DIR_DIST_LIB = $(DIR_DIST)/lib

@@ -11,8 +11,13 @@
 *.ncb
 *.swp
 
-##############################
-## Ignored project directories
+########################################
+## Ignored project files and directories
+Makefile
+Makefile.Debug
+Makefile.Release
+object_script.GMlib.Debug
+object_script.GMlib.Release
 dist/*
 doc/*
 work/*

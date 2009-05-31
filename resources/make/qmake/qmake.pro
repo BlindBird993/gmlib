@@ -35,13 +35,22 @@ DEFINES = GM_GL_EXTENSION
 ## Win32 spesific options
 win32 {
 
+  # MingGW pacement
+  MINGW_DIR = C:/MinGW
+
   # Compiler placement
-  QMAKE_CXX = C:/MinGW_tdm/bin/mingw32-g++
+  QMAKE_CXX = $${MINGW_DIR}/bin/mingw32-g++
 
   # Include Paths
   INCLUDEPATH += \
-    C:/MinGW_tdm/include \
-    C:/MinGW_tdm/include/GL
+    $${MINGW_DIR}/include \
+    $${MINGW_DIR}/include/GL
+
+  LIBS += \
+    -L"$${MINGW_DIR}/lib" \
+    -lGLee \
+    -lopengl32 \
+    -lglu32
 }
 
 ## Unix Spesific options
@@ -54,6 +63,9 @@ unix {
   INCLUDEPATH += \
     -I"/usr/include" \
     -I"/usr/include/GL"
+
+  # Tells qmake to create a static library
+#  CONFIG += staticlib
 }
 
 
@@ -63,8 +75,8 @@ unix {
 
 # Compiler
 # Debug / Release
-QMAKE_CXXFLAGS = -g -pg -frtti
-#QMAKE_CXXFLAGS = -frtti
+#QMAKE_CXXFLAGS = -g -pg -frtti
+QMAKE_CXXFLAGS = -frtti
 
 # Linker
 QMAKE_LFLAGS = ${QMAKE_CXXFLAGS}
@@ -81,7 +93,7 @@ TEMPLATE = lib
 CONFIG -= qt
 
 # Tells qmake to create a static library
-CONFIG += staticlib
+#CONFIG += staticlib
 
 
 
