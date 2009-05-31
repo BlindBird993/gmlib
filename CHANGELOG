@@ -10,6 +10,8 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
         * Changed the primary way to compile GMlib.
           Now utilizes qmake for Makefile building.
+        * Static lib destination directory fix "dist" -> "dist/lib"
+        * Compiles static lib on unix
 
 
 2009-05-30 Jostein Bratlie

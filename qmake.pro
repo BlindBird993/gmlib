@@ -65,7 +65,8 @@ unix {
     -I"/usr/include/GL"
 
   # Tells qmake to create a static library
-#  CONFIG += staticlib
+  CONFIG += staticlib
+
 }
 
 
@@ -104,7 +105,7 @@ CONFIG -= qt
 TARGET = GMlib
 
 # Defines some internal work directories
-DESTDIR = dist/
+DESTDIR = dist/lib
 OBJECTS_DIR = work/qmake/tmp
 RCC_DIR = work/qmake/rcc
 
