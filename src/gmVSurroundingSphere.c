@@ -67,6 +67,12 @@ namespace GMlib {
   inline
   void VSurroundingSphere<T,n>::display() {
 
+    glPushMatrix();
+
+    HqMatrix<T,3> mat = this->_ref_n2->getMatrixGlobal();
+    mat.invertOrthoNormal();
+    glMultMatrix( mat );
+
     // Push GL Attributes
     glPushAttrib( GL_LIGHTING_BIT | GL_POLYGON_BIT );
 
@@ -95,6 +101,8 @@ namespace GMlib {
 
     // Pop GL Attributes
     glPopAttrib();
+
+    glPopMatrix();
   }
 
   template <typename T, int n>

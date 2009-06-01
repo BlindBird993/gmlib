@@ -58,7 +58,7 @@ namespace GMlib {
 
     for( int i = 0; i < no_locals-1; i++ ) {
       _c[i] = new DPArc<T>( g->evaluateParent( _t[i+1], 2 ), _t[i], _t[i+1], _t[i+2] );
-      insert( _c[i] );
+      insertPatch( _c[i] );
     }
 
 
@@ -68,7 +68,7 @@ namespace GMlib {
       _c[i] = _c[0];
     else {
       _c[i] = new DPArc<T>( g->evaluateParent( _t[i+1], 2 ), _t[i], _t[i+1], _t[i+2] );
-      insert( _c[i] );
+      insertPatch( _c[i] );
     }
   }
 
@@ -92,7 +92,7 @@ namespace GMlib {
     for( int i = 0; i < no_locals - 1; i++ ) {
 
       _c[i] = new DPBezierCurve<T>( g->evaluateParent( _t[i+1], d ), _t[i], _t[i+1], _t[i+2] );
-      insert( _c[i] );
+      insertPatch( _c[i] );
     }
 
     int i = no_locals-1;
@@ -100,7 +100,7 @@ namespace GMlib {
       _c[i] = _c[0];
     else {
       _c[i] = new DPBezierCurve<T>( g->evaluateParent( _t[i+1], d ), _t[i], _t[i+1], _t[i+2] );
-      insert( _c[i] );
+      insertPatch( _c[i] );
     }
   }
 
@@ -187,6 +187,17 @@ namespace GMlib {
     _resamp_mode = GM_RESAMPLE_PREEVAL;
     _pre_eval = true;
     /////////////////////////
+  }
+
+
+  template <typename T>
+  inline
+  void DPERBSCurve<T>::insertPatch( DCurve<T>* patch ) {
+
+    patch->replot( 10 );
+    patch->setVisible( false );
+    patch->setCollapsed( true );
+    insert( patch );
   }
 
 

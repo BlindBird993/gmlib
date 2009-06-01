@@ -11,8 +11,12 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 2009-06-01 Jostein Bratlie
 
-        *gmSceneObject
+        * gmSceneObject
           - Fixed an issue with some left over variables in an inline GM_STREAM function in gmSceneObject.h
+        * gmDPERBSCurve
+          - Local patches is now inserted correctly into the ERBS Curve.
+        * gmVSurroundingSphere
+          - The surrounding sphere is now displayed correctly
 
 
 2009-05-31 Jostein Bratlie

@@ -66,6 +66,7 @@ namespace GMlib {
 
 
     virtual void                init();
+    void                        insertPatch( DCurve<T> *patch );
     void                        localDisplay();
     virtual void                visualizeLocalPatch( PCurve<T,3>* p, int i, int m, bool collapsed );
     virtual void                visualizeLocalPatchInit( int i, int m, bool collapsed );
