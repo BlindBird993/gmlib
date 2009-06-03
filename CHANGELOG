@@ -4,6 +4,23 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+2009-06-03 Jostein Bratlie
+
+        * gmDParametrics/gmDPBezier*
+          - Moved the transformation functions from hte bezier curve and surface objects to the common parametrics
+            object as the default functionality are common for all displayable parametric objects.
+        * gmDPERBS*/gmDPBezier*
+          - Fixed the visual representation of the collapsed object.
+            Now the local "bezier" patch is located correctly according to the interpolation point on the ERBS*.
+        * gmDPERBSCurve
+          - Fixed an issue where local patches would not get hidden.
+        * qmake.pro
+          - Reset the Release (QMAKE_CXXFLAGS_RELEASE) and Debug (QMAKE_CXXFLAGS_DEBUG) CXX flags,
+            so the CXX flags can be set with a common flag definition (QMAKE_CXXFLAGS).
+
+
 2009-06-01 T.Sang Tran
 
         * Add missing implementation, getMaterials(), in gmVContours.

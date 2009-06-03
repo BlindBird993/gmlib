@@ -105,9 +105,11 @@ namespace GMlib {
   template <typename T>
   void DPBezierCurve<T>::edit( int selector ) {
 
+    _c_moved = true;
     DCurve<T>::replot(0,false);
     if( this->_parent )
       this->_parent->edit( this );
+    _c_moved = false;
   }
 
 
@@ -155,6 +157,7 @@ namespace GMlib {
 //    _l_ref = dynamic_cast<PBezierCurve<T,3>*>(this->_p_ref);
     _selectors = false;
     _sg = 0;
+    _c_moved = false;
   }
 
 
@@ -170,46 +173,6 @@ namespace GMlib {
   void DPBezierCurve<T>::localDisplay() {
 
     DCurve<T>::localDisplay();
-  }
-
-
-  template <typename T>
-  inline
-  void DPBezierCurve<T>::rotate(Angle a, const Vector<float,3>& rot_axel) {
-
-    DParametrics<T,1>::rotate( a, rot_axel );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T>
-  inline
-  void DPBezierCurve<T>::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
-
-    DParametrics<T,1>::rotate( a, p, d );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T>
-  inline
-  void DPBezierCurve<T>::rotateGlobal(Angle a, const Vector<float,3>& rot_axel) {
-
-    DParametrics<T,1>::rotateGlobal( a, rot_axel );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T>
-  inline
-  void DPBezierCurve<T>::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
-
-    DParametrics<T,1>::rotateGlobal( a, p, d );
-    if( this->_parent )
-      this->_parent->edit( this );
   }
 
 
@@ -247,23 +210,22 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPBezierCurve<T>::translate( const Vector<float,3>& trans_vector ) {
+  void DPBezierCurve<T>::updateCoeffs( const Vector<T,3>& d ) {
 
+		if( _c_moved ) {
 
-    DParametrics<T,1>::translate( trans_vector );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
+		  HqMatrix<T,3> invmat = this->_matrix;
+		  invmat.invertOrthoNormal();
 
+			Vector<T,3> diff = invmat*d;
+			for( int i = 0; i < _c.getDim(); i++ ) {
 
-  template <typename T>
-  inline
-  void DPBezierCurve<T>::translateGlobal( const Vector<float,3>& trans_vector ) {
-
-
-    DParametrics<T,1>::translateGlobal( trans_vector );
-    if( this->_parent )
-      this->_parent->edit( this );
+        _c[i] += diff;
+        _s[i]->translate( diff );
+			}
+			DisplayObject::translate( -d );
+			this->replot();
+		}
   }
 
 

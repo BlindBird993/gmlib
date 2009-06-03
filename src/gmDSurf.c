@@ -223,6 +223,7 @@ namespace GMlib {
   void DSurf<T>::localSelect() {
 
     if( this->_dynamic ) {
+
       glEnableClientState( GL_VERTEX_ARRAY );
 
       for( int i = 0; i < this->_vertices_n2.getDim1(); i++ ) {
@@ -241,7 +242,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DSurf<T>::replot( int m1, int m2, bool dynamic, int d1, int d2 ) {
+  void DSurf<T>::replot( int m1, int m2, int d1, int d2, bool dynamic ) {
 
     // Check wheather or not PSurf is valid
 //    if( !_p_ref )

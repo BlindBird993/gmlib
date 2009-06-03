@@ -104,7 +104,7 @@ namespace GMlib {
       for( int j = 0; j < c.getDim2(); j++ )
         _c[i][j] -= c(0)(0);
 
-    this->translate( c(0)(0) );
+    this->translateGlobal( c(0)(0) );
   }
 
 
@@ -139,9 +139,11 @@ namespace GMlib {
   template <typename T>
   void DPBezierSurf<T>::edit( int selector ) {
 
-    DSurf<T>::replot(0,0,false);
+    _c_moved = true;
+    this->replot(0,0,false);
     if( this->_parent )
       this->_parent->edit( this );
+    _c_moved = false;
   }
 
 
@@ -191,6 +193,7 @@ namespace GMlib {
 //    _l_ref = dynamic_cast<PBezierSurf<T,3>*>( this->_p_ref );
     _selectors = false;
     _sg = 0;
+    _c_moved = false;
   }
 
 
@@ -205,69 +208,7 @@ namespace GMlib {
   inline
   void DPBezierSurf<T>::localDisplay() {
 
-//    glPushAttrib( GL_LIGHTING_BIT | GL_POINT_BIT );
-//
-//
-//    glDisable( GL_LIGHTING );
-//    glColor( GMcolor::Green );
-//    glPointSize( 1.5f );
-//
-//    glBegin( GL_POINTS ); {
-//
-//
-//      glPoint( (this->evaluate(0.5, 0))[0] );
-//
-//
-//    } glEnd();
-//
-//    glPopAttrib();
-
     DSurf<T>::localDisplay();
-
-  }
-
-
-  template <typename T>
-  inline
-  void DPBezierSurf<T>::rotate(Angle a, const Vector<float,3>& rot_axel) {
-
-//    DParametrics<T,2>::rotate( a, rot_axel );
-    DisplayObject::rotate( a, rot_axel );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T>
-  inline
-  void DPBezierSurf<T>::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
-
-//    DParametrics<T,2>::rotate( a, p, d );
-    DisplayObject::rotate( a, p, d );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T>
-  inline
-  void DPBezierSurf<T>::rotateGlobal(Angle a, const Vector<float,3>& rot_axel) {
-
-//    DParametrics<T,2>::rotateGlobal( a, rot_axel );
-    DisplayObject::rotateGlobal( a, rot_axel );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T>
-  inline
-  void DPBezierSurf<T>::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
-
-//    DParametrics<T,2>::rotateGlobal( a, p, d );
-    DisplayObject::rotateGlobal( a, p, d );
-    if( this->_parent )
-      this->_parent->edit( this );
   }
 
 
@@ -323,25 +264,24 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPBezierSurf<T>::translate( const Vector<float,3>& trans_vector ) {
+  void DPBezierSurf<T>::updateCoeffs( const Vector<T,3>& d ) {
 
+		if( _c_moved ) {
 
-//    DParametrics<T,2>::translate( trans_vector );
-    DisplayObject::translate( trans_vector );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
+		  HqMatrix<T,3> invmat = this->_matrix;
+		  invmat.invertOrthoNormal();
 
+			Vector<T,3> diff = invmat*d;
+			for( int i = 0; i < _c.getDim1(); i++ ) {
+				for( int j = 0; j < _c.getDim2(); j++ ) {
 
-  template <typename T>
-  inline
-  void DPBezierSurf<T>::translateGlobal( const Vector<float,3>& trans_vector ) {
-
-
-    DParametrics<T,2>::translateGlobal( trans_vector );
-    DisplayObject::translateGlobal( trans_vector );
-    if( this->_parent )
-      this->_parent->edit( this );
+					_c[i][j] += diff;
+					_s[i][j]->translate( diff );
+				}
+			}
+			DisplayObject::translate( -d );
+			this->replot();
+		}
   }
 
 

@@ -59,8 +59,14 @@ namespace GMlib {
     int                       getNoSampU() const;
     int                       getNoSampV() const;
 //    PSurf<T,3>*               getPSurf();
+<<<<<<< dev:src/gmDSurf.h
     virtual bool              isClosestPoint( const Point<T,3>& q, T& u, T& v );
     void                      replot( int m1 = 0, int m2 = 0 , bool dynamic = false, int d1 = 2, int d2 = 2 );
+=======
+    virtual bool              isClosestPoint( const Point<T,3>& q, T& u, T& v, int max_itr = 20 );
+    virtual bool              isIntersecting( const Point<T,3>& q, const Vector<T,3>& lv, T&u, T& v, Array<Point<T,3> >& par, int max_itr = 20 );
+    void                      replot( int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2, bool dynamic = false );
+>>>>>>> local:src/gmDSurf.h
     void                      setPSurf( PSurf<T,3>* psurf );
     virtual void              setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p );
 

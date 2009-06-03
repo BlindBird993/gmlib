@@ -248,7 +248,7 @@ namespace GMlib {
 
 
   template <typename T>
-  void DCurve<T>::replot( int m, bool dynamic, int d ) {
+  void DCurve<T>::replot( int m, int d, bool dynamic ) {
 
     // Check wheather or not PCurve is valid
 //    if( !_p_ref )
@@ -293,7 +293,7 @@ namespace GMlib {
     // Clean up Display Lists
     if( this->_dlist ) {
 
-      glDeleteLists( this->_dlist, 1 );
+      glDeleteLists( this->_dlist, 2 );
       this->_dlist = 0;
     }
 
@@ -310,10 +310,20 @@ namespace GMlib {
     }
     else {
 
-      this->_dlist = glGenLists(1);
+      this->_dlist = glGenLists(2);
 
-      // Make displaylist for display of lined curve and select
+      // Make displaylist for display of lined curve
       glNewList( this->_dlist, GL_COMPILE ); {
+        glBegin(GL_LINE_STRIP); {
+
+          for( int i = 0; i < p.getDim(); i++ )
+            glPoint( Point<float, 3>( p[i][0].toFloat() ) );
+
+        }glEnd();
+      } glEndList();
+
+      // Make displaylist for selection of lined curve
+      glNewList( this->_dlist + 1, GL_COMPILE ); {
         glBegin(GL_LINE_STRIP); {
 
           for( int i = 0; i < p.getDim(); i++ )

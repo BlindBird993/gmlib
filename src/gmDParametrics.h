@@ -75,6 +75,7 @@ namespace GMlib {
     DParametrics( const DParametrics<T,n>& copy );
     DParametrics( const Parametrics<T,3>& copy );
     DParametrics( Parametrics<T,3>* copy );
+    ~DParametrics();
 
     void                                  enableDefaultVisualizer( bool enable = true );
     const GLColor&                        getColor() const;
@@ -102,6 +103,10 @@ namespace GMlib {
 //    void                                  rotate( Angle a, const Point<float,3>& p,const UnitVector<float,3>& d );
 //    void                                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
 //    void                                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    void                                  rotate(Angle a, const Vector<float,3>& rot_axel);
+    void                                  rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    void                                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
+    void                                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     void                                  setColor( const GLColor& color );
     void                                  setLighted( bool lighted );
     void                                  setMaterial( const Material& material );
@@ -109,6 +114,8 @@ namespace GMlib {
     void                                  toggleDefaultVisualizer();
 //    void                                  translate( const Vector<float,3>& trans_vector );
 //    void                                  translateGlobal( const Vector<float,3>& trans_vector );
+    void                                  translate(const Vector<float,3>& trans_vector);
+    void                                  translateGlobal(const Vector<float,3>& trans_vector);
 
   protected:
     Array< Visualizer<T,n>* >             _visualizers;

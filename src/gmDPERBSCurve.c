@@ -137,7 +137,19 @@ namespace GMlib {
   inline
   void DPERBSCurve<T>::edit( SceneObject *obj ) {
 
-    DCurve<T>::replot( 0 );
+    int i;
+    for( i = 0; i < _c.getDim(); i++ )
+      if( _c[i] == obj )
+        goto edit_loop_break;
+
+    edit_loop_break:
+
+    // If Bezier Patch
+    DPBezierCurve<T> *bezier = dynamic_cast<DPBezierCurve<T>*>(_c[i]);
+    if( bezier )
+      bezier->updateCoeffs( _c[i]->getPos() - _c[i]->evaluate( 0.5, 0 )[0] );
+
+    DCurve<T>::replot(0);
   }
 
 
@@ -204,6 +216,10 @@ namespace GMlib {
   template <typename T>
   inline
   bool DPERBSCurve<T>::isLocalPatchesVisible() const {
+
+    for( int i = 0; i < _c.getDim(); i++ )
+      if( _c(i)->isVisible() )
+        return true;
 
     return false;//_p_visible;
   }

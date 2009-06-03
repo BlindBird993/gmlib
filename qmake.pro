@@ -76,6 +76,8 @@ unix {
 
 # Compiler
 # Debug / Release
+QMAKE_CXXFLAGS_DEBUG =
+QMAKE_CXXFLAGS_RELEASE =
 #QMAKE_CXXFLAGS = -g -pg -frtti
 QMAKE_CXXFLAGS = -frtti
 

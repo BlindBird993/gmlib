@@ -47,9 +47,9 @@ namespace GMlib {
 
     _dynamic = copy._dynamic;
     _lighted = copy._lighted;
-    _dlist = copy._dlist;
     _ref = copy._ref;
 
+    _dlist = 0;
     enableDefaultVisualizer();
   }
 
@@ -68,6 +68,15 @@ namespace GMlib {
 
     _ref = copy;
     _init();
+  }
+
+
+  template <typename T, int n>
+  inline
+  DParametrics<T,n>::~DParametrics() {
+
+    if( _dlist )
+      glDeleteLists( _dlist, 2 );
   }
 
 
@@ -352,6 +361,46 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  void DParametrics<T,n>::rotate(Angle a, const Vector<float,3>& rot_axel) {
+
+    DisplayObject::rotate( a, rot_axel );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
+
+
+  template <typename T, int n>
+  inline
+  void DParametrics<T,n>::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
+
+    DisplayObject::rotate( a, p, d );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
+
+
+  template <typename T, int n>
+  inline
+  void DParametrics<T,n>::rotateGlobal(Angle a, const Vector<float,3>& rot_axel) {
+
+    DisplayObject::rotateGlobal( a, rot_axel );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
+
+
+  template <typename T, int n>
+  inline
+  void DParametrics<T,n>::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
+
+    DisplayObject::rotateGlobal( a, p, d );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
+
+
+  template <typename T, int n>
+  inline
   void DParametrics<T,n>::setColor( const GLColor& color ) {
 
     _color = color;
@@ -425,6 +474,26 @@ namespace GMlib {
 ////
 ////    _ref->translateGlobal( tmp );
 //  }
+
+
+  template <typename T, int n>
+  inline
+  void DParametrics<T,n>::translate( const Vector<float,3>& trans_vector ) {
+
+    DisplayObject::translate( trans_vector );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
+
+
+  template <typename T, int n>
+  inline
+  void DParametrics<T,n>::translateGlobal( const Vector<float,3>& trans_vector ) {
+
+    DisplayObject::translateGlobal( trans_vector );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
 
 
 

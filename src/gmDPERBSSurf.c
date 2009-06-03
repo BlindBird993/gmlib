@@ -167,6 +167,18 @@ namespace GMlib {
   inline
   void DPERBSSurf<T>::edit( SceneObject* obj ) {
 
+    int i, j;
+    for( i = 0; i < _c.getDim1()-1; i++ )
+      for( j = 0; j < _c.getDim2()-1; j++ )
+        if( _c[i][j] == obj )
+          goto edit_loop_break;
+
+    edit_loop_break:
+
+    DPBezierSurf<T> *bezier = dynamic_cast<DPBezierSurf<T>*>(_c[i][j]);
+    if( bezier )
+      bezier->updateCoeffs( _c[i][j]->getPos() - _c[i][j]->evaluate( 0.5, 0.5, 0, 0 )[0][0] );
+
     DSurf<T>::replot(0,0);
   }
 

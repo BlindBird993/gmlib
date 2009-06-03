@@ -56,19 +56,15 @@ namespace GMlib {
 //    virtual PBezierCurve<T,3>*    getPBezierCurve();
     virtual void                  hideSelectors();
     bool                          isSelectorsVisible() const;
-    void                          rotate(Angle a, const Vector<float,3>& rot_axel);
-    void                          rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    void                          rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    void                          rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     virtual void                  showSelectors( bool grid = false, const GLColor& _selector_color = GMcolor::DarkBlue, const GLColor& grid_color = GMcolor::LightGreen );
-    void                          translate(const Vector<float,3>& trans_vector);
-    void                          translateGlobal(const Vector<float,3>& trans_vector);
+    void                          updateCoeffs( const Vector<T,3>& d );
 
   protected:
     bool                          _selectors;
     SelectorGrid<T,3>*			      _sg;
     DVector< Selector<T,3>* >     _s;
 //    PBezierCurve<T,3>             *_l_ref;
+    bool                          _c_moved;
 
     string                        getIdentity() const;
     virtual void                  init();
