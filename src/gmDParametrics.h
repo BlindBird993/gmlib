@@ -144,6 +144,7 @@ namespace GMlib {
 
   private:
     void                                  _init();
+    void                                  _initSoType();
 
 
 

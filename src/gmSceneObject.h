@@ -54,15 +54,32 @@ namespace GMlib{
   class Light;
 
 
-  enum {
-    GM_SO_TYPE_SCENEOBJECT      = 0001,
-    GM_SO_TYPE_CAMERA           = 0002,
-    GM_SO_TYPE_LIGHT            = 0003,
-    GM_SO_TYPE_SELECTOR         = 0010,
-    GM_SO_TYPE_SELECTOR_GRID    = 0011,
-    GM_SO_TYPE_BASIC_CURVE      = 1000,
-    GM_SO_TYPE_BASIC_SURFACE    = 2000,
-    GM_SO_TYPE_BASIC_VOLUME     = 3000
+  enum GM_SO_TYPE {
+
+    // Basic Types
+    GM_SO_TYPE_SCENEOBJECT                    = 0x0001,
+    GM_SO_TYPE_CAMERA                         = 0x0002,
+    GM_SO_TYPE_LIGHT                          = 0x0003,
+    GM_SO_TYPE_SELECTOR                       = 0x0050,
+    GM_SO_TYPE_SELECTOR_GRID                  = 0x0051,
+
+    // Point
+    GM_SO_TYPE_POINT                          = 0x0200,
+
+    // Curves
+    GM_SO_TYPE_CURVE                          = 0x1000,
+    GM_SO_TYPE_CURVE_BEZIER                   = 0x1001,
+    GM_SO_TYPE_CURVE_BSPLINE                  = 0x1002,
+    GM_SO_TYPE_CURVE_ERBS                     = 0x1003,
+
+    // Surfaces
+    GM_SO_TYPE_SURFACE                        = 0x2000,
+    GM_SO_TYPE_SURFACE_BEZIER                 = 0x2001,
+    GM_SO_TYPE_SURFACE_BSPLINE                = 0x2002,
+    GM_SO_TYPE_SURFACE_ERBS                   = 0x2003,
+
+    // Volumes
+    GM_SO_TYPE_VOLUME                         = 0x3000
   };
 
 

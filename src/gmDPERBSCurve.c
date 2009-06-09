@@ -40,6 +40,8 @@ namespace GMlib {
   inline
   DPERBSCurve<T>::DPERBSCurve() {
 
+    this->_type_id = GM_SO_TYPE_CURVE_ERBS;
+
     init();
   }
 
@@ -47,6 +49,8 @@ namespace GMlib {
   template <typename T>
   inline
   DPERBSCurve<T>::DPERBSCurve( DCurve<T>* g, int no_locals ) {
+
+    this->_type_id = GM_SO_TYPE_CURVE_ERBS;
 
     init();
 
@@ -76,6 +80,8 @@ namespace GMlib {
   template <typename T>
   inline
   DPERBSCurve<T>::DPERBSCurve( DCurve<T>* g, int no_locals, int d ) {
+
+    this->_type_id = GM_SO_TYPE_CURVE_ERBS;
 
     init();
 

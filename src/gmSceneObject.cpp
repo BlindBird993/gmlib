@@ -100,7 +100,7 @@ namespace GMlib {
     _name	= _free_name++;
     _active	= false;
     _local_cs = d._local_cs;
-    _type_id  = GM_SO_TYPE_SCENEOBJECT;
+    _type_id  = d._type_id;
     _visible  = d._visible;
     _selected = d._selected;
 

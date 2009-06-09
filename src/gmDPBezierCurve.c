@@ -37,6 +37,8 @@ namespace GMlib {
   inline
   DPBezierCurve<T>::DPBezierCurve( const DVector< Vector<T, 3> >& c ) {
 
+    this->_type_id = GM_SO_TYPE_CURVE_BEZIER;
+
     init();
 
     _closed = false;
@@ -52,6 +54,8 @@ namespace GMlib {
   template <typename T>
   inline
   DPBezierCurve<T>::DPBezierCurve( const DVector< Vector<T, 3> >& c, T s, T t, T e ) {
+
+    this->_type_id = GM_SO_TYPE_CURVE_BEZIER;
 
     init();
 

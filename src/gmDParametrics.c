@@ -37,6 +37,7 @@ namespace GMlib {
   DParametrics<T,n>::DParametrics() {
 
     _ref = 0;
+    _initSoType();
     _init();
   }
 
@@ -88,6 +89,27 @@ namespace GMlib {
     _dlist = 0;
 
     enableDefaultVisualizer();
+  }
+
+
+  template <typename T, int n>
+  void DParametrics<T,n>::_initSoType() {
+
+    switch( n ) {
+
+      case GM_POINT:
+        _type_id = GM_SO_TYPE_POINT;
+        break;
+      case GM_CURVE:
+        _type_id = GM_SO_TYPE_CURVE;
+        break;
+      case GM_SURFACE:
+        _type_id = GM_SO_TYPE_SURFACE;
+        break;
+      case GM_FLOW:
+        _type_id = GM_SO_TYPE_VOLUME;
+        break;
+    }
   }
 
 

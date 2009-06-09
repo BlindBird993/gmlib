@@ -5,6 +5,25 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-06-09 Jostein Bratlie
+
+        * gmSceneObject/gmDParametrics/gmDPBSplineCurve/gmDPBezier*/gmDPERBS*
+          - Added and deployed more type ID's.
+            // Point
+            GM_SO_TYPE_POINT
+            // Curves
+            GM_SO_TYPE_CURVE              (replaces GM_SO_TPYE_BASIC_CURVE)
+            GM_SO_TYPE_CURVE_BEZIER
+            GM_SO_TYPE_CURVE_BSPLINE
+            GM_SO_TYPE_CURVE_ERBS
+            // Surfaces
+            GM_SO_TYPE_SURFACE            (replaces GM_SO_TPYE_BASIC_SURFACE)
+            GM_SO_TYPE_SURFACE_BEZIER
+            GM_SO_TYPE_SURFACE_BSPLINE
+            GM_SO_TYPE_SURFACE_ERBS
+            // Volumes
+            GM_SO_TYPE_VOLUME             (replaces GM_SO_TPYE_BASIC_VOLUME)
+
 
 2009-06-03 Jostein Bratlie
 

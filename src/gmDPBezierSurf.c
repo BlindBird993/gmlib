@@ -55,6 +55,8 @@ namespace GMlib {
   inline
   DPBezierSurf<T>::DPBezierSurf( const DMatrix< Vector<T, 3> >& cp ) {
 
+    this->_type_id = GM_SO_TYPE_SURFACE_BEZIER;
+
     init();
 
 
@@ -76,6 +78,8 @@ namespace GMlib {
   template <typename T>
   inline
   DPBezierSurf<T>::DPBezierSurf( const DMatrix< Vector<T, 3> >& c, T s_u, T u, T e_u, T s_v, T v, T e_v  ) {
+
+    this->_type_id = GM_SO_TYPE_SURFACE_BEZIER;
 
     init();
 

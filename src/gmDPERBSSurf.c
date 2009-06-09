@@ -47,12 +47,16 @@ namespace GMlib {
   inline
   DPERBSSurf<T>::DPERBSSurf() {
 
+    this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
+
     init();
   }
 
   template <typename T>
   inline
   DPERBSSurf<T>::DPERBSSurf( DSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 ) {
+
+    this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
 
     init();
 
@@ -114,6 +118,8 @@ namespace GMlib {
   template <typename T>
   inline
   DPERBSSurf<T>::DPERBSSurf( const DMatrix< DPBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v ) : _u(u), _v(v) {
+
+    this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
 
     init();
 

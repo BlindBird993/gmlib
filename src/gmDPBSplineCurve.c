@@ -45,6 +45,8 @@ namespace GMlib {
   inline
   DPBSplineCurve<T>::DPBSplineCurve( const DVector< Vector<T, 3> >& cv,  int d  ) {
 
+    this->_type_id = GM_SO_TYPE_CURVE_BSPLINE;
+
     init();
   }
 
