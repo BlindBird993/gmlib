@@ -550,7 +550,7 @@ namespace GMlib {
    *  DUMMY
    */
   inline
-  bool GLMatrix::operator < ( const GLMatrix& m ) const {
+  bool GLMatrix::operator < ( const GLMatrix& /*matrix*/ ) const {
     return true;
   }
 

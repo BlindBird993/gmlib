@@ -138,7 +138,7 @@ namespace GMlib {
     //********   Virtual functions nessesary for inheritance !!!   ********
     //*  This functions must be implemented in the real parametric Curve  *
     //*********************************************************************
-    virtual void	            eval(T t, int d, bool l = true ) {}
+    virtual void	            eval(T t, int d, bool l = true ) = 0;
     virtual T		              getStartP() {return T(0);}
     virtual T		              getEndP() {return T(0);}
 

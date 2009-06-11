@@ -176,7 +176,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void GMWindow::message( const std::string& str) {}
+  void GMWindow::message( const std::string& /* str */ ) {}
 
 
   /*! void GMWindow::message( SceneObject* d)
@@ -185,7 +185,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void GMWindow::message( SceneObject* d) {}
+  void GMWindow::message( SceneObject* /* obj */ ) {}
 
 
   /*! void GMWindow::message( Point<float,3>& p)
@@ -194,7 +194,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void GMWindow::message( Point<float,3>& p) {}
+  void GMWindow::message( Point<float,3>& /* p */ ) {}
 
 
   /*! bool GMWindow::find(int x, int y, int& index)

@@ -56,7 +56,7 @@ namespace GMlib {
    *	\todo Remove if not needed!
    */
   inline
-  bool ViewSet::operator<(const ViewSet& viewset) const {
+  bool ViewSet::operator < ( const ViewSet& /* viewset */ ) const {
 
     return true;
   }

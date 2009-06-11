@@ -538,7 +538,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T DCurve<T>::getLocalMapping( T t, T ts, T ti, T te ) {
+  T DCurve<T>::getLocalMapping( T t, T /*ts*/, T /*ti*/, T /*te*/ ) {
 
     return t;
   }

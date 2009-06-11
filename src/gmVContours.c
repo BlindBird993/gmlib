@@ -298,7 +298,7 @@ namespace GMlib {
   inline
   void VContours<T,n>::replot(
     DVector< DVector< Vector<T, 3> > >& p,
-    int m, int d
+    int /*m*/, int /*d*/
   ) {
 
 
@@ -478,7 +478,7 @@ namespace GMlib {
   void VContours<T,n>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& p,
     DMatrix< Vector<T, 3> >& normals,
-    int m1, int m2, int d1, int d2
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
   ) {
 
     // Color/Material Countours

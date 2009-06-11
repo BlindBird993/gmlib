@@ -495,7 +495,7 @@ namespace GMlib {
    *  Pending Documentation
    *  Virtual SceneObject function
    */
-  void DisplayObject::_prepareDisplay( const HqMatrix<float,3>& m ) {
+  void DisplayObject::_prepareDisplay( const HqMatrix<float,3>& mat ) {
 
 //    cout << "::Prepare Display Object: " << getIdentity();
 //    cout << "  ::m:" << endl;
@@ -507,8 +507,8 @@ namespace GMlib {
 //    }
 
     /*! \todo fix the way the matrix is handled */
-    _matrix_scene = m;
-    _matrix_scene_inv = m;
+    _matrix_scene = mat;
+    _matrix_scene_inv = mat;
     _matrix_scene_inv.invertOrthoNormal();
 
 
@@ -537,7 +537,7 @@ namespace GMlib {
    *  Pending Documentation
    *  Virtual SceneObject function
    */
-  void DisplayObject::localSimulate(double dt) {
+  void DisplayObject::localSimulate( double /*dt*/ ) {
 
     if(_locked) {
 

@@ -168,7 +168,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPCylinder<T>::eval( T u, T v, int d1, int d2, bool lu, bool lv ) {
+  void DPCylinder<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     this->_p[0][0][0] =		_rx * sin( v );
     this->_p[0][0][1] =		_ry * cos( v );

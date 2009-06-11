@@ -95,7 +95,7 @@ namespace GMlib {
   }
 
 
-  StlObject::StlObject( const std::string& filename, const GLColor& color, int flip ) {
+  StlObject::StlObject( const std::string& filename, const GLColor& color, int /*flip*/ ) {
 
     _dlist = 0;
 

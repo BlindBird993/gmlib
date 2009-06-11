@@ -98,11 +98,11 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  SpotLight::SpotLight(	const SpotLight& pl) {
+  SpotLight::SpotLight(	const SpotLight& copy ) : PointLight( copy ) {
 
-    _dir = pl._dir;
-    setCuttoff(pl._cutoff);
-    rotate(_dir.getAngle(pl._dir),_dir^pl._dir);
+    _dir = copy._dir;
+    setCuttoff(copy._cutoff);
+    rotate(_dir.getAngle(copy._dir),_dir^copy._dir);
   }
 
 

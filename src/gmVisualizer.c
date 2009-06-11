@@ -74,17 +74,17 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void Visualizer<T,n>::replot(
-    DVector< DVector< Vector<T, 3> > >& p,
-    int m, int d
+    DVector< DVector< Vector<T, 3> > >& /*p*/,
+    int /*m*/, int /*d*/
   ) {}
 
 
   template <typename T, int n>
   inline
   void Visualizer<T,n>::replot(
-    DMatrix< DMatrix< Vector<T, 3> > >& p,
-    DMatrix< Vector<T, 3> >& normals,
-    int m1, int m2, int d1, int d2
+    DMatrix< DMatrix< Vector<T, 3> > >& /*p*/,
+    DMatrix< Vector<T, 3> >& /*normals*/,
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
   ) {}
 
 

@@ -106,7 +106,7 @@ namespace GMlib {
    *	Pending Documentation
    *	Running the CameraIso.
    */
-  void CameraIso::go(bool stereo) {
+  void CameraIso::go(bool /*stereo*/) {
 
     _active = true;
     display();
@@ -135,7 +135,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  void CameraIso::lockTarget(SceneObject* obj) {}
+  void CameraIso::lockTarget(SceneObject* /*obj*/) {}
 
 
   /*! void CameraIso::lockTarget(const Point<float,3>& p)
@@ -143,7 +143,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  void CameraIso::lockTarget(const Point<float,3>& p) {}
+  void CameraIso::lockTarget(const Point<float,3>& /*p*/) {}
 
 
   /*! void CameraIso::lockTarget(double d)
@@ -151,7 +151,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  void CameraIso::lockTarget(double d) {}
+  void CameraIso::lockTarget(double /*d*/) {}
 
 
   /*! SceneObject* CameraIso::lockTargetAtPixel(int x,int y)
@@ -159,7 +159,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  SceneObject* CameraIso::lockTargetAtPixel(int x,int y) {
+  SceneObject* CameraIso::lockTargetAtPixel(int /*x*/,int /*y*/) {
 
     return 0;
   }

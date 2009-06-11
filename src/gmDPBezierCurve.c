@@ -107,7 +107,7 @@ namespace GMlib {
 
 
   template <typename T>
-  void DPBezierCurve<T>::edit( int selector ) {
+  void DPBezierCurve<T>::edit( int /*selector*/ ) {
 
     _c_moved = true;
     DCurve<T>::replot(0,false);
@@ -270,7 +270,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPBezierCurve<T>::eval( T t, int d, bool l ) {
+  void DPBezierCurve<T>::eval( T t, int /*d*/, bool /*l*/ ) {
 
     // Compute the Bernstein-Hermite Polynomials
     DMatrix< T > bhp;
@@ -289,7 +289,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T DPBezierCurve<T>::getLocalMapping( T t, T ts, T ti, T te ) {
+  T DPBezierCurve<T>::getLocalMapping( T t, T ts, T /*ti*/, T te ) {
 
     return (t - ts) / (te-ts);
   }
@@ -312,7 +312,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPBezierCurve<T>::resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end ) {
+  void DPBezierCurve<T>::resample( DVector< DVector< Vector<T,3> > >& p, int m, int /*d*/, T start, T end ) {
 
     // dt; sample step value
     const T dt = (end-start) / T(m-1);

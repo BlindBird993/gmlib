@@ -49,7 +49,7 @@ namespace GMlib {
 
 
   inline
-  String::String( int num ) : std::string() {
+  String::String( int /* num */ ) : std::string() {
 
     // Origin implementation (.NET functions)
     //_itoa(num, _data, 10);
@@ -62,7 +62,7 @@ namespace GMlib {
 
 
   inline
-  String::String( double num ) : std::string() {
+  String::String( double /* num */ ) : std::string() {
 
     // Origin implementation (.NET functions)
     //_gcvt(num, 1 + int(num / 10.0) + _precision, _data);

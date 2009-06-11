@@ -132,7 +132,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPRoseCurve<T>::eval( T t, int d, bool l ) {
+  void DPRoseCurve<T>::eval( T t, int d, bool /*l*/ ) {
 
     this->_p.setDim( d + 1 );
 

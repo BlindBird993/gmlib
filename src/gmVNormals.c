@@ -141,7 +141,7 @@ namespace GMlib {
   void VNormals<T,n>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& p,
     DMatrix< Vector<T, 3> >& normals,
-    int m1, int m2, int d1, int d2
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
   ) {
 
     if( !this->_ref->isDynamic() ) {

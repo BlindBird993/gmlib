@@ -67,7 +67,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  GMWindow::GMWindow(const GMWindow& gw) {
+  GMWindow::GMWindow( const GMWindow& gw ) : Scene() {
 
     (*this) = gw;
   }

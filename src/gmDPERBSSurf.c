@@ -314,7 +314,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSSurf<T>::visualizeLocalPatch( PSurf<T,3>* p, int i, int j, int n, int m, bool collapsed ) {
+  void DPERBSSurf<T>::visualizeLocalPatch( PSurf<T,3>* /*p*/, int /*i*/, int /*j*/, int /*k*/, int /*l*/, bool /*collapsed*/ ) {
 
 //
 //    // Bezier Curve
@@ -322,7 +322,7 @@ namespace GMlib {
 //    if( bsObj ) {
 //
 //      _p[i][j] =  new DPBezierSurf<T>( bsObj );
-//      visualizeLocalPatchInit( i, j,3, m, collapsed );
+//      visualizeLocalPatchInit( i, j,3, l, collapsed );
 //      return;
 //    }
   }
@@ -330,7 +330,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSSurf<T>::visualizeLocalPatchInit( int i, int j, int n, int m, bool collapsed ) {
+  void DPERBSSurf<T>::visualizeLocalPatchInit( int /*i*/, int /*j*/, int /*k*/, int /*l*/, bool /*collapsed*/ ) {
 
 //    // if-then: Set collapsed
 //    if( collapsed )
@@ -361,7 +361,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSSurf<T>::eval( T u, T v, int d1, int d2, bool lu, bool lv) {
+  void DPERBSSurf<T>::eval( T u, T v, int /*d1*/, int /*d2*/, bool /*lu*/, bool /*lv*/ ) {
 
     // Find Knot Indices u_k and v_k
     int uk, vk;
@@ -432,7 +432,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSSurf<T>::getB( DVector<T>& B, const DVector<T>& kv, int tk, T t, int d ) {
+  void DPERBSSurf<T>::getB( DVector<T>& B, const DVector<T>& kv, int tk, T t, int /*d*/ ) {
 
     B.setDim(3);
 
@@ -646,8 +646,8 @@ namespace GMlib {
     DMatrix< DMatrix < Vector<T,3> > >& p,
     int m1,
     int m2,
-    int d1,
-    int d2,
+    int /*d1*/,
+    int /*d2*/,
     T s_u,
     T s_v,
     T e_u,

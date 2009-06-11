@@ -141,7 +141,7 @@ namespace GMlib {
 
 
   template <typename T>
-  void DPBezierSurf<T>::edit( int selector ) {
+  void DPBezierSurf<T>::edit( int /*selector*/ ) {
 
     _c_moved = true;
     this->replot(0,0,false);
@@ -302,7 +302,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPBezierSurf<T>::eval( T u, T v, int d1, int d2, bool lu, bool lv ) {
+  void DPBezierSurf<T>::eval( T u, T v, int /*d1*/, int /*d2*/, bool /*lu*/, bool /*lv*/ ) {
 
     // Set Dimensions
     this->_p.setDim( getDegreeU()+1, getDegreeV()+1 );
@@ -360,7 +360,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T DPBezierSurf<T>::getLocalMapping( T t, T ts, T tt, T te ) {
+  T DPBezierSurf<T>::getLocalMapping( T t, T ts, T /*tt*/, T te ) {
 
     return (t - ts) / (te-ts);
   }
@@ -404,8 +404,8 @@ namespace GMlib {
     DMatrix< DMatrix < Vector<T,3> > >& p,
     int m1,
     int m2,
-    int d1,
-    int d2,
+    int /*d1*/,
+    int /*d2*/,
     T s_u,
     T s_v,
     T e_u,

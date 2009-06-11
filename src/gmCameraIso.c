@@ -90,7 +90,7 @@ namespace GMlib {
    *	Moveing in shooting direction
    */
   inline
-  void CameraIso::move(float d) {}
+  void CameraIso::move( float /* delta */ ) {}
 
 
   /*! void CameraIso::move(const Vector<float,3>& t)
@@ -100,7 +100,7 @@ namespace GMlib {
    *	Move in direction t.
    */
   inline
-  void CameraIso::move(const Vector<float,3>& t) {}
+  void CameraIso::move( const Vector<float,3>& /* delta */ ) {}
 
 
   /*! void CameraIso::rotate(Angle, const Vector<float,3>&)
@@ -109,7 +109,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void CameraIso::rotate(Angle, const Vector<float,3>&) {}
+  void CameraIso::rotate( Angle /*angle*/, const Vector<float,3>& /* axel */ ) {}
 
 
   /*! void CameraIso::rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&)
@@ -157,7 +157,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void CameraIso::tilt(Angle a) {}
+  void CameraIso::tilt( Angle /* angle */ ) {}
 
 
   /*! void CameraIso::translate(const Vector<float,3>& trans_vector)
@@ -166,7 +166,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void CameraIso::translate(const Vector<float,3>& trans_vector) {}
+  void CameraIso::translate( const Vector<float,3>& /*trans_vector*/ ) {}
 
 
   /*! void CameraIso::translateGlobal(const Vector<float,3>&)
@@ -175,7 +175,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void CameraIso::translateGlobal(const Vector<float,3>&) {}
+  void CameraIso::translateGlobal( const Vector<float,3>& /*trans_vector*/ ) {}
 
 
   /*! void CameraIso::turn(Angle a)
@@ -184,6 +184,6 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void CameraIso::turn(Angle a) {}
+  void CameraIso::turn( Angle /*angle*/ ) {}
 
 }

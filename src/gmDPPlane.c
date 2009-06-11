@@ -142,7 +142,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  void DPPlane<T>::eval(T u, T v, int d1, int d2, bool lu, bool lv ) {
+  void DPPlane<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     this->_p[0][0] = _pt + u*_u + v*_v ;
 

@@ -78,7 +78,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  bool	MaterialObjectList::readFromFile(char* file_name) {
+  bool	MaterialObjectList::readFromFile( char* /*file_name*/ ) {
 
     return true;
   }
@@ -89,7 +89,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  bool	MaterialObjectList::storeToFile(char* file_name) {
+  bool	MaterialObjectList::storeToFile( char* /*file_name*/ ) {
 
     return true;
   }

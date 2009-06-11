@@ -375,7 +375,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localSimulate(double dt) {}
+  void SceneObject::localSimulate( double /*dt*/ ) {}
 
 
   void SceneObject::generateCollapsedDList() {
@@ -565,12 +565,12 @@ namespace GMlib {
   }
 
 
-  /*! void SceneObject::_prepareDisplay(const HqMatrix<float,3>& m)
+  /*! void SceneObject::_prepareDisplay( const HqMatrix<float,3>& mat )
    *  \brief Pending Documentation
    *
    *  Made specially for DisplayObject's
    */
-  void SceneObject::_prepareDisplay(const HqMatrix<float,3>& m) {}
+  void SceneObject::_prepareDisplay( const HqMatrix<float,3>& /*mat*/ ) {}
 
 
   /*! void SceneObject::_simulate( double dt )

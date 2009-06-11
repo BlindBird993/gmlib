@@ -166,7 +166,7 @@ namespace GMlib {
   inline
   void VDerivatives<T,n>::replot(
     DVector< DVector< Vector<T, 3> > >& p,
-    int m, int d
+    int /*m*/, int /*d*/
   ) {
 
     if( !this->_ref->isDynamic() ) {
@@ -213,8 +213,8 @@ namespace GMlib {
   inline
   void VDerivatives<T,n>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& p,
-    DMatrix< Vector<T, 3> >& normals,
-    int m1, int m2, int d1, int d2
+    DMatrix< Vector<T, 3> >& /*normals*/,
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
   ) {
 
     if( !this->_ref->isDynamic() ) {

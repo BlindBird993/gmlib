@@ -270,14 +270,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSCurve<T>::visualizeLocalPatch( PCurve<T,3>* p, int i, int m, bool collapsed ) {
+  void DPERBSCurve<T>::visualizeLocalPatch( PCurve<T,3>* /*p*/, int /*i*/, int /*k*/, bool /*collapsed*/ ) {
 //
 //    // Arc
 //    PArc<T,3> *arcObj = dynamic_cast<PArc<T,3>*>( p );
 //    if( arcObj ) {
 //
 //      _p[i] = new DPArc<T>( arcObj );
-//      visualizeLocalPatchInit( i, m, collapsed );
+//      visualizeLocalPatchInit( i, k, collapsed );
 //      return;
 //    }
 //
@@ -286,7 +286,7 @@ namespace GMlib {
 //    if( bcObj ) {
 //
 //      _p[i] = new DPBezierCurve<T>( bcObj );
-//      visualizeLocalPatchInit( i, m, collapsed );
+//      visualizeLocalPatchInit( i, k, collapsed );
 //      return;
 //    }
   }
@@ -294,7 +294,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSCurve<T>::visualizeLocalPatchInit( int i, int m, bool collapsed ) {
+  void DPERBSCurve<T>::visualizeLocalPatchInit( int /*i*/, int /*k*/, bool /*collapsed*/ ) {
 //
 //    // if-then: Set collapsed
 //    if( collapsed )
@@ -328,7 +328,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSCurve<T>::eval( T t, int d, bool l) {
+  void DPERBSCurve<T>::eval( T t, int /*d*/, bool /*l*/ ) {
 
     int tk;
     for( tk = 1; tk < _t.getDim()-2; tk++ )
@@ -401,7 +401,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSCurve<T>::getB( DVector<T>& B, int tk, T t, int d ) {
+  void DPERBSCurve<T>::getB( DVector<T>& B, int tk, T t, int /*d*/ ) {
 
     B.setDim(3);
     _evaluator->set( _t[tk], _t[tk+1] - _t[tk] );
@@ -445,7 +445,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPERBSCurve<T>::resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end ) {
+  void DPERBSCurve<T>::resample( DVector< DVector< Vector<T,3> > >& p, int m, int /*d*/, T /*start*/, T /*end*/ ) {
 
     // dt; sample step value
     const T dt = ( getEndP() - getStartP() ) / T(m-1);

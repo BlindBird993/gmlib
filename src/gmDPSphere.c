@@ -184,7 +184,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPSphere<T>::eval(T u, T v, int d1, int d2, bool lu, bool lv ) {
+  void DPSphere<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     T r = _radius;
     T cos_u = cos(u);

@@ -958,7 +958,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T DSurf<T>::getLocalMapping( T t, T ts, T tt, T te ) {
+  T DSurf<T>::getLocalMapping( T t, T /*ts*/, T /*tt*/, T /*te*/ ) {
 
     return t;
   }
@@ -1146,7 +1146,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSurf<T,3>* DSurf<T>::split( T t, int uv ) {
+  PSurf<T,3>* DSurf<T>::split( T /*t*/, int /*uv*/ ) {
 
     return 0;
   }
@@ -1260,11 +1260,11 @@ namespace GMlib {
   template <typename T>
   inline
   void DSurf<T>::resample(
-    DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a,
-    int m1,
-    int m2,
-    int d1,
-    int d2
+    DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& /*a*/,
+    int /*m1*/,
+    int /*m2*/,
+    int /*d1*/,
+    int /*d2*/
   ) {
 
 //    if(m1>0)

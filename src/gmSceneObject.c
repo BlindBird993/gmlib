@@ -41,7 +41,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void SceneObject::edit(int selector_id) {}
+  void SceneObject::edit( int /* selector_id */ ) {}
 
 
   /*! void SceneObject::edit(SceneObject* lp)
@@ -50,7 +50,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void SceneObject::edit(SceneObject* lp) {}
+  void SceneObject::edit( SceneObject* /* obj */ ) {}
 
 
   /*! void SceneObject::edit()
@@ -68,7 +68,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void SceneObject::editPos(Vector<float,3> delta) {}
+  void SceneObject::editPos( Vector<float,3> /* delta*/  ) {}
 
 
   /*! void SceneObject::enableChildren( bool enable = true )
@@ -244,7 +244,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void SceneObject::selectEvent(int selector_id) {}
+  void SceneObject::selectEvent( int /* selector_id */ ) {}
 
 
 
@@ -341,7 +341,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void SceneObject::setMaterial(const Material& m) {}
+  void SceneObject::setMaterial( const Material& /* mat */ ) {}
 
 
   /*! void SceneObject::_display()

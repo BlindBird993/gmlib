@@ -113,7 +113,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void DPCircle<T>::eval( T t, int d, bool l ) {
+  void DPCircle<T>::eval( T t, int d, bool /*l*/ ) {
 
     this->_p.setDim( d + 1 );
 

@@ -188,7 +188,7 @@ namespace GMlib {
     T	                            _sc_v;		        // Scale v-parametre
 
 
-    virtual void                  eval( T u, T v, int d1, int d2, bool lu = true, bool lv = true ) {} // = 0;
+    virtual void                  eval( T u, T v, int d1, int d2, bool lu = true, bool lv = true ) = 0;
     virtual T                     getEndPU() { return T(0); } // = 0;
     virtual T                     getEndPV() { return T(0); } // = 0;
     virtual T                     getStartPU() { return T(0); } //  = 0;
