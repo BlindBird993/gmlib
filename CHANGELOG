@@ -5,6 +5,21 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2009-06-11 Jostein Bratlie
+
+        * gmScene
+          - Added a function to Scene which makes the Scene of the SceneObject available.
+            Scene* getScene();
+        * gmDPERBS*
+          - Added functions to get the number of local patches.
+            DPERBSCurve:
+              int getNoLocalPatches() const
+            DPERBSSurf:
+              int getNoLocalPatchesU() const
+              int getNoLocalPatchesV() const
+
+
 2009-06-09 Jostein Bratlie
 
         * gmSceneObject/gmDParametrics/gmDPBSplineCurve/gmDPBezier*/gmDPERBS*

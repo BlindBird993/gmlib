@@ -568,6 +568,23 @@ namespace GMlib {
     return _c;
   }
 
+
+  template <typename T>
+  inline
+  int DPERBSSurf<T>::getNoLocalPatchesU() const {
+
+    return _c.getDim1();
+  }
+
+
+  template <typename T>
+  inline
+  int DPERBSSurf<T>::getNoLocalPatchesV() const {
+
+    return _c.getDim2();
+  }
+
+
   template <typename T>
   inline
   void DPERBSSurf<T>::generateKnotVector( DSurf<T>* g ) {

@@ -166,6 +166,13 @@ namespace GMlib {
   }
 
 
+  inline
+  Scene* SceneObject::getScene() {
+
+    return _scene;
+  }
+
+
   /*! bool SceneObject::getSelected()
    *  \brief Pending Documentation
    *

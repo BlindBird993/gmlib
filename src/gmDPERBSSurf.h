@@ -57,6 +57,8 @@ namespace GMlib {
 
     void                      edit( SceneObject *obj );
     string                    getIdentity() const;
+    int                       getNoLocalPatchesU() const;
+    int                       getNoLocalPatchesV() const;
 //    virtual PERBSSurf<T,3>*   getPERBSSurf();
     virtual void              hideLocalPatches();
     bool                      isLocalPatchesVisible() const;

@@ -429,6 +429,14 @@ namespace GMlib {
 
   template <typename T>
   inline
+  int DPERBSCurve<T>::getNoLocalPatches() const {
+
+    return _c.getDim();
+  }
+
+
+  template <typename T>
+  inline
   T DPERBSCurve<T>::getStartP() {
 
     return _t[1];

@@ -146,6 +146,7 @@ namespace GMlib{
     const HqMatrix<float,3>&    getMatrixGlobal() const;
     unsigned int                getName() const;
     SceneObject*                getParent();
+    Scene*                      getScene();
     bool                        getSelected();
     Sphere<float,3>	            getSurroundingSphere() const;
     Sphere<float,3>     	      getSurroundingSphereClean() const;
