@@ -76,8 +76,8 @@ namespace GMlib {
         Vector<float,3> &v5 = p[i+1][j][0][0];
         Vector<float,3> &v6 = p[i][j][0][0];
 
-        Vector<float,3> n1 = Vector3D<float>(v2 - v1) ^ (v3 - v1);
-        Vector<float,3> n2 = Vector3D<float>(v5 - v4) ^ (v6 - v4);
+        Vector<float,3> n1 = Vector3D<float>(v2 - v1) ^ Vector3D<float>(v3 - v1);
+        Vector<float,3> n2 = Vector3D<float>(v5 - v4) ^ Vector3D<float>(v6 - v4);
 
         _normals.insertAlways( n1 );
         _vertices.insertAlways( v1 );
@@ -184,7 +184,6 @@ namespace GMlib {
     _dlist = glGenLists( 2 );
 
 
-
     glNewList( _dlist, GL_COMPILE ); {
       glBegin( GL_TRIANGLES ); {
 
@@ -201,7 +200,7 @@ namespace GMlib {
       glBegin( GL_TRIANGLES ); {
 
         for( int i = 0; i < _normals.getSize()-1; i++ ) {
-          glNormal( _normals[i] );
+          //glNormal( _normals[i] );
           for( int j = 0;j < 3; j++ )
             glPoint( _vertices[ 3*i+j ] );
         }
@@ -280,33 +279,22 @@ namespace GMlib {
 
       _identity = hbuff;
 
-      cout << "Loading binary STL file:" << endl;
-      cout << " - Identity: " << _identity << endl;
-
       unsigned int facets;
       stream.read( (char*)&facets, sizeof( unsigned int ) );
 
-      cout << " - No. Facets: " << facets << endl;
 
       // Allocate memory
-      _normals.setMaxSize(facets);
-      _vertices.setMaxSize(_normals.getMaxSize()*3);
+      _normals.setSize(facets);
+      _vertices.setSize(_normals.getMaxSize()*3);
 
       // Read Normal and Vertices and Attribute bit of each face
       for( int i = 0; i < (int)facets; i++ ) {
 
-        cout << i << ": ";
         // Normal
         stream.read( (char*)&_normals[i], 3 * sizeof( unsigned int ) );
-        cout << "(" << _normals[i][0] << ", " << _normals[i][1] << ", " << _normals[i][2] << ") - ";
 
         // Vertices
         stream.read( (char*)&_vertices[i*3], 9 * sizeof( unsigned int ) );
-        cout << "(" << _vertices[i*3][0] << ", " << _vertices[i*3][1] << ", " << _vertices[i*3][2];
-        cout << "(" << _vertices[i*3+1][0] << ", " << _vertices[i*3+1][1] << ", " << _vertices[i*3+1][2];
-        cout << "(" << _vertices[i*3+2][0] << ", " << _vertices[i*3+2][1] << ", " << _vertices[i*3+2][2];
-
-        cout << endl;
 
         // Attribute
         unsigned short attrib = 0;
@@ -358,7 +346,7 @@ namespace GMlib {
         const Vector<float,3> &v2 = _vertices(i*3+2);
 
         // Normal
-        const UnitVector<float,3> &n = _normals(i);
+        const Vector<float,3> &n = _normals(i);
 
         content << "  facet normal " << n(0) << " " << n(1) << " " << n(2) << endl;
 

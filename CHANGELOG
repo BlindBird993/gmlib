@@ -5,6 +5,12 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-06-12 T.Sang Tran
+
+        * gmStlObject
+          - Fixed importing, exporting and normals.
+
+
 
 2009-06-11 Jostein Bratlie
 
