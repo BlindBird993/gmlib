@@ -187,7 +187,7 @@ namespace GMlib {
     glNewList( _dlist, GL_COMPILE ); {
       glBegin( GL_TRIANGLES ); {
 
-        for( int i = 0; i < _normals.getSize()-1; i++) {
+        for( int i = 0; i < _normals.getSize(); i++) {
           glNormal( _normals[i] );                // STL file only carries one normal
           for( int j = 0; j < 3; j++ )            // for each triangle, makes a facet shading,
             glPoint( _vertices[ 3*i+j ] );        // they must be averaged for true smooth surfaces.
@@ -199,8 +199,7 @@ namespace GMlib {
     glNewList( _dlist+1, GL_COMPILE ); {
       glBegin( GL_TRIANGLES ); {
 
-        for( int i = 0; i < _normals.getSize()-1; i++ ) {
-          //glNormal( _normals[i] );
+        for( int i = 0; i < _normals.getSize(); i++ ) {
           for( int j = 0;j < 3; j++ )
             glPoint( _vertices[ 3*i+j ] );
         }
