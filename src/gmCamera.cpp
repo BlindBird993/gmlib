@@ -594,8 +594,10 @@ namespace GMlib {
     setFrustumVisible();
     _type_id  = GM_SO_TYPE_CAMERA;
     _culling = true;
-    _select_color = GMcolor::Yellow;
-    _select_linewidth = 1.0f;
+    _select_color = GMcolor::Pink;
+    _select_linewidth = 1.2f;
+    _select_active_color = GMcolor::Yellow;
+    _select_active_linewidth = 1.0f;
   }
 
 
@@ -636,11 +638,23 @@ namespace GMlib {
   }
 
 
+  void Camera::setSelectActiveColor( const Color& color ) {
+
+    _select_active_color = color;
+  }
+
+
+  void Camera::setSelectActiveLineWidth( float width ) {
+
+    _select_active_linewidth = width;
+  }
+
 
   void Camera::setSelectColor( const Color& color ) {
 
     _select_color = color;
   }
+
 
   void Camera::setSelectLineWidth( float width ) {
 

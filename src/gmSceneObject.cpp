@@ -356,6 +356,12 @@ namespace GMlib {
   void SceneObject::localDisplay() {}
 
 
+  void SceneObject::localDisplayActive() {
+
+    localSelect();
+  }
+
+
   void SceneObject::localDisplaySelection() {
 
     localSelect();

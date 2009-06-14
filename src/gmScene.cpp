@@ -50,6 +50,7 @@ namespace GMlib {
     _timer_time_scale    = 1;
     _timer_time_elapsed  = 0;
     _matrix_stack    += HqMatrix<float,3>();
+    _active_obj = 0x0;
   }
 
 
@@ -64,6 +65,7 @@ namespace GMlib {
     _timer_time_scale = 1;
     _timer_time_elapsed  = 0;
     _matrix_stack += HqMatrix<float,3>();
+    _active_obj = 0x0;
   }
 
 
@@ -77,6 +79,7 @@ namespace GMlib {
     _timer_active   = true;
     _timer_time_scale    = 1;
     _timer_time_elapsed  = 0;
+    _active_obj = 0x0;
   }
 
 
@@ -301,10 +304,18 @@ namespace GMlib {
   }
 
 
+  void Scene::_displayActive() {
+
+    if( _active_obj )
+      _active_obj->_displayActive();
+  }
+
+
   void Scene::_displaySelection() {
 
     for( int i = 0; i < _sel_objs.getSize(); i++ )
-      _sel_objs[i]->_displaySelection();
+      if( _sel_objs[i] != _active_obj )
+        _sel_objs[i]->_displaySelection();
   }
 
 

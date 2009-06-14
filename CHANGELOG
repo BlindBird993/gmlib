@@ -5,11 +5,18 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2009-06-14 Jostein Bratlie
+
+        * Added another temporary overlay to gmScene and gmCamera,
+          so that you can draw the selection of an "active selected" object with another color then
+          the rest of the selected objects.
+
+
 2009-06-12 T.Sang Tran
 
         * gmStlObject
           - Fixed importing, exporting and normals.
-
 
 
 2009-06-11 Jostein Bratlie

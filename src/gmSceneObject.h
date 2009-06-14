@@ -200,6 +200,7 @@ namespace GMlib{
     virtual void                generateCollapsedDList();
     const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
     virtual void                localDisplay();
+    virtual void                localDisplayActive();
     virtual void                localDisplaySelection();
     virtual void                localSelect();
     virtual void                localSimulate(double dt);
@@ -217,6 +218,7 @@ namespace GMlib{
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
     void	                      _display();
+    void                        _displayActive();
     void	                      _displaySelection();
     void                        _fillObj( Array<SceneObject*>& );
     int		                      _prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);

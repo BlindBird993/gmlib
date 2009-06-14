@@ -134,6 +134,8 @@ namespace GMlib {
 		void 										setFrustumVisible(bool visible=true);
 		void										setScene(Scene& s);
 		void										setScene(Scene *s);
+    void                    setSelectActiveColor( const Color& color );
+    void                    setSelectActiveLineWidth( float width );
     void                    setSelectColor( const Color& color );
     void                    setSelectLineWidth( float width );
 		virtual void 						zoom(float z);
@@ -170,8 +172,12 @@ namespace GMlib {
 //	private:
 		static Scene						_default_scene;
 		static unsigned int						_display_list;
+
     Color                   _select_color;
     float                   _select_linewidth;
+
+    Color                   _select_active_color;
+    float                   _select_active_linewidth;
 
 		Scene*									_scene;
 		int											_x,_y,_w,_h;					// Viewport position and size.

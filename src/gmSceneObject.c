@@ -381,6 +381,25 @@ namespace GMlib {
 
 
   inline
+  void SceneObject::_displayActive() {
+
+
+    if(!_active) {
+
+      glPushMatrix();
+        if(_local_cs)
+          glMultMatrix(_present);
+        _scale.glScaling();
+
+        if(_collapsed)  displayCollapsed();
+        else            localDisplayActive();
+
+      glPopMatrix();
+    }
+  }
+
+
+  inline
   void SceneObject::_displaySelection() {
 
 
