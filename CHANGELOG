@@ -4,6 +4,21 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-06-15 T.Sang Tran
+
+        * gmDParametric, gmSceneObject, gmTriangle
+          - Moved material and color properties to SceneObject
+
+        * gmStlObject
+          - Added more functions
+            int getNoNormals()
+            const Array< Vector<float,3> >& getNormals() const
+            const Array< Point<float,3> >& getPoints() const
+            float getPointSize()
+            float getPointSize() const
+            void setPointSize()
+          - Added the possibility to visualize the STL object using either GL_TRIANGLES or GL_POINTS
+
 
 
 2009-06-14 Jostein Bratlie

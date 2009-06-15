@@ -342,15 +342,6 @@ namespace GMlib {
   }
 
 
-  /*! void SceneObject::setMaterial(const Material& m)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void SceneObject::setMaterial( const Material& /* mat */ ) {}
-
-
   /*! void SceneObject::_display()
    *  \brief Pending Documentation
    *

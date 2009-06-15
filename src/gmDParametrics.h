@@ -78,12 +78,8 @@ namespace GMlib {
     ~DParametrics();
 
     void                                  enableDefaultVisualizer( bool enable = true );
-    const GLColor&                        getColor() const;
-    GLColor&                              getColor();
 //    Vector<float,3>                       getDir();
     unsigned int                          getDisplayListIdx() const;
-    const Material&                       getMaterial() const;
-    Material&                             getMaterial();
     Parametrics<T,3>*                     getParametrics();
 //    Point<float,3>	                      getPos();
 //    Vector<float,3>	                      getSide();
@@ -93,11 +89,9 @@ namespace GMlib {
     const DMatrix<Arrow<float,3> >&       getVerticesN2() const;
     Visualizer<T,n>*                      getVisualizer( const std::string& str );
     Array< Visualizer<T,n>* >&            getVisualizers();
-
     void                                  insertVisualizer( Visualizer<T,n>* visualizer );
     bool                                  isDynamic() const;
     bool                                  isDefaultVisualizerActive();
-    bool                                  isLighted() const;
     void                                  removeVisualizer( Visualizer<T,n>* visualizer );
 //    void                                  rotate( Angle a, const Vector<float,3>& rot_axel );
 //    void                                  rotate( Angle a, const Point<float,3>& p,const UnitVector<float,3>& d );
@@ -107,9 +101,6 @@ namespace GMlib {
     void                                  rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     void                                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
     void                                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    void                                  setColor( const GLColor& color );
-    void                                  setLighted( bool lighted );
-    void                                  setMaterial( const Material& material );
     void                                  setParametrics( Parametrics<T,3> *ref );
     void                                  toggleDefaultVisualizer();
 //    void                                  translate( const Vector<float,3>& trans_vector );
@@ -125,13 +116,10 @@ namespace GMlib {
 
     // States
     bool                                  _dynamic;
-    bool                                  _lighted;
 
 
 
     unsigned int                          _dlist;
-    Material					                    _material;
-    GLColor                               _color;
 
 
     DMatrix< Point<float,2> >           _texture_coords;

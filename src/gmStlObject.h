@@ -39,56 +39,71 @@
 #include "gmDisplayObject.h"
 #include "gmArrayLX.h"
 #include "gmDPSphere.h"
-#include "gmTriangle.h"
-
 
 
 namespace GMlib {
+
+
+  template <typename T>
+  class Vertex;
+
+
+  enum GM_STL_VISUALIZATION {
+    GM_STL_POINT,
+    GM_STL_TRIANGLE
+  };
+
 
   class StlObject : public DisplayObject {
   public:
     StlObject( const string& filename, const GLColor& color = 5, int flip = 1 ); // From file, in given color
     StlObject( std::ifstream& stream, bool binary = true, const GLColor& color = GMcolor::Aqua );
-    StlObject( DSurf<float> *obj, int m1 = 20, int m2 = 20 );
+    StlObject( DSurf<float> *obj, int m1 = 20, int m2 = 20, GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
     StlObject( float r = 10 );				 // Makes a Sphere, just for debugging
     ~StlObject();
 
-    std::string                     getIdentity() const;
-    unsigned int                    getNoPoints();
-    Array< Vector<float,3> >        getNormals();
-    Array<Point<float,3> >          getPoints();
-    ArrayLX< Vertex<float> >        getVertices();
+    std::string                       getIdentity() const;
+    unsigned int                      getNoNormals() const;
+    unsigned int                      getNoPoints() const;
+    Array< Vector<float,3> >          getNormals();
+    const Array< Vector<float,3> >&   getNormals() const;
+    Array<Point<float,3> >            getPoints();
+    const Array<Point<float,3> >&     getPoints() const;
+    float                             getPointSize();
+    ArrayLX< Vertex<float> >          getVertices();
 
-    void                            load( std::ifstream& stream, bool binary = true );
-    void                            replot();
-    void                            save( std::ofstream& stream, bool binary = true );
-    void                            setColor( const GLColor& color );
+    void                              load( std::ifstream& stream, bool binary = true );
+    void                              replot( GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
+    void                              save( std::ofstream& stream, bool binary = true );
+    void                              setPointSize( float s = 5.0 );
 
   protected:
-    void localDisplay();
-    void localSelect();
+    void                              localDisplay();
+    void                              localSelect();
 
 
   private:
-    unsigned int                    _dlist;
-    DPSphere<float>                 *_sphere;         // Debug
+    float                             _getFloat();
+    unsigned int                      _getUint();
+    unsigned long                     _getUli();
+    int                               _readStlBinary( const string& filename );
+    void                              _updateBounding();
+    void                              _makeList( GLenum e = GL_TRIANGLES );
+    void                              _init();
 
-    std::string                     _identity;				// I put the filename in here,
-    FILE*                           _stl_file;
-    GLColor                         _color;
+    unsigned int                      _dlist;
+    DPSphere<float>                   *_sphere;         // Debug
 
-    Array<Point<float,3> >          _vertices;        // storage, each three makes a triangle
-    Array<Vector<float,3> >         _normals;         // with one normal for each triangle
-    Box<float,3>                    _bbox;					  // Bounding box, should be an options
+    std::string                       _identity;				// I put the filename in here,
+    FILE*                             _stl_file;
+
+    Array<Point<float,3> >            _vertices;        // storage, each three makes a triangle
+    Array<Vector<float,3> >           _normals;         // with one normal for each triangle
+    Box<float,3>                      _bbox;					  // Bounding box, should be an options
+    float                             _point_size;
 
     // binary file utility functions to render it.
-    float                           _getFloat();
-    unsigned int                    _getUint();
-    unsigned long                   _getUli();
-    int                             _readStlBinary( const string& filename );
 
-    void                            _updateBounding();
-    void                            _makeList();
 
   };
 

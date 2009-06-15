@@ -30,6 +30,9 @@
  */
 
 
+#include "gmTriangle.h"
+
+
 namespace GMlib {
 
 
@@ -42,7 +45,14 @@ namespace GMlib {
 
 
   inline
-  unsigned int StlObject::getNoPoints() {
+  unsigned int StlObject::getNoNormals() const {
+
+    return _normals.getSize();
+  }
+
+
+  inline
+  unsigned int StlObject::getNoPoints() const {
 
     return _vertices.getSize();
   }
@@ -50,6 +60,13 @@ namespace GMlib {
 
   inline
   Array< Vector<float,3> > StlObject::getNormals() {
+
+    return _normals;
+  }
+
+
+  inline
+  const Array< Vector<float,3> >& StlObject::getNormals() const {
 
     return _normals;
   }
@@ -68,6 +85,13 @@ namespace GMlib {
 
 
   inline
+  const Array< Point<float,3> >& StlObject::getPoints() const {
+
+    return _vertices;
+  }
+
+
+  inline
   ArrayLX< Vertex<float> > StlObject::getVertices() {
 
     ArrayLX< Vertex<float> > v;         // returns copy, no cast between Point3D<float> and Point<float,3>
@@ -82,9 +106,22 @@ namespace GMlib {
   inline
   void StlObject::localDisplay() {
 
-    _color.glSet();
+    glPushAttrib( GL_LIGHTING_BIT );
+
+    if( this->isLighted() )
+    {
+      this->_material.glSet();
+    }
+    else
+    {
+      glDisable( GL_LIGHTING );
+      this->_color.glSet();
+    }
+
     if( _dlist )
       glCallList( _dlist );
+
+    glPopAttrib();
   }
 
 
@@ -94,11 +131,5 @@ namespace GMlib {
     glCallList( _dlist+1 );
   }
 
-
-  inline
-  void StlObject::setColor( const GLColor& color ) {
-
-    _color = color;
-  }
 
 }

@@ -46,11 +46,10 @@ namespace GMlib {
   inline
   DParametrics<T,n>::DParametrics( const DParametrics<T,n>& copy ) : DisplayObject( copy ) {
 
-    _dynamic = copy._dynamic;
-    _lighted = copy._lighted;
-    _ref = copy._ref;
+    _dynamic  = copy._dynamic;
+    _ref      = copy._ref;
 
-    _dlist = 0;
+    _dlist    = 0;
     enableDefaultVisualizer();
   }
 
@@ -85,7 +84,6 @@ namespace GMlib {
   void DParametrics<T,n>::_init() {
 
     _dynamic = false;
-    _lighted = true;
     _dlist = 0;
 
     enableDefaultVisualizer();
@@ -125,22 +123,6 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
-  inline
-  const GLColor& DParametrics<T,n>::getColor() const {
-
-    return _color;
-  }
-
-
-  template <typename T, int n>
-  inline
-  GLColor& DParametrics<T,n>::getColor() {
-
-    return _color;
-  }
-
-
 //  template <typename T, int n>
 //  inline
 //  Vector<float,3> DParametrics<T,n>::getDir() {
@@ -155,22 +137,6 @@ namespace GMlib {
   unsigned int DParametrics<T,n>::getDisplayListIdx() const {
 
     return _dlist;
-  }
-
-
-  template <typename T, int n>
-  inline
-  const Material& DParametrics<T,n>::getMaterial() const {
-
-    return _material;
-  }
-
-
-  template <typename T, int n>
-  inline
-  Material& DParametrics<T,n>::getMaterial() {
-
-    return _material;
   }
 
 
@@ -285,14 +251,6 @@ namespace GMlib {
   bool DParametrics<T,n>::isDynamic() const {
 
     return _dynamic;
-  }
-
-
-  template <typename T, int n>
-  inline
-  bool DParametrics<T,n>::isLighted() const {
-
-    return _lighted;
   }
 
 
@@ -418,30 +376,6 @@ namespace GMlib {
     DisplayObject::rotateGlobal( a, p, d );
     if( this->_parent )
       this->_parent->edit( this );
-  }
-
-
-  template <typename T, int n>
-  inline
-  void DParametrics<T,n>::setColor( const GLColor& color ) {
-
-    _color = color;
-  }
-
-
-  template <typename T, int n>
-  inline
-  void DParametrics<T,n>::setLighted( bool lighted ) {
-
-    _lighted = lighted;
-  }
-
-
-  template <typename T, int n>
-  inline
-  void DParametrics<T,n>::setMaterial( const Material& material ) {
-
-    _material = material;
   }
 
 

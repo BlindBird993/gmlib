@@ -70,15 +70,18 @@ namespace GMlib {
 
     _matrix.rotateGlobal(a, u, v);
 
-    _name	= _free_name++;
-    _active	= false;
-    _local_cs = true;
-    _type_id  = GM_SO_TYPE_SCENEOBJECT;
-    _visible = true;
-    _selected = false;
+    _name	            = _free_name++;
+    _active	          = false;
+    _local_cs         = true;
+    _type_id          = GM_SO_TYPE_SCENEOBJECT;
+    _lighted          = true;
+    _visible          = true;
+    _selected         = false;
+    _material         = GMmaterial::Obsidian;
+    _color            = GMcolor::Red;
 
-    _collapsed = false;
-    _collapsed_dlist = 0;
+    _collapsed        = false;
+    _collapsed_dlist  = 0;
     generateCollapsedDList();
 
     _children.clear();
@@ -92,20 +95,23 @@ namespace GMlib {
    */
   SceneObject::SceneObject( const SceneObject& d ) {
 
-    _parent = 0;
-    _matrix	= d._matrix;
-    _children	= d._children;
-    _sphere	= d._sphere;
-    _scale  = d._scale;
-    _name	= _free_name++;
-    _active	= false;
-    _local_cs = d._local_cs;
-    _type_id  = d._type_id;
-    _visible  = d._visible;
-    _selected = d._selected;
+    _parent           = 0;
+    _matrix	          = d._matrix;
+    _children	        = d._children;
+    _lighted          = d._lighted;
+    _sphere	          = d._sphere;
+    _scale            = d._scale;
+    _name	            = _free_name++;
+    _active	          = false;
+    _local_cs         = d._local_cs;
+    _type_id          = d._type_id;
+    _visible          = d._visible;
+    _selected         = d._selected;
+    _color            = d._color;
+    _material         = d._material;
 
-    _collapsed = d._collapsed;
-    _collapsed_dlist = 0;
+    _collapsed        = d._collapsed;
+    _collapsed_dlist  = 0;
     generateCollapsedDList();
   }
 
@@ -415,6 +421,31 @@ namespace GMlib {
 
   }
 
+
+  const GLColor& SceneObject::getColor() const {
+
+    return _color;
+  }
+
+
+  GLColor& SceneObject::getColor() {
+
+    return _color;
+  }
+
+
+  const Material& SceneObject::getMaterial() const {
+
+    return _material;
+  }
+
+
+  Material& SceneObject::getMaterial() {
+
+    return _material;
+  }
+
+
   /*! HqMatrix<flaot,3>& SceneObject::getMatrix()
    *  \brief Pending Documentation
    *
@@ -437,6 +468,12 @@ namespace GMlib {
   }
 
 
+  bool SceneObject::isLighted() const {
+
+    return _lighted;
+  }
+
+
   /*! void SceneObject::reset()
    *  \brief Pending Documentation
    *
@@ -445,6 +482,29 @@ namespace GMlib {
   void SceneObject::reset() {
 
     _matrix.reset();
+  }
+
+
+  void SceneObject::setColor( const Color& c ) {
+
+    _color = c;
+  }
+
+
+  void SceneObject::setLighted( bool lighted ) {
+
+    _lighted = lighted;
+  }
+
+
+  /*! void SceneObject::setMaterial(const Material& m)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  void SceneObject::setMaterial( const Material& m ) {
+
+    _material = m;
   }
 
 

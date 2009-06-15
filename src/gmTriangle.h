@@ -100,13 +100,13 @@ namespace GMlib {
     void                              computeNormals();
     Box<T,3>					                getBoundBox() const;
 
-    Edge<T>*		                  getEdge(int i)		const;
+    Edge<T>*		                      getEdge(int i)		const;
     int                               getNoVertices()	const;
     int                               getNoEdges()		const;
     int                               getNoTriangles()	const;
 
-    Triangle<T>*	                  getTriangle(int i)	const;
-    Vertex<T>*		                  getVertex(int i)	const;
+    Triangle<T>*	                    getTriangle(int i)	const;
+    Vertex<T>*		                    getVertex(int i)	const;
 
     int                               initRender(); //const;
 
@@ -136,16 +136,14 @@ namespace GMlib {
 
     int                               _d;
 
-    Material                          _material;
-
     DMatrix<ArrayT<Triangle<T>*> >    _tri_order;
     ArrayT<T>                         _u;
     ArrayT<T>                         _v;
     Box<T,3>                          _box;
 
    Vertex<T>	                        __v;		// dummy because of MS-VC++ compiler
-   Edge<T>			                    __e;		// dummy because of MS-VC++ compiler
-   Triangle<T> 	                    __t;		// dummy because of MS-VC++ compiler
+   Edge<T>			                      __e;		// dummy because of MS-VC++ compiler
+   Triangle<T> 	                      __t;		// dummy because of MS-VC++ compiler
 
     bool                              _fillPolygon(Array<Edge<T>*>&);
     bool                              _removeLastVertex();;

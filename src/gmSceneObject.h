@@ -43,6 +43,7 @@
 
 // Local GMlib includes
 #include "gmOpenGL.h"
+#include "gmColor.h"
 #include "gmMaterial.h"
 
 
@@ -125,7 +126,7 @@ namespace GMlib{
 
     SceneObject(
       const Vector<float,3>& trans  = Vector3D<float>(0,0,0),
-      const Point<float,3>&  scale   = Point3D<float>(1,1,1),
+      const Point<float,3>&  scale  = Point3D<float>(1,1,1),
       const Vector<float,3>& rotate = Vector3D<float>(1,0,0),
       Angle a=0);
 
@@ -141,7 +142,11 @@ namespace GMlib{
     bool                        flipSelected();
     Point<float,3>	            getCenterPos() const;
     Array<SceneObject*>&        getChildren();
+    const GLColor&              getColor() const;
+    GLColor&                    getColor();
     virtual std::string         getIdentity() const;
+    const Material&             getMaterial() const;
+    Material&                   getMaterial();
     virtual HqMatrix<float,3>&  getMatrix();
     const HqMatrix<float,3>&    getMatrixGlobal() const;
     unsigned int                getName() const;
@@ -153,6 +158,7 @@ namespace GMlib{
     int                         getTypeId();
     void                        insert(SceneObject* obj);
     bool                        isCollapsed() const;
+    bool                        isLighted() const;
     bool                        isSelected() const;
     virtual bool                isVisible() const;
     void                        remove(SceneObject* obj);
@@ -160,8 +166,12 @@ namespace GMlib{
     virtual void                rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     virtual void                rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
     virtual void                rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void                scale(const Point<float,3>& scale_factor);
     virtual void                selectEvent(int selector_id);
     virtual void                setCollapsed(bool c);
+    void                        setColor( const Color& c );
+    void                        setLighted( bool lighted );
+    void                        setMaterial(const Material& m);
     void                        setMatrix( const HqMatrix<float,3>& mat );
     void                        setParent(SceneObject* obj);
     void                        setSelected(bool s);
@@ -170,8 +180,8 @@ namespace GMlib{
     virtual bool                toggleVisible();
     virtual void                translate(const Vector<float,3>& trans_vector);
     virtual void                translateGlobal(const Vector<float,3>& trans_vector);
-    virtual void                scale(const Point<float,3>& scale_factor);
-    virtual void                setMaterial(const Material& m);
+
+
 
 
   protected:
@@ -194,6 +204,9 @@ namespace GMlib{
     bool					              _visible;	//! culling on invisible items
     bool					              _collapsed;	//! represented by a small cube
     unsigned int                _collapsed_dlist;
+    Material                    _material;
+    GLColor                     _color;
+    bool                        _lighted;
 
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                displayCollapsed();
@@ -224,6 +237,7 @@ namespace GMlib{
     int		                      _prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
     virtual void                _prepareDisplay(const HqMatrix<float,3>& m);
     void	                      _select(int what = -1);
+
 
 
   // *****************************

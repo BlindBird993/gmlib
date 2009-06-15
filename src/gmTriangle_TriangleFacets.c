@@ -44,7 +44,6 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
     //setStreamMode();
     _dlist_name=0;
-    _material = GMlib::GMmaterial::Brass;
   }
 
 
@@ -55,7 +54,6 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
     (*this) = v;
     //setStreamMode();
     _dlist_name = 0;
-    _material = GMlib::GMmaterial::Brass;
   }
 
 
@@ -838,9 +836,21 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
   inline
   void TriangleFacets<T>::localDisplay() {
 
-    _material.glSet();
+    glPushAttrib( GL_LIGHTING_BIT );
+
+    if( this->isLighted() )
+    {
+      this->_material.glSet();
+    }
+    else
+    {
+      glDisable( GL_LIGHTING );
+      this->_color.glSet();
+    }
+
     render();
-    _material.glUnSet();
+
+    glPopAttrib();
   }
 
 

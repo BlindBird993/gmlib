@@ -47,10 +47,12 @@ namespace GMlib {
     Sphere<float,3> s(pos,r);
 
     setSurroundingSphere(s);
+
+    _init();
   }
 
 
-  StlObject::StlObject( DSurf<float> *obj, int m1, int m2 ) {
+  StlObject::StlObject( DSurf<float> *obj, int m1, int m2, GM_STL_VISUALIZATION gsv ) {
 
     // Resample DSurf
     DMatrix< DMatrix< Vector<float, 3> > > p;
@@ -91,7 +93,8 @@ namespace GMlib {
       }
     }
 
-    replot();
+    _init();
+    replot( gsv );
   }
 
 
@@ -104,6 +107,7 @@ namespace GMlib {
 
     _readStlBinary( filename );
 
+    _init();
     replot();
   }
 
@@ -115,7 +119,7 @@ namespace GMlib {
     _color = color;
 
     load( stream, binary );
-
+    _init();
     replot();
   }
 
@@ -169,7 +173,14 @@ namespace GMlib {
     return( number );
   }
 
-  void StlObject::_makeList() {
+
+  void StlObject::_init() {
+
+    _point_size = 5.0;
+  }
+
+
+  void StlObject::_makeList( GLenum e ) {
 
 
 
@@ -183,9 +194,14 @@ namespace GMlib {
     // make display lists
     _dlist = glGenLists( 2 );
 
+    glPushAttrib( GL_POINT_BIT );
 
     glNewList( _dlist, GL_COMPILE ); {
-      glBegin( GL_TRIANGLES ); {
+
+      if( e == GL_POINTS )
+        glPointSize( _point_size );
+
+      glBegin( e ); {
 
         for( int i = 0; i < _normals.getSize(); i++) {
           glNormal( _normals[i] );                // STL file only carries one normal
@@ -205,6 +221,8 @@ namespace GMlib {
         }
       } glEnd();
     } glEndList();
+
+    glPopAttrib();
   }
 
 
@@ -264,6 +282,23 @@ namespace GMlib {
     Sphere<float,3> s( pos, _bbox.getPointDelta().getLength() * 0.5 );
 
     setSurroundingSphere( s );
+  }
+
+
+  float StlObject::getPointSize() {
+
+    return _point_size;
+  }
+
+
+  void StlObject::replot( GM_STL_VISUALIZATION gsv ) {
+
+    if( gsv == GM_STL_POINT )
+      _makeList( GL_POINTS );
+    else
+      _makeList( GL_TRIANGLES );
+
+    _updateBounding();
   }
 
 
@@ -369,10 +404,10 @@ namespace GMlib {
   }
 
 
-  void StlObject::replot() {
+  void StlObject::setPointSize( float s ) {
 
-    _makeList();
-
-    _updateBounding();
+    _point_size = s;
   }
+
+
 }
