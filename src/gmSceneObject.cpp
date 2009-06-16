@@ -128,7 +128,7 @@ namespace GMlib {
 
         _children[i]->setParent(0);
         remove( _children[i] );
-      //delete _object[i]; ?
+        delete _children[i];
       }
     }
 

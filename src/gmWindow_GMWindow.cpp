@@ -123,6 +123,8 @@ namespace GMlib {
         removeLight( light );
       else
         remove( rmobjs[i] );
+
+      delete rmobjs[i];
     }
   }
 

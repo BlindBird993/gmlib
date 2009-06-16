@@ -4,11 +4,23 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+2009-06-16 Jostein Bratlie
+
+        * Fixed a couple potential memory leeks from the GMlib scene.
+        * gmScene
+          - in Scene destructor one object was left in the SceneObject Array.
+        * gmSceneObject
+          - SceneObject now deletes it's children on destruction.
+        * gmWindow
+          GMWindow now deletes objects on clearScene(...)
+
+
 2009-06-15 T.Sang Tran
 
         * gmDParametric, gmSceneObject, gmTriangle
           - Moved material and color properties to SceneObject
-
         * gmStlObject
           - Added more functions
             int getNoNormals()
@@ -18,7 +30,6 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
             float getPointSize() const
             void setPointSize()
           - Added the possibility to visualize the STL object using either GL_TRIANGLES or GL_POINTS
-
 
 
 2009-06-14 Jostein Bratlie

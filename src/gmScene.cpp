@@ -90,8 +90,8 @@ namespace GMlib {
    */
   Scene::~Scene() {
 
-    for(int i=1; i<_scene.getSize(); i++)
-      if( _scene[i] != NULL )
+    for( int i=0; i < _scene.getSize(); i++ )
+      if( _scene[i] != 0x0 )
         delete _scene[i];
   }
 
