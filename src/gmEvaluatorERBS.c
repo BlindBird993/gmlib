@@ -200,6 +200,22 @@ namespace GMlib {
 
   template <typename T>
   inline
+  T EvaluatorERBS<T>::getAlpha() const {
+
+    return _alpha;
+  }
+
+
+  template <typename T>
+  inline
+  T EvaluatorERBS<T>::getBeta() const {
+
+    return _beta;
+  }
+
+
+  template <typename T>
+  inline
   T EvaluatorERBS<T>::getDer( int i ) const {
 
 		switch(i) {
@@ -259,9 +275,57 @@ namespace GMlib {
 
   template <typename T>
   inline
+  T EvaluatorERBS<T>::getDt() const {
+
+    return _dt;
+  }
+
+
+  template <typename T>
+  inline
+  T EvaluatorERBS<T>::getGamma() const {
+
+    return _gamma;
+  }
+
+
+  template <typename T>
+  inline
+  T EvaluatorERBS<T>::getLambda() const {
+
+    return _lambda;
+  }
+
+
+  template <typename T>
+  inline
+  int EvaluatorERBS<T>::getResolution() const {
+
+    return _m;
+  }
+
+
+  template <typename T>
+  inline
   T EvaluatorERBS<T>::getScale() const {
 
     return _scale;
+  }
+
+
+  template <typename T>
+  inline
+  T EvaluatorERBS<T>::getScale1() const {
+
+    return _scale1;
+  }
+
+
+  template <typename T>
+  inline
+  T EvaluatorERBS<T>::getScale2() const {
+
+    return _scale2;
   }
 
 

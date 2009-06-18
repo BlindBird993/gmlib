@@ -6,6 +6,20 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2009-06-18 Jostein Bratlie
+
+        * gmEvaluatorERBS
+          - Added retrieval functions to extract properties from the evaluator.
+            getAlpha()
+            getBeta()
+            getGamma()
+            getLambda()
+            getDt()
+            getResolution()
+            getScale1()
+            getScale2()
+
+
 2009-06-16 Jostein Bratlie
 
         * Fixed a couple potential memory leeks from the GMlib scene.

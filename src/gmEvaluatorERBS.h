@@ -47,12 +47,20 @@ namespace GMlib {
     EvaluatorERBS( const EvaluatorERBS<T>& eval );
     virtual ~EvaluatorERBS();
 
+    T             getAlpha() const;
+    T             getBeta() const;
     T             getDer( int i ) const;
     T             getDer1() const;
     T             getDer1( T t );
     T             getDer2() const;
     T             getDer2( T t );
+    T             getDt() const;
+    T             getGamma() const;
+    T             getLambda() const;
+    int           getResolution() const;
     T             getScale() const;
+    T             getScale1() const;
+    T             getScale2() const;
 
 
     void          set( T t = 0, T dt = 1 );
