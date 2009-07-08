@@ -204,6 +204,18 @@ namespace GMlib {
   }
 
 
+  void Scene::removeSelection( SceneObject* obj ) {
+
+    if( obj ) {
+
+      if( _active_obj == obj )
+        _active_obj = 0x0;
+
+      _sel_objs.remove( obj );
+    }
+  }
+
+
   /*! SceneObject* Scene::operator[]( int i )
    *  \brief Pending Documentation
    *

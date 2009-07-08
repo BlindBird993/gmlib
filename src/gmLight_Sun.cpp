@@ -60,14 +60,14 @@ namespace GMlib {
   Sun::~Sun() {}
 
 
-  /*! void Sun::setDayLight( const GLColor& amb )
+  /*! void Sun::setDayLight( const Color& amb )
    *	\brief Pending Documentation
    *
    *	Pending Documentation
    */
-  void Sun::setDayLight( const GLColor& amb ) {
+  void Sun::setDayLight( const Color& amb ) {
 
-    _global_ambient = amb;
+    _global_ambient = GLColor(amb);
     _setDayLight(1);
   }
 

@@ -58,12 +58,12 @@ namespace GMlib {
   }
 
 
-  /*! Light::Light(const GLColor& amb , const GLColor& dif, const GLColor& spe)
+  /*! Light::Light(const Color& amb , const Color& dif, const Color& spe)
    * \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  Light::Light(const GLColor& amb , const GLColor& dif, const GLColor& spe) {
+  Light::Light(const Color& amb , const Color& dif, const Color& spe) {
 
     if(_free_light.getSize()>0)
     {

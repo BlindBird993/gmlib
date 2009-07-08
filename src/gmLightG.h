@@ -50,9 +50,10 @@ namespace GMlib{
   public:
     PointLightG();
 		PointLightG(	const Point<float,3>& pos);
-		PointLightG(	const GLColor& amb,
-			const GLColor& dif,
-			const GLColor& spe,
+		PointLightG(
+      const Color& amb,
+			const Color& dif,
+			const Color& spe,
 			const Point<float,3>& pos
 		);
 		PointLightG( const PointLight& copy );
@@ -85,9 +86,9 @@ namespace GMlib{
 			Angle cut_off
     );
 		SpotLightG(
-			const GLColor& amb,
-			const GLColor& dif,
-			const GLColor& spe,
+			const Color& amb,
+			const Color& dif,
+			const Color& spe,
 			const Point<float,3>& pos,
 			const Vector<float,3>& dir,
 			Angle cut_off = 90
@@ -97,6 +98,8 @@ namespace GMlib{
 		SpotLightG( const SpotLightG& copy );
 
 		std::string     getIdentity() const;
+
+		void            setCutOff(const Angle& cut_off);
 
   protected:
     void            localDisplay();

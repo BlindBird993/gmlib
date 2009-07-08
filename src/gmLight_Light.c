@@ -108,14 +108,14 @@ namespace GMlib {
    */
   inline
   void Light::setColor(
-    const GLColor& ambient,
-    const GLColor& diffuse,
-    const GLColor& specular
+    const Color& ambient,
+    const Color& diffuse,
+    const Color& specular
   ) {
 
-    _ambient		= ambient;
-    _diffuse		= diffuse;
-    _specular		= specular;
+    _ambient		= GLColor( ambient );
+    _diffuse		= GLColor( diffuse );
+    _specular		= GLColor( specular );
 
     setIntensity(1.0);
   }

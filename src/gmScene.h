@@ -91,6 +91,7 @@ namespace GMlib{
     bool                  isRunning();
     void                  prepare();
     void                  remove(SceneObject* obj);
+    void                  removeSelection( SceneObject* obj );
     void                  resetTime();
 
     void                  setTimeScale(double s);

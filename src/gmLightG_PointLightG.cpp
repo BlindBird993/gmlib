@@ -49,9 +49,10 @@ namespace GMlib {
   }
 
 
-	PointLightG::PointLightG(	const GLColor& amb,
-    const GLColor& dif,
-    const GLColor& spe,
+	PointLightG::PointLightG(
+    const Color& amb,
+    const Color& dif,
+    const Color& spe,
     const Point<float,3>& pos
   ) : PointLight( amb, dif, spe, pos ) {
 

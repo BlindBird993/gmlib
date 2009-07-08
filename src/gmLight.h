@@ -54,51 +54,51 @@ namespace GMlib{
   class Light {
   public:
     Light();
-    Light( const GLColor& amb , const GLColor& dif, const GLColor& spe );
+    Light( const Color& amb , const Color& dif, const Color& spe );
     Light( const Light& );
     virtual ~Light();
 
-    virtual void            culling( const Frustum& );
-    void                    disable();
-    void                    enable();
-    bool                    isCullable();
-    bool                    isEnabled();
-    virtual void            lighting();
-    void                    setColor(
-                              const GLColor& ambient = GLColor( 0.2f, 0.2f, 0.2f ),
-                              const GLColor& diffuse = GLColor( 1.0f, 1.0f, 1.0f ),
-                              const GLColor& specular= GLColor( 1.0f, 1.0f, 1.0f )
-                            );
+    virtual void                  culling( const Frustum& );
+    void                          disable();
+    void                          enable();
+    bool                          isCullable();
+    bool                          isEnabled();
+    virtual void                  lighting();
+    void                          setColor(
+                                    const Color& ambient = Color( 0.2f, 0.2f, 0.2f ),
+                                    const Color& diffuse = Color( 1.0f, 1.0f, 1.0f ),
+                                    const Color& specular= Color( 1.0f, 1.0f, 1.0f )
+                                  );
 
-    void                    setCullable( bool cullable );
-    void                    setIntensity(double d,int i=0);
+    void                          setCullable( bool cullable );
+    void                          setIntensity(double d,int i=0);
 
+
+    const GLColor&                getAmbient();
+    const GLColor&                getDiffuse();
+    unsigned int                  getLightName();
+    const GLColor&                getSpecular();
 
   protected:
-    const GLColor&          getAmbient();
-    const GLColor&          getDiffuse();
-    unsigned int	                getLightName();
-    const GLColor&          getSpecular();
+    void                          glLight( GLenum pn, const GLColor& co);
+    void                          glLight( GLenum pn, float f );
+    void                          glLight( GLenum pn, int f );
+    void                          glLightDir( const Vector<float,3>& dir );
+    void                          glLightPos( const Point<float,3>& pos );
+    void                          glLightSun( const Vector<float,3>& pos );
 
-    void                    glLight( GLenum pn, const GLColor& co);
-    void                    glLight( GLenum pn, float f );
-    void                    glLight( GLenum pn, int f );
-    void                    glLightDir( const Vector<float,3>& dir );
-    void                    glLightPos( const Point<float,3>& pos );
-    void                    glLightSun( const Vector<float,3>& pos );
-
-    static float		      _min_light_contribution; // 1/100
+    static float                  _min_light_contribution; // 1/100
 
 
   private:
     static unsigned int		        _next_light;
     static Array<unsigned int>    _free_light;
-    GLenum				          _light_name;
+    GLenum				                _light_name;
 
-    GLColor			            _ambient;
-    GLColor			            _diffuse;
-    GLColor			            _specular;
-    bool				            _cullable;
+    GLColor			                  _ambient;
+    GLColor			                  _diffuse;
+    GLColor			                  _specular;
+    bool				                  _cullable;
 
 
   };	// END class Light
@@ -118,9 +118,10 @@ namespace GMlib{
 	public:
 		PointLight();
 		PointLight(	const Point<float,3>& pos);
-		PointLight(	const GLColor& amb,
-			const GLColor& dif,
-			const GLColor& spe,
+		PointLight(
+      const Color& amb,
+			const Color& dif,
+			const Color& spe,
 			const Point<float,3>& pos
 		);
 		PointLight(	const PointLight& pl);
@@ -164,17 +165,20 @@ namespace GMlib{
 			const Vector<float,3>& dir,
 			Angle cut_off );
 		SpotLight(
-			const GLColor& amb,
-			const GLColor& dif,
-			const GLColor& spe,
+			const Color& amb,
+			const Color& dif,
+			const Color& spe,
 			const Point<float,3>& pos,
 			const Vector<float,3>& dir,
 			Angle cut_off = 90);
 		SpotLight( const SpotLight& pl);
 		virtual ~SpotLight();
 
+    const Angle&            getCutOff() const;
+    double                  getExponent() const;
 		std::string             getIdentity() const;
-		void                    setCuttoff(const Angle cut_off);
+
+		virtual void            setCutOff( const Angle& cut_off);
 		void                    setExponent(double exp);
 
 
@@ -206,7 +210,7 @@ namespace GMlib{
 
 		std::string             getIdentity() const;
 		void                    scaleDayLight( double d );
-		void                    setDayLight( const GLColor& amb = GLColor( 0.1f, 0.1f, 0.1f ) );
+		void                    setDayLight( const Color& amb = Color( 0.1f, 0.1f, 0.1f ) );
 
 
 	protected:

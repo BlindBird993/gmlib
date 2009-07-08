@@ -53,9 +53,9 @@ namespace GMlib {
 
 
   SpotLightG::SpotLightG(
-    const GLColor& amb,
-    const GLColor& dif,
-    const GLColor& spe,
+    const Color& amb,
+    const Color& dif,
+    const Color& spe,
     const Point<float,3>& pos,
     const Vector<float,3>& dir,
     Angle cut_off
@@ -129,6 +129,9 @@ namespace GMlib {
 
 
 
+    if( _dlist )
+      glDeleteLists( _dlist, 2 );
+
     _dlist = glGenLists( 2 );
 
     glNewList(_dlist, GL_COMPILE); // The Light Box
@@ -152,6 +155,14 @@ namespace GMlib {
   std::string SpotLightG::getIdentity() const {
 
     return "SpotLightG";
+  }
+
+
+
+  void SpotLightG::setCutOff(const Angle& cut_off) {
+
+    SpotLight::setCutOff( cut_off );
+    _makeDisplayList();
   }
 
 

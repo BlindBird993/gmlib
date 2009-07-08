@@ -6,6 +6,24 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2009-07-08 Jostein Bratlie
+
+        * gmScene
+          - Added a public function which removes an object from the internal selection array,
+            and if object is flagged as active in the scene it is deflagged
+            void removeSelection( SceneObject* )
+        * gmLight/gmLightG
+          - Constructors and set functions now take a Color object instead of a GLColor object.
+          - Light
+            - The get functions: getAmbient, getDiffuse, getSpecular and getLightName is now public instead of protected.
+          - SpotLight
+            - Added get functions to retrieve cut off and exponent factors.
+            - Renamed setCuttoff function to setCutOff; misspelling.
+              Also made it virtual
+          - SpotLightG
+            - Reimplemented the setCutOff function from the parent SpotLight class, so the visual representation can be regenerated.
+
+
 2009-06-18 Jostein Bratlie
 
         * gmEvaluatorERBS
