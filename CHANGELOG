@@ -6,6 +6,17 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2009-07-29 Jostein Bratlie
+
+        * gmScene
+          - Added two functions to retrieve the object marked as active and the objects marked as selected in a scene.
+            SceneObject*          getActiveObject()
+            Array<SceneObject*>&  getSelectedObjects()
+        * gmDPSteinerSurf
+          - Corrected open/closed definition in parametric U direction. It is now defined as open.
+
+
+
 2009-07-08 Jostein Bratlie
 
         * gmScene

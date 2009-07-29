@@ -80,8 +80,10 @@ namespace GMlib{
     virtual ~Scene();
 
     SceneObject*          find(unsigned int name);
+    SceneObject*          getActiveObject();
     double                getElapsedTime();
     Array<Light*>&        getLights();
+    Array<SceneObject*>&  getSelectedObjects();
     int                   getSize();
     int                   getSizeTotal();
     Sphere<float,3>	      getSphere();

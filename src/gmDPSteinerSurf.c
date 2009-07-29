@@ -206,7 +206,7 @@ namespace GMlib {
   inline
   bool DPSteinerSurf<T>::isClosedU() const {
 
-    return true;
+    return false;
   }
 
 

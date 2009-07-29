@@ -34,6 +34,12 @@
 namespace GMlib {
 
 
+  inline
+  SceneObject* Scene::getActiveObject() {
+
+    return _active_obj;
+  }
+
 
   /*! double Scene::getElapsedTime()
    *  \brief Pending Documentation
@@ -59,6 +65,13 @@ namespace GMlib {
   Array<Light*>& Scene::getLights() {
 
     return _lights;
+  }
+
+
+  inline
+  Array<SceneObject*>& Scene::getSelectedObjects() {
+
+    return _sel_objs;
   }
 
 
