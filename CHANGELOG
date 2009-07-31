@@ -6,6 +6,15 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2009-07-31 Jostein Bratlie
+
+        * gmTexture
+          - Fixed an error where on copy the texture deletes the wrong texture.
+        * gmDSurf/gmVDefault
+          - Fixed an error where a texture applied to a surface gets applied to all successing surfaces of the given rendering session,
+            and messes up selection.
+
+
 2009-07-29 Jostein Bratlie
 
         * gmScene
@@ -14,7 +23,6 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
             Array<SceneObject*>&  getSelectedObjects()
         * gmDPSteinerSurf
           - Corrected open/closed definition in parametric U direction. It is now defined as open.
-
 
 
 2009-07-08 Jostein Bratlie

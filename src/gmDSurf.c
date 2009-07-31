@@ -322,19 +322,14 @@ namespace GMlib {
           }
         }
       }
-
     }
     else {
 
       this->_dlist = glGenLists(2);
 
-
       // Create display list for Display
       // Display list no. 0 main list
       glNewList( this->_dlist, GL_COMPILE ); {
-
-        if( this->_material.getTextureID() )
-          this->_material.glSet();
 
         for( int i = 0; i < p.getDim1() - 1; i++ ) {
 
@@ -367,7 +362,6 @@ namespace GMlib {
           glBegin(GL_TRIANGLE_STRIP); {
 
             for( int j = 0; j < p.getDim2(); j++ ) {
-
 
               glPoint( Point3D<float>( ( p[i][j][0][0] ).toFloat() ) );
               glPoint( Point3D<float>( ( p[i+1][j][0][0] ).toFloat() ) );

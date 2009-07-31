@@ -47,7 +47,7 @@ namespace GMlib {
   void VDefault<T,n>::display() {
 
     // Push GL Attributes
-    glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT ); {
+    glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT | GL_TEXTURE_BIT ); {
 
 
       // Handle lighting and set Color/Material accordingly
@@ -147,7 +147,24 @@ namespace GMlib {
       }
       else {
 
-        glCallList( this->_ref->getDisplayListIdx() );
+        switch( n ) {
+          case 1: {
+
+            glCallList( this->_ref->getDisplayListIdx() );
+          }
+          break;
+
+          case 2: {
+
+            // Get Material Data
+            const Material &m = this->_ref->getMaterial();
+            if( m.getTextureID() )
+              m.glSet();
+
+            glCallList( this->_ref->getDisplayListIdx() );
+          }
+          break;
+        }
       }
 
     // Pop GL Attributes

@@ -108,6 +108,9 @@ namespace GMlib {
 
   bool Texture::genTexture() {
 
+    cout << "Generating Texture" << endl;
+    cout << " Texture ID(pre gen):         " << _texture_id << endl;
+
     // Check if Data != 0
     if( _data == 0 )
       return false;
@@ -123,6 +126,8 @@ namespace GMlib {
 
     glGenTextures( 1, &_texture_id );
 
+
+    cout << " Texture ID(post gen):        " << _texture_id << endl;
 
     // Bind Texture ID
     glBindTexture( _texture_dimension, _texture_id );
@@ -173,6 +178,15 @@ namespace GMlib {
 
     // Add Texture ID to Texture ID Map
     _texture_id_map[_texture_id] = 1;
+
+
+    cout << "Texture map" << endl;
+    std::map<unsigned int, int>::iterator itr;
+    for( itr = _texture_id_map.begin(); itr != _texture_id_map.end(); itr++ ) {
+
+      cout << " " << (*itr).first << " -> " << (*itr).second << endl;
+    }
+
 
     // Return Success
     return true;
@@ -267,12 +281,12 @@ namespace GMlib {
       _texture_id_map[ _texture_id ]++;
 
     // Clean up old tex id
-    if( old_texture_id ) {
+    if( old_texture_id && (old_texture_id != _texture_id ) ) {
 
-      _texture_id_map[_texture_id]--;
+      _texture_id_map[old_texture_id]--;
 
-      if( _texture_id_map[_texture_id] < 1 )
-        glDeleteTextures( 1, &_texture_id );
+      if( _texture_id_map[old_texture_id] < 1 )
+        glDeleteTextures( 1, &old_texture_id );
     }
 
     return *this;
