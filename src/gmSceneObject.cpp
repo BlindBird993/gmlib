@@ -211,7 +211,7 @@ namespace GMlib {
     Vector<float,3> u = lu ^ ra;
     Vector<float,3> v = ra ^ u;
 
-    _matrix.rotateGlobal(a, u, v);
+    _matrix.rotate(a, u, v);
   }
 
 
@@ -227,7 +227,7 @@ namespace GMlib {
     Vector3D<float> lu = ra.getLinIndVec();
     Vector<float,3> u = lu ^ ra;
     Vector<float,3> v = ra ^ u;
-    _matrix.rotateGlobal(a, u, v, p);
+    _matrix.rotate(a, u, v, p);
   }
 
 

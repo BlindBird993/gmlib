@@ -78,8 +78,8 @@ unix {
 # Debug / Release
 QMAKE_CXXFLAGS_DEBUG =
 QMAKE_CXXFLAGS_RELEASE =
-#QMAKE_CXXFLAGS = -g -pg -frtti
-QMAKE_CXXFLAGS = -frtti
+QMAKE_CXXFLAGS = -g -pg -frtti
+#QMAKE_CXXFLAGS = -frtti
 
 # Linker
 QMAKE_LFLAGS = ${QMAKE_CXXFLAGS}
@@ -238,6 +238,7 @@ HEADERS += \
   src/gmVContours.h \
   src/gmVDefault.h \
   src/gmVDerivatives.h \
+  src/gmVDynamicTexture.h \
   src/gmVGLContoursPhongShader.h \
   src/gmVGLPhongShader.h \
   src/gmVGLShader.h \

@@ -81,6 +81,8 @@ namespace GMlib {
     virtual void          select();
     void                  set( DParametrics<T,n>* obj );
 
+    virtual void          simulate( double dt );
+
     virtual bool          operator == ( const Visualizer* v ) const;
 
 

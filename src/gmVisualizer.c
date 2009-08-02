@@ -118,6 +118,11 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  void Visualizer<T,n>::simulate( double /*dt*/ ) {}
+
+
+  template <typename T, int n>
+  inline
   bool Visualizer<T,n>::operator == ( const Visualizer* v ) const {
 
     if( this == v )

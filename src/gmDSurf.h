@@ -76,6 +76,7 @@ namespace GMlib {
 
     void                      localDisplay();
     void                      localSelect();
+    void                      localSimulate( double dt );
 
 
   private:

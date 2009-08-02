@@ -11,6 +11,8 @@
 			<CompileFile command="cd ../../.. &amp;&amp; $make -f $makefile $file" />
 			<Clean command="cd ../../.. &amp;&amp; $make -f $makefile maintainer-clean" />
 			<DistClean command="cd ../../.. &amp;&amp; $make -f $makefile maintainer-clean" />
+			<AskRebuildNeeded command="$make -q -f $makefile $target" />
+			<SilentBuild command="$make -s -f $makefile $target" />
 		</MakeCommands>
 		<Build>
 			<Target title="lib">
@@ -29,6 +31,8 @@
 					<CompileFile command="cd ../../.. &amp;&amp; $make -f $makefile $file" />
 					<Clean command="cd ../../.. &amp;&amp; $make -f $makefile maintainer-clean" />
 					<DistClean command="cd ../../.. &amp;&amp; $make -f $makefile maintainer-clean" />
+					<AskRebuildNeeded command="$make -q -f $makefile $target" />
+					<SilentBuild command="$make -s -f $makefile $target" />
 				</MakeCommands>
 			</Target>
 		</Build>
@@ -611,6 +615,16 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmVDerivatives.h" />
+		<Unit filename="../../../src/gmVDynamicTexture" />
+		<Unit filename="../../../src/gmVDynamicTexture.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmVDynamicTexture.h" />
+		<Unit filename="../../../src/gmVDynamicTextureAnimation" />
+		<Unit filename="../../../src/gmVDynamicTextureAnimation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmVDynamicTextureAnimation.h" />
 		<Unit filename="../../../src/gmVGLContoursPhongShader" />
 		<Unit filename="../../../src/gmVGLContoursPhongShader.c">
 			<Option compilerVar="CPP" />

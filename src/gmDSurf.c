@@ -242,6 +242,15 @@ namespace GMlib {
 
   template <typename T>
   inline
+  void DSurf<T>::localSimulate( double dt ) {
+
+    for( int i = 0; i < this->_visualizers.getSize(); i++ )
+      this->_visualizers[i]->simulate( dt );
+  }
+
+
+  template <typename T>
+  inline
   void DSurf<T>::replot( int m1, int m2, int d1, int d2, bool dynamic ) {
 
     // Check wheather or not PSurf is valid

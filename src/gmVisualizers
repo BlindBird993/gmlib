@@ -35,12 +35,14 @@
 #include "gmVisualizer"
 
 // Visualizers
-#include "gmVContours"              // Displays Contours
-#include "gmVDefault"               // Default Visualizer
-#include "gmVDerivatives"           // Displays Derivatives
-#include "gmVGLShader"              // GLSL Shader Visualizer
-#include "gmVGLContoursPhongShader" // Contours with Phong Shader Visualizer
-#include "gmVGLPhongShader"         // Phong Shader Visualizer
-#include "gmVNormals"               // Displays Normals
-#include "gmVPoints"                // Visualizes the Object as a "cloud" of Points
-#include "gmVSurroundingSphere"     // Displays The Surrounding Sphere of an object
+#include "gmVContours"                      // Displays Contours
+#include "gmVDefault"                       // Default Visualizer
+#include "gmVDerivatives"                   // Displays Derivatives
+#include "gmVDynamicTexture"                // Visualize textures dynamically.
+#include "gmVDynamicTextureAnimation"       // Visualize textures animated dynamically.
+#include "gmVGLShader"                      // GLSL Shader Visualizer
+#include "gmVGLContoursPhongShader"         // Contours with Phong Shader Visualizer
+#include "gmVGLPhongShader"                 // Phong Shader Visualizer
+#include "gmVNormals"                       // Displays Normals
+#include "gmVPoints"                        // Visualizes the Object as a "cloud" of Points
+#include "gmVSurroundingSphere"             // Displays The Surrounding Sphere of an object

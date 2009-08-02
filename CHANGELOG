@@ -9,10 +9,18 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 2009-07-31 Jostein Bratlie
 
         * gmTexture
-          - Fixed an error where on copy the texture deletes the wrong texture.
+          - Fixed an error where on copy the texture object deletes the wrong texture.
         * gmDSurf/gmVDefault
           - Fixed an error where a texture applied to a surface gets applied to all successing surfaces of the given rendering session,
             and messes up selection.
+          - Additionaly the texture coordinates is no longer buildt into the display list. But is Applied as needed on display.
+        * gmVisualizers/gmVDynamicTexture/gmVDynamicTextureAnimaion/gmDSurf
+          - Added simulation support for Visualizers.
+          - Added two new Visualizers:
+            - gmVDynamicTexture: Visualizers an objects texture dynamically according to local changes to the texture matrix.
+            - gmVDynamicTextureAnimation: Simulates animated effects by extending the gmVDynamicTexture visualizer.
+        * gmSceneObject
+          - Fixed the local rotate functions. void rotate(...).
 
 
 2009-07-29 Jostein Bratlie
