@@ -31,7 +31,8 @@
 #ifndef __gmSIMPLEX_H__
 #define __gmSIMPLEX_H__
 
-#include "GMSubSpace.h"
+#include "gmPoint.h"
+#include "gmSubSpace.h"
 
 namespace GMlib {
 
@@ -63,20 +64,22 @@ namespace GMlib {
   public:
 
     // Constructor
-    Simplex(const Point<T,n>& p = Point<T,n>(T(0)));
-    Simplex(const Point<T,n>& p1, const Point<T,n>& p2);
-    Simplex(const Arrow<T,n>& a);
-    Simplex(const Point<T,n>& p1, const Point<T,n>& p2, const Point<T,n>& p3);
-    Simplex(const SubSpace<T,n,m-1>& s);
+    Simplex();
+    Simplex( const Point<T,n>& p);
+    Simplex( const Point<T,n>& p1, const Point<T,n>& p2);
+    Simplex( const Arrow<T,n>& a);
+    Simplex( const Point<T,n>& p1, const Point<T,n>& p2, const Point<T,n>& p3);
+    Simplex( const SubSpace<T,n,m-1>& s);
 
     // Copy constructor
-	Simplex(const Vector<Point<T,n>,m>& s);// :  Vector<Point<T,n>,m>(s)
+    Simplex( const Vector< Point<T ,n>, m>& copy );
 
-    Point<T,n>	closestPoint(const Point<T,n>& p) const;
-    Vector<T,n> distanceVector(const Point<T,n>& p) const;
-    T distanceTo(const Point<T,n>& p) const;
-    T distanceAlong(const Point<T,n>& p, int i=0) const;
-    Vector<Simplex<T,n,m-1>,m+2> sub();
+
+    Point<T,n>	                      closestPoint(const Point<T,n>& p) const;
+    Vector<T,n>                       distanceVector(const Point<T,n>& p) const;
+    T                                 distanceTo(const Point<T,n>& p) const;
+    T                                 distanceAlong(const Point<T,n>& p, int i=0) const;
+    Vector<Simplex<T,n,m-1>,m+2>      sub();
 
   }; // END class Simplex
 
@@ -119,11 +122,11 @@ namespace GMlib {
   {
   public:
     LineSegment();
-    LineSegment(const Point<T,n>& p);
-    LineSegment(const Point<T,n>& p1 ,const Point<T,n>& p2);
-    LineSegment(const Arrow<T,n>& a);
-    LineSegment(const SubSpace<T,n,1>& s);
-    LineSegment(const Vector<Point<T,n>,1>& s);
+    LineSegment( const Point<T,n>& p );
+    LineSegment( const Point<T,n>& p1 ,const Point<T,n>& p2 );
+    LineSegment( const Arrow<T,n>& a );
+    LineSegment( const SubSpace<T,n,1>& s );
+    LineSegment( const Vector<Point<T,n>,1>& s );
 
   }; // END class LineSegment
 
@@ -148,11 +151,11 @@ namespace GMlib {
   {
   public:
     Triangle();
-    Triangle(const Point<T,n>& p);
-    Triangle(const Point<T,n>& p ,const Vector<T,n>& v);
-    Triangle(const Arrow<T,n>& a);
-    Triangle(const SubSpace<T,n,2>& s);
-    Triangle(const Vector<Point<T,n>,3>& s);
+    Triangle( const Point<T,n>& p );
+    Triangle( const Point<T,n>& p ,const Vector<T,n>& v );
+    Triangle( const Arrow<T,n>& a );
+    Triangle( const SubSpace<T,n,2>& s );
+    Triangle( const Vector<Point<T,n>,3>& s );
 
   }; // END class Triangle
 
@@ -178,11 +181,11 @@ namespace GMlib {
   class Tetrahedron : public Simplex<T,n,4> {
   public:
     Tetrahedron();
-    Tetrahedron(const Point<T,n>& p);
-    Tetrahedron(const Point<T,n>& p ,const Vector<T,n>& v);
-    Tetrahedron(const Arrow<T,n>& a);
-    Tetrahedron(const SubSpace<T,n,3>& s);
-    Tetrahedron(const Vector<Point<T,n>,4>& s);
+    Tetrahedron( const Point<T,n>& p );
+    Tetrahedron( const Point<T,n>& p ,const Vector<T,n>& v );
+    Tetrahedron( const Arrow<T,n>& a );
+    Tetrahedron( const SubSpace<T,n,3>& s );
+    Tetrahedron( const Vector<Point<T,n>,4>& s );
 
   }; // END class Tetrahedron
 

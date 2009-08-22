@@ -57,9 +57,9 @@ namespace GMlib {
    */
   class View {
 	public:
-		View(Camera* cam=0);
-		View(ViewBorder* border);
-		View(const View& view);
+		View( Camera* cam = 0x0 );
+		View( ViewBorder* border );
+		View( const View& view );
 
 	private:
 		friend class ViewSet;

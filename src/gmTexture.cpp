@@ -61,35 +61,8 @@ namespace GMlib {
 
 
   Texture::Texture( const Texture& texture ) {
-//
-//    // Keep old tex id
-//    unsigned int old_texture_id = _texture_id;
-//
-//    // Copy data
-//    _texture_id = texture._texture_id;
-//    _texture_dimension = texture._texture_dimension;
-//    _texture_gen_mode = texture._texture_gen_mode;
-//
-//    _data = texture._data;
-//    _width = texture._width;
-//    _height = texture._height;
-//    _depth = texture._depth;
-//
-//    // Iterate current tex id
-//    if( _texture_id )
-//      _texture_id_map[ _texture_id ]++;
-//
-//    // Clean up old tex id
-//    if( old_texture_id ) {
-//
-//      _texture_id_map[_texture_id]--;
-//
-//      if( _texture_id_map[_texture_id] < 1 )
-//        glDeleteTextures( 1, &_texture_id );
-//    }
-    operator = ( texture );
 
-//    cout << "texture copy[" << _texture_id << "]: " << _texture_id_map[ _texture_id ] << endl;
+    operator = ( texture );
   }
 
   Texture::~Texture() {
@@ -101,15 +74,10 @@ namespace GMlib {
       if( _texture_id_map[_texture_id] < 1 )
         glDeleteTextures( 1, &_texture_id );
     }
-
-//    cout << "texture delete[" << _texture_id << "]: " << _texture_id_map[ _texture_id ] << endl;
   }
 
 
   bool Texture::genTexture() {
-
-    cout << "Generating Texture" << endl;
-    cout << " Texture ID(pre gen):         " << _texture_id << endl;
 
     // Check if Data != 0
     if( _data == 0 )
@@ -126,8 +94,6 @@ namespace GMlib {
 
     glGenTextures( 1, &_texture_id );
 
-
-    cout << " Texture ID(post gen):        " << _texture_id << endl;
 
     // Bind Texture ID
     glBindTexture( _texture_dimension, _texture_id );
@@ -171,22 +137,11 @@ namespace GMlib {
         gluBuild2DMipmaps( _texture_dimension, 3, _width, _height, GL_RGBA, GL_UNSIGNED_BYTE, _data );
     }
 
-
     // "Release" Texture ID
     glBindTexture( _texture_dimension, 0 );
 
-
     // Add Texture ID to Texture ID Map
     _texture_id_map[_texture_id] = 1;
-
-
-    cout << "Texture map" << endl;
-    std::map<unsigned int, int>::iterator itr;
-    for( itr = _texture_id_map.begin(); itr != _texture_id_map.end(); itr++ ) {
-
-      cout << " " << (*itr).first << " -> " << (*itr).second << endl;
-    }
-
 
     // Return Success
     return true;

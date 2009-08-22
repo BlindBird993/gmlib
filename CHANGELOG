@@ -5,6 +5,10 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-08-21 Jostein Bratlie
+        * gmSimplex
+          - Split the default constructor as gcc 4.2 did not like the default initializer for the default contructor.
+
 
 2009-07-31 Jostein Bratlie
 
