@@ -605,6 +605,11 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmVContours.h" />
+		<Unit filename="../../../src/gmVCoordinateSystem" />
+		<Unit filename="../../../src/gmVCoordinateSystem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmVCoordinateSystem.h" />
 		<Unit filename="../../../src/gmVDefault" />
 		<Unit filename="../../../src/gmVDefault.c">
 			<Option compilerVar="CC" />

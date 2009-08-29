@@ -36,6 +36,7 @@
 
 // Visualizers
 #include "gmVContours"                      // Displays Contours
+#include "gmVCoordinateSystem"              // Displays The objects Coordinate System
 #include "gmVDefault"                       // Default Visualizer
 #include "gmVDerivatives"                   // Displays Derivatives
 #include "gmVDynamicTexture"                // Visualize textures dynamically.

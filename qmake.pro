@@ -236,6 +236,7 @@ HEADERS += \
 # gmVisualizers
 HEADERS += \
   src/gmVContours.h \
+  src/gmVCoordinateSystem.h \
   src/gmVDefault.h \
   src/gmVDerivatives.h \
   src/gmVDynamicTexture.h \
