@@ -161,6 +161,7 @@ HEADERS += \
   src/gmGLColor.h \
   src/gmLightG.h \
   src/gmMaterial.h \
+  src/gmPathTrack.h \
   src/gmSelector.h \
   src/gmSelectorGrid.h \
   src/gmSphere3D.h \
@@ -276,6 +277,7 @@ SOURCES += \
   src/gmMaterial_Material.cpp \
   src/gmMaterial_MaterialObjectList.cpp \
   src/gmOpenGL_GLMatrix.cpp \
+  src/gmPathTrack.cpp \
   src/gmScene.cpp \
   src/gmSceneObject.cpp \
   src/gmStlObject.cpp \

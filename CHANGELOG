@@ -4,6 +4,11 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2009-09-03 Jostein Bratlie
+        * gmPathTrack
+          - Another class reimplemented from the old source base, PathTrack.
+            It gives an object in motion a "tracking tail" which shows the objects path track.
+
 
 2009-08-28 Jostein Bratlie
         * gmVCoordinateSystem

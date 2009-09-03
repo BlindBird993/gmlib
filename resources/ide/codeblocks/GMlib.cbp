@@ -410,6 +410,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmParametrics.h" />
+		<Unit filename="../../../src/gmPathTrack" />
+		<Unit filename="../../../src/gmPathTrack.cpp" />
+		<Unit filename="../../../src/gmPathTrack.h" />
 		<Unit filename="../../../src/gmPoint" />
 		<Unit filename="../../../src/gmPoint.h" />
 		<Unit filename="../../../src/gmPoint2D" />
