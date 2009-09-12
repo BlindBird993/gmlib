@@ -177,6 +177,16 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmDPERBSSurf.h" />
+		<Unit filename="../../../src/gmDPLuaScriptCurve" />
+		<Unit filename="../../../src/gmDPLuaScriptCurve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmDPLuaScriptCurve.h" />
+		<Unit filename="../../../src/gmDPLuaScriptSurf" />
+		<Unit filename="../../../src/gmDPLuaScriptSurf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmDPLuaScriptSurf.h" />
 		<Unit filename="../../../src/gmDPPlane" />
 		<Unit filename="../../../src/gmDPPlane.c">
 			<Option compilerVar="CC" />
@@ -486,6 +496,11 @@
 		</Unit>
 		<Unit filename="../../../src/gmSceneObject.cpp" />
 		<Unit filename="../../../src/gmSceneObject.h" />
+		<Unit filename="../../../src/gmScript" />
+		<Unit filename="../../../src/gmScript.h" />
+		<Unit filename="../../../src/gmScript_LuaScript.cpp" />
+		<Unit filename="../../../src/gmScript_LuaVar.cpp" />
+		<Unit filename="../../../src/gmScript_Script.cpp" />
 		<Unit filename="../../../src/gmSelector" />
 		<Unit filename="../../../src/gmSelector.c">
 			<Option compilerVar="CC" />
@@ -686,6 +701,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmWindow_ViewSet.cpp" />
+		<Unit filename="../../../src/lua/pcircle_eval.lua" />
+		<Unit filename="../../../src/lua/psphere_eval.lua" />
 		<Extensions>
 			<code_completion />
 			<envvars />

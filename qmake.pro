@@ -25,7 +25,8 @@
 ################
 # GMlib Features
 
-DEFINES = GM_GL_EXTENSION
+#DEFINES = GM_GL_EXTENSION
+#DEFINES = GM_GL_EXTENSION GM_SCRIPT_LUA
 
 
 
@@ -61,12 +62,12 @@ unix {
 
   # Include Paths
   INCLUDEPATH += \
-    -I"/usr/include" \
-    -I"/usr/include/GL"
+    "/usr/include" \
+    "/usr/include/GL"
+#    "/usr/include/lua5.1"
 
   # Tells qmake to create a static library
   CONFIG += staticlib
-
 }
 
 
@@ -78,8 +79,8 @@ unix {
 # Debug / Release
 QMAKE_CXXFLAGS_DEBUG =
 QMAKE_CXXFLAGS_RELEASE =
-QMAKE_CXXFLAGS = -g -pg -frtti
-#QMAKE_CXXFLAGS = -frtti
+#QMAKE_CXXFLAGS = -g -pg -frtti
+QMAKE_CXXFLAGS = -frtti
 
 # Linker
 QMAKE_LFLAGS = ${QMAKE_CXXFLAGS}
@@ -216,6 +217,8 @@ HEADERS += \
   src/gmDPCylinder.h \
   src/gmDPERBSCurve.h \
   src/gmDPERBSSurf.h \
+  src/gmDPLuaScriptCurve.h \
+  src/gmDPLuaScriptSurf.h \
   src/gmDPPlane.h \
   src/gmDPRoseCurve.h \
   src/gmDPSphere.h \
@@ -229,6 +232,7 @@ HEADERS += \
   src/gmEvaluatorERBS.h \
   src/gmEvaluatorStatic.h \
   src/gmRandom.h \
+  src/gmScript.h \
   src/gmStream.h \
   src/gmString.h \
   src/gmTimer.h
@@ -257,6 +261,8 @@ HEADERS += \
 
 
 
+
+
 ##############
 # Source Files
 
@@ -280,10 +286,14 @@ SOURCES += \
   src/gmPathTrack.cpp \
   src/gmScene.cpp \
   src/gmSceneObject.cpp \
+  src/gmScript_LuaScript.cpp \
+  src/gmScript_LuaVar.cpp \
+  src/gmScript_Script.cpp \
   src/gmStlObject.cpp \
   src/gmStream_Separator.cpp \
   src/gmTexture.cpp \
   src/gmWindow_GMWindow.cpp \
   src/gmWindow_View.cpp \
   src/gmWindow_ViewSet.cpp
+
 

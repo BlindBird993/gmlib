@@ -4,6 +4,30 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+
+2009-09-12 Jostein Bratlie
+        * Made changes to the default settings in the GMlib qmake project file
+          - No extensions is compiled in by default.
+          - Compiles default for release, with the "frtti" flag enabled.
+        * Added Scripting support through the Script class in gmScript.
+          - Added a lua extension, so lua scripts can be utilized in GMlib, available through gmScript and the classes:
+            - LuaScript   - c++ wrapper for the lua c api
+            - LuaVar      - Holds common lua and c/c++ vars
+          - All script support is available through the namespace GMlib::Script,
+            and lua script support is available through the namespace GMlib::Script::Lua
+          - On GMlib compilation the definition GM_SCRIPT_LUA must be passed to the compiler to enable compilation of the lua script extensions
+            As must the same definition be passed to the client application on compilation.
+            The lua headers an libraries is avalable from: http://www.lua.org
+          - A Scriptalbe curve and a scriptable surface has also been added. DPLuaScriptCurve and DPLuaScriptSurf,
+            available through gmDPLuaScriptCurve and gmDPLuaScriptSurf respectivly, and also through gmDParametrics.
+          - Two luascripts has been added to the source base:
+            src/lua/pcircle_eval.lua
+            src/lua/psphere_eval.lua
+            - These can be loaded into the DPLuaScript* objects.
+
+
 2009-09-03 Jostein Bratlie
         * gmPathTrack
           - Another class reimplemented from the old source base, PathTrack.

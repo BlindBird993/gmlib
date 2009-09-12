@@ -57,3 +57,7 @@
 #include "gmDPSphere"         // Sphere
 #include "gmDPSteinerSurf"    // The Steiner Surface
 #include "gmDPTorus"          // Torus Surface
+
+// Scriptable
+#include "gmDPLuaScriptCurve"
+#include "gmDPLuaScriptSurf"
