@@ -6,6 +6,10 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2009-09-24 Jostein Bratlie
+        * MAJOR CHANGE
+        * Cleaned up the parametrics tree: Removed the Affine class tree structure, and all sub-classes.
+
 
 2009-09-12 Jostein Bratlie
         * Made changes to the default settings in the GMlib qmake project file
