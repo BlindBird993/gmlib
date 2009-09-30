@@ -47,13 +47,13 @@ namespace GMlib {
   class DisplayObject;
 
   template <typename T, int n>
-  class DParametrics;
+  class Parametrics;
 
   template <typename T>
-  class DCurve;
+  class PCurve;
 
   template <typename T>
-  class DSurf;
+  class PSurf;
 
   template <typename T, int n>
   class Visualizer {
@@ -79,7 +79,7 @@ namespace GMlib {
     );
 
     virtual void          select();
-    void                  set( DParametrics<T,n>* obj );
+    void                  set( Parametrics<T,n>* obj );
 
     virtual void          simulate( double dt );
 
@@ -87,9 +87,9 @@ namespace GMlib {
 
 
   protected:
-    DParametrics<T,n>     *_ref;
-    DCurve<T>             *_ref_n1;
-    DSurf<T>              *_ref_n2;
+    Parametrics<T,n>      *_ref;
+    PCurve<T>             *_ref_n1;
+    PSurf<T>              *_ref_n2;
 
 
   private:

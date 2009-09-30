@@ -7,8 +7,28 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 2009-09-24 Jostein Bratlie
-        * MAJOR CHANGE
-        * Cleaned up the parametrics tree: Removed the Affine class tree structure, and all sub-classes.
+        * MAJOR CHANGE: Parametric class tree cleanup!
+        * Removed the Affine class tree structure, and all sub-classes.
+          - AffineSpace
+          - Parametrics
+          - PCurve / PSurf
+          - P*
+            - e.g.: PSphere
+        * All displayable parametrics classes has been remaned to follow one structural class hiearchy.
+          - DParamterics -> Parametrics
+          - DCurve -> PCurve
+          - DSurf -> PSurf
+          - DP* -> P*
+            - e.g.: DPSphere -> PSphere
+        * Other sections affected by this change (corrected thereafter):
+          - gmStlObject
+          - gmVisualizer
+        * PCurve
+          - Added functions to extract the speed and radius from a given position on a parametric curve.
+            - getRadius( T t ), T
+            - getSpeed( T t ), T
+        * PTCurve/DPTCurve
+          - Merged to PTCurve, DPTCurve removed.
 
 
 2009-09-12 Jostein Bratlie

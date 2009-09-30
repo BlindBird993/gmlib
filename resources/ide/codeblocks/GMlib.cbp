@@ -112,116 +112,11 @@
 		<Unit filename="../../../src/gmColor.h" />
 		<Unit filename="../../../src/gmContainer" />
 		<Unit filename="../../../src/gmCore" />
-		<Unit filename="../../../src/gmDCurve" />
-		<Unit filename="../../../src/gmDCurve.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDCurve.h" />
 		<Unit filename="../../../src/gmDMatrix" />
 		<Unit filename="../../../src/gmDMatrix.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmDMatrix.h" />
-		<Unit filename="../../../src/gmDPApple" />
-		<Unit filename="../../../src/gmDPApple.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPApple.h" />
-		<Unit filename="../../../src/gmDPArc" />
-		<Unit filename="../../../src/gmDPArc.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPArc.h" />
-		<Unit filename="../../../src/gmDPBSplineCurve" />
-		<Unit filename="../../../src/gmDPBSplineCurve.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPBSplineCurve.h" />
-		<Unit filename="../../../src/gmDPBezierCurve" />
-		<Unit filename="../../../src/gmDPBezierCurve.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPBezierCurve.h" />
-		<Unit filename="../../../src/gmDPBezierSurf" />
-		<Unit filename="../../../src/gmDPBezierSurf.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPBezierSurf.h" />
-		<Unit filename="../../../src/gmDPButterfly" />
-		<Unit filename="../../../src/gmDPButterfly.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPButterfly.h" />
-		<Unit filename="../../../src/gmDPCircle" />
-		<Unit filename="../../../src/gmDPCircle.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPCircle.h" />
-		<Unit filename="../../../src/gmDPCylinder" />
-		<Unit filename="../../../src/gmDPCylinder.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPCylinder.h" />
-		<Unit filename="../../../src/gmDPERBSCurve" />
-		<Unit filename="../../../src/gmDPERBSCurve.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPERBSCurve.h" />
-		<Unit filename="../../../src/gmDPERBSSurf" />
-		<Unit filename="../../../src/gmDPERBSSurf.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPERBSSurf.h" />
-		<Unit filename="../../../src/gmDPLuaScriptCurve" />
-		<Unit filename="../../../src/gmDPLuaScriptCurve.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPLuaScriptCurve.h" />
-		<Unit filename="../../../src/gmDPLuaScriptSurf" />
-		<Unit filename="../../../src/gmDPLuaScriptSurf.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPLuaScriptSurf.h" />
-		<Unit filename="../../../src/gmDPPlane" />
-		<Unit filename="../../../src/gmDPPlane.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPPlane.h" />
-		<Unit filename="../../../src/gmDPRoseCurve" />
-		<Unit filename="../../../src/gmDPRoseCurve.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPRoseCurve.h" />
-		<Unit filename="../../../src/gmDPSphere" />
-		<Unit filename="../../../src/gmDPSphere.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPSphere.h" />
-		<Unit filename="../../../src/gmDPSteinerSurf" />
-		<Unit filename="../../../src/gmDPSteinerSurf.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPSteinerSurf.h" />
-		<Unit filename="../../../src/gmDPTCurve" />
-		<Unit filename="../../../src/gmDPTCurve.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPTCurve.h" />
-		<Unit filename="../../../src/gmDPTorus" />
-		<Unit filename="../../../src/gmDPTorus.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDPTorus.h" />
-		<Unit filename="../../../src/gmDParametrics" />
-		<Unit filename="../../../src/gmDParametrics.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDParametrics.h" />
-		<Unit filename="../../../src/gmDSurf" />
-		<Unit filename="../../../src/gmDSurf.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../../../src/gmDSurf.h" />
 		<Unit filename="../../../src/gmDVector" />
 		<Unit filename="../../../src/gmDVector.c">
 			<Option compilerVar="CC" />
@@ -320,11 +215,111 @@
 		<Unit filename="../../../src/gmOpenGL_ScaleObj.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../../../src/gmPApple" />
+		<Unit filename="../../../src/gmPApple.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPApple.h" />
+		<Unit filename="../../../src/gmPArc" />
+		<Unit filename="../../../src/gmPArc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPArc.h" />
+		<Unit filename="../../../src/gmPBSplineCurve" />
+		<Unit filename="../../../src/gmPBSplineCurve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPBSplineCurve.h" />
+		<Unit filename="../../../src/gmPBezierCurve" />
+		<Unit filename="../../../src/gmPBezierCurve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPBezierCurve.h" />
+		<Unit filename="../../../src/gmPBezierSurf" />
+		<Unit filename="../../../src/gmPBezierSurf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPBezierSurf.h" />
+		<Unit filename="../../../src/gmPButterfly" />
+		<Unit filename="../../../src/gmPButterfly.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPButterfly.h" />
+		<Unit filename="../../../src/gmPCircle" />
+		<Unit filename="../../../src/gmPCircle.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPCircle.h" />
+		<Unit filename="../../../src/gmPCurve" />
+		<Unit filename="../../../src/gmPCurve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPCurve.h" />
+		<Unit filename="../../../src/gmPCylinder" />
+		<Unit filename="../../../src/gmPCylinder.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPCylinder.h" />
+		<Unit filename="../../../src/gmPERBSCurve" />
+		<Unit filename="../../../src/gmPERBSCurve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPERBSCurve.h" />
+		<Unit filename="../../../src/gmPERBSSurf" />
+		<Unit filename="../../../src/gmPERBSSurf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPERBSSurf.h" />
+		<Unit filename="../../../src/gmPLuaScriptCurve" />
+		<Unit filename="../../../src/gmPLuaScriptCurve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPLuaScriptCurve.h" />
+		<Unit filename="../../../src/gmPLuaScriptSurf" />
+		<Unit filename="../../../src/gmPLuaScriptSurf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPLuaScriptSurf.h" />
+		<Unit filename="../../../src/gmPPlane" />
+		<Unit filename="../../../src/gmPPlane.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPPlane.h" />
+		<Unit filename="../../../src/gmPRoseCurve" />
+		<Unit filename="../../../src/gmPRoseCurve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPRoseCurve.h" />
+		<Unit filename="../../../src/gmPSphere" />
+		<Unit filename="../../../src/gmPSphere.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPSphere.h" />
+		<Unit filename="../../../src/gmPSteinerSurf" />
+		<Unit filename="../../../src/gmPSteinerSurf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPSteinerSurf.h" />
+		<Unit filename="../../../src/gmPSurf" />
+		<Unit filename="../../../src/gmPSurf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPSurf.h" />
 		<Unit filename="../../../src/gmPTCurve" />
 		<Unit filename="../../../src/gmPTCurve.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../../src/gmPTCurve.h" />
+		<Unit filename="../../../src/gmPTorus" />
+		<Unit filename="../../../src/gmPTorus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmPTorus.h" />
+		<Unit filename="../../../src/gmParametrics" />
+		<Unit filename="../../../src/gmParametrics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../../src/gmParametrics.h" />
 		<Unit filename="../../../src/gmPathTrack" />
 		<Unit filename="../../../src/gmPathTrack.cpp" />
 		<Unit filename="../../../src/gmPathTrack.h" />

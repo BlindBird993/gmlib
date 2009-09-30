@@ -33,9 +33,9 @@
 namespace GMlib {
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  PTCurve<T, n>::PTCurve( PCurve<T, n>* pcA, PCurve<T, n>* pcB ) {
+  PTCurve<T>::PTCurve( PCurve<T>* pcA, PCurve<T>* pcB ) {
 
     _angle      = T(0);
     _pcA        = pcA;
@@ -45,9 +45,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  PTCurve<T, n>::PTCurve( const PTCurve<T, n>& ptc ) {
+  PTCurve<T>::PTCurve( const PTCurve<T>& ptc ) {
 
     _angle      = ptc._angle;
 
@@ -62,9 +62,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  void PTCurve<T, n>::_compute( DVector<DVector<Vector<T, n> > >& p ) {
+  void PTCurve<T>::_compute( DVector<DVector<Vector<T,3> > >& p ) {
 
     for(int i = 0; i < p.getDim(); i++) {
       _merge_PA_and_PB( i );
@@ -73,9 +73,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  void PTCurve<T, n>::_merge_PA_and_PB( int i ) {
+  void PTCurve<T>::_merge_PA_and_PB( int i ) {
 
     _tPoints[0] = _pA[i][0][0];
     _tPoints[1] = _pA[i][0][1];
@@ -86,9 +86,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  void PTCurve<T, n>::_resample( PCurve<T, n>* obj, DVector<DVector<Vector<T, n> > >& p, int m, int d ) {
+  void PTCurve<T>::_resample( PCurve<T>* obj, DVector<DVector<Vector<T,3> > >& p, int m, int d ) {
 
     p.setDim( m );
 
@@ -103,9 +103,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  Point<T, 3> PTCurve<T, n>::_rotate_and_project() {
+  Point<T, 3> PTCurve<T>::_rotate_and_project() {
 
     Point<T, 3> p;
     Point<T, 6> tA, tB;
@@ -135,25 +135,34 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  std::string PTCurve<T,n>::getIdentity() const {
+  std::string PTCurve<T>::getIdentity() const {
 
     return "PTCurve";
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  bool PTCurve<T, n>::isClosed() const {
+  bool PTCurve<T>::isClosed() const {
 
     return false;
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  void PTCurve<T,n>::resample( DVector<DVector<Vector<T, n> > >& p, int m, int d, T start, T end ) {
+  void PTCurve<T>::localSimulate( double dt ) {
+
+    setAngle( dt );
+    this->replot();
+  }
+
+
+  template <typename T>
+  inline
+  void PTCurve<T>::resample( DVector<DVector<Vector<T,3> > >& p, int m, int d, T start, T end ) {
 
     if( _resampleA )
       _resample( _pcA, _pA, m ,d );
@@ -166,9 +175,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  void PTCurve<T,n>::setAngle( T a ) {
+  void PTCurve<T>::setAngle( T a ) {
 
     _angle += a;
     if(_angle >= M_2PI)
@@ -176,18 +185,18 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  void PTCurve<T,n>::setPA( PCurve<T, n>* pcA ) {
+  void PTCurve<T>::setPA( PCurve<T>* pcA ) {
 
     _pcA        = pcA;
     _resampleA  = true;
   }
 
 
-  template <typename T, int n>
+  template <typename T>
   inline
-  void PTCurve<T,n>::setPB( PCurve<T, n>* pcB ) {
+  void PTCurve<T>::setPB( PCurve<T>* pcB ) {
 
     _pcB        = pcB;
     _resampleB  = true;

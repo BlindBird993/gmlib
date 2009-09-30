@@ -38,7 +38,7 @@
 
 #include "gmDisplayObject.h"
 #include "gmArrayLX.h"
-#include "gmDPSphere.h"
+#include "gmPSphere.h"
 
 
 namespace GMlib {
@@ -58,7 +58,7 @@ namespace GMlib {
   public:
     StlObject( const string& filename, const GLColor& color = 5, int flip = 1 ); // From file, in given color
     StlObject( std::ifstream& stream, bool binary = true, const GLColor& color = GMcolor::Aqua );
-    StlObject( DSurf<float> *obj, int m1 = 20, int m2 = 20, GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
+    StlObject( PSurf<float> *obj, int m1 = 20, int m2 = 20, GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
     StlObject( float r = 10 );				 // Makes a Sphere, just for debugging
     ~StlObject();
 
@@ -92,7 +92,7 @@ namespace GMlib {
     void                              _init();
 
     unsigned int                      _dlist;
-    DPSphere<float>                   *_sphere;         // Debug
+    PSphere<float>                    *_sphere;         // Debug
 
     std::string                       _identity;				// I put the filename in here,
     FILE*                             _stl_file;

@@ -43,41 +43,42 @@
 namespace GMlib {
 
 
-  template <typename T, int n>
-  class PTCurve : public PCurve<T, n> {
+  template <typename T>
+  class PTCurve : public PCurve<T> {
   public:
-    PTCurve( PCurve<T, n>* pcA, PCurve<T, n>* pcB );
-    PTCurve( const PTCurve<T, n>& ptc );
+    PTCurve( PCurve<T>* pcA, PCurve<T>* pcB );
+    PTCurve( const PTCurve<T>& ptc );
 
     std::string                         getIdentity() const;
     bool                                isClosed() const;
     void                                setAngle( T a );
-    void                                setPA( PCurve<T, n>* pcA );
-    void                                setPB( PCurve<T, n>* pcB );
+    void                                setPA( PCurve<T>* pcA );
+    void                                setPB( PCurve<T>* pcB );
 
 
   protected:
     void                                eval( T t, int d, bool l = true ) {}
     T                                   getStartP() { return T(0); }
     T                                   getEndP() { return T(1); }
-    void                                resample( DVector< DVector< Vector<T, n> > >& p, int m, int d, T start, T end );
+    void                                localSimulate( double dt );
+    void                                resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
 
 
   private:
-    void                                _compute( DVector< DVector< Vector<T, n> > >& p );
+    void                                _compute( DVector< DVector< Vector<T,3> > >& p );
     void                                _merge_PA_and_PB( int i );
-    void                                _resample( PCurve<T, n>* obj, DVector<DVector< Vector<T, n> > >& p, int m, int d );
-    Point<T, 3>                         _rotate_and_project();
+    void                                _resample( PCurve<T>* obj, DVector<DVector< Vector<T,3> > >& p, int m, int d );
+    Point<T,3>                          _rotate_and_project();
 
-    PCurve<T, n>                        *_pcA;
-    PCurve<T, n>                        *_pcB;
+    PCurve<T>                           *_pcA;
+    PCurve<T>                           *_pcB;
 
     T                                   _angle;
-    DVector<DVector<Vector<T, n> > >    _pA;
-    DVector<DVector<Vector<T, n> > >    _pB;
+    DVector<DVector<Vector<T,3> > >     _pA;
+    DVector<DVector<Vector<T,3> > >     _pB;
     bool                                _resampleA;
     bool                                _resampleB;
-    Point<T, 6>                         _tPoints;
+    Point<T,6>                          _tPoints;
 
 
 

@@ -38,7 +38,7 @@ namespace GMlib {
 
   StlObject::StlObject(float r) {
     _identity = string( "STL place holder" );
-    _sphere = new DPSphere<float>( r );
+    _sphere = new PSphere<float>( r );
     _sphere->replot();
     insert( _sphere );
 
@@ -52,7 +52,7 @@ namespace GMlib {
   }
 
 
-  StlObject::StlObject( DSurf<float> *obj, int m1, int m2, GM_STL_VISUALIZATION gsv ) {
+  StlObject::StlObject( PSurf<float> *obj, int m1, int m2, GM_STL_VISUALIZATION gsv ) {
 
     // Resample DSurf
     DMatrix< DMatrix< Vector<float, 3> > > p;

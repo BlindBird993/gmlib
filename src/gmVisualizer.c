@@ -31,8 +31,8 @@
  */
 
 
-#include "gmDCurve.h"
-#include "gmDSurf.h"
+#include "gmPCurve.h"
+#include "gmPSurf.h"
 
 
 namespace GMlib {
@@ -95,21 +95,21 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void Visualizer<T,n>::set( DParametrics<T,n>* obj ) {
+  void Visualizer<T,n>::set( Parametrics<T,n>* obj ) {
 
     _ref = obj;
 
     switch( n ) {
       case 1: {
 
-        _ref_n1 = dynamic_cast<DCurve<T>*>( obj );
+        _ref_n1 = dynamic_cast<PCurve<T>*>( obj );
       }
       break;
 
       case 2:
       default: {
 
-        _ref_n2 = dynamic_cast<DSurf<T>*>( obj );
+        _ref_n2 = dynamic_cast<PSurf<T>*>( obj );
       }
       break;
     }

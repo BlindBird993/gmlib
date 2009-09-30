@@ -157,8 +157,6 @@ HEADERS += \
 HEADERS += \
   src/gmArrow3D.h \
   src/gmColor.h \
-  src/gmDCurve.h \
-  src/gmDSurf.h \
   src/gmGLColor.h \
   src/gmLightG.h \
   src/gmMaterial.h \
@@ -183,48 +181,27 @@ HEADERS += \
 
 # gmParametrics
 HEADERS += \
-  src/gmPApple.h \
   src/gmParametrics.h \
+  src/gmPCurve.h \
+  src/gmPSurf.h \
+  src/gmPApple.h \
   src/gmPArc.h \
   src/gmPBezierCurve.h \
   src/gmPBezierSurf.h \
   src/gmPBSplineCurve.h \
   src/gmPButterfly.h \
   src/gmPCircle.h \
-  src/gmPCurve.h \
   src/gmPCylinder.h \
   src/gmPERBSCurve.h \
   src/gmPERBSSurf.h \
+  src/gmPLuaScriptCurve.h \
+  src/gmPLuaScriptSurf.h \
   src/gmPPlane.h \
   src/gmPRoseCurve.h \
   src/gmPSphere.h \
   src/gmPSteinerSurf.h \
-  src/gmPSurf.h \
   src/gmPTCurve.h \
   src/gmPTorus.h
-
-
-# gmDParametrics
-HEADERS += \
-  src/gmDPApple.h \
-  src/gmDParametrics.h \
-  src/gmDPArc.h \
-  src/gmDPBezierCurve.h \
-  src/gmDPBezierSurf.h \
-  src/gmDPBSplineCurve.h \
-  src/gmDPButterfly.h \
-  src/gmDPCircle.h \
-  src/gmDPCylinder.h \
-  src/gmDPERBSCurve.h \
-  src/gmDPERBSSurf.h \
-  src/gmDPLuaScriptCurve.h \
-  src/gmDPLuaScriptSurf.h \
-  src/gmDPPlane.h \
-  src/gmDPRoseCurve.h \
-  src/gmDPSphere.h \
-  src/gmDPSteinerSurf.h \
-  src/gmDPTCurve.h \
-  src/gmDPTorus.h
 
 
 # gmUtils
