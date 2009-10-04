@@ -32,7 +32,6 @@
 
 #include "gmGlobal"
 
-#include "gmAffineSpace"
 #include "gmAngle"
 #include "gmMatrix"
 #include "gmPoint"
