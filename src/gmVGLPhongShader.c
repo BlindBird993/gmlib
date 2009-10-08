@@ -40,7 +40,7 @@ namespace GMlib {
 
       template <typename T, int n>
       inline
-      VGLPhongShader<T,n>::VGLPhongShader() : Visualizer<T,n>(), GLPhongShader() {}
+      VGLPhongShader<T,n>::VGLPhongShader() : VDefault<T,n>(), GLPhongShader() {}
 
 
       template <typename T, int n>
@@ -53,7 +53,7 @@ namespace GMlib {
       void VGLPhongShader<T,n>::display() {
 
         glSet();
-        glCallList( this->_ref->getDisplayListIdx() );
+        VDefault<T,n>::display();
         glUnSet();
       }
 

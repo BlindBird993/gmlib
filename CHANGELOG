@@ -5,6 +5,10 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-10-08 Jostein Bratlie
+        * gmVGLShader, gmVGLPhongShader
+          - Now inherits the default visualizer, VDefault.
+
 
 2009-09-24 Jostein Bratlie
         * MAJOR CHANGE: Parametric class tree cleanup!

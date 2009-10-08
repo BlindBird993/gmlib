@@ -39,7 +39,7 @@
 
 // GMlib includes
 #include "gmGLSL.h"
-#include "gmVisualizer.h"
+#include "gmVDefault.h"
 
 
 #ifdef GM_GPU_GLSL
@@ -52,7 +52,7 @@ namespace GMlib {
     namespace GLSL {
 
       template <typename T, int n>
-      class VGLShader : public Visualizer<T,n>, public GLShader {
+      class VGLShader : public VDefault<T,n>, public GLShader {
       public:
         VGLShader();
         VGLShader( const char* vs, const char* fs, bool compile = false );

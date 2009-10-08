@@ -38,7 +38,7 @@
 #include <string>
 
 // GMlib includes
-#include "gmVisualizer.h"
+#include "gmVDefault.h"
 #include "gmGLPhongShader.h"
 
 
@@ -52,7 +52,7 @@ namespace GMlib {
     namespace GLSL {
 
       template <typename T, int n>
-      class VGLPhongShader : public Visualizer<T,n>, public GLPhongShader {
+      class VGLPhongShader : public VDefault<T,n>, public GLPhongShader {
       public:
         VGLPhongShader();
         ~VGLPhongShader();

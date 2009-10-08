@@ -42,17 +42,17 @@ namespace GMlib {
 
       template <typename T, int n>
       inline
-      VGLShader<T,n>::VGLShader() : Visualizer<T,n>(), GLShader() {}
+      VGLShader<T,n>::VGLShader() : VDefault<T,n>(), GLShader() {}
 
 
       template <typename T, int n>
       inline
-      VGLShader<T,n>::VGLShader( const char* vs, const char* fs, bool compile ) : Visualizer<T,n>(), GLShader( vs, fs, compile ) {}
+      VGLShader<T,n>::VGLShader( const char* vs, const char* fs, bool compile ) : VDefault<T,n>(), GLShader( vs, fs, compile ) {}
 
 
       template <typename T, int n>
       inline
-      VGLShader<T,n>::VGLShader( const VGLShader<T,n>& cpy ) : Visualizer<T,n>( cpy ), GLShader( cpy ) {}
+      VGLShader<T,n>::VGLShader( const VGLShader<T,n>& cpy ) : VDefault<T,n>( cpy ), GLShader( cpy ) {}
 
 
       template <typename T, int n>
@@ -65,7 +65,7 @@ namespace GMlib {
       void VGLShader<T,n>::display() {
 
         glSet();
-        glCallList( this->_ref->getDisplayListIdx() );
+        VDefault<T,n>::display();
         glUnSet();
       }
 
