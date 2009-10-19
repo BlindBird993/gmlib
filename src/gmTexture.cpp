@@ -65,6 +65,7 @@ namespace GMlib {
     operator = ( texture );
   }
 
+
   Texture::~Texture() {
 
     if( _texture_id ) {

@@ -72,6 +72,9 @@ namespace GMlib {
       }
 
 
+      LuaVar::~LuaVar() {}
+
+
       LuaVar& LuaVar::operator = ( const LuaVar& copy ) {
 
         _type       = copy._type;
@@ -80,6 +83,12 @@ namespace GMlib {
         _var_str    = copy._var_str;
 
         return *this;
+      }
+
+
+      const std::string& LuaVar::getName() const {
+
+        return _name;
       }
 
 
@@ -110,6 +119,12 @@ namespace GMlib {
 
 
         }
+      }
+
+
+      void LuaVar::setName( const std::string& name ) {
+
+        _name = name;
       }
 
 

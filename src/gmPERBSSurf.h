@@ -47,12 +47,14 @@ namespace GMlib {
   public:
     PERBSSurf(); // Dummy
     PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 );
+    PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e );
     PERBSSurf( const DMatrix< PBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v );
     PERBSSurf( const PERBSSurf<T>& copy );
     virtual ~PERBSSurf();
 
     void                                edit( SceneObject *obj );
     void                                generateKnotVector( PSurf<T>* g );
+    void                                generateKnotVector( PSurf<T>* g, T u_s, T u_e, T v_s, T v_e );
     string                              getIdentity() const;
     DVector<T>&                         getKnotsU();
     DVector<T>&                         getKnotsV();

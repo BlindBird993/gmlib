@@ -5,6 +5,23 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2009-10-19 Jostein Bratlie
+        * gmMaterial
+          - Added a constructor which taks both a predefined material and a texture
+            Material( const Texture& tex, const Material& mat )
+        * gmScript : LuaScript
+          - LuaVar support is now extended so custom defined types can be passed to the lua script interpreter
+          - LuaVars with a defined name will now be pushed to scripts where now spesific function is defined.
+        * gmScript : LuaVar
+          - The push( ... ) function is now virtual, and can be reimplemented in new types.
+          - A name can now be associated with each lua variable. This name will be the variablename inside the lua-script if no spesific
+            functions call is defined.
+        * gmPLuaScriptCurve/gmPLuaScriptSurf is addapted to the LuaScript changes.
+        * gmPERBSSurf
+          - Added a new constructor to create an ERBS surface from a part of an excisting Parametric surface.
+
+
 2009-10-08 Jostein Bratlie
         * gmVGLShader, gmVGLPhongShader
           - Now inherits the default visualizer, VDefault.

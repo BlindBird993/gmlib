@@ -43,6 +43,7 @@ namespace GMlib {
     init();
   }
 
+
   template <typename T>
   inline
   PERBSSurf<T>::PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 ) {
@@ -56,6 +57,86 @@ namespace GMlib {
 
     _c.setDim( no_locals_u, no_locals_v );
     generateKnotVector( g );
+
+    // Create the inner surface patches
+    int i, j;
+    for( i = 0; i < no_locals_u-1; i++ ) {    // locals should be -1, and then later handle the edges.
+      for( j = 0; j < no_locals_v-1; j++ ) {
+
+        _c[i][j] = new PBezierSurf<T>(
+          g->evaluateParent( _u[i+1], _v[j+1], d1, d2 ),
+          _u[i], _u[i+1], _u[i+2],
+          _v[j], _v[j+1], _v[j+2]
+        );
+        insertPatch( _c[i][j] );
+      }
+
+      if( _closed_v )
+        _c[i][j] = _c[i][0];
+      else {
+        _c[i][j] = new PBezierSurf<T>(
+          g->evaluateParent( _u[i+1], _v[j+1], d1, d2 ),
+          _u[i], _u[i+1], _u[i+2],
+          _v[j], _v[j+1], _v[j+2]
+        );
+        insertPatch( _c[i][j] );
+      }
+    }
+
+    if( _closed_u )
+      for( j = 0; j < no_locals_v; j++ )
+        _c[i][j] = _c[0][j];
+    else{
+      for( j = 0; j < no_locals_v; j++ ) {
+        _c[i][j] = new PBezierSurf<T>(
+          g->evaluateParent( _u[i+1], _v[j+1], d1, d2 ),
+          _u[i], _u[i+1], _u[i+2],
+          _v[j], _v[j+1], _v[j+2]
+        );
+        insertPatch( _c[i][j] );
+      }
+    }
+
+    for( int i = 0; i < _c.getDim1(); i++ ) {
+      for( int j = 0; j < _c.getDim2(); j++ ) {
+
+        _c[i][j]->setLighted( true );
+        _c[i][j]->setMaterial( GMmaterial::Ruby );
+      }
+    }
+  }
+
+
+  template <typename T>
+  inline
+  PERBSSurf<T>::PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e ) {
+
+    this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
+
+    init();
+
+    if( u_s < 0 ) u_s = 0;
+    if( u_s > 1 ) u_s = 1;
+    if( u_e < 0 ) u_e = 0;
+    if( u_e > 1 ) u_e = 1;
+    if( v_s < 0 ) v_s = 0;
+    if( v_s > 1 ) v_s = 1;
+    if( v_e < 0 ) v_e = 0;
+    if( v_e > 1 ) v_e = 1;
+
+
+    if( u_e - u_s >= 1 )
+      _closed_u = g->isClosedU();
+    else
+      _closed_u = false;
+
+    if( v_e - v_s >= 1 )
+      _closed_v = g->isClosedV();
+    else
+      _closed_v = false;
+
+    _c.setDim( no_locals_u, no_locals_v );
+    generateKnotVector( g, u_s, u_e, v_s, v_e );
 
     // Create the inner surface patches
     int i, j;
@@ -253,6 +334,37 @@ namespace GMlib {
       _v,
       g->getParStartV(),
       g->getParDeltaV() / ( _c.getDim2()-1 ),
+      _c.getDim2() + 2,
+      isClosedV()
+    );
+  }
+
+
+  template <typename T>
+  inline
+  void PERBSSurf<T>::generateKnotVector( PSurf<T>* g, T u_s, T u_e, T v_s, T v_e ) {
+
+    T start_u = g->getParStartU() + g->getParStartU() * u_s;
+    T delta_u = g->getParDeltaU() * u_e - u_s;
+
+    T start_v = g->getParStartV() + g->getParStartV() * v_s;
+    T delta_v = g->getParDeltaV() * v_e - v_s;
+
+
+    // Knot Vector in U direction
+    generateKnotVector(
+      _u,
+      start_u,
+      delta_u / ( _c.getDim1()-1 ),
+      _c.getDim1() + 2,
+      isClosedU()
+    );
+
+    // Knot Vector in V direction
+    generateKnotVector(
+      _v,
+      start_v,
+      delta_v / ( _c.getDim2()-1 ),
       _c.getDim2() + 2,
       isClosedV()
     );

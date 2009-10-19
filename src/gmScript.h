@@ -54,6 +54,7 @@ namespace GMlib {
 #ifdef GM_SCRIPT_LUA
 
 #include "gmArray.h"
+#include "gmDVector.h"
 
 namespace GMlib {
 
@@ -69,7 +70,6 @@ namespace GMlib {
 //          #include <lualib.h>
 //          #include <lauxlib.h>
 //        }
-
       } // END namespace luaC
 
 
@@ -79,7 +79,8 @@ namespace GMlib {
         GM_LUA_VAR_TYPE_BOOL,
         GM_LUA_VAR_TYPE_NUM,
         GM_LUA_VAR_TYPE_STRING,
-        GM_LUA_VAR_TYPE_CFUNC
+        GM_LUA_VAR_TYPE_CFUNC,
+        GM_LUA_VAR_TYPE_CUSTOME
       };
 
 
@@ -101,8 +102,11 @@ namespace GMlib {
         LuaVar( const char* str );
         LuaVar( luaC::lua_CFunction func );
         LuaVar( const LuaVar& var );
+        ~LuaVar();
 
-        void                  push( luaC::lua_State* L ) const;
+        const std::string&    getName() const;
+        virtual void          push( luaC::lua_State* L ) const;
+        void                  setName( const std::string& name );
         bool                  toBoolean() const;
         double                toDouble() const;
         float                 toFloat() const;
@@ -111,7 +115,8 @@ namespace GMlib {
 
         LuaVar&               operator = ( const LuaVar& var );
 
-      private:
+      protected:
+        std::string           _name;
         GM_LUA_VAR_TYPE       _type;
         bool                  _var_bool;
         double                _var_num;
@@ -124,43 +129,44 @@ namespace GMlib {
 
 
 
+
       class LuaScript : public Script {
       public:
         LuaScript();
         ~LuaScript();
 
-        void                addVar( const LuaVar& var );
-        void                addVars( const ArrayT<LuaVar>& vars );
+        void                    addVar( LuaVar* var );
+        void                    addVars( const ArrayT<LuaVar*>& vars );
 
-        void                clearVars();
+        void                    clearVars();
 
-        void                exec();
-        void                exec( const std::string& fname );
-        std::string         getErrors();
-        int                 getErrfunc() const;
-        const Array<LuaVar>&    getResult() const;
-        int                 getStatus() const;
+        void                    exec();
+        void                    exec( const std::string& fname );
+        std::string             getErrors();
+        int                     getErrfunc() const;
+        const Array<LuaVar*>&   getResult() const;
+        int                     getStatus() const;
 
-        void                loadProgram( const std::string& prog, GM_LUA_LOAD_TYPE type );
-        void                loadStdLibs();
+        void                    loadProgram( const std::string& prog, GM_LUA_LOAD_TYPE type );
+        void                    loadStdLibs();
 
-                            inline operator luaC::lua_State* () { return _L; }   // Enables the possibility to use the object as a pointer of type lua_State
+                                inline operator luaC::lua_State* () { return _L; }   // Enables the possibility to use the object as a pointer of type lua_State
 
       protected:
-        luaC::lua_State     *_L;
+        luaC::lua_State         *_L;
 
-        GM_LUA_LOAD_TYPE    _load_type;
-        std::string         _prog;
+        GM_LUA_LOAD_TYPE        _load_type;
+        std::string             _prog;
 
-        int                 _s;
-        int                 _errfunc;
-        bool                _valid;
-        Array<LuaVar>       _vars;
-        Array<LuaVar>       _result;
+        int                     _s;
+        int                     _errfunc;
+        bool                    _valid;
+        Array<LuaVar*>          _vars;
+        Array<LuaVar*>          _result;
 
-        virtual void        constructResult();
-        void                constructResult_table();
-        void                load();
+        virtual void            constructResult();
+        void                    constructResult_table();
+        void                    load();
 
 
       }; // END class LuaScript

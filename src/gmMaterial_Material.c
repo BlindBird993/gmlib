@@ -49,6 +49,15 @@ namespace GMlib {
   }
 
 
+  inline
+  Material::Material( const Texture& tex, const Material& mat ) {
+
+    *this = mat;
+
+    set( tex );
+  }
+
+
   /*! Material::Material( const Material&  m )
    *	\brief Pending Documentation
    *
@@ -64,14 +73,9 @@ namespace GMlib {
     _shininess = copy._shininess;
     _transparancy = copy._transparancy;
 
-
-
-
     _source_blend_factor = copy._source_blend_factor;
     _destination_blend_factor = copy._destination_blend_factor;
     _sided = copy._sided;
-
-//    memcpy(this,&m,sizeof(Material));
   }
 
 

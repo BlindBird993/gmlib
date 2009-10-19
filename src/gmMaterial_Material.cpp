@@ -146,7 +146,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void Material::set( Texture texture ) {
+  void Material::set( const Texture& texture ) {
 
     _texture = texture;
   }

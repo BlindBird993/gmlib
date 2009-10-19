@@ -71,7 +71,8 @@ namespace GMlib {
       float shininess 		= 0.0f,
       const Texture& texture = Texture()
 		);
-    Material(const Material& copy );
+		Material( const Texture& tex, const Material& mat = Material() );
+    Material( const Material& copy );
     virtual ~Material();
 
     const GLColor&    getAmb() const;
@@ -87,7 +88,7 @@ namespace GMlib {
     void 						  set( const GLColor& amb, const GLColor& dif, const GLColor& spc );
     void 						  set( const GLenum sfactor, const GLenum dfactor );
     void 						  set( float shininess );
-    void 						  set( Texture texture );
+    void 						  set( const Texture& texture );
     void 						  setAmb( const GLColor& amb );
     void 						  setDif( const GLColor& dif );
     void 						  setDoubleSided( bool s );

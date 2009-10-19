@@ -58,13 +58,13 @@ namespace GMlib {
       }
 
 
-      void LuaScript::addVar( const LuaVar& var ) {
+      void LuaScript::addVar( LuaVar* var ) {
 
         _vars += var;
       }
 
 
-      void LuaScript::addVars( const ArrayT<LuaVar>& vars ) {
+      void LuaScript::addVars( const ArrayT<LuaVar*>& vars ) {
 
         _vars += vars;
       }
@@ -87,9 +87,9 @@ namespace GMlib {
           int var_type = luaC::lua_type( _L, luaC::lua_gettop(_L) );
           switch( var_type ) {
 
-            case LUA_TBOOLEAN:  _result += LuaVar( luaC::lua_toboolean( _L, 1 ) );  break;
-            case LUA_TNUMBER:   _result += LuaVar( luaC::lua_tonumber( _L, 1 ) );   break;
-            case LUA_TSTRING:   _result += LuaVar( luaC::lua_tostring( _L, 1 ) );   break;
+            case LUA_TBOOLEAN:  _result += new LuaVar( luaC::lua_toboolean( _L, 1 ) );  break;
+            case LUA_TNUMBER:   _result += new LuaVar( luaC::lua_tonumber( _L, 1 ) );   break;
+            case LUA_TSTRING:   _result += new LuaVar( luaC::lua_tostring( _L, 1 ) );   break;
             case LUA_TTABLE:    constructResult_table();    break;
 
             case LUA_TNIL:
@@ -109,9 +109,9 @@ namespace GMlib {
 
           switch( var_type ) {
 
-            case LUA_TBOOLEAN:  _result += LuaVar( luaC::lua_toboolean( _L, -1 ) );  break;
-            case LUA_TNUMBER:   _result += LuaVar( luaC::lua_tonumber( _L, -1 ) );   break;
-            case LUA_TSTRING:   _result += LuaVar( luaC::lua_tostring( _L, -1 ) );   break;
+            case LUA_TBOOLEAN:  _result += new LuaVar( luaC::lua_toboolean( _L, -1 ) );  break;
+            case LUA_TNUMBER:   _result += new LuaVar( luaC::lua_tonumber( _L, -1 ) );   break;
+            case LUA_TSTRING:   _result += new LuaVar( luaC::lua_tostring( _L, -1 ) );   break;
             case LUA_TTABLE:    constructResult_table();    break;
 
             case LUA_TNIL:
@@ -130,8 +130,20 @@ namespace GMlib {
 
         if( _valid ) {
 
+          // Push varis
+          int no_vars = 0;
+          for( int i = 0; i < _vars.getSize(); i++ ) {
+
+            if( _vars[i]->getName().length() > 0 ) {
+
+              _vars[i]->push( _L );
+              luaC::lua_setglobal( _L, _vars[i]->getName().c_str() );
+              no_vars++;
+            }
+          }
+
           // Call the lua script program
-          _s = luaC::lua_pcall( _L, 0, LUA_MULTRET, _errfunc );
+          _s = luaC::lua_pcall( _L, 0, LUA_MULTRET, 0 );
         }
       }
 
@@ -143,26 +155,28 @@ namespace GMlib {
         if( _valid ) {
 
           // Execute the script
-          luaC::lua_call( _L, 0, 0 );
+          _s = luaC::lua_pcall( _L, 0, 0, _errfunc );
+          if( _s == 0 ) {
 
-          // Set function name to be called
-          luaC::lua_getglobal( _L, fname.c_str() );
+            // Set function name to be called
+            luaC::lua_getglobal( _L, fname.c_str() );
 
-          // Push the functions variables on the stack
-          for( int i = 0; i < _vars.getSize(); i++ )
-            _vars[i].push( _L );
+            // Push the functions variables on the stack
+            for( int i = 0; i < _vars.getSize(); i++ )
+              _vars[i]->push( _L );
 
-          // Call the function
-          _s = luaC::lua_pcall( _L, _vars.getSize(), 1, _errfunc );
+            // Call the function
+            _s = luaC::lua_pcall( _L, _vars.getSize(), 1, _errfunc );
 
-          // Set result as global value.
-          luaC::lua_setglobal( _L, "result" );
+            // Set result as global value.
+            luaC::lua_setglobal( _L, "result" );
 
-          // copy back return values.
-          constructResult();
+            // copy back return values.
+            constructResult();
 
-          // ballance the lua stack
-//          luaC::lua_pop( _L, 1 );
+            // ballance the lua stack
+  //          luaC::lua_pop( _L, 1 );
+          }
         }
       }
 
@@ -189,7 +203,7 @@ namespace GMlib {
       }
 
 
-      const Array<LuaVar>& LuaScript::getResult() const {
+      const Array<LuaVar*>& LuaScript::getResult() const {
 
         return _result;
       }

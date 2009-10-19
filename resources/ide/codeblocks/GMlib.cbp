@@ -398,6 +398,7 @@
 		<Unit filename="../../../src/gmSceneObject.h" />
 		<Unit filename="../../../src/gmScript" />
 		<Unit filename="../../../src/gmScript.h" />
+		<Unit filename="../../../src/gmScript_LuaCubeDVectorVar.cpp" />
 		<Unit filename="../../../src/gmScript_LuaScript.cpp" />
 		<Unit filename="../../../src/gmScript_LuaVar.cpp" />
 		<Unit filename="../../../src/gmScript_Script.cpp" />

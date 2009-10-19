@@ -93,9 +93,9 @@ namespace GMlib {
 
         // Set up variables for lua
         clearVars();
-        addVar( LuaVar( t ) );
-        addVar( LuaVar( d ) );
-        addVar( LuaVar( l ) );
+        addVar( new LuaVar( t ) );
+        addVar( new LuaVar( d ) );
+        addVar( new LuaVar( l ) );
 
         // Execute
         exec( "eval" );
