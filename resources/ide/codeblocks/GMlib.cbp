@@ -44,10 +44,10 @@
 		<Unit filename="../../../COPYING.LESSER" />
 		<Unit filename="../../../DoxyfileDevAPI" />
 		<Unit filename="../../../DoxyfileUsrAPI" />
+		<Unit filename="../../../GMlib.pro" />
 		<Unit filename="../../../INSTALL" />
 		<Unit filename="../../../README" />
 		<Unit filename="../../../RELEASE" />
-		<Unit filename="../../../qmake.pro" />
 		<Unit filename="../../doxygen/trac/footer.html" />
 		<Unit filename="../../doxygen/trac/header.html" />
 		<Unit filename="../../doxygen/trac/stylesheet.css" />

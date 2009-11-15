@@ -21,3 +21,7 @@ object_script.GMlib.Release
 dist/*
 doc/*
 work/*
+
+##########################################
+# Ignored Ct Creator spesifics directories
+qtc-gdbmacros

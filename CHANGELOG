@@ -5,6 +5,12 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-11-15 Jostein Bratlie
+        * QMake project file
+          - Renamed to GMlib.pro: makes the project be named GMlib when loaded in the QtCreator IDE.
+          - Restructured so that it is easier to use and/or configure.
+            Allmost all prameters can be passed on the command line at compile time.
+
 
 2009-10-19 Jostein Bratlie
         * gmMaterial
