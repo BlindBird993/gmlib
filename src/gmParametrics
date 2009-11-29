@@ -35,31 +35,33 @@
 
 
 // Direct subclasses of Parametrics
-#include "gmPCurve"          // Curve
-#include "gmPSurf"           // Surface
+#include "gmPCurve"                 // Curve
+#include "gmPSurf"                  // Surface
 
 // Parametric Curves
-#include "gmPArc"            // An Arc
-#include "gmPBSplineCurve"   // BSpline Curve
-#include "gmPBezierCurve"    // Bezier Curve
-#include "gmPButterfly"      // The so called "Butterfly" curve
-#include "gmPCircle"         // Circle
-#include "gmPERBSCurve"      // Expo Rational BSpline Curve
-#include "gmPRoseCurve"      // Rose Curve
+#include "gmPArc"                   // An Arc
+#include "gmPBSplineCurve"          // BSpline curve
+#include "gmPBezierCurve"           // Bezier curve
+#include "gmPButterfly"             // The so called "Butterfly" curve
+#include "gmPChrysanthemumCurve"    // The Chrysanthemum cuve
+#include "gmPCircle"                // Circle
+#include "gmPERBSCurve"             // Expo Rational BSpline curve
+#include "gmPRoseCurve"             // Rose curve
 
 // Parametric Tensor Product Surfaces
-#include "gmPApple"          // Apple
-#include "gmPBezierSurf"     // Bezier Surface
-#include "gmPCylinder"       // Cylinder
-#include "gmPERBSSurf"       // Expo Rational BSpline Surface
-#include "gmPPlane"          // Plane
-#include "gmPSphere"         // Sphere
-#include "gmPSteinerSurf"    // The Steiner Surface
-#include "gmPTorus"          // Torus Surface
+#include "gmPApple"                 // Apple
+#include "gmPAsteroidalSphere"      // Asteroidal Sphere
+#include "gmPBezierSurf"            // Bezier Surface
+#include "gmPCylinder"              // Cylinder
+#include "gmPERBSSurf"              // Expo Rational BSpline Surface
+#include "gmPPlane"                 // Plane
+#include "gmPSphere"                // Sphere
+#include "gmPSteinerSurf"           // The Steiner Surface
+#include "gmPTorus"                 // Torus Surface
 
 // Trasformation
-#include "gmPTCurve"         // Transformable TCurve (special curve)
+#include "gmPTCurve"                // Transformable TCurve (special curve)
 
 // Scriptable
-#include "gmPLuaScriptCurve"
-#include "gmPLuaScriptSurf"
+#include "gmPLuaScriptCurve"        // Lua scriptable curve
+#include "gmPLuaScriptSurf"         // Lua scriptable surface

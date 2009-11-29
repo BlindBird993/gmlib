@@ -22,83 +22,65 @@
 
 
 
-/*! \file gmPCircle.c
+/*! \file gmPChrysanthemumCurve.c
  *
- *  Implementation of the PCircle template class.
+ *  Implementation of the PChrysanthemumCurve template class.
  *
- *  \date   2008-09-09
+ *  \date   2009-11-28
  */
 
 
 namespace GMlib {
 
 
-  template <typename T>
-  inline
-  PCircle<T>::PCircle( T radius ) {
 
+  template <typename T>
+  PChrysanthemumCurve<T>::PChrysanthemumCurve( T radius ) {
+
+    this->_dm = GM_DERIVATION_DD;
     _r = radius;
-    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
   template <typename T>
-  inline
-  PCircle<T>::PCircle( const PCircle<T>& copy ) : PCurve<T>(copy) {}
-
-
-  template <typename T>
-  PCircle<T>::~PCircle() {}
+  PChrysanthemumCurve<T>::PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy ) : PCurve<T>( copy ) {}
 
 
   template <typename T>
   inline
-  void PCircle<T>::eval( T t, int d, bool /*l*/ ) {
+  void PChrysanthemumCurve<T>::eval( T t, int d, bool l ) {
 
-    this->_p.setDim( d + 1 );
+    this->_p.setDim( d+1 );
 
-    this->_p[0][0] = _r * cos( t );
-    this->_p[0][1] = _r * sin( t );
+    const double p4 = sin( 17.0 * t / 3.0 );
+    const double p8 = sin( 2.0 * cos( 3.0 * t ) - 28.0 * t );
+    const double r = 5.0 * ( 1.0 + sin( 11.0 * t / 5.0 ) ) - 4 * pow( p4, 4 ) * pow( p8, 8 );
+
+    this->_p[0][0] = _r * T( r * cos( t ) );
+    this->_p[0][1] = _r * T( r * sin( t ) );
     this->_p[0][2] = T(0);
 
-    if( this->_dm == GM_DERIVATION_EXPLICIT ) {
-
-      if( d > 0 ) {
-
-        this->_p[1][0] = - _r * T( sin( t ) );
-        this->_p[1][1] =   _r * T( cos( t ) );
-        this->_p[1][2] =   T(0);
-      }
-
-      if( d > 1 ) {
-
-        this->_p[2][0] = - _r * T( cos( t ) );
-        this->_p[2][1] = - _r * T( sin( t ) );
-        this->_p[2][2] =   T(0);
-      }
-    }
   }
 
 
   template <typename T>
   inline
-  T PCircle<T>::getEndP() {
+  T PChrysanthemumCurve<T>::getEndP() {
 
-    return T( M_2PI );
+    return T( 21 * M_PI );
+  }
+
+
+  template <typename T>
+  std::string PChrysanthemumCurve<T>::getIdentity() const {
+
+    return "PChrysanthemumCurve";
   }
 
 
   template <typename T>
   inline
-  string PCircle<T>::getIdentity() const {
-
-    return "PCircle";
-  }
-
-
-  template <typename T>
-  inline
-  T PCircle<T>::getStartP() {
+  T PChrysanthemumCurve<T>::getStartP() {
 
     return T(0);
   }
@@ -106,26 +88,11 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T PCircle<T>::getRadius() {
-
-    return _r;
-  }
-
-
-  template <typename T>
-  inline
-  bool PCircle<T>::isClosed() const {
+  bool PChrysanthemumCurve<T>::isClosed() const {
 
     return true;
   }
 
 
-  template <typename T>
-  inline
-  void PCircle<T>::setRadius( T radius ) {
-
-      _r = radius;
-  }
-
-
 } // END namespace GMlib
+

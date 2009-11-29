@@ -156,7 +156,6 @@ namespace GMlib {
     // Evaluating first Local Curve @ k
     DVector< Vector<T,3> > c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), 2 );
 
-
     // If t == _t[tk], meaning that the sample is at the knot, set the sample value to the sampled value of the first local curve.
     if( abs(t - _t[tk]) < 1e-5 ) {
       this->_p = c0;
@@ -165,7 +164,6 @@ namespace GMlib {
 
     // Evaluating second Local Curve @ k
     DVector< Vector<T,3> > c1 = _c[c1i]->evaluateParent( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), 2 );
-
     DVector<T> B;
     getB( B, tk, t, 2 );
 
@@ -277,7 +275,7 @@ namespace GMlib {
   template <typename T>
   void PERBSCurve<T>::init() {
 
-    _evaluator = new EvaluatorERBS<T>();
+    _evaluator = new EvaluatorERBS<long double>();
     _resamp_mode = GM_RESAMPLE_PREEVAL;
     _pre_eval = true;
   }
@@ -400,6 +398,7 @@ namespace GMlib {
       // Evaluate First Local Curve
       c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), 2 );
 
+
       // Use c0 only if it is at the interpolation point
       if( abs(t - _t[tk]) < 1e-5 )
         p[i] = c0;
@@ -407,7 +406,6 @@ namespace GMlib {
 
         // Evaluate Second Local Curve
         c1 = _c[c1i]->evaluateParent( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), 2 );
-
 
         // Correct c0 with c1
         c0 -= c1;

@@ -22,21 +22,11 @@
 
 
 
-/*! \file gmDisplayUtils
+/*! \file gmPAsteroidalSphere
  *
- *  C++ interface for the gmDisplayUtils Component
+ *  C++ interface for the Parameterized AsteroidalSphere Surface header and classes.
  *
- *  \date   2008-08-04
+ *  \date   2009-11-29
  */
 
-#include "gmArrow3D"
-#include "gmColor"
-#include "gmGLColor"
-#include "gmLightG"
-#include "gmMaterial"
-#include "gmSelector"
-#include "gmSelectorGrid"
-#include "gmSphere3D"
-#include "gmStlObject"
-#include "gmTexture"
-#include "gmTriangle"
+#include "gmPAsteroidalSphere.h"

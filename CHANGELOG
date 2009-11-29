@@ -5,6 +5,23 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-11-29 Jostein Bratlie
+        * ERBSCurve
+          - ERBS basis evaulator now defined with the type "long double"
+            unrelated to the type of T to ensure stability and computation error safety
+        * Added to new parametric objects:
+          - PAstroidalSphere - reimplementation from the old GMlib source
+          - PChrysanthemumCurve - new implementation: math fetched from http://local.wasp.uwa.edu.au/~pbourke/geometry/chrysanthemum/
+            - no derivatives defined explicitly
+        * PArc
+          - Source cleaned up.
+            Object is now moved to the interpolation point of the ERBSCurve and the math is defined at local origin.
+        * PButterfly/PRoseCurve
+          - Math cleanup: scaling fixed as it made the curves skew.
+        * DisplayUtils
+          - Removed a couple of left over includes. (DCurve/DSurf)
+
+
 2009-11-15 Jostein Bratlie
         * QMake project file
           - Renamed to GMlib.pro: makes the project be named GMlib when loaded in the QtCreator IDE.

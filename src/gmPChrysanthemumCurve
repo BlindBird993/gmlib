@@ -22,21 +22,11 @@
 
 
 
-/*! \file gmDisplayUtils
+/*! \file gmPChrysanthemum
  *
- *  C++ interface for the gmDisplayUtils Component
+ *  C++ interface for the Parameterized Chrysanthemum Curve header and classes.
  *
- *  \date   2008-08-04
+ *  \date   2009-11-28
  */
 
-#include "gmArrow3D"
-#include "gmColor"
-#include "gmGLColor"
-#include "gmLightG"
-#include "gmMaterial"
-#include "gmSelector"
-#include "gmSelectorGrid"
-#include "gmSphere3D"
-#include "gmStlObject"
-#include "gmTexture"
-#include "gmTriangle"
+#include "gmPChrysanthemumCurve.h"

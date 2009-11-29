@@ -61,12 +61,10 @@ namespace GMlib {
 
 
   protected:
-    T                   _delta;   // Speed, but not speed
-    T                   _s;       // Speed
-    T                   _c;       // Curvature
+    T                   _d;       // Delta
+    T                   _k;       // Kappa
     T                   _start;   // Start
     T                   _end;     // End
-    HqMatrix<float,3>   _matrix_arc;
 
     void	              eval(T t, int d, bool l);
     T                   getCurvature( DVector< Vector<T,3> >& p );

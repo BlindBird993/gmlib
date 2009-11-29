@@ -22,21 +22,45 @@
 
 
 
-/*! \file gmDisplayUtils
+/*! \file gmPChrysanthemumCurve.h
  *
- *  C++ interface for the gmDisplayUtils Component
+ *  Interface for the PChrysanthemumCurve class.
  *
- *  \date   2008-08-04
+ *  \date   2009-11-28
  */
 
-#include "gmArrow3D"
-#include "gmColor"
-#include "gmGLColor"
-#include "gmLightG"
-#include "gmMaterial"
-#include "gmSelector"
-#include "gmSelectorGrid"
-#include "gmSphere3D"
-#include "gmStlObject"
-#include "gmTexture"
-#include "gmTriangle"
+#ifndef __gmPCHRYSANTHEMUMCURVE_H__
+#define __gmPCHRYSANTHEMUMCURVE_H__
+
+
+// GMlib includes+
+#include "gmPCurve.h"
+
+
+namespace GMlib {
+
+  template <typename T>
+  class PChrysanthemumCurve : public PCurve<T> {
+  public:
+    PChrysanthemumCurve( T radius = T(1) );
+    PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy );
+
+    std::string   getIdentity() const;
+
+  protected:
+    T             _r;
+
+    void          eval( T t, int d, bool l );
+    T             getEndP();
+    T             getStartP();
+    bool          isClosed() const;
+
+  }; // END class PChrysanthemumCurve
+
+} // END namespace GMlib
+
+
+// Include PChrysanthemumCurve class function implementations
+#include "gmPChrysanthemumCurve.c"
+
+#endif // __gmPCHRYSANTHEMUMCURVE_H__

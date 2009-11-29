@@ -37,9 +37,8 @@ namespace GMlib {
   inline
   PArc<T>::PArc( T speed, T curvature ) {
 
-    _delta = T(1);
-    _s = speed;
-    _c = curvature;
+    _d = speed;
+    _k = curvature;
 
     _start = T(0);
     _end =  T( M_2PI );
@@ -50,9 +49,8 @@ namespace GMlib {
   inline
   PArc<T>::PArc( T speed, T curvature, T start, T end ) {
 
-    _delta = T(1);
-    _s = speed;
-    _c = curvature;
+    _d = speed;
+    _k = curvature;
 
     _start = start;
     _end = end;
@@ -63,37 +61,34 @@ namespace GMlib {
   inline
   PArc<T>::PArc( DVector< Vector<T,3> >& p, T s, T t, T e ) {
 
-    _s = 1;
-    _c = getCurvature( p );
-    _delta = p[1].getLength();
-    _start = (s-t)*_delta;
-    _end = (e-t)*_delta;
-//    this->setDomain( s, e );
+    Vector<T,3> x, y, z, y_;
+
+    _d      = p[1].getLength();
+    _start  = (s-t);
+    _end    = (e-t);
 
     DVector< Vector<T,3> > xyz(3);
-    xyz[0] = p[1] / _delta;
-    xyz[1] = ( p[2] - ( xyz[0] * p[2] ) * xyz[0] ) / (_delta * _delta);
+    x = p[1] / _d;
+    y_ = ( p[2] - ( x * p[2] ) * x ) / (_d * _d);
 
-    if( xyz[1].getLength() > 1.0e-5 ) {
-      xyz[1] = xyz[1] / xyz[1].getLength();
-      xyz[2] = Vector3D<T>(xyz[1]) ^ xyz[0];
 
-      GLMatrix bcmat( _matrix_arc.getTransposed().getPtr() );
-      bcmat.basisChange( xyz[0], xyz[1], xyz[2], p[0] );
-      for( int i = 0; i < 4; i++ )
-        for( int j = 0; j < 4; j++ )
-          _matrix_arc[i][j] = bcmat.get(j,i);
-//      _matrix.basisChange( xyz[0], xyz[1], xyz[2], p[0] );
+    _k = y_.getLength();
+
+    if( y_.getLength() > 1e-5 ) {
+
+      y = y_ / y_.getLength();
+      z = Vector3D<T>(y) ^ x;
     }
-    else {
-      GLMatrix bcmat( _matrix_arc.getTransposed().getPtr() );
-      bcmat.basisChange( xyz[0], Vector3D<T>( 0, 0, 0 ), Vector3D<T>( 0, 0, 0 ), p[0] );
-      for( int i = 0; i < 4; i++ )
-        for( int j = 0; j < 4; j++ )
-          _matrix_arc[i][j] = bcmat.get(j,i);
-//      _matrix.basisChange( xyz[0], Vector3D<T>( 0, 0, 0 ), Vector3D<T>( 0, 0, 0 ), p[0] );
-    }
+    else
+      y = z = Vector<T,3>( T(0) );
 
+
+    // Do basis change
+    this->_side = y;
+    this->_up   = z;
+    this->_dir  = x;
+    this->_pos  = p[0];
+    DisplayObject::basisChange( this->_side, this->_up, this->_dir, this->_pos );
   }
 
 
@@ -101,8 +96,8 @@ namespace GMlib {
   inline
   PArc<T>::PArc( const PArc<T>& copy ) : PCurve<T>(copy) {
 
-    _s = copy._s;
-    _c = copy._c;
+    _d = copy._d;
+    _k = copy._k;
 
     _start = copy._start;
     _end = copy._end;
@@ -120,9 +115,10 @@ namespace GMlib {
 
     this->_p.setDim( d + 1 );
 
-    if( _c == T(0) ) {
+    if( _k < 1e-5 ) {
 
-      this->_p[0][0] = _s * t;
+
+      this->_p[0][0] = _d * t;
       this->_p[0][1] = T(0);
       this->_p[0][2] = T(0);
 
@@ -130,7 +126,7 @@ namespace GMlib {
 
         if( d > 0 ) {
 
-          this->_p[1][0] = _s;
+          this->_p[1][0] = _d;
           this->_p[1][1] = T(0);
           this->_p[1][2] = T(0);
         }
@@ -143,37 +139,35 @@ namespace GMlib {
         }
       }
     }
-    else {
+    else { // if _k > 0
 
-      const T oot = T(1)/_c;
-      const T cst = _c*_s*t;
 
-      this->_p[0][0] = oot * sin(cst);
-      this->_p[0][1] = oot * ( 1 - cos(cst) );
+      this->_p[0][0] = T( sin( _k * _d * t ) );
+      this->_p[0][1] = T( 1.0 - cos( _k * _d * t ) );
       this->_p[0][2] = T(0);
+
+      this->_p *= T(1) / _k;
 
       if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-        const T cs = _c*_s;
+        const T g = _k * _d;
 
         if( d > 0 ) {
 
-          this->_p[1][0] = oot * cs * cos(cst);
-          this->_p[1][1] = oot * cs * sin(cst);
+          this->_p[1][0] = g * T( cos( _k * _d * t ) );
+          this->_p[1][1] = g * T( sin( _k * _d * t ) );
           this->_p[1][2] = T(0);
         }
 
         if( d > 1 ) {
 
-          this->_p[2][0] = oot * cs * cs * -sin(cst);
-          this->_p[2][1] = oot * cs * cs * cos(cst);
+          this->_p[2][0] = g * T( -sin( _k * _d * t ) );
+          this->_p[2][1] = g * T(  cos( _k * _d * t ) );
           this->_p[2][2] = T(0);
         }
       }
     }
-    this->_p[0] = _matrix_arc * Point<T,3>(this->_p[0]);
-    this->_p[1] = _matrix_arc * this->_p[1];
-    this->_p[2] = _matrix_arc * this->_p[2];
+
   }
 
 
@@ -181,7 +175,7 @@ namespace GMlib {
   inline
   T PArc<T>::getCurvature() const {
 
-    return _c;
+    return _k;
   }
 
 
@@ -223,7 +217,7 @@ namespace GMlib {
   inline
   T PArc<T>::getLocalMapping( T t, T ts, T ti, T te ) {
 
-    return ( t - ti ) * _delta;
+    return this->getParStart() + (t - ti) / (te-ts) * this->getParDelta();
   }
 
 
@@ -231,7 +225,7 @@ namespace GMlib {
   inline
   T PArc<T>::getSpeed() const {
 
-    return _s;
+    return _d;
   }
 
 
@@ -247,7 +241,7 @@ namespace GMlib {
   inline
   bool PArc<T>::isClosed() const {
 
-    return (_end - _start) < 1e-7;
+    return (_end - _start) < 1e-5;
   }
 
 
@@ -255,7 +249,7 @@ namespace GMlib {
   inline
   void PArc<T>::setCurvature( T curvature ) {
 
-      _c = curvature;
+      _k = curvature;
   }
 
 
@@ -271,7 +265,7 @@ namespace GMlib {
   inline
   void PArc<T>::setSpeed( T speed ) {
 
-      _s = speed;
+      _d = speed;
   }
 
 

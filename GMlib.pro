@@ -19,132 +19,92 @@
 # # along with GMlib. If not, see <http://www.gnu.org/licenses/>.
 # #
 # ###############################################################################
-
-
-##################
+# #################
 # Configuration
-
 # GMlib Features
-#
-# GM_GL_EXTENSION   enables OpenGL extensions
-# GM_SCRIPT_LUA     enables lua scripting support through wrapper classes
-#
+# GM_GL_EXTENSION enables OpenGL extensions
+# GM_SCRIPT_LUA enables lua scripting support through wrapper classes
 # DEFINES = GM_GL_EXTENSIONS
 # DEFINES = GM_GL_EXTENSIONS GM_SCRIPT_LUA
-DEFINES =
+DEFINES = 
 
-##########################
+# #########################
 # Compiler flags
-
-QMAKE_CXXFLAGS =
-QMAKE_CXXFLAGS_DEBUG = -frtti -pg -g
+QMAKE_CXXFLAGS = 
+QMAKE_CXXFLAGS_DEBUG = -frtti \
+    -pg \
+    -g
 QMAKE_CXXFLAGS_RELEASE = -frtti
 
-
-############################
+# ###########################
 # Architecture/environment spesific configuration
-
 # Windows
-#
-win32 {
-
+win32 { 
     # MingGW pacement
     MINGW_DIR = C:/MinGW
-
+    
     # Compiler placement
     QMAKE_CXX = $${MINGW_DIR}/bin/mingw32-g++
-
+    
     # Include Paths
-    INCLUDEPATH += \
-      $${MINGW_DIR}/include \
-      $${MINGW_DIR}/include/GL
-
+    INCLUDEPATH += $${MINGW_DIR}/include \
+        $${MINGW_DIR}/include/GL
+    
     # Libraries
-    LIBS += \
-      -L"$${MINGW_DIR}/lib" \
-      -lGLee \
-      -lopengl32 \
-      -lglu32
-
-
+    LIBS += -L"$${MINGW_DIR}/lib"
+    contains( DEFINES, "GM_GL_EXTENSIONS" ):LIBS += -lGLee # GLee must be linked before the opengl libraries.
+    LIBS += -lopengl32 \
+        -lglu32
 }
 
 # Unix
-#
-unix {
-
+unix { 
     # Compiler
     QMAKE_CXX = g++
-
+    
     # Include Paths
-    INCLUDEPATH += \
-      "/usr/include" \
-      "/usr/include/GL"
-
-    contains( DEFINES, "GM_SCRIPT_LUA" ) : INCLUDEPATH += "/usr/include/lua5.1"
+    INCLUDEPATH += "/usr/include" \
+        "/usr/include/GL"
+    contains( DEFINES, "GM_SCRIPT_LUA" ):INCLUDEPATH += "/usr/include/lua5.1"
 }
 
-
-
-
-
-#################################################################################
+# ################################################################################
 # No configuration beneath this line, unless you know what you are doing.
-#################################################################################
-
-#################
+# ################################################################################
+# ################
 # QMake project definitions
-
 # Library name
 TARGET = GMlib
 
-
 # QMake template
 TEMPLATE = lib
-
 
 # QMake config
 CONFIG -= qt
 CONFIG += debug_and_release
 
-
 # Destination directory
 DESTDIR = dist
-
 
 # Compilers work directory
 OBJECTS_DIR = work/qmake/tmp
 RCC_DIR = work/qmake/rcc
 
-
 # Target
-CONFIG( debug, debug|release ) {
-
-  unix:TARGET = $$join(TARGET,,,_debug)
-  win32:TARGET = $$join(TARGET,,d)
+CONFIG( debug, debug|release ) { 
+    unix:TARGET = $$join(TARGET,,,_debug)
+    win32:TARGET = $$join(TARGET,,d)
 }
-
 
 # Installation
-
-win32 {
-
-  target.path = c:/gmlib/lib
-}
-
-unix {
-
-  target.path = /usr/local/lib/gmlib
-}
-
+win32:target.path = c:/gmlib/lib
+unix:target.path = /usr/local/lib/gmlib
 INSTALLS += target
-
 
 # ###########################
 # Basic qmake template setup
 # Defines that it is a library
 TEMPLATE = lib
-
 
 # ##################################
 # Header Files (sorted by "module")
@@ -203,11 +163,13 @@ HEADERS += src/gmParametrics.h \
     src/gmPCurve.h \
     src/gmPSurf.h \
     src/gmPApple.h \
-    src/gmPArc.h \
+    src/gmPArc.h \ \
+    src/gmPAsteroidalSphere.h \
     src/gmPBezierCurve.h \
     src/gmPBezierSurf.h \
     src/gmPBSplineCurve.h \
     src/gmPButterfly.h \
+    src/gmPChrysanthemumCurve.h \
     src/gmPCircle.h \
     src/gmPCylinder.h \
     src/gmPERBSCurve.h \
@@ -248,7 +210,6 @@ HEADERS += src/gmVContours.h \
 HEADERS += src/gmGLSL.h \
     src/gmGLPhongShader.h
 
-
 # #############
 # Source Files
 SOURCES += src/gmCamera.cpp \
@@ -279,7 +240,6 @@ SOURCES += src/gmCamera.cpp \
     src/gmWindow_GMWindow.cpp \
     src/gmWindow_View.cpp \
     src/gmWindow_ViewSet.cpp
-
 
 # ######################
 # Non C/C++ Source Files
@@ -487,4 +447,8 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmVDerivatives.c \
     src/gmVDefault.c \
     src/gmVCoordinateSystem.c \
-    src/gmVContours.c
+    src/gmVContours.c \
+    src/gmPChrysanthemumCurve \
+    src/gmPChrysanthemumCurve.c \
+    src/gmPAsteroidalSphere \
+    src/gmPAsteroidalSphere.c

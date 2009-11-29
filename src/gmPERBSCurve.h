@@ -50,40 +50,40 @@ namespace GMlib {
     PERBSCurve( const PERBSCurve<T>& copy );
     virtual ~PERBSCurve();
 
-    void                        edit( SceneObject *obj );
-    void                        generateKnotVector( PCurve<T>* g );
-    string                      getIdentity() const;
-    DVector< PCurve<T>* >&      getLocalPatches();
-    int                         getNoLocalPatches() const;
-    virtual void                hideLocalPatches();
-    bool                        isClosed() const;
-    bool                        isLocalPatchesVisible() const;
-    virtual void                showLocalPatches();
-    void                        setResampleMode( GM_RESAMPLE_MODE mode );
+    void                            edit( SceneObject *obj );
+    void                            generateKnotVector( PCurve<T>* g );
+    string                          getIdentity() const;
+    DVector< PCurve<T>* >&          getLocalPatches();
+    int                             getNoLocalPatches() const;
+    virtual void                    hideLocalPatches();
+    bool                            isClosed() const;
+    bool                            isLocalPatchesVisible() const;
+    virtual void                    showLocalPatches();
+    void                            setResampleMode( GM_RESAMPLE_MODE mode );
 
   protected:
-    bool                        _closed;
+    bool                            _closed;
 
-    EvaluatorERBS<T>            *_evaluator;
+    EvaluatorERBS<long double>      *_evaluator;
 
-    DVector< DVector<T> >       _B;
-    DVector< int >              _tk;
-    DVector<T>                  _t;
+    DVector< DVector<T> >           _B;
+    DVector< int >                  _tk;
+    DVector<T>                      _t;
 //
-    GM_RESAMPLE_MODE            _resamp_mode;
-    bool                        _pre_eval;
+    GM_RESAMPLE_MODE                _resamp_mode;
+    bool                            _pre_eval;
 
-    DVector< PCurve<T>* >       _c;
+    DVector< PCurve<T>* >           _c;
 
-    void	                      eval( T t, int d = 0, bool l = false );
-    void                        getB( DVector<T>& B, int tk, T t, int d );
-    T                           getEndP();
-    T                           getStartP();
-    virtual void                init();
-    void                        insertPatch( PCurve<T> *patch );
-    void                        resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
-    void                        resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
-    void                        resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
+    void                            eval( T t, int d = 0, bool l = false );
+    void                            getB( DVector<T>& B, int tk, T t, int d );
+    T                               getEndP();
+    T                               getStartP();
+    virtual void                    init();
+    void                            insertPatch( PCurve<T> *patch );
+    void                            resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
+    void                            resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
+    void                            resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
 
   }; // END class PERBSCurve
 
