@@ -31,9 +31,7 @@ DEFINES =
 # #########################
 # Compiler flags
 QMAKE_CXXFLAGS = 
-QMAKE_CXXFLAGS_DEBUG = -frtti \
-    -pg \
-    -g
+QMAKE_CXXFLAGS_DEBUG = -frtti -g
 QMAKE_CXXFLAGS_RELEASE = -frtti
 
 # ###########################
@@ -49,12 +47,6 @@ win32 {
     # Include Paths
     INCLUDEPATH += $${MINGW_DIR}/include \
         $${MINGW_DIR}/include/GL
-    
-    # Libraries
-    LIBS += -L"$${MINGW_DIR}/lib"
-    contains( DEFINES, "GM_GL_EXTENSIONS" ):LIBS += -lGLee # GLee must be linked before the opengl libraries.
-    LIBS += -lopengl32 \
-        -lglu32
 }
 
 # Unix
@@ -91,15 +83,10 @@ OBJECTS_DIR = work/qmake/tmp
 RCC_DIR = work/qmake/rcc
 
 # Target
-CONFIG( debug, debug|release ) { 
+CONFIG( debug, debug|release ) {
     unix:TARGET = $$join(TARGET,,,_debug)
-    win32:TARGET = $$join(TARGET,,d)
+    win32:TARGET = $$join(TARGET,,,D)
 }
-
-# Installation
-win32:target.path = c:/gmlib/lib
-unix:target.path = /usr/local/lib/gmlib
-INSTALLS += target
 
 # ###########################
 # Basic qmake template setup

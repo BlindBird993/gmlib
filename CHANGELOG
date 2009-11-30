@@ -6,7 +6,9 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 2009-11-30 Jostein Bratlie
-        * Compiles as a static library by default
+        * Qt .pro file update
+          - Compiles as a static library by default
+          - The library will be suffixed _debug on linux and D on windows if it's compiled with the debug flag
 
 
 2009-11-29 Jostein Bratlie
