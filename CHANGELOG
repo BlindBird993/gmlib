@@ -5,6 +5,10 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-11-30 Jostein Bratlie
+        * Compiles as a static library by default
+
+
 2009-11-29 Jostein Bratlie
         * ERBSCurve
           - ERBS basis evaulator now defined with the type "long double"

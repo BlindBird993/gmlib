@@ -81,7 +81,7 @@ TEMPLATE = lib
 
 # QMake config
 CONFIG -= qt
-CONFIG += debug_and_release
+CONFIG += staticlib debug_and_release
 
 # Destination directory
 DESTDIR = dist
