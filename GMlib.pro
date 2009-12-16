@@ -31,7 +31,8 @@ DEFINES =
 # #########################
 # Compiler flags
 QMAKE_CXXFLAGS = 
-QMAKE_CXXFLAGS_DEBUG = -frtti -g
+QMAKE_CXXFLAGS_DEBUG = -frtti \
+    -g
 QMAKE_CXXFLAGS_RELEASE = -frtti
 
 # ###########################
@@ -73,7 +74,8 @@ TEMPLATE = lib
 
 # QMake config
 CONFIG -= qt
-CONFIG += staticlib debug_and_release
+CONFIG += staticlib \
+    debug_and_release
 
 # Destination directory
 DESTDIR = dist
@@ -83,7 +85,7 @@ OBJECTS_DIR = work/qmake/tmp
 RCC_DIR = work/qmake/rcc
 
 # Target
-CONFIG( debug, debug|release ) {
+CONFIG( debug, debug|release ) { 
     unix:TARGET = $$join(TARGET,,,_debug)
     win32:TARGET = $$join(TARGET,,,D)
 }
@@ -137,7 +139,7 @@ HEADERS += src/gmArrow3D.h \
     src/gmSphere3D.h \
     src/gmStlObject.h \
     src/gmTexture.h \
-    src/gmTriangle.h
+    src/gmTriangleSystem.h
 
 # gmMisc
 HEADERS += src/gmCodeExample.h
@@ -150,7 +152,8 @@ HEADERS += src/gmParametrics.h \
     src/gmPCurve.h \
     src/gmPSurf.h \
     src/gmPApple.h \
-    src/gmPArc.h \ \
+    src/gmPArc.h \
+    \ \
     src/gmPAsteroidalSphere.h \
     src/gmPBezierCurve.h \
     src/gmPBezierSurf.h \
@@ -248,7 +251,6 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmArrayLX.c \
     src/gmArray.c \
     src/gmAngle.c \
-    src/gmTriangle \
     src/gmTimer \
     src/gmTexture \
     src/gmSubSpace \
@@ -311,13 +313,6 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmCore \
     src/gmContainer \
     src/gmColor \
-    src/gmTriangle_Vertex.c \
-    src/gmTriangle_TriangleSystem.c \
-    src/gmTriangle_TriangleFacets.c \
-    src/gmTriangle_Triangle.c \
-    src/gmTriangle_Tile.c \
-    src/gmTriangle_PWVLine.c \
-    src/gmTriangle_Edge.c \
     src/gmTimer.c \
     src/gmSubSpace_SubSpace.c \
     src/gmSubSpace_Plane.c \
@@ -438,4 +433,12 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmPChrysanthemumCurve \
     src/gmPChrysanthemumCurve.c \
     src/gmPAsteroidalSphere \
-    src/gmPAsteroidalSphere.c
+    src/gmPAsteroidalSphere.c \
+    src/gmTriangleSystem \
+    src/gmTriangleSystem_TSVertex.c \
+    src/gmTriangleSystem_TSTriangle.c \
+    src/gmTriangleSystem_TSTile.c \
+    src/gmTriangleSystem_TSLine.c \
+    src/gmTriangleSystem_TSEdge.c \
+    src/gmTriangleSystem_TriangleSystem.c \
+    src/gmTriangleSystem_TriangleFacets.c

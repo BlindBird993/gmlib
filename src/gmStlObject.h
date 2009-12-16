@@ -45,7 +45,7 @@ namespace GMlib {
 
 
   template <typename T>
-  class Vertex;
+  class TSVertex;
 
 
   enum GM_STL_VISUALIZATION {
@@ -70,7 +70,7 @@ namespace GMlib {
     Array<Point<float,3> >            getPoints();
     const Array<Point<float,3> >&     getPoints() const;
     float                             getPointSize();
-    ArrayLX< Vertex<float> >          getVertices();
+    ArrayLX< TSVertex<float> >          getVertices();
 
     void                              load( std::ifstream& stream, bool binary = true );
     void                              replot( GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );

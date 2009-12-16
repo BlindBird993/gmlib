@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmTriangle_TriangleSystem.c
+/*! \file gmTriangleSystem_TriangleSystem.c
  *  \brief TriangleSystem class function implementations
  *
  *  \date   2008-10-22
@@ -37,7 +37,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleSystem<T>::adjust( Triangle<T> *t, bool wider )	{
+  void TriangleSystem<T>::adjust( TSTriangle<T> *t, bool wider )	{
 
     _tv->_adjustTriangle(t,wider);
   }
@@ -45,7 +45,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vertex<T>* TriangleSystem<T>::find( const Point<T,3>& p) const {
+  TSVertex<T>* TriangleSystem<T>::find( const Point<T,3>& p) const {
 
     return _tv->_find(p);
   }
@@ -53,7 +53,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Edge<T>* TriangleSystem<T>::find( const Point<T,3>& p1,const Point<T,3>& p2){
+  TSEdge<T>* TriangleSystem<T>::find( const Point<T,3>& p1,const Point<T,3>& p2){
 
     return _tv->_find(p1,p2);
   }
@@ -69,7 +69,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleSystem<T>::insert( Edge<T> *e ) {
+  void TriangleSystem<T>::insert( TSEdge<T> *e ) {
 
     (_tv->_getEdges()) += e;
   }
@@ -77,7 +77,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleSystem<T>::insert( Triangle<T> *t) {
+  void TriangleSystem<T>::insert( TSTriangle<T> *t) {
 
     _tv->_insertTriangle(t);
   }
@@ -85,7 +85,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleSystem<T>::remove( Edge<T> *e) {
+  void TriangleSystem<T>::remove( TSEdge<T> *e) {
 
     (_tv->_getEdges()).remove(e);
   }
@@ -93,7 +93,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleSystem<T>::remove( Triangle<T> *t) {
+  void TriangleSystem<T>::remove( TSTriangle<T> *t) {
 
     _tv->_removeTriangle(t);
   }

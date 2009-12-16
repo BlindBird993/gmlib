@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmTriangle.h
+/*! \file gmTriangleSystem.h
  *
  *  Interface of the Triangle system classes.
  *
@@ -31,8 +31,8 @@
 
 
 
-#ifndef __gmTRIANGLE_H__
-#define __gmTRIANGLE_H__
+#ifndef __gmTRIANGLESYSTEM_H__
+#define __gmTRIANGLESYSTEM_H__
 
 
 
@@ -44,7 +44,8 @@
 #include "gmArrayLX.h"
 #include "gmSArray.h"
 #include "gmDMatrix.h"
-//#include "gmDPCylinder.h"
+
+#include "gmDisplayObject.h"
 
 
 
@@ -57,22 +58,22 @@ namespace GMlib {
   class TriangleSystem;
 
   template <typename T>
-  class Vertex;
+  class TSVertex;
 
   template <typename T>
-  class Edge;
+  class TSEdge;
 
   template <typename T>
-  class Triangle;
+  class TSTriangle;
 
   template <typename T>
-  class Tile;
+  class TSTile;
 
   template <typename T>
-  class PWVLine;
+  class TSLine;
 
 
-  /** \class  TriangleFacets gmTriangle.h <gmTriangle>
+  /** \class  TriangleFacets gmTriangleSystem.h <gmTriangleSystem>
    *  \brief  The storage class of the Triangle system
    *
    *  This is the main class. Here you can make, adjust
@@ -80,11 +81,11 @@ namespace GMlib {
    *  the storage class for the vertices, edges and triangles
    */
   template <typename T>
-  class  TriangleFacets : public ArrayLX< Vertex<T> >, public DisplayObject {
+  class  TriangleFacets : public ArrayLX< TSVertex<T> >, public DisplayObject {
    public:
 
     TriangleFacets( int d = 0 );
-    TriangleFacets( const ArrayLX<Vertex<T> >& v);
+    TriangleFacets( const ArrayLX<TSVertex<T> >& v);
     ~TriangleFacets();
 
 
@@ -100,24 +101,24 @@ namespace GMlib {
     void                              computeNormals();
     Box<T,3>					                getBoundBox() const;
 
-    Edge<T>*		                      getEdge(int i)		const;
+    TSEdge<T>*		                      getEdge(int i)		const;
     int                               getNoVertices()	const;
     int                               getNoEdges()		const;
     int                               getNoTriangles()	const;
 
-    Triangle<T>*	                    getTriangle(int i)	const;
-    Vertex<T>*		                    getVertex(int i)	const;
+    TSTriangle<T>*	                  getTriangle(int i)	const;
+    TSVertex<T>*		                    getVertex(int i)	const;
 
     int                               initRender(); //const;
 
-    void                              insertPwl( PWVLine<T>& );
-    bool                              insertVertex( Vertex<T>&, bool c = false );
-    bool                              removeVertex( Vertex<T>& v );
-    bool                              removeVertexNew( Vertex<T>& v);
+    void                              insertLine( TSLine<T>& );
+    bool                              insertVertex( TSVertex<T>&, bool c = false );
+    bool                              removeVertex( TSVertex<T>& v );
+    bool                              removeVertexNew( TSVertex<T>& v);
 
     void                              render(); // const;
 
-    bool                              setConstEdge(Vertex<T> v1, Vertex<T> v2);
+    bool                              setConstEdge(TSVertex<T> v1, TSVertex<T> v2);
 
     void                              triangulateDelaunay();
 
@@ -130,36 +131,36 @@ namespace GMlib {
 
 
   private:
-    ArrayLX< Edge<T>* >		            _edges;
-    ArrayLX< Triangle<T>* >           _triangles;
-    Array< Tile<T> *>                 _tmptiles;
+    ArrayLX< TSEdge<T>* >		            _edges;
+    ArrayLX< TSTriangle<T>* >         _triangles;
+    Array< TSTile<T> *>                 _tmptiles;
 
     int                               _d;
 
-    DMatrix<ArrayT<Triangle<T>*> >    _tri_order;
+    DMatrix<ArrayT<TSTriangle<T>*> >  _tri_order;
     ArrayT<T>                         _u;
     ArrayT<T>                         _v;
     Box<T,3>                          _box;
 
-   Vertex<T>	                        __v;		// dummy because of MS-VC++ compiler
-   Edge<T>			                      __e;		// dummy because of MS-VC++ compiler
-   Triangle<T> 	                      __t;		// dummy because of MS-VC++ compiler
+   TSVertex<T>	                        __v;		// dummy because of MS-VC++ compiler
+   TSEdge<T>			                      __e;		// dummy because of MS-VC++ compiler
+   TSTriangle<T> 	                      __t;		// dummy because of MS-VC++ compiler
 
-    bool                              _fillPolygon(Array<Edge<T>*>&);
+    bool                              _fillPolygon(Array<TSEdge<T>*>&);
     bool                              _removeLastVertex();;
     void                              _set(int i);
-    int                               _surroundingTriangle(Triangle<T>*&, const Vertex<T>&);// const;
+    int                               _surroundingTriangle(TSTriangle<T>*&, const TSVertex<T>&);// const;
 
 
   friend class TriangleSystem<T>;
   private:
-    void                              _adjustTriangle( Triangle<T>*, bool wider = false );
-    ArrayLX<Edge<T>* >&		            _getEdges();
-    Vertex<T>*                        _find( const Point<T,3>& ) const;
-    Edge<T>*                          _find( const Point<T,3>&, const Point<T,3>& ) const;
-    void                              _insertTriangle( Triangle<T>* );
-    void                              _removeTriangle( Triangle<T>* );
-    ArrayLX<Triangle<T>* >&	          _triangle();
+    void                              _adjustTriangle( TSTriangle<T>*, bool wider = false );
+    ArrayLX<TSEdge<T>* >&		            _getEdges();
+    TSVertex<T>*                        _find( const Point<T,3>& ) const;
+    TSEdge<T>*                          _find( const Point<T,3>&, const Point<T,3>& ) const;
+    void                              _insertTriangle( TSTriangle<T>* );
+    void                              _removeTriangle( TSTriangle<T>* );
+    ArrayLX<TSTriangle<T>* >&	          _triangle();
 
 
 
@@ -196,11 +197,7 @@ namespace GMlib {
 
 
 
-
-
-
-
-  /** \class TriangleSystem gmTriangle.h <gmTriangle>
+  /** \class TriangleSystem gmTriangleSystem.h <gmTriangleSystem>
    *  \brief The TriangleSystem base class
    *
    *  The base class for vertices, edges and triangles
@@ -211,16 +208,16 @@ namespace GMlib {
     void                        set( TriangleFacets<T>& ts );
 
   protected:
-    void                        adjust( Triangle<T> *t, bool wider = false );
-    Vertex<T>*                  find( const Point<T,3>& p ) const;
-    Edge<T>*                    find( const Point<T,3>& p1, const Point<T,3>& p2 );
+    void                        adjust( TSTriangle<T> *t, bool wider = false );
+    TSVertex<T>*                  find( const Point<T,3>& p ) const;
+    TSEdge<T>*                    find( const Point<T,3>& p1, const Point<T,3>& p2 );
 
 //    int                         getStreamMode();
 
-    void                        insert( Edge<T> *e );
-    void                        insert( Triangle<T> *t );
-    void                        remove( Edge<T> *e );
-    void                        remove( Triangle<T> *t );
+    void                        insert( TSEdge<T> *e );
+    void                        insert( TSTriangle<T> *t );
+    void                        remove( TSEdge<T> *e );
+    void                        remove( TSTriangle<T> *t );
 
 
   private:
@@ -229,40 +226,36 @@ namespace GMlib {
 
 
 
-
-
-
-
-  /** \class  Vertex
-   *  \brief  The Vertex class
+  /** \class  TSVertex
+   *  \brief  The TSVertex class
    *
    *  The vertex class storing 3D position and a normal
    */
   template <typename T>
-  class Vertex : private Arrow<T,3>, public TriangleSystem<T> {
+  class TSVertex : private Arrow<T,3>, public TriangleSystem<T> {
   public:
-    Vertex();
-    Vertex( const Point<T,2>& v );
-    Vertex( const Point<T,3>& p );
-    Vertex( const Point<T,3>& p, const Vector<T,3>& n );
-    Vertex( const T& x, const T& y, const T& z = T() );
-    ~Vertex();
+    TSVertex();
+    TSVertex( const Point<T,2>& v );
+    TSVertex( const Point<T,3>& p );
+    TSVertex( const Point<T,3>& p, const Vector<T,3>& n );
+    TSVertex( const T& x, const T& y, const T& z = T() );
+    ~TSVertex();
 
 
     bool                  boundary() const;
     Arrow<T,3>			      getArrow();
-    ArrayT<Edge<T>*>&	    getEdges();
+    ArrayT<TSEdge<T>*>&	    getEdges();
     Point<T,3>			      getNormal() const;
-    Array<Edge<T>*>		    getOuterEdges() const;
+    Array<TSEdge<T>*>		    getOuterEdges() const;
     Point<T,2>			      getParameter() const;
     Point<T,3>			      getPosition() const;
     T                     getRadius();
     T                     getRadiusMax();
     T                     getRadiusMin();
-    Array<Triangle<T>*>   getTriangles() const;
+    Array<TSTriangle<T>*>   getTriangles() const;
 
     bool                  isConst()	const;
-    int                   isInside( Triangle<T>* ) const;
+    int                   isInside( TSTriangle<T>* ) const;
 
     void                  setConst( bool c = true );
     void                  setRadius( T r );
@@ -270,9 +263,9 @@ namespace GMlib {
     void                  setRadiusMin( T r );
     void                  setZ( T z );
 
-    Vertex<T>&            operator=(const Vertex<T>& t);
-    bool                  operator==(const Vertex<T>& t)	const;
-    bool                  operator<(const Vertex<T> &t) const;
+    TSVertex<T>&            operator=(const TSVertex<T>& t);
+    bool                  operator==(const TSVertex<T>& t)	const;
+    bool                  operator<(const TSVertex<T> &t) const;
 
 
 
@@ -281,7 +274,7 @@ namespace GMlib {
     T                     _radius;
     T                     _maxradius;
     T                     _minradius;
-    ArrayT<Edge<T>*>      _edges;
+    ArrayT<TSEdge<T>*>      _edges;
 
     bool                  _const;
 
@@ -289,28 +282,28 @@ namespace GMlib {
     void                  _set( const Point<T,3>& p, const Vector<T,3>& n );
 
 
-  friend class Edge<T>;
+  friend class TSEdge<T>;
   friend class TriangleFacets<T>;
   private:
 
     void                  _computeNormal();
     void                  _deleteEdges();
-    bool                  _insertEdge(Edge<T>* e);
-    bool                  _removeEdge(Edge<T>* e);
+    bool                  _insertEdge(TSEdge<T>* e);
+    bool                  _removeEdge(TSEdge<T>* e);
 
-    void                  _set( const Vertex<T>& v );
+    void                  _set( const TSVertex<T>& v );
 
 
 //  #if defined GM_STREAM
 //
 //
 //  public:
-//    friend ostream&       operator<<(ostream& out, const Vertex<T>& v) { return v._prOut(out); }
-//    friend ostream&       operator<<(ostream& out, const Vertex<T>* v) { return v->_prOut(out); }
-//    friend istream&       operator>>(istream& in, Vertex<T>& v)	{ return v._prIn(in); }
-//    friend istream&       operator>>(istream& in, Vertex<T>* v)	{ return v->_prIn(in); }
+//    friend ostream&       operator<<(ostream& out, const TSVertex<T>& v) { return v._prOut(out); }
+//    friend ostream&       operator<<(ostream& out, const TSVertex<T>* v) { return v->_prOut(out); }
+//    friend istream&       operator>>(istream& in, TSVertex<T>& v)	{ return v._prIn(in); }
+//    friend istream&       operator>>(istream& in, TSVertex<T>* v)	{ return v->_prIn(in); }
 //
-//    void                  print(char prompt[]="Vertex<T>", ostream & out = cout) const
+//    void                  print(char prompt[]="TSVertex<T>", ostream & out = cout) const
 //    { out << prompt << ": " << (*this) << "\n"; }
 //
 //  private:
@@ -323,48 +316,48 @@ namespace GMlib {
 
 
 
-  /** \class Edge gmTriangle.h <gmTriangle>
-   *  \brief The Edge class
+  /** \class TSEdge gmTriangleSystem.h <gmTriangleSystem>
+   *  \brief The TSEdge class
    *
    *  The edge class defined by 2 vertices, can be fixed
    */
   template <typename T>
-  class Edge : public TriangleSystem<T> {
+  class TSEdge : public TriangleSystem<T> {
   public:
-    Edge();
-    Edge(Vertex<T>& s, Vertex<T>& e);
-    Edge(const Edge<T>& e);
-    ~Edge();
+    TSEdge();
+    TSEdge(TSVertex<T>& s, TSVertex<T>& e);
+    TSEdge(const TSEdge<T>& e);
+    ~TSEdge();
 
     bool                  boundary() const;
 
-    Vertex<T>*	          getCommonVertex(const Edge<T>&) const;
-    Vertex<T>*	          getFirstVertex() const;
+    TSVertex<T>*	          getCommonVertex(const TSEdge<T>&) const;
+    TSVertex<T>*	          getFirstVertex() const;
 
     Point<T,3>	          getCenterPos();
     Point<T,2>	          getCenterPos2D();
     T                     getLength();
     T                     getLength2D();
-    Array<Triangle<T>*>   getTriangle();
+    Array<TSTriangle<T>*>   getTriangle();
     Vector<T,3>	          getVector();
     Vector2D<T>	          getVector2D();
-    Vertex<T>*	          getLastVertex() const;
+    TSVertex<T>*	          getLastVertex() const;
 
-    Vertex<T>*	          getOtherVertex(const Vertex<T>&) const;
+    TSVertex<T>*	          getOtherVertex(const TSVertex<T>&) const;
 
 
     void                  setConst(bool c = true);
 
 
-    bool                  operator <  (const Edge<T>& v) const;
-    bool                  operator >  (const Edge<T>& v) const;
-    bool                  operator <= (const Edge<T>& v) const;
-    bool                  operator >= (const Edge<T>& v) const;
+    bool                  operator <  (const TSEdge<T>& v) const;
+    bool                  operator >  (const TSEdge<T>& v) const;
+    bool                  operator <= (const TSEdge<T>& v) const;
+    bool                  operator >= (const TSEdge<T>& v) const;
 
 
   private:
-    Vertex<T>             *_vertex[2];
-    Triangle<T>           *_triangle[2];
+    TSVertex<T>             *_vertex[2];
+    TSTriangle<T>           *_triangle[2];
     bool	                _const;
 
 
@@ -372,24 +365,24 @@ namespace GMlib {
     void                  _upv();
 
 
-  friend class Triangle<T>;
+  friend class TSTriangle<T>;
   friend class TriangleFacets<T>;
   private:
 
-    Edge<T>*              _getNext();
+    TSEdge<T>*              _getNext();
     bool                  _hasPoints(const Point<T,3>& , const Point<T,3>&) const;
-    bool                  _isFirst(Vertex<T>* v);
-    bool                  _isLast(Vertex<T>* v);
+    bool                  _isFirst(TSVertex<T>* v);
+    bool                  _isLast(TSVertex<T>* v);
 
     void                  _okDelaunay();
 
-    Triangle<T>*          _getOther(Triangle<T>*);
-    bool                  _removeTriangle(Triangle<T>*);
+    TSTriangle<T>*          _getOther(TSTriangle<T>*);
+    bool                  _removeTriangle(TSTriangle<T>*);
     void                  _reverse();
-    void                  _setTriangle(Triangle<T>* t1,Triangle<T>* t2);
-    bool                  _split( Vertex<T>& p );
-    bool                  _swapTriangle(Triangle<T>* ot, Triangle<T>* nt);
-    bool                  _swapVertex(Vertex<T>& is_v,Vertex<T>& new_v);
+    void                  _setTriangle(TSTriangle<T>* t1,TSTriangle<T>* t2);
+    bool                  _split( TSVertex<T>& p );
+    bool                  _swapTriangle(TSTriangle<T>* ot, TSTriangle<T>* nt);
+    bool                  _swapVertex(TSVertex<T>& is_v,TSVertex<T>& new_v);
 
 
 
@@ -399,36 +392,29 @@ namespace GMlib {
 //    istream& _prIn(istream& in);
 //  public:
 //
-//    friend ostream& operator<<(ostream& out, const Edge<T>& v);
-//    friend ostream& operator<<(ostream& out, const Edge<T>* v);
-//    friend istream& operator>>(istream& in, Edge<T>& v);
-//    friend istream& operator>>(istream& in, Edge<T>* v);
+//    friend ostream& operator<<(ostream& out, const TSEdge<T>& v);
+//    friend ostream& operator<<(ostream& out, const TSEdge<T>* v);
+//    friend istream& operator>>(istream& in, TSEdge<T>& v);
+//    friend istream& operator>>(istream& in, TSEdge<T>* v);
 //
-//    void print(char prompt[]="Edge<T>", ostream & out = cout) const;
+//    void print(char prompt[]="TSEdge<T>", ostream & out = cout) const;
 //  #endif
   };
 
 
 
-
-
-
-
-
-
-  /** \class  Triangle gmTriangle.h <gmTriangle>
-   *  \brief  The Trangle class
+  /** \class  TSTriangle gmTriangleSystem.h <gmTriangleSystem>
+   *  \brief  The TriangleSystem Trangle class
    *
    *  The triangle class defined by 3 edges
    */
   template <typename T>
-  class Triangle: public TriangleSystem<T> {
+  class TSTriangle: public TriangleSystem<T> {
   public:
-
-    Triangle();
-    Triangle( Edge<T>* e1, Edge<T>* e2, Edge<T>* e3 );
-    Triangle( const Triangle<T>& t );
-    ~Triangle();
+    TSTriangle();
+    TSTriangle( TSEdge<T>* e1, TSEdge<T>* e2, TSEdge<T>* e3 );
+    TSTriangle( const TSTriangle<T>& t );
+    ~TSTriangle();
 
 
     T					              getAngleLargest();
@@ -441,41 +427,41 @@ namespace GMlib {
     T					              getCircum();
     T					              getCircum2D();
 
-    Array<Edge<T>*>		      getEdges() const;
+    Array<TSEdge<T>*>		      getEdges() const;
     Vector<T,3>		          getNormal() const;
-    Array<Vertex<T>*>	      getVertices() const;
-    int	                    isAround(const Vertex<T>& v) const;
+    Array<TSVertex<T>*>	      getVertices() const;
+    int	                    isAround(const TSVertex<T>& v) const;
 
 
 
   private:
-    Edge<T>                 *_edge[3];
+    TSEdge<T>                 *_edge[3];
     Box<unsigned char,2>    _box;
 
 
 
-  friend class Edge<T>;
+  friend class TSEdge<T>;
   friend class TriangleFacets<T>;
   private:
 
     T                       _evalZ( const Point2D<T>& p, int deg = 1 ) const;
     Box<unsigned char,2>&   _getBox();
     void                    _render();//  const;
-    bool                    _reverse( Edge<T>* edge );
-    void                    _setEdges( Edge<T>* e1, Edge<T>* e2, Edge<T>* e3 );
-    bool                    _split( Vertex<T>& p );
+    bool                    _reverse( TSEdge<T>* edge );
+    void                    _setEdges( TSEdge<T>* e1, TSEdge<T>* e2, TSEdge<T>* e3 );
+    bool                    _split( TSVertex<T>& p );
     void                    _updateBox( ArrayT<T>& u, ArrayT<T>& v, int d );
 
 
 
 //  #if defined GM_STREAM
 //  public:
-//    friend ostream& operator << ( ostream& out, const Triangle<T>& v );
-//    friend ostream& operator << ( ostream& out, const Triangle<T>* v );
-//    friend istream& operator >> ( istream& in, Triangle<T>& v );
-//    friend istream& operator >> ( istream& in, Triangle<T>* v );
+//    friend ostream& operator << ( ostream& out, const TSTriangle<T>& v );
+//    friend ostream& operator << ( ostream& out, const TSTriangle<T>* v );
+//    friend istream& operator >> ( istream& in, TSTriangle<T>& v );
+//    friend istream& operator >> ( istream& in, TSTriangle<T>* v );
 //
-//    void print( char prompt[] = "Triangle<T>", ostream & out = cout ) const;
+//    void print( char prompt[] = "TSTriangle<T>", ostream & out = cout ) const;
 //
 //  private:
 //    ostream& _prOut( ostream& out )const;
@@ -485,20 +471,16 @@ namespace GMlib {
 
 
 
-
-
-
-
-  /** \class  Tile gmTriangle.h <gmTriangle>
-   *  \brief  The Tile class
+  /** \class  TSTile gmTriangleSystem.h <gmTriangleSystem>
+   *  \brief  The TSTile class
    *
    *  The tile class defined by vertex, and dual of its triangles
    */
   template <typename T>
-  class Tile : public DisplayObject {
+  class TSTile : public DisplayObject {
   public:
-    Tile();
-    Tile( Vertex<T>* v, Box<T,3> domain );
+    TSTile();
+    TSTile( TSVertex<T>* v, Box<T,3> domain );
 
     T                     getBigR();
     string                getIdentity() const;
@@ -511,7 +493,7 @@ namespace GMlib {
 
   private:
     Array< Point<T,2> >   _vorpts;
-    Vertex<T>             *_vertex;
+    TSVertex<T>             *_vertex;
     T                     _inscribed;
     T                     _circumscribed;
 
@@ -520,21 +502,18 @@ namespace GMlib {
 
 
 
-
-
-
-  /** \class  PWVLine gmTriangle.h <gmTriangle>
-   *  \brief  The PWVLine class
+  /** \class  TSLine gmTriangleSystem.h <gmTriangleSystem>
+   *  \brief  The TSLine class
    *
-   *  This is a picewice linear curve based on vertices. You can also use the normal
+   *  TSLine
    */
   template <typename T>
-  class PWVLine : public Array< Vertex<T> > {
+  class TSLine : public Array< TSVertex<T> > {
   public:
-    PWVLine( int d = 0);
-    PWVLine( const Array<Vertex<T> >& v );
+    TSLine( int d = 0);
+    TSLine( const Array<TSVertex<T> >& v );
 
-    Vertex<T> interpolate( int i, double t ) const;
+    TSVertex<T> interpolate( int i, double t ) const;
   };
 
 
@@ -544,30 +523,30 @@ namespace GMlib {
 
 
 // Include TriangleFacets class function implementations
-#include "gmTriangle_TriangleFacets.c"
+#include "gmTriangleSystem_TriangleFacets.c"
 
 // Include TriangleSystem class function implementations
-#include "gmTriangle_TriangleSystem.c"
+#include "gmTriangleSystem_TriangleSystem.c"
 
-// Include Vertex class function implementations
-#include "gmTriangle_Vertex.c"
+// Include TriangleSystem Vertex class function implementations
+#include "gmTriangleSystem_TSVertex.c"
 
-// Include Edge class function implementations
-#include "gmTriangle_Edge.c"
+// Include TriangleSystem Edge class function implementations
+#include "gmTriangleSystem_TSEdge.c"
 
-// Include Triangle class function implementations
-#include "gmTriangle_Triangle.c"
+// Include TriangleSystem Triangle class function implementations
+#include "gmTriangleSystem_TSTriangle.c"
 
-// Include Tile class function implementations
-#include "gmTriangle_Tile.c"
+// Include TriangleSystem Tile class function implementations
+#include "gmTriangleSystem_TSTile.c"
 
-// Include PWVLine class function implementations
-#include "gmTriangle_PWVLine.c"
-
-
+// Include TriangleSystem Line class function implementations
+#include "gmTriangleSystem_TSLine.c"
 
 
 
-#endif // __gmTRIANGLE_H__
+
+
+#endif // __gmTRIANGLESYSTEM_H__
 
 

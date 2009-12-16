@@ -22,8 +22,8 @@
 
 
 
-/*! \file gmTriangle_PWVLine.c
- *  \brief PWVLine class function implementations
+/*! \file gmTriangleSystem_TSLine.c
+ *  \brief TSLine class function implementations
  *
  *  \date   2008-10-24
  */
@@ -36,16 +36,16 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PWVLine<T>::PWVLine( int d ) : Array<Vertex<T> >( d ) {}
+  TSLine<T>::TSLine( int d ) : Array<TSVertex<T> >( d ) {}
 
 
   template <typename T>
   inline
-  PWVLine<T>::PWVLine(const Array<Vertex<T> >& v) : Array<Vertex<T> >(v) {}
+  TSLine<T>::TSLine( const Array<TSVertex<T> >& v ) : Array<TSVertex<T> >(v) {}
 
 
   template <typename T>
-  Vertex<T> PWVLine<T>::interpolate( int i, double t ) const {
+  TSVertex<T> TSLine<T>::interpolate( int i, double t ) const {
 
   //	if( i < 0 || i > getSize() - 2 ) {
   //		// Errormessage for debug purpose
@@ -54,7 +54,7 @@ namespace GMlib {
     Point<T,3> pos = (1-t)*( (*this)(i).getPosition() ) + t*( (*this)(i+1).getPosition() );
     Point<T,3> nor = (1-t)*( (*this)(i).getNormal() ) + t*( (*this)(i+1).getNormal() );
 
-    return Vertex<T>( pos, nor );
+    return TSVertex<T>( pos, nor );
   }
 
 }

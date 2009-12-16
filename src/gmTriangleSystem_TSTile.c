@@ -22,8 +22,8 @@
 
 
 
-/*! \file gmTriangle_Tile.c
- *  \brief Tile class function implementations
+/*! \file gmTriangleSystem_TSTile.c
+ *  \brief TSTile class function implementations
  *
  *  \date   2008-10-24
  */
@@ -35,22 +35,22 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Tile<T>::Tile() {}
+  TSTile<T>::TSTile() {}
 
 
   template <typename T>
   inline
-  Tile<T>::Tile( Vertex<T>* v, Box<T,3> domain ) {
+  TSTile<T>::TSTile( TSVertex<T>* v, Box<T,3> domain ) {
 
     _vertex = v;
 
-    Array<Edge<T> *> edges;
+    Array<TSEdge<T> *> edges;
     edges = v->getEdges();
 
-    Array<Triangle<T> *> triangles = v->getTriangles();
+    Array<TSTriangle<T> *> triangles = v->getTriangles();
     for( int i = 0; i < triangles.getSize(); i++ ) {
 
-      Array<Vertex<T>* > vertices = triangles[i]->getVertices();
+      Array<TSVertex<T>* > vertices = triangles[i]->getVertices();
 
       if(vertices[0] != _vertex)
         swap( vertices[0], vertices[1]);
@@ -100,7 +100,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Point2D<T> Tile<T>::_voronoi( const Point2D<T>& v1, const Point2D<T>& v2, const Point2D<T>& v3 ) {
+  Point2D<T> TSTile<T>::_voronoi( const Point2D<T>& v1, const Point2D<T>& v2, const Point2D<T>& v3 ) {
 
     Vector2D<T> d1 = v2 - v1;
     Vector2D<T> d2 = v3 - v1;
@@ -112,7 +112,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T Tile<T>::getBigR() {
+  T TSTile<T>::getBigR() {
 
     return _circumscribed;
   }
@@ -120,15 +120,15 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string Tile<T>::getIdentity() const {
+  string TSTile<T>::getIdentity() const {
 
-    return "Tile";
+    return "TSTile";
   }
 
 
   template <typename T>
   inline
-  T Tile<T>::getSmallR() {
+  T TSTile<T>::getSmallR() {
 
     return _inscribed;
   }
@@ -136,7 +136,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Tile<T>::localDisplay() {
+  void TSTile<T>::localDisplay() {
 
     render();
   }
@@ -144,7 +144,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Tile<T>::localSelect() {
+  void TSTile<T>::localSelect() {
 
     glBegin( GL_LINE_STRIP ); {
 
@@ -162,7 +162,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Tile<T>::render() {
+  void TSTile<T>::render() {
 
     glPushAttrib( GL_LIGHTING_BIT );
   //  GLboolean lg;

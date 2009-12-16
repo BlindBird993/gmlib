@@ -22,8 +22,8 @@
 
 
 
-/*! \file gmTriangle_Edge.c
- *  \brief Edge class function implementations
+/*! \file gmTriangleSystem_TSEdge.c
+ *  \brief TSEdge class function implementations
  *
  *  \date   2008-10-22
  */
@@ -35,7 +35,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Edge<T>::Edge() {
+  TSEdge<T>::TSEdge() {
 
     _vertex[0] = _vertex[1] = NULL;
     _triangle[0] = _triangle[1] = NULL;
@@ -45,7 +45,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Edge<T>::Edge( Vertex<T>& s, Vertex<T>& e ) : _triangle() {
+  TSEdge<T>::TSEdge( TSVertex<T>& s, TSVertex<T>& e ) : _triangle() {
 
     _vertex[0] = &s;
     _vertex[1] = &e;
@@ -56,7 +56,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Edge<T>::Edge( const Edge<T>& e ) : _vertex( e._vertex ), _triangle( e._triangle ) {
+  TSEdge<T>::TSEdge( const TSEdge<T>& e ) : _vertex( e._vertex ), _triangle( e._triangle ) {
 
     _const = e._const;
     _upv();
@@ -64,7 +64,7 @@ namespace GMlib {
 
 
   template <typename T>
-  Edge<T>::~Edge() {
+  TSEdge<T>::~TSEdge() {
 
     if( _triangle[0] != NULL )  delete _triangle[0];
     if( _triangle[1] != NULL )	delete _triangle[1];
@@ -76,9 +76,9 @@ namespace GMlib {
 
 
   template <typename T>
-  Edge<T>* Edge<T>::_getNext() {
+  TSEdge<T>* TSEdge<T>::_getNext() {
 
-    ArrayT< Edge<T>* > edg = _vertex[1]->getEdges();
+    ArrayT< TSEdge<T>* > edg = _vertex[1]->getEdges();
     edg.remove(this);
 
     if( boundary() )
@@ -92,10 +92,10 @@ namespace GMlib {
 
 
   template <typename T>
-  bool Edge<T>::_hasPoints( const Point<T,3>& p1, const Point<T,3>& p2 ) const {
+  bool TSEdge<T>::_hasPoints( const Point<T,3>& p1, const Point<T,3>& p2 ) const {
 
-    Vertex<T> * v1 = find(p1);
-    ArrayT<Edge<T>*> edges = v1->getEdges();
+    TSVertex<T> * v1 = find(p1);
+    ArrayT<TSEdge<T>*> edges = v1->getEdges();
 
     for( int i = 0; i < edges.getSize(); i++ )
       if( edges[i]->getOtherVertex(v1)->getPos() == p2 )
@@ -103,7 +103,7 @@ namespace GMlib {
 
     return false;
   /*
-    Vertex<T> * v2 = find(p2);
+    TSVertex<T> * v2 = find(p2);
     if(_vertex[0] == v1 && _vertex[1] == v2)		return true;
     else if(_vertex[1] == v1 && _vertex[0] == v2)	return true;
     else											return false;
@@ -113,7 +113,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Edge<T>::_isFirst( Vertex<T>* v ) {
+  bool TSEdge<T>::_isFirst( TSVertex<T>* v ) {
 
     return v == _vertex[0];
   }
@@ -121,14 +121,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Edge<T>::_isLast( Vertex<T>* v ) {
+  bool TSEdge<T>::_isLast( TSVertex<T>* v ) {
 
     return v == _vertex[1];
   }
 
 
   template <typename T>
-  void Edge<T>::_okDelaunay() {
+  void TSEdge<T>::_okDelaunay() {
 
     if( _vertex[0]->isConst() && _vertex[1]->isConst() )
       setConst();
@@ -136,7 +136,7 @@ namespace GMlib {
     if( _const || _triangle[0] == NULL || _triangle[1] == NULL )
       return;
 
-    Array<Vertex<T>*> a = _triangle[0]->getVertices();
+    Array<TSVertex<T>*> a = _triangle[0]->getVertices();
 
     a.insert( _triangle[1]->getVertices() );
 
@@ -156,7 +156,7 @@ namespace GMlib {
 
 
   template <typename T>
-  Triangle<T>* Edge<T>::_getOther( Triangle<T>* t ) {
+  TSTriangle<T>* TSEdge<T>::_getOther( TSTriangle<T>* t ) {
 
     if( t == _triangle[0] )
       return _triangle[1];
@@ -168,7 +168,7 @@ namespace GMlib {
 
 
   template <typename T>
-  bool Edge<T>::_removeTriangle( Triangle<T>* t ) {
+  bool TSEdge<T>::_removeTriangle( TSTriangle<T>* t ) {
 
     if( _triangle[0] == t )
       _triangle[0] = NULL;
@@ -183,9 +183,9 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Edge<T>::_reverse() {
+  void TSEdge<T>::_reverse() {
 
-    Vertex<T> *v = _vertex[0];
+    TSVertex<T> *v = _vertex[0];
     _vertex[0] = _vertex[1];
     _vertex[1] = v;
   }
@@ -193,7 +193,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Edge<T>::_setTriangle( Triangle<T>* t1, Triangle<T>* t2 ) {
+  void TSEdge<T>::_setTriangle( TSTriangle<T>* t1, TSTriangle<T>* t2 ) {
 
     _triangle[0] = t1;
     _triangle[1] = t2;
@@ -201,22 +201,22 @@ namespace GMlib {
 
 
   template <typename T>
-  bool Edge<T>::_split( Vertex<T>& p ) {
+  bool TSEdge<T>::_split( TSVertex<T>& p ) {
 
-    Vertex<T>* v = NULL;
-    Edge<T>*   e = NULL;
-    Triangle<T> *t1 = NULL, *t2 = NULL;
+    TSVertex<T>* v = NULL;
+    TSEdge<T>*   e = NULL;
+    TSTriangle<T> *t1 = NULL, *t2 = NULL;
 
     if( _triangle[0] != NULL )
       _triangle[0]->_reverse(this);
     if( _triangle[1] != NULL )
       _triangle[1]->_reverse(this);
 
-//    Array<Edge<T>*> edg1 = _triangle[0] == NULL ? NULL : _triangle[0]->getEdges();
-//    Array<Edge<T>*> edg2 = _triangle[1] == NULL ? NULL : _triangle[1]->getEdges();
+//    Array<TSEdge<T>*> edg1 = _triangle[0] == NULL ? NULL : _triangle[0]->getEdges();
+//    Array<TSEdge<T>*> edg2 = _triangle[1] == NULL ? NULL : _triangle[1]->getEdges();
 
-      Array<Edge<T>*> edg1;
-      Array<Edge<T>*> edg2;
+      Array<TSEdge<T>*> edg1;
+      Array<TSEdge<T>*> edg2;
       if( _triangle[0] != NULL ) edg1 = _triangle[0]->getEdges();
       if( _triangle[1] != NULL ) edg2 = _triangle[1]->getEdges();
 
@@ -224,7 +224,7 @@ namespace GMlib {
       // swap triangles, _triang[0] should be on left
       if(_vertex[0] == getCommonVertex(*(edg1[1]))) {
 
-        Triangle<T>* st = _triangle[0];
+        TSTriangle<T>* st = _triangle[0];
         _triangle[0] = _triangle[1];
         _triangle[1] = st;
         if( _triangle[0] != NULL ) edg1 = _triangle[0]->getEdges();
@@ -235,7 +235,7 @@ namespace GMlib {
       // swap triangles, _triang[0] should be on left
       if(_vertex[0] != getCommonVertex(*(edg2[1]))) {
 
-        Triangle<T>* st = _triangle[0];
+        TSTriangle<T>* st = _triangle[0];
         _triangle[0] = _triangle[1];
         _triangle[1] = st;
         if( _triangle[0] != NULL ) edg1 = _triangle[0]->getEdges();
@@ -245,8 +245,8 @@ namespace GMlib {
 
 
     // Splitt edge in two
-    Edge<T>* e1 = this;
-    Edge<T>* e2 = new Edge<T>(*(_vertex[1]),p);
+    TSEdge<T>* e1 = this;
+    TSEdge<T>* e2 = new TSEdge<T>(*(_vertex[1]),p);
     _vertex[1]->_removeEdge(this);
     _vertex[1] = &p;
     p._insertEdge(this);
@@ -257,9 +257,9 @@ namespace GMlib {
     if( _triangle[0] != NULL ) {
 
       v = edg1[1]->getCommonVertex(*(edg1[2]));
-      e = new Edge<T>(p,*v);
+      e = new TSEdge<T>(p,*v);
 
-      t1 = new Triangle<T>( e2, edg1[1], e );
+      t1 = new TSTriangle<T>( e2, edg1[1], e );
       _triangle[0]->_setEdges( e1, e, edg1[2] );
       e->_setTriangle( t1, _triangle[0] );
       edg1[1]->_swapTriangle( _triangle[0], t1 );
@@ -274,9 +274,9 @@ namespace GMlib {
     if( _triangle[1] != NULL ) {
 
       v = edg2[1]->getCommonVertex(*(edg2[2]));
-      e = new Edge<T>(p,*v);
+      e = new TSEdge<T>(p,*v);
 
-      t2 = new Triangle<T>(e2,e,edg2[2]);
+      t2 = new TSTriangle<T>(e2,e,edg2[2]);
       _triangle[1]->_setEdges(e1,edg2[1],e);
       e->_setTriangle(t2,_triangle[1]);
 
@@ -306,7 +306,7 @@ namespace GMlib {
 
 
   template <typename T>
-  bool Edge<T>::_swap() {
+  bool TSEdge<T>::_swap() {
 
     if( _const || _triangle[0] == NULL || _triangle[1] == NULL )
       return false;
@@ -314,8 +314,8 @@ namespace GMlib {
     _triangle[0]->_reverse(this);
     _triangle[1]->_reverse(this);
 
-    Array<Edge<T>*> edg1 = _triangle[0]->getEdges();
-    Array<Edge<T>*> edg2 = _triangle[1]->getEdges();
+    Array<TSEdge<T>*> edg1 = _triangle[0]->getEdges();
+    Array<TSEdge<T>*> edg2 = _triangle[1]->getEdges();
 
     _vertex[0]->_removeEdge(this);
     _vertex[1]->_removeEdge(this);
@@ -345,7 +345,7 @@ namespace GMlib {
 
 
   template <typename T>
-  bool Edge<T>::_swapTriangle( Triangle<T>* ot, Triangle<T>* nt ) {
+  bool TSEdge<T>::_swapTriangle( TSTriangle<T>* ot, TSTriangle<T>* nt ) {
 
     if( ot == _triangle[0] ) {
 
@@ -363,7 +363,7 @@ namespace GMlib {
 
 
   template <typename T>
-  bool Edge<T>::_swapVertex( Vertex<T>& match_vtx, Vertex<T>& rep_vtx ) {
+  bool TSEdge<T>::_swapVertex( TSVertex<T>& match_vtx, TSVertex<T>& rep_vtx ) {
 
     bool ret = false;
 
@@ -388,7 +388,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Edge<T>::_upv() {
+  void TSEdge<T>::_upv() {
 
     _vertex[0]->_insertEdge( this );
     _vertex[1]->_insertEdge(this);
@@ -400,14 +400,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Edge<T>::boundary() const {
+  bool TSEdge<T>::boundary() const {
 
     return _triangle[0] == NULL || _triangle[1] == NULL;
   }
 
 
   template <typename T>
-  Vertex<T>* Edge<T>::getCommonVertex( const Edge<T>& e ) const {
+  TSVertex<T>* TSEdge<T>::getCommonVertex( const TSEdge<T>& e ) const {
 
     if( _vertex[0] == e._vertex[0] || _vertex[0] == e._vertex[1] )
       return _vertex[0];
@@ -420,7 +420,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vertex<T>* Edge<T>::getFirstVertex() const {
+  TSVertex<T>* TSEdge<T>::getFirstVertex() const {
 
     return _vertex[0];
   }
@@ -428,7 +428,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Point<T,3> Edge<T>::getCenterPos() {
+  Point<T,3> TSEdge<T>::getCenterPos() {
 
     return (_vertex[1]->getPosition() + _vertex[0]->getPosition()) * 0.5;
   }
@@ -436,7 +436,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Point<T,2> Edge<T>::getCenterPos2D() {
+  Point<T,2> TSEdge<T>::getCenterPos2D() {
 
     return ( _vertex[1]->getParameter() + _vertex[0]->getParameter() ) * 0.5;
   }
@@ -444,7 +444,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T Edge<T>::getLength() {
+  T TSEdge<T>::getLength() {
 
     return getVector().getLength();
   }
@@ -452,16 +452,16 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T Edge<T>::getLength2D()	{
+  T TSEdge<T>::getLength2D()	{
 
     return getVector2D().getLength();
   }
 
 
   template <typename T>
-  Array<Triangle<T>*> Edge<T>::getTriangle() {
+  Array<TSTriangle<T>*> TSEdge<T>::getTriangle() {
 
-    Array<Triangle<T>*> arr;
+    Array<TSTriangle<T>*> arr;
     if( _triangle[0] != NULL ) arr.insert( _triangle[0] );
     if( _triangle[1] != NULL ) arr.insert( _triangle[1] );
     return arr;
@@ -470,7 +470,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vector<T,3> Edge<T>::getVector() {
+  Vector<T,3> TSEdge<T>::getVector() {
 
     return _vertex[1]->getPosition() - _vertex[0]->getPosition();
   }
@@ -478,7 +478,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vector2D<T> Edge<T>::getVector2D(){
+  Vector2D<T> TSEdge<T>::getVector2D(){
 
     return _vertex[1]->getParameter() - _vertex[0]->getParameter();
   }
@@ -486,14 +486,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vertex<T>* Edge<T>::getLastVertex() const {
+  TSVertex<T>* TSEdge<T>::getLastVertex() const {
 
     return _vertex[1];
   }
 
 
   template <typename T>
-  Vertex<T>* Edge<T>::getOtherVertex( const Vertex<T>& v ) const {
+  TSVertex<T>* TSEdge<T>::getOtherVertex( const TSVertex<T>& v ) const {
 
     if( (*_vertex[0]) == v )
       return _vertex[1];
@@ -506,7 +506,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Edge<T>::setConst( bool c ) {
+  void TSEdge<T>::setConst( bool c ) {
 
     _const = c;
   }
@@ -514,9 +514,9 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Edge<T>::operator <  (const Edge<T>& v) const {
+  bool TSEdge<T>::operator <  (const TSEdge<T>& v) const {
 
-    Vertex<T>* c = (*this).commonVertex(v);
+    TSVertex<T>* c = (*this).commonVertex(v);
     Vector<T,3> a = (*this).otherVertex((*c))->getPosition()-c->getPosition();
     Vector<T,3> b = v.otherVertex((*c))->getPosition()-c->getPosition();
 
@@ -529,7 +529,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Edge<T>::operator >  ( const Edge<T>& v ) const {
+  bool TSEdge<T>::operator >  ( const TSEdge<T>& v ) const {
 
     return !((*this) < v);
   }
@@ -537,7 +537,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Edge<T>::operator <= ( const Edge<T>& v ) const {
+  bool TSEdge<T>::operator <= ( const TSEdge<T>& v ) const {
 
     return !((*this) > v);
   }
@@ -545,7 +545,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Edge<T>::operator >= ( const Edge<T>& v ) const {
+  bool TSEdge<T>::operator >= ( const TSEdge<T>& v ) const {
 
     return !((*this) < v);
   }
@@ -562,7 +562,7 @@ namespace GMlib {
   //
   //template <template T>
   //inline
-  //ostream& Edge<T>::_prOut(ostream& out)const
+  //ostream& TSEdge<T>::_prOut(ostream& out)const
   //{
   //	out << (*_vertex[0]) << " " << (*_vertex[1])
   //		<< " " << _const << "\n ";
@@ -572,7 +572,7 @@ namespace GMlib {
   //
   //template <template T>
   //inline
-  //istream& Edge<T>::_prIn(istream& in)
+  //istream& TSEdge<T>::_prIn(istream& in)
   //{
   //	Point<T,3> p1, p2;
   //	in >> p1 >> p2 >> _const;
@@ -585,7 +585,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& Edge<T>::operator<<( ostream& out, const Edge<T>& v ) {
+  //ostream& TSEdge<T>::operator<<( ostream& out, const TSEdge<T>& v ) {
   //
   //  return v._prOut(out);
   //}
@@ -593,7 +593,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& Edge<T>::operator<<( ostream& out, const Edge<T>* v ) {
+  //ostream& TSEdge<T>::operator<<( ostream& out, const TSEdge<T>* v ) {
   //
   //  return v->_prOut(out);
   //}
@@ -601,7 +601,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& Edge<T>::operator >> ( istream& in, Edge<T>& v )	{
+  //istream& TSEdge<T>::operator >> ( istream& in, TSEdge<T>& v )	{
   //
   //  return v._prIn(in);
   //}
@@ -609,7 +609,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& Edge<T>::operator>>( istream& in, Edge<T>* v ) {
+  //istream& TSEdge<T>::operator>>( istream& in, TSEdge<T>* v ) {
   //
   //  return v->_prIn(in);
   //}
@@ -617,7 +617,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void print(char prompt[]="Edge<T>", ostream & out = cout) const {
+  //void print(char prompt[]="TSEdge<T>", ostream & out = cout) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}

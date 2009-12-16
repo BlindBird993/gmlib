@@ -39,4 +39,4 @@
 #include "gmSphere3D"
 #include "gmStlObject"
 #include "gmTexture"
-#include "gmTriangle"
+#include "gmTriangleSystem"

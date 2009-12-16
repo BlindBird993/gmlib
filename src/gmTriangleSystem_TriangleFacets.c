@@ -22,25 +22,24 @@
 
 
 
-/*! \file gmTriangle_TriangleFacets.c
+/*! \file gmTriangleSystem_TriangleFacets.c
  *  \brief TriangleFacets class function implementations
  *
  *  \date   2008-10-22
  */
 
 
+#include "gmOpenGL.h"
 #include "gmSArray.h"
 
 namespace GMlib {
 
-//using namespace GMlib;
-
-template <class T>
-TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
+  template <class T>
+  TriangleFacets<T>* TriangleSystem<T>::_tv = NULL;
 
   template <typename T>
   inline
-  TriangleFacets<T>::TriangleFacets( int d ) : ArrayLX<Vertex<T> >( d > 0 ? d+3 : 0 ), _edges(), _triangles() {
+  TriangleFacets<T>::TriangleFacets( int d ) : ArrayLX<TSVertex<T> >( d > 0 ? d+3 : 0 ), _edges(), _triangles() {
 
     //setStreamMode();
     _dlist_name=0;
@@ -49,7 +48,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
   template <typename T>
   inline
-  TriangleFacets<T>::TriangleFacets( const ArrayLX<Vertex<T> >& v): ArrayLX<Vertex<T> >(v.size()+3), _edges(),_triangles()	{
+  TriangleFacets<T>::TriangleFacets( const ArrayLX<TSVertex<T> >& v): ArrayLX<TSVertex<T> >(v.size()+3), _edges(),_triangles()	{
 
     (*this) = v;
     //setStreamMode();
@@ -110,7 +109,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  void TriangleFacets<T>::_adjustTriangle( Triangle<T>* t, bool wider ) {
+  void TriangleFacets<T>::_adjustTriangle( TSTriangle<T>* t, bool wider ) {
 
     int i,j;
     Box<unsigned char,2> b	= t->_getBox();
@@ -136,14 +135,14 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
   template <typename T>
   inline
-  ArrayLX<Edge<T>* >& TriangleFacets<T>::_getEdges() {
+  ArrayLX<TSEdge<T>* >& TriangleFacets<T>::_getEdges() {
 
     return _edges;
   }
 
 
   template <typename T>
-  bool TriangleFacets<T>::_fillPolygon( Array<Edge<T>*>& e ) {
+  bool TriangleFacets<T>::_fillPolygon( Array<TSEdge<T>*>& e ) {
 
     int i, j, index;
     bool stop;
@@ -152,9 +151,9 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
     for(i=0; i< e.getSize(); i++)
     {
-      Triangle<T>* t = e[i]->other(NULL);
+      TSTriangle<T>* t = e[i]->other(NULL);
       t->_reverse(e[i]);
-      Array<Edge<T>*> edg = t->getEdges();
+      Array<TSEdge<T>*> edg = t->getEdges();
       if(e[i]->isFirst(e[i]->getCommonVertex(*edg[1])))
           e[i]->reverse();
     }
@@ -164,8 +163,8 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
         if(e[i]->isLast(e[j]->getFirstVertex())) e.swap(i+1,j);
 
 
-    Edge<T> *a = e[0];
-    Edge<T> *b = e[1];
+    TSEdge<T> *a = e[0];
+    TSEdge<T> *b = e[1];
     int k0,k1,k2;
 
     while(e.getSize() > 3)
@@ -206,8 +205,8 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
         a = e[k0];
         b = e[k1];
 
-        Edge<T> *ne = new Edge<T>(*(a->getFirstVertex()),*(b->getLastVertex()));
-        Triangle<T> *nt = new Triangle<T>(ne,b,a);
+        TSEdge<T> *ne = new TSEdge<T>(*(a->getFirstVertex()),*(b->getLastVertex()));
+        TSTriangle<T> *nt = new TSTriangle<T>(ne,b,a);
         a->swapTriangle(NULL,nt);
         b->swapTriangle(NULL,nt);
         ne->setTriangle(nt,NULL);
@@ -218,7 +217,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
       }
     }
 
-    Triangle<T> *nt = new Triangle<T>(e[2],e[1],e[0]);
+    TSTriangle<T> *nt = new TSTriangle<T>(e[2],e[1],e[0]);
     e[0]->swapTriangle(NULL,nt);
     e[1]->swapTriangle(NULL,nt);
     e[2]->swapTriangle(NULL,nt);
@@ -229,7 +228,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  Vertex<T>*  TriangleFacets<T>::_find( const Point<T,3>& p ) const {
+  TSVertex<T>*  TriangleFacets<T>::_find( const Point<T,3>& p ) const {
 
     int i;
     for( i = 0; i < this->getSize(); i++ )
@@ -241,7 +240,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  Edge<T>*   TriangleFacets<T>::_find( const Point<T,3>& p1, const Point<T,3>& p2 ) const {
+  TSEdge<T>*   TriangleFacets<T>::_find( const Point<T,3>& p1, const Point<T,3>& p2 ) const {
 
     int i;
     for(i=0; i<_edges.getSize(); i++)
@@ -253,7 +252,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  void TriangleFacets<T>::_insertTriangle( Triangle<T>* t ) {
+  void TriangleFacets<T>::_insertTriangle( TSTriangle<T>* t ) {
 
     _triangles += t;
 
@@ -277,7 +276,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  void TriangleFacets<T>::_removeTriangle( Triangle<T>* t ) {
+  void TriangleFacets<T>::_removeTriangle( TSTriangle<T>* t ) {
 
     _triangles.remove(t);
 
@@ -300,7 +299,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
   template <typename T>
   void TriangleFacets<T>::_set( int i ) {
 
-    Triangle<T>* t;
+    TSTriangle<T>* t;
     int k = _surroundingTriangle(t, (*this)[i]);
 
     if (k < 0)
@@ -315,7 +314,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  int  TriangleFacets<T>::_surroundingTriangle( Triangle<T>*& t, const Vertex<T>& v ) {
+  int  TriangleFacets<T>::_surroundingTriangle( TSTriangle<T>*& t, const TSVertex<T>& v ) {
 
     int k,s,n = 1 << _d;
     Point<T,2>	nb = v.getParameter();
@@ -333,7 +332,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
     k=0;
     for (it=_tri_order[i][j].getSize()-1; it>=0; it--)
-      if ( k=v.isInside(_tri_order[i][j](it))) break;
+      if( ( k = v.isInside( _tri_order[i][j](it) ) ) ) break;
 
       t = (it >= 0 ? _tri_order[i][j](it) : NULL);
 
@@ -343,7 +342,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
   template <typename T>
   inline
-  ArrayLX<Triangle<T>* >&	TriangleFacets<T>::_triangle()	{
+  ArrayLX<TSTriangle<T>* >&	TriangleFacets<T>::_triangle()	{
 
     return _triangle;
   }
@@ -369,8 +368,8 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
   T TriangleFacets<T>::evalZ( const Point2D<T>& p, int deg ) {
 
     T z = 0;
-    Triangle<T>* t;
-    int idx = _surroundingTriangle( t, Vertex<T>(p) );
+    TSTriangle<T>* t;
+    int idx = _surroundingTriangle( t, TSVertex<T>(p) );
 
     if( idx )
       z=t->evalZ( p, deg );
@@ -401,7 +400,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
     _triangles.clear();
     _edges.clear();
 
-    ((ArrayLX< Vertex<T> >*)this)->clear();
+    ((ArrayLX< TSVertex<T> >*)this)->clear();
 
     if (d >= 0)
       _d = d;
@@ -426,7 +425,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
   template <typename T>
   inline
-  Edge<T>* TriangleFacets<T>::getEdge( int i )	const	{
+  TSEdge<T>* TriangleFacets<T>::getEdge( int i )	const	{
 
     return _edges(i);
   }
@@ -458,7 +457,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
   template <typename T>
   inline
-  Triangle<T>* TriangleFacets<T>::getTriangle( int i )	const {
+  TSTriangle<T>* TriangleFacets<T>::getTriangle( int i )	const {
 
     return _triangles(i);
   }
@@ -466,7 +465,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
   template <typename T>
   inline
-  Vertex<T>* TriangleFacets<T>::getVertex( int i )	const	{
+  TSVertex<T>* TriangleFacets<T>::getVertex( int i )	const	{
 
     return &this->getElement(i);
   }
@@ -498,7 +497,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  void TriangleFacets<T>::insertPwl( PWVLine<T>& pwl ) {
+  void TriangleFacets<T>::insertLine( TSLine<T>& pwl ) {
 
     __e.set(*this);
 
@@ -513,7 +512,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
       Point2D<T> p  = (*this)[j].getParameter();		// current point
       Point2D<T> np = pwl[i+1].getParameter();		// next new point
 
-      ArrayT<Edge<T>*> edges = (*this)[j].getEdges();
+      ArrayT<TSEdge<T>*> edges = (*this)[j].getEdges();
 
       Array<Point2D<T> > pt;						// Find all neighbour points
       for(k=0; k<edges.getSize(); k++)
@@ -567,7 +566,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
           if((v^(np-pt[m])) > POS_TOLERANCE)	// outside all triangles
           {
             tt = tt +(1-tt)*t;
-            Vertex<T> vt = pwl.interpolate(i,tt);///FEILLLL
+            TSVertex<T> vt = pwl.interpolate(i,tt);///FEILLLL
             vt.setConst();
             insertVertex(vt);
             j = getIndex(vt);
@@ -590,7 +589,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  bool TriangleFacets<T>::insertVertex( Vertex<T>& v, bool c ) {
+  bool TriangleFacets<T>::insertVertex( TSVertex<T>& v, bool c ) {
 
     __e.set( *this );
 
@@ -623,7 +622,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  bool TriangleFacets<T>::removeVertex( Vertex<T>& v ) {
+  bool TriangleFacets<T>::removeVertex( TSVertex<T>& v ) {
 
     __e.set(*this);
 
@@ -632,7 +631,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
     v.deleteEdges();
 
-    ArrayT<Edge<T>*> edges = (*this)[this->getSize()-1].getEdges();
+    ArrayT<TSEdge<T>*> edges = (*this)[this->getSize()-1].getEdges();
     for ( int i=0; i < edges.getSize(); i++ )
       edges[i]->swapVertex((*this)[this->getSize() - 1],(*this)[id]);
 
@@ -641,9 +640,9 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  bool TriangleFacets<T>::removeVertexNew( Vertex<T>& v ) {
+  bool TriangleFacets<T>::removeVertexNew( TSVertex<T>& v ) {
 
-    Array<Edge<T>*>   o_edges = v.getOuterEdges();
+    Array<TSEdge<T>*>   o_edges = v.getOuterEdges();
 
     removeVertex(v);
 
@@ -667,7 +666,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
 
   template <typename T>
-  bool TriangleFacets<T>::setConstEdge( Vertex<T> v1, Vertex<T> v2 ) {
+  bool TriangleFacets<T>::setConstEdge( TSVertex<T> v1, TSVertex<T> v2 ) {
 
     int i;
 
@@ -695,7 +694,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
     if( this->getSize() < 3 ) return;
 
-    ArrayLX<Vertex<T> >& vertex = *this;
+    ArrayLX<TSVertex<T> >& vertex = *this;
 
     // Set the size of edge and triangle array to the upper bound.
     // Remember that there is only 3 outer edges.
@@ -714,9 +713,9 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
     double dy	  = _box.getValueDelta(1);
     double delta  = dx>dy?dx:dy;
 
-    Vertex<T> p1(_box.getValueMin(0) - delta,   _box.getValueMin(1) - delta);
-    Vertex<T> p2(_box.getValueMax(0) + 3*delta, _box.getValueMin(1) - delta);
-    Vertex<T> p3(_box.getValueMin(0) - delta,   _box.getValueMax(1) + 3*delta);
+    TSVertex<T> p1(_box.getValueMin(0) - delta,   _box.getValueMin(1) - delta);
+    TSVertex<T> p2(_box.getValueMax(0) + 3*delta, _box.getValueMin(1) - delta);
+    TSVertex<T> p3(_box.getValueMin(0) - delta,   _box.getValueMax(1) + 3*delta);
 
     vertex += p1;
     vertex += p2;
@@ -724,13 +723,13 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
 
     // Make tree Edges.
 
-    _edges += new Edge<T>(vertex[vertex.getSize()-3], vertex[vertex.getSize()-2]);
-    _edges += new Edge<T>(vertex[vertex.getSize()-2], vertex[vertex.getSize()-1]);
-    _edges += new Edge<T>(vertex[vertex.getSize()-1], vertex[vertex.getSize()-3]);
+    _edges += new TSEdge<T>(vertex[vertex.getSize()-3], vertex[vertex.getSize()-2]);
+    _edges += new TSEdge<T>(vertex[vertex.getSize()-2], vertex[vertex.getSize()-1]);
+    _edges += new TSEdge<T>(vertex[vertex.getSize()-1], vertex[vertex.getSize()-3]);
 
     // Make a triangle.
 
-    _triangles += new Triangle<T>(_edges[0],_edges[1],_edges[2]);
+    _triangles += new TSTriangle<T>(_edges[0],_edges[1],_edges[2]);
 
     _edges[0]->_setTriangle(_triangles[0],NULL);
     _edges[1]->_setTriangle(_triangles[0],NULL);
@@ -791,9 +790,9 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
       if(_edges[i]->boundary())
       {
         n_bound++;
-        Triangle<T>* t = _edges[i]->_getOther(NULL);
+        TSTriangle<T>* t = _edges[i]->_getOther(NULL);
         t->_reverse(_edges[i]);
-        Array<Edge<T>*> edges = t->getEdges();
+        Array<TSEdge<T>*> edges = t->getEdges();
         if( _edges[i]->_isFirst( _edges[i]->getCommonVertex(*edges[1]) ) )
           _edges[i]->_reverse();
       }
@@ -802,8 +801,8 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
       if( _edges[i]->boundary() )
         break;
 
-    Edge<T> *a = _edges[i];
-    Edge<T> *b = a->_getNext();
+    TSEdge<T> *a = _edges[i];
+    TSEdge<T> *b = a->_getNext();
 
 
     for(i=0; i<n_bound;i++)
@@ -812,8 +811,8 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
       UnitVector2D<T>	u = v + b->getVector2D();
       if((u^v) > POS_TOLERANCE) {
 
-        Edge<T> *ne = new Edge<T>(*(a->getFirstVertex()),*(b->getLastVertex()));
-        Triangle<T> *nt = new Triangle<T>(ne,b,a);
+        TSEdge<T> *ne = new TSEdge<T>(*(a->getFirstVertex()),*(b->getLastVertex()));
+        TSTriangle<T> *nt = new TSTriangle<T>(ne,b,a);
         a->_swapTriangle(NULL,nt);
         b->_swapTriangle(NULL,nt);
         ne->_setTriangle(nt,NULL);
@@ -898,7 +897,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
   //template <typename T>
   //ostream& TriangleFacets<T>::_prOut(ostream& out) const {
   //
-  //	const ArrayLX< Vertex<T> >& vertex = *this;
+  //	const ArrayLX< TSVertex<T> >& vertex = *this;
   //	if( _stream_mode == 1 || _stream_mode == 4 || _stream_mode == 5 || _stream_mode == 7 )
   //		out << vertex << endl << endl;
   //	if( _stream_mode == 2 || _stream_mode == 4 || _stream_mode == 6 || _stream_mode == 7 )
@@ -914,7 +913,7 @@ TriangleFacets<T>* TriangleSystem<T>::_tv=NULL;
   //
   //	__e.set(*this);
   //
-  //	ArrayLX<Vertex<T> >& vertex = *this;
+  //	ArrayLX<TSVertex<T> >& vertex = *this;
   //
   //	if( _stream_mode == 1 || _stream_mode == 4 || _stream_mode == 7 ) {
   //

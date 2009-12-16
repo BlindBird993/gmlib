@@ -22,11 +22,11 @@
 
 
 
-/*! \file gmTriangle
+/*! \file gmTriangleSystem
  *
  *  C++ interface for the Triangle system header and classes.
  *
  *  \date   2008-10-21
  */
 
-#include "gmTriangle.h"
+#include "gmTriangleSystem.h"

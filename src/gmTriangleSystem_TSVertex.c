@@ -22,8 +22,8 @@
 
 
 
-/*! \file gmTriangle_Vertex.c
- *  \brief Vertex class function implementations
+/*! \file gmTriangleSystem_TSVertex.c
+ *  \brief TSVertex class function implementations
  *
  *  \date   2008-10-22
  */
@@ -34,7 +34,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vertex<T>::Vertex() : Arrow<T,3>(), _edges() {
+  TSVertex<T>::TSVertex() : Arrow<T,3>(), _edges() {
 
     _const = false;
     _maxradius = _radius = 0.0;
@@ -43,7 +43,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vertex<T>::Vertex( const Point<T,2>& v ) : Arrow<T,3>( Point3D<T>( v(0), v(1), 0 ) ) {
+  TSVertex<T>::TSVertex( const Point<T,2>& v ) : Arrow<T,3>( Point3D<T>( v(0), v(1), 0 ) ) {
 
     _const = false;
     _maxradius = _radius = 0.0;
@@ -52,7 +52,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vertex<T>::Vertex( const Point<T,3>& p ) : Arrow<T,3>( p ), _edges() {
+  TSVertex<T>::TSVertex( const Point<T,3>& p ) : Arrow<T,3>( p ), _edges() {
 
     _const = false;
     _maxradius = _radius = 0.0;
@@ -61,7 +61,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vertex<T>::Vertex( const Point<T,3>& p, const Vector<T,3>& n ) : Arrow<T,3>( p, n ), _edges() {
+  TSVertex<T>::TSVertex( const Point<T,3>& p, const Vector<T,3>& n ) : Arrow<T,3>( p, n ), _edges() {
 
     _const = false;
     _maxradius = _radius = 0.0;
@@ -70,7 +70,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vertex<T>::Vertex( const T& x, const T& y, const T& z ) : Arrow<T,3>( Point3D<T>( x, y, z ) ), _edges() {
+  TSVertex<T>::TSVertex( const T& x, const T& y, const T& z ) : Arrow<T,3>( Point3D<T>( x, y, z ) ), _edges() {
 
     _const = false;
     _maxradius = _radius = 0.0;
@@ -78,16 +78,16 @@ namespace GMlib {
 
 
   template <typename T>
-  Vertex<T>::~Vertex() {
+  TSVertex<T>::~TSVertex() {
 
     _edges.clear();
   }
 
 
   template <typename T>
-  void Vertex<T>::_computeNormal() {
+  void TSVertex<T>::_computeNormal() {
 
-    Array<Triangle<T>*> tris = getTriangles();
+    Array<TSTriangle<T>*> tris = getTriangles();
     Point<T,3> nor = Point<T,3>(T(0));
     for( int i = 0; i < tris.getSize(); i++ )
       nor += tris[i]->getNormal();
@@ -98,7 +98,7 @@ namespace GMlib {
 
 
   template <typename T>
-  void Vertex<T>::_deleteEdges() {
+  void TSVertex<T>::_deleteEdges() {
 
     while( _edges.getSize() > 0 )
       delete _edges[0];
@@ -109,7 +109,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Vertex<T>::_insertEdge(Edge<T>* e)	{
+  bool TSVertex<T>::_insertEdge(TSEdge<T>* e)	{
 
     return _edges.insert( e );
   }
@@ -117,7 +117,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Vertex<T>::_removeEdge(Edge<T>* e)	{
+  bool TSVertex<T>::_removeEdge(TSEdge<T>* e)	{
 
     return _edges.remove( e );
   }
@@ -125,7 +125,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Vertex<T>::_set( const Point<T,3>& p, const Vector<T,3>& n ) {
+  void TSVertex<T>::_set( const Point<T,3>& p, const Vector<T,3>& n ) {
 
     setPos(p);
     setDir(n);
@@ -134,7 +134,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Vertex<T>::_set( const Vertex<T>& v ) {
+  void TSVertex<T>::_set( const TSVertex<T>& v ) {
 
     _set( v.getPosition(), v.getNormal() );
     _const = v._const;
@@ -143,7 +143,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Vertex<T>::boundary() const {
+  bool TSVertex<T>::boundary() const {
 
     for( int i = 0; i < _edges.getSize(); i++ )
       if( _edges(i)->boundary() )
@@ -155,7 +155,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Arrow<T,3> Vertex<T>::getArrow() {
+  Arrow<T,3> TSVertex<T>::getArrow() {
 
     Arrow<T,3> r( this->getPos(), this->getDir() );
     return r;
@@ -164,7 +164,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  ArrayT<Edge<T>*>&	Vertex<T>::getEdges() {
+  ArrayT<TSEdge<T>*>&	TSVertex<T>::getEdges() {
 
     return _edges;
   }
@@ -172,23 +172,23 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Point<T,3> Vertex<T>::getNormal() const {
+  Point<T,3> TSVertex<T>::getNormal() const {
 
     return this->getDir();
   }
 
 
   template <typename T>
-  Array<Edge<T>*> Vertex<T>::getOuterEdges() const {
+  Array<TSEdge<T>*> TSVertex<T>::getOuterEdges() const {
 
-    Array<Triangle<T>*> tris  = getTriangles();
-    Array<Edge<T>*>		s_edg = getEdges();
-    Array<Edge<T>*>		o_edg( s_edg.getSize() );
+    Array<TSTriangle<T>*> tris  = getTriangles();
+    Array<TSEdge<T>*>		s_edg = getEdges();
+    Array<TSEdge<T>*>		o_edg( s_edg.getSize() );
 
     int i, j;
     for( i = 0; i < tris.getSize(); i++ ) {
 
-      Array<Edge<T>*>	ee = tris[i]->getEdges();
+      Array<TSEdge<T>*>	ee = tris[i]->getEdges();
       for( j = 0; j < ee.getSize(); j++ )
         if( !s_edg.exist( ee[j] ) )
           o_edg += ee[j];
@@ -200,7 +200,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Point<T,2> Vertex<T>::getParameter() const {
+  Point<T,2> TSVertex<T>::getParameter() const {
 
     return Point2D<T>( this->getPos() );
   }
@@ -208,7 +208,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Point<T,3> Vertex<T>::getPosition() const	{
+  Point<T,3> TSVertex<T>::getPosition() const	{
 
     return this->getPos();
   }
@@ -216,7 +216,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T Vertex<T>::getRadius() {
+  T TSVertex<T>::getRadius() {
 
     return _radius;
   }
@@ -224,7 +224,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T Vertex<T>::getRadiusMax() {
+  T TSVertex<T>::getRadiusMax() {
 
     return _maxradius;
   }
@@ -232,16 +232,16 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T Vertex<T>::getRadiusMin() {
+  T TSVertex<T>::getRadiusMin() {
 
     return _minradius;
   }
 
 
   template <typename T>
-  Array<Triangle<T>*> Vertex<T>::getTriangles() const {
+  Array<TSTriangle<T>*> TSVertex<T>::getTriangles() const {
 
-    Array<Triangle<T>*> tris;
+    Array<TSTriangle<T>*> tris;
     for( int i = 0; i < _edges.getSize(); i++ )
       tris.insert( _edges(i)->getTriangle() );
 
@@ -251,16 +251,16 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Vertex<T>::isConst() const {
+  bool TSVertex<T>::isConst() const {
 
     return _const;
   }
 
 
   template <typename T>
-  int  Vertex<T>::isInside( Triangle<T>* t ) const {
+  int  TSVertex<T>::isInside( TSTriangle<T>* t ) const {
 
-    Array<Vertex<T>*> v = t->getVertices();
+    Array<TSVertex<T>*> v = t->getVertices();
     Array<Point<T,2> > a;
 
     for( int i = 0; i < 3; i++ )
@@ -274,7 +274,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Vertex<T>::setConst( bool c ) {
+  void TSVertex<T>::setConst( bool c ) {
 
     _const = c;
   }
@@ -282,7 +282,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Vertex<T>::setRadius( T r ) {
+  void TSVertex<T>::setRadius( T r ) {
 
     _radius = r;
   }
@@ -290,7 +290,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Vertex<T>::setRadiusMax( T r ) {
+  void TSVertex<T>::setRadiusMax( T r ) {
 
     _maxradius = r;
   }
@@ -298,21 +298,21 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void Vertex<T>::setRadiusMin( T r ) {
+  void TSVertex<T>::setRadiusMin( T r ) {
 
     _minradius = r;
   }
 
 
   template <typename T>
-  void Vertex<T>::setZ( T z ) {
+  void TSVertex<T>::setZ( T z ) {
 
     setPos( Point3D<T>( this->getPosition()[0], this->getPosition()[1], z ) );
   }
 
 
   template <typename T>
-  Vertex<T>& Vertex<T>::operator = ( const Vertex<T>& t ) {
+  TSVertex<T>& TSVertex<T>::operator = ( const TSVertex<T>& t ) {
 
     _edges = t._edges;
     _const = t._const;
@@ -325,7 +325,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Vertex<T>::operator == (const Vertex<T>& t) const {
+  bool TSVertex<T>::operator == (const TSVertex<T>& t) const {
 
     return getParameter() == t.getParameter();
   }
@@ -333,7 +333,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool Vertex<T>::operator < (const Vertex<T> &t) const {
+  bool TSVertex<T>::operator < (const TSVertex<T> &t) const {
 
     return true;
   }
@@ -347,7 +347,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& Vertex<T>::operator<<(ostream& out, const Vertex<T>& v) {
+  //ostream& TSVertex<T>::operator<<(ostream& out, const TSVertex<T>& v) {
   //
   //  return v._prOut(out);
   //}
@@ -355,7 +355,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& Vertex<T>::operator<<(ostream& out, const Vertex<T>* v) {
+  //ostream& TSVertex<T>::operator<<(ostream& out, const TSVertex<T>* v) {
   //
   //  return v->_prOut(out);
   //}
@@ -363,7 +363,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& Vertex<T>::operator>>(istream& in, Vertex<T>& v)	{
+  //istream& TSVertex<T>::operator>>(istream& in, TSVertex<T>& v)	{
   //
   //  return v._prIn(in);
   //}
@@ -371,7 +371,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& Vertex<T>::operator>>(istream& in, Vertex<T>* v)	{
+  //istream& TSVertex<T>::operator>>(istream& in, TSVertex<T>* v)	{
   //
   //  return v->_prIn(in);
   //}
@@ -380,7 +380,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void Vertex<T>::print(char prompt[]="Vertex<T>", ostream & out = cout) const {
+  //void TSVertex<T>::print(char prompt[]="TSVertex<T>", ostream & out = cout) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}
@@ -391,7 +391,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& Vertex<T>::_prOut(ostream& out)const
+  //ostream& TSVertex<T>::_prOut(ostream& out)const
   //{
   //	out << getPosition() << GMlib::GMseparator::Group;
   ////	if(  ) out << dir() << "\n ";
@@ -402,7 +402,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& Vertex<T>::_prIn(istream& in)
+  //istream& TSVertex<T>::_prIn(istream& in)
   //{
   //	Point<T,3> p;
   //	in >> p; setPos(p);

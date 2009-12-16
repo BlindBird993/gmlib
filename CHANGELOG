@@ -5,6 +5,14 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2009-12-15 Jostein Bratlie
+        * Triangle system refactoring.
+          - Header file renamed gmTriangleSystem from gmTriangle
+          - Triangle system classes: Edge, Line, Tile, Triangle, Vertex renamed to TS* (E.g.: Edge -> TSEdge).
+            Fixes name crashes with GMlib core module classes.
+
+
 2009-11-30 Jostein Bratlie
         * Qt .pro file update
           - Compiles as a static library by default

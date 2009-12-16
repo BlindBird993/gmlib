@@ -30,7 +30,7 @@
  */
 
 
-#include "gmTriangle.h"
+#include "gmTriangleSystem.h"
 
 
 namespace GMlib {
@@ -92,12 +92,12 @@ namespace GMlib {
 
 
   inline
-  ArrayLX< Vertex<float> > StlObject::getVertices() {
+  ArrayLX< TSVertex<float> > StlObject::getVertices() {
 
-    ArrayLX< Vertex<float> > v;         // returns copy, no cast between Point3D<float> and Point<float,3>
+    ArrayLX< TSVertex<float> > v;         // returns copy, no cast between Point3D<float> and Point<float,3>
     v.setSize( _vertices.getSize() );
     for( int i = 0; i < _vertices.getSize(); i++ )
-      v[i] = Vertex<float>( _vertices[i], _normals[i/3] );
+      v[i] = TSVertex<float>( _vertices[i], _normals[i/3] );
 
     return v;
   }
