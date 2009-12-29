@@ -41,17 +41,12 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  VContours<T,n>::VContours( const VContours<T,n>& copy ) : Visualizer<T,n>( copy ) {
-  }
+  VContours<T,n>::VContours( const VContours<T,n>& copy ) : VDefault<T,n>( copy ) {}
 
 
   template <typename T, int n>
   inline
-  VContours<T,n>::~VContours() {
-
-    if( _dlist )
-      glDeleteLists( _dlist, 1 );
-  }
+  VContours<T,n>::~VContours() {}
 
 
   template <typename T, int n>
@@ -160,7 +155,6 @@ namespace GMlib {
   inline
   void VContours<T,n>::_init() {
 
-    _dlist = 0;
     _type = GM_VISUALIZER_CONTOURS_TYPE_COLOR;
     _mapping = GM_VISUALIZER_CONTOURS_MAP_X;
 
@@ -187,66 +181,42 @@ namespace GMlib {
     else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL )  glEnable( GL_LIGHTING );
 
 
+    if( n == 1 ) {
 
-    // Display; dependant on dynamic/static status
-    if( this->_ref->isDynamic()  && _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR ) {
+      // Enable the Vertex Array
+      glEnableClientState( GL_VERTEX_ARRAY );
+      glEnableClientState( GL_COLOR_ARRAY );
 
-      // Switch on parameter value n, roll out during linking.
-      switch( n ) {
+      // Give Pointer to Vertex Data
+      glColorPointer( 4, GL_UNSIGNED_BYTE, 0, &_c1[0] );
+      glVertexPointer( 3, GL_FLOAT, 0, this->_n1(0).getPtr() );
 
-        // Display if curve
-        case 1: {
+      // Draw
+      glDrawArrays( GL_LINE_STRIP, 0, this->_n1.getDim() );
 
-          // Get Vertex data
-          const DVector< Vector< float, 3 > > &v = this->_ref->getVerticesN1();
-
-          // Enable the Vertex Array
-          glEnableClientState( GL_VERTEX_ARRAY );
-          glEnableClientState( GL_COLOR_ARRAY );
-
-          // Give Pointer to Vertex Data
-          glColorPointer( 4, GL_UNSIGNED_BYTE, 0, &_color_pointer_n1[0] );
-          glVertexPointer( 3, GL_FLOAT, 0, v(0).getPtr() );
-
-          // Draw
-          glDrawArrays( GL_LINE_STRIP, 0, v.getDim() );
-
-          glDisableClientState( GL_VERTEX_ARRAY );
-          glDisableClientState( GL_COLOR_ARRAY );
-        }
-        break;
-
-        // Display if Surface
-        case 2: {
-
-          // Get Vertex, Texture and Material Data
-          const DMatrix< Arrow<float,3> > &v = this->_ref->getVerticesN2();
-
-          // Enable Vertex and Normal Array
-          glEnableClientState( GL_VERTEX_ARRAY );
-          glEnableClientState( GL_COLOR_ARRAY );
-
-          // Draw
-          for( int i = 0; i < v.getDim1(); i++ ) {
-
-            // Give Pointers to Vertex and Normal Data
-            glVertexPointer( 3, GL_FLOAT, 2*3*sizeof(float), v(i)(0).getPos().getPtr() );
-            glColorPointer( 4, GL_UNSIGNED_BYTE, 0, &_color_pointer_n2[0][0] );
-
-            // Draw Strip
-            glDrawArrays( GL_TRIANGLE_STRIP, 0, v(i).getDim() );
-          }
-
-          // Disable Client States
-          glDisableClientState( GL_VERTEX_ARRAY );
-          glDisableClientState( GL_COLOR_ARRAY );
-        }
-        break;
-      }
+      glDisableClientState( GL_VERTEX_ARRAY );
+      glDisableClientState( GL_COLOR_ARRAY );
     }
-    else {
+    else if( n == 2 ) {
 
-      glCallList( _dlist );
+      // Enable Vertex and Normal Array
+      glEnableClientState( GL_VERTEX_ARRAY );
+      glEnableClientState( GL_COLOR_ARRAY );
+
+      // Draw
+      for( int i = 0; i < this->_n2.getDim1(); i++ ) {
+
+        // Give Pointers to Vertex and Normal Data
+        glColorPointer( 4, GL_UNSIGNED_BYTE, 0, &_c2[0][0] );
+        glVertexPointer( 3, GL_FLOAT, 2*3*sizeof(float), this->_n2(i)(0).getPos().getPtr() );
+
+        // Draw Strip
+        glDrawArrays( GL_TRIANGLE_STRIP, 0, this->_n2(i).getDim() );
+      }
+
+      // Disable Client States
+      glDisableClientState( GL_VERTEX_ARRAY );
+      glDisableClientState( GL_COLOR_ARRAY );
     }
 
     // Pop GL Attribs
@@ -298,10 +268,11 @@ namespace GMlib {
   inline
   void VContours<T,n>::replot(
     DVector< DVector< Vector<T, 3> > >& p,
-    int /*m*/, int /*d*/
+    int m, int d
   ) {
 
-
+    // Replot the default visualizer
+    VDefault<T,n>::replot( p, m, d );
 
     // Color Countours
     DVector<Color> ccs;
@@ -447,29 +418,29 @@ namespace GMlib {
 
 
     // Create Vertex arrays ^^
-    if( this->_ref->isDynamic() ) {
+//    if( this->_ref->isDynamic() ) {
 
-      _color_pointer_n1 = ccs;
-    }
-    else {
-
-      if( _dlist )
-        glDeleteLists( _dlist, 1 );
-
-      _dlist = glGenLists(1);
-
-      // Create the Curve Display List
-      glNewList( _dlist, GL_COMPILE ); {
-        glBegin(GL_LINE_STRIP); {
-
-          for( int i = 0; i < p.getDim(); i++ ) {
-            glColor( ccs[i] );
-            glPoint( Point<float, 3>( p[i][0].toFloat() ) );
-          }
-
-        }glEnd();
-      } glEndList();
-    }
+      _c1 = ccs;
+//    }
+//    else {
+//
+//      if( _dlist )
+//        glDeleteLists( _dlist, 1 );
+//
+//      _dlist = glGenLists(1);
+//
+//      // Create the Curve Display List
+//      glNewList( _dlist, GL_COMPILE ); {
+//        glBegin(GL_LINE_STRIP); {
+//
+//          for( int i = 0; i < p.getDim(); i++ ) {
+//            glColor( ccs[i] );
+//            glPoint( Point<float, 3>( p[i][0].toFloat() ) );
+//          }
+//
+//        }glEnd();
+//      } glEndList();
+//    }
   }
 
 
@@ -478,8 +449,11 @@ namespace GMlib {
   void VContours<T,n>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& p,
     DMatrix< Vector<T, 3> >& normals,
-    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
+    int m1, int m2, int d1, int d2
   ) {
+
+    // Replot the default visualizer
+    VDefault<T,n>::replot( p, normals, m1, m2, d1, d2 );
 
     // Color/Material Countours
     DMatrix<double> cmap;
@@ -532,6 +506,7 @@ namespace GMlib {
               max = value;
           }
         }
+
 
         // Correct interval
         if( max - min > 0 ) {
@@ -649,74 +624,84 @@ namespace GMlib {
       break;
     }
 
+    cout << "color map" << endl;
+    for( int i = 0; i < cmap.getDim1(); i++ ) {
 
+      for( int j = 0; j < cmap.getDim2(); j++ ) {
+
+        cout << cmap[i][j] << " ";
+      }
+      cout << endl;
+
+    }
+    cout << endl;
 
 
     DMatrix<Color> ccs;
-    DMatrix<Material> mcs;
-    if( _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR ) {
+//    DMatrix<Material> mcs;
+//    if( _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR ) {
 
       ccs.setDim( p.getDim1(), p.getDim2() );
       for( int i = 0; i < p.getDim1(); i++ )
         for( int j = 0; j < p.getDim2(); j++ )
           ccs[i][j] = _getColor( cmap[i][j] );
-    }
-    else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL ) {
-
-      mcs.setDim( p.getDim1(), p.getDim2() );
-      for( int i = 0; i < p.getDim1(); i++ )
-        for( int j = 0; j < p.getDim2(); j++ )
-          mcs[i][j] = _getMaterial( cmap[i][j] );
-    }
+//    }
+//    else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL ) {
+//
+//      mcs.setDim( p.getDim1(), p.getDim2() );
+//      for( int i = 0; i < p.getDim1(); i++ )
+//        for( int j = 0; j < p.getDim2(); j++ )
+//          mcs[i][j] = _getMaterial( cmap[i][j] );
+//    }
 
 
     // Create Vertex arrays ^^
-    if( this->_ref->isDynamic() && _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR ) {
+//    if( this->_ref->isDynamic() && _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR ) {
 
-      _color_pointer_n2.setDim( p.getDim1()-1, p.getDim2()*2 );
+      _c2.setDim( p.getDim1()-1, p.getDim2()*2 );
 
       for( int i = 0; i < p.getDim1()-1; i++ ) {
         for( int j = 0; j < p.getDim2(); j++ ) {
 
-          _color_pointer_n2[i][ 2*j   ] = ccs[ i   ][j];
-          _color_pointer_n2[i][ 2*j+1 ] = ccs[ i+1 ][j];
+          _c2[i][ 2*j   ] = ccs[ i   ][j];
+          _c2[i][ 2*j+1 ] = ccs[ i+1 ][j];
         }
       }
-    }
-    else {
-
-      if( _dlist )
-        glDeleteLists( _dlist, 1 );
-
-      _dlist = glGenLists(1);
-
-      // Create the Curve Display List
-      glNewList( _dlist, GL_COMPILE ); {
-
-        for( int i = 0; i < p.getDim1() - 1; i++ ) {
-          glBegin(GL_TRIANGLE_STRIP); {
-            for( int j = 0; j < p.getDim2(); j++ ) {
-
-              if( _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR )          glColor( ccs[i][j] );
-              else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL )  mcs[i][j].glSet();
-
-              glVertex( Arrow<float, 3>(
-                Point3D<float>( ( p[i][j][0][0] ).toFloat() ),
-                ( normals[i][j] ).getNormalized().toFloat()
-              ) );
-
-              if( _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR )          glColor( ccs[i+1][j] );
-              else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL )  mcs[i+1][j].glSet();
-
-              glVertex( Arrow<float, 3>(
-                Point3D<float>( ( p[i+1][j][0][0] ).toFloat() ),
-                ( normals[i+1][j] ).getNormalized().toFloat()
-              ) );
-            }
-          } glEnd();
-        }
-      } glEndList();
-    }
+//    }
+//    else {
+//
+//      if( _dlist )
+//        glDeleteLists( _dlist, 1 );
+//
+//      _dlist = glGenLists(1);
+//
+//      // Create the Curve Display List
+//      glNewList( _dlist, GL_COMPILE ); {
+//
+//        for( int i = 0; i < p.getDim1() - 1; i++ ) {
+//          glBegin(GL_TRIANGLE_STRIP); {
+//            for( int j = 0; j < p.getDim2(); j++ ) {
+//
+//              if( _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR )          glColor( ccs[i][j] );
+//              else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL )  mcs[i][j].glSet();
+//
+//              glVertex( Arrow<float, 3>(
+//                Point3D<float>( ( p[i][j][0][0] ).toFloat() ),
+//                ( normals[i][j] ).getNormalized().toFloat()
+//              ) );
+//
+//              if( _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR )          glColor( ccs[i+1][j] );
+//              else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL )  mcs[i+1][j].glSet();
+//
+//              glVertex( Arrow<float, 3>(
+//                Point3D<float>( ( p[i+1][j][0][0] ).toFloat() ),
+//                ( normals[i+1][j] ).getNormalized().toFloat()
+//              ) );
+//            }
+//          } glEnd();
+//        }
+//      } glEndList();
+//    }
   }
 
 

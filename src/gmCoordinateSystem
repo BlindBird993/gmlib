@@ -22,23 +22,13 @@
 
 
 
-/*! \file gmDisplayUtils
+/*! \file gmCoordinateSystem
+ *  \brief gmCoordinateSystem c++ header
  *
- *  C++ interface for the gmDisplayUtils Component
+ *  C++ interface for the gmCoordinateSystem.h header and classes.
  *
- *  \date   2008-08-04
+ *  \date   2009-12-21
  */
 
-#include "gmArrow3D"
-#include "gmColor"
-#include "gmCoordinateSystem"
-#include "gmGLColor"
-#include "gmLightG"
-#include "gmMaterial"
-#include "gmSelector"
-#include "gmSelectorGrid"
-#include "gmSphere3D"
-#include "gmStlObject"
-#include "gmSurroundingSphere"
-#include "gmTexture"
-#include "gmTriangleSystem"
+#include "gmCoordinateSystem.h"
+

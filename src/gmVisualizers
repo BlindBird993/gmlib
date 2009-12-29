@@ -36,7 +36,6 @@
 
 // Visualizers
 #include "gmVContours"                      // Displays Contours
-#include "gmVCoordinateSystem"              // Displays The objects Coordinate System
 #include "gmVDefault"                       // Default Visualizer
 #include "gmVDerivatives"                   // Displays Derivatives
 #include "gmVDynamicTexture"                // Visualize textures dynamically.
@@ -46,4 +45,3 @@
 #include "gmVGLPhongShader"                 // Phong Shader Visualizer
 #include "gmVNormals"                       // Displays Normals
 #include "gmVPoints"                        // Visualizes the Object as a "cloud" of Points
-#include "gmVSurroundingSphere"             // Displays The Surrounding Sphere of an object

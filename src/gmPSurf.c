@@ -645,51 +645,8 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurf<T>::localDisplay() {
+  void PSurf<T>::replot( int m1, int m2, int d1, int d2 ) {
 
-    for( int i = 0; i < this->_visualizers.getSize(); i++ )
-      this->_visualizers[i]->display();
-  }
-
-
-  template <typename T>
-  inline
-  void PSurf<T>::localSelect() {
-
-    if( this->_dynamic ) {
-
-      glEnableClientState( GL_VERTEX_ARRAY );
-
-      for( int i = 0; i < this->_vertices_n2.getDim1(); i++ ) {
-
-        glVertexPointer( 3, GL_FLOAT, 2*3*sizeof(float), ( this->_vertices_n2[i][0].getPos() ).getPtr() );
-        glDrawArrays( GL_TRIANGLE_STRIP, 0, this->_vertices_n2[i].getDim() );
-      }
-    }
-    else
-      glCallList( this->_dlist + 1 );
-
-    for( int i = 0; i < this->_visualizers.getSize(); i++ )
-      this->_visualizers[i]->select();
-  }
-
-
-  template <typename T>
-  inline
-  void PSurf<T>::localSimulate( double dt ) {
-
-    for( int i = 0; i < this->_visualizers.getSize(); i++ )
-      this->_visualizers[i]->simulate( dt );
-  }
-
-
-  template <typename T>
-  inline
-  void PSurf<T>::replot( int m1, int m2, int d1, int d2, bool dynamic ) {
-
-    // Check wheather or not PSurf is valid
-//    if( !_p_ref )
-//      return;
 
     // Correct sample domain
     if( m1 < 2 )
@@ -703,7 +660,6 @@ namespace GMlib {
       _sam2.setDim( m2 );
 
     // Set Properties
-    this->_dynamic = dynamic;
     _no_der_u = d1;
     _no_der_v = d2;
     _no_samp_u = m1;
@@ -723,97 +679,8 @@ namespace GMlib {
     DMatrix< Vector<T, 3> > normals;
     resampleNormals( p, normals );
 
-
     // Set The Surrounding Sphere
     setSurroundingSphere( p );
-
-    // Clean up Display Lists
-    if( this->_dlist ) {
-
-      glDeleteLists( this->_dlist, 2 );
-      this->_dlist = 0;
-    }
-
-
-    // Create Display lists or input data into vertex arrays...
-    // Dependent on wheather or not the Surface is dynamic
-    if( this->_dynamic ) {
-
-      this->_vertices_n2.setDim( p.getDim1()-1, p.getDim2()*2 );
-
-      for( int i = 0; i < p.getDim1()-1; i++ ) {
-        for( int j = 0; j < p.getDim2(); j++ ) {
-
-          this->_vertices_n2[i][ 2*j   ].setPos( p[ i   ][j][0][0].toFloat() );
-          this->_vertices_n2[i][ 2*j   ].setDir( ( normals[i][j] ).getNormalized().toFloat() );
-
-          this->_vertices_n2[i][ 2*j+1 ].setPos( p[ i+1 ][j][0][0].toFloat() );
-          this->_vertices_n2[i][ 2*j+1 ].setDir( ( normals[i+1][j] ).getNormalized().toFloat() );
-        }
-      }
-
-
-      if( this->_material.getTextureID() ) {
-
-        this->_texture_coords.setDim( p.getDim1() - 1, p.getDim2() * 2 );
-
-        for( int i = 0; i < p.getDim1() - 1; i++ ) {
-          for( int j = 0; j < p.getDim2(); j++ ) {
-
-            this->_texture_coords[i][ 2 * j       ] = Point2D<float>( i / float( p.getDim1() - 1 ), j / float( p.getDim2() - 1 ) );
-            this->_texture_coords[i][ (2 * j) + 1 ] = Point2D<float>( (i+1) / float( p.getDim1()- 1 ), j / float( p.getDim2() - 1 ) );
-          }
-        }
-      }
-    }
-    else {
-
-      this->_dlist = glGenLists(2);
-
-      // Create display list for Display
-      // Display list no. 0 main list
-      glNewList( this->_dlist, GL_COMPILE ); {
-
-        for( int i = 0; i < p.getDim1() - 1; i++ ) {
-
-          glBegin(GL_TRIANGLE_STRIP); {
-
-            for( int j = 0; j < p.getDim2(); j++ ) {
-
-              glTexCoord( Point2D<float>( (i) / float( p.getDim1() - 1 ), j / float( p.getDim2() - 1 ) ) );
-              glVertex( Arrow<float, 3>(
-                Point3D<float>( ( p[i][j][0][0] ).toFloat() ),
-                ( normals[i][j] ).getNormalized().toFloat()
-              ) );
-
-              glTexCoord( Point2D<float>( (i+1) / float( p.getDim1() - 1 ), j / float( p.getDim2() - 1 ) ) );
-              glVertex( Arrow<float, 3>(
-                Point3D<float>( ( p[i+1][j][0][0] ).toFloat() ),
-                ( normals[i+1][j] ).getNormalized().toFloat()
-              ) );
-            }
-          } glEnd();
-        }
-      } glEndList();
-
-      // Create display list for Select
-      // Display list no. 1
-      glNewList(this->_dlist+1, GL_COMPILE); {
-
-        for( int i = 0; i < p.getDim1() - 1 ; i++ ) {
-
-          glBegin(GL_TRIANGLE_STRIP); {
-
-            for( int j = 0; j < p.getDim2(); j++ ) {
-
-              glPoint( Point3D<float>( ( p[i][j][0][0] ).toFloat() ) );
-              glPoint( Point3D<float>( ( p[i+1][j][0][0] ).toFloat() ) );
-            }
-          } glEnd();
-        }
-      } glEndList();
-    }
-
 
     // Replot Visaulizers
     for( int i = 0; i < this->_visualizers.getSize(); i++ )

@@ -37,6 +37,10 @@
 #include <string>
 
 // GMlib includes
+#include "gmPoint.h"
+#include "gmColor.h"
+#include "gmDVector.h"
+#include "gmDMatrix.h"
 #include "gmVisualizer.h"
 
 
@@ -50,24 +54,27 @@ namespace GMlib {
     ~VNormals();
 
     void                          display();
-    const GLColor&                getColor() const;
+    const Color&                  getColor() const;
     std::string                   getIdentity() const;
     double                        getSize() const;
+    void                          replot(
+      DVector< DVector< Vector<T, 3> > >& p,
+      int m, int d
+    );
     void                          replot(
       DMatrix< DMatrix< Vector<T, 3> > >& p,
       DMatrix< Vector<T, 3> >& normals,
       int m1, int m2, int d1, int d2
     );
-    void                          setColor( const GLColor& color );
+    void                          setColor( const Color& color );
     void                          setSize( double size = 1.0 );
 
-  private:
-    GLColor                       _color;
-    unsigned int                  _dlist;
+  protected:
+    DVector< Vector<float,3> >    _n1;
+    DMatrix< Arrow<float,3> >     _n2;
 
+    Color                         _color;
     double                        _size;
-
-    void                          _init();
   };
 
 } // END namespace GMlib

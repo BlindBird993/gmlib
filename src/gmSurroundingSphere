@@ -22,18 +22,12 @@
 
 
 
-/*! \file gmVCoordinateSystem
- *  \brief VCoordinateSystem C++ header
+/*! \file gmSurroundingSphere
+ *  \brief gmSurroundingSphere C++ header
  *
- *  C++ interface for the VCoordinateSystem header and classes.
+ *  C++ interface for the SurroundingSphere header and classes.
  *
- *  \date   2009-08-25
+ *  \date   2009-12-26
  */
 
-#include "gmVCoordinateSystem.h"
-
-
-
-
-
-
+#include "gmSurroundingSphere.h"

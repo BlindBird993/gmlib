@@ -5,6 +5,30 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2009-12-29 Jostein Bratlie
+        * gmMatrix
+          - Corrected the way a sphere is multiplied with a matrix.
+            The radius were computed incorrectly. (Incorrect vector multiplication).
+          - This fixes a bug with the SceneObjects surrounding spheres where the sphere gets the wrong
+            radius if the object is rotated.
+        * Parametrics (PCurve/PSurf)
+          - The PCurve and PSurf replot(...) functions now take 2 and 4 parameters respectivly, instead of 3 and 5.
+            The last parameter, bool dynamic, is removed, and all parametric objects are computed dynamically.
+        * Parametrics (Visualizers)
+          - Inflicted visualizers are corrected so that they are computing dynamic data.
+            Vertex/Color/Texture data is now stored only in vertex arrays, display lists deprecated.
+        * SurroundingSphere/CoordinateSystem (VSurroundingSphere/VCoordinateSystem)
+          - Visualizers VSurroundingSphere and VCoordinateSystem replaced by display objects
+            SurroundingSphere and CoordinateSystem respectivly.
+            To show a scene objects surrounding sphere or coordinate system axis insert a SurroundingSphere or CoordinateSystem object
+            as its child.
+        * SceneObject
+          - The function getMatrixParentGlobal() which returns the homogenous transformation matrix from the scene root to the parent
+            is now public instead of protected.
+        * VDynamicTexture/VDynamicTextureAnimation
+          - Returns the correct identity from std::string getIdentity() const.
+          - Returns their respective class names.
+
 
 2009-12-15 Jostein Bratlie
         * Triangle system refactoring.

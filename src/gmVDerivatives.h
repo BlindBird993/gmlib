@@ -38,6 +38,7 @@
 
 // GMlib includes
 #include "gmDVector.h"
+#include "gmDMatrix.h"
 #include "gmVisualizer.h"
 
 namespace GMlib {
@@ -56,7 +57,7 @@ namespace GMlib {
     ~VDerivatives();
 
     void                                display();
-    const GLColor&                      getColor() const;
+    const Color&                        getColor() const;
     std::string                         getIdentity() const;
     int                                 getIdxU() const;
     int                                 getIdxV() const;
@@ -71,21 +72,20 @@ namespace GMlib {
       DMatrix< Vector<T, 3> >& normals,
       int m1, int m2, int d1, int d2
     );
-    void                                setColor( const GLColor& color );
+    void                                setColor( const Color& color );
+    void                                setDerivative( int u = 0, int v = 0 );
     void                                setSize( GM_VISUALIZER_DERIVATIVES_SIZE mode, double size = 1.0 );
-    void                                showDerivative( int u = 0, int v = 0 );
 
-  private:
-    GLColor                             _color;
-    unsigned int                        _dlist;
+  protected:
+    Color                               _color;
+    DVector< Arrow<float,3> >           _n1;
+    DMatrix< Arrow<float,3> >           _n2;
 
     GM_VISUALIZER_DERIVATIVES_SIZE      _size_mode;
     double                              _size;
 
     int                                 _u;
     int                                 _v;
-
-    void                                _init();
   };
 
 } // END namespace GMlib

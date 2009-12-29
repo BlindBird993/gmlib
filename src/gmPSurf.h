@@ -84,7 +84,7 @@ namespace GMlib {
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
     virtual bool                  isClosestPoint( const Point<T,3>& q, T& u, T& v );
-    void                          replot( int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2, bool dynamic = false );
+    void                          replot( int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
     virtual void                  resample(DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a, int m1, int m2, int d1, int d2 );
     virtual void                  resample(DMatrix<DMatrix <Vector<T,3> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
     virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T, 3> > > &sample, DMatrix<Vector<T, 3> > &normals ) const;
@@ -105,10 +105,6 @@ namespace GMlib {
     int                           _no_der_v;
     int                           _no_samp_u;
     int                           _no_samp_v;
-
-    void                          localDisplay();
-    void                          localSelect();
-    void                          localSimulate( double dt );
 
 
 

@@ -37,7 +37,8 @@ namespace GMlib {
   inline
   VPoints<T,n>::VPoints() {
 
-    _init();
+      _size = 1.0;
+      _color = GMcolor::BlueViolet;
   }
 
 
@@ -48,22 +49,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  VPoints<T,n>::~VPoints() {
-
-    if( _dlist )
-      glDeleteLists( _dlist, 1 );
-  }
-
-
-  template <typename T, int n>
-  inline
-  void VPoints<T,n>::_init() {
-
-      _dlist = 0;
-      _size = 1.0;
-      _color = GMcolor::BlueViolet;
-  }
-
+  VPoints<T,n>::~VPoints() {}
 
 
   template <typename T, int n>
@@ -78,53 +64,28 @@ namespace GMlib {
     glColor( _color );
     glPointSize( _size );
 
+    // Enable vertex array
+    glEnableClientState( GL_VERTEX_ARRAY );
 
-    // Display; dependant on dynamic/static status
-    if( this->_ref->isDynamic() ) {
+    if( n == 1 ) {
 
-      switch( n ) {
-        case 1: {
+      // Give pointer to vertex data & draw
+      glVertexPointer( 3, GL_FLOAT, 0, _n1(0).getPtr() );
+      glDrawArrays( GL_POINTS, 0, _n1.getDim() );
+    }
+    else if( n == 2 ) {
 
-          // Get Vertex data
-          const DVector< Vector< float, 3 > > &v = this->_ref->getVerticesN1();
+      // Draw
+      for( int i = 0; i < _n2.getDim1(); i++ ) {
 
-          // Enable the Vertex Array
-          glEnableClientState( GL_VERTEX_ARRAY );
-
-          // Give Pointer to Vertex Data
-          glVertexPointer( 3, GL_FLOAT, 0, v(0).getPtr() );
-
-          // Draw
-          glDrawArrays( GL_POINTS, 0, v.getDim() );
-        }
-        break;
-
-        case 2:
-        default: {
-
-          // Get Vertex, Texture and Material Data
-          const DMatrix< Arrow<float,3> > &v = this->_ref->getVerticesN2();
-
-          // Enable Vertex and Normal Array
-          glEnableClientState( GL_VERTEX_ARRAY );
-
-          // Draw
-          for( int i = 0; i < v.getDim1(); i++ ) {
-
-            // Give Pointer to Vertex Data
-            glVertexPointer( 3, GL_FLOAT, 2*3*sizeof(float), v(i)(0).getPos().getPtr() );
-
-            // Draw
-            glDrawArrays( GL_POINTS, 0, v(i).getDim() );
-          }
-        }
-        break;
+        // Give pointer to vertex data and draw
+        glVertexPointer( 3, GL_FLOAT, 3*sizeof(float), _n2(i)(0).getPtr() );
+        glDrawArrays( GL_POINTS, 0, _n2(i).getDim() );
       }
     }
-    else {
 
-      glCallList( _dlist );
-    }
+    // Disable vertex array
+    glDisableClientState( GL_VERTEX_ARRAY );
 
     // Pop GL Attribs
     glPopAttrib();
@@ -143,7 +104,7 @@ namespace GMlib {
   inline
   std::string VPoints<T,n>::getIdentity() const {
 
-    return "Points Visualizer";
+    return "VPoints";
   }
 
 
@@ -162,24 +123,9 @@ namespace GMlib {
     int /*m*/, int /*d*/
   ) {
 
-    if( !this->_ref->isDynamic() ) {
-
-      if( _dlist )
-        glDeleteLists( _dlist, 1 );
-
-      _dlist = glGenLists(1);
-
-      // Make displaylist for display of pointed curve
-      glNewList( _dlist, GL_COMPILE ); {
-
-        glBegin(GL_POINTS); {
-
-          for( int i = 0; i < p.getDim(); i++ )
-            glPoint( Point<float, 3>( (p[i][0]).toFloat() ) );
-
-        }glEnd();
-      }glEndList();
-    }
+    _n1.setDim( p.getDim() );
+    for( int i = 0; i < p.getDim(); i++ )
+      _n1[i] = p[i][0];
   }
 
 
@@ -191,25 +137,10 @@ namespace GMlib {
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
   ) {
 
-    if( !this->_ref->isDynamic() ) {
-
-      if( _dlist )
-        glDeleteLists( _dlist, 1 );
-
-      _dlist = glGenLists(1);
-
-      // Make displaylist for display of pointed curve
-      glNewList( _dlist, GL_COMPILE ); {
-
-        glBegin(GL_POINTS); {
-
-          for( int i = 0; i < p.getDim1(); i++ )
-            for( int j = 0; j < p.getDim2(); j++ )
-              glPoint( Point<float, 3>( (p[i][j][0][0]).toFloat() ) );
-
-        }glEnd();
-      }glEndList();
-    }
+    _n2.setDim( p.getDim1(), p.getDim2() );
+    for( int i = 0; i < p.getDim1(); i++ )
+      for( int j = 0; j < p.getDim2(); j++ )
+        _n2[i][j] = p[i][j][0][0];
   }
 
 
@@ -227,5 +158,5 @@ namespace GMlib {
     _size = size;
   }
 
-}
+} // END namespace GMlib
 

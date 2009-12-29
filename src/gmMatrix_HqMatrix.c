@@ -362,7 +362,6 @@ namespace GMlib {
   Sphere<T,n>		HqMatrix<T, n>::operator*(const Sphere<T,n>& s)		const{
 
     Sphere<T,n> r( s.isValid() );
-
     if( s.isValid()) {
 
       // Position
@@ -371,7 +370,7 @@ namespace GMlib {
       // Radius
       Vector<T,n> v(T(0));
       v[0]= s.getRadius();
-      GM_Static_P_<T,n,n>::mv_xq( v.getPtr(), this->getPtr(), v );
+      v = (*this) * v;
       r.resetRadius( v.getLength() );
     }
 

@@ -303,47 +303,7 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  void  PCurve<T>::localDisplay() {
-
-    glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT ); {
-
-      // Set Properties
-      glDisable( GL_LIGHTING );
-      glLineWidth( _line_width );
-
-      for( int i = 0; i < this->_visualizers.getSize(); i++ )
-        this->_visualizers[i]->display();
-
-    } glPopAttrib();
-  }
-
-
-  template <typename T>
-  inline
-  void PCurve<T>::localSelect() {
-
-    glPushAttrib( GL_LINE_BIT ); {
-
-      glLineWidth( 2 * _line_width );
-
-      if( this->_dynamic ) {
-
-        glVertexPointer( 3, GL_FLOAT, 2*3*sizeof(float), this->_vertices_n1[0].getPtr() );
-        glDrawArrays( GL_LINE_STRIP, 0, this->_vertices_n1.getDim() );
-      }
-      else
-        glCallList( this->_dlist );
-
-    } glPopAttrib();
-
-    for( int i = 0; i < this->_visualizers.getSize(); i++ )
-      this->_visualizers[i]->select();
-  }
-
-
-  template <typename T>
-  void PCurve<T>::replot( int m, int d, bool dynamic ) {
+  void PCurve<T>::replot( int m, int d ) {
 
 
     // Correct sample domain
@@ -354,75 +314,16 @@ namespace GMlib {
 
 
     // Set Properties
-    this->_dynamic = dynamic;
     _no_samp = m;
     _no_der = d;
 
 
     // Resample
-//    cout << "Sample data of: " << getIdentity() << endl;
     DVector< DVector< Vector<T, 3> > > p;
     resample( p, m, 1, getStartP(), getEndP() );
 
-//    for( int i = 0; i < p.getDim(); i++ ) {
-//
-//      cout << "samp: " << i << endl;
-//      for( int j = 0; j < p[i].getDim(); j++ ) {
-//        cout << " der: " << j << endl;
-//        for( int k = 0; k < 3; k++ )
-//          cout << "  " << p[i][j][k];
-//        cout << endl;
-//      }
-//      cout << endl;
-//    }
-//    cout << endl << endl;
-
     // Set The Surrounding Sphere
     setSurroundingSphere( p );
-
-
-    // Clean up Display Lists
-    if( this->_dlist ) {
-
-      glDeleteLists( this->_dlist, 2 );
-      this->_dlist = 0;
-    }
-
-
-    // Create Display lists or input data into vertex arrays...
-    // Dependent on wheather or not the Curve is dynamic
-    if(dynamic) {
-
-      glEnableClientState( GL_VERTEX_ARRAY );
-      this->_vertices_n1.setDim( p.getDim() );
-
-      for( int i = 0; i < p.getDim(); i++ )
-        this->_vertices_n1[i] = p[i][0].toFloat();
-    }
-    else {
-
-      this->_dlist = glGenLists(2);
-
-      // Make displaylist for display of lined curve
-      glNewList( this->_dlist, GL_COMPILE ); {
-        glBegin(GL_LINE_STRIP); {
-
-          for( int i = 0; i < p.getDim(); i++ )
-            glPoint( Point<float, 3>( p[i][0].toFloat() ) );
-
-        }glEnd();
-      } glEndList();
-
-      // Make displaylist for selection of lined curve
-      glNewList( this->_dlist + 1, GL_COMPILE ); {
-        glBegin(GL_LINE_STRIP); {
-
-          for( int i = 0; i < p.getDim(); i++ )
-            glPoint( Point<float, 3>( p[i][0].toFloat() ) );
-
-        }glEnd();
-      } glEndList();
-    }
 
 
     // Replot Visaulizers

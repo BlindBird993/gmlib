@@ -36,7 +36,7 @@
 #include "gmColor.h"
 #include "gmMaterial.h"
 
-#include "gmVisualizer.h"
+#include "gmVDefault.h"
 
 
 namespace GMlib {
@@ -60,7 +60,7 @@ namespace GMlib {
   };
 
   template <typename T, int n>
-  class VContours : public Visualizer<T,n> {
+  class VContours : public VDefault<T,n> {
   public:
     VContours();
     VContours( const VContours<T,n>& copy );
@@ -93,9 +93,9 @@ namespace GMlib {
     Array<Material>               _materials;
     GM_VISUALIZER_CONTOURS_MAP    _mapping;
     GM_VISUALIZER_CONTOURS_TYPE   _type;
-    unsigned int                  _dlist;
-    DVector<Color>                _color_pointer_n1;
-    DMatrix<Color>                _color_pointer_n2;
+
+    DVector<Color>                _c1;
+    DMatrix<Color>                _c2;
 
     Color                         _getColor( T d );
     T                             _getCurvatureCurve( DVector< Vector<T, 3> >& p );

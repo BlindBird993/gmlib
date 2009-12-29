@@ -72,7 +72,7 @@ namespace GMlib {
   inline
   std::string VDynamicTextureAnimation<T,n>::getIdentity() const {
 
-    return "Dynamic Texture Animation Visualizer";
+    return "VDynamicTextureAnimation";
   }
 
 

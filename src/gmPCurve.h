@@ -65,7 +65,7 @@ namespace GMlib {
     T                         getRadius( T t );
     T                         getSpeed( T t );
     virtual bool              isClosed() const {return false;}
-    virtual void              replot( int m = 0, int d = 2, bool dynamic = false );
+    virtual void              replot( int m = 0, int d = 2 );
     void                      setDomain( T start, T end );
     void                      setDomainScale( T sc );
     void                      setDomainTrans( T tr );
@@ -116,9 +116,6 @@ namespace GMlib {
     virtual void              resample( Array<Point<T,3> >& a, int m, T start, T end );	// Given sampling rate
     virtual void              resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end );
 
-
-    void                      localDisplay();
-    void                      localSelect();
 
     T					                shift( T t );
 

@@ -103,7 +103,7 @@ HEADERS += src/gmArray.h \
     src/gmArrayT.h \
     src/gmDMatrix.h \
     src/gmDVector.h \
-    src/gmSArray.h
+    src/gmSArray.h \
 
 # gmCore
 HEADERS += src/gmAffineSpace.h \
@@ -130,6 +130,7 @@ HEADERS += src/gmCamera.h \
 # gmDisplayUtils
 HEADERS += src/gmArrow3D.h \
     src/gmColor.h \
+    src/gmCoordinateSystem.h \
     src/gmGLColor.h \
     src/gmLightG.h \
     src/gmMaterial.h \
@@ -138,6 +139,7 @@ HEADERS += src/gmArrow3D.h \
     src/gmSelectorGrid.h \
     src/gmSphere3D.h \
     src/gmStlObject.h \
+    src/gmSurroundingSphere.h \
     src/gmTexture.h \
     src/gmTriangleSystem.h
 
@@ -153,7 +155,6 @@ HEADERS += src/gmParametrics.h \
     src/gmPSurf.h \
     src/gmPApple.h \
     src/gmPArc.h \
-    \ \
     src/gmPAsteroidalSphere.h \
     src/gmPBezierCurve.h \
     src/gmPBezierSurf.h \
@@ -184,7 +185,6 @@ HEADERS += src/gmEvaluatorERBS.h \
 
 # gmVisualizers
 HEADERS += src/gmVContours.h \
-    src/gmVCoordinateSystem.h \
     src/gmVDefault.h \
     src/gmVDerivatives.h \
     src/gmVDynamicTexture.h \
@@ -193,8 +193,7 @@ HEADERS += src/gmVContours.h \
     src/gmVGLShader.h \
     src/gmVisualizer.h \
     src/gmVNormals.h \
-    src/gmVPoints.h \
-    src/gmVSurroundingSphere.h
+    src/gmVPoints.h
 
 # gmGPU
 HEADERS += src/gmGLSL.h \
@@ -206,6 +205,7 @@ SOURCES += src/gmCamera.cpp \
     src/gmCameraIso.cpp \
     src/gmCodeExample.cpp \
     src/gmColor.cpp \
+    src/gmCoordinateSystem.cpp \
     src/gmDisplayObject.cpp \
     src/gmGLSL.cpp \
     src/gmGLPhongShader.cpp \
@@ -226,6 +226,7 @@ SOURCES += src/gmCamera.cpp \
     src/gmScript_Script.cpp \
     src/gmStlObject.cpp \
     src/gmStream_Separator.cpp \
+    src/gmSurroundingSphere.cpp \
     src/gmTexture.cpp \
     src/gmWindow_GMWindow.cpp \
     src/gmWindow_View.cpp \
@@ -398,7 +399,6 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmDisplayObject.c \
     src/gmColor.c \
     src/gmWindow \
-    src/gmVSurroundingSphere \
     src/gmVPoints \
     src/gmVNormals \
     src/gmVisualizers \
@@ -410,14 +410,12 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmVDynamicTexture \
     src/gmVDerivatives \
     src/gmVDefault \
-    src/gmVCoordinateSystem \
     src/gmVContours \
     src/gmUtils \
     src/gmWindow_ViewSet.c \
     src/gmWindow_ViewBorder.c \
     src/gmWindow_View.c \
     src/gmWindow_GMWindow.c \
-    src/gmVSurroundingSphere.c \
     src/gmVPoints.c \
     src/gmVNormals.c \
     src/gmVisualizer.c \
@@ -428,7 +426,6 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmVDynamicTexture.c \
     src/gmVDerivatives.c \
     src/gmVDefault.c \
-    src/gmVCoordinateSystem.c \
     src/gmVContours.c \
     src/gmPChrysanthemumCurve \
     src/gmPChrysanthemumCurve.c \
@@ -441,4 +438,6 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmTriangleSystem_TSLine.c \
     src/gmTriangleSystem_TSEdge.c \
     src/gmTriangleSystem_TriangleSystem.c \
-    src/gmTriangleSystem_TriangleFacets.c
+    src/gmTriangleSystem_TriangleFacets.c \
+    src/gmCoordinateSystem \
+    src/gmSurroundingSphere

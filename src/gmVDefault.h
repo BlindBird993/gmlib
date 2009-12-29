@@ -51,7 +51,25 @@ namespace GMlib {
 
     void          display();
 
+    void          select();
+
     std::string   getIdentity() const;
+
+    void          replot(
+      DVector< DVector< Vector<T, 3> > >& p,
+      int m, int d
+    );
+
+    void          replot(
+      DMatrix< DMatrix< Vector<T, 3> > >& p,
+      DMatrix< Vector<T, 3> >& normals,
+      int m1, int m2, int d1, int d2
+    );
+
+  protected:
+    DVector< Vector<float,3> >    _n1;
+    DMatrix< Arrow<float,3> >     _n2;
+    DMatrix< Point<float,2> >     _t2;
 
 
   }; // END class VDefault

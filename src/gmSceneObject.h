@@ -149,6 +149,7 @@ namespace GMlib{
     Material&                   getMaterial();
     virtual HqMatrix<float,3>&  getMatrix();
     const HqMatrix<float,3>&    getMatrixGlobal() const;
+    const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
     unsigned int                getName() const;
     SceneObject*                getParent();
     Scene*                      getScene();
@@ -211,7 +212,6 @@ namespace GMlib{
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                displayCollapsed();
     virtual void                generateCollapsedDList();
-    const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
     virtual void                localDisplay();
     virtual void                localDisplayActive();
     virtual void                localDisplaySelection();

@@ -22,73 +22,58 @@
 
 
 
-/*! \file gmVSurroundingSphere.h
+/*! \file gmSurroundingSphere.h
  *
- *  Interface for the VSurroundingSphere class.
+ *  Interface for the SurroundingSphere class.
  *
- *  \date   2009-01-27
+ *  \date   2009-12-26
  */
 
-#ifndef __gmVSURROUNDINGSPHERE_H__
-#define __gmVSURROUNDINGSPHERE_H__
+#ifndef __gmSURROUNDINGSPHERE_H__
+#define __gmSURROUNDINGSPHERE_H__
 
 
-#include "gmGLColor.h"
+#include "gmColor.h"
 #include "gmVisualizer.h"
 
 
 namespace GMlib {
 
 
-  enum GM_VISUALIZER_SS {
-    GM_VISUALIZER_SS_SPHERE = 1,
-    GM_VISUALIZER_SS_CLEAN  = 2
+  enum GM_SURROUNDINGSPHERE {
+    GM_SURROUNDINGSPHERE_TOTAL = 1,
+    GM_SURROUNDINGSPHERE_CLEAN  = 2
 
   };
 
-  template <typename T, int n>
-  class VSurroundingSphere : public Visualizer<T,n> {
-  public:
-    VSurroundingSphere();
-    VSurroundingSphere( const VSurroundingSphere<T,n>& copy );
 
-    void                display();
-    const GLColor&      getColor( unsigned int mask ) const;
+  class SurroundingSphere : public DisplayObject {
+  public:
+    SurroundingSphere();
+    SurroundingSphere( const SurroundingSphere& copy );
+
+    const Color&        getColor( unsigned int mask ) const;
     std::string         getIdentity() const;
     unsigned int        getSpheres() const;
     bool                isWireframe() const;
-    void                replot(
-      DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d
-    );
-    void                replot(
-      DMatrix< DMatrix< Vector<T, 3> > >& p,
-      DMatrix< Vector<T, 3> >& normals,
-      int m1, int m2, int d1, int d2
-    );
-    void                setColor( const GLColor& color, unsigned int mask );
+    void                setColor( const Color& color, unsigned int mask );
     void                setSpheres( unsigned int mask );
     void                setWireframe( bool wireframe );
 
-  private:
+  protected:
+    void                localDisplay();
     unsigned int        _spheres;
-
     bool                _wireframe;
+    Color               _ct;
+    Color               _cc;
 
-    GLColor             _color;
-    GLColor             _color_clean;
+  }; // END class SurroundingSphere
 
-    void                _init();
-
-  };
 
 } // END namespace GMlib
 
-// Include VSurroundingSphere class function implementations
-#include "gmVSurroundingSphere.c"
 
-
-#endif // __gmVSURROUNDINGSPHERE_H__
+#endif // __gmSURROUNDINGSPHERE_H__
 
 
 

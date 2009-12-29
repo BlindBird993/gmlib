@@ -77,14 +77,14 @@ namespace GMlib {
     ~Parametrics();
 
     void                                  enableDefaultVisualizer( bool enable = true );
-    unsigned int                          getDisplayListIdx() const;
-    const DMatrix<Point<float,2> >&       getTextureCoords() const;
-    const DVector<Vector<float,3> >&      getVerticesN1() const;
-    const DMatrix<Arrow<float,3> >&       getVerticesN2() const;
+//    unsigned int                          getDisplayListIdx() const;
+//    const DMatrix<Point<float,2> >&       getTextureCoords() const;
+//    const DVector<Vector<float,3> >&      getVerticesN1() const;
+//    const DMatrix<Arrow<float,3> >&       getVerticesN2() const;
     Visualizer<T,n>*                      getVisualizer( const std::string& str );
     Array< Visualizer<T,n>* >&            getVisualizers();
     void                                  insertVisualizer( Visualizer<T,n>* visualizer );
-    bool                                  isDynamic() const;
+//    bool                                  isDynamic() const;
     bool                                  isDefaultVisualizerActive();
     void                                  removeVisualizer( Visualizer<T,n>* visualizer );
     void                                  rotate(Angle a, const Vector<float,3>& rot_axel);
@@ -100,14 +100,18 @@ namespace GMlib {
     Array< Visualizer<T,n>* >             _visualizers;
     VDefault<T,n>                         _default_visualizer;
 
-    // States
-    bool                                  _dynamic;
+//    // States
+//    bool                                  _dynamic;
+//
+//    // Visualization
+//    unsigned int                          _dlist;
+//    DMatrix< Point<float,2> >             _texture_coords;
+//    DVector< Vector<float,3> >	          _vertices_n1;
+//    DMatrix< Arrow<float,3> >             _vertices_n2;
 
-    // Visualization
-    unsigned int                          _dlist;
-    DMatrix< Point<float,2> >             _texture_coords;
-    DVector< Vector<float,3> >	          _vertices_n1;
-    DMatrix< Arrow<float,3> >             _vertices_n2;
+    void                                  localDisplay();
+    void                                  localSelect();
+    void                                  localSimulate( double dt );
 
   private:
     void                                  _init();

@@ -66,12 +66,11 @@ namespace GMlib {
     void              setColor( const GLColor& color );
     void              setSize( float size );
 
-  private:
+  protected:
+    DVector< Point<float,3> >   _n1;
+    DMatrix< Point<float,3> >   _n2;
     float             _size;
-    unsigned int      _dlist;
     GLColor           _color;
-
-    void              _init();
   };
 
 

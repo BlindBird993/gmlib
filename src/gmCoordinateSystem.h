@@ -22,14 +22,58 @@
 
 
 
-/*! \file gmVSurroundingSphere
- *  \brief gmVSurroundingSphere C++ header
+/*! \file gmCoordinateSystem.h
  *
- *  C++ interface for the VSurroundingSphere header and classes.
+ *  Interface for the CoordinateSystem class.
+ *  Rewrite/port of the old VCoordinateSystem of 2009-08-25
  *
- *  \date   2009-01-27
+ *  \date   2009-12-21
  */
 
-#include "gmVSurroundingSphere.h"
+#ifndef __gmCOORDINATESYSTEM_H__
+#define __gmCOORDINATESYSTEM_H__
+
+
+// STL
+#include <string>
+
+// GMlib
+#include "gmDisplayObject.h"
+
+
+namespace GMlib {
+
+
+  enum GM_COORDSYS {
+    GM_COORDSYS_LOCAL,
+    GM_COORDSYS_GLOBAL,
+    GM_COORDSYS_PARENT
+  };
+
+  class CoordinateSystem : public DisplayObject {
+  public:
+    CoordinateSystem();
+    CoordinateSystem( const CoordinateSystem& copy );
+    ~CoordinateSystem();
+
+    GM_COORDSYS        getCoordinateSystem() const;
+    std::string        getIdentity() const;
+    void               setCoordinateSystem( GM_COORDSYS coordsys );
+
+  protected:
+    void               localDisplay();
+
+    GM_COORDSYS        _cs;
+
+
+  };
+
+} // END namespace GMlib
+
+
+#endif // __gmCOORDINATESYSTEM_H__
+
+
+
 
 

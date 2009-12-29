@@ -45,9 +45,9 @@ namespace GMlib {
   inline
   Parametrics<T,n>::Parametrics( const Parametrics<T,n>& copy ) : DisplayObject( copy ) {
 
-    _dynamic  = copy._dynamic;
-
-    _dlist    = 0;
+//    _dynamic  = copy._dynamic;
+//
+//    _dlist    = 0;
     enableDefaultVisualizer();
   }
 
@@ -55,17 +55,17 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Parametrics<T,n>::~Parametrics() {
-
-    if( _dlist )
-      glDeleteLists( _dlist, 2 );
+//
+//    if( _dlist )
+//      glDeleteLists( _dlist, 2 );
   }
 
 
   template <typename T, int n>
   void Parametrics<T,n>::_init() {
 
-    _dynamic = false;
-    _dlist = 0;
+//    _dynamic = false;
+//    _dlist = 0;
 
     enableDefaultVisualizer();
   }
@@ -105,37 +105,37 @@ namespace GMlib {
 
 
 
-  template <typename T, int n>
-  inline
-  unsigned int Parametrics<T,n>::getDisplayListIdx() const {
-
-    return _dlist;
-  }
-
-
-  template <typename T, int n>
-  inline
-  const DMatrix<Point<float,2> >& Parametrics<T,n>::getTextureCoords() const {
-
-    return _texture_coords;
-  }
-
-
-
-  template <typename T, int n>
-  inline
-  const DVector<Vector<float,3> >& Parametrics<T,n>::getVerticesN1() const {
-
-    return _vertices_n1;
-  }
-
-
-  template <typename T, int n>
-  inline
-  const DMatrix<Arrow<float,3> >& Parametrics<T,n>::getVerticesN2() const {
-
-    return _vertices_n2;
-  }
+//  template <typename T, int n>
+//  inline
+//  unsigned int Parametrics<T,n>::getDisplayListIdx() const {
+//
+//    return _dlist;
+//  }
+//
+//
+//  template <typename T, int n>
+//  inline
+//  const DMatrix<Point<float,2> >& Parametrics<T,n>::getTextureCoords() const {
+//
+//    return _texture_coords;
+//  }
+//
+//
+//
+//  template <typename T, int n>
+//  inline
+//  const DVector<Vector<float,3> >& Parametrics<T,n>::getVerticesN1() const {
+//
+//    return _vertices_n1;
+//  }
+//
+//
+//  template <typename T, int n>
+//  inline
+//  const DMatrix<Arrow<float,3> >& Parametrics<T,n>::getVerticesN2() const {
+//
+//    return _vertices_n2;
+//  }
 
 
   template <typename T, int n>
@@ -177,11 +177,38 @@ namespace GMlib {
   }
 
 
+//  template <typename T, int n>
+//  inline
+//  bool Parametrics<T,n>::isDynamic() const {
+//
+//    return _dynamic;
+//  }
+
+
   template <typename T, int n>
   inline
-  bool Parametrics<T,n>::isDynamic() const {
+  void Parametrics<T,n>::localDisplay() {
 
-    return _dynamic;
+    for( int i = 0; i < _visualizers.getSize(); i++ )
+      _visualizers[i]->display();
+  }
+
+
+  template <typename T, int n>
+  inline
+  void Parametrics<T,n>::localSelect() {
+
+    for( int i = 0; i < _visualizers.getSize(); i++ )
+      _visualizers[i]->select();
+  }
+
+
+  template <typename T, int n>
+  inline
+  void Parametrics<T,n>::localSimulate( double dt ) {
+
+    for( int i = 0; i < _visualizers.getSize(); i++ )
+      _visualizers[i]->simulate( dt );
   }
 
 
