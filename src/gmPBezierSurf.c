@@ -105,7 +105,7 @@ namespace GMlib {
   void PBezierSurf<T>::edit( int /*selector*/ ) {
 
     _c_moved = true;
-    this->replot(0,0,false);
+    this->replot();
     if( this->_parent )
       this->_parent->edit( this );
     _c_moved = false;

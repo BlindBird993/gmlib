@@ -5,6 +5,11 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2010-01-07 Jostein Bratlie
+        * Fixed a wrong replot(...) statement in PBezierSurf
+
+
 2009-12-29 Jostein Bratlie
         * gmMatrix
           - Corrected the way a sphere is multiplied with a matrix.
