@@ -121,6 +121,12 @@ namespace GMlib {
   }
 
 
+  void Camera::enableBlendSort( bool enable ) {
+
+    _blend_sort = enable;
+  }
+
+
   /*! SceneObject*	Camera::findSelectObject(int, int, int type_id)
    *	\brief Pending Documentation
    *
@@ -196,29 +202,10 @@ namespace GMlib {
   double Camera::getDistanceToObject(SceneObject* obj) {
 
     if(obj) {
-      cout << "Distance from " << getIdentity() << " to " << obj->getIdentity() << endl;
-      cout << "  obj center pos: " << obj->getCenterPos()[0] << " " << obj->getCenterPos()[1] << " " << obj->getCenterPos()[2] << endl;
-      cout << "  _matrix:" << endl;
-      for( int i = 0; i < 4; i++ ) {
 
-        cout << "    ";
-        for( int j = 0; j < 4; j++ ) {
-          cout << _matrix[i][j] << " ";
-        }
-        cout << endl;
-      }
-      cout << "  _matrix_scene_inv:" << endl;
-      for( int i = 0; i < 4; i++ ) {
-
-        cout << "    ";
-        for( int j = 0; j < 4; j++ ) {
-          cout << _matrix_scene_inv[i][j] << " ";
-        }
-        cout << endl;
-      }
-      cout << "  Dist Vector: " << (_matrix*_matrix_scene_inv*obj->getCenterPos())[0] << " " << (_matrix*_matrix_scene_inv*obj->getCenterPos())[1] << " " << (_matrix*_matrix_scene_inv*obj->getCenterPos())[2] << endl;
-      cout << "  DTO: " << (_matrix*_matrix_scene_inv*obj->getCenterPos()).getLength() << endl;
-      return(_matrix*_matrix_scene_inv*obj->getCenterPos()).getLength();
+      const HqMatrix<float,3> mat = _matrix*_matrix_scene_inv;
+      const Vector<float,3> dv = mat*Point<float,3>(obj->getCenterPos());
+      return dv.getLength();
     }
     else
       return 0.0;
@@ -268,6 +255,12 @@ namespace GMlib {
       display();
     }
     _active = false;
+  }
+
+
+  bool Camera::isBlendSortEnabled() const {
+
+    return _blend_sort;
   }
 
 
@@ -594,6 +587,7 @@ namespace GMlib {
     setFrustumVisible();
     _type_id  = GM_SO_TYPE_CAMERA;
     _culling = true;
+    _blend_sort = true;
     _select_color = GMcolor::Pink;
     _select_linewidth = 1.2f;
     _select_active_color = GMcolor::Yellow;

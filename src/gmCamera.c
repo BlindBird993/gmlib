@@ -109,9 +109,18 @@ namespace GMlib {
       if(_coord_sys_visible)
         drawActiveCam();
 
+      // Cull the scene using the camera's frustum
       _scene->_culling( _frustum, _culling );
+
+      // Sort the scene for blending, if required
+      if( _blend_sort )
+        _scene->_blending( this );
+
+      // Enable lighting
       _scene->_lighting();
-      _scene->_display();
+
+      // Render scene
+      _scene->_display( _blend_sort );
 
 
       // Display Selection

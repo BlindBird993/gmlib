@@ -104,6 +104,7 @@ namespace GMlib {
 		void										decreaseFocalDist(double delta=1);
 		virtual double					deltaTranslate(DisplayObject * obj);
 		void                    enableCulling( bool enable = true );
+    void                    enableBlendSort( bool enable = true );
 		SceneObject*						findSelectObject(int, int, int type_id=0);
 		Array<SceneObject* >		findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
 		float                   getAngleTan() const;
@@ -123,6 +124,7 @@ namespace GMlib {
 		void										increaseFocalDist(double delta=1);
 		bool 										isCoordSysVisible() const;
 		bool                    isCulling() const;
+    bool                    isBlendSortEnabled() const;
 		bool 										isFrustumVisible() const;
 		virtual SceneObject*		lockTargetAtPixel(int,int);
 		void 										reset();						// To be used when changing Camera.
@@ -191,6 +193,7 @@ namespace GMlib {
 		float									_angle_tan;
 
 		bool                    _culling;
+    bool                    _blend_sort;
 	};
 
 }

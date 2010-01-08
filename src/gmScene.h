@@ -40,7 +40,9 @@
 
 // locale GMlib includes
 #include "gmTimer.h"
-#include "gmArray.h" // maby gmSArray.h
+//#include "gmArray.h" // maby gmSArray.h
+#include "gmSArray.h"
+#include "gmSortObject.h"
 #include "gmOpenGL.h"
 
 
@@ -116,14 +118,17 @@ namespace GMlib{
     friend class Camera;
 
     void                  _lighting();
-    void                  _display();
+    void                  _display( bool blend_sorted );
     void                  _displayActive();
     void                  _displaySelection();
     void                  _select( int type_id );
     virtual void          _culling( const Frustum& f, bool on = true );
+    void                  _blending( Camera* cam );
 
     Array<SceneObject*>   _scene;
     Array<SceneObject*>	  _disp_objs;
+    SArray< SortObject<SceneObject*, float> >   _disp_opaque;
+    SArray< SortObject<SceneObject*, float> >   _disp_translucent;
 
     Array<Light*>			    _lights;
     Array<HqMatrix<float,3> >		    _matrix_stack;

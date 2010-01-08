@@ -33,6 +33,7 @@
 #include "gmScene.h"
 #include "gmSceneObject.h"
 #include "gmLight.h"
+#include "gmCamera.h"
 
 
 namespace GMlib {
@@ -309,10 +310,26 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void Scene::_display() {
+  void Scene::_display( bool blend_sorted ) {
 
-    for( int i = 0; i < _disp_objs.getSize(); i++ )
-      _disp_objs[i]->_display();
+
+    glDisable( GL_BLEND );
+
+    if( !blend_sorted ) {
+
+      for( int i = 0; i < _disp_objs.getSize(); i++ )
+        _disp_objs[i]->_display();
+    }
+    else {
+
+      for( int i = 0; i < _disp_opaque.getSize(); i++ )
+        _disp_opaque[i].getObject()->_display();
+
+      glEnable( GL_BLEND );
+      for( int i = 0; i < _disp_translucent.getSize(); i++ ) {
+        _disp_translucent[i].getObject()->_display();
+      }
+    }
   }
 
 
@@ -362,4 +379,35 @@ namespace GMlib {
         _scene[i]->_fillObj( _disp_objs );
   }
 
-}
+
+  void Scene::_blending( Camera *cam ) {
+
+    _disp_opaque.resetSize();
+    _disp_translucent.resetSize();
+
+    for( int i = 0; i < _disp_objs.getSize(); i++ ) {
+
+      const double dto = cam->getDistanceToObject( _disp_objs[i]);
+      if( _disp_objs[i]->isOpaque() )
+        _disp_translucent += SortObject<SceneObject*,float>(_disp_objs[i], dto );
+      else
+        _disp_opaque += SortObject<SceneObject*,float>(_disp_objs[i], dto );
+    }
+
+    // Sort opaque objects front to back
+    _disp_opaque.sort();
+
+    // Sort translucent objects back to front
+    _disp_translucent.sort();
+    _disp_translucent.reverse();
+  }
+
+
+} // END namespace GMlib
+
+
+
+
+
+
+

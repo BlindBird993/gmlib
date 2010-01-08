@@ -221,6 +221,13 @@ namespace GMlib {
   }
 
 
+  inline
+  bool SceneObject::isOpaque() const {
+
+    return _opaque;
+  }
+
+
   /*! bool SceneObject::isSelected() const
    *  \brief Pending Documentation
    *
@@ -264,6 +271,13 @@ namespace GMlib {
   void SceneObject::setCollapsed(bool c) {
 
     _collapsed = c;
+  }
+
+
+  inline
+  void SceneObject::setOpaque( bool o ) {
+
+    _opaque = o;
   }
 
 

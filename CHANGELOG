@@ -4,6 +4,20 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+2010-01-08 Jostein Bratlie
+        * Added support for pre-rendering object blend sorting. (Enabled by default).
+          - Affected modules: gmCamera, gmScene, gmSceneObject, gmVDefault
+          - When enabled objects is sorted for blending. All opaque objects is rendered first in front to back order
+            before all translucent objects is renderd in back to fron order.
+          - Can be turned on/off for cameras individually.
+        * SceneObjects is defined opaque by default, but for sorting they must be set to translucent by the 'void setOpaque( bool )' function.
+          - Status is fetched with 'bool isOpaque() const'
+        * Blend sorting is turned on an off in a camera with the function 'void enableBlendSort( bool )'
+          - Status is fetched with 'bool isBlendSortEnabled() const'
+        * The Default parametrics visualizer has set blend function s/d As/1-As by default.
+          - This can be changed with the 'void setGLBlendFunc( GLenum sfactor, GLenum dfactor )' in VDefault.
+        * Support class added for sorting: SortObject (gmSortObject).
+          - Template class <typename T, typename G> which takes an object(T) and its sort value(G)
 
 
 2010-01-07 Jostein Bratlie

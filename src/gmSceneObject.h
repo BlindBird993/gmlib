@@ -160,6 +160,7 @@ namespace GMlib{
     void                        insert(SceneObject* obj);
     bool                        isCollapsed() const;
     bool                        isLighted() const;
+    bool                        isOpaque() const;
     bool                        isSelected() const;
     virtual bool                isVisible() const;
     void                        remove(SceneObject* obj);
@@ -174,6 +175,7 @@ namespace GMlib{
     void                        setLighted( bool lighted );
     void                        setMaterial(const Material& m);
     void                        setMatrix( const HqMatrix<float,3>& mat );
+    void                        setOpaque( bool o );
     void                        setParent(SceneObject* obj);
     void                        setSelected(bool s);
     virtual void                setVisible( bool v, int prop = 0 );
@@ -208,6 +210,7 @@ namespace GMlib{
     Material                    _material;
     GLColor                     _color;
     bool                        _lighted;
+    bool                        _opaque;
 
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                displayCollapsed();

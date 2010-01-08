@@ -75,6 +75,7 @@ namespace GMlib {
     _local_cs         = true;
     _type_id          = GM_SO_TYPE_SCENEOBJECT;
     _lighted          = true;
+    _opaque           = true;
     _visible          = true;
     _selected         = false;
     _material         = GMmaterial::Obsidian;
@@ -99,6 +100,7 @@ namespace GMlib {
     _matrix	          = d._matrix;
     _children	        = d._children;
     _lighted          = d._lighted;
+    _opaque           = d._opaque;
     _sphere	          = d._sphere;
     _scale            = d._scale;
     _name	            = _free_name++;

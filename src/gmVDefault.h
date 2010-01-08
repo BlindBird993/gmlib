@@ -52,6 +52,7 @@ namespace GMlib {
     void          display();
 
     void          select();
+    void          setGLBlendFunc( GLenum sfactor, GLenum dfactor );
 
     std::string   getIdentity() const;
 
@@ -70,6 +71,9 @@ namespace GMlib {
     DVector< Vector<float,3> >    _n1;
     DMatrix< Arrow<float,3> >     _n2;
     DMatrix< Point<float,2> >     _t2;
+
+    GLenum                        _blend_sfactor;
+    GLenum                        _blend_dfactor;
 
 
   }; // END class VDefault

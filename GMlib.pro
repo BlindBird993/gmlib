@@ -104,6 +104,7 @@ HEADERS += src/gmArray.h \
     src/gmDMatrix.h \
     src/gmDVector.h \
     src/gmSArray.h \
+    src/gmSortObject.h
 
 # gmCore
 HEADERS += src/gmAffineSpace.h \
@@ -440,4 +441,5 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmTriangleSystem_TriangleSystem.c \
     src/gmTriangleSystem_TriangleFacets.c \
     src/gmCoordinateSystem \
-    src/gmSurroundingSphere
+    src/gmSurroundingSphere \
+    src/gmSortObject.c

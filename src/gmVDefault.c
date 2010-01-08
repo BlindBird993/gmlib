@@ -34,12 +34,20 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  VDefault<T,n>::VDefault() {}
+  VDefault<T,n>::VDefault() {
+
+    _blend_sfactor = GL_SRC_ALPHA;
+    _blend_dfactor = GL_ONE_MINUS_SRC_ALPHA;
+  }
 
 
   template <typename T, int n>
   inline
-  VDefault<T,n>::VDefault( const VDefault<T,n>& copy ) : Visualizer<T,n>( copy ) {}
+  VDefault<T,n>::VDefault( const VDefault<T,n>& copy ) : Visualizer<T,n>( copy ) {
+
+    _blend_sfactor = copy._blend_sfactor;
+    _blend_dfactor = copy._blend_dfactor;
+  }
 
 
   template <typename T, int n>
@@ -66,6 +74,13 @@ namespace GMlib {
         // Get Color Data
         const GLColor &c = this->_ref->getColor();
         c.glSet();
+      }
+
+
+      // Handle Opacity/Transparency
+      if( this->_ref->isOpaque() ) {
+
+        glBlendFunc(_blend_sfactor, _blend_dfactor);
       }
 
 
@@ -202,6 +217,14 @@ namespace GMlib {
     }
 
     glDisableClientState( GL_VERTEX_ARRAY );
+  }
+
+
+  template <typename T, int n>
+  void VDefault<T,n>::setGLBlendFunc( GLenum sfactor, GLenum dfactor ) {
+
+    _blend_sfactor = sfactor;
+    _blend_dfactor = dfactor;
   }
 
 } // END namespace GMlib
