@@ -45,7 +45,6 @@ namespace GMlib {
     set( amb, dif, spc, shininess, texture );
     set(GL_ONE,GL_ONE);
     _sided = GL_FRONT_AND_BACK;
-    _transparancy = 1;
   }
 
 
@@ -71,7 +70,6 @@ namespace GMlib {
     _dif = copy._dif;
     _spc = copy._spc;
     _shininess = copy._shininess;
-    _transparancy = copy._transparancy;
 
     _source_blend_factor = copy._source_blend_factor;
     _destination_blend_factor = copy._destination_blend_factor;
@@ -135,7 +133,10 @@ namespace GMlib {
   inline
   bool Material::isTransparent() const {
 
-    return ( !((_source_blend_factor==GL_ONE) && (_destination_blend_factor==GL_ONE)) );
+    if( _texture.isValid() )
+      return ( !((_source_blend_factor==GL_ONE) && (_destination_blend_factor==GL_ONE)) );
+    else
+      return ( (_amb.getAlpha() < 1.0) && (_dif.getAlpha() < 1.0) && (_spc.getAlpha() < 1.0) );
   };
 
 
@@ -238,7 +239,9 @@ namespace GMlib {
   inline
   void Material::setTransparancy(double t) {
 
-    _transparancy = t;
+    _amb.setAlpha( t );
+    _dif.setAlpha( t );
+    _spc.setAlpha( t );
   }
 
 

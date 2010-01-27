@@ -4,6 +4,17 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+
+
+2010-01-27 Jostein Bratlie
+        * Fixed blending bug.
+          - Drew translucent objects when opaque where supposed to be drawn and vica versa.
+        * gmMaterial
+          - Fixed transparancy setting.
+          - Fixed alpha value of default Materials.
+
+
 2010-01-08 Jostein Bratlie
         * Added support for pre-rendering object blend sorting. (Enabled by default).
           - Affected modules: gmCamera, gmScene, gmSceneObject, gmVDefault

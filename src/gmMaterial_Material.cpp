@@ -47,24 +47,24 @@ namespace GMlib {
     Material Bronze			      = Material ( 	GLColor( 0.2125,   0.1275,   0.054,    1.0),		GLColor( 0.714,     0.4284, 	0.18144, 	1.0),		GLColor( 0.393548,  0.271906,  0.166721, 	1.0),		25.6		);
     Material Chrome			      = Material ( 	GLColor( 0.25,     0.25,     0.25,     1.0),		GLColor( 0.4,       0.4, 			0.4, 			1.0),		GLColor( 0.774597, 	0.774597,  0.774597, 	1.0),		76.8		);
     Material Copper			      = Material ( 	GLColor( 0.19125,  0.0735,   0.0225,   1.0),		GLColor( 0.7038,    0.27048, 	0.0828, 	1.0),		GLColor( 0.256777, 	0.137622,  0.086014, 	1.0),		12.8		);
-    Material Emerald		      = Material ( 	GLColor( 0.0215,   0.1745,   0.0215,   0.55),		GLColor( 0.07568,   0.61424, 	0.07568, 	0.55),	GLColor( 0.633, 		0.727811,  0.633, 		0.55),	76.8		);
+    Material Emerald		      = Material ( 	GLColor( 0.0215,   0.1745,   0.0215,   1.0),		GLColor( 0.07568,   0.61424, 	0.07568, 	1.0),   GLColor( 0.633, 		0.727811,  0.633, 		1.0),   76.8		);
     Material Gold			        = Material ( 	GLColor( 0.24725,  0.1995,   0.0745,   1.0),		GLColor( 0.75164,   0.60648, 	0.22648, 	1.0),		GLColor( 0.628281, 	0.555802,  0.366065, 	1.0),		51.2		);
-    Material Jade			        = Material ( 	GLColor( 0.135,    0.2225,   0.1575,   0.95),		GLColor( 0.54,      0.89, 		0.63, 		0.95),	GLColor( 0.316228, 	0.316228,  0.316228, 	0.95),	12.8		);
-    Material Obsidian		      = Material ( 	GLColor( 0.05375,  0.05,     0.06625,  0.82),		GLColor( 0.18275,   0.17, 		0.22525, 	0.82),	GLColor( 0.332741, 	0.328634,  0.346435, 	0.82),	38.4		);
-    Material Pearl			      = Material ( 	GLColor( 0.25,     0.20725,  0.20725,  0.922),	GLColor( 1.0,       0.829, 		0.829, 		0.922),	GLColor( 0.296648, 	0.296648,  0.296648, 	0.922), 11.264	);
+    Material Jade			        = Material ( 	GLColor( 0.135,    0.2225,   0.1575,   1.0),		GLColor( 0.54,      0.89, 		0.63, 		1.0),   GLColor( 0.316228, 	0.316228,  0.316228, 	1.0),   12.8		);
+    Material Obsidian		      = Material ( 	GLColor( 0.05375,  0.05,     0.06625,  1.0),		GLColor( 0.18275,   0.17, 		0.22525, 	1.0), 	GLColor( 0.332741, 	0.328634,  0.346435, 	1.0),   38.4		);
+    Material Pearl			      = Material ( 	GLColor( 0.25,     0.20725,  0.20725,  1.0),    GLColor( 1.0,       0.829, 		0.829, 		1.0),   GLColor( 0.296648, 	0.296648,  0.296648, 	1.0),   11.264	);
     Material Pewter			      = Material ( 	GLColor( 0.105882, 0.058824, 0.113725, 1.0),	  GLColor( 0.427451,  0.470588, 0.541176,	1.0),		GLColor( 0.333333, 	0.333333,  0.521569, 	1.0),		9.84615 );
-    Material Plastic		      = Material ( 	GLColor( 1.0,      1.0,      1.0,      0.5),		GLColor( 0.5,       0.5, 			0.5, 			0.5),		GLColor( 0.4, 			0.4, 			 0.4, 			1.0),		10.0		);
+    Material Plastic		      = Material ( 	GLColor( 1.0,      1.0,      1.0,      1.0),		GLColor( 0.5,       0.5, 			0.5, 			1.0),		GLColor( 0.4, 			0.4, 			 0.4, 			1.0),		10.0		);
     Material PolishedBronze	  = Material ( 	GLColor( 0.25,     0.148,    0.06475,  1.0),		GLColor( 0.4,       0.2368, 	0.1036, 	1.0),		GLColor( 0.774597, 	0.458561,  0.200621, 	1.0),		66.8		);
     Material PolishedCopper	  = Material ( 	GLColor( 0.2295,   0.08825,  0.0275,   1.0),		GLColor( 0.5508,    0.2118, 	0.066, 		1.0),		GLColor( 0.580594, 	0.223257,  0.0695701,	1.0),		51.2		);
     Material PolishedGold	    = Material ( 	GLColor( 0.24725,  0.2245,   0.0645,   1.0),		GLColor( 0.34615,   0.3143, 	0.0903, 	1.0),		GLColor( 0.797357, 	0.723991,  0.208006, 	1.0),		83.2		);
     Material PolishedGreen	  = Material ( 	GLColor( 0.0,      0.0,      0.0,      1.0),		GLColor( 0.1,       0.35, 		0.1, 			1.0),		GLColor( 0.45, 			0.55, 		 0.45, 			1.0),		50.0		);
     Material PolishedRed	    = Material ( 	GLColor( 0.0,      0.0,      0.0,      1.0),		GLColor( 0.5,       0.0, 			0.0, 			1.0),		GLColor( 0.7, 			0.6, 		   0.6, 			1.0),		50.0		);
     Material PolishedSilver   = Material ( 	GLColor( 0.23125,  0.23125,  0.23125,  1.0),		GLColor( 0.2775,    0.2775, 	0.2775, 	1.0),		GLColor( 0.773911, 	0.773911,  0.773911, 	1.0),		89.6		);
-    Material Ruby			        = Material ( 	GLColor( 0.1745,   0.01175,  0.01175,  0.55),		GLColor( 0.61424,   0.04136, 	0.04136, 	0.55),	GLColor( 0.727811, 	0.626959,  0.626959, 	0.55),  56.8		);
-    Material Sapphire		      = Material ( 	GLColor( 0.01175,  0.01175,  0.1745,   0.55),	  GLColor( 0.04136,   0.04136, 	0.61424, 	0.55),	GLColor( 0.626959, 	0.626959,  0.727811,	0.55),	76.8		);
+    Material Ruby			        = Material ( 	GLColor( 0.1745,   0.01175,  0.01175,  1.0),		GLColor( 0.61424,   0.04136, 	0.04136, 	1.0), 	GLColor( 0.727811, 	0.626959,  0.626959, 	1.0),   56.8		);
+    Material Sapphire		      = Material ( 	GLColor( 0.01175,  0.01175,  0.1745,   1.0),	  GLColor( 0.04136,   0.04136, 	0.61424, 	1.0),   GLColor( 0.626959, 	0.626959,  0.727811,	1.0),   76.8		);
     Material Silver			      = Material ( 	GLColor( 0.19225,  0.19225,  0.19225,  1.0),		GLColor( 0.50754,   0.50754,  0.50754, 	1.0), 	GLColor( 0.508273, 	0.508273,  0.508273, 	1.0), 	51.2		);
     Material Snow			        = Material ( 	GLColor( 1.0,      1.0,      1.0,      1.0),		GLColor( 0.5,       0.5, 			0.5, 			1.0),		GLColor( 0.4, 			0.4, 			 0.4, 			1.0),		10.0		);
-    Material Turquoise		    = Material ( 	GLColor( 0.1,      0.18725,  0.1745,   0.8),		GLColor( 0.396,     0.74151, 	0.69102, 	0.8),		GLColor( 0.297254, 	0.30829, 	 0.306678, 	0.8),		12.8		);
+    Material Turquoise		    = Material ( 	GLColor( 0.1,      0.18725,  0.1745,   1.0),		GLColor( 0.396,     0.74151, 	0.69102, 	1.0),		GLColor( 0.297254, 	0.30829, 	 0.306678, 	0.8),		12.8		);
   }
 
 

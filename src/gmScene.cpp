@@ -389,9 +389,9 @@ namespace GMlib {
 
       const double dto = cam->getDistanceToObject( _disp_objs[i]);
       if( _disp_objs[i]->isOpaque() )
-        _disp_translucent += SortObject<SceneObject*,float>(_disp_objs[i], dto );
-      else
         _disp_opaque += SortObject<SceneObject*,float>(_disp_objs[i], dto );
+      else
+        _disp_translucent += SortObject<SceneObject*,float>(_disp_objs[i], dto );
     }
 
     // Sort opaque objects front to back

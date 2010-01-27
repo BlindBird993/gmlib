@@ -106,7 +106,6 @@ namespace GMlib {
     GLColor		        _dif;
     GLColor		        _spc;
     float				      _shininess;
-    float				      _transparancy;
 
 
   private:
