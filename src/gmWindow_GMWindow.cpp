@@ -99,11 +99,14 @@ namespace GMlib {
 
   void GMWindow::clearScene() {
 
-    Scene::stop();
+    if( _running )
+      Scene::stop();
 
     for(int i = 0; i < _sel_objs.getSize(); i++)
       _sel_objs[i]->setSelected( false );
     _sel_objs.clear();
+
+    _active_obj = 0x0;
 
     //_rotation_object  = 0x0;
     //_locked_object    = 0x0
@@ -126,6 +129,9 @@ namespace GMlib {
 
       delete rmobjs[i];
     }
+
+    if( _running )
+      Scene::start();
   }
 
 

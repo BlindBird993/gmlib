@@ -236,7 +236,7 @@ namespace GMlib {
   inline
   std::string VContours<T,n>::getIdentity() const {
 
-    return "Contours Visualizer";
+    return "VContours";
   }
 
 

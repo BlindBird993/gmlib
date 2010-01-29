@@ -63,13 +63,20 @@ namespace GMlib {
   }
 
 
+  inline
+  bool GMWindow::isRunning() const {
+
+    return _running;
+  }
+
+
   /*! bool GMWindow::isStereoEnabled()
    *	\brief Pending Documentation
    *
    *	Pending Documentation
    */
   inline
-  bool GMWindow::isStereoEnabled() {
+  bool GMWindow::isStereoEnabled() const {
 
     return _stereo;
   }

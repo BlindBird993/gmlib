@@ -6,6 +6,19 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2010-01-29 Jostein Bratlie
+        * gmSceneObject
+          - Collapsed objects now has the same solid color
+        * gmVContours
+          - Fixed identity: it is now "VContours".
+        * gmWindow (GMWindow)
+          - Now reports whether simulation is running through the 'bool isRunning() const' function
+          - The 'isStereoEnabled()' function is now const
+          - The 'toggleRun()' function is redefined as public instead of protected.
+          - 'void clearScene()'
+            - toggles simulation off while clearing the scene (bugfix)
+
+
 
 2010-01-27 Jostein Bratlie
         * Fixed blending bug.

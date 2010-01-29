@@ -206,7 +206,8 @@ namespace GMlib {
 
     void                    insertLight(Light* light, bool insert_in_scene = false);
     void                    insertSun();
-    bool                    isStereoEnabled();
+    bool                    isRunning() const;
+    bool                    isStereoEnabled() const;
     void                    popViewSet(int i);
     bool                    removeCamera(Camera * cam);
     bool                    removeLight(Light* light);
@@ -217,6 +218,7 @@ namespace GMlib {
     void                    setSunDirection(Angle d);
     void                    setViewSet(int new_c, int old_c=1, bool split_vertically=true, double d=0.5);
 
+    virtual bool            toggleRun();
     bool                    toggleStereo();
 
 
@@ -254,7 +256,6 @@ namespace GMlib {
     virtual void            init();
     void                    reshape(int w, int h);
     virtual void            swapBuffers();
-    virtual bool            toggleRun();
 
 
   private:

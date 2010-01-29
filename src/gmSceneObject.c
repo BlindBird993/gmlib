@@ -377,7 +377,12 @@ namespace GMlib {
           glMultMatrix(_present);
         _scale.glScaling();
 
-        if(_collapsed)  displayCollapsed();
+        if(_collapsed) {
+
+          glDisable( GL_LIGHTING );
+          glColor( Color( 0.6f, 0.6f, 0.6f, 1.0f ) );
+          displayCollapsed();
+        }
         else            localDisplay();
 
       } glPopMatrix();
