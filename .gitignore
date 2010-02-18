@@ -11,6 +11,7 @@
 *.ncb
 *.swp
 
+#
 ########################################
 ## Ignored project files and directories
 Makefile
@@ -22,6 +23,7 @@ dist/*
 doc/*
 work/*
 
+#
 ##########################################
 # Ignored Ct Creator spesifics directories
 qtc-gdbmacros

@@ -59,26 +59,20 @@ namespace GMlib {
         swap(vertices[0],vertices[2]);
 
       Point<T,2> t;
-        t = (
-          voronoi(
-            vertices[0]->parameter(),
-            vertices[1]->parameter(),
-            vertices[2]->parameter()
-          )
-        );
+      t = _voronoi(vertices[0]->getParameter(), vertices[1]->getParameter(), vertices[2]->getParameter());
 
       if( domain.isSurrounding( Point3D<T>(t[0],t[1],0.2) ) )
         _vorpts.insertAlways(t);
     }
 
     for( int i = 0; i < edges.getSize(); i++ )
-      if(edges(i)->boundary()) _vorpts.alwaysInsert( edges(i)->getCenterPos2D() );
+		if(edges(i)->boundary()) _vorpts.insertAlways( edges(i)->getCenterPos2D() );
 
 
     // make polygon, maybe edges should have been sorted first
     _vorpts[0].setTestType( 3, _vertex->getPosition(), Vector2D<T>(0.0,1.0) );
-    _vorpts.sort();
-
+//    _vorpts.sort();
+///////////
     _circumscribed=0.0;
     _inscribed=1.0E9;
     // for(int i=0; i<vorpts.size(); i++)
@@ -93,7 +87,7 @@ namespace GMlib {
     for( int i = 0; i < edges.getSize(); i++ )
       if( edges(i)->getLength2D()*1.0 > _circumscribed )
         _circumscribed = ( edges(i)->getLength2D())*1.0; // largest
-
+///////////////////////
     setSurroundingSphere( Sphere<T,3>( (Point<T,3>)_vertex->getParameter(), _circumscribed ) );
   }
 
@@ -169,13 +163,12 @@ namespace GMlib {
   //  glGetBooleanv(GL_LIGHTING,&lg);
   //  if(lg) glDisable(GL_LIGHTING);
     //Red.glSet();
-    glBegin(GL_LINE_STRIP); {
-
+    glBegin(GL_LINE_STRIP); 
       //glBegin(GL_TRIANGLE_FAN);
       //glVertex((Point3D<T>)myvtx->parameter());
       for(int i=0; i<_vorpts.size(); i++) glVertex((Point3D<T>)_vorpts(i));
       if(!_vertex->boundary()) glVertex((Point3D<T>)_vorpts(0));
-    } glEnd();
+	glEnd();
 
   //  if(lg)
   //    glEnable(GL_LIGHTING);

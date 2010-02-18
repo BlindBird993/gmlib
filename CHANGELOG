@@ -4,8 +4,17 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
-
-
+2010-02-18 Arnt Roald Kristoffersen
+		* gmTriangleSystem
+		  - added createVoronoi() function to use TSTile functionality
+		  - added renderVoronoi() to easily render Voronoi diagram
+		  - Fixed a call to _voronoi that was written as voronoi
+		  - Marked code that need rewritting with ///// around it
+		  - Call to invalid function alwaysInsert --> insertAlways
+		  - commented out call to sort() that was taken away from gmArray in gmTriangleSystem_TSTile.c
+		* gmEvalatorStatic
+		  - included the header gmDMatrix.h
+		
 2010-01-29 Jostein Bratlie
         * gmSceneObject
           - Collapsed objects now has the same solid color

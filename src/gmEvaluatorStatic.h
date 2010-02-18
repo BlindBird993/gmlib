@@ -32,7 +32,7 @@
 #ifndef __gmEVALUATRORSTATIC_H__
 #define __gmEVALUATRORSTATIC_H__
 
-
+#include "gmDMatrix.h"
 
 namespace GMlib {
 

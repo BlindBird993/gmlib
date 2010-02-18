@@ -404,6 +404,11 @@ namespace GMlib {
 
     if (d >= 0)
       _d = d;
+
+	if (_dlist_name) {
+		glDeleteLists(_dlist_name,1);
+		_dlist_name = 0;
+	}
   }
 
 
@@ -828,6 +833,25 @@ namespace GMlib {
         b = a->_getNext();
       }
     }
+  }
+
+
+  template <typename T>
+  inline
+  void TriangleFacets<T>::createVoronoi() {
+	  std::cout << "tiles: " << _tmptiles.size() << std::endl;
+	  _tmptiles.setSize(this->size());
+	  Box<T,3> domain=getBoundBox();
+	  for (int i=0; i<size(); i++) 
+		  //_triangles[i]->getCenterPos();
+		  _tmptiles[i] = new TSTile<float> (&(*this)[i],domain);
+  }
+
+  template <typename T>
+  inline	
+  void TriangleFacets<T>::renderVoronoi() {
+		for (int i=0;i<_tmptiles.size();i++)
+			_tmptiles[i]->render();
   }
 
 

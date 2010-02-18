@@ -53,7 +53,7 @@ namespace GMlib {
 
     // Compute all the deriatives :P
     mat[d][0] = -scale;
-    mat[d][1] = scale;
+    mat[d][1] = scale; 
 
     for( int k = 2; k <= d; k++ ) {
 

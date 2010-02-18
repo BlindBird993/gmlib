@@ -122,6 +122,11 @@ namespace GMlib {
 
     void                              triangulateDelaunay();
 
+	void							  createVoronoi();
+	void							  renderVoronoi() {
+											for (int i=0;i<_tmptiles.size();i++)
+												_tmptiles[i]->render();
+									  }
 
    protected:
     int	                              _dlist_name;
@@ -232,7 +237,7 @@ namespace GMlib {
    *  The vertex class storing 3D position and a normal
    */
   template <typename T>
-  class TSVertex : private Arrow<T,3>, public TriangleSystem<T> {
+  class TSVertex : public Arrow<T,3>, public TriangleSystem<T> {
   public:
     TSVertex();
     TSVertex( const Point<T,2>& v );
