@@ -839,10 +839,9 @@ namespace GMlib {
   template <typename T>
   inline
   void TriangleFacets<T>::createVoronoi() {
-	  std::cout << "tiles: " << _tmptiles.size() << std::endl;
-	  _tmptiles.setSize(this->size());
+    _tmptiles.setSize(this->getSize());
 	  Box<T,3> domain=getBoundBox();
-	  for (int i=0; i<size(); i++) 
+    for (int i=0; i<this->getSize(); i++)
 		  //_triangles[i]->getCenterPos();
 		  _tmptiles[i] = new TSTile<float> (&(*this)[i],domain);
   }
