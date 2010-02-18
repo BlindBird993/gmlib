@@ -123,10 +123,7 @@ namespace GMlib {
     void                              triangulateDelaunay();
 
 	void							  createVoronoi();
-	void							  renderVoronoi() {
-											for (int i=0;i<_tmptiles.size();i++)
-												_tmptiles[i]->render();
-									  }
+	void							  renderVoronoi();
 
    protected:
     int	                              _dlist_name;
