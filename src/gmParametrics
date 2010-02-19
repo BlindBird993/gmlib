@@ -52,6 +52,7 @@
 #include "gmPApple"                 // Apple
 #include "gmPAsteroidalSphere"      // Asteroidal Sphere
 #include "gmPBezierSurf"            // Bezier Surface
+#include "gmPCircularSurface"       // Circular Surface
 #include "gmPCylinder"              // Cylinder
 #include "gmPERBSSurf"              // Expo Rational BSpline Surface
 #include "gmPPlane"                 // Plane

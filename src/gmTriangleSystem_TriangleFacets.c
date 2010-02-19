@@ -482,6 +482,9 @@ namespace GMlib {
   inline
   int TriangleFacets<T>::initRender() {
 
+    if( _dlist_name )
+      glDeleteLists( _dlist_name, 1 );
+
     _dlist_name = glGenLists(1);
     glNewList( _dlist_name, GL_COMPILE );
       glBegin( GL_TRIANGLES );
@@ -872,6 +875,13 @@ namespace GMlib {
 
     render();
 
+////    glNewList( _dlist_name, GL_COMPILE );
+//      glBegin( GL_TRIANGLES );
+//        for( int i = 0; i < _triangles.size(); i++ )
+//          _triangles(i)->_render();
+//      glEnd();
+////    glEndList();
+
     glPopAttrib();
   }
 
@@ -880,7 +890,10 @@ namespace GMlib {
   inline
   void TriangleFacets<T>::localSelect() {
 
-    render();
+    glBegin( GL_TRIANGLES );
+      for( int i = 0; i < _triangles.size(); i++ )
+        _triangles(i)->_render();
+    glEnd();
   }
 
 

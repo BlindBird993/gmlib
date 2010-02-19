@@ -65,6 +65,7 @@ namespace GMlib {
     bool                                isClosedU() const;
     bool                                isClosedV() const;
     bool                                isLocalPatchesVisible() const;
+    void                                resample( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
     void                                setResampleMode( GM_RESAMPLE_MODE mode );
     virtual void                        showLocalPatches();
 
@@ -103,7 +104,6 @@ namespace GMlib {
     T                                   getStartPV();
     virtual void                        init();
     void                                insertPatch( PSurf<T> *patch );
-    void                                resample( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
     void                                resampleInline( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, T du, T dv );
     void                                resamplePreEval( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, T du, T dv );
 

@@ -60,6 +60,7 @@ namespace GMlib {
     bool                        isClosedU() const;
     bool                        isClosedV() const;
     bool                        isSelectorsVisible() const;
+    void                        resample( DMatrix<DMatrix <Vector<T,3> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
     void                        setClosed( bool closed_u, bool closed_v );
     void                        setControlPoints( const DMatrix< Vector<T,3> >& cp );
     void                        setResampleMode( GM_RESAMPLE_MODE mode );
@@ -91,7 +92,6 @@ namespace GMlib {
     T                           getStartPU();
     T                           getStartPV();
     virtual void                init();
-    void                        resample( DMatrix<DMatrix <Vector<T,3> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
     void                        resampleInline( DMatrix< DMatrix< Vector<T,3> > >& p, int m1, int m2, T du, T dv );
     void                        resamplePreEval( DMatrix< DMatrix< Vector<T,3> > >& p, int m1, int m2, T du, T dv );
 

@@ -51,6 +51,7 @@ namespace GMlib {
     string                    getIdentity() const;
     void                      generateKnotVector();
     bool                      isClosed() const;
+    void                      resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
     void                      setControlPoints( const DVector< Vector<T,3> >& cv, bool gen_kv = true );
     void                      setDegree( int d );
     void                      setKnotVector( const DVector<T>& kv );
@@ -77,7 +78,6 @@ namespace GMlib {
     T                         getStartP();
     T                         getW( T t, int idx, int d ) const;
     T                         getWder( T t, int idx, int d ) const;
-    void                      resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
     void                      resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
     void                      resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
 

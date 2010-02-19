@@ -163,6 +163,7 @@ HEADERS += src/gmParametrics.h \
     src/gmPButterfly.h \
     src/gmPChrysanthemumCurve.h \
     src/gmPCircle.h \
+    src/gmPCircularSurface.h \
     src/gmPCylinder.h \
     src/gmPERBSCurve.h \
     src/gmPERBSSurf.h \
@@ -442,4 +443,6 @@ OTHER_FILES += src/lua/pcircle_eval.lua \
     src/gmTriangleSystem_TriangleFacets.c \
     src/gmCoordinateSystem \
     src/gmSurroundingSphere \
-    src/gmSortObject.c
+    src/gmSortObject.c \
+    src/gmPCircularSurface \
+    src/gmPCircularSurface.c

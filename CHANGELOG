@@ -4,6 +4,16 @@ Changelog
 
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
+
+2010-02-19 Jostein Bratlie
+    * gmParametrics
+      - Added a new parametric surface: PCircularSurface
+      - Defined the reimplemented resample(...) function(s) from PCurve/PSurf as public in PBezier(Curve/Surf), PERBS(Curve/Surf), PBSplineCurve.
+        It were defined wrongly as proteced.
+    * gmTriangleFacets
+      - Fixed an error in initRender() where the display list where not deleted before a new were created.
+
+
 2010-02-18 Arnt Roald Kristoffersen
 		* gmTriangleSystem
 		  - added createVoronoi() function to use TSTile functionality
@@ -15,6 +25,7 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 		* gmEvalatorStatic
 		  - included the header gmDMatrix.h
 		
+
 2010-01-29 Jostein Bratlie
         * gmSceneObject
           - Collapsed objects now has the same solid color
@@ -26,7 +37,6 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
           - The 'toggleRun()' function is redefined as public instead of protected.
           - 'void clearScene()'
             - toggles simulation off while clearing the scene (bugfix)
-
 
 
 2010-01-27 Jostein Bratlie

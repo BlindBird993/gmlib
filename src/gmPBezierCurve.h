@@ -57,6 +57,7 @@ namespace GMlib {
     virtual void                  hideSelectors();
     bool                          isClosed() const;
     bool                          isSelectorsVisible() const;
+    void                          resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
     void                          setClosed( bool state );
     void                          setControlPoints( const DVector< Vector<T,3> >& cv );
     void                          setResampleMode( GM_RESAMPLE_MODE mode );
@@ -85,7 +86,6 @@ namespace GMlib {
     T                             getStartP();
     virtual void                  init();
 
-    void                          resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
     void                          resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
     void                          resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
 
