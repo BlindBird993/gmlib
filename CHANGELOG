@@ -5,6 +5,15 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2010-03-11 Jostein Bratlie
+    * gmVContours
+      - Fixed a bug in the Contours visualizer.
+      - Some optimization
+      - Added more visualization mappings for parametric spheres
+        - Principle curvature (max/min)
+        - Speed u/v
+
+
 2010-02-19 Jostein Bratlie
     * gmParametrics
       - Added a new parametric surface: PCircularSurface

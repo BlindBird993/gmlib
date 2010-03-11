@@ -54,9 +54,14 @@ namespace GMlib {
     GM_VISUALIZER_CONTOURS_MAP_U,
     GM_VISUALIZER_CONTOURS_MAP_V,
     GM_VISUALIZER_CONTOURS_MAP_SPEED,
+    GM_VISUALIZER_CONTOURS_MAP_SPEED_U,
+    GM_VISUALIZER_CONTOURS_MAP_SPEED_V,
     GM_VISUALIZER_CONTOURS_MAP_CURVATURE,
     GM_VISUALIZER_CONTOURS_MAP_CURVATURE_GAUSS,
-    GM_VISUALIZER_CONTOURS_MAP_CURVATURE_MEAN
+    GM_VISUALIZER_CONTOURS_MAP_CURVATURE_MEAN,
+    GM_VISUALIZER_CONTOURS_MAP_CURVATURE_PRINCIPAL_MIN,
+    GM_VISUALIZER_CONTOURS_MAP_CURVATURE_PRINCIPAL_MAX
+
   };
 
   template <typename T, int n>
@@ -101,7 +106,11 @@ namespace GMlib {
     T                             _getCurvatureCurve( DVector< Vector<T, 3> >& p );
     T                             _getCurvatureSurfGauss( DMatrix< Vector<T,3> >& p );
     T                             _getCurvatureSurfMean( DMatrix< Vector<T,3> >& p );
+    T                             _getCurvatureSurfPrincipalMax( DMatrix< Vector<T,3> >& p );
+    T                             _getCurvatureSurfPrincipalMin( DMatrix< Vector<T,3> >& p );
     Material                      _getMaterial( T d );
+    T                             _getValueCurve( DVector< DVector< Vector<T, 3> > >& p, int i );
+    T                             _getValueSurface( DMatrix< DMatrix< Vector<T, 3> > >& p, int i, int j );
     void                          _init();
 
   };

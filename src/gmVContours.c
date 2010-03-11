@@ -131,6 +131,28 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  T VContours<T,n>::_getCurvatureSurfPrincipalMax( DMatrix< Vector<T,3> >& p ) {
+
+    T K = _getCurvatureSurfGauss( p );
+    T H = _getCurvatureSurfMean( p );
+
+    return H + sqrt( H*H - K );
+  }
+
+
+  template <typename T, int n>
+  inline
+  T VContours<T,n>::_getCurvatureSurfPrincipalMin( DMatrix< Vector<T,3> >& p ) {
+
+    T K = _getCurvatureSurfGauss( p );
+    T H = _getCurvatureSurfMean( p );
+
+    return H - sqrt( H*H - K );
+  }
+
+
+  template <typename T, int n>
+  inline
   Material VContours<T,n>::_getMaterial( T d ) {
 
     // Find Index
@@ -148,6 +170,104 @@ namespace GMlib {
 
     Material ret( amb, dif, spc, shininess );
     return ret;
+  }
+
+
+  template <typename T, int n>
+  inline
+  T VContours<T,n>::_getValueCurve( DVector< DVector< Vector<T, 3> > >& p, int i ) {
+
+    switch( _mapping ) {
+    case GM_VISUALIZER_CONTOURS_MAP_X:
+      return p[i][0][0];
+    case GM_VISUALIZER_CONTOURS_MAP_Y:
+      return p[i][0][1];
+    case GM_VISUALIZER_CONTOURS_MAP_Z:
+      return p[i][0][2];
+
+    default: break;
+    }
+
+
+    // Values requireing 1st derivative
+    if( p[i].getDim() < 2 )
+      return T(0);
+
+    switch( _mapping ) {
+    case GM_VISUALIZER_CONTOURS_MAP_SPEED:
+    case GM_VISUALIZER_CONTOURS_MAP_SPEED_U:
+      return p[i][1].getLength();
+
+    default: break;
+    }
+
+
+    // Values requireing 2nd derivative
+    if( p[i].getDim() < 2 )
+      return T(0);
+
+    switch( _mapping ) {
+    case GM_VISUALIZER_CONTOURS_MAP_CURVATURE:
+      return _getCurvatureCurve(p[i]);
+
+    default: break;
+    }
+
+    return T(0);
+  }
+
+
+  template <typename T, int n>
+  inline
+  T VContours<T,n>::_getValueSurface( DMatrix< DMatrix< Vector<T, 3> > >& p, int i, int j ) {
+
+    switch( _mapping ) {
+    case GM_VISUALIZER_CONTOURS_MAP_X:
+      return p[i][j][0][0][0];
+    case GM_VISUALIZER_CONTOURS_MAP_Y:
+      return p[i][j][0][0][1];
+    case GM_VISUALIZER_CONTOURS_MAP_Z:
+      return p[i][j][0][0][2];
+
+    default: break;
+    }
+
+
+    // Values requireing 1st derivatives
+    if( p[i][j].getDim1() < 2 || p[i][j].getDim2() < 2 )
+      return T(0);
+
+    switch( _mapping ) {
+    case GM_VISUALIZER_CONTOURS_MAP_SPEED_U:
+      return p[i][j][1][0].getLength();
+    case GM_VISUALIZER_CONTOURS_MAP_SPEED_V:
+      return p[i][j][0][1].getLength();
+
+    default: break;
+    }
+
+
+    // Values requireing 2nd derivatives
+    if( p[i][j].getDim1() < 3 || p[i][j].getDim2() < 3 )
+      return T(0);
+
+    switch( _mapping ) {
+    case GM_VISUALIZER_CONTOURS_MAP_CURVATURE_GAUSS:
+      return _getCurvatureSurfGauss(p[i][j]);
+
+    case GM_VISUALIZER_CONTOURS_MAP_CURVATURE_MEAN:
+      return _getCurvatureSurfMean(p[i][j]);
+
+    case GM_VISUALIZER_CONTOURS_MAP_CURVATURE_PRINCIPAL_MAX:
+      return _getCurvatureSurfPrincipalMax( p[i][j] );
+
+    case GM_VISUALIZER_CONTOURS_MAP_CURVATURE_PRINCIPAL_MIN:
+      return _getCurvatureSurfPrincipalMin( p[i][j] );
+
+    default: break;
+    }
+
+    return T(0);
   }
 
 
@@ -207,7 +327,7 @@ namespace GMlib {
       for( int i = 0; i < this->_n2.getDim1(); i++ ) {
 
         // Give Pointers to Vertex and Normal Data
-        glColorPointer( 4, GL_UNSIGNED_BYTE, 0, &_c2[0][0] );
+        glColorPointer( 4, GL_UNSIGNED_BYTE, 0, &_c2[i][0] );
         glVertexPointer( 3, GL_FLOAT, 2*3*sizeof(float), this->_n2(i)(0).getPos().getPtr() );
 
         // Draw Strip
@@ -274,111 +394,27 @@ namespace GMlib {
     // Replot the default visualizer
     VDefault<T,n>::replot( p, m, d );
 
-    // Color Countours
-    DVector<Color> ccs;
-
     T min, max;
     T C; // Color Factor, (map to local)
-    ccs.setDim( p.getDim() );
+    _c1.setDim( p.getDim() );
     switch( _mapping ) {
 
-      case GM_VISUALIZER_CONTOURS_MAP_X:
-      case GM_VISUALIZER_CONTOURS_MAP_Y:
-      case GM_VISUALIZER_CONTOURS_MAP_Z:
-      {
-
-        int coord;
-        switch( _mapping ) {
-          case GM_VISUALIZER_CONTOURS_MAP_X:  coord = 0;  break;
-          case GM_VISUALIZER_CONTOURS_MAP_Y:  coord = 1;  break;
-          case GM_VISUALIZER_CONTOURS_MAP_Z:
-          default:                            coord = 2;  break;
-        }
-
-        min = max = p[0][0][coord];
-
-        // Extract all "height"-coords
-        for( int i = 0; i < p.getDim(); i++ ) {
-
-          const T value = p[i][0][coord];
-          if( value < min )
-            min = value;
-          if( value > max )
-            max = value;
-        }
-
-        // Correct interval
-        if( max - min > 0 ) {
-          C = 1.0f / (max - min);
-          min /= (max - min);
-        }
-        else {
-          C = min = T(0);
-        }
-
-
-        // Compute colors
-        for( int i = 0; i < p.getDim(); i++ ) {
-
-          const T value = p[i][0][coord];
-          ccs[i] = _getColor( ( C * value ) - min );
-        }
-      }
-      break;
-
-      case GM_VISUALIZER_CONTOURS_MAP_T:
-      case GM_VISUALIZER_CONTOURS_MAP_U:
+    case GM_VISUALIZER_CONTOURS_MAP_T:
+    case GM_VISUALIZER_CONTOURS_MAP_U:
       {
         for( int i = 0; i < p.getDim(); i++ )
-          ccs[i] = _getColor( double(i) / double(p.getDim()-1) );
+          _c1[i] = _getColor( double(i) / double(p.getDim()-1) );
       }
       break;
-
-
-      case GM_VISUALIZER_CONTOURS_MAP_SPEED:
+    default:
       {
         // Init min/max
-        min = max = (p[0][1]).getLength();
+        min = max = _getValueCurve( p, 0 );//_getCurvatureCurve(p[0]);
 
         // Extract all speed data
         for( int i = 0; i < p.getDim(); i++ ) {
 
-          const T speed = (p[i][1]).getLength();
-          if( speed < min )
-            min = speed;
-          if( speed > max )
-            max = speed;
-        }
-
-        // Correct interval
-        if( max - min > 0 ) {
-          C = 1.0f / (max - min);
-          min /= (max - min);
-        }
-        else {
-          C = min = T(0);
-        }
-
-        // Compute interpolated color values
-        for( int i = 0; i < p.getDim(); i++ ) {
-
-          const T speed = (p[i][1]).getLength();
-          ccs[i] = _getColor( ( C * speed ) - min );
-        }
-      }
-      break;
-
-      case GM_VISUALIZER_CONTOURS_MAP_CURVATURE:
-      case GM_VISUALIZER_CONTOURS_MAP_CURVATURE_GAUSS:
-      case GM_VISUALIZER_CONTOURS_MAP_CURVATURE_MEAN:
-      {
-        // Init min/max
-        min = max = _getCurvatureCurve(p[0]);
-
-        // Extract all speed data
-        for( int i = 0; i < p.getDim(); i++ ) {
-
-          const T curvature = _getCurvatureCurve(p[i]);
+          const T curvature = _getValueCurve( p, i );//_getCurvatureCurve(p[i]);
           if( curvature < min )
             min = curvature;
           if( curvature > max )
@@ -389,7 +425,7 @@ namespace GMlib {
         if( (max-min) < 1e-5 ) {
 
           for( int i = 0; i < p.getDim(); i++ )
-            ccs[i] = _colors[0];
+            _c1[i] = _colors[0];
         }
         else {
           C = 1.0f / (max-min);
@@ -398,49 +434,13 @@ namespace GMlib {
           // Compute interpolated color values
           for( int i = 0; i < p.getDim(); i++ ) {
 
-            const T curvature = _getCurvatureCurve(p[i]);
-            ccs[i] = _getColor( ( C * curvature ) - min );
+            const T curvature = _getValueCurve( p, i );//_getCurvatureCurve(p[i]);
+            _c1[i] = _getColor( ( C * curvature ) - min );
           }
         }
       }
       break;
-
-
-
-      default:
-      {
-        // Compute colors
-        for( int i = 0; i < p.getDim(); i++ )
-          ccs[i] = _colors[0];
-      }
-      break;
     }
-
-
-    // Create Vertex arrays ^^
-//    if( this->_ref->isDynamic() ) {
-
-      _c1 = ccs;
-//    }
-//    else {
-//
-//      if( _dlist )
-//        glDeleteLists( _dlist, 1 );
-//
-//      _dlist = glGenLists(1);
-//
-//      // Create the Curve Display List
-//      glNewList( _dlist, GL_COMPILE ); {
-//        glBegin(GL_LINE_STRIP); {
-//
-//          for( int i = 0; i < p.getDim(); i++ ) {
-//            glColor( ccs[i] );
-//            glPoint( Point<float, 3>( p[i][0].toFloat() ) );
-//          }
-//
-//        }glEnd();
-//      } glEndList();
-//    }
   }
 
 
@@ -463,15 +463,14 @@ namespace GMlib {
     cmap.setDim( p.getDim1(), p.getDim2() );
     switch( _mapping ) {
 
-      case GM_VISUALIZER_CONTOURS_MAP_T:
-      case GM_VISUALIZER_CONTOURS_MAP_U:
+    case GM_VISUALIZER_CONTOURS_MAP_U:
       {
         for( int i = 0; i < p.getDim1(); i++ )
           for( int j = 0; j < p.getDim2(); j++ )
             cmap[i][j] = double(i) / double(p.getDim1()-1);
       }
       break;
-      case GM_VISUALIZER_CONTOURS_MAP_V:
+    case GM_VISUALIZER_CONTOURS_MAP_V:
       {
         for( int i = 0; i < p.getDim1(); i++ )
           for( int j = 0; j < p.getDim2(); j++ )
@@ -479,66 +478,16 @@ namespace GMlib {
       }
       break;
 
-
-      case GM_VISUALIZER_CONTOURS_MAP_X:
-      case GM_VISUALIZER_CONTOURS_MAP_Y:
-      case GM_VISUALIZER_CONTOURS_MAP_Z:
-      {
-
-        int coord;
-        switch( _mapping ) {
-          case GM_VISUALIZER_CONTOURS_MAP_X:  coord = 0;  break;
-          case GM_VISUALIZER_CONTOURS_MAP_Y:  coord = 1;  break;
-          case GM_VISUALIZER_CONTOURS_MAP_Z:
-          default:                            coord = 2;  break;
-        }
-
-        min = max = p[0][0][0][0][coord];
-
-        // Extract all "height"-coords
-        for( int i = 0; i < p.getDim1(); i++ ) {
-          for( int j = 0; j < p.getDim2(); j++ ) {
-
-            const T value = p[i][j][0][0][coord];
-            if( value < min )
-              min = value;
-            if( value > max )
-              max = value;
-          }
-        }
-
-
-        // Correct interval
-        if( max - min > 0 ) {
-          C = 1.0f / (max - min);
-          min /= (max - min);
-        }
-        else {
-          C = min = T(0);
-        }
-
-
-        // Compute map values
-        for( int i = 0; i < p.getDim1(); i++ ) {
-          for( int j = 0; j < p.getDim2(); j++ ) {
-
-            const T value = p[i][j][0][0][coord];
-            cmap[i][j] = ( C * value ) - min;
-          }
-        }
-      }
-      break;
-
-      case GM_VISUALIZER_CONTOURS_MAP_CURVATURE_GAUSS:
+    default:
       {
         // Init min/max
-        min = max = _getCurvatureSurfGauss(p[0][0]);
+        min = max = _getValueSurface(p, 0, 0);
 
         // Extract all Gaussian Curvature data
         for( int i = 0; i < p.getDim1(); i++ ) {
           for( int j = 0; j < p.getDim2(); j++ ) {
 
-            const T curvature = _getCurvatureSurfGauss(p[i][j]);
+            const T curvature = _getValueSurface(p, i, j);
             if( curvature < min )
               min = curvature;
             if( curvature > max )
@@ -561,80 +510,14 @@ namespace GMlib {
           for( int i = 0; i < p.getDim1(); i++ ) {
             for( int j = 0; j < p.getDim2(); j++ ) {
 
-              const T curvature = _getCurvatureSurfGauss(p[i][j]);
+              const T curvature = _getValueSurface(p, i, j);
               cmap[i][j] = ( C * curvature ) - min;
             }
           }
         }
       }
       break;
-
-      case GM_VISUALIZER_CONTOURS_MAP_CURVATURE:
-      case GM_VISUALIZER_CONTOURS_MAP_CURVATURE_MEAN:
-      {
-        // Init min/max
-        min = max = _getCurvatureSurfGauss(p[0][0]);
-
-        // Extract all Mean Curvature data
-        for( int i = 0; i < p.getDim1(); i++ ) {
-          for( int j = 0; j < p.getDim2(); j++ ) {
-
-            const T curvature = _getCurvatureSurfMean(p[i][j]);
-            if( curvature < min )
-              min = curvature;
-            if( curvature > max )
-              max = curvature;
-          }
-        }
-
-        // Correct interval
-        if( (max-min) < 1e-5 ) {
-
-          for( int i = 0; i < p.getDim1(); i++ )
-            for( int j = 0; j < p.getDim2(); j++ )
-              cmap[i][j] = 0.0;
-        }
-        else {
-          C = 1.0f / (max-min);
-          min /= (max-min);
-
-          // Compute interpolated map values
-          for( int i = 0; i < p.getDim1(); i++ ) {
-            for( int j = 0; j < p.getDim2(); j++ ) {
-
-              const T curvature = _getCurvatureSurfMean(p[i][j]);
-              cmap[i][j] = ( C * curvature ) - min;
-            }
-          }
-        }
-      }
-      break;
-
-
-      case GM_VISUALIZER_CONTOURS_MAP_SPEED:
-      default:
-      {
-        // Compute map values
-        for( int i = 0; i < p.getDim1(); i++ )
-          for( int j = 0; j < p.getDim2(); j++ )
-            cmap[i][j] = 0.0;
-//            ccs[i][j] = _colors[0];
-
-      }
-      break;
     }
-
-    cout << "color map" << endl;
-    for( int i = 0; i < cmap.getDim1(); i++ ) {
-
-      for( int j = 0; j < cmap.getDim2(); j++ ) {
-
-        cout << cmap[i][j] << " ";
-      }
-      cout << endl;
-
-    }
-    cout << endl;
 
 
     DMatrix<Color> ccs;
@@ -656,52 +539,15 @@ namespace GMlib {
 
 
     // Create Vertex arrays ^^
-//    if( this->_ref->isDynamic() && _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR ) {
+    _c2.setDim( p.getDim1()-1, p.getDim2()*2 );
 
-      _c2.setDim( p.getDim1()-1, p.getDim2()*2 );
+    for( int i = 0; i < p.getDim1()-1; i++ ) {
+      for( int j = 0; j < p.getDim2(); j++ ) {
 
-      for( int i = 0; i < p.getDim1()-1; i++ ) {
-        for( int j = 0; j < p.getDim2(); j++ ) {
-
-          _c2[i][ 2*j   ] = ccs[ i   ][j];
-          _c2[i][ 2*j+1 ] = ccs[ i+1 ][j];
-        }
+        _c2[i][ 2*j   ] = ccs[ i   ][j];
+        _c2[i][ 2*j+1 ] = ccs[ i+1 ][j];
       }
-//    }
-//    else {
-//
-//      if( _dlist )
-//        glDeleteLists( _dlist, 1 );
-//
-//      _dlist = glGenLists(1);
-//
-//      // Create the Curve Display List
-//      glNewList( _dlist, GL_COMPILE ); {
-//
-//        for( int i = 0; i < p.getDim1() - 1; i++ ) {
-//          glBegin(GL_TRIANGLE_STRIP); {
-//            for( int j = 0; j < p.getDim2(); j++ ) {
-//
-//              if( _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR )          glColor( ccs[i][j] );
-//              else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL )  mcs[i][j].glSet();
-//
-//              glVertex( Arrow<float, 3>(
-//                Point3D<float>( ( p[i][j][0][0] ).toFloat() ),
-//                ( normals[i][j] ).getNormalized().toFloat()
-//              ) );
-//
-//              if( _type == GM_VISUALIZER_CONTOURS_TYPE_COLOR )          glColor( ccs[i+1][j] );
-//              else if( _type == GM_VISUALIZER_CONTOURS_TYPE_MATERIAL )  mcs[i+1][j].glSet();
-//
-//              glVertex( Arrow<float, 3>(
-//                Point3D<float>( ( p[i+1][j][0][0] ).toFloat() ),
-//                ( normals[i+1][j] ).getNormalized().toFloat()
-//              ) );
-//            }
-//          } glEnd();
-//        }
-//      } glEndList();
-//    }
+    }
   }
 
 
