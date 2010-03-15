@@ -306,7 +306,7 @@ namespace GMlib {
   void PBSplineCurve<T>::setControlPoints( const DVector< Vector<T,3> >& cp, bool gen_kv ) {
 
 
-    // Check whether or not the curve should be pre_evaluated again at the next evaluation,
+    // Check whether the curve should be pre_evaluated again at the next evaluation,
     // and if the control points should be updated
     if( _cp.getDim() == cp.getDim() ) {
 

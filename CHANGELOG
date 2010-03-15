@@ -5,34 +5,59 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2010-03-15 Jostein Bratlie
+        * GMlib.pro
+          - Commented out the section which defines an explicit MinGW installation as default.
+        * gmPCircle
+          - Added more derivatives. (Now it has seven explicitly defined.)
+        * gmVDerivatives
+          - Default visualization changed from normalized to percentage
+        * gmParametrics (PCurve/PSurf + subclasses: PBezier*, PERBS*)
+          - Changed the presample/preevaluation system so that a single uniform resample structure can be achieved.
+          - A virtula function preSample(...) is introduced which has the task of doing all the presampling.
+          - PBezier*, PERBS*
+            - The resample(...) function is no no longer reimplemented, but the differentiation between inline and pre-evaluation
+              is now handled by eval(...)
+          - PSurf
+            - Added functionality to compute principal curvature for surfaces with 2+ defined derivatives.
+              getCurvaturePrincipalMin(...) and getCurvaturePrincipalMax(...) provides the functionality.
+              These functions are virtual as the equivilant functions for Gaussian and Mean curvature.
+          - PERBS*
+            - Fixed scaling issues in the constructors which crated inacurate bezier patches.
+            - Fixed evaluator issues so that it is now possible to define how many derivatives to compute.
+              Remember! The final degree of the curve and surfaces is limited to the maximum degree of the patches and basis-functions.
+            - Cleaned up some memory issues.
+
+
 2010-03-11 Jostein Bratlie
-    * gmVContours
-      - Fixed a bug in the Contours visualizer.
-      - Some optimization
-      - Added more visualization mappings for parametric spheres
-        - Principle curvature (max/min)
-        - Speed u/v
+        * gmVContours
+          - Fixed a bug in the Contours visualizer.
+          - Some optimization
+          - Added more visualization mappings for parametric spheres
+            - Principle curvature (max/min)
+            - Speed u/v
 
 
 2010-02-19 Jostein Bratlie
-    * gmParametrics
-      - Added a new parametric surface: PCircularSurface
-      - Defined the reimplemented resample(...) function(s) from PCurve/PSurf as public in PBezier(Curve/Surf), PERBS(Curve/Surf), PBSplineCurve.
-        It were defined wrongly as proteced.
-    * gmTriangleFacets
-      - Fixed an error in initRender() where the display list where not deleted before a new were created.
+        * gmParametrics
+          - Added a new parametric surface: PCircularSurface
+          - Defined the reimplemented resample(...) function(s) from PCurve/PSurf as public in PBezier(Curve/Surf), PERBS(Curve/Surf), PBSplineCurve.
+            It were defined wrongly as proteced.
+        * gmTriangleFacets
+          - Fixed an error in initRender() where the display list where not deleted before a new were created.
 
 
 2010-02-18 Arnt Roald Kristoffersen
-		* gmTriangleSystem
-		  - added createVoronoi() function to use TSTile functionality
-		  - added renderVoronoi() to easily render Voronoi diagram
-		  - Fixed a call to _voronoi that was written as voronoi
-		  - Marked code that need rewritting with ///// around it
-		  - Call to invalid function alwaysInsert --> insertAlways
-		  - commented out call to sort() that was taken away from gmArray in gmTriangleSystem_TSTile.c
-		* gmEvalatorStatic
-		  - included the header gmDMatrix.h
+        * gmTriangleSystem
+          - added createVoronoi() function to use TSTile functionality
+          - added renderVoronoi() to easily render Voronoi diagram
+          - Fixed a call to _voronoi that was written as voronoi
+          - Marked code that need rewritting with ///// around it
+          - Call to invalid function alwaysInsert --> insertAlways
+          - commented out call to sort() that was taken away from gmArray in gmTriangleSystem_TSTile.c
+        * gmEvalatorStatic
+          - included the header gmDMatrix.h
 		
 
 2010-01-29 Jostein Bratlie

@@ -57,24 +57,62 @@ namespace GMlib {
 
     this->_p.setDim( d + 1 );
 
-    this->_p[0][0] = _r * cos( t );
-    this->_p[0][1] = _r * sin( t );
+    const T ct = _r * cos(t);
+    const T st = _r * sin(t);
+
+    this->_p[0][0] = ct;
+    this->_p[0][1] = st;
     this->_p[0][2] = T(0);
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
       if( d > 0 ) {
 
-        this->_p[1][0] = - _r * T( sin( t ) );
-        this->_p[1][1] =   _r * T( cos( t ) );
-        this->_p[1][2] =   T(0);
+        this->_p[1][0] = -st;
+        this->_p[1][1] =  ct;
+        this->_p[1][2] =  T(0);
       }
 
       if( d > 1 ) {
 
-        this->_p[2][0] = - _r * T( cos( t ) );
-        this->_p[2][1] = - _r * T( sin( t ) );
-        this->_p[2][2] =   T(0);
+        this->_p[2][0] = -ct;
+        this->_p[2][1] = -st;
+        this->_p[2][2] =  T(0);
+      }
+
+      if( d > 2 ) {
+
+        this->_p[3][0] =  st;
+        this->_p[3][1] = -ct;
+        this->_p[3][2] =  T(0);
+      }
+
+      if( d > 3 ) {
+
+        this->_p[4][0] =  ct;
+        this->_p[4][1] =  st;
+        this->_p[4][2] =  T(0);
+      }
+
+      if( d > 4 ) {
+
+        this->_p[5][0] = -st;
+        this->_p[5][1] =  ct;
+        this->_p[5][2] =  T(0);
+      }
+
+      if( d > 5 ) {
+
+        this->_p[6][0] = -ct;
+        this->_p[6][1] = -st;
+        this->_p[6][2] =  T(0);
+      }
+
+      if( d > 6 ) {
+
+        this->_p[7][0] =  st;
+        this->_p[7][1] = -ct;
+        this->_p[7][2] =  T(0);
       }
     }
   }

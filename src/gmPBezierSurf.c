@@ -29,6 +29,8 @@
  *  \date   2008-11-20
  */
 
+#include "gmDMatrix.h"
+#include "gmEvaluatorStatic.h"
 
 namespace GMlib {
 
@@ -41,14 +43,6 @@ namespace GMlib {
     this->_type_id = GM_SO_TYPE_SURFACE_BEZIER;
 
     init();
-
-
-    _cu = false;
-    _cv = false;
-    _su = T( 1 );
-    _sv = T( 1 );
-    _pre_eval = true;
-    _resamp_mode = GM_RESAMPLE_PREEVAL;
 
     // Set Control Points
     setControlPoints( cp );
@@ -63,22 +57,16 @@ namespace GMlib {
 
     init();
 
-    _cu = false;
-    _cv = false;
-    _su = T(1)/(e_u-s_u);
-    _sv = T(1)/(e_v-s_v);
-    _pre_eval = true;
-    _resamp_mode = GM_RESAMPLE_PREEVAL;
-
     // Generate the control points
     DMatrix<T> bhpu, bhpv;
-    EvaluatorStatic<T>::evaluateBhp( bhpu, c.getDim1()-1, ( u - s_u ) / ( e_u - s_u ), _su );
-    EvaluatorStatic<T>::evaluateBhp( bhpv, c.getDim2()-1, ( v - s_v ) / ( e_v - s_v ), _sv );
+    EvaluatorStatic<T>::evaluateBhp( bhpu, c.getDim1()-1, ( u - s_u ) / ( e_u - s_u ), T(1)/(e_u-s_u) );
+    EvaluatorStatic<T>::evaluateBhp( bhpv, c.getDim2()-1, ( v - s_v ) / ( e_v - s_v ), T(1)/(e_v-s_v) );
     bhpu.invert();
     bhpv.invert();
     bhpv.transpose();
 
     _c = bhpu * (c^bhpv);
+
 
     for( int i = 0; i < c.getDim1(); i++ )
       for( int j = 0; j < c.getDim2(); j++ )
@@ -116,18 +104,56 @@ namespace GMlib {
   inline
   void PBezierSurf<T>::eval( T u, T v, int /*d1*/, int /*d2*/, bool /*lu*/, bool /*lv*/ ) {
 
+//    // Send the control to the pre-eval evaluator
+//    if( _resamp_mode == GM_RESAMPLE_PREEVAL ) {
+//
+//      evalPre( u, v, d1, d2, lu, lv );
+//      return;
+//    }
+
     // Set Dimensions
     this->_p.setDim( getDegreeU()+1, getDegreeV()+1 );
 
     // Compute the Bernstein-Hermite Polynomials
     DMatrix< T > bu, bv;
-    EvaluatorStatic<T>::evaluateBhp( bu, this->getDegreeU(), u, T(1) );
-    EvaluatorStatic<T>::evaluateBhp( bv, this->getDegreeV(), v, T(1) );
+    EvaluatorStatic<T>::evaluateBhp( bu, this->getDegreeU(), u, _su );
+    EvaluatorStatic<T>::evaluateBhp( bv, this->getDegreeV(), v, _sv );
 //    bv.transpose();
+
+    for( int i = 0; i < bu.getDim1(); i++ )
+      for( int j = 0; j < bv.getDim2(); j++ )
+        this->_p[i][j] = bu[i] * ( _c^bv[j] );
+  }
+
+
+  template <typename T>
+  inline
+  void PBezierSurf<T>::evalPre( T u, T v, int /*d1*/, int /*d2*/, bool /*lu*/, bool /*lv*/ ) {
+
+    // Find the u/v index for the preevaluated data.
+    int iu, iv;
+    iv = 0;
+    iu = 0;
+    findIndex( u, v, iu, iv );
+
+    // Set Dimensions
+    this->_p.setDim( getDegreeU()+1, getDegreeV()+1 );
+
+    DMatrix<T> bu = _u[iu][iv];
+    DMatrix<T> bv = _v[iu][iv];
 
     for( int i = 0; i < bu.getDim1(); i++ )
       for( int j = 0; j < bu.getDim2(); j++ )
         this->_p[i][j] = bu[i] * ( _c^bv[j] );
+  }
+
+
+  template <typename T>
+  inline
+  void PBezierSurf<T>::findIndex( T u, T v, int& iu, int& iv ) {
+
+    iu = (this->_no_samp_u-1)*(u-this->getParStartU())/(this->getParDeltaU())+0.1;
+    iv = (this->_no_samp_v-1)*(v-this->getParStartV())/(this->getParDeltaV())+0.1;
   }
 
 
@@ -232,6 +258,13 @@ namespace GMlib {
     _selectors = false;
     _sg = 0;
     _c_moved = false;
+
+    _cu = false;
+    _cv = false;
+    _su = T(1);
+    _sv = T(1);
+    _pre_eval = true;
+    _resamp_mode = GM_RESAMPLE_PREEVAL;
   }
 
 
@@ -257,93 +290,45 @@ namespace GMlib {
     return _selectors;
   }
 
-
   template <typename T>
   inline
-  void PBezierSurf<T>::resample(
-    DMatrix< DMatrix < Vector<T,3> > >& p,
-    int m1,
-    int m2,
-    int /*d1*/,
-    int /*d2*/,
-    T s_u,
-    T s_v,
-    T e_u,
-    T e_v
+  void PBezierSurf<T>::preSample(
+    int m1, int m2, int /*d1*/, int /*d2*/,
+    T s_u, T s_v, T e_u, T e_v
   ) {
 
-    // dt; sample step value
-    const T du = (e_u-s_u) / T(m1-1);
-    const T dv = (e_v-s_v) / T(m2-1);
-
-    // Set dim of result set
-    p.setDim(m1,m2);
-
+    // break out of the preSample function if no preevalution is to be used
     switch( _resamp_mode ) {
-
-      case GM_RESAMPLE_INLINE:
-        resampleInline( p, m1, m2, du, dv );
-        break;
-
-      case GM_RESAMPLE_PREEVAL:
-      default:
-        resamplePreEval( p, m1, m2, du, dv );
-        break;
+    case GM_RESAMPLE_PREEVAL: break;
+    case GM_RESAMPLE_INLINE:
+    default:
+      return;
     }
-  }
 
+    // break out and return if preevaluation isn't necessary.
+    if( !_pre_eval && m1 == _u.getDim1() && m2 == _u.getDim2() )
+      return;
 
-  template <typename T>
-  inline
-  void PBezierSurf<T>::resampleInline( DMatrix< DMatrix< Vector<T,3> > >& p, int m1, int m2, T du, T dv ) {
+    // compute du and dv (step in parametric u and v direction)
+    const T du = ( e_u - s_u ) / T(m1-1);
+    const T dv = ( e_v - s_v ) / T(m2-1);
 
-    // For each sample point on the uniform curve calculate the Bernstein-Hermite Polynomials
+    // Set the dimension of the Bernstein-Hermite Polynomial DVector
+    _u.setDim(m1,m2);
+    _v.setDim(m1,m2);
+
+    // Compute the Bernstein-Hermite Polynomiale, for the Bezier Surface
     for( int i = 0; i < m1; i++ ) {
       for( int j = 0; j < m2; j++ ) {
 
-        eval( i * du, j * dv );
-        p[i][j] = this->_p;
+        EvaluatorStatic<T>::evaluateBhp( _u[i][j], getDegreeU(), i*du, _su );
+        EvaluatorStatic<T>::evaluateBhp( _v[i][j], getDegreeV(), j*dv, _sv );
       }
     }
-  }
 
+    // Disable the pre-evaluation step
+    _pre_eval = false;
 
-  template <typename T>
-  inline
-  void PBezierSurf<T>::resamplePreEval( DMatrix< DMatrix < Vector<T,3> > >& p, int m1, int m2, T du, T dv ) {
-
-    // Check whether or not to redo the preEvaluation
-    // No point i checking the dimensions of bhps_v as they are the same as their u equivilents
-    if( _pre_eval || m1 != _u.getDim1() || m2 != _u.getDim2() ) {
-
-      // Set the dimension of the Bernstein-Hermite Polynomial DVector
-      _u.setDim(m1,m2);
-      _v.setDim(m1,m2);
-
-      // Compute the Bernstein-Hermite Polynomiale, for the Bezier Surface
-      for( int i = 0; i < m1; i++ ) {
-        for( int j = 0; j < m2; j++ ) {
-
-          EvaluatorStatic<T>::evaluateBhp( _u[i][j], getDegreeU(), i*du, T(1) );
-          EvaluatorStatic<T>::evaluateBhp( _v[i][j], getDegreeV(), j*dv, T(1) );
-        }
-      }
-
-      // Disable the pre-evaluation step
-      _pre_eval = false;
-    }
-
-    p.setDim( m1, m2 );
-    for( int i = 0; i < m1; i++ ) {
-      for( int j = 0; j < m2; j++ ) {
-
-        DMatrix<T> &u = _u[i][j];
-        DMatrix<T> &v = _v[i][j];
-        for( int k = 0; k < u.getDim1(); k++ )
-          for( int l = 0; l < v.getDim2(); l++ )
-            p[i][j][k][l] = u[k] * (_c^v[l]);
-      }
-    }
   }
 
 

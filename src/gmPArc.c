@@ -111,7 +111,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PArc<T>::eval( T t, int d, bool l ) {
+  void PArc<T>::eval( T t, int d, bool /*l*/ ) {
 
     this->_p.setDim( d + 1 );
 

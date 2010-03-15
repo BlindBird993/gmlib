@@ -40,14 +40,14 @@ QMAKE_CXXFLAGS_RELEASE = -frtti
 # Windows
 win32 { 
     # MingGW pacement
-    MINGW_DIR = C:/MinGW
+    #MINGW_DIR = C:/MinGW
     
     # Compiler placement
-    QMAKE_CXX = $${MINGW_DIR}/bin/mingw32-g++
+    #QMAKE_CXX = $${MINGW_DIR}/bin/mingw32-g++
     
     # Include Paths
-    INCLUDEPATH += $${MINGW_DIR}/include \
-        $${MINGW_DIR}/include/GL
+    #INCLUDEPATH += $${MINGW_DIR}/include \
+    #    $${MINGW_DIR}/include/GL
 }
 
 # Unix

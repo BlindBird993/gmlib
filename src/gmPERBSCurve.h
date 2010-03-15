@@ -58,7 +58,7 @@ namespace GMlib {
     virtual void                    hideLocalPatches();
     bool                            isClosed() const;
     bool                            isLocalPatchesVisible() const;
-    void                            resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
+    void                            preSample( int m, int d, T start, T end );
     virtual void                    showLocalPatches();
     void                            setResampleMode( GM_RESAMPLE_MODE mode );
 
@@ -77,13 +77,13 @@ namespace GMlib {
     DVector< PCurve<T>* >           _c;
 
     void                            eval( T t, int d = 0, bool l = false );
+    void                            evalPre( T t, int d = 0, bool l = false );
+    void                            findIndex( T t, int& it );
     void                            getB( DVector<T>& B, int tk, T t, int d );
     T                               getEndP();
     T                               getStartP();
     virtual void                    init();
     void                            insertPatch( PCurve<T> *patch );
-    void                            resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
-    void                            resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
 
   }; // END class PERBSCurve
 

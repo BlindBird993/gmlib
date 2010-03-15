@@ -303,6 +303,19 @@ namespace GMlib {
 
 
   template <typename T>
+  inline
+  bool PCurve<T>::isClosed() const {
+
+    return false;
+  }
+
+
+  template <typename T>
+  inline
+  void PCurve<T>::preSample( int /*m*/, int /*d*/, T /*s*/, T /*e*/ ) {}
+
+
+  template <typename T>
   void PCurve<T>::replot( int m, int d ) {
 
 
@@ -317,6 +330,9 @@ namespace GMlib {
     _no_samp = m;
     _no_der = d;
 
+
+    // pre-sampel / pre evaluate data for a given parametric curve, if wanted/needed
+    preSample( m, 1, getStartP(), getEndP() );
 
     // Resample
     DVector< DVector< Vector<T, 3> > > p;

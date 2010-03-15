@@ -404,6 +404,29 @@ namespace GMlib {
     return 0.5 * (e*G - 2 * (f*F) + g*E) / (E*G - F*F);
   }
 
+
+  template <typename T>
+  inline
+  T PSurf<T>::getCurvaturePrincipalMax( T u, T v ) {
+
+    T K = getCurvatureGauss( u, v );
+    T H = getCurvatureMean( u, v );
+
+    return H + sqrt( H*H - K );
+  }
+
+
+  template <typename T>
+  inline
+  T PSurf<T>::getCurvaturePrincipalMin( T u, T v ) {
+
+    T K = getCurvatureGauss( u, v );
+    T H = getCurvatureMean( u, v );
+
+    return H - sqrt( H*H - K );
+  }
+
+
   template <typename T>
   inline
   int PSurf<T>::getDerU() {
@@ -645,6 +668,14 @@ namespace GMlib {
 
   template <typename T>
   inline
+  void PSurf<T>::preSample(
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
+    T /*s_u*/, T /*s_v*/, T /*e_u*/, T /*e_v*/
+  ) {}
+
+
+  template <typename T>
+  inline
   void PSurf<T>::replot( int m1, int m2, int d1, int d2 ) {
 
 
@@ -664,6 +695,17 @@ namespace GMlib {
     _no_der_v = d2;
     _no_samp_u = m1;
     _no_samp_v = m2;
+
+
+    // pre-sampel / pre evaluate data for a given parametric surface, if wanted/needed
+    preSample(
+      m1, m2, d1, d2,
+      getStartPU(),
+      getStartPV(),
+      getEndPU(),
+      getEndPV()
+    );
+
 
     // Sample Positions and related Derivatives
     DMatrix< DMatrix< Vector<T, 3> > > p;

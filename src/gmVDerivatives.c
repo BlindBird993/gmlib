@@ -43,7 +43,7 @@ namespace GMlib {
     _color = GMcolor::Green;
     _u = 1;
     _v = 1;
-    _size_mode = GM_VISUALIZER_DERIVATIVES_NORMALIZED;
+    _size_mode = GM_VISUALIZER_DERIVATIVES_PERCENT;
     _size = 1.0;
   }
 

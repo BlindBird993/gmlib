@@ -59,6 +59,8 @@ namespace GMlib {
     DMatrix<Vector<T,3> >&    	  evaluateParent( T u, T v, int d1, int d2 );
     virtual T                     getCurvatureGauss( T u, T v );
     virtual T                     getCurvatureMean( T u, T v );
+    virtual T                     getCurvaturePrincipalMax( T u, T v );
+    virtual T                     getCurvaturePrincipalMin( T u, T v );
     int                           getDerU();
     Vector<T,3>&                  getDerU( T u, T v );
     int                           getDerV();
@@ -84,6 +86,7 @@ namespace GMlib {
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
     virtual bool                  isClosestPoint( const Point<T,3>& q, T& u, T& v );
+    virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
     void                          replot( int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
     virtual void                  resample(DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a, int m1, int m2, int d1, int d2 );
     virtual void                  resample(DMatrix<DMatrix <Vector<T,3> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));

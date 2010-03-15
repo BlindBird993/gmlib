@@ -65,7 +65,7 @@ namespace GMlib {
     bool                                isClosedU() const;
     bool                                isClosedV() const;
     bool                                isLocalPatchesVisible() const;
-    void                                resample( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
+    void                                preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
     void                                setResampleMode( GM_RESAMPLE_MODE mode );
     virtual void                        showLocalPatches();
 
@@ -92,20 +92,19 @@ namespace GMlib {
 
     DMatrix< PSurf<T>* >                _c;
 
-
     void	                              eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
+    void                                evalPre( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
+    void                                findIndex( T u, T v, int& iu, int& iv );
     void                                generateKnotVector( DVector<T>& kv, const T s, const T d, int kvd, bool closed );
     void                                getB( DVector<T>& B, const DVector<T>& kv, int tk, T t, int d );
     DMatrix< Vector<T,3> >              getC( T u, T v, int uk, int vk, T du, T dv );
-    DMatrix< Vector<T,3> >              getCPre( T u, T v, int uk, int vk, T du, T dv, int i, int j );
+    DMatrix< Vector<T,3> >              getCPre( T u, T v, int uk, int vk, T du, T dv, int iu, int iv );
     T                                   getEndPU();
     T                                   getEndPV();
     T                                   getStartPU();
     T                                   getStartPV();
     virtual void                        init();
     void                                insertPatch( PSurf<T> *patch );
-    void                                resampleInline( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, T du, T dv );
-    void                                resamplePreEval( DMatrix<DMatrix <Vector<T,3> > >& p, int m1, int m2, T du, T dv );
 
   }; // END class PERBSSurf
 

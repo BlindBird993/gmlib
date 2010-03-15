@@ -117,7 +117,14 @@ namespace GMlib {
 
 
   template <typename T>
-  PERBSCurve<T>::~PERBSCurve() {}
+  PERBSCurve<T>::~PERBSCurve() {
+
+    for( int i = 0; i < _c.getDim(); i++ )
+      SceneObject::remove( _c[i] );
+
+    if( _evaluator )
+      delete _evaluator;
+  }
 
 
   template <typename T>
@@ -142,7 +149,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::eval( T t, int /*d*/, bool /*l*/ ) {
+  void PERBSCurve<T>::eval( T t, int d, bool l ) {
+
+    // Send the control to the pre-eval evaluator
+    if( _resamp_mode == GM_RESAMPLE_PREEVAL ) {
+
+      evalPre( t, d, l );
+      return;
+    }
 
     int tk;
     for( tk = 1; tk < _t.getDim()-2; tk++ )
@@ -154,7 +168,7 @@ namespace GMlib {
     c1i = tk;
 
     // Evaluating first Local Curve @ k
-    DVector< Vector<T,3> > c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), 2 );
+    DVector< Vector<T,3> > c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), d );
 
     // If t == _t[tk], meaning that the sample is at the knot, set the sample value to the sampled value of the first local curve.
     if( abs(t - _t[tk]) < 1e-5 ) {
@@ -163,9 +177,9 @@ namespace GMlib {
     }
 
     // Evaluating second Local Curve @ k
-    DVector< Vector<T,3> > c1 = _c[c1i]->evaluateParent( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), 2 );
+    DVector< Vector<T,3> > c1 = _c[c1i]->evaluateParent( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), d );
     DVector<T> B;
-    getB( B, tk, t, 2 );
+    getB( B, tk, t, d );
 
     // Calculate pascals triangle numbers and then compute the sample position data
     c0 -= c1;
@@ -184,6 +198,63 @@ namespace GMlib {
 
     }
     this->_p = c1;
+  }
+
+
+  template <typename T>
+  inline
+  void PERBSCurve<T>::evalPre( T t, int /*d*/, bool /*l*/ ) {
+
+    // Find the u/v index for the preevaluated data.
+    int it;
+    it = 0;
+    findIndex( t, it );
+
+    // Find Knot Indice t_k
+    int tk = _tk[it];
+
+    int c0i, c1i;
+    c0i = tk - 1;
+    c1i = tk;
+
+    // Evaluating first Local Curve @ k
+    DVector< Vector<T,3> > c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), _B.getDim()-1 );
+
+    // If t == _t[tk], meaning that the sample is at the knot, set the sample value to the sampled value of the first local curve.
+    if( abs(t - _t[tk]) < 1e-5 ) {
+      this->_p = c0;
+      return;
+    }
+
+    // Evaluating second Local Curve @ k
+    DVector< Vector<T,3> > c1 = _c[c1i]->evaluateParent( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), _B.getDim()-1 );
+    const DVector<T> &B = _B[it];
+
+    // Calculate pascals triangle numbers and then compute the sample position data
+    c0 -= c1;
+
+    DVector<T> a(B.getDim());
+    for( int i = 0; i < B.getDim(); i++ ) {
+
+      // Compute the pascal triangle numbers
+      a[i] = 1;
+      for( int j = i-1; j > 0; j-- )
+        a[j] += a[j-1];
+
+      // Compute the sample position data
+      for( int j = 0; j <= i; j++ )
+        c1[i] += ( a[j] * B(j) ) * c0[i-j];
+
+    }
+    this->_p = c1;
+  }
+
+
+  template <typename T>
+  inline
+  void PERBSCurve<T>::findIndex( T t, int& it ) {
+
+    it = (this->_no_samp-1)*(t-this->getParStart())/(this->getParDelta())+0.1;
   }
 
 
@@ -213,9 +284,9 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::getB( DVector<T>& B, int tk, T t, int /*d*/ ) {
+  void PERBSCurve<T>::getB( DVector<T>& B, int tk, T t, int d ) {
 
-    B.setDim(3);
+    B.setDim(d+1);
     _evaluator->set( _t[tk], _t[tk+1] - _t[tk] );
     B[0] = 1 - _evaluator->operator()(t);  // (*_evaluator)(t)
     B[1] = - _evaluator->getDer1();
@@ -314,122 +385,49 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::resample( DVector< DVector< Vector<T,3> > >& p, int m, int /*d*/, T /*start*/, T /*end*/ ) {
+  void PERBSCurve<T>::preSample( int m, int d, T start, T end ) {
+
+    // break out of the preSample function if no preevalution is to be used
+    switch( _resamp_mode ) {
+    case GM_RESAMPLE_PREEVAL: break;
+    case GM_RESAMPLE_INLINE:
+    default:
+      return;
+    }
+
+
+    // break out and return if preevaluation isn't necessary.
+    if( !_pre_eval && m == _tk.getDim() )
+    return;
+
+
+    int tk;
+    tk = 1;
 
     // dt; sample step value
-    const T dt = ( getEndP() - getStartP() ) / T(m-1);
+    const T dt = ( end - start ) / T(m-1);
 
-    // Set dim of result set
-    p.setDim(m);
-
-    switch( _resamp_mode ) {
-
-      case GM_RESAMPLE_INLINE:
-        resampleInline( p, m, dt );
-        break;
-
-      case GM_RESAMPLE_PREEVAL:
-      default:
-        resamplePreEval( p, m, dt );
-        break;
-    }
-  }
-
-
-  template <typename T>
-  inline
-  void PERBSCurve<T>::resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt ) {
+    // Set dimension for B and index value tables.
+    _B.setDim(m);
+    _tk.setDim( m );
 
     for( int i = 0; i < m; i++ ) {
 
-      T t = _t[1] + T(i) * dt;
+      // Compute the "current" t value
+      const T t = getStartP() + T(i) * dt;
 
-      eval( t );
-      p[i] = this->_p;
-    }
-  }
-
-
-  template <typename T>
-  inline
-  void PERBSCurve<T>::resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt ) {
-
-    T t;
-
-    if( _pre_eval || m != _tk.getDim() ) {
-
-      int tk;
-
-      // Init the indice table
-      _B.setDim(m);
-      _tk.setDim( m );
-
-      tk = 1;
-      for( int i = 0; i < m; i++ ) {
-
-        // Compute the "current" t value
-        t = getStartP() + T(i) * dt;
-
-        // Calculate index of i
-        if( _t[tk+1] <= t )
-          tk++;
-        _tk[i] = tk;
+      // Calculate index of i
+      if( _t[tk+1] <= t )
+        tk++;
+      _tk[i] = tk;
 
 
-        // Find the complementary B-Vector coherent with the current index.
-        if( !(abs(t - _t[tk]) < 1e-5) )
-          getB( _B[i], tk, t, 2 );
-      }
-      _pre_eval = false;
+      // Find the complementary B-Vector coherent with the current index.
+      if( !(abs(t - _t[tk]) < 1e-5) )
+        getB( _B[i], tk, t, d );
     }
 
-    // Inline Computations
-    DVector< Vector<T,3> > c0, c1;
-    for( int i = 0; i < m; i++ ) {
-
-      // T-value of ERBS
-      t = getStartP() + T(i) * dt;
-
-      // Indices
-      const int tk = _tk[i];
-      const int c0i = tk-1;
-      const int c1i = tk;
-
-      // Evaluate First Local Curve
-      c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), 2 );
-
-
-      // Use c0 only if it is at the interpolation point
-      if( abs(t - _t[tk]) < 1e-5 )
-        p[i] = c0;
-      else {
-
-        // Evaluate Second Local Curve
-        c1 = _c[c1i]->evaluateParent( _c[c1i]->getLocalMapping( t, _t[tk], _t[tk+1], _t[tk+2] ), 2 );
-
-        // Correct c0 with c1
-        c0 -= c1;
-
-        // Fetch the preevaluated ERBS Vector
-        DVector<T> B = _B[i];
-
-        // Add pascal triangle numbers to the equation and compute the final points with coherant derivatives
-        DVector<T> a(B.getDim());
-        for( int j = 0; j < B.getDim(); j++ ) {
-
-          // Compute the pascal triangle numbers
-          a[j] = 1;
-          for( int k = j-1; k > 0; k-- )
-            a[k] += a[k-1];
-
-          // Compute the sample position data
-          for( int k = 0; k <= j; k++ )
-            c1[j] += ( a[k] * B[k] ) * c0[j-k];
-        }
-
-        p[i] = c1;
-      }
-    }
+    _pre_eval = false;
   }
 
 

@@ -64,7 +64,8 @@ namespace GMlib {
     T                         getParStart();
     T                         getRadius( T t );
     T                         getSpeed( T t );
-    virtual bool              isClosed() const {return false;}
+    virtual bool              isClosed() const;
+    virtual void              preSample( int m, int d, T s = T(0), T e = T(0) );
     virtual void              replot( int m = 0, int d = 2 );
     void                      setDomain( T start, T end );
     void                      setDomainScale( T sc );

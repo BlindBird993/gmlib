@@ -42,11 +42,6 @@ namespace GMlib {
 
     init();
 
-    _closed = false;
-    _scale = T(1);
-    _pre_eval = true;
-    _resamp_mode = GM_RESAMPLE_PREEVAL;
-
     // Set Control Points
     setControlPoints( c );
   }
@@ -60,17 +55,11 @@ namespace GMlib {
 
     init();
 
-    _closed = false;
-    _scale = T(1)/(e-s);
-    _pre_eval = true;
-    _resamp_mode = GM_RESAMPLE_PREEVAL;
-
-//    this->setDomain( s, e );
-
     // Generate the control points
     DMatrix<T> bhp;
     EvaluatorStatic<T>::evaluateBhp( bhp, c.getDim()-1, (t-s)/(e-s), T(1)/(e-s) );
     bhp.invert();
+    _c.setDim( c.getDim() );
     _c = bhp * c;
 
     for( int i = 0; i < c.getDim(); i++ )
@@ -124,11 +113,40 @@ namespace GMlib {
   inline
   void PBezierCurve<T>::eval( T t, int /*d*/, bool /*l*/ ) {
 
+    // Send the control to the pre-eval evaluator
+//    if( _resamp_mode == GM_RESAMPLE_PREEVAL ) {
+//
+//      evalPre( t, d, l );
+//      return;
+//    }
+
     // Compute the Bernstein-Hermite Polynomials
     DMatrix< T > bhp;
     EvaluatorStatic<T>::evaluateBhp( bhp, getDegree(), t, _scale );
 
     this->_p = bhp * _c;
+  }
+
+
+  template <typename T>
+  inline
+  void PBezierCurve<T>::evalPre( T t, int /*d*/, bool /*l*/ ) {
+
+    // Compute the Bernstein-Hermite Polynomials
+//    DMatrix< T > bhp;
+//    EvaluatorStatic<T>::evaluateBhp( bhp, getDegree(), t, _scale );
+
+    int it = 0;
+    findIndex( t, it );
+
+    this->_p = _t[it] * _c;
+  }
+
+  template <typename T>
+  inline
+  void PBezierCurve<T>::findIndex( T t, int& it ) {
+
+    it = (this->_no_samp-1)*(t-this->getParStart())/(this->getParDelta())+0.1;
   }
 
 
@@ -190,6 +208,11 @@ namespace GMlib {
     _selectors = false;
     _sg = 0;
     _c_moved = false;
+
+    _scale = T(1);
+    _closed = false;
+    _pre_eval = true;
+    _resamp_mode = GM_RESAMPLE_PREEVAL;
   }
 
 
@@ -210,62 +233,32 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierCurve<T>::resample( DVector< DVector< Vector<T,3> > >& p, int m, int /*d*/, T start, T end ) {
+  void PBezierCurve<T>::preSample( int m, int /*d*/, T start, T end ) {
+
+    // break out of the preSample function if no preevalution is to be used
+    switch( _resamp_mode ) {
+    case GM_RESAMPLE_PREEVAL: break;
+    case GM_RESAMPLE_INLINE:
+    default:
+      return;
+    }
+
+    // Check whether to redo the preEvaluation
+    if( !_pre_eval && m == _t.getDim() )
+      return;
 
     // dt; sample step value
     const T dt = (end-start) / T(m-1);
 
-    // Set dim of result set
-    p.setDim(m);
-
-    switch( _resamp_mode ) {
-
-      case GM_RESAMPLE_INLINE:
-        resampleInline( p, m, dt );
-        break;
-
-      case GM_RESAMPLE_PREEVAL:
-      default:
-        resamplePreEval( p, m, dt );
-        break;
-    }
-  }
-
-
-  template <typename T>
-  inline
-  void PBezierCurve<T>::resampleInline( DVector< DVector< Vector<T, 3> > >& p, int m, T dt ) {
+    // Set the dimension of the Bernstein-Hermite Polynomial DVector
+    _t.setDim(m);
 
     // For each sample point on the uniform curve calculate the Bernstein-Hermite Polynomials
-    for( int i = 0; i < m; i++ ) {
-
-      eval( i * dt );
-      p[i] = this->_p;
-    }
-  }
-
-
-  template <typename T>
-  inline
-  void PBezierCurve<T>::resamplePreEval( DVector< DVector< Vector<T, 3> > >& p, int m, T dt ) {
-
-    // Check whether or not to redo the preEvaluation
-    if( _pre_eval || m != _t.getDim() ) {
-
-      // Set the dimension of the Bernstein-Hermite Polynomial DVector
-      _t.setDim(m);
-
-      // For each sample point on the uniform curve calculate the Bernstein-Hermite Polynomials
-      for( int i = 0; i < m; i++ )
-        EvaluatorStatic<T>::evaluateBhp( _t[i], getDegree(), i*dt, _scale );
-
-      // Disable the pre-evaluation step
-      _pre_eval = false;
-    }
-
-    p.setDim( m );
     for( int i = 0; i < m; i++ )
-      p[i] = _t[i] * _c;
+      EvaluatorStatic<T>::evaluateBhp( _t[i], getDegree(), i*dt, _scale );
+
+    // Disable the pre-evaluation step
+    _pre_eval = false;
   }
 
 
