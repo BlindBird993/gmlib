@@ -22,17 +22,42 @@
 
 
 
-/*! \file gmUtils
+/*! \file gmUtils.c
  *
- *  C++ interface for the GMlib utils headers and the relative classes
+ *  GMUtils
  *
- *  \date   2008-07-02
+ *  \date   2010-05-16
  */
 
 
-#include "gmUtils.h"
+namespace GMlib {
 
-#include "gmTimer"
-#include "gmRandom"
-#include "gmStream"
-#include "gmString"
+  namespace GMutils {
+
+    template <typename T>
+    T fact( int j )
+    {
+      if ( j <= 0 )
+        return T(1);
+
+      T r=1;
+      for( int i = j; i > 1; i-- )
+        r *= i;
+
+      return r;
+    }
+
+
+    template <typename T>
+    T binomial( int n, int j )
+    {
+           if( n < j )
+             return T(0);
+
+           return fact <T> (n) / (double)( fact <T> (j) * fact <T> (n-j) );
+    }
+
+
+  } // END namespace GMutils
+
+} // END namespace GMlib

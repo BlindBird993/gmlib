@@ -5,11 +5,16 @@
 *.bak
 *.backup
 *.o
+*.lib
+*.obj
+*.so
 *.layout
 *.user
 *.suo
 *.ncb
 *.swp
+*.moc
+*.pro.user*
 
 #
 ########################################
@@ -19,9 +24,8 @@ Makefile.Debug
 Makefile.Release
 object_script.GMlib.Debug
 object_script.GMlib.Release
-dist/*
-doc/*
-work/*
+include/*
+lib/*
 
 #
 ##########################################

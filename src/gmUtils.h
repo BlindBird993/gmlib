@@ -22,17 +22,22 @@
 
 
 
-/*! \file gmUtils
+/*! \file gmUtils.h
  *
- *  C++ interface for the GMlib utils headers and the relative classes
+ *  GMUtils
  *
- *  \date   2008-07-02
+ *  \date   2010-05-16
  */
 
+#ifndef __gmUTILS_H__
+#define __gmUTILS_H__
 
-#include "gmUtils.h"
 
-#include "gmTimer"
-#include "gmRandom"
-#include "gmStream"
-#include "gmString"
+
+
+// Include gmlib utility functions
+#include "gmUtils.c"
+
+
+
+#endif // __gmUTILS_H__

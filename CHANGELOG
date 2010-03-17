@@ -5,6 +5,21 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2010-03-17 Jostein Bratlie
+        * Build system
+          - qmake project restructure
+          - GMlib.pro is now a subdir template
+          - src/src.pro handles the GMlib source files
+          - gmlib.pri contains directory paths and general qmake settings
+          - gmlib_cpp.pri contains rules on how the cpp files in GMlib should be buildt.
+          - Compiled library now placed in $GMLIBDIR/lib/gmlib
+        * Documentation
+          - Added an extrac compilation target 'doc' which generates Developer API documentation in the 'doc' directory.
+          - Original doxygen files ( DoxyfileDevAPI and DoxyfileUsrAPI ) now resides in resources/doxygen
+          - controlled by gmlib_doc.pri
+        * gmUtils
+          - Added template functions for computation of 'faculty' and 'binomial' in namespace GMutils
+
 
 2010-03-15 Jostein Bratlie
         * GMlib.pro
