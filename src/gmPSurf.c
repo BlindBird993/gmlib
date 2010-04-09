@@ -40,17 +40,21 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSurf<T>::PSurf() {
+  PSurf<T>::PSurf( int s1, int s2 ) {
 
+    _no_sam_u                       = s1;
+    _no_sam_v                       = s2;
     _d1                             = -1;
     _d2                             = -1;
     _tr_u                           = T(0);
     _sc_u                           = T(1);
     _tr_v                           = T(0);
     _sc_v                           = T(1);
+
+    setNoDer( 2 );
     //_setSam( s1, s2 );
 
-    _init();
+    this->_default_visualizer.set( this );
   }
 
 
@@ -70,15 +74,12 @@ namespace GMlib {
     _sc_v         = copy._sc_v;
     _sam_p_u      = copy._sam_p_u;
     _sam_p_v      = copy._sam_p_v;
-    _sam1         = copy._sam1;
-    _sam2         = copy._sam2;
+    _no_sam_p_u   = copy._no_sam_p_u;
+    _no_sam_p_v   = copy._no_sam_p_v;
     _default_d    = copy._default_d;
 
-
-    _no_der_u     = copy._no_der_u;
-    _no_der_v     = copy._no_der_v;
-    _no_samp_u    = copy._no_samp_u;
-    _no_samp_v    = copy._no_samp_v;
+    _no_sam_u     = copy._no_sam_u;
+    _no_sam_v     = copy._no_sam_v;
 
   }
 
@@ -221,18 +222,6 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  void PSurf<T>::_init() {
-
-    _no_der_u = 1;
-    _no_der_v = 1;
-    _no_samp_u = 2;
-    _no_samp_v = 2;
-
-    this->_default_visualizer.set( this );
-  }
-
-
 //  template <typename T>
 //  inline
 //  void PSurf<T>::estimateClpPar( const Point<T,3>& p, T& u, T& v ) {
@@ -251,21 +240,9 @@ namespace GMlib {
   inline
   DMatrix<Vector<T,3> >& PSurf<T>::evaluate( T u, T v, int d1, int d2 ) {
 
-    static DMatrix<Vector<T,3> > p;
-    p.setDim( d1+1, d2+1 );
-
-    eval(u,v,d1,d2);
-
-    p[0][0] = this->_present * (Point<T,3>)_p[0][0];
-
-    for( int j = 1; j < p.getDim2(); j++ )
-      p[0][j] = this->_present * (Vector<T,3>)_p[0][j];
-
-    for( int i = 1; i < p.getDim1(); i++ )
-      for( int j = 0; j < p.getDim2(); j++ )
-        p[i][j] = this->_present * (Vector<T,3>)_p[i][j];
-
-    return p;
+    _eval(u, v, d1, d2);
+    _evalNormal();
+    return _p;
   }
 
 
@@ -306,19 +283,31 @@ namespace GMlib {
 
   template <typename T>
   inline
-  DMatrix<Vector<T,3> >& PSurf<T>::evaluateLocal( Point<T,2> p, int d ) {
+  DMatrix<Vector<T,3> >& PSurf<T>::evaluateGlobal( Point<T,2> p, int d ) {
 
-    return evaluateLocal( p[0], p[1], d, d);
+    return evaluateGlobal( p[0], p[1], d, d);
   }
 
 
   template <typename T>
   inline
-  DMatrix<Vector<T,3> >& PSurf<T>::evaluateLocal( T u, T v, int d1, int d2 ) {
+  DMatrix<Vector<T,3> >& PSurf<T>::evaluateGlobal( T u, T v, int d1, int d2 ) {
 
-    _eval(u, v, d1, d2);
-    _evalNormal();
-    return _p;
+    static DMatrix<Vector<T,3> > p;
+    p.setDim( d1+1, d2+1 );
+
+    eval(u,v,d1,d2);
+
+    p[0][0] = this->_present * (Point<T,3>)_p[0][0];
+
+    for( int j = 1; j < p.getDim2(); j++ )
+      p[0][j] = this->_present * (Vector<T,3>)_p[0][j];
+
+    for( int i = 1; i < p.getDim1(); i++ )
+      for( int j = 0; j < p.getDim2(); j++ )
+        p[i][j] = this->_present * (Vector<T,3>)_p[i][j];
+
+    return p;
   }
 
 
@@ -429,9 +418,17 @@ namespace GMlib {
 
   template <typename T>
   inline
-  int PSurf<T>::getDerU() {
+  int PSurf<T>::getDerivativesU() const {
 
     return _d1;
+  }
+
+
+  template <typename T>
+  inline
+  int PSurf<T>::getDerivativesV() const {
+
+    return _d2;
   }
 
 
@@ -459,14 +456,6 @@ namespace GMlib {
 
     _eval(u, v, 2, 2);
     return _p[1][1];
-  }
-
-
-  template <typename T>
-  inline
-  int PSurf<T>::getDerV() {
-
-    return _d2;
   }
 
 
@@ -501,38 +490,6 @@ namespace GMlib {
   T PSurf<T>::getLocalMapping( T t, T /*ts*/, T /*tt*/, T /*te*/ ) {
 
     return t;
-  }
-
-
-  template <typename T>
-  inline
-  int PSurf<T>::getNoDerU() const {
-
-    return _no_der_u;
-  }
-
-
-  template <typename T>
-  inline
-  int PSurf<T>::getNoDerV() const {
-
-    return _no_der_v;
-  }
-
-
-  template <typename T>
-  inline
-  int PSurf<T>::getNoSampU() const {
-
-    return _no_samp_u;
-  }
-
-
-  template <typename T>
-  inline
-  int PSurf<T>::getNoSampV() const {
-
-    return _no_samp_v;
   }
 
 
@@ -594,17 +551,33 @@ namespace GMlib {
 
   template <typename T>
   inline
-  int PSurf<T>::getSamU( int i ) {
+  int PSurf<T>::getSamPU( int i ) const {
 
-    return _sam1[i];
+    return _no_sam_p_u(i);
   }
 
 
   template <typename T>
   inline
-  int PSurf<T>::getSamV( int i ) {
+  int PSurf<T>::getSamPV( int i ) const {
 
-    return _sam2[i];
+    return _no_sam_p_v(i);
+  }
+
+
+  template <typename T>
+  inline
+  int PSurf<T>::getSamplesU() const {
+
+    return _no_sam_u;
+  }
+
+
+  template <typename T>
+  inline
+  int PSurf<T>::getSamplesV() const {
+
+    return _no_sam_v;
   }
 
 
@@ -639,9 +612,7 @@ namespace GMlib {
 
     for(int i = 0; i < 20; i++ ) {
 
-//      eval(u, v, 2, 2);
-//      DMatrix< Vector<T,3> > &r = _p_ref->evaluateLocal( u, v, 2, 2 );
-      DMatrix< Vector<T,3> > &r = evaluateLocal( u, v, 2, 2 );
+      DMatrix< Vector<T,3> > &r = evaluate( u, v, 2, 2 );
       Vector<T,3> d = p-r[0][0];
 
       a11 = d*r[2][0] - r[1][0] * r[1][0];
@@ -681,21 +652,14 @@ namespace GMlib {
 
     // Correct sample domain
     if( m1 < 2 )
-      m1 = _sam1.getDim();
+      m1 = _no_sam_u;
     else
-      _sam1.setDim( m1 );
+      _no_sam_u = m1;
 
     if( m2 < 2 )
-      m2 = _sam2.getDim();
+      m2 = _no_sam_v;
     else
-      _sam2.setDim( m2 );
-
-    // Set Properties
-    _no_der_u = d1;
-    _no_der_v = d2;
-    _no_samp_u = m1;
-    _no_samp_v = m2;
-
+      _no_sam_v = m2;
 
     // pre-sampel / pre evaluate data for a given parametric surface, if wanted/needed
     preSample(
@@ -798,17 +762,17 @@ namespace GMlib {
   ) {
 
 //    if(m1>0)
-//    for(int i=0; i< _sam1.getDim(); i++)
-//      _sam1[i]= max(2,int(0.5+(m1*(_sam_p_u[i+1] - _sam_p_u[i]))/(_sam_p_u.back() - _sam_p_u[0])));
+//    for(int i=0; i< _no_sam_p_u.getDim(); i++)
+//      _no_sam_p_u[i]= max(2,int(0.5+(m1*(_sam_p_u[i+1] - _sam_p_u[i]))/(_sam_p_u.back() - _sam_p_u[0])));
 //    if(m2>0)
-//    for(int i=0; i< _sam2.getDim(); i++)
-//      _sam2[i]= max(2,int(0.5+(m2*(_sam_p_v[i+1] - _sam_p_v[i]))/(_sam_p_v.back() - _sam_p_v[0])));
+//    for(int i=0; i< _no_sam_p_v.getDim(); i++)
+//      _no_sam_p_v[i]= max(2,int(0.5+(m2*(_sam_p_v[i+1] - _sam_p_v[i]))/(_sam_p_v.back() - _sam_p_v[0])));
 //
-//    a.setDim(_sam1.getDim(),_sam2.getDim());
+//    a.setDim(_no_sam_p_u.getDim(),_no_sam_p_v.getDim());
 //
 //    for(int i = 0; i < a.getDim1(); i++)
 //      for(int j = 0; j < a.getDim2(); j++)
-//        resample(a[i][j],_sam1[i],_sam2[j], d1, d2, _sam_p_u[i],_sam_p_v[j],_sam_p_u[i+1],_sam_p_v[j+1]);
+//        resample(a[i][j],_no_sam_p_u[i],_no_sam_p_v[j], d1, d2, _sam_p_u[i],_sam_p_v[j],_sam_p_u[i+1],_sam_p_v[j+1]);
   }
 
 
@@ -912,7 +876,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurf<T>::setEval( int d ) {
+  void PSurf<T>::setNoDer( int d ) {
 
      _default_d  = d;
   }

@@ -56,6 +56,8 @@ namespace GMlib {
 
     _closed = g->isClosed();
 
+    if( _closed ) no_locals++;
+
     _c.setDim(no_locals);
 
     generateKnotVector( g );
@@ -86,6 +88,8 @@ namespace GMlib {
     init();
 
     _closed = g->isClosed();
+
+    if( _closed ) no_locals++;
 
     _c.setDim(no_locals);
 
@@ -254,7 +258,7 @@ namespace GMlib {
   inline
   void PERBSCurve<T>::findIndex( T t, int& it ) {
 
-    it = (this->_no_samp-1)*(t-this->getParStart())/(this->getParDelta())+0.1;
+    it = (this->_no_sam-1)*(t-this->getParStart())/(this->getParDelta())+0.1;
   }
 
 

@@ -6,6 +6,14 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
 
+2010-04-09 Jostein Bratlie (2)
+        * gmPCurve/gmPSurf
+          - Fixed differences between the PCurve and PSurf API
+        * gmPERBSCurve/gmPERBSSurf
+          - fixed an issue in PERBS curve and surface constructors which gave an incorrect number
+            of local patches if the curve/surface to be mimicked was closed.
+
+
 2010-04-09 Jostein Bratlie
         * gmScene
           - Scene::insert(...) made virtual

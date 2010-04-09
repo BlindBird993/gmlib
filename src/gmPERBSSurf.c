@@ -55,6 +55,9 @@ namespace GMlib {
     _closed_u = g->isClosedU();
     _closed_v = g->isClosedV();
 
+    if( _closed_u ) no_locals_u++;
+    if( _closed_v ) no_locals_v++;
+
     _c.setDim( no_locals_u, no_locals_v );
     generateKnotVector( g );
 
@@ -134,6 +137,9 @@ namespace GMlib {
       _closed_v = g->isClosedV();
     else
       _closed_v = false;
+
+    if( _closed_u ) no_locals_u++;
+    if( _closed_v ) no_locals_v++;
 
     _c.setDim( no_locals_u, no_locals_v );
     generateKnotVector( g, u_s, u_e, v_s, v_e );
@@ -362,8 +368,8 @@ namespace GMlib {
   inline
   void PERBSSurf<T>::findIndex( T u, T v, int& iu, int& iv ) {
 
-    iu = (this->_no_samp_u-1)*(u-this->getParStartU())/(this->getParDeltaU())+0.1;
-    iv = (this->_no_samp_v-1)*(v-this->getParStartV())/(this->getParDeltaV())+0.1;
+    iu = (this->_no_sam_u-1)*(u-this->getParStartU())/(this->getParDeltaU())+0.1;
+    iv = (this->_no_sam_v-1)*(v-this->getParStartV())/(this->getParDeltaV())+0.1;
   }
 
 

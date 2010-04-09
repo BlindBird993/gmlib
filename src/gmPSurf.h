@@ -45,35 +45,31 @@ namespace GMlib {
   class PSurf : public Parametrics<T,2> {
   public:
 
-    PSurf();
+    PSurf( int s1 = 20, int s2 = 20 );
     PSurf( const PSurf<T>& copy );
 
     //virtual void                  estimateClpPar( const Point<T,3>& p, T& u, T& v );
-    DMatrix<Vector<T,3> >&	      evaluate( Point<T,2> p, int d );
+    DMatrix<Vector<T,3> >&        evaluate( Point<T,2> p, int d );
     DMatrix<Vector<T,3> >&    	  evaluate( T u, T v, int d1, int d2 );
-    DVector<Vector<T,3> >	        evaluateD( Point<T,2> p, int d );
-    DVector<Vector<T,3> >	        evaluateD( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,3> >&    	  evaluateLocal( Point<T,2> p, int d );
-    DMatrix<Vector<T,3> >&    	  evaluateLocal( T u, T v, int d1, int d2 );
+    DVector<Vector<T,3> >         evaluateD( Point<T,2> p, int d );
+    DVector<Vector<T,3> >         evaluateD( T u, T v, int d1, int d2 );
+    DMatrix<Vector<T,3> >&    	  evaluateGlobal( Point<T,2> p, int d );
+    DMatrix<Vector<T,3> >&    	  evaluateGlobal( T u, T v, int d1, int d2 );
     DMatrix<Vector<T,3> >&    	  evaluateParent( Point<T,2> p, int d );
     DMatrix<Vector<T,3> >&    	  evaluateParent( T u, T v, int d1, int d2 );
     virtual T                     getCurvatureGauss( T u, T v );
     virtual T                     getCurvatureMean( T u, T v );
     virtual T                     getCurvaturePrincipalMax( T u, T v );
     virtual T                     getCurvaturePrincipalMin( T u, T v );
-    int                           getDerU();
+    int                           getDerivativesU() const;
+    int                           getDerivativesV() const;
     Vector<T,3>&                  getDerU( T u, T v );
-    int                           getDerV();
     Vector<T,3>&                  getDerV( T u, T v );
     Vector<T,3>&                  getDerUU( T u, T v );
     Vector<T,3>&                  getDerVV( T u, T v );
     Vector<T,3>&                  getDerUV( T u, T v );
     std::string                   getIdentity() const;
     virtual T                     getLocalMapping( T t, T ts, T tt, T te );
-    int                           getNoDerU() const;
-    int                           getNoDerV() const;
-    int                           getNoSampU() const;
-    int                           getNoSampV() const;
     Vector<T,3>&                  getNormal();
     T                             getParDeltaU();
     T                             getParDeltaV();
@@ -81,13 +77,15 @@ namespace GMlib {
     T                             getParStartV();
     T                             getParEndU();
     T                             getParEndV();
-    int                           getSamU( int i = 0 );
-    int                           getSamV( int i = 0 );
+    int                           getSamPU( int i = 0 ) const;
+    int                           getSamPV( int i = 0 ) const;
+    int                           getSamplesU() const;
+    int                           getSamplesV() const;
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
     virtual bool                  isClosestPoint( const Point<T,3>& q, T& u, T& v );
     virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
-    void                          replot( int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
+    virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
     virtual void                  resample(DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a, int m1, int m2, int d1, int d2 );
     virtual void                  resample(DMatrix<DMatrix <Vector<T,3> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
     virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T, 3> > > &sample, DMatrix<Vector<T, 3> > &normals ) const;
@@ -97,76 +95,55 @@ namespace GMlib {
     void                          setDomainV( T start, T end );
     void                          setDomainVScale( T sc );
     void                          setDomainVTrans( T tr );
-    void                          setEval( int d );
+    void                          setNoDer( int d );
     virtual void                  setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p );
     virtual Parametrics<T,2>*     split( T t, int uv );
 
     Point<T,3>&                   operator () ( T u, T v );
 
   protected:
-    int                           _no_der_u;
-    int                           _no_der_v;
-    int                           _no_samp_u;
-    int                           _no_samp_v;
+    int                           _no_sam_u;    // Number of samples u for single sampling
+    int                           _no_sam_v;    // Number of samples v for single sampling
 
+    DVector< Vector<T,2> >        _sam_p_u;     // Sample partition u (start/stop)
+    DVector< Vector<T,2> >        _sam_p_v;     // Sample partition v (start/stop)
 
+    DVector< int >                _no_sam_p_u;  // Number of samples for each sampling partition in u
+    DVector< int >                _no_sam_p_v;  // Number of samples for each sampling partition in v
 
-    // ****************************
-    // Storing samling informations
-
-    // The sampling partition in u. Default first sampling value is
-    // getStartParU() and last sampling value is usually getEndParU().
-    DVector<T>			              _sam_p_u;
-
-    // The sampling partition in v. Default first sampling value is
-    // getStartParV() and last sampling value is usually getEndParV().
-    DVector<T>			              _sam_p_v;
-
-    // Samplings-number u directions for each partition.
-    DVector<int>		              _sam1;
-
-    // Samplings-number v directions for each partition.
-    // NB! Invariant!! dim of _sam* = dim of _sam_p_* -1.
-    DVector<int>		              _sam2;
 
     // Used by operator() for number of derivative to evaluate.
-    int					                  _default_d;
+    int                           _default_d;
 
 
-    // *************************************
     // The result of the previous evaluation
+    DMatrix< Vector<T,3> >        _p;           // Position and belonging partial derivatives
+    Vector<T,3>                   _n;           // Surface normal, for display in 3D
+    T                             _u;           // The parameter value in u-direction used for last evaluation
+    T                             _v;           // The parameter value in v-direction used for last evaluation
+    int                           _d1;          // Number of derivatives in u-direction computed last time
+    int                           _d2;          // Number of derivatives in v-direction computed last time
+    bool                          _diagonal;    // True if only upper left half of matrix is evaluated.
 
-    DMatrix< Vector<T,3> >        _p;		      // Position and belonging partial derivatives
-    Vector<T,3>				            _n;		      // Surface normal, for display in 3D
-    T						                  _u;		      // The parameter value in u-direction used for last evaluation
-    T						                  _v;		      // The parameter value in v-direction used for last evaluation
-    int						                _d1;		    // Number of derivatives in u-direction computed last time
-    int						                _d2;		    // Number of derivatives in v-direction computed last time
-    bool					                _diagonal;  // True if only upper left half of matrix is evaluated.
-
-
-    // ******************
     // Shift of parameter
-    T	                            _tr_u;		        // Translate u-parametre
-    T	                            _sc_u;		        // Scale u-parametre
+    T                             _tr_u;        // Translate u-parametre
+    T                             _sc_u;        // Scale u-parametre
 
-    T	                            _tr_v;		        // Translate v-parametre
-    T	                            _sc_v;		        // Scale v-parametre
-
+    T                             _tr_v;        // Translate v-parametre
+    T                             _sc_v;        // Scale v-parametre
 
     virtual void                  eval( T u, T v, int d1, int d2, bool lu = true, bool lv = true ) = 0;
-    virtual T                     getEndPU() { return T(0); } // = 0;
-    virtual T                     getEndPV() { return T(0); } // = 0;
-    virtual T                     getStartPU() { return T(0); } //  = 0;
-    virtual T                     getStartPV() { return T(0); } // = 0;
+    virtual T                     getEndPU() = 0;
+    virtual T                     getEndPV() = 0;
+    virtual T                     getStartPU() = 0;
+    virtual T                     getStartPV() = 0;
     T                             shiftU(T u);
-    T	                            shiftV(T v);
+    T                             shiftV(T v);
 
   private:
     void                          _eval( T u, T v, int d1, int d2 );
     void                          _evalDerDD( DMatrix< DMatrix< Vector<T,3> > >& a, int d1, int d2, T du, T dv ) const;
     void                          _evalNormal();
-    void                          _init();
     void                          _setSam( int m1, int m2 );
     int                           _sum( int i, int j );
 
