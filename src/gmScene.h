@@ -91,7 +91,7 @@ namespace GMlib{
     Sphere<float,3>	      getSphere();
     Sphere<float,3>	      getSphereClean() const;
     double                getTimeScale();
-    void                  insert(SceneObject* obj);
+    virtual void          insert(SceneObject* obj);
     bool                  isRunning();
     void                  prepare();
     void                  remove(SceneObject* obj);

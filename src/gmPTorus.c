@@ -218,6 +218,27 @@ namespace GMlib {
     return T(0);
   }
 
+  template <typename T>
+  inline
+  const T& PTorus<T>::getTubeRadius1() const {
+
+    return _b;
+  }
+
+  template <typename T>
+  inline
+  const T& PTorus<T>::getTubeRadius2() const {
+
+    return _c;
+  }
+
+  template <typename T>
+  inline
+  const T& PTorus<T>::getWheelRadius() const {
+
+    return _a;
+  }
+
 
   template <typename T>
   inline
@@ -232,6 +253,27 @@ namespace GMlib {
   bool PTorus<T>::isClosedV() const {
 
     return true;
+  }
+
+  template <typename T>
+  inline
+  void PTorus<T>::setTubeRadius1( const T& radius ) {
+
+    _b = radius;
+  }
+
+  template <typename T>
+  inline
+  void PTorus<T>::setTubeRadius2( const T& radius ) {
+
+    _c = radius;
+  }
+
+  template <typename T>
+  inline
+  void PTorus<T>::setWheelRadius( const T& radius ) {
+
+    _a = radius;
   }
 
 }

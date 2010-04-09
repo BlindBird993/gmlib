@@ -5,6 +5,14 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2010-04-09 Jostein Bratlie
+        * gmScene
+          - Scene::insert(...) made virtual
+        * gmPTorus
+          - Getter and setter functionality for PTorus class
+
+
 2010-03-17 Jostein Bratlie
         * Build system
           - qmake project restructure
