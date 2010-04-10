@@ -424,13 +424,13 @@ namespace GMlib {
   }
 
 
-  const GLColor& SceneObject::getColor() const {
+  const Color& SceneObject::getColor() const {
 
     return _color;
   }
 
 
-  GLColor& SceneObject::getColor() {
+  Color& SceneObject::getColor() {
 
     return _color;
   }

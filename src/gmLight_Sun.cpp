@@ -67,7 +67,7 @@ namespace GMlib {
    */
   void Sun::setDayLight( const Color& amb ) {
 
-    _global_ambient = GLColor(amb);
+    _global_ambient = Color(amb);
     _setDayLight(1);
   }
 
@@ -95,7 +95,7 @@ namespace GMlib {
    */
   void Sun::_setDayLight(double d) {
 
-    GLColor	a = d*_global_ambient;
+    Color	a = d*_global_ambient;
     float f[4];
     f[0] = float(a.getRedC());
     f[1] = float(a.getGreenC());

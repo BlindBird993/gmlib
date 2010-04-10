@@ -168,12 +168,12 @@ namespace GMlib {
   }
 
 
-  /*! void ViewSet::_setBorderColor(const GLColor& bc)
+  /*! void ViewSet::_setBorderColor(const Color& bc)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
    */
-  void ViewSet::_setBorderColor(const GLColor& bc) {
+  void ViewSet::_setBorderColor(const Color& bc) {
 
     _border_color = bc;
   }

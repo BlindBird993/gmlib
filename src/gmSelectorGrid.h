@@ -48,7 +48,7 @@ namespace GMlib {
   template <typename T, int n>
   class SelectorGrid : public Selector<T,n> {
   public:
-    SelectorGrid( Point<T,n>& mp, SceneObject* parent, const GLColor& c = GLColor(0.5,0.5,0.9));
+    SelectorGrid( Point<T,n>& mp, SceneObject* parent, const Color& c = Color(0.5,0.5,0.9));
 
     void add(Point<T,n>& p1, Point<T,n>& p2);
 

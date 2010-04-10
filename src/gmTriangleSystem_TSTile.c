@@ -158,22 +158,16 @@ namespace GMlib {
   inline
   void TSTile<T>::render() {
 
-    glPushAttrib( GL_LIGHTING_BIT );
-  //  GLboolean lg;
-  //  glGetBooleanv(GL_LIGHTING,&lg);
-  //  if(lg) glDisable(GL_LIGHTING);
-    //Red.glSet();
-    glBegin(GL_LINE_STRIP); 
-      //glBegin(GL_TRIANGLE_FAN);
-      //glVertex((Point3D<T>)myvtx->parameter());
-      for(int i=0; i<_vorpts.size(); i++) glVertex((Point3D<T>)_vorpts(i));
-      if(!_vertex->boundary()) glVertex((Point3D<T>)_vorpts(0));
-	glEnd();
+    glPushAttrib( GL_LIGHTING_BIT ); {
+      glBegin(GL_LINE_STRIP); {
 
-  //  if(lg)
-  //    glEnable(GL_LIGHTING);
+        for( int i=0; i<_vorpts.size(); i++ )
+          glVertex( (Point3D<T>)_vorpts(i) );
 
-    glPopAttrib();
+        if(!_vertex->boundary())  glVertex((Point3D<T>)_vorpts(0));
+
+      }glEnd();
+    }glPopAttrib();
   }
 
 }

@@ -861,28 +861,21 @@ namespace GMlib {
   inline
   void TriangleFacets<T>::localDisplay() {
 
-    glPushAttrib( GL_LIGHTING_BIT );
+    glPushAttrib( GL_LIGHTING_BIT ); {
 
-    if( this->isLighted() )
-    {
-      this->_material.glSet();
-    }
-    else
-    {
-      glDisable( GL_LIGHTING );
-      this->_color.glSet();
-    }
+      if( this->isLighted() )
+      {
+        this->_material.glSet();
+      }
+      else
+      {
+        glDisable( GL_LIGHTING );
+        glColor(this->_color);
+      }
 
-    render();
+      render();
 
-////    glNewList( _dlist_name, GL_COMPILE );
-//      glBegin( GL_TRIANGLES );
-//        for( int i = 0; i < _triangles.size(); i++ )
-//          _triangles(i)->_render();
-//      glEnd();
-////    glEndList();
-
-    glPopAttrib();
+    } glPopAttrib();
   }
 
 

@@ -65,54 +65,54 @@ namespace GMlib {
   class Material {
   public:
     Material(
-			const GLColor& amb 	= GLColor( 0.7f, 0.0f, 0.0f, 1.0f ),
-      const GLColor& dif 	= GLColor( 0.7f, 0.0f, 0.0f, 1.0f ),
-      const GLColor& spc 	= GLColor( 0.7f, 0.0f, 0.0f, 1.0f ),
+      const Color& amb 	= Color( 0.7f, 0.0f, 0.0f, 1.0f ),
+      const Color& dif 	= Color( 0.7f, 0.0f, 0.0f, 1.0f ),
+      const Color& spc 	= Color( 0.7f, 0.0f, 0.0f, 1.0f ),
       float shininess 		= 0.0f,
       const Texture& texture = Texture()
-		);
-		Material( const Texture& tex, const Material& mat = Material() );
+    );
+    Material( const Texture& tex, const Material& mat = Material() );
     Material( const Material& copy );
     virtual ~Material();
 
-    const GLColor&    getAmb() const;
-    const GLColor&    getDif() const;
-    const GLColor&    getSpc() const;
-    float             getShininess() const;
-    int  						  getTextureID() const;
-    virtual void		  glSet() const;
-    void 						  glSetInverse() const;
-    virtual void 		  glUnSet() const;
-    bool 						  isTransparent() const;
-    void 						  set( const GLColor& amb, const GLColor& dif, const GLColor& spc, float shininess, const Texture& texture );
-    void 						  set( const GLColor& amb, const GLColor& dif, const GLColor& spc );
-    void 						  set( const GLenum sfactor, const GLenum dfactor );
-    void 						  set( float shininess );
-    void 						  set( const Texture& texture );
-    void 						  setAmb( const GLColor& amb );
-    void 						  setDif( const GLColor& dif );
-    void 						  setDoubleSided( bool s );
-    void 						  setSided( GLenum s );
-    void 						  setSpc( const GLColor& spc );
-    void 						  setTransparancy( double t );
+    const Color&    getAmb() const;
+    const Color&    getDif() const;
+    const Color&    getSpc() const;
+    float           getShininess() const;
+    int             getTextureID() const;
+    virtual void    glSet() const;
+    void            glSetInverse() const;
+    virtual void    glUnSet() const;
+    bool            isTransparent() const;
+    void            set( const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture );
+    void            set( const Color& amb, const Color& dif, const Color& spc );
+    void            set( const GLenum sfactor, const GLenum dfactor );
+    void            set( float shininess );
+    void            set( const Texture& texture );
+    void            setAmb( const Color& amb );
+    void            setDif( const Color& dif );
+    void            setDoubleSided( bool s );
+    void            setSided( GLenum s );
+    void            setSpc( const Color& spc );
+    void            setTransparancy( double t );
 
-    Material& 			  operator =  ( const Material& m );
-    bool 						  operator == ( const Material& m ) const;
+    Material&       operator =  ( const Material& m );
+    bool            operator == ( const Material& m ) const;
 
 
   protected:
-    Texture           _texture;
-    GLColor           _amb;
-    GLColor		        _dif;
-    GLColor		        _spc;
-    float				      _shininess;
+    Texture         _texture;
+    Color           _amb;
+    Color           _dif;
+    Color           _spc;
+    float           _shininess;
 
 
   private:
 
-    GLenum			    _source_blend_factor;
-    GLenum			    _destination_blend_factor;
-    GLenum			    _sided;
+    GLenum          _source_blend_factor;
+    GLenum          _destination_blend_factor;
+    GLenum          _sided;
 
 
   // *****************************

@@ -43,7 +43,6 @@
 
 // Local GMlib includes
 #include "gmOpenGL.h"
-#include "gmColor.h"
 #include "gmMaterial.h"
 
 
@@ -138,12 +137,12 @@ namespace GMlib{
     virtual void                edit();
     virtual void                editPos(Vector<float,3> delta);
     virtual void                enableChildren( bool enable = true );
-    SceneObject*		            find(unsigned int name);
+    SceneObject*                find(unsigned int name);
     bool                        flipSelected();
-    Point<float,3>	            getCenterPos() const;
+    Point<float,3>              getCenterPos() const;
     Array<SceneObject*>&        getChildren();
-    const GLColor&              getColor() const;
-    GLColor&                    getColor();
+    const Color&                getColor() const;
+    Color&                      getColor();
     virtual std::string         getIdentity() const;
     const Material&             getMaterial() const;
     Material&                   getMaterial();
@@ -154,8 +153,8 @@ namespace GMlib{
     SceneObject*                getParent();
     Scene*                      getScene();
     bool                        getSelected();
-    Sphere<float,3>	            getSurroundingSphere() const;
-    Sphere<float,3>     	      getSurroundingSphereClean() const;
+    Sphere<float,3>             getSurroundingSphere() const;
+    Sphere<float,3>             getSurroundingSphereClean() const;
     int                         getTypeId();
     void                        insert(SceneObject* obj);
     bool                        isCollapsed() const;
@@ -208,7 +207,7 @@ namespace GMlib{
     bool					              _collapsed;	//! represented by a small cube
     unsigned int                _collapsed_dlist;
     Material                    _material;
-    GLColor                     _color;
+    Color                     _color;
     bool                        _lighted;
     bool                        _opaque;
 

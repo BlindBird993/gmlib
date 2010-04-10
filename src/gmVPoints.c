@@ -61,7 +61,7 @@ namespace GMlib {
 
     // Set Properties
     glDisable( GL_LIGHTING );
-    glColor( _color );
+    Color( _color );
     glPointSize( _size );
 
     // Enable vertex array
@@ -94,7 +94,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const GLColor& VPoints<T,n>::getColor() const {
+  const Color& VPoints<T,n>::getColor() const {
 
     return _color;
   }
@@ -146,7 +146,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void VPoints<T,n>::setColor( const GLColor& color ) {
+  void VPoints<T,n>::setColor( const Color& color ) {
 
     _color = color;
   }

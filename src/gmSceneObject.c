@@ -379,9 +379,13 @@ namespace GMlib {
 
         if(_collapsed) {
 
-          glDisable( GL_LIGHTING );
-          glColor( Color( 0.6f, 0.6f, 0.6f, 1.0f ) );
-          displayCollapsed();
+          glPushAttrib( GL_LIGHTING_BIT ); {
+
+            glDisable( GL_LIGHTING );
+            glColor( Color( 0.6f, 0.6f, 0.6f, 1.0f ) );
+            displayCollapsed();
+
+          } glPopAttrib();
         }
         else            localDisplay();
 
@@ -451,8 +455,8 @@ namespace GMlib {
           glMultMatrix( _present );
 
         _scale.glScaling();
-        GLColor name(getName());
-        name.glSet();
+        Color name(getName());
+        glColor(name);
 
         if( _collapsed )
           displayCollapsed();

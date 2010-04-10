@@ -51,7 +51,7 @@ namespace GMlib {
     ~VPoints();
 
     void              display();
-    const GLColor&    getColor() const;
+    const Color&    getColor() const;
     std::string       getIdentity() const;
     float             getSize() const;
     void              replot(
@@ -63,14 +63,14 @@ namespace GMlib {
       DMatrix< Vector<T, 3> >& normals,
       int m1, int m2, int d1, int d2
     );
-    void              setColor( const GLColor& color );
+    void              setColor( const Color& color );
     void              setSize( float size );
 
   protected:
     DVector< Point<float,3> >   _n1;
     DMatrix< Point<float,3> >   _n2;
     float             _size;
-    GLColor           _color;
+    Color           _color;
   };
 
 

@@ -256,6 +256,13 @@ namespace GMlib {
   }
 
 
+  inline
+  const unsigned char*  Color::getRgba() const {
+
+    return _color.rgba;
+  }
+
+
   /*! void Color::set(unsigned int n)
    *  \brief Pending Documentation
    *

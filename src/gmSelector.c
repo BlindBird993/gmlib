@@ -45,13 +45,13 @@ namespace GMlib {
 
 
 
-  /*! Selector<T,n>::Selector( Point<T,n>& mp, int id, SceneObject* parent, T r, const GLColor& c, Selector<T,n>* root )
+  /*! Selector<T,n>::Selector( Point<T,n>& mp, int id, SceneObject* parent, T r, const Color& c, Selector<T,n>* root )
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   template <typename T, int n>
-  Selector<T,n>::Selector( Point<T,n>& mp, int id, SceneObject* parent, T r, const GLColor& c, Selector<T,n>* root )
+  Selector<T,n>::Selector( Point<T,n>& mp, int id, SceneObject* parent, T r, const Color& c, Selector<T,n>* root )
     : _position(mp) {
 
     Sphere<float,3> ts(Point<float,3>(float(0)),0.866);
@@ -318,8 +318,8 @@ namespace GMlib {
 
       glPushAttrib( GL_LIGHTING_BIT );
         glDisable(GL_LIGHTING);
-        if(_selected)	_marked.glSet();
-        else			_default.glSet();
+        if(_selected)	glColor(_marked);
+        else			glColor(_default);
         glCallList(_display_list);
       glPopAttrib();
     }

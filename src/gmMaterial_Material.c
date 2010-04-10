@@ -34,13 +34,13 @@
 namespace GMlib {
 
 
-  /*! Material::Material(	const GL_Color& amb, const GL_Color& dif, const GL_Color& spc, float shininess, const Texture& texture )
+  /*! Material::Material(	const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture )
    *	\brief Pending Documentation
    *
    *	Default/Standar constructor
    */
   inline
-  Material::Material(	const GLColor& amb, const GLColor& dif, const GLColor& spc, float shininess, const Texture& texture )	{
+  Material::Material(	const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture )	{
 
     set( amb, dif, spc, shininess, texture );
     set(GL_ONE,GL_ONE);
@@ -87,21 +87,21 @@ namespace GMlib {
 
 
   inline
-  const GLColor& Material::getAmb() const {
+  const Color& Material::getAmb() const {
 
     return _amb;
   }
 
 
   inline
-  const GLColor& Material::getDif() const {
+  const Color& Material::getDif() const {
 
     return _dif;
   }
 
 
   inline
-  const GLColor& Material::getSpc() const {
+  const Color& Material::getSpc() const {
 
     return _spc;
   }
@@ -140,13 +140,13 @@ namespace GMlib {
   };
 
 
-  /*! void Material::set( const GLColor& amb, const GLColor& dif, const GLColor& spc, float shininess, const Texture& texture )
+  /*! void Material::set( const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture )
    *	\brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::set( const GLColor& amb, const GLColor& dif, const GLColor& spc, float shininess, const Texture& texture ) {
+  void Material::set( const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture ) {
 
     _amb = amb;
     _dif = dif;
@@ -156,13 +156,13 @@ namespace GMlib {
   }
 
 
-  /*! void Material::set(const GLColor& amb, const GLColor& dif, const GLColor& spc )
+  /*! void Material::set(const Color& amb, const Color& dif, const Color& spc )
    *	\brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::set(const GLColor& amb, const GLColor& dif, const GLColor& spc ) {
+  void Material::set(const Color& amb, const Color& dif, const Color& spc ) {
 
     _amb = amb;
     _dif = dif;
@@ -170,25 +170,25 @@ namespace GMlib {
   }
 
 
-  /*! void Material::setAmb(const GLColor& amb)
+  /*! void Material::setAmb(const Color& amb)
    *	\brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::setAmb(const GLColor& amb)	{
+  void Material::setAmb(const Color& amb)	{
 
     _amb = amb;
   }
 
 
-  /*!void Material::setDif(const GLColor& dif)
+  /*!void Material::setDif(const Color& dif)
    *	\brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::setDif(const GLColor& dif)	{
+  void Material::setDif(const Color& dif)	{
 
     _dif = dif;
   }
@@ -219,13 +219,13 @@ namespace GMlib {
   }
 
 
-  /*! void Material::setSpc(const GLColor& spc)
+  /*! void Material::setSpc(const Color& spc)
    *	\brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::setSpc(const GLColor& spc)	{
+  void Material::setSpc(const Color& spc)	{
 
     _spc=spc;
   }

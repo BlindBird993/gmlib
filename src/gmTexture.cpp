@@ -249,9 +249,9 @@ namespace GMlib {
   }
 
 
-  const GLColor& Texture::operator()(int i, int j) const {
+  const Color& Texture::operator()(int i, int j) const {
 
-      GLColor* color = (GLColor*)_data;
+      Color* color = (Color*)_data;
       return color[ (j * _width) + i];
   }
 

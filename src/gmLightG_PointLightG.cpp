@@ -103,21 +103,10 @@ namespace GMlib {
 
       glDisable( GL_LIGHTING );
 
-      getAmbient().glSet();
+      glColor(getAmbient());
       glCallList( _dlist );
 
     } glPopAttrib();
-  //
-  //
-  //
-  //
-  //	GLboolean lg;
-  //	glGetBooleanv(GL_LIGHTING,&lg);
-  //	if(lg) glDisable(GL_LIGHTING);
-  //	_sc.glScaling();
-  //	_getAmbient().glSet();
-  //	glCallList(_display_list);
-  //	if(lg) glEnable(GL_LIGHTING);
   }
 
 

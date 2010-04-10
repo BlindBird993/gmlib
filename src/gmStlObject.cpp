@@ -98,7 +98,7 @@ namespace GMlib {
   }
 
 
-  StlObject::StlObject( const std::string& filename, const GLColor& color, int /*flip*/ ) {
+  StlObject::StlObject( const std::string& filename, const Color& color, int /*flip*/ ) {
 
     _dlist = 0;
 
@@ -112,7 +112,7 @@ namespace GMlib {
   }
 
 
-  StlObject::StlObject( std::ifstream& stream, bool binary, const GLColor& color ) {
+  StlObject::StlObject( std::ifstream& stream, bool binary, const Color& color ) {
 
     _dlist = 0;
 

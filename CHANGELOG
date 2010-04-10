@@ -5,6 +5,9 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2010-04-10 Jostein Bratlie
+        * Replaced the last of the OpenGL spesific GLColor class implementation with the general Color class.
+
 
 2010-04-09 Jostein Bratlie (2)
         * gmPCurve/gmPSurf

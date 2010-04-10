@@ -66,6 +66,7 @@ namespace GMlib {
     Color           getInverse() const;
     unsigned char   getRed() const;
     double          getRedC() const;
+    const unsigned char*  getRgba() const;
 
     void            set( unsigned int n );
     void            set( unsigned char  rgba, int i );

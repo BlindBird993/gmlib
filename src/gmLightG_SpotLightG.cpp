@@ -195,7 +195,7 @@ namespace GMlib {
 
       glDisable( GL_LIGHTING );
 
-      getAmbient().glSet();
+      glColor(getAmbient());
       glCallList( _dlist+1 );
 
     } glPopAttrib();

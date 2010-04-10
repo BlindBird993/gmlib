@@ -37,14 +37,14 @@ namespace GMlib {
 
 
 
-  /*! SelectorGrid::SelectorGrid( Point<T,n>& mp, SceneObject* parent, const GLColor& c )
+  /*! SelectorGrid::SelectorGrid( Point<T,n>& mp, SceneObject* parent, const Color& c )
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    *  add a new line
    */
   template <typename T, int n>
-  SelectorGrid<T,n>::SelectorGrid( Point<T,n>& mp, SceneObject* parent, const GLColor& c ) : Selector<T,n>( mp, -1, parent ) {
+  SelectorGrid<T,n>::SelectorGrid( Point<T,n>& mp, SceneObject* parent, const Color& c ) : Selector<T,n>( mp, -1, parent ) {
 
     this->_type_id	= GM_SO_TYPE_SELECTOR_GRID;
     this->_default	= c;
@@ -52,7 +52,7 @@ namespace GMlib {
     this->_root		= NULL;
     this->_scale.reset();
     translate( -mp.toFloat());
-    //this->setSurroundingSphere(parent->getSurroundingSphere());  // Sphere<float,3>(mp,1.0));
+
     Sphere<float,3> ts(Point<float,3>(float(0)),0.866);
     this->setSurroundingSphere(ts);
   }
@@ -90,9 +90,9 @@ namespace GMlib {
         glDisable( GL_LIGHTING );
 
         if(this->_selected)
-          this->_marked.glSet();
+          glColor(this->_marked);
         else
-          this->_default.glSet();
+          glColor(this->_default);
 
         glBegin(GL_LINES); {
 

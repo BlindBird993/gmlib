@@ -138,7 +138,7 @@ namespace GMlib {
       glDisable(GL_COLOR_MATERIAL);glDisable(GL_LIGHTING);glDisable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     glShadeModel(GL_FLAT);
-    GLColor c;
+    Color c;
     select(type_id);
     glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
     glPopAttrib(); // reset state
@@ -162,13 +162,13 @@ namespace GMlib {
     glDisable(GL_COLOR_MATERIAL);glDisable(GL_LIGHTING);glDisable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     glShadeModel(GL_FLAT);
-    GLColor* pixels=new GLColor[dx*dy];
+    Color* pixels=new Color[dx*dy];
     _select(type_id);
     glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
     glPopAttrib(); // reset state
 
     int ct=0;
-    GLColor c;
+    Color c;
     for(int i=ymin; i<ymax; i++)
       for(int j=xmin;j<xmax; j++)
       {
@@ -272,16 +272,16 @@ namespace GMlib {
   void Camera::localDisplay() {
 
     static Material lins(
-      GLColor( 0.19125f,  0.0735f,  0.0225f,    1.0f ),
-      GLColor( 0.5038f,   0.27048f,  0.0828f,   1.0f ),
-      GLColor( 0.256777f, 0.137622f, 0.086014f, 1.0f ),
+      Color( 0.19125f,  0.0735f,  0.0225f,    1.0f ),
+      Color( 0.5038f,   0.27048f,  0.0828f,   1.0f ),
+      Color( 0.256777f, 0.137622f, 0.086014f, 1.0f ),
       12.8f
     );
 
     static Material rubb(
-      GLColor( 0.105882f, 0.058824f, 0.103725f, 1.0f ),
-      GLColor( 0.427451f, 0.470588f, 0.501176f, 1.0f ),
-      GLColor( 0.333333f, 0.333333f, 0.501569f, 1.0f ),
+      Color( 0.105882f, 0.058824f, 0.103725f, 1.0f ),
+      Color( 0.427451f, 0.470588f, 0.501176f, 1.0f ),
+      Color( 0.333333f, 0.333333f, 0.501569f, 1.0f ),
       9.84615f
     );
 
@@ -297,7 +297,7 @@ namespace GMlib {
     glCallList(_display_list+4);
     if(_frustum_visible) {
 
-      GLColor		col( 1.0f, 1.0f, 1.0f, 1.0f ); // hvit
+      Color		col( 1.0f, 1.0f, 1.0f, 1.0f ); // hvit
       Point3D<float> p1(0,0,-_near_plane);
       Point3D<float> p2(0,0,-_far_plane);
       Vector3D<float> v1(0,_angle_tan*_near_plane,0);
@@ -311,7 +311,7 @@ namespace GMlib {
       GLboolean lg;
       glGetBooleanv(GL_LIGHTING,&lg);
       if(lg) glDisable(GL_LIGHTING);
-      col.glSet();
+      glColor(col);
       glBegin(GL_LINE_LOOP);
         glPoint(p1+v2);	glPoint(p1-v2);	glPoint(p1m-v2);	glPoint(p1m+v2);
       glEnd();
@@ -332,7 +332,7 @@ namespace GMlib {
       glPushMatrix();
       HqMatrix<float,3> invmat = _present; invmat.invertOrthoNormal();
       glTranslate(invmat*_lock_pos);
-      GLColor(GMcolor::Green).glSet();
+      glColor(GMcolor::Green);
       glCallList(_display_list+8);
       glPopMatrix();
       if(lg) glEnable(GL_LIGHTING);

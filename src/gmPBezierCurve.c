@@ -315,7 +315,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierCurve<T>::showSelectors( bool grid, const GLColor& _selector_color, const GLColor& grid_color ) {
+  void PBezierCurve<T>::showSelectors( bool grid, const Color& _selector_color, const Color& grid_color ) {
 
     if( _selectors )
       return;

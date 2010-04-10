@@ -72,8 +72,8 @@ namespace GMlib {
         glDisable( GL_LIGHTING );
 
         // Get Color Data
-        const GLColor &c = this->_ref->getColor();
-        c.glSet();
+        const Color &c = this->_ref->getColor();
+        glColor(c);
       }
 
 

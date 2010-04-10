@@ -160,7 +160,7 @@ namespace GMlib {
 		Array<Camera*>			_cameras;
 		Array<ViewBorder*>	_borders;
 		View								_root;
-		GLColor							_border_color;
+    Color							_border_color;
 
 		Array<ViewBorder*>	_selected_borders;
 
@@ -172,7 +172,7 @@ namespace GMlib {
 		void 								_moveBorder(int x, int y);
 		void 								_removeCamera(int i);
 		void 								_reset();
-		void 								_setBorderColor(const GLColor& bc);
+    void 								_setBorderColor(const Color& bc);
 
 		Camera* 						operator[](int i);
 

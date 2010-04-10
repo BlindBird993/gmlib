@@ -1,15 +1,9 @@
-
-HEADERS +=
-
-SOURCES +=
-
-OTHER_FILES +=
-
-
+HEADERS += 
+SOURCES += 
+OTHER_FILES += 
 
 # Module Headers
-HEADERS_MODULES += \
-    gmContainer \
+HEADERS_MODULES += gmContainer \
     gmCore \
     gmDisplay \
     gmDisplayUtils \
@@ -17,12 +11,10 @@ HEADERS_MODULES += \
     gmOpenGL \
     gmParametrics \
     gmUtils \
-    gmVisualizers \
-
+    gmVisualizers
 
 # C++ Headers
-HEADERS_CPP += \
-    gmAngle \
+HEADERS_CPP += gmAngle \
     gmArray \
     gmArrayLX \
     gmArrayT \
@@ -37,7 +29,6 @@ HEADERS_CPP += \
     gmDVector \
     gmEvaluatorERBS \
     gmEvaluatorStatic \
-    gmGLColor \
     gmGlobal \
     gmGLPhongShader \
     gmGLSL \
@@ -104,14 +95,9 @@ HEADERS_CPP += \
     gmVPoints \
     gmWindow
 
-
-
-
-#########
+# ########
 # Headers
-
-HEADERS += \
-    gmAngle.h \
+HEADERS += gmAngle.h \
     gmArray.h \
     gmArrayLX.h \
     gmArrayT.h \
@@ -126,7 +112,6 @@ HEADERS += \
     gmDVector.h \
     gmEvaluatorERBS.h \
     gmEvaluatorStatic.h \
-    gmGLColor.h \
     gmGlobal.h \
     gmGLPhongShader.h \
     gmGLSL.h \
@@ -197,12 +182,9 @@ HEADERS += \
     gmWindow.h \
     gmUtils.h
 
-
-#########
+# ########
 # Sources
-
-SOURCES += \
-    gmCamera.cpp \
+SOURCES += gmCamera.cpp \
     gmCameraIso.cpp \
     gmCodeExample.cpp \
     gmColor.cpp \
@@ -233,11 +215,9 @@ SOURCES += \
     gmWindow_View.cpp \
     gmWindow_ViewSet.cpp
 
-##################
+# #################
 # Template sources
-
-SOURCES_TEMPLATES += \
-    gmPBSplineSurf.c \
+SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmCameraIso.c \
     gmCamera.c \
     gmArrow3D.c \
@@ -321,7 +301,6 @@ SOURCES_TEMPLATES += \
     gmLight_SpotLight.c \
     gmLight_PointLight.c \
     gmLight_Light.c \
-    gmGLColor.c \
     gmEvaluatorStatic.c \
     gmEvaluatorERBS.c \
     gmDVector.c \
@@ -355,19 +334,14 @@ SOURCES_TEMPLATES += \
     gmSortObject.c \
     gmPCircularSurface.c \
     gmUtils.c
-
-SOURCES_LUA += \
-    lua/pcircle_eval.lua \
-    lua/psphere_eval.lua \
-
-SOURCES_GLSL +=
-
-
-
-OTHER_FILES += \ $$HEADERS_MODULES $$HEADERS_CPP $$SOURCES_TEMPLATES $$SOURCES_LUA
-
+SOURCES_LUA += lua/pcircle_eval.lua \
+    lua/psphere_eval.lua
+SOURCES_GLSL += 
+OTHER_FILES += \ \
+    $$HEADERS_MODULES \
+    $$HEADERS_CPP \
+    $$SOURCES_TEMPLATES \
+    $$SOURCES_LUA
 include( ../gmlib.pri )
-
 TARGET = gmlib
-
 include( ../gmlib_cpp.pri )

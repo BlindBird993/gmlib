@@ -74,13 +74,13 @@ namespace GMlib{
     void                          setIntensity(double d,int i=0);
 
 
-    const GLColor&                getAmbient();
-    const GLColor&                getDiffuse();
+    const Color&                  getAmbient();
+    const Color&                  getDiffuse();
     unsigned int                  getLightName();
-    const GLColor&                getSpecular();
+    const Color&                  getSpecular();
 
   protected:
-    void                          glLight( GLenum pn, const GLColor& co);
+    void                          glLight( GLenum pn, const Color& co);
     void                          glLight( GLenum pn, float f );
     void                          glLight( GLenum pn, int f );
     void                          glLightDir( const Vector<float,3>& dir );
@@ -91,14 +91,14 @@ namespace GMlib{
 
 
   private:
-    static unsigned int		        _next_light;
+    static unsigned int           _next_light;
     static Array<unsigned int>    _free_light;
-    GLenum				                _light_name;
+    GLenum                        _light_name;
 
-    GLColor			                  _ambient;
-    GLColor			                  _diffuse;
-    GLColor			                  _specular;
-    bool				                  _cullable;
+    Color                         _ambient;
+    Color                         _diffuse;
+    Color                         _specular;
+    bool                          _cullable;
 
 
   };	// END class Light
@@ -219,7 +219,7 @@ namespace GMlib{
 
 	private:
 		Vector<float,3>         _dir;
-		GLColor						      _global_ambient;
+                Color                   _global_ambient;
 
 		void                    _setDayLight(double d);
 

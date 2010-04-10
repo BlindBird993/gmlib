@@ -65,7 +65,7 @@ namespace GMlib {
     void                        setControlPoints( const DMatrix< Vector<T,3> >& cp );
     void                        setResampleMode( GM_RESAMPLE_MODE mode );
     void                        setScale( T du, T dv );
-    virtual void                showSelectors( bool grid = false, const GLColor& _selector_color = GMcolor::DarkBlue, const GLColor& grid_color = GMcolor::LightGreen );
+    virtual void                showSelectors( bool grid = false, const Color& _selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
     void                        updateCoeffs( const Vector<T,3>& d );
 
 

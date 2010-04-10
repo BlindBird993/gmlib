@@ -74,7 +74,7 @@ namespace GMlib {
     void                            setGenMode( unsigned int texture_gen_mode );
 
     Texture&                        operator = ( const Texture& texture );
-    const GLColor&                  operator()(int i, int j) const;
+    const Color&                  operator()(int i, int j) const;
     bool                            operator == ( const Texture& texture ) const;
 
 

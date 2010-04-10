@@ -49,8 +49,8 @@ namespace GMlib {
     GLboolean lg;
     glGetBooleanv(GL_LIGHTING,&lg);
     if(lg) glDisable(GL_LIGHTING);
-    GLColor gr(120,120,120);
-    gr.glSet();
+    Color gr(120,120,120);
+    glColor(gr);
     glBegin(GL_LINES);
       Vector<float,3> dside = _gw*_side;
       Vector<float,3> dup   = _gh*_up;

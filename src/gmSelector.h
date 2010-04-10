@@ -50,7 +50,7 @@ namespace GMlib{
   class Selector: public DisplayObject {
   public:
     Selector(const Selector<T,n>& s);
-    Selector(Point<T,n>& mp, int id, SceneObject* parent, T r=1, const GLColor& c = GLColor(0.0,0.0,0.7), Selector<T,n>* root=NULL );
+    Selector(Point<T,n>& mp, int id, SceneObject* parent, T r=1, const Color& c = Color(0.0,0.0,0.7), Selector<T,n>* root=NULL );
     virtual ~Selector();
 
     void	                editPos(Vector<float,3> dp);
@@ -73,8 +73,8 @@ namespace GMlib{
   protected:
     bool			            _enabled;
     Selector<T,n>*        _root;
-    GLColor		            _default;
-    GLColor		            _marked;
+    Color		            _default;
+    Color		            _marked;
 
     void                  allDisable();
     void                  allEnable();

@@ -174,9 +174,9 @@ namespace GMlib {
     glPushAttrib( GL_LIGHTING );
     glDisable( GL_LIGHTING );
     glBegin(GL_LINES); // draw Coordsys
-      GLColor( GMcolor::Red ).glSet();	glPoint(cp); glPoint(cp+Vector3D<float>(0.1,0,0));
-      GLColor( GMcolor::Green ).glSet();	glPoint(cp); glPoint(cp+Vector3D<float>(0,0.1,0));
-      GLColor( GMcolor::Blue ).glSet();	glPoint(cp); glPoint(cp+Vector3D<float>(0,0,0.1));
+      glColor( GMcolor::Red );	glPoint(cp); glPoint(cp+Vector3D<float>(0.1,0,0));
+      glColor( GMcolor::Green );	glPoint(cp); glPoint(cp+Vector3D<float>(0,0.1,0));
+      glColor( GMcolor::Blue );	glPoint(cp); glPoint(cp+Vector3D<float>(0,0,0.1));
     glEnd();
     if(_locked && ! _lock_object)
     {

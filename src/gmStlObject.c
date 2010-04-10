@@ -115,7 +115,7 @@ namespace GMlib {
     else
     {
       glDisable( GL_LIGHTING );
-      this->_color.glSet();
+      glColor(this->_color);
     }
 
     if( _dlist )

@@ -31,7 +31,7 @@
  */
 
 
-#include "gmGLColor.h"
+#include "gmColor.h"
 #include "gmMatrix.h"
 
 
@@ -39,9 +39,9 @@ namespace GMlib {
 
 
   inline
-  void glColor(const GLColor& c) {
+  void glColor(const Color& c) {
 
-    c.glSet();
+    glColor4ubv( c.getRgba() );
   }
 
   //*************************************************
@@ -49,7 +49,7 @@ namespace GMlib {
   //*************************************************
 
   inline
-  void glLight(GLenum li, GLenum pn, const GLColor& co) {
+  void glLight(GLenum li, GLenum pn, const Color& co) {
 
     float f[4];
     f[0] = float(co.getRedC());
@@ -111,7 +111,7 @@ namespace GMlib {
   //***************************************************
 
   inline
-  void glMaterial(GLenum li,GLenum pn, const GLColor& co) {
+  void glMaterial(GLenum li,GLenum pn, const Color& co) {
 
     float f[4];
     f[0] = float(co.getRedC());

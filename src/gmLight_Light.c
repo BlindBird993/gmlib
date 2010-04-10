@@ -101,7 +101,7 @@ namespace GMlib {
 
 
 
-  /*! void Light::setColor( const GLColor& ambient, const GLColor& diffuse, const GLColor& specular )
+  /*! void Light::setColor( const Color& ambient, const Color& diffuse, const Color& specular )
    * \brief Pending Documentation
    *
    *  Pending Documentation
@@ -113,9 +113,9 @@ namespace GMlib {
     const Color& specular
   ) {
 
-    _ambient		= GLColor( ambient );
-    _diffuse		= GLColor( diffuse );
-    _specular		= GLColor( specular );
+    _ambient		= Color( ambient );
+    _diffuse		= Color( diffuse );
+    _specular		= Color( specular );
 
     setIntensity(1.0);
   }
@@ -150,25 +150,25 @@ namespace GMlib {
   }
 
 
-  /*! const GLColor& Light::getAmbient()
+  /*! const Color& Light::getAmbient()
    * \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  const GLColor& Light::getAmbient() {
+  const Color& Light::getAmbient() {
 
     return _ambient;
   }
 
 
-  /*! const GLColor& Light::getDiffuse()
+  /*! const Color& Light::getDiffuse()
    * \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  const GLColor& Light::getDiffuse() {
+  const Color& Light::getDiffuse() {
 
     return _diffuse;
   }
@@ -186,25 +186,25 @@ namespace GMlib {
   }
 
 
-  /*! const GLColor& Light::getSpecular()
+  /*! const Color& Light::getSpecular()
    * \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  const GLColor& Light::getSpecular()	{
+  const Color& Light::getSpecular()	{
 
     return _specular;
   }
 
 
-  /*! void Light::glLight( GLenum pn, const GLColor& co)
+  /*! void Light::glLight( GLenum pn, const Color& co)
    * \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Light::glLight( GLenum pn, const GLColor& co) {
+  void Light::glLight( GLenum pn, const Color& co) {
 
     GMlib::glLight(_light_name, pn, co);
   }

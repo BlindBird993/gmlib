@@ -388,7 +388,7 @@ namespace GMlib {
 
 
   template <typename T>
-  void PBezierSurf<T>::showSelectors( bool grid, const GLColor& _selector_color, const GLColor& grid_color ) {
+  void PBezierSurf<T>::showSelectors( bool grid, const Color& _selector_color, const Color& grid_color ) {
 
     if( _selectors )
       return;
