@@ -5,7 +5,6 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
-
 2010-04-22 Jostein Bratlie
         * Visualizer system re-write
           - Base moved down to SceneObject
@@ -27,6 +26,18 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
         * OpenGL cleanup
           - Splitted all non-OGL spesific code from gmOpenGL
         * OpenGL Shader remake
+
+
+2010-04-16 Arnt Roald Kristoffersen
+        * gmEvalatorERBS
+          - changed <> to "" when including header files
+        * gmTriangleSystem
+          - added class TSVEdge
+          - decleared Array<TSVEdge> in main class
+        * gmTriangleSystem_TSVEdge.c
+          - implementet the new functions for class TSVEdge
+        * gmTriangleSystem_TriangleFacets.c
+          - added voronoi points to an array
 
 
 2010-04-10 Jostein Bratlie

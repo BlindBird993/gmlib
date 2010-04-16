@@ -403,6 +403,9 @@ namespace GMlib {
     _triangles.clear();
     _edges.clear();
 
+	_vorpnts.clear();
+	_voredges.clear();
+
     ((ArrayLX< TSVertex<T> >*)this)->clear();
 
     if (d >= 0)
@@ -845,18 +848,130 @@ namespace GMlib {
   template <typename T>
   inline
   void TriangleFacets<T>::createVoronoi() {
-    _tmptiles.setSize(this->getSize());
-	  Box<T,3> domain=getBoundBox();
-    for (int i=0; i<this->getSize(); i++)
-		  //_triangles[i]->getCenterPos();
-		  _tmptiles[i] = new TSTile<float> (&(*this)[i],domain);
+
+    for (int i=0; i<_triangles.size(); i++) {
+      Point2D<T> c;
+
+      Array<TSVertex<T> *> v = _triangles(i)->getVertices();
+
+      Point<T,2> p1 = (Point2D<T>)v(0)->getPosition();
+      Point<T,2> p2 = (Point2D<T>)v(1)->getPosition();
+      Point<T,2> p3 = (Point2D<T>)v(2)->getPosition();
+
+      T b1 = p1*p1;
+      T b2 = p2*p2;
+      T b3 = p3*p3;
+
+      Point2D<T> b(b2-b1,b3-b2);
+      Point2D<T> a1 = p2 - p1;
+      Point2D<T> a2 = p3 - p2;
+
+          c = (0.5/(a1^a2))*
+            Point2D<T>(Point2D<T>(a2[1],-a1[1])*b,Point2D<T>(-a2[0],a1[0])*b);
+      _triangles(i)->_vorpnt = c;
+    }
+
+    int k = 0;
+    for (int i=0; i<_triangles.size(); i++) {
+      for (int j=0; j<_triangles(i)->getEdges().size(); j++) {
+        Array<TSTriangle<T> *> tt = _triangles(i)->getEdges()(j)->getTriangle();
+
+        if (tt.size() > 1) {
+          if (tt[0] == _triangles[i]) k=1; else k=0;
+          //int m = _triangles.getIndex(tt[k]);
+         // std::cout << "triangle found: " << m << "--" << i << std::endl;
+          //if (m!=-1)
+
+          //_voredges.insert(TSVEdge<T>(_vorpnts(i),_vorpnts(m)));
+          _voredges.insert(TSVEdge<T>(_triangles(i)->_vorpnt,tt[k]->_vorpnt));
+        } else {
+          // insert a voronoi edge splitting boundary edge
+          /*
+          Point<T,2> p = _triangles(i)->getEdges()(j)->getCenterPos2D();
+          T length = max(T(1),T(2)*(p-_vorpnts(i)).getLength());
+        //  int res = _triangles(i)->isAround(new TSVertex<T>(_vorpnts(i)));
+          if ((_vorpnts(i)-p).getLength() > T(0)) {
+            p = (p-_vorpnts(i))*length+_vorpnts(i);
+         // else p = length*(_vorpnts(i)-_triangles(i)->getCenterPos2D())+_vorpnts(i);
+            _voredges.insert(TSVEdge<T>(_vorpnts(i),p));
+          }
+          */
+        }
+      }
+    }
+
+    // Ikke fungerende versjon
+    //std::cout << "tiles: " << _tmptiles.size() << std::endl;
+    //_tmptiles.setSize(this->size());
+    //Box<T,3> domain=getBoundBox();
+    //for (int i=0; i<size(); i++)
+     // //_triangles[i]->getCenterPos();
+     // _tmptiles[i] = new TSTile<float> (&(*this)[i],domain);
   }
 
   template <typename T>
   inline	
   void TriangleFacets<T>::renderVoronoi() {
-		for (int i=0;i<_tmptiles.size();i++)
-			_tmptiles[i]->render();
+
+	// /* 
+	  glDisable(GL_LIGHTING);
+	  glPointSize(2.0f);
+	  glEnable(GL_POINT_SMOOTH);
+	  glBegin(GL_POINTS);
+	  glColor3f(1.0f,0.0f,0.0f);
+	  for (int j=0; j<_vorpnts.size(); j++) {
+		  Point<T,2> c = _vorpnts(j);
+		  glVertex2f(c[0],c[1]);
+	  }
+	  glEnd();
+	  //glDisable(GL_POINT_SMOOTH);
+	  //*/
+
+	  glBegin(GL_LINES);
+	  glColor3f(1.0f, 0.0f, 0.0f);
+	  for (int i=0; i<_voredges.size(); i++) { // i+=2) {
+		  glColor3f(1.0f,0.0f,0.0f);
+		  glVertex2f(_voredges(i)(0)(0), _voredges(i)(0)(1));
+		  glVertex2f(_voredges(i)(1)(0), _voredges(i)(1)(1));
+	  }
+	  glEnd();
+	  glDisable(GL_POINT_SMOOTH);
+	  
+	  glBegin(GL_LINES);
+	  glColor3f(0.0f, 0.0f, 1.0f);
+	/*  for (int k=0; k<_vec.size(); k++) {
+		  glVertex3f(0.0f,0.0f,0.0f);
+		  glVertex3f(_vec(k)(0),_vec(k)(1),0.0f);
+		 
+	  }*/
+	  glEnd();
+	  
+	  /*
+	  for (int h=0; h<_triangles.size(); h++) {
+	 	  Point<float,2> p;
+		  p[0] = _triangles(h)->getVertices()(0)->getPosition()(0);
+		  p[1] = _triangles(h)->getVertices()(0)->getPosition()(1);
+		  float r = (_vorpnts(h) - p).getLength();
+		  double a; int n = 36;
+		  glBegin(GL_LINE_LOOP);		
+			  glColor3f(0.0f,0.0f,1.0f);
+			  for (int s=0;s<n;s++) {
+				  a = ((double)s*2.0*3.14)/((double)n);
+				  float x = r * cos(a) + _vorpnts(h)(0);
+				  float y = r * sin(a) + _vorpnts(h)(1);
+				  glVertex2f(x,y);
+			  }
+		  glEnd();
+	  }
+	  */
+
+
+
+
+	//  glEnable(GL_LIGHTING);
+	  // rendring av ikke fungerende versjon
+	/*	for (int i=0;i<_tmptiles.size();i++)
+			_tmptiles[i]->render();*/
   }
 
 

@@ -72,6 +72,9 @@ namespace GMlib {
   template <typename T>
   class TSLine;
 
+  template <typename T>
+  class TSVEdge;
+
 
   /** \class  TriangleFacets gmTriangleSystem.h <gmTriangleSystem>
    *  \brief  The storage class of the Triangle system
@@ -136,6 +139,8 @@ namespace GMlib {
     ArrayLX< TSEdge<T>* >		            _edges;
     ArrayLX< TSTriangle<T>* >         _triangles;
     Array< TSTile<T> *>                 _tmptiles;
+	Array<TSVEdge<T> >			  _voredges;
+	Array<Point<T,2> >			  _vorpnts;
 
     int                               _d;
 
@@ -226,6 +231,24 @@ namespace GMlib {
     static TriangleFacets<T>    *_tv;
   };
 
+  /** \class VEdge
+   *  \brief The Voronoi Edge class
+   *
+   *  Simple class containing the two voronoi points
+  */
+  template <typename T>
+  class TSVEdge {
+  public:
+	  TSVEdge();
+	  TSVEdge(const Point<T,2> &p, const Point<T,2> &q);
+	  
+
+	  bool operator==(const TSVEdge<T> &e) const;
+	  bool operator<(const TSVEdge<T> &e) const;
+	  Point<T,2> const &operator() (int i) const;
+  private:
+	  Point<T,2> _pnts[2];
+  };
 
 
   /** \class  TSVertex
@@ -444,6 +467,7 @@ namespace GMlib {
 
   friend class TSEdge<T>;
   friend class TriangleFacets<T>;
+	Point<T,2>				  _vorpnt;
   private:
 
     T                       _evalZ( const Point2D<T>& p, int deg = 1 ) const;
@@ -545,7 +569,8 @@ namespace GMlib {
 // Include TriangleSystem Line class function implementations
 #include "gmTriangleSystem_TSLine.c"
 
-
+// Include Voronoi Edge class function implementations
+#include "gmTriangleSystem_TSVEdge.c"
 
 
 
