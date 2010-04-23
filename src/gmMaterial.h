@@ -225,7 +225,7 @@ namespace GMlib {
 
     MaterialObject(
 			const Material& mat,
-      string name
+      std::string name
 		);
 
     MaterialObject(	const MaterialObject& m);
@@ -235,10 +235,10 @@ namespace GMlib {
     const String&			getName() const;
     const char*				getNameC() const;
     bool 							is(const char* name) const;
-    bool 							is(const string& name) const;
+    bool 							is(const std::string& name) const;
     bool 							is(const Material& m) const;
     void 							setMaterial(const Material& m);
-    void 							setName(const string& name);
+    void 							setName(const std::string& name);
     void 							setName(const char* name);
 
     MaterialObject&		operator=(const MaterialObject& m);

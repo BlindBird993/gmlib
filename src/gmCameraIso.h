@@ -34,11 +34,6 @@
 #define __gmCAMERAISO_H__
 
 
-// STL Includes
-#include <iostream>
-using namespace std;
-
-
 // GMlib Includes
 #include "gmStream.h"
 #include "gmCamera.h"

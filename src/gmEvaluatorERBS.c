@@ -30,6 +30,9 @@
  */
 
 
+// stl
+#include <cmath>
+
 namespace GMlib {
 
   template <typename T>
@@ -56,7 +59,7 @@ namespace GMlib {
       return T(0);
 
 
-		T h = ( t-1 / (1+_gamma) ) * abs(t-_lambda) / ( t * (1-t) );
+    T h = ( t-1 / (1+_gamma) ) * std::fabs(t-_lambda) / ( t * (1-t) );
 		if( t < _lambda )
       h -= T(1);
 		else
@@ -67,14 +70,14 @@ namespace GMlib {
 
 		if( (1+_gamma)*_alpha < 1 ) {
 
-			const T g = pow( abs(t-_lambda), 1-(1+_gamma)*_alpha ) / h;
+      const T g = pow( std::fabs(t-_lambda), 1-(1+_gamma)*_alpha ) / h;
 			if( g < 2.3e-308 )
         return 0.0;
 			else
         return 1 / g;
 		}
 		else if( (1+_gamma)*_alpha > 1 )
-			return	h * pow( abs(t-_lambda), (1+_gamma)*_alpha-1 );
+      return	h * pow( std::fabs(t-_lambda), (1+_gamma)*_alpha-1 );
 		else
 			return	h;
 	}
@@ -84,14 +87,14 @@ namespace GMlib {
   inline
   T EvaluatorERBS<T>::_getIntegral( T a, T b, T sum, T eps ) {
 
-		T t = b - a;
+     T t = b - a;
 
-		T mat[16][16];
-		mat[0][0] = sum * t;
+     T mat[16][16];
+     mat[0][0] = sum * t;
 
     T s;
-		int i,j, k;
-		for( i = 1; i < 16; i++ ) {
+     int i,j, k;
+     for( i = 1; i < 16; i++ ) {
 
 			s = T(0);
 			k = 1 << i;
@@ -108,7 +111,7 @@ namespace GMlib {
 				mat[j][i-j] = ( b*mat[j-1][i-j+1] - mat[j-1][i-j] ) / (b-1.0);
 			}
 
-			if( abs( mat[i][0] - mat[i-1][0] ) < eps )
+      if( std::fabs( mat[i][0] - mat[i-1][0] ) < eps )
         return mat[i][0];
 		}
 
@@ -125,7 +128,7 @@ namespace GMlib {
 			return T(0);
 		else
 			return exp(
-        -_beta * pow( abs(t-_lambda),
+        -_beta * pow( std::fabs(t-_lambda),
         _alpha * (1+_gamma) ) / d
       );
   }
@@ -188,13 +191,13 @@ namespace GMlib {
   void EvaluatorERBS<T>::_prepare( T t ) {
 
     // Translate/Scale the input paramter
-		t  = ( t - _tk ) / _dtk;
+    t  = ( t - _tk ) / _dtk;
 
-		// Find the local interval
-		_local   = min( int(t*_m), _m-1 );
+    // Find the local interval
+    _local   = std::min( int(t*_m), _m-1 );
 
-		// Translate/Scale the local dt parameter
-		_local_dt  = ( t - _local*_dt ) / _dt;
+    // Translate/Scale the local dt parameter
+    _local_dt  = ( t - _local*_dt ) / _dt;
   }
 
 
@@ -218,13 +221,15 @@ namespace GMlib {
   inline
   T EvaluatorERBS<T>::getDer( int i ) const {
 
-		switch(i) {
-		  case 1:
-        return getDer1();
+    switch(i) {
+    case 1:
+      return getDer1();
 
-      case 2:
-        return getDer2();
-		}
+    case 2:
+      return getDer2();
+    }
+
+    return T(0);
   }
 
 

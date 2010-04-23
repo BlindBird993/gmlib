@@ -171,7 +171,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PApple<T>::getIdentity() const {
+  std::string PApple<T>::getIdentity() const {
 
     return "PApple";
   }

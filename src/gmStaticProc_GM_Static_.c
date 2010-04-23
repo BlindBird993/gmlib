@@ -28,10 +28,8 @@
  *  \date   2008-07-03
  */
 
-
-#include <iostream>
-using std::cout;
-using std::endl;
+// stl
+#include <cmath>
 
 
 namespace GMlib {
@@ -246,7 +244,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void GM_Static_<T, n>::maxIdx(T *a, int& i) {
-    if(abs(*a) > abs(*(a+n-i))) i = n;
+    if( std::fabs(*a) > std::fabs(*(a+n-i))) i = n;
     GM_Static_<T,n-1>::maxIdx(a+1,i);
   }
 
@@ -444,7 +442,7 @@ namespace GMlib {
   template <typename T>
   inline
   void GM_Static_<T, 1>::maxIdx(T *a, int& i) {
-    if(abs(*a) > abs(*(a+1-i))) i = 1;
+    if(std::fabs(*a) > std::fabs(*(a+1-i))) i = 1;
   }
 
 }

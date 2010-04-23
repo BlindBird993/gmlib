@@ -55,7 +55,7 @@ namespace GMlib {
     void                                edit( SceneObject *obj );
     void                                generateKnotVector( PSurf<T>* g );
     void                                generateKnotVector( PSurf<T>* g, T u_s, T u_e, T v_s, T v_e );
-    string                              getIdentity() const;
+    std::string                         getIdentity() const;
     DVector<T>&                         getKnotsU();
     DVector<T>&                         getKnotsV();
     DMatrix<PSurf<T>* >&                getLocalPatches();

@@ -277,7 +277,7 @@ namespace GMlib {
     DMatrix< Vector<T,3> > s0 = getC( u, v, uk, vk, d1, d2 );
 
     // If placed on a knot, return only first patch result
-    if( abs(v - _v[vk]) < 1e-5 ) {
+    if( std::fabs(v - _v[vk]) < 1e-5 ) {
       this->_p = s0;
       return;
     }
@@ -331,7 +331,7 @@ namespace GMlib {
     DMatrix< Vector<T,3> > s0 = getCPre( u, v, uk, vk, 2, 2, iu, iv );
 
     // If placed on a knot return only first patch result
-    if( abs(v - _v[vk]) < 1e-5 ) {
+    if( std::fabs(v - _v[vk]) < 1e-5 ) {
       this->_p = s0;
       return;
     }
@@ -478,7 +478,7 @@ namespace GMlib {
     DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lu, lv, du, dv );
 
     // If on a interpolation point return only first patch evaluation
-    if( abs(u - _u[uk]) < 1e-5 )
+    if( std::fabs(u - _u[uk]) < 1e-5 )
       return c0;
 
 
@@ -531,7 +531,7 @@ namespace GMlib {
     DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lu, lv, du, dv );
 
     // If on a interpolation point return only first patch evaluation
-    if( abs(u - _u[uk]) < 1e-5 )
+    if( std::fabs(u - _u[uk]) < 1e-5 )
       return c0;
 
     // Select next local patch in u direction
@@ -585,7 +585,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PERBSSurf<T>::getIdentity() const {
+  std::string PERBSSurf<T>::getIdentity() const {
 
     return "PERBSSurf";
   }
@@ -757,11 +757,11 @@ namespace GMlib {
         _vk[i][j] = vk;
 
         // Evaluate ERBS basis in u direction
-        if( !(abs(u - _u[uk]) < 1e-5) )
+        if( !(std::fabs(u - _u[uk]) < 1e-5) )
           getB( _Bu[i][j], _u, uk, u, d1 );
 
         // Evaluate ERBS basis in v direction
-        if( !(abs(v - _v[vk]) < 1e-5) )
+        if( !(std::fabs(v - _v[vk]) < 1e-5) )
           getB( _Bv[i][j], _v, vk, v, d2 );
       }
     }

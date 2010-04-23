@@ -45,65 +45,57 @@
 
 namespace GMlib {
 
-  namespace GPU {
+  namespace GLSL {
 
-    namespace GLSL {
+    class GLShader {
+    public:
+      GLShader( GLenum type );
+      ~GLShader();
 
+      bool          compile();
+      std::string   getInfoLog() const;
+      GLuint        getId() const;
+      GLenum        getType() const;
+      bool          isCompiled() const;
+      void          set( const char* source );
 
-      class GLShader {
-      public:
-        GLShader();
-        GLShader( const char* vs, const char* fs, bool compile = false );
-        GLShader( const GLShader& cpy );
-        GLShader( GLShader* cpy );
-        ~GLShader();
+    protected:
+      GLenum        _type;
+      GLuint        _id;
+      const char    *_source;
+      bool          _compiled;
+      std::string   _info_log;
 
-        char*         getFragmentError();
-        const char*   getFragmentSource();
-        unsigned int  getProgramData() const;
-        char*         getProgramError();
-        char*         getVertexError();
-        const char*   getVertexSource();
-        void          glSet();
-        void          glUnSet();
-        bool          isActive() const;
-        bool          isChanged() const;
-        bool          isValid() const;
-        bool          initShader( bool clean_first = false );
-        void          resetShader();
-        void          set( const char* vs, const char* fs );
-        void          setFragmentShader( const char* fs );
-        void          setVertexShader( const char* vs );
-        void          toggleShader( bool force = false );
+      void          updateInfoLog();
 
 
-      protected:
-        bool          _active;
-        bool          _changed;
-        bool          _valid;
+
+    }; // END class Shader 2
 
 
-        unsigned int  _prog;
-        unsigned int  _prog_backup;
-        unsigned int  _vs;
-        unsigned int  _fs;
+    class GLProgram {
+    public:
+      GLProgram();
+      ~GLProgram();
+
+      void          attachShader( GLShader* shader );
+      void          begin();
+      void          detachShader( GLShader* shader );
+      void          end();
+      GLuint        getId();
+      std::string   getInfoLog();
+      bool          link();
+
+    protected:
+      GLuint        _id;
+      std::string   _info_log;
+
+      void          updateInfoLog();
 
 
-        const char    *_vs_src;
-        const char    *_fs_src;
+    }; // END class GLProgram
 
-
-      private:
-        char*         _get_error_info( bool shader, unsigned int v );
-        void          _init();
-
-
-      }; // End class Shader
-
-
-    } // End namespace GLSL
-
-  } // End namespace GPU
+  } // End namespace GLSL
 
 } // End namespace GMlib
 

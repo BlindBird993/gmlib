@@ -33,29 +33,14 @@
 #define __gmVISUALIZER_H__
 
 
-// STL includes
+// stl
 #include <string>
-
-// GMlib includes
-#include "gmDMatrix.h"
-#include "gmOpenGL.h"
-
 
 namespace GMlib {
 
 
-  class DisplayObject;
+  class SceneObject;
 
-  template <typename T, int n>
-  class Parametrics;
-
-  template <typename T>
-  class PCurve;
-
-  template <typename T>
-  class PSurf;
-
-  template <typename T, int n>
   class Visualizer {
   public:
     Visualizer();
@@ -65,21 +50,8 @@ namespace GMlib {
     virtual void          display() = 0;
     virtual std::string   getIdentity() const;
 
-    // Curve
-    virtual void          replot(
-      DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d
-    );
-
-    // Surface
-    virtual void          replot(
-      DMatrix< DMatrix< Vector<T, 3> > >& p,
-      DMatrix< Vector<T, 3> >& normals,
-      int m1, int m2, int d1, int d2
-    );
-
-    virtual void          select();
-    void                  set( Parametrics<T,n>* obj );
+    virtual void          select() = 0;
+    virtual void          set( SceneObject* obj );
 
     virtual void          simulate( double dt );
 
@@ -87,9 +59,7 @@ namespace GMlib {
 
 
   protected:
-    Parametrics<T,n>      *_ref;
-    PCurve<T>             *_ref_n1;
-    PSurf<T>              *_ref_n2;
+    SceneObject           *_obj;
 
 
   private:
@@ -99,9 +69,6 @@ namespace GMlib {
 
 
 } // END namespace GMlib
-
-// Include Visualizer class function implementations
-#include "gmVisualizer.c"
 
 
 #endif // __gmVISUALIZER_H__

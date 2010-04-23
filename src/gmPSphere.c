@@ -198,7 +198,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PSphere<T>::getIdentity() const {
+  std::string PSphere<T>::getIdentity() const {
 
     return "PSphere";
   }

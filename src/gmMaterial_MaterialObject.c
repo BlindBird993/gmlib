@@ -53,7 +53,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  MaterialObject::MaterialObject(	const Material& mat, string name ) : Material(mat)	{
+  MaterialObject::MaterialObject(	const Material& mat, std::string name ) : Material(mat)	{
 
     _name = name;
   }
@@ -137,7 +137,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  bool MaterialObject::is(const string& name) const {
+  bool MaterialObject::is(const std::string& name) const {
 
     return _name == name;
   }
@@ -172,7 +172,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void MaterialObject::setName(const string& name) {
+  void MaterialObject::setName(const std::string& name) {
 
     _name = name;
   }

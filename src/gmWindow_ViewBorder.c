@@ -109,7 +109,7 @@ namespace GMlib {
     if(vertical == _vertical)
       return _child_lt._getSize(vertical) + _child_rb._getSize(vertical);
     else
-      return min( _child_lt._getSize(vertical), _child_rb._getSize(vertical) );
+      return std::min( _child_lt._getSize(vertical), _child_rb._getSize(vertical) );
   }
 
 

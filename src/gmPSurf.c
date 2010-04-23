@@ -34,6 +34,8 @@
 #include <sstream>
 #include <iomanip>
 
+// local
+#include "gmPSurfVisualizer.h"
 
 namespace GMlib {
 
@@ -44,6 +46,8 @@ namespace GMlib {
 
     _no_sam_u                       = s1;
     _no_sam_v                       = s2;
+    _no_der_u                       = 1;
+    _no_der_v                       = 1;
     _d1                             = -1;
     _d2                             = -1;
     _tr_u                           = T(0);
@@ -54,7 +58,8 @@ namespace GMlib {
     setNoDer( 2 );
     //_setSam( s1, s2 );
 
-    this->_default_visualizer.set( this );
+    _default_visualizer = new PSurfVisualizer<T>();
+    enableDefaultVisualizer( true );
   }
 
 
@@ -80,7 +85,18 @@ namespace GMlib {
 
     _no_sam_u     = copy._no_sam_u;
     _no_sam_v     = copy._no_sam_v;
+    _no_der_u     = copy._no_sam_u;
+    _no_der_v     = copy._no_sam_v;
 
+    _default_visualizer = new PSurfVisualizer<T>();
+    enableDefaultVisualizer( true );
+  }
+
+  template <typename T>
+  PSurf<T>::~PSurf() {
+
+    enableDefaultVisualizer( false );
+    delete _default_visualizer;
   }
 
 
@@ -227,6 +243,15 @@ namespace GMlib {
 //  void PSurf<T>::estimateClpPar( const Point<T,3>& p, T& u, T& v ) {
 //  }
 
+  template <typename T>
+  void PSurf<T>::enableDefaultVisualizer( bool enable ) {
+
+    if( !enable )
+      removeVisualizer( _default_visualizer );
+    else
+      insertVisualizer( _default_visualizer );
+  }
+
 
   template <typename T>
   inline
@@ -265,14 +290,14 @@ namespace GMlib {
     int i,j;
 
     for(i = 0; i <= d1; i++) {
-      for(j = 0; j<= min(i, d2); j++)	{
+      for(j = 0; j<= std::min(i, d2); j++)	{
         p += _p[i-j][j];
       }
     }
 
     // Origin --> for(;i <= max(d1, d2); i++)
-    for(i = 0; i <= max(d1, d2); i++) {
-      for(j = i-d1; j <= min(i, d2); j++) {
+    for(i = 0; i <= std::max(d1, d2); i++) {
+      for(j = i-d1; j <= std::min(i, d2); j++) {
         p += _p[i-j][j];
       }
     }
@@ -420,7 +445,7 @@ namespace GMlib {
   inline
   int PSurf<T>::getDerivativesU() const {
 
-    return _d1;
+    return _no_der_u;
   }
 
 
@@ -428,7 +453,7 @@ namespace GMlib {
   inline
   int PSurf<T>::getDerivativesV() const {
 
-    return _d2;
+    return _no_der_v;
   }
 
 
@@ -580,6 +605,22 @@ namespace GMlib {
     return _no_sam_v;
   }
 
+  template <typename T>
+  inline
+  void PSurf<T>::insertVisualizer( Visualizer *visualizer ) {
+
+    PSurfVisualizer<T> *visu = dynamic_cast<PSurfVisualizer<T>*>( visualizer );
+    if( !visu )
+      return;
+
+    if( _psurf_visualizers.exist( visu ) )
+      return;
+
+    _psurf_visualizers += visu;
+
+    SceneObject::insertVisualizer( visualizer );
+  }
+
 
   template <typename T>
   inline
@@ -629,7 +670,7 @@ namespace GMlib {
       u   += du;
       v   += dv;
 
-      if(fabs(du) < 1e-6 && fabs(dv) < 1e-6)
+      if(std::fabs(du) < 1e-6 && std::fabs(dv) < 1e-6)
         return true;
     }
 
@@ -661,6 +702,18 @@ namespace GMlib {
     else
       _no_sam_v = m2;
 
+    // Correct derivatives
+    if( d1 < 1 )
+      d1 = _no_der_u;
+    else
+      _no_der_u = d1;
+
+    if( d2 < 1 )
+      d2 = _no_der_v;
+    else
+      _no_der_v = d2;
+
+
     // pre-sampel / pre evaluate data for a given parametric surface, if wanted/needed
     preSample(
       m1, m2, d1, d2,
@@ -689,8 +742,19 @@ namespace GMlib {
     setSurroundingSphere( p );
 
     // Replot Visaulizers
-    for( int i = 0; i < this->_visualizers.getSize(); i++ )
-      this->_visualizers[i]->replot( p, normals, m1, m2, d1, d2 );
+    for( int i = 0; i < this->_psurf_visualizers.getSize(); i++ )
+      this->_psurf_visualizers[i]->replot( p, normals, m1, m2, d1, d2 );
+  }
+
+  template <typename T>
+  inline
+  void PSurf<T>::removeVisualizer( Visualizer *visualizer ) {
+
+    PSurfVisualizer<T> *visu = dynamic_cast<PSurfVisualizer<T>*>( visualizer );
+    if( visu )
+      _psurf_visualizers.remove( visu );
+
+    SceneObject::removeVisualizer( visu );
   }
 
 
@@ -782,45 +846,9 @@ namespace GMlib {
 
     normals.setDim( sample.getDim1(), sample.getDim2() );
 
-//    cout << "Generating Normals:" << endl;
-
-    for( int i = 0; i < sample.getDim1(); i++ ) {
-      for( int j = 0; j < sample.getDim2(); j++ ) {
+    for( int i = 0; i < sample.getDim1(); i++ )
+      for( int j = 0; j < sample.getDim2(); j++ )
         normals[i][j] = Vector3D<T>( sample(i)(j)(1)(0) ) ^ sample(i)(j)(0)(1);
-//        normals[i][j] = Vector3D<T>( sample(i)(j)(0)(1) ) ^ sample(i)(j)(1)(0);
-  //
-  //      cout << "\t[" << i << ", " << j << "] (";
-  //      for( int k = 0; k < n; k++ ){
-  //
-  //        cout << setw(3) << sample(i)(j)(1)(0)(k);
-  //        if( k != n-1 )
-  //          cout << ", ";
-  //      }
-  //      cout << ") u'";
-  //      cout << endl;
-  //
-  //      cout << "\t[" << i << ", " << j << "] (";
-  //      for( int k = 0; k < n; k++ ){
-  //
-  //        cout << setw(3) << sample(i)(j)(0)(1)(k);
-  //        if( k != n-1 )
-  //          cout << ", ";
-  //      }
-  //      cout << ") v'";
-  //      cout << endl;
-  //
-  //      cout << "\t[" << i << ", " << j << "] (";
-  //      for( int k = 0; k < n; k++ ){
-  //
-  //        cout << setw(3) << normals[i][j][k];
-  //        if( k != n-1 )
-  //          cout << ", ";
-  //      }
-  //      cout << ") norm";
-  //      cout << endl << endl;
-      }
-  //      cout << endl;
-    }
   }
 
 
@@ -920,6 +948,15 @@ namespace GMlib {
   Parametrics<T,2>* PSurf<T>::split( T /*t*/, int /*uv*/ ) {
 
     return 0;
+  }
+
+  template <typename T>
+  void PSurf<T>::toggleDefaultVisualizer() {
+
+    if( !_psurf_visualizers.exist( _default_visualizer ) )
+      enableDefaultVisualizer( true );
+    else
+      enableDefaultVisualizer( false );
   }
 
 

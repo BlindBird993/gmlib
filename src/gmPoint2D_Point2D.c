@@ -53,7 +53,7 @@ namespace GMlib {
       UnitVector2D<T> b = a(j) - a(i);
       r = b^((*this) - a(i));
       if (r < - POS_TOLERANCE)		return 0;
-      if (fabs(r) < POS_TOLERANCE)	v += -i-1;
+      if (std::fabs(r) < POS_TOLERANCE)	v += -i-1;
     }
 
     if (v.size() == 0)	return 1;
@@ -87,7 +87,7 @@ namespace GMlib {
     T r = a1*a1;
     T s = a2*a2;
 
-    if (fabs(r-s) < POS_TOLERANCE)	return -1;
+    if (std::fabs(r-s) < POS_TOLERANCE)	return -1;
     else if (r < s)					return  1;
     else							return  0;
   }

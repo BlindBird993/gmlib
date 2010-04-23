@@ -37,7 +37,7 @@ namespace GMlib {
 
 
   StlObject::StlObject(float r) {
-    _identity = string( "STL place holder" );
+    _identity = std::string( "STL place holder" );
     _sphere = new PSphere<float>( r );
     _sphere->replot();
     insert( _sphere );
@@ -226,7 +226,7 @@ namespace GMlib {
   }
 
 
-  int StlObject::_readStlBinary(const string& filename) {
+  int StlObject::_readStlBinary(const std::string& filename) {
 
     if( ( _stl_file = fopen( filename.c_str(), "rb" ) ) == NULL )
       return(-1);
@@ -371,7 +371,7 @@ namespace GMlib {
     else {
 
       std::stringstream content;
-      content << "solid " << this->getIdentity() << endl;
+      content << "solid " << this->getIdentity() << std::endl;
 
       for( int i = 0; i < _normals.getSize(); i++ ) {
 
@@ -382,22 +382,22 @@ namespace GMlib {
         // Normal
         const Vector<float,3> &n = _normals(i);
 
-        content << "  facet normal " << n(0) << " " << n(1) << " " << n(2) << endl;
+        content << "  facet normal " << n(0) << " " << n(1) << " " << n(2) << std::endl;
 
-          content << "    outer loop" << endl;
+          content << "    outer loop" << std::endl;
 
 
             // Vertices
-            content << "      vertex " << v0(0) << " " << v0(1) << " " << v0(2) << endl;
-            content << "      vertex " << v1(0) << " " << v1(1) << " " << v1(2) << endl;
-            content << "      vertex " << v2(0) << " " << v2(1) << " " << v2(2) << endl;
+            content << "      vertex " << v0(0) << " " << v0(1) << " " << v0(2) << std::endl;
+            content << "      vertex " << v1(0) << " " << v1(1) << " " << v1(2) << std::endl;
+            content << "      vertex " << v2(0) << " " << v2(1) << " " << v2(2) << std::endl;
 
-          content << "    endloop" << endl;
+          content << "    endloop" << std::endl;
 
-        content << "  endfacet" <<endl;
+        content << "  endfacet" << std::endl;
       }
 
-      content << "endsolid " << this->getIdentity() << endl;
+      content << "endsolid " << this->getIdentity() << std::endl;
 
       stream.write( content.str().c_str(), content.str().length() * sizeof( char ) );
     }

@@ -5,6 +5,30 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2010-04-22 Jostein Bratlie
+        * Visualizer system re-write
+          - Base moved down to SceneObject
+          - Parametric Curve spesific visualizers:
+            - PCurveVisualizer (default visualizer)
+            - PCurveContoursVisualizer
+            - PCurveDerivativesVisualizer
+            - PCurvePointsVisualizer
+          - Parametric Surface spesific visualizers:
+            - PSurfVisualizer (default visualizer)
+            - PSurfContoursVisualizer
+            - PSurfDerivativesVisualizer
+            - PSurfGLSLVisualizer (OpenGL Shader visualizer)
+            - PSurfNormalsVisualizer
+            - PSurfPointsVisualizer
+        * Namespace cleanup
+          - All 'using namespace' and 'using' removed
+        * PSurf/PCurve cleanup
+        * OpenGL cleanup
+          - Splitted all non-OGL spesific code from gmOpenGL
+        * OpenGL Shader remake
+
+
 2010-04-10 Jostein Bratlie
         * Replaced the last of the OpenGL spesific GLColor class implementation with the general Color class.
 

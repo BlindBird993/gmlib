@@ -175,7 +175,7 @@ namespace GMlib {
     DVector< Vector<T,3> > c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), d );
 
     // If t == _t[tk], meaning that the sample is at the knot, set the sample value to the sampled value of the first local curve.
-    if( abs(t - _t[tk]) < 1e-5 ) {
+    if( std::fabs(t - _t[tk]) < 1e-5 ) {
       this->_p = c0;
       return;
     }
@@ -225,7 +225,7 @@ namespace GMlib {
     DVector< Vector<T,3> > c0 = _c[c0i]->evaluateParent( _c[c0i]->getLocalMapping( t, _t[tk-1], _t[tk], _t[tk+1] ), _B.getDim()-1 );
 
     // If t == _t[tk], meaning that the sample is at the knot, set the sample value to the sampled value of the first local curve.
-    if( abs(t - _t[tk]) < 1e-5 ) {
+    if( std::fabs(t - _t[tk]) < 1e-5 ) {
       this->_p = c0;
       return;
     }
@@ -308,7 +308,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PERBSCurve<T>::getIdentity() const {
+  std::string PERBSCurve<T>::getIdentity() const {
 
     return "PERBSCurve";
   }
@@ -427,7 +427,7 @@ namespace GMlib {
 
 
       // Find the complementary B-Vector coherent with the current index.
-      if( !(abs(t - _t[tk]) < 1e-5) )
+      if( !(std::fabs(t - _t[tk]) < 1e-5) )
         getB( _B[i], tk, t, d );
     }
 

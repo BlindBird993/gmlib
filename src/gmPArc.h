@@ -50,7 +50,7 @@ namespace GMlib {
     virtual ~PArc();
 
     T                   getCurvature() const;
-    string              getIdentity() const;
+    std::string         getIdentity() const;
     T                   getLocalMapping( T t, T ts, T ti, T te );
     T                   getSpeed() const;
     bool                isClosed() const;

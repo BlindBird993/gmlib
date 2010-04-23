@@ -34,10 +34,6 @@
 
 #include <stddef.h>
 #include <iostream>
-using std::ostream;
-using std::istream;
-using std::cout;
-using std::endl;
 
 
 namespace GMlib {
@@ -145,7 +141,7 @@ namespace GMlib {
       return ar._printIn( in );
     }
 
-    void print( char prompt[] = "ArrayT<T>", ostream& out = cout ) const;
+    void print( char prompt[] = "ArrayT<T>", ostream& out = std::cout ) const;
 
   #endif
 

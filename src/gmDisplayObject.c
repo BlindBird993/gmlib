@@ -30,6 +30,8 @@
  *  \date   2008-08-03
  */
 
+// local
+#include "gmGLMatrix.h"
 
 namespace GMlib {
 

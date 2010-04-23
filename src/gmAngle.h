@@ -35,7 +35,6 @@
 
 // System includes
 #include <cmath>
-using namespace std;
 
 
 namespace GMlib {

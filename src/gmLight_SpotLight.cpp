@@ -66,9 +66,6 @@ namespace GMlib {
 
     _dir = Vector3D<float>(0,0,1);
     setCutOff(cut_off);
-//    cout << "SpotLight _dir.getAngle(dir): " << _dir.getAngle(dir).getDeg() << endl;
-//    Vector<float, 3> cdir = _dir^dir;
-//    cout << "SpotLight _dir^dir:           (" << cdir[0] << ", " << cdir[1] << ", " << cdir[2] << ")" << endl;
     rotate(_dir.getAngle(dir), _dir^dir);
   }
 

@@ -32,10 +32,6 @@
  */
 
 
-#include <iostream>
-using std::cout;
-using std::endl;
-
 
 
 
@@ -98,8 +94,6 @@ namespace GMlib {
   inline
   void Camera::display() {
 
-
-    //cout << "Rendering camera View of camera with ID: " << getTypeId() << endl;
     setPerspective();
     glViewport(_x,_y,_w,_h);
     glPushMatrix();

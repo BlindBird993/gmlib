@@ -31,7 +31,6 @@
 
 
 // GMlib includes
-#include "gmOpenGL.h"
 #include "gmPoint3D.h"
 #include "gmCamera.h"
 #include "gmMaterial.h"

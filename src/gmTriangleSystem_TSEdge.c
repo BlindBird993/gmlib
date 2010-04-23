@@ -617,7 +617,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void print(char prompt[]="TSEdge<T>", ostream & out = cout) const {
+  //void print(char prompt[]="TSEdge<T>", ostream & out = std::cout) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}

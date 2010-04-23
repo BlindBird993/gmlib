@@ -63,8 +63,6 @@ namespace GMlib {
 #include "gmArray.h"
 #include "gmMaterial.h"
 #include "gmDisplayObject.h"
-#include "gmVisualizer.h"
-#include "gmVDefault.h"
 
 namespace GMlib {
 
@@ -76,48 +74,19 @@ namespace GMlib {
     Parametrics( const Parametrics<T,n>& copy );
     ~Parametrics();
 
-    void                                  enableDefaultVisualizer( bool enable = true );
-//    unsigned int                          getDisplayListIdx() const;
-//    const DMatrix<Point<float,2> >&       getTextureCoords() const;
-//    const DVector<Vector<float,3> >&      getVerticesN1() const;
-//    const DMatrix<Arrow<float,3> >&       getVerticesN2() const;
-    Visualizer<T,n>*                      getVisualizer( const std::string& str );
-    Array< Visualizer<T,n>* >&            getVisualizers();
-    void                                  insertVisualizer( Visualizer<T,n>* visualizer );
-//    bool                                  isDynamic() const;
-    bool                                  isDefaultVisualizerActive();
-    void                                  removeVisualizer( Visualizer<T,n>* visualizer );
     void                                  rotate(Angle a, const Vector<float,3>& rot_axel);
     void                                  rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     void                                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
     void                                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    void                                  toggleDefaultVisualizer();
+    void                                  setDerivationMethod( GM_DERIVATION_METHOD method );
     void                                  translate(const Vector<float,3>& trans_vector);
     void                                  translateGlobal(const Vector<float,3>& trans_vector);
 
   protected:
     GM_DERIVATION_METHOD                  _dm;
-    Array< Visualizer<T,n>* >             _visualizers;
-    VDefault<T,n>                         _default_visualizer;
-
-//    // States
-//    bool                                  _dynamic;
-//
-//    // Visualization
-//    unsigned int                          _dlist;
-//    DMatrix< Point<float,2> >             _texture_coords;
-//    DVector< Vector<float,3> >	          _vertices_n1;
-//    DMatrix< Arrow<float,3> >             _vertices_n2;
-
-    void                                  localDisplay();
-    void                                  localSelect();
-    void                                  localSimulate( double dt );
 
   private:
-    void                                  _init();
     void                                  _initSoType();
-
-    void                                  setDerivationMethod( GM_DERIVATION_METHOD method );
 
 
   }; // END class Parametrics

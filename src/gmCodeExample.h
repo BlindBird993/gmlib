@@ -39,8 +39,6 @@
 
 
 #include <string>
-using namespace std;
-
 
 namespace GMlib{
 
@@ -59,23 +57,23 @@ namespace GMlib{
     void      printHeader() const;
     void      printFooter() const;
 
-    void      setClassName( const string& comp );
-    void      setComponent( const string& comp );
-    void      setDescription( const string& desc );
+    void      setClassName( const std::string& comp );
+    void      setComponent( const std::string& comp );
+    void      setDescription( const std::string& desc );
     void      setNumber( int num );
-    void      setPrintDelimiter( const string& del );
-    void      setSubComponent( const string& comp );
+    void      setPrintDelimiter( const std::string& del );
+    void      setSubComponent( const std::string& comp );
 
-    //static    print( int lvl, const string &str );
+    //static    print( int lvl, const std::string &str );
 
   private:
-    string    _class;
-    string    _component;
-    string    _delimiter;
-    string    _description;
-    int       _number;
-    string    _sub_component;
-    bool      _test_class;
+    std::string   _class;
+    std::string   _component;
+    std::string   _delimiter;
+    std::string   _description;
+    int           _number;
+    std::string   _sub_component;
+    bool          _test_class;
 
 
      //void     textFormat( int lvl, string str ) const;

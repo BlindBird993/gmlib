@@ -96,7 +96,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PButterfly<T>::getIdentity() const {
+  std::string PButterfly<T>::getIdentity() const {
 
     return "PButterfly";
   }

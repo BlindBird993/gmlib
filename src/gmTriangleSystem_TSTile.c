@@ -114,7 +114,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string TSTile<T>::getIdentity() const {
+  std::string TSTile<T>::getIdentity() const {
 
     return "TSTile";
   }

@@ -38,7 +38,7 @@ namespace GMlib {
 
 
   inline
-  string StlObject::getIdentity() const {
+  std::string StlObject::getIdentity() const {
 
     return _identity;
   }

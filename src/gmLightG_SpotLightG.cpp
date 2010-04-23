@@ -168,19 +168,6 @@ namespace GMlib {
 
   void SpotLightG::localDisplay() {
 
-//    cout << "Displaying: " << getIdentity() << endl;
-//    Point<float,3> pos = getPos();
-//    Vector<float,3> dir = getDir();
-//    Vector<float,3> up = getUp();
-//    Vector<float,3> side = getSide();
-//
-//    cout << "  @ Pos:      (" << pos[0] << ", " << pos[1] << ", " << pos[2] << ")" << endl;
-//    cout << "  @ Dir:      (" << dir[0] << ", " << dir[1] << ", " << dir[2] << ")" << endl;
-//    cout << "  @ Up:       (" << up[0] << ", " << up[1] << ", " << up[2] << ")" << endl;
-//    cout << "  @ Side:     (" << side[0] << ", " << side[1] << ", " << side[2] << ")" << endl;
-//    cout << "  @ LightDir: (" << _dir[0] << ", " << _dir[1] << ", " << _dir[2] << ")" << endl;
-
-
     // Draw Casing
     glPushAttrib( GL_POINT_BIT | GL_LIGHTING_BIT ); {
 

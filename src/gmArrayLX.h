@@ -39,7 +39,6 @@
 
 // STL includes
 #include <vector>
-using std::vector;
 
 
 namespace GMlib{

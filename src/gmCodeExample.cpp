@@ -31,7 +31,6 @@
 
 #include <iostream>
 #include <iomanip>
-using namespace std;
 
 #include "gmCodeExample.h"
 namespace GMlib {
@@ -51,57 +50,57 @@ namespace GMlib {
 
   void CodeExample::printHeader() const {
 
-    cout << endl;
-    cout << "*" << endl;
-    cout << "* " << GMLIB_NAME << " (" << GMLIB_DESC << ") ";
+    std::cout << std::endl;
+    std::cout << "*" << std::endl;
+    std::cout << "* " << GMLIB_NAME << " (" << GMLIB_DESC << ") ";
 
     if(_test_class) {
-      cout << "TESTING" << endl;
+      std::cout << "TESTING" << std::endl;
 
     } else {
-      cout << "EXAMPLE" << endl;
+      std::cout << "EXAMPLE" << std::endl;
     }
 
-    cout << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *" << endl;
+    std::cout << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *" << std::endl;
 
     if(_component != "") {
-      cout << "* Component:         " << _component << endl;
+      std::cout << "* Component:         " << _component << std::endl;
     }
 
     if(_component != "" && _sub_component != "") {
-      cout << "* Sub Component:     " << _sub_component << endl;
+      std::cout << "* Sub Component:     " << _sub_component << std::endl;
     }
 
-    cout << "* Number:            " << setw(3) << setfill( '0' ) << _number << endl;
-    cout << "* Class:             " << _class << endl;
-    cout << "*" << endl;
-    cout << "* Description:       " << _description << endl;
-    cout << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *" << endl;
-    cout << endl;
+    std::cout << "* Number:            " << std::setw(3) << std::setfill( '0' ) << _number << std::endl;
+    std::cout << "* Class:             " << _class << std::endl;
+    std::cout << "*" << std::endl;
+    std::cout << "* Description:       " << _description << std::endl;
+    std::cout << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *" << std::endl;
+    std::cout << std::endl;
   }
 
 
   void CodeExample::printFooter() const {
 
-    cout << endl;
-    cout << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *" << endl;
-    cout << "*" << endl;
+    std::cout << std::endl;
+    std::cout << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *" << std::endl;
+    std::cout << "*" << std::endl;
   }
 
 
-  void CodeExample::setClassName( const string& name ) {
+  void CodeExample::setClassName( const std::string& name ) {
 
     _class = name;
   }
 
 
-  void CodeExample::setComponent( const string& comp ) {
+  void CodeExample::setComponent( const std::string& comp ) {
 
     _component = comp;
   }
 
 
-  void CodeExample::setDescription( const string& desc ) {
+  void CodeExample::setDescription( const std::string& desc ) {
 
     _description = desc;
   }
@@ -113,13 +112,13 @@ namespace GMlib {
   }
 
 
-  void CodeExample::setPrintDelimiter( const string &del ) {
+  void CodeExample::setPrintDelimiter( const std::string &del ) {
 
     _delimiter = del;
   }
 
 
-  void CodeExample::setSubComponent( const string& comp ) {
+  void CodeExample::setSubComponent( const std::string& comp ) {
 
     _sub_component = comp;
   }

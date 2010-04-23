@@ -171,7 +171,7 @@ namespace GMlib {
 
 //  public:
 //    int  getStreamMode() const;
-//    void print( string prompt = " TriangleFacets<T>", ostream& out = cout ) const;
+//    void print( string prompt = " TriangleFacets<T>", ostream& out = std::cout ) const;
 //    void setStreamMode( int i = 1 );
 //
 //    friend ostream& operator<<(ostream& out, const  TriangleFacets<T>& v) {
@@ -305,7 +305,7 @@ namespace GMlib {
 //    friend istream&       operator>>(istream& in, TSVertex<T>& v)	{ return v._prIn(in); }
 //    friend istream&       operator>>(istream& in, TSVertex<T>* v)	{ return v->_prIn(in); }
 //
-//    void                  print(char prompt[]="TSVertex<T>", ostream & out = cout) const
+//    void                  print(char prompt[]="TSVertex<T>", ostream & out = std::cout) const
 //    { out << prompt << ": " << (*this) << "\n"; }
 //
 //  private:
@@ -399,7 +399,7 @@ namespace GMlib {
 //    friend istream& operator>>(istream& in, TSEdge<T>& v);
 //    friend istream& operator>>(istream& in, TSEdge<T>* v);
 //
-//    void print(char prompt[]="TSEdge<T>", ostream & out = cout) const;
+//    void print(char prompt[]="TSEdge<T>", ostream & out = std::cout) const;
 //  #endif
   };
 
@@ -463,7 +463,7 @@ namespace GMlib {
 //    friend istream& operator >> ( istream& in, TSTriangle<T>& v );
 //    friend istream& operator >> ( istream& in, TSTriangle<T>* v );
 //
-//    void print( char prompt[] = "TSTriangle<T>", ostream & out = cout ) const;
+//    void print( char prompt[] = "TSTriangle<T>", ostream & out = std::cout ) const;
 //
 //  private:
 //    ostream& _prOut( ostream& out )const;
@@ -485,7 +485,7 @@ namespace GMlib {
     TSTile( TSVertex<T>* v, Box<T,3> domain );
 
     T                     getBigR();
-    string                getIdentity() const;
+    std::string           getIdentity() const;
     T                     getSmallR();
     void                  render();
 

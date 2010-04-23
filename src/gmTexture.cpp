@@ -31,15 +31,17 @@
  */
 
 
-// GMlib includes
+// local
 #include "gmOpenGL.h"
+
+// header
 #include "gmTexture.h"
 
 
 namespace GMlib {
 
 
-  map<unsigned int, int> Texture::_texture_id_map = map<unsigned int, int>();
+  std::map<unsigned int, int> Texture::_texture_id_map = std::map<unsigned int, int>();
 
 
   Texture::Texture() {

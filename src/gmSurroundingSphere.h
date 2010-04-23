@@ -33,8 +33,8 @@
 #define __gmSURROUNDINGSPHERE_H__
 
 
+#include "gmDisplayObject.h"
 #include "gmColor.h"
-#include "gmVisualizer.h"
 
 
 namespace GMlib {

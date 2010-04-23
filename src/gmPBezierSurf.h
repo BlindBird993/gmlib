@@ -33,13 +33,17 @@
 #define __gmPBEZIERSURF_H__
 
 
-// GMlib includes+
+// local
 #include "gmPSurf.h"
-#include "gmSelector.h"
-#include "gmSelectorGrid.h"
 
 
 namespace GMlib {
+
+  template <typename T, int n>
+  class Selector;
+
+  template <typename T, int n>
+  class SelectorGrid;
 
 
   template <typename T>
@@ -54,7 +58,7 @@ namespace GMlib {
     DMatrix< Vector<T,3> >&     getControlPoints();
     int                         getDegreeU() const;
     int                         getDegreeV() const;
-    string                      getIdentity() const;
+    std::string                 getIdentity() const;
     T                           getLocalMapping( T t, T ts, T tt, T te );
     virtual void                hideSelectors();
     bool                        isClosedU() const;

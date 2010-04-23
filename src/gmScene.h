@@ -39,11 +39,12 @@
 
 
 // locale GMlib includes
+#include "gmPoint.h"
 #include "gmTimer.h"
 //#include "gmArray.h" // maby gmSArray.h
 #include "gmSArray.h"
 #include "gmSortObject.h"
-#include "gmOpenGL.h"
+#include "gmFrustum.h"
 
 
 namespace GMlib{
@@ -88,8 +89,8 @@ namespace GMlib{
     Array<SceneObject*>&  getSelectedObjects();
     int                   getSize();
     int                   getSizeTotal();
-    Sphere<float,3>	      getSphere();
-    Sphere<float,3>	      getSphereClean() const;
+    Sphere<float,3>       getSphere();
+    Sphere<float,3>       getSphereClean() const;
     double                getTimeScale();
     virtual void          insert(SceneObject* obj);
     bool                  isRunning();
@@ -130,13 +131,13 @@ namespace GMlib{
     SArray< SortObject<SceneObject*, float> >   _disp_opaque;
     SArray< SortObject<SceneObject*, float> >   _disp_translucent;
 
-    Array<Light*>			    _lights;
-    Array<HqMatrix<float,3> >		    _matrix_stack;
+    Array<Light*>         _lights;
+    Array<HqMatrix<float,3> >                   _matrix_stack;
 
-    GMTimer			          _timer;
-    bool		              _timer_active;
-    double		            _timer_time_elapsed;
-    double		            _timer_time_scale;
+    GMTimer               _timer;
+    bool                  _timer_active;
+    double                _timer_time_elapsed;
+    double                _timer_time_scale;
 
   }; // END class Scene
 

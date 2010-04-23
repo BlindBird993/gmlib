@@ -38,61 +38,57 @@
 
 namespace GMlib {
 
-  namespace GPU {
+  namespace GLSL {
 
-    namespace GLSL {
+    GLPhongShader::GLPhongShader() : GLShader() {
 
-      GLPhongShader::GLPhongShader() : GLShader() {
-
-        const char* vs = {
-        "varying vec3 normal, lightVec, eyeVec;"
-        "varying vec4 Ag, A, D, S;"
-        "void main()"
-        "{"
-        " normal       = vec3( gl_NormalMatrix * gl_Normal );"
-        " eyeVec       = vec3( gl_ModelViewMatrix * gl_Vertex );"
-        " lightVec     = vec3( gl_LightSource[0].position.xyz - eyeVec );"
-        " Ag           = gl_LightModel.ambient       * gl_FrontMaterial.ambient;"
-        " A            = gl_LightSource[0].ambient   * gl_FrontMaterial.ambient;"
-        " D            = gl_LightSource[0].diffuse   * gl_FrontMaterial.diffuse;"
-        " S            = gl_LightSource[0].specular  * gl_FrontMaterial.specular;"
-        " gl_Position  = ftransform();"
-        "}"
-        };
+      const char* vs = {
+      "varying vec3 normal, lightVec, eyeVec;"
+      "varying vec4 Ag, A, D, S;"
+      "void main()"
+      "{"
+      " normal       = vec3( gl_NormalMatrix * gl_Normal );"
+      " eyeVec       = vec3( gl_ModelViewMatrix * gl_Vertex );"
+      " lightVec     = vec3( gl_LightSource[0].position.xyz - eyeVec );"
+      " Ag           = gl_LightModel.ambient       * gl_FrontMaterial.ambient;"
+      " A            = gl_LightSource[0].ambient   * gl_FrontMaterial.ambient;"
+      " D            = gl_LightSource[0].diffuse   * gl_FrontMaterial.diffuse;"
+      " S            = gl_LightSource[0].specular  * gl_FrontMaterial.specular;"
+      " gl_Position  = ftransform();"
+      "}"
+      };
 
 
-        const char* fs = {
-        "varying vec3 normal, lightVec, eyeVec;"
-        "varying vec4 Ag, A, D, S;"
-        "void main()"
-        "{"
-        " vec4 color     = Ag + A;"
-        " vec3 N         = normalize( normal );"
-        " vec3 L         = normalize( lightVec );"
-        " float lambert  = dot( N, L ); "
-        " if( lambert > 0.0 )"
-        " {"
-        "   color    += D * lambert;"
-        "   vec3 E    = normalize( -eyeVec );"
-        "   vec3 R    = vec3( 2.0 * N * lambert - L );"
-        "   float PS  = pow( max( dot( R, E ), 0.0 ), gl_FrontMaterial.shininess );"
-        "   color    += S * PS;"
-        " }"
-        " gl_FragColor = color;"
-        "}"
-        };
+      const char* fs = {
+      "varying vec3 normal, lightVec, eyeVec;"
+      "varying vec4 Ag, A, D, S;"
+      "void main()"
+      "{"
+      " vec4 color     = Ag + A;"
+      " vec3 N         = normalize( normal );"
+      " vec3 L         = normalize( lightVec );"
+      " float lambert  = dot( N, L ); "
+      " if( lambert > 0.0 )"
+      " {"
+      "   color    += D * lambert;"
+      "   vec3 E    = normalize( -eyeVec );"
+      "   vec3 R    = vec3( 2.0 * N * lambert - L );"
+      "   float PS  = pow( max( dot( R, E ), 0.0 ), gl_FrontMaterial.shininess );"
+      "   color    += S * PS;"
+      " }"
+      " gl_FragColor = color;"
+      "}"
+      };
 
-        this->set( vs, fs );
-        this->initShader();
-      }
-
-
-      GLPhongShader::~GLPhongShader() {}
+      this->set( vs, fs );
+      this->initShader();
+    }
 
 
-    } // End namespace GLSL
+    GLPhongShader::~GLPhongShader() {}
 
-  } // End namespace GPU
+
+  } // End namespace GLSL
 
 } // End namespace GMlib
 

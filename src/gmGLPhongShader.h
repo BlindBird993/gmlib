@@ -43,22 +43,17 @@
 
 namespace GMlib {
 
-  namespace GPU {
+  namespace GLSL {
 
-    namespace GLSL {
-
-      class GLPhongShader : public GLShader {
-      public:
-        GLPhongShader();
-        ~GLPhongShader();
+    class GLPhongShader : public GLShader {
+    public:
+      GLPhongShader();
+      ~GLPhongShader();
 
 
-      }; // End GLPhongShader
+    }; // End GLPhongShader
 
-
-    } // End namespace GLSL
-
-  } // End namespace GPU
+  } // End namespace GLSL
 
 } // Ene namespace GMlib
 

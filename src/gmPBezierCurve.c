@@ -159,7 +159,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PBezierCurve<T>::getIdentity() const {
+  std::string PBezierCurve<T>::getIdentity() const {
 
     return "PBezierCurve";
   }

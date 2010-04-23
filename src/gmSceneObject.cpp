@@ -34,6 +34,8 @@
 #include "gmLight.h"
 #include "gmSceneObject.h"
 
+#include "gmVisualizer.h"
+
 
 namespace GMlib {
 
@@ -139,173 +141,68 @@ namespace GMlib {
   }
 
 
-  /*! SceneObject* SceneObject::find(unsigned int name)
+  /*! void SceneObject::_fillObj( Array<SceneObject*>& )
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  SceneObject* SceneObject::find(unsigned int name) {
+  void SceneObject::_fillObj( Array<SceneObject*>& disp_objs ) {
 
-    SceneObject* d;
-
-    if(name == _name)	return this;
-    for(int i=0; i < _children.getSize(); i++)
-      if( (d = _children(i)->find(name)) ) return d;
-    return 0;
-  }
-
-
-  /*! Sphere<float,3>	SceneObject::getSurroundingSphereClean() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  Sphere<float,3>	SceneObject::getSurroundingSphereClean() const {
-
-    Sphere<float,3> sp;
-
+    if(_sphere.isValid())
+      disp_objs += this;
     for(int i=0; i< _children.getSize(); i++)
-      sp += _children(i)->getSurroundingSphereClean();
-    if(_type_id!=GM_SO_TYPE_CAMERA && _type_id!=GM_SO_TYPE_LIGHT) sp += _global_sphere;
-    return sp;
+      _children[i]->_fillObj(disp_objs);
   }
 
 
-  /*! void SceneObject::insert(SceneObject* obj)
+  /*! int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother=0)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  void SceneObject::insert(SceneObject* obj) {
+  int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
 
-    if(obj)
-    {
-      _children.insert(obj);
-      obj->_parent=this;
+    int nr = 1;
+    _scene  = s;
+
+    _parent=parent;
+
+    Light * pl  = dynamic_cast<Light *>(this);
+    if(pl) obj += pl;
+
+    mat.push();
+
+    _prepareDisplay(mat.back());
+    mat.back() = mat.back() * getMatrix();
+
+    _present = mat.back();
+    _global_total_sphere = _global_sphere = _present*_sphere;
+
+
+    if(_scale.isActive()) {
+
+      _global_sphere *= _scale.getMax();
+      _global_sphere %= _scale.getScale();
+      _global_total_sphere *= _scale.getMax();
+      _global_total_sphere %= _scale.getScale();
     }
-  }
+    for( int i = 0; i < _children.getSize(); i++ ) {
 
-
-  /*! void SceneObject::remove(SceneObject* obj)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::remove(SceneObject* obj) {
-
-    if(obj)
-      if(!_children.remove(obj))
-        for(int i=0; i< _children.getSize(); i++)
-          _children[i]->remove(obj);
-  }
-
-
-  /*! void SceneObject::rotate(Angle a, const Vector<float,3>& rot_axel)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In local coordinates.**
-   */
-  void SceneObject::rotate(Angle a, const Vector<float,3>& rot_axel) {
-
-    Vector3D<float> ra = rot_axel;
-    Vector3D<float> lu = ra.getLinIndVec();
-    Vector<float,3> u = lu ^ ra;
-    Vector<float,3> v = ra ^ u;
-
-    _matrix.rotate(a, u, v);
-  }
-
-
-  /*! void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In local coordinates.**
-   */
-  void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
-
-    Vector3D<float> ra = d;
-    Vector3D<float> lu = ra.getLinIndVec();
-    Vector<float,3> u = lu ^ ra;
-    Vector<float,3> v = ra ^ u;
-    _matrix.rotate(a, u, v, p);
-  }
-
-
-  /*! void SceneObject::rotateGlobal(Angle a, const Vector<float,3>& rot_axel)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In Scene Coordinates **
-   */
-  void SceneObject::rotateGlobal( Angle a, const Vector<float,3>& rot_axel ) {
-
-    Vector3D<float> ra = rot_axel;
-    Vector3D<float> lu = ra.getLinIndVec();
-    Vector<float,3> u = lu ^ ra;
-    Vector<float,3> v = ra ^ u;
-
-    _matrix.rotateGlobal(a, u, v);
-  }
-
-
-  /*! void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In Scene Coordinates **
-   */
-  void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
-
-    Vector3D<float> ra = d;
-    Vector3D<float> lu = ra.getLinIndVec();
-    Vector<float,3> u = lu ^ ra;
-    Vector<float,3> v = ra ^ u;
-
-    _matrix.rotateGlobal(a, u, v, p);
-  }
-
-
-  /*! void SceneObject::translate(const Vector<float,3>& trans_vector)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In local coordinates.**
-   */
-  void SceneObject::translate(const Vector<float,3>& trans_vector) {
-
-    _matrix.translate(trans_vector);
-  }
-
-
-  /*! void SceneObject::translateGlobal(const Vector<float,3>& trans_vector)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In Scene Coordinates **
-   */
-  void SceneObject::translateGlobal(const Vector<float,3>& trans_vector) {
-
-    _matrix.translateGlobal(trans_vector);
-  }
-
-
-  /*! void SceneObject::scale(const Point<float,3>& scale_factor)
-   *  \brief Pending Documentation
-   *
-   *  ( Only geometry )
-   */
-  void SceneObject::scale(const Point<float,3>& scale_factor) {
-    for(int i=0; i<_children.getSize(); i++)
-    {
-      Point3D<float> tr = -(_children[i]->_matrix*Point<float,3>(0.0f));
-      _children[i]->translate(scale_factor%tr);
-      _children[i]->scale(scale_factor);
+      nr += _children[i]->_prepare(obj,mat,s,this);
+      _global_total_sphere += _children[i]->getSurroundingSphere();
     }
-    _scale.scale(scale_factor);
-    _sphere = _scale.scaleSphere(_sphere);
+
+    mat.pop();
+    return nr;
   }
+
+
+  /*! void SceneObject::_prepareDisplay( const HqMatrix<float,3>& mat )
+   *  \brief Pending Documentation
+   *
+   *  Made specially for DisplayObject's
+   */
+  void SceneObject::_prepareDisplay( const HqMatrix<float,3>& /*mat*/ ) {}
 
 
   /*! void culling( Array<SceneObject*>&, const Frustum& );
@@ -356,40 +253,20 @@ namespace GMlib {
   }
 
 
-  /*! void localDisplay()
+  /*! SceneObject* SceneObject::find(unsigned int name)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  void SceneObject::localDisplay() {}
+  SceneObject* SceneObject::find(unsigned int name) {
 
+    SceneObject* d;
 
-  void SceneObject::localDisplayActive() {
-
-    localSelect();
+    if(name == _name)	return this;
+    for(int i=0; i < _children.getSize(); i++)
+      if( (d = _children(i)->find(name)) ) return d;
+    return 0;
   }
-
-
-  void SceneObject::localDisplaySelection() {
-
-    localSelect();
-  }
-
-
-  /*! void localSelect()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::localSelect()  {}
-
-
-  /*! void localSimulate(double dt)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::localSimulate( double /*dt*/ ) {}
 
 
   void SceneObject::generateCollapsedDList() {
@@ -470,9 +347,117 @@ namespace GMlib {
   }
 
 
+  /*! Sphere<float,3>	SceneObject::getSurroundingSphereClean() const
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  Sphere<float,3> SceneObject::getSurroundingSphereClean() const {
+
+    Sphere<float,3> sp;
+
+    for(int i=0; i< _children.getSize(); i++)
+      sp += _children(i)->getSurroundingSphereClean();
+    if(_type_id!=GM_SO_TYPE_CAMERA && _type_id!=GM_SO_TYPE_LIGHT) sp += _global_sphere;
+    return sp;
+  }
+
+  const Array<Visualizer*>& SceneObject::getVisualizers() const {
+
+    return _visualizers;
+  }
+
+
+  /*! void SceneObject::insert(SceneObject* obj)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  void SceneObject::insert(SceneObject* obj) {
+
+    if(obj)
+    {
+      _children.insert(obj);
+      obj->_parent=this;
+    }
+  }
+
+  void SceneObject::insertVisualizer( Visualizer* visualizer ) {
+
+    if( _visualizers.exist( visualizer ) )
+      return;
+
+    visualizer->set( this );
+    _visualizers += visualizer;
+  }
+
+
   bool SceneObject::isLighted() const {
 
     return _lighted;
+  }
+
+
+  /*! void localDisplay()
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  void SceneObject::localDisplay() {
+
+    for( int i = 0; i < _visualizers.getSize(); ++i )
+      _visualizers[i]->display();
+  }
+
+
+  void SceneObject::localDisplayActive() {
+
+    localSelect();
+  }
+
+
+  void SceneObject::localDisplaySelection() {
+
+    localSelect();
+  }
+
+
+  /*! void localSelect()
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  void SceneObject::localSelect()  {
+
+    for( int i = 0; i < _visualizers.getSize(); ++i )
+      _visualizers[i]->select();
+  }
+
+
+  /*! void localSimulate(double dt)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  void SceneObject::localSimulate( double /*dt*/ ) {}
+
+
+  /*! void SceneObject::remove(SceneObject* obj)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  void SceneObject::remove(SceneObject* obj) {
+
+    if(obj)
+      if(!_children.remove(obj))
+        for(int i=0; i< _children.getSize(); i++)
+          _children[i]->remove(obj);
+  }
+
+  void SceneObject::removeVisualizer( Visualizer* visualizer ) {
+
+    _visualizers.remove( visualizer );
   }
 
 
@@ -484,6 +469,90 @@ namespace GMlib {
   void SceneObject::reset() {
 
     _matrix.reset();
+  }
+
+
+  /*! void SceneObject::rotate(Angle a, const Vector<float,3>& rot_axel)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   *  ** In local coordinates.**
+   */
+  void SceneObject::rotate(Angle a, const Vector<float,3>& rot_axel) {
+
+    Vector3D<float> ra = rot_axel;
+    Vector3D<float> lu = ra.getLinIndVec();
+    Vector<float,3> u = lu ^ ra;
+    Vector<float,3> v = ra ^ u;
+
+    _matrix.rotate(a, u, v);
+  }
+
+
+  /*! void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   *  ** In local coordinates.**
+   */
+  void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
+
+    Vector3D<float> ra = d;
+    Vector3D<float> lu = ra.getLinIndVec();
+    Vector<float,3> u = lu ^ ra;
+    Vector<float,3> v = ra ^ u;
+    _matrix.rotate(a, u, v, p);
+  }
+
+
+  /*! void SceneObject::rotateGlobal(Angle a, const Vector<float,3>& rot_axel)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   *  ** In Scene Coordinates **
+   */
+  void SceneObject::rotateGlobal( Angle a, const Vector<float,3>& rot_axel ) {
+
+    Vector3D<float> ra = rot_axel;
+    Vector3D<float> lu = ra.getLinIndVec();
+    Vector<float,3> u = lu ^ ra;
+    Vector<float,3> v = ra ^ u;
+
+    _matrix.rotateGlobal(a, u, v);
+  }
+
+
+  /*! void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   *  ** In Scene Coordinates **
+   */
+  void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
+
+    Vector3D<float> ra = d;
+    Vector3D<float> lu = ra.getLinIndVec();
+    Vector<float,3> u = lu ^ ra;
+    Vector<float,3> v = ra ^ u;
+
+    _matrix.rotateGlobal(a, u, v, p);
+  }
+
+
+  /*! void SceneObject::scale(const Point<float,3>& scale_factor)
+   *  \brief Pending Documentation
+   *
+   *  ( Only geometry )
+   */
+  void SceneObject::scale(const Point<float,3>& scale_factor) {
+    for(int i=0; i<_children.getSize(); i++)
+    {
+      Point3D<float> tr = -(_children[i]->_matrix*Point<float,3>(0.0f));
+      _children[i]->translate(scale_factor%tr);
+      _children[i]->scale(scale_factor);
+    }
+    _scale.scale(scale_factor);
+    _sphere = _scale.scaleSphere(_sphere);
   }
 
 
@@ -527,120 +596,6 @@ namespace GMlib {
   }
 
 
-  /*! void SceneObject::updateSurroundingSphere(const Point<float,3>& p)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::updateSurroundingSphere(const Point<float,3>& p) {
-
-    _sphere += p;
-  }
-
-
-  /*! void SceneObject::_fillObj( Array<SceneObject*>& )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::_fillObj( Array<SceneObject*>& disp_objs ) {
-
-    if(_sphere.isValid())
-      disp_objs += this;
-    for(int i=0; i< _children.getSize(); i++)
-      _children[i]->_fillObj(disp_objs);
-  }
-
-
-  /*! int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother=0)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
-
-//    std::string identity = getIdentity();
-//    cout << "Preparing: " << identity << endl;
-    int nr = 1;
-    _scene  = s;
-
-    _parent=parent;
-
-//    cout << "::parent:  " << ( _parent ? parent->getIdentity() : "non" ) << endl;
-
-//    HqMatrix<float,3> matrix = getMatrix();
-//    cout << "::matrix:" << endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      cout << "  ";
-//      for( int j = 0; j < 4; j++ )
-//        cout << matrix[i][j] << " ";
-//      cout << endl;
-//    }
-
-    Light * pl  = dynamic_cast<Light *>(this);
-    if(pl) obj += pl;
-
-    mat.push();
-
-//    cout << "::mat.back() pre:" << endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      cout << "  ";
-//      for( int j = 0; j < 4; j++ )
-//        cout << mat.back()[i][j] << " ";
-//      cout << endl;
-//    }
-
-    _prepareDisplay(mat.back());
-    mat.back() = mat.back() * getMatrix();
-
-
-//    cout << "::mat.back() post:" << endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      cout << "  ";
-//      for( int j = 0; j < 4; j++ )
-//        cout << mat.back()[i][j] << " ";
-//      cout << endl;
-//    }
-
-    _present = mat.back();
-    _global_total_sphere = _global_sphere = _present*_sphere;
-
-
-//    cout << "Sphere:" << endl;
-//    cout << "  coords: " << _sphere.getPos()[0] << " " << _sphere.getPos()[1] << " " << _sphere.getPos()[2] << endl;
-//    cout << "  radius: " << _sphere.getRadius() << endl;
-//
-//
-//    cout << "Surrounding Sphere:" << endl;
-//    cout << "  coords: " << _global_total_sphere.getPos()[0] << " " << _global_total_sphere.getPos()[1] << " " << _global_total_sphere.getPos()[2] << endl;
-//    cout << "  radius: " << _global_total_sphere.getRadius() << endl;
-
-    if(_scale.isActive()) {
-
-      _global_sphere *= _scale.getMax();
-      _global_sphere %= _scale.getScale();
-      _global_total_sphere *= _scale.getMax();
-      _global_total_sphere %= _scale.getScale();
-    }
-    for( int i = 0; i < _children.getSize(); i++ ) {
-
-      nr += _children[i]->_prepare(obj,mat,s,this);
-      _global_total_sphere += _children[i]->getSurroundingSphere();
-    }
-
-    mat.pop();
-    return nr;
-  }
-
-
-  /*! void SceneObject::_prepareDisplay( const HqMatrix<float,3>& mat )
-   *  \brief Pending Documentation
-   *
-   *  Made specially for DisplayObject's
-   */
-  void SceneObject::_prepareDisplay( const HqMatrix<float,3>& /*mat*/ ) {}
-
-
   /*! void SceneObject::_simulate( double dt )
    *  \brief Pending Documentation
    *
@@ -654,6 +609,40 @@ namespace GMlib {
 
     for(int i=0; i< _children.size(); i++)
       _children[i]->simulate(dt);
+  }
+
+  /*! void SceneObject::translate(const Vector<float,3>& trans_vector)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   *  ** In local coordinates.**
+   */
+  void SceneObject::translate(const Vector<float,3>& trans_vector) {
+
+    _matrix.translate(trans_vector);
+  }
+
+
+  /*! void SceneObject::translateGlobal(const Vector<float,3>& trans_vector)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   *  ** In Scene Coordinates **
+   */
+  void SceneObject::translateGlobal(const Vector<float,3>& trans_vector) {
+
+    _matrix.translateGlobal(trans_vector);
+  }
+
+
+  /*! void SceneObject::updateSurroundingSphere(const Point<float,3>& p)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  void SceneObject::updateSurroundingSphere(const Point<float,3>& p) {
+
+    _sphere += p;
   }
 
 }

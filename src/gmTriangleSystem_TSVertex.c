@@ -380,7 +380,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void TSVertex<T>::print(char prompt[]="TSVertex<T>", ostream & out = cout) const {
+  //void TSVertex<T>::print(char prompt[]="TSVertex<T>", ostream & out = std::cout) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}

@@ -32,8 +32,6 @@
 
 // STL includes
 #include <cmath>
-using std::fabs;
-
 
 
 #ifdef GM_INTEL
@@ -251,7 +249,7 @@ namespace GMlib {
     for (i=0;i<n;i++)
     {
       big=0.0;
-      for (j=0;j<n;j++) if ((temp=fabs(a[i][j])) > big) big=temp;
+      for (j=0;j<n;j++) if ((temp=std::fabs(a[i][j])) > big) big=temp;
       if (big == 0.0) return (*this);   //nrerror("Singular matrix in routine ludcmp");
       vv[i]=1.0/big;
     }
@@ -269,7 +267,7 @@ namespace GMlib {
         sum=a[i][j];
         for (k=0;k<j;k++) sum -= a[i][k]*a[k][j];
         a[i][j]=sum;
-        if ((dum=vv[i]*fabs(sum)) >= big) { big=dum; imax=i; }
+        if ((dum=vv[i]*std::fabs(sum)) >= big) { big=dum; imax=i; }
       }
       if (j != imax)
       {
@@ -331,7 +329,7 @@ namespace GMlib {
   template <typename T>
   inline
   void  DMatrix<T>::resetDim(int i, int j) {
-    int m, k = min(i,_n);
+    int m, k = std::min(i,_n);
     DVector<T>* tmp = (i>4 ? new DVector<T>[i]:_init);
     for(m=0; m<k; m++)
     {
@@ -421,7 +419,7 @@ namespace GMlib {
     {
       for(i=0; i<getDim1(); i++)
         for(j=0;j<i;j++)
-          swap(_p[j][i],_p[i][j]);
+          std::swap(_p[j][i],_p[i][j]);
     }
     return (*this);
   }

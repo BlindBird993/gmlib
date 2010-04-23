@@ -150,7 +150,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PCircularSurface<T>::getIdentity() const {
+  std::string PCircularSurface<T>::getIdentity() const {
 
     return "PCircularSurface";
   }

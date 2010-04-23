@@ -37,9 +37,15 @@
 
 // Local
 #include "gmArray.h"
+#include "gmDVector.h"
+#include "gmDMatrix.h"
 #include "gmParametrics.h"
 
+
 namespace GMlib {
+
+  template <typename T>
+  class PSurfVisualizer;
 
   template <typename T>
   class PSurf : public Parametrics<T,2> {
@@ -47,7 +53,9 @@ namespace GMlib {
 
     PSurf( int s1 = 20, int s2 = 20 );
     PSurf( const PSurf<T>& copy );
+    virtual ~PSurf();
 
+    void                          enableDefaultVisualizer( bool enable = true );
     //virtual void                  estimateClpPar( const Point<T,3>& p, T& u, T& v );
     DMatrix<Vector<T,3> >&        evaluate( Point<T,2> p, int d );
     DMatrix<Vector<T,3> >&    	  evaluate( T u, T v, int d1, int d2 );
@@ -81,11 +89,13 @@ namespace GMlib {
     int                           getSamPV( int i = 0 ) const;
     int                           getSamplesU() const;
     int                           getSamplesV() const;
+    void                          insertVisualizer( Visualizer *visualizer );
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
     virtual bool                  isClosestPoint( const Point<T,3>& q, T& u, T& v );
     virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
-    virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 2, int d2 = 2 );
+    void                          removeVisualizer( Visualizer *visualizer );
+    virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0 );
     virtual void                  resample(DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a, int m1, int m2, int d1, int d2 );
     virtual void                  resample(DMatrix<DMatrix <Vector<T,3> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
     virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T, 3> > > &sample, DMatrix<Vector<T, 3> > &normals ) const;
@@ -98,12 +108,19 @@ namespace GMlib {
     void                          setNoDer( int d );
     virtual void                  setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p );
     virtual Parametrics<T,2>*     split( T t, int uv );
+    void                          toggleDefaultVisualizer();
 
     Point<T,3>&                   operator () ( T u, T v );
 
   protected:
+    Array< PSurfVisualizer<T>* >  _psurf_visualizers;
+    PSurfVisualizer<T>            *_default_visualizer;
+
     int                           _no_sam_u;    // Number of samples u for single sampling
     int                           _no_sam_v;    // Number of samples v for single sampling
+
+    int                           _no_der_u;    // Number of derivatives u
+    int                           _no_der_v;    // Number of derivatives u
 
     DVector< Vector<T,2> >        _sam_p_u;     // Sample partition u (start/stop)
     DVector< Vector<T,2> >        _sam_p_v;     // Sample partition v (start/stop)

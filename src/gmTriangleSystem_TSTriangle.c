@@ -427,7 +427,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void TSTriangle<T>::print( char prompt[] = "TSTriangle<T>", ostream & out = cout ) const {
+  //void TSTriangle<T>::print( char prompt[] = "TSTriangle<T>", ostream & out = std::cout ) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}

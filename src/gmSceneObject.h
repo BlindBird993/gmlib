@@ -41,9 +41,12 @@
 // STL includes
 #include <string>
 
-// Local GMlib includes
-#include "gmOpenGL.h"
+// local
 #include "gmMaterial.h"
+#include "gmFrustum.h"
+#include "gmScaleObject.h"
+
+
 
 
 namespace GMlib{
@@ -52,6 +55,7 @@ namespace GMlib{
   class Camera;
   class Scene;
   class Light;
+  class Visualizer;
 
 
   enum GM_SO_TYPE {
@@ -148,7 +152,7 @@ namespace GMlib{
     Material&                   getMaterial();
     virtual HqMatrix<float,3>&  getMatrix();
     const HqMatrix<float,3>&    getMatrixGlobal() const;
-    const	HqMatrix<float,3>&    getMatrixParentGlobal() const;
+    const HqMatrix<float,3>&    getMatrixParentGlobal() const;
     unsigned int                getName() const;
     SceneObject*                getParent();
     Scene*                      getScene();
@@ -156,13 +160,16 @@ namespace GMlib{
     Sphere<float,3>             getSurroundingSphere() const;
     Sphere<float,3>             getSurroundingSphereClean() const;
     int                         getTypeId();
+    const Array<Visualizer*>&   getVisualizers() const;
     void                        insert(SceneObject* obj);
+    virtual void                insertVisualizer( Visualizer* visualizer );
     bool                        isCollapsed() const;
     bool                        isLighted() const;
     bool                        isOpaque() const;
     bool                        isSelected() const;
     virtual bool                isVisible() const;
     void                        remove(SceneObject* obj);
+    virtual void                removeVisualizer( Visualizer* visualizer );
     virtual void                rotate(Angle a, const Vector<float,3>& rot_axel);
     virtual void                rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     virtual void                rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
@@ -191,25 +198,26 @@ namespace GMlib{
     friend class Scene;
     friend class Camera;
 
-    int						              _type_id;
+    int                         _type_id;
     Array<SceneObject*>	        _children;
-    Scene*					            _scene;		//! Den aktuelle scenen til displayhierarkiet
-    SceneObject*			          _parent;	//! the mother in the hierarchy (tree). moved here from private
-    HqMatrix<float,3>				    _matrix;	//! The difference matrix from mother to this.
-    HqMatrix<float,3>        		_present;	//! The difference matrix from global to this.
-    ScaleObj				            _scale;		//! The scaling for this and the children.
-    bool					              _local_cs;	//! Using local coordinate system, default is true
-    bool					              _active;		//! This variable is only for camera.
-    Sphere<float,3>		          _global_sphere;			//! for this object
-    Sphere<float,3>		          _global_total_sphere;	//! included all children
-    bool					              _selected;
-    bool					              _visible;	//! culling on invisible items
-    bool					              _collapsed;	//! represented by a small cube
+    Scene*                      _scene;		//! Den aktuelle scenen til displayhierarkiet
+    SceneObject*                _parent;	//! the mother in the hierarchy (tree). moved here from private
+    HqMatrix<float,3>           _matrix;	//! The difference matrix from mother to this.
+    HqMatrix<float,3>           _present;	//! The difference matrix from global to this.
+    ScaleObject                 _scale;		//! The scaling for this and the children.
+    bool                        _local_cs;	//! Using local coordinate system, default is true
+    bool                        _active;		//! This variable is only for camera.
+    Sphere<float,3>             _global_sphere;			//! for this object
+    Sphere<float,3>             _global_total_sphere;	//! included all children
+    bool                        _selected;
+    bool                        _visible;	//! culling on invisible items
+    bool                        _collapsed;	//! represented by a small cube
     unsigned int                _collapsed_dlist;
     Material                    _material;
-    Color                     _color;
+    Color                       _color;
     bool                        _lighted;
     bool                        _opaque;
+    Array<Visualizer*>          _visualizers;
 
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                displayCollapsed();
@@ -219,12 +227,12 @@ namespace GMlib{
     virtual void                localDisplaySelection();
     virtual void                localSelect();
     virtual void                localSimulate(double dt);
-    void	                      reset();
-    void	                      setSurroundingSphere( const Sphere<float,3>& b );
+    void                        reset();
+    void                        setSurroundingSphere( const Sphere<float,3>& b );
     void                        updateSurroundingSphere( const Point<float,3>& p );
 
 
-    virtual void	              simulate( double dt );
+    virtual void                simulate( double dt );
 
 
   private:
@@ -232,13 +240,13 @@ namespace GMlib{
     unsigned int                _name;		//! Unic name for this object, used for selecting
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
-    void	                      _display();
+    void                        _display();
     void                        _displayActive();
-    void	                      _displaySelection();
+    void                        _displaySelection();
     void                        _fillObj( Array<SceneObject*>& );
-    int		                      _prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
+    int                         _prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
     virtual void                _prepareDisplay(const HqMatrix<float,3>& m);
-    void	                      _select(int what = -1);
+    void                        _select(int what = -1);
 
 
 

@@ -41,7 +41,6 @@
 
 // GMlib includes
 #include "gmDisplayObject.h"
-#include "gmOpenGL.h"
 
 
 namespace GMlib{

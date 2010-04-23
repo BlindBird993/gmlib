@@ -52,7 +52,7 @@ namespace GMlib {
 
     void                            edit( SceneObject *obj );
     void                            generateKnotVector( PCurve<T>* g );
-    string                          getIdentity() const;
+    std::string                     getIdentity() const;
     DVector< PCurve<T>* >&          getLocalPatches();
     int                             getNoLocalPatches() const;
     virtual void                    hideLocalPatches();

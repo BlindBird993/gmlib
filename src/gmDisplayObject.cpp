@@ -497,37 +497,10 @@ namespace GMlib {
    */
   void DisplayObject::_prepareDisplay( const HqMatrix<float,3>& mat ) {
 
-//    cout << "::Prepare Display Object: " << getIdentity();
-//    cout << "  ::m:" << endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      cout << "    ";
-//      for( int j = 0; j < 4; j++ )
-//        cout << m(i)(j) << " ";
-//      cout << endl;
-//    }
-
     /*! \todo fix the way the matrix is handled */
     _matrix_scene = mat;
     _matrix_scene_inv = mat;
     _matrix_scene_inv.invertOrthoNormal();
-
-
-
-//    cout << "  ::matrix_scene:" << endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      cout << "    ";
-//      for( int j = 0; j < 4; j++ )
-//        cout << _matrix_scene(i)(j) << " ";
-//      cout << endl;
-//    }
-//    cout << "  ::matrix_scene_inv:" << endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      cout << "    ";
-//      for( int j = 0; j < 4; j++ )
-//        cout << _matrix_scene_inv(i)(j) << " ";
-//      cout << endl;
-//    }
-
   }
 
 

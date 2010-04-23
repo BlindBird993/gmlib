@@ -56,7 +56,7 @@ namespace GMlib {
 
   class StlObject : public DisplayObject {
   public:
-    StlObject( const string& filename, const Color& color = 5, int flip = 1 ); // From file, in given color
+    StlObject( const std::string& filename, const Color& color = 5, int flip = 1 ); // From file, in given color
     StlObject( std::ifstream& stream, bool binary = true, const Color& color = GMcolor::Aqua );
     StlObject( PSurf<float> *obj, int m1 = 20, int m2 = 20, GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
     StlObject( float r = 10 );				 // Makes a Sphere, just for debugging
@@ -86,7 +86,7 @@ namespace GMlib {
     float                             _getFloat();
     unsigned int                      _getUint();
     unsigned long                     _getUli();
-    int                               _readStlBinary( const string& filename );
+    int                               _readStlBinary( const std::string& filename );
     void                              _updateBounding();
     void                              _makeList( GLenum e = GL_TRIANGLES );
     void                              _init();

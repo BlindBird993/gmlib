@@ -32,7 +32,6 @@
 
 // STL includes
 #include <algorithm>
-using std::min;
 
 
 
@@ -346,7 +345,7 @@ namespace GMlib {
   inline
   void  DVector<T>::resetDim(int i) {
 
-    int j, k = min(i,_n);
+    int j, k = std::min(i,_n);
     T* tmp = ( i > 4 ? new T[i] : _init );
 
     for( j = 0; j < k; j++ )

@@ -34,6 +34,110 @@
 namespace GMlib {
 
 
+  /*! void SceneObject::_display()
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  inline
+  void SceneObject::_display() {
+    if(!_active) {
+    /*		if(_type_id != GM_SO_TYPE_SELECTOR_GRID)
+      {
+        glPushMatrix();
+        Sphere3D sp(_global_sphere,10,10);
+        sp.display();
+        glPopMatrix();
+      }
+    */
+      glPushMatrix(); {
+        if(_local_cs)
+          glMultMatrix(_present);
+        _scale.glScaling();
+
+        if(_collapsed) {
+
+          glPushAttrib( GL_LIGHTING_BIT ); {
+
+            glDisable( GL_LIGHTING );
+            glColor( Color( 0.6f, 0.6f, 0.6f, 1.0f ) );
+            displayCollapsed();
+
+          } glPopAttrib();
+        }
+        else            localDisplay();
+
+      } glPopMatrix();
+    }
+  }
+
+
+  inline
+  void SceneObject::_displayActive() {
+
+
+    if(!_active) {
+
+      glPushMatrix();
+        if(_local_cs)
+          glMultMatrix(_present);
+        _scale.glScaling();
+
+        if(_collapsed)  displayCollapsed();
+        else            localDisplayActive();
+
+      glPopMatrix();
+    }
+  }
+
+
+  inline
+  void SceneObject::_displaySelection() {
+
+
+    if(!_active) {
+
+      glPushMatrix();
+        if(_local_cs)
+          glMultMatrix(_present);
+        _scale.glScaling();
+
+        if(_collapsed)  displayCollapsed();
+        else            localDisplaySelection();
+
+      glPopMatrix();
+    }
+  }
+
+
+  /*! void SceneObject::_select( int what )
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  inline
+  void SceneObject::_select( int what ) {
+
+    if( !_active && ( what == 0 || what == _type_id || ( what < 0 && what + _type_id != 0 ) ) ) {
+
+      glPushMatrix(); {
+
+        if( _local_cs )
+          glMultMatrix( _present );
+
+        _scale.glScaling();
+        Color name(getName());
+        glColor(name);
+
+        if( _collapsed )
+          displayCollapsed();
+        else
+          localSelect();
+
+      } glPopMatrix();
+    }
+  }
+
 
   /*! void SceneObject::edit(int selector_id)
    *  \brief Pending Documentation
@@ -191,7 +295,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  Sphere<float,3>	SceneObject::getSurroundingSphere() const	{
+  Sphere<float,3> SceneObject::getSurroundingSphere() const	{
 
     return  _global_total_sphere;
   }
@@ -342,8 +446,6 @@ namespace GMlib {
     return _collapsed = !_collapsed;
   }
 
-
-
   /*! void SceneObject::toggleVisible()
    *  \brief Pending Documentation
    *
@@ -353,118 +455,6 @@ namespace GMlib {
   bool SceneObject::toggleVisible() {
 
     return _visible =! _visible;
-  }
-
-
-  /*! void SceneObject::_display()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void SceneObject::_display() {
-    if(!_active) {
-    /*		if(_type_id != GM_SO_TYPE_SELECTOR_GRID)
-      {
-        glPushMatrix();
-        Sphere3D sp(_global_sphere,10,10);
-        sp.display();
-        glPopMatrix();
-      }
-    */
-      glPushMatrix(); {
-        if(_local_cs)
-          glMultMatrix(_present);
-        _scale.glScaling();
-
-        if(_collapsed) {
-
-          glPushAttrib( GL_LIGHTING_BIT ); {
-
-            glDisable( GL_LIGHTING );
-            glColor( Color( 0.6f, 0.6f, 0.6f, 1.0f ) );
-            displayCollapsed();
-
-          } glPopAttrib();
-        }
-        else            localDisplay();
-
-      } glPopMatrix();
-    }
-  }
-
-
-  inline
-  void SceneObject::_displayActive() {
-
-
-    if(!_active) {
-
-      glPushMatrix();
-        if(_local_cs)
-          glMultMatrix(_present);
-        _scale.glScaling();
-
-        if(_collapsed)  displayCollapsed();
-        else            localDisplayActive();
-
-      glPopMatrix();
-    }
-  }
-
-
-  inline
-  void SceneObject::_displaySelection() {
-
-
-    if(!_active) {
-
-      glPushMatrix();
-        if(_local_cs)
-          glMultMatrix(_present);
-        _scale.glScaling();
-
-        if(_collapsed)  displayCollapsed();
-        else            localDisplaySelection();
-
-      glPopMatrix();
-    }
-  }
-
-
-  /*! void SceneObject::_select( int what )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void SceneObject::_select( int what ) {
-
-//    cout << "Evaluationg select request" << endl;
-//    cout << "\t_active:  " << _active << endl;
-//    cout << "\twhat:     " << what << endl;
-//    cout << "\t_type_id: " << _type_id << endl;
-
-
-    if( !_active && ( what == 0 || what == _type_id || ( what < 0 && what + _type_id != 0 ) ) ) {
-//      cout << "\t\tPaint Select" << endl;
-
-      glPushMatrix(); {
-
-        if( _local_cs )
-          glMultMatrix( _present );
-
-        _scale.glScaling();
-        Color name(getName());
-        glColor(name);
-
-        if( _collapsed )
-          displayCollapsed();
-        else
-          localSelect();
-
-      } glPopMatrix();
-    }
   }
 
 }

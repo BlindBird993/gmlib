@@ -28,7 +28,10 @@
  *  \date   2008-10-22
  */
 
+// stl
+#include <cmath>
 
+// local
 #include "gmOpenGL.h"
 #include "gmSArray.h"
 
@@ -74,26 +77,26 @@ namespace GMlib {
 
     int ptbt=8*_tri_order.getDim1()*_tri_order.getDim2()+8 + 8*_tri_order.getDim1();
 
-    cout << "antall element strre enn 20: " << p << " Av totalt: "
-       << _tri_order.getDim1()*_tri_order.getDim2() << endl;
+    std::cout << "antall element strre enn 20: " << p << " Av totalt: "
+       << _tri_order.getDim1()*_tri_order.getDim2() << std::endl;
 
-    cout << "Total byte pr element i matrise  : "
-       << (4*r)/((double)_tri_order.getDim1()*_tri_order.getDim2()) << endl;
+    std::cout << "Total byte pr element i matrise  : "
+       << (4*r)/((double)_tri_order.getDim1()*_tri_order.getDim2()) << std::endl;
 
-    cout << "Total kbyte bruk i matrise  : " << (4*r + ptbt)/1024 << endl;
-    cout << "Minimum kbyte bruk i matrise: " << (4*s + ptbt)/1024 << endl;
-    cout << "For mye kbyte bruk i matrise: " << (4*k)/1024  << endl;
+    std::cout << "Total kbyte bruk i matrise  : " << (4*r + ptbt)/1024 << std::endl;
+    std::cout << "Minimum kbyte bruk i matrise: " << (4*s + ptbt)/1024 << std::endl;
+    std::cout << "For mye kbyte bruk i matrise: " << (4*k)/1024  << std::endl;
 
-    cout << "Total byte pr pkt i matrise  : " << (4*r + ptbt)/((double)this->getSize()) << endl;
-    cout << "Minimum byte pr pkt i matrise: " << (4*s + ptbt)/((double)this->getSize()) << endl;
-    cout << "For mye byte pr pkt i matrise: " << (4*k)/((double)this->getSize()) << endl;
+    std::cout << "Total byte pr pkt i matrise  : " << (4*r + ptbt)/((double)this->getSize()) << std::endl;
+    std::cout << "Minimum byte pr pkt i matrise: " << (4*s + ptbt)/((double)this->getSize()) << std::endl;
+    std::cout << "For mye byte pr pkt i matrise: " << (4*k)/((double)this->getSize()) << std::endl;
 
     for(k=i=0; i< this->getSize(); i++) k += 4+8+4*(*this)[i].getEdges().getMaxSize();
     for(i=0; i< _edges.getSize(); i++) k += 4*5;
     for(i=0; i< _triangles.getSize(); i++) k += 14;
 
 
-    cout << "Totalt brukt memory :" << (4*r+ptbt+k)/1024 << " kbyte\n";
+    std::cout << "Totalt brukt memory :" << (4*r+ptbt+k)/1024 << " kbyte\n";
 
 
     for(r=k=i=0; i< this->getSize(); i++)
@@ -101,8 +104,8 @@ namespace GMlib {
       k += (*this)[i].getEdges().getSize();
       r += (*this)[i].getEdges().getMaxSize();
     }
-    cout << "Antall edger i snitt i Verticene: " << ((double)k)/i << endl;
-    cout << "Max edger i snitt i Verticene   : " << ((double)r)/i << endl;
+    std::cout << "Antall edger i snitt i Verticene: " << ((double)k)/i << std::endl;
+    std::cout << "Max edger i snitt i Verticene   : " << ((double)r)/i << std::endl;
 
     clear();
   }
@@ -542,7 +545,7 @@ namespace GMlib {
         {										// the neighbour edges continue to
           m = (k == (pt.getSize()-1))? 0:k+1;	// the top and insert the new point.
           v  = pt[m] - p[k];
-          if(fabs(v^(np-pt[k])) < POS_TOLERANCE ) break;
+          if(std::fabs(v^(np-pt[k])) < POS_TOLERANCE ) break;
         }
         if(k<pt.getSize()) break;
 
@@ -557,7 +560,7 @@ namespace GMlib {
           Vector2D<T> v3 = pt[k] - p;
 
           T det = v1^v2;
-          if (fabs(det) < 1e-15) continue;
+          if (std::fabs(det) < 1e-15) continue;
 
           det = 1/det;
 

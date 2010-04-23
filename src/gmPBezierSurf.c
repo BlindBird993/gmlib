@@ -29,8 +29,11 @@
  *  \date   2008-11-20
  */
 
+// local
 #include "gmDMatrix.h"
 #include "gmEvaluatorStatic.h"
+#include "gmSelector.h"
+#include "gmSelectorGrid.h"
 
 namespace GMlib {
 
@@ -198,7 +201,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PBezierSurf<T>::getIdentity() const {
+  std::string PBezierSurf<T>::getIdentity() const {
 
     return "PBezierSurf";
   }

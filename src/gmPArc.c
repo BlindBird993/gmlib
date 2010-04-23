@@ -207,7 +207,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PArc<T>::getIdentity() const {
+  std::string PArc<T>::getIdentity() const {
 
     return "PArc";
   }

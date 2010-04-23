@@ -72,10 +72,6 @@ typedef unsigned short wchar_t;
 
 
 
-// STL includes
-#include <iostream>
-using namespace std;
-
 // OpenGL and extionsion includes
 #ifdef GM_GL_EXTENSION
   #ifdef _WIN32
@@ -88,7 +84,9 @@ using namespace std;
 
   // Enable Prototype GL Extensions
   #ifdef GM_GL_EXTENSION
-    #define GL_GLEXT_PROTOTYPES
+    #ifndef GL_GLEXT_PROTOTYPES
+      #define GL_GLEXT_PROTOTYPES
+    #endif
   #endif
 
   // Include OGL header
@@ -118,7 +116,7 @@ using namespace std;
 #include "gmStream.h"
 
 #include "gmMatrix.h"
-
+#include "gmColor.h"
 
 namespace GMlib {
 
@@ -134,366 +132,578 @@ namespace GMlib {
   const unsigned int GM_SPHERE_MAP = GL_SPHERE_MAP;
 
 
+  inline
+  void glColor(const Color& c) {
 
+    glColor4ubv( c.getRgba() );
+  }
 
 
+  //*************************************************
+  //********** overloaded Light functions ***********
+  //*************************************************
 
-  /*! \var _I
-   *  \brief The Identity Matrix
-   *
-   */
-  static float _I[16] = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
-
-
-  /*! \class GLMatrix
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  class GLMatrix {
-  public:
-    GLMatrix();
-    GLMatrix(float* m);
-    GLMatrix(const GLMatrix& m);
-    GLMatrix(Angle a, const UnitVector<float,3>& r);
-    GLMatrix(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    GLMatrix(const Vector<float,3>& tr);
-
-    void                basisChangeCam(
-                          const Vector<float,3>& x,
-                          const Vector<float,3>& y,
-                          const Vector<float,3>& z,
-                          const Vector<float,3>& p);
-
-    void                basisChange(
-                          const Vector<float,3>& x,
-                          const Vector<float,3>& y,
-                          const Vector<float,3>& z,
-                          const Vector<float,3>& p);
-
-    void                basisChangeInv(
-                          const Vector<float,3>& x,
-                          const Vector<float,3>& y,
-                          const Vector<float,3>& z,
-                          const Vector<float,3>& p);
-
-    const float&      get(int i,int j) const;
-    void                get(GLenum p);
-    GLMatrix&           getInverse() const;
-    GLMatrix&           getInverseOrtho() const;
-    float*            getPtr() const;
-    void                invert();
-    void                invertOrtho();
-    void                mult() const;
-    GLMatrix&           multRev(const GLMatrix& m);
-    void                put() const;
-    void                reset();
-    void                rotate( Angle a, const UnitVector<float,3>& d);
-    void                rotate( Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    void                rotateGlobal( Angle a, const Vector<float,3>& s);
-    void                rotateGlobal( Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    void                roundoff(int i=1000);
-    void                scale( const Point<float,3>& s);
-    void                scaleGlobal( const Point<float,3>& s);
-    void                translate( const Point<float,3>& s);
-    void                translateGlobal( const Point<float,3>& s);
-
-    GLMatrix&           operator =  (float* m);
-    GLMatrix&           operator =  (const GLMatrix& m);
-    float&            operator () (int i,int j);
-    GLMatrix&           operator *= (const GLMatrix& m);
-    GLMatrix            operator *  (GLMatrix& m);
-    Point<float,3>      operator *  (const Point<float,3>& p) const;
-    Vector<float,3>     operator *  (const Vector<float,3>& p) const;
-    Arrow<float,3>    operator *  (const Arrow<float,3>& b) const;
-    Box<float,3>      operator *  (const Box<float,3>& b) const;
-    Sphere<float,3>   operator *  (const Sphere<float,3>& b) const;
-    bool                operator <  (const GLMatrix& m) const;
-
+  inline
+  void glLight(GLenum li, GLenum pn, const Color& co) {
 
-  private:
-    float             _matrix[16];
+    float f[4];
+    f[0] = float(co.getRedC());
+    f[1] = float(co.getGreenC());
+    f[2] = float(co.getBlueC());
+    f[3] = float(co.getAlphaC());
+    glLightfv(li,pn,f);
+  }
 
-    void                _cpy();
-    void                _cpy( const float* m);
-    void                _makeOrtho( const UnitVector<float,3>& d, Vector3D<float>& x, Vector3D<float>& y, Vector3D<float>& z);
-    void                _mult( const GLMatrix& m1,const GLMatrix& m2);
-    void                _mult2( GLMatrix& m1,const GLMatrix& m2) const;
+  inline
+  void glLightSun(GLenum li, const Point<float,3>& pos) {
 
+    float f[4];
+    f[0] = pos(0);
+    f[1] = pos(1);
+    f[2] = pos(2);
+    f[3] = float(0.0);
+    glLightfv(li,GL_POSITION,f);
+  }
 
+  inline
+  void glLightPos(GLenum li, const Point<float,3>& pos) {
 
+    float f[4];
+    f[0] = pos(0);
+    f[1] = pos(1);
+    f[2] = pos(2);
+    f[3] = float(1.0);
+    glLightfv(li,GL_POSITION,f);
+  }
 
 
+  inline
+  void glLightDir(GLenum li, const Vector<float,3>& dir) {
 
+    float f[3];
+    f[0] = dir(0);
+    f[1] = dir(1);
+    f[2] = dir(2);
+    glLightfv(li,GL_SPOT_DIRECTION,f);
+  }
 
-  public:
 
+  inline
+  void glLight(GLenum li,GLenum pn, float f) {
 
-    friend
-    Point<float,3>& operator*=(Point<float,3>& p, const GLMatrix& m) {
-      p = m*p;
-      return p;
-    }
+    glLightf(li,pn,f);
+  }
 
-    friend
-    Vector<float,3>& operator*=(Vector<float,3>& p, const GLMatrix& m) {
-      p = m*p;
-      return p;
-    }
+  inline
+  void glLight(GLenum li,GLenum pn, int f) {
 
-    friend
-    UnitVector<float,3>& operator*=(UnitVector<float,3>& p, const GLMatrix& m) {
-      p = m * p;
-      return p;
-    }
+    glLighti(li,pn,f);
+  }
 
-    friend
-    Arrow<float,3>& operator*=(Arrow<float,3>& p, const GLMatrix& m) {
-      p = m*p; return p;
-    }
 
-    friend
-    Box<float,3>& operator*=(Box<float,3>& p, const GLMatrix& m) {
-      p = m*p; return p;
-    }
+  //***************************************************
+  //********** overloaded glMaterial functions ********
+  //***************************************************
 
-    friend
-    Sphere<float,3>& operator*=(Sphere<float,3>& p, const GLMatrix& m) {
-      p = m*p; return p;
-    }
+  inline
+  void glMaterial(GLenum li,GLenum pn, const Color& co) {
 
+    float f[4];
+    f[0] = float(co.getRedC());
+    f[1] = float(co.getGreenC());
+    f[2] = float(co.getBlueC());
+    f[3] = float(co.getAlphaC());
+    glMaterialfv(li,pn,f);
+  }
 
-    // *****************************
-    // IOSTREAM overloaded operators
+  inline
+  void glMaterial(GLenum li,GLenum pn, const Point<float,3>& co) {
 
-    #ifdef GM_STREAM
+    glMaterialfv(li,pn,(float*)(&co));
+  }
 
-    template<class T_Stream>
-    friend T_Stream& operator<<(T_Stream& out, const GLMatrix& mm) {
+  inline
+  void glMaterial(GLenum li,GLenum pn, float f) {
 
-      float* m = mm.getPtr();
-      out << m[0] << GMseparator::Element << m[4] << GMseparator::Element << m[8] << GMseparator::Element << m[12] << GMseparator::Group;
-      out << m[1] << GMseparator::Element << m[5] << GMseparator::Element << m[9] << GMseparator::Element << m[13] << GMseparator::Group;
-      out << m[2] << GMseparator::Element << m[6] << GMseparator::Element << m[10]<< GMseparator::Element << m[14] << GMseparator::Group;
-      out << m[3] << GMseparator::Element << m[7] << GMseparator::Element << m[11]<< GMseparator::Element << m[15] << GMseparator::Group;
-      return out;
-    }
+    glMaterialf(li,pn,f);
+  }
 
+  inline
+  void glMaterial(GLenum li,GLenum pn, int f) {
 
-    template<class T_Stream>
-    friend T_Stream& operator>>(T_Stream& in, GLMatrix& mm) {
+    glMateriali(li,pn,f);
+  }
 
-      float* m = mm.getPtr();
-      static Separator es(GMseparator::Element);
-      static Separator gs(GMseparator::Group);
+  //*************************************************
+  //********** overloaded Transformation functions **
+  //*************************************************
 
-      in >> m[0] >> es >> m[4] >> es >> m[8] >> es >> m[12] >> gs;
-      in >> m[1] >> es >> m[5] >> es >> m[9] >> es >> m[13] >> gs;
-      in >> m[2] >> es >> m[6] >> es >> m[10]>> es >> m[14] >> gs;
-      in >> m[3] >> es >> m[7] >> es >> m[11]>> es >> m[15] >> gs;
-      return in;
-    }
+  //*************float******************
+  inline
+  void glScale(const Point<float,3>& p) {
 
+    glScalef(p(0),p(1),p(2));
+  }
 
-  private:
-    istream& _printIn( istream& in );
-    ostream& _printOut( ostream& out ) const;
+  inline
+  void glRotate(Angle a, const Vector<float,3>& p) {
 
+    glRotatef(float(180*a.getRad()/M_PI),p(0),p(1),p(2));
+  }
 
-  public:
-    friend
-    ostream& operator << ( ostream& out, const GLMatrix& v ) {
+  inline
+  void glTranslate(const Point<float,3>& p) {
 
-      return v._printOut( out );
-    }
+    glTranslatef(p(0),p(1),p(2));
+  }
 
-    friend
-    ostream& operator << ( ostream& out, const GLMatrix* v ) {
 
-      return v->_printOut( out );
-    }
+  //**************double******************
+  inline
+  void glScale(const Point<double,3>& p) {
 
-    friend
-    istream& operator >> ( istream& in, GLMatrix& v ) {
+    glScaled(p(0),p(1),p(2));
+  }
 
-      return v._printIn (in );
-    }
+  inline
+  void glRotate(Angle a, const Vector<double,3>& p) {
 
-    friend
-    istream& operator >> ( istream& in, GLMatrix* v ) {
+    glRotated(float(180*a.getRad()/M_PI),p(0),p(1),p(2));
+  }
 
-      return v->_printIn( in );
-    }
+  inline
+  void glTranslate(const Point<double,3>& p) {
 
-    void print( char prompt[] = "GLMatrix", ostream & out = cout ) const;
+    glTranslated(p(0),p(1),p(2));
+  }
 
-    #endif
 
-  }; // END class GLMatrix
+  //*************************************************
+  //********** overloaded Matrix functions **********
+  //*************************************************
+//
+//  inline
+//  void glLoadMatrix(const GLMatrix& m)
+//  {
+//    glLoadMatrixf(m.getPtr());
+//  }
+//
+//  inline
+//  void glMultMatrix(const GLMatrix& m)
+//  {
+//    glMultMatrixf(m.getPtr());
+//  }
 
 
+  inline
+  void glLoadMatrix(const HqMatrix<float,3>& m) {
 
+    glLoadMatrixf(m.getTransposed().getPtr());
+  }
 
 
+  inline
+  void glMultMatrix(const HqMatrix<float,3>& m) {
 
+    glMultMatrixf(m.getTransposed().getPtr());
+  }
 
 
+  inline
+  void glLoadMatrix(const HqMatrix<double,3>& m) {
 
+    glLoadMatrixd(m.getTransposed().getPtr());
+  }
 
-  /*! \class Frustum
-   *  \brief  Pending Documentation
-   *
-   *  A class to describe a frutrum to a perspectiv or isometric view.
-   */
-  class Frustum {
-  public:
-    Frustum();													          // Default constructor
-    Frustum(
-      const HqMatrix<float,3>& m,								// Standar perspective constructor
-      const Point<float,3>& p,
-      const Vector<float,3>& d,
-      const Vector<float,3>& u,
-      const Vector<float,3>& s,
-      float angle_tan,
-      float ratio,
-      float nearplane,
-      float farplane);
 
-    Frustum(
-      const HqMatrix<float,3>& m,								// Iso constructor constructor
-      const Point<float,3>& p,
-      float width,
-      float ratio,
-      const Vector<float,3>& d,
-      const Vector<float,3>& u,
-      const Vector<float,3>& s,
-      float nearplane,
-      float farplane);
+  inline
+  void glMultMatrix(const HqMatrix<double,3>& m) {
 
-    Frustum(const Frustum&  v);
+    glMultMatrixd(m.getTransposed().getPtr());
+  }
 
-    void              set(
-                        const HqMatrix<float,3>& m,			// Perspective
-                        const Point<float,3>& p,
-                        const Vector<float,3>& d,
-                        const Vector<float,3>& u,
-                        const Vector<float,3>& s,
-                        float angle_tan,
-                        float ratio,
-                        float nearplane,
-                        float farplane);
 
-    void              set(
-                        const HqMatrix<float,3>& m,			// Iso
-                        const Point<float,3>& p,
-                        float width,
-                        float ratio,
-                        const Vector<float,3>& d,
-                        const Vector<float,3>& u,
-                        const Vector<float,3>& s,
-                        float nearplane,
-                        float farplane);
 
-    Point<float,3>    getPos(int i) const;
-    Vector<float,3>   getNormal(int i) const;
+  //********************************
+  //********  DIMENSION  2 *********
+  //********************************
 
-    int               isInterfering(const Sphere<float,3>& s) const;
+  //*********************************************************
+  //********** Point<double,2>:based gl-functions ***********
+  //*********************************************************
 
-  private:
-    Point<float,3>	  _p[2];	// p[0]: høyre/opp/bak-hjørne  p[1]: venstre/ned/foran-hjørne
-    Vector<float,3>   _v[6];	// normal: venstre, høyre, opp, ned, bak, fram.
+  inline
+  void glPoint(const Point<double,2>& p)
+  {
+    glVertex2dv((double *)&p);
+  }
 
-  }; // END class Frustum
+  inline
+  void glPoint(Point<double,2>* p)
+  {
+    glVertex2dv((double *)p);
+  }
 
 
+  //*********************************************************
+  //********** Point<float,2>:based gl-functions ************
+  //*********************************************************
 
+  inline
+  void glPoint(const Point<float,2>& p)
+  {
+    glVertex2fv((float *)&p);
+  }
 
+  inline
+  void glPoint(Point<float,2>* p)
+  {
+    glVertex2fv((float *)p);
+  }
 
+  inline
+  void glTexCoord( float coord ) {
+    glTexCoord1f( coord );
+  }
 
+  inline
+  void glTexCoord(const Point<float,2>& p)
+  {
+    glTexCoord2fv((float *)&p);
+  }
 
+  //*********************************************************
+  //********** Point<int,2>:based gl-functions **************
+  //*********************************************************
 
+  inline
+  void glPoint(const Point<int,2>& p)
+  {
+    glVertex2iv((int *)&p);
+  }
 
+  inline
+  void glPoint(Point<int,2>* p)
+  {
+    glVertex2iv((int *)p);
+  }
 
 
-  /*! \class ScaleObj
-   *  \brief Pending Documentation
-   *
-   *  Scaleing Object
-   */
-  class ScaleObj {
-  public:
-    ScaleObj();
-    ScaleObj(float	s);
-    ScaleObj(Point<float,3>	sc);
+  //*********************************************************
+  //********** Point<short,2>:based gl-functions ************
+  //*********************************************************
 
-    float                   getMax() const;
-    Point<float,3>const&    getScale();
-    void                    glScaling();
+  inline
+  void glPoint(const Point<short,2>& p)
+  {
+    glVertex2sv((short *)&p);
+  }
+
+  inline
+  void glPoint(Point<short,2>* p)
+  {
+    glVertex2sv((short *)p);
+  }
+
+
+
 
-    bool                    isActive()  const;
-
-    void                    reset();
-    void                    reset(const Point<float,3>& sc);
-    void                    scale(const Point<float,3>& sc);
-    Sphere<float,3>         scaleSphere(const Sphere<float,3>& sp) const;
-
-
-  private:
-    bool			              _scaled;
-    Point<float,3>          _s;
-    float			              _max;
-
-    void                    _updateMax();
-
-
-  #ifdef GM_STREAM
-    public:
-      template<class T_Stream>
-      friend T_Stream& operator<<(T_Stream& out, const ScaleObj& v)
-      {
-        out << (int)v._scaled << GMseparator::Element << v._s << GMseparator::Element << v._max ;
-        return out;
-      }
-
-      template<class T_Stream>
-      friend T_Stream& operator>>(T_Stream& in, ScaleObj& v)
-      {
-        static Separator es(GMseparator::Element);
-        //		GLubyte r,g,b,a;
-        int scaled;
-        in >> scaled >> es >> v._s >> es >> v._max;
-        v._scaled = (bool)scaled;
-        return in;
-      }
-
-  #endif
-
-  }; // END class ScaleObj
-
-
-
-
+  //********************************
+  //********  DIMENSION  3 *********
+  //********************************
+
+  //*********************************************************
+  //********** Point<double,3>:based gl-functions ***********
+  //*********************************************************
+
+  inline
+  void glPoint(const Point<double,3>& p)
+  {
+    glVertex3dv((double *)&p);
+  }
+
+  inline
+  void glVector(const Vector<double,3>& p)
+  {
+    double a[4];
+    memcpy(a, p.getPtr(),3);
+    a[3] = 0;
+    glVertex4dv(a);
+  }
+
+  inline
+  void glNormal(const Vector<double,3>& v)
+  {
+    glNormal3dv((double *)&v);
+  }
+
+  inline
+  void glVertex(const Arrow<double,3>& p)
+  {
+    glNormal3dv((double *)(p.getDir().getPtr()));
+    glVertex3dv((double *)&p);
+  }
+
+
+  inline
+  void glPoint(Point<double,3>* p)
+  {
+    glVertex3dv((double *)p);
+  }
+
+  inline
+  void glVector(Vector<double,3>* p)
+  {
+    double a[4];
+    memcpy(a,p,3);
+    a[3] = 0;
+    glVertex4dv(a);
+  }
+
+  inline
+  void glNormal(Vector<double,3>* v)
+  {
+    glNormal3dv((double *)v);
+  }
+
+  inline
+  void glVertex(Arrow<double,3>* p)
+  {
+    glNormal3dv((double *)(p->getDir().getPtr()));
+    glVertex3dv((double *)p);
+
+  }
+
+  //*********************************************************
+  //********** Point<float,3>:based gl-functions ************
+  //*********************************************************
+
+  inline
+  void glPoint(const Point<float,3>& p)
+  {
+    glVertex3fv((float *)&p);
+  }
+
+  inline
+  void glVector(const Vector<float,3>& p)
+  {
+    float a[4];
+    memcpy(a,p.getPtr(),3);
+    a[3] = 0;
+    glVertex4fv(a);
+  }
+
+  inline
+  void glNormal(const Vector<float,3>& v)
+  {
+    glNormal3fv((float *)&v);
+  }
+
+  inline
+  void glVertex(const Arrow<float,3>& p)
+  {
+    glNormal3fv((float *)(p.getDir().getPtr()));
+    glVertex3fv((float *)&p);
+  }
+
+
+  inline
+  void glPoint(Point<float,3>* p)
+  {
+    glVertex3fv((float *)p);
+  }
+
+  inline
+  void glVector(Vector<float,3>* p)
+  {
+    float a[4];
+    memcpy(a,p,3);
+    a[3] = 0;
+    glVertex4fv(a);
+  }
+
+  inline
+  void glNormal(Vector<float,3>* v)
+  {
+    glNormal3fv((float *)v);
+  }
+
+  inline
+  void glVertex(Arrow<float,3>* p)
+  {
+    glNormal3fv((float *)(p->getDir().getPtr()));
+    glVertex3fv((float *)p);
+  }
+
+
+  //*********************************************************
+  //********** Point<int,3>:based gl-functions **************
+  //*********************************************************
+
+  inline
+  void glPoint(const Point<int,3>& p)
+  {
+    glVertex3iv((int *)&p);
+  }
+
+  inline
+  void glNormal(const Vector<int,3>& v)
+  {
+    glNormal3iv((int *)&v);
+  }
+
+  inline
+  void glVertex(const Arrow<int,3>& p)
+  {
+    glNormal3iv((int *)(p.getDir().getPtr()));
+    glVertex3iv((int *)&p);
+  }
+
+
+  inline
+  void glPoint(Point<int,3>* p)
+  {
+    glVertex3iv((int *)p);
+  }
+
+  inline
+  void glNormal(Vector<int,3>* v)
+  {
+    glNormal3iv((int *)v);
+  }
+
+  inline
+  void glVertex(Arrow<int,3>* p)
+  {
+    glNormal3iv((int *)(p->getDir().getPtr()));
+    glVertex3iv((int *)p);
+  }
+
+
+  //*********************************************************
+  //********** Point<short,3>:based gl-functions ************
+  //*********************************************************
+
+  inline
+  void glPoint(const Point<short,3>& p)
+  {
+    glVertex3sv((short *)&p);
+  }
+
+  inline
+  void glNormal(const Vector<short,3>& v)
+  {
+    glNormal3sv((short *)&v);
+  }
+
+  inline
+  void glVertex(const Arrow<short,3>& p)
+  {
+    glNormal3sv((short *)(p.getDir().getPtr()));
+    glVertex3sv((short *)&p);
+  }
+
+
+  inline
+  void glPoint(Point<short,3>* p)
+  {
+    glVertex3sv((short *)p);
+  }
+
+  inline
+  void glNormal(Vector<short,3>* v)
+  {
+    glNormal3sv((short *)v);
+  }
+
+  inline
+  void glVertex(Arrow<short,3>* p)
+  {
+    glNormal3sv((short *)(p->getDir().getPtr()));
+    glVertex3sv((short *)p);
+  }
+
+
+
+  //********************************
+  //********  DIMENSION  4 *********
+  //********************************
+
+  //*********************************************************
+  //********** Point<double,4>:based gl-functions ***********
+  //*********************************************************
+
+  inline
+  void glPoint(const Point<double,4>& p)
+  {
+    glVertex4dv((double *)&p);
+  }
+
+  inline
+  void glPoint(Point<double,4>* p)
+  {
+    glVertex4dv((double *)p);
+  }
+
+
+  //*********************************************************
+  //********** Point<float,4>:based gl-functions ************
+  //*********************************************************
+
+  inline
+  void glPoint(const Point<float,4>& p)
+  {
+    glVertex4fv((float *)&p);
+  }
+
+  inline
+  void glPoint(Point<float,4>* p)
+  {
+    glVertex4fv((float *)p);
+  }
+
+
+  //*********************************************************
+  //********** Point<int,4>:based gl-functions **************
+  //*********************************************************
+
+  inline
+  void glPoint(const Point<int,4>& p)
+  {
+    glVertex4iv((int *)&p);
+  }
+
+  inline
+  void glPoint(Point<int,4>* p)
+  {
+    glVertex4iv((int *)p);
+  }
+
+
+  //*********************************************************
+  //********** Point<short,4>:based gl-functions ************
+  //*********************************************************
+
+  inline
+  void glPoint(const Point<short,4>& p)
+  {
+    glVertex4sv((short *)&p);
+  }
+
+  inline
+  void glPoint(Point<short,4>* p)
+  {
+    glVertex4sv((short *)p);
+  }
+
+
+  // ***********
+  // SwapBuffers
+
+  void swapBuffers(void);
 
 
 } // END namespace GMlib
-
-
-
-// Include GMlib namespace gmOpenGL function definitions/implementations
-#include "gmOpenGL.c"
-
-// Include inline GLMatrix implementations
-#include "gmOpenGL_GLMatrix.c"
-
-// Include inline Frustum class implementations
-#include "gmOpenGL_Frustum.c"
-
-// Include inline ScaleObj class implementations
-#include "gmOpenGL_ScaleObj.c"
-
-
-
-
 
 
 #endif // __gmOPENGL_H__

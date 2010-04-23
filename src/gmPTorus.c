@@ -197,7 +197,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  string PTorus<T>::getIdentity() const {
+  std::string PTorus<T>::getIdentity() const {
 
     return "PTorus";
   }

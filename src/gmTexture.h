@@ -37,8 +37,6 @@
 // STL includes
 #include <map>
 #include <string>
-using std::string;
-using std::map;
 
 // Locale GMlib includes
 #include "gmOpenGL.h"
@@ -79,7 +77,7 @@ namespace GMlib {
 
 
   private:
-    static map<unsigned int, int>   _texture_id_map;
+    static std::map<unsigned int, int>   _texture_id_map;
 
     unsigned char*                  _data;
     unsigned int	                  _height;

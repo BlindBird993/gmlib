@@ -31,17 +31,29 @@
  */
 
 
-// The base class of all Visualizers
+// Visualizer Base Classes
 #include "gmVisualizer"
+#include "gmPCurveVisualizer"               // PCurve Visualizer Base
+#include "gmPSurfVisualizer"                // PSurf Visualizer Base
+
 
 // Visualizers
-#include "gmVContours"                      // Displays Contours
-#include "gmVDefault"                       // Default Visualizer
-#include "gmVDerivatives"                   // Displays Derivatives
-#include "gmVDynamicTexture"                // Visualize textures dynamically.
-#include "gmVDynamicTextureAnimation"       // Visualize textures animated dynamically.
-#include "gmVGLShader"                      // GLSL Shader Visualizer
-#include "gmVGLContoursPhongShader"         // Contours with Phong Shader Visualizer
-#include "gmVGLPhongShader"                 // Phong Shader Visualizer
-#include "gmVNormals"                       // Displays Normals
-#include "gmVPoints"                        // Visualizes the Object as a "cloud" of Points
+
+// PCurve Visualizers( non-glsl )
+#include "gmPCurveContoursVisualizer"       // PCurve Contours Visualizer
+#include "gmPCurveDerivativesVisualizer"    // PCurve Derivatives Visualizer
+#include "gmPCurvePointsVisualizer"         // PCurve Points Visualizer
+
+// PSurf Visualizers( non-glsl )
+#include "gmPSurfContoursVisualizer"        // PSurf Contours Visualizer
+#include "gmPSurfDerivativesVisualizer"     // PSurf Derivatives Visualizer
+#include "gmPSurfNormalsVisualizer"         // PSurf Normals Visualizer
+#include "gmPSurfPointsVisualizer"          // PSurf Points Visualizer
+
+// PCurve GLSL Visualizer
+#include "gmPCurveGLSLVisualizer"           // PCurve GLSL Visualizer
+
+// PSurf GLSL Visualizer
+#include "gmPSurfGLSLVisualizer"            // PSurf GLSL Visualizer
+
+

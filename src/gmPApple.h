@@ -35,7 +35,6 @@
 
 
 #include <string>
-using std::string;
 
 #include "gmPSurf.h"
 
@@ -56,7 +55,7 @@ namespace GMlib {
     void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
     T                 getEndPU();
     T                 getEndPV();
-    string            getIdentity() const;
+    std::string       getIdentity() const;
     T                 getStartPU();
     T                 getStartPV();
     virtual void      init();

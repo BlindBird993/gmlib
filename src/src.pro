@@ -1,6 +1,6 @@
-HEADERS += 
-SOURCES += 
-OTHER_FILES += 
+HEADERS +=
+SOURCES +=
+OTHER_FILES +=
 
 # Module Headers
 HEADERS_MODULES += gmContainer \
@@ -30,7 +30,6 @@ HEADERS_CPP += gmAngle \
     gmEvaluatorERBS \
     gmEvaluatorStatic \
     gmGlobal \
-    gmGLPhongShader \
     gmGLSL \
     gmLight \
     gmLightG \
@@ -82,18 +81,23 @@ HEADERS_CPP += gmAngle \
     gmTexture \
     gmTimer \
     gmTriangleSystem \
-    gmVContours \
-    gmVDefault \
-    gmVDerivatives \
-    gmVDynamicTexture \
-    gmVDynamicTextureAnimation \
-    gmVGLContoursPhongShader \
-    gmVGLPhongShader \
-    gmVGLShader \
     gmVisualizer \
-    gmVNormals \
-    gmVPoints \
-    gmWindow
+    gmWindow \
+    gmPCurveVisualizer \
+    gmPCurveContoursVisualizer \
+    gmPCurveDerivativesVisualizer \
+    gmPCurvePointsVisualizer \
+    gmPSurfVisualizer \
+    gmPSurfContoursVisualizer \
+    gmPSurfDerivativesVisualizer \
+    gmPSurfNormalsVisualizer \
+    gmPSurfPointsVisualizer \
+    gmScaleObject \
+    gmFrustum \
+    gmGLMatrix \
+    gmPCurveGLSLVisualizer \
+    gmPSurfGLSLVisualizer
+
 
 # ########
 # Headers
@@ -113,7 +117,6 @@ HEADERS += gmAngle.h \
     gmEvaluatorERBS.h \
     gmEvaluatorStatic.h \
     gmGlobal.h \
-    gmGLPhongShader.h \
     gmGLSL.h \
     gmLight.h \
     gmLightG.h \
@@ -168,19 +171,23 @@ HEADERS += gmAngle.h \
     gmTexture.h \
     gmTimer.h \
     gmTriangleSystem.h \
-    gmVContours.h \
-    gmVDefault.h \
-    gmVDerivatives.h \
-    gmVDynamicTexture.h \
-    gmVDynamicTextureAnimation.h \
-    gmVGLContoursPhongShader.h \
-    gmVGLPhongShader.h \
-    gmVGLShader.h \
     gmVisualizer.h \
-    gmVNormals.h \
-    gmVPoints.h \
     gmWindow.h \
-    gmUtils.h
+    gmUtils.h \
+    gmPSurfVisualizer.h \
+    gmPCurveVisualizer.h \
+    gmPCurvePointsVisualizer.h \
+    gmPSurfPointsVisualizer.h \
+    gmPSurfNormalsVisualizer.h \
+    gmPCurveDerivativesVisualizer.h \
+    gmPSurfDerivativesVisualizer.h \
+    gmPCurveContoursVisualizer.h \
+    gmPSurfContoursVisualizer.h \
+    gmFrustum.h \
+    gmScaleObject.h \
+    gmGLMatrix.h \
+    gmPSurfGLSLVisualizer.h \
+    gmPCurveGLSLVisualizer.h
 
 # ########
 # Sources
@@ -191,7 +198,6 @@ SOURCES += gmCamera.cpp \
     gmCoordinateSystem.cpp \
     gmDisplayObject.cpp \
     gmGLSL.cpp \
-    gmGLPhongShader.cpp \
     gmLight_Light.cpp \
     gmLight_PointLight.cpp \
     gmLight_SpotLight.cpp \
@@ -200,7 +206,6 @@ SOURCES += gmCamera.cpp \
     gmLightG_SpotLightG.cpp \
     gmMaterial_Material.cpp \
     gmMaterial_MaterialObjectList.cpp \
-    gmOpenGL_GLMatrix.cpp \
     gmPathTrack.cpp \
     gmScene.cpp \
     gmSceneObject.cpp \
@@ -211,9 +216,11 @@ SOURCES += gmCamera.cpp \
     gmStream_Separator.cpp \
     gmSurroundingSphere.cpp \
     gmTexture.cpp \
+    gmVisualizer.cpp \
     gmWindow_GMWindow.cpp \
     gmWindow_View.cpp \
-    gmWindow_ViewSet.cpp
+    gmWindow_ViewSet.cpp \
+    gmGLMatrix.cpp
 
 # #################
 # Template sources
@@ -287,10 +294,6 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmPArc.c \
     gmParametrics.c \
     gmPApple.c \
-    gmOpenGL_ScaleObj.c \
-    gmOpenGL_GLMatrix.c \
-    gmOpenGL_Frustum.c \
-    gmOpenGL.c \
     gmMatrix_SqMatrix.c \
     gmMatrix_Matrix.c \
     gmMatrix_HqMatrix.c \
@@ -311,17 +314,6 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmWindow_ViewBorder.c \
     gmWindow_View.c \
     gmWindow_GMWindow.c \
-    gmVPoints.c \
-    gmVNormals.c \
-    gmVisualizer.c \
-    gmVGLShader.c \
-    gmVGLPhongShader.c \
-    gmVGLContoursPhongShader.c \
-    gmVDynamicTextureAnimation.c \
-    gmVDynamicTexture.c \
-    gmVDerivatives.c \
-    gmVDefault.c \
-    gmVContours.c \
     gmPChrysanthemumCurve.c \
     gmPAsteroidalSphere.c \
     gmTriangleSystem_TSVertex.c \
@@ -333,15 +325,35 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmTriangleSystem_TriangleFacets.c \
     gmSortObject.c \
     gmPCircularSurface.c \
-    gmUtils.c
+    gmUtils.c \
+    gmPSurfVisualizer.c \
+    gmPCurvePointsVisualizer.c \
+    gmPSurfPointsVisualizer.c \
+    gmPCurveVisualizer.c \
+    gmPSurfNormalsVisualizer.c \
+    gmPCurveDerivativesVisualizer.c \
+    gmPSurfDerivativesVisualizer.c \
+    gmPCurveContoursVisualizer.c \
+    gmPSurfContoursVisualizer.c \
+    gmFrustum.c \
+    gmScaleObject.c \
+    gmGLMatrix.c \
+    gmPSurfGLSLVisualizer.c \
+    gmPCurveGLSLVisualizer.c
+
 SOURCES_LUA += lua/pcircle_eval.lua \
     lua/psphere_eval.lua
-SOURCES_GLSL += 
-OTHER_FILES += \ \
+
+SOURCES_GLSL += glsl/phong.frag \
+    glsl/phong.vert
+
+OTHER_FILES += \
     $$HEADERS_MODULES \
     $$HEADERS_CPP \
     $$SOURCES_TEMPLATES \
-    $$SOURCES_LUA
+    $$SOURCES_LUA \
+    $$SOURCES_GLSL
+
 include( ../gmlib.pri )
 TARGET = gmlib
 include( ../gmlib_cpp.pri )

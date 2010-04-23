@@ -52,7 +52,7 @@ namespace GMlib {
     void                          edit( int selector );
     DVector< Vector<T,3> >&       getControlPoints();
     int                           getDegree() const;
-    string                        getIdentity() const;
+    std::string                   getIdentity() const;
     T                             getLocalMapping( T t, T ts, T ti, T te );
     virtual void                  hideSelectors();
     bool                          isClosed() const;

@@ -182,7 +182,7 @@ namespace GMlib {
     // return GM_Static_<T,n>::maxIndex(pt);
     int j=0;
     for(int i=1; i<n; i++)
-      if( abs( _pt[i] ) > abs( _pt[j] ) ) j = i;
+      if( std::fabs( _pt[i] ) > std::fabs( _pt[j] ) ) j = i;
     return j;
   }
 

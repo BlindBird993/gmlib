@@ -38,6 +38,7 @@ namespace GMlib {
   PCurve<T>::PCurve( int s ) {
 
     _no_sam           = s;
+    _no_der           = 1;
     _d                = -1;
     _tr               = T(0);
     _sc               = T(1);
@@ -47,7 +48,8 @@ namespace GMlib {
     this->_lighted    = false;
     _line_width       = 1.0;
 
-    this->_default_visualizer.set( this );
+    _default_visualizer = new PCurveVisualizer<T>();
+    enableDefaultVisualizer( true );
   }
 
 
@@ -57,6 +59,7 @@ namespace GMlib {
 
 
     _no_sam       = copy._no_sam;
+    _no_der       = copy._no_der;
 
     _p            = copy._p;
     _t            = copy._t;
@@ -68,6 +71,16 @@ namespace GMlib {
     _line_width   = copy._line_width;
 
     setNoDer(2);
+
+    _default_visualizer = new PCurveVisualizer<T>();
+    enableDefaultVisualizer( true );
+  }
+
+  template <typename T>
+  PCurve<T>::~PCurve() {
+
+    enableDefaultVisualizer( false );
+    delete _default_visualizer;
   }
 
 
@@ -124,6 +137,15 @@ namespace GMlib {
         p[p.getDim()-1][u] *= one_over_du;
       }
     }
+  }
+
+  template <typename T>
+  void PCurve<T>::enableDefaultVisualizer( bool enable ) {
+
+    if( !enable )
+      removeVisualizer( _default_visualizer );
+    else
+      insertVisualizer( _default_visualizer );
   }
 
 
@@ -204,7 +226,7 @@ namespace GMlib {
   inline
   int PCurve<T>::getDerivatives() const {
 
-    return _d;
+    return _no_der;
   }
 
 
@@ -296,6 +318,22 @@ namespace GMlib {
     return getDer1( t ).getLength();
   }
 
+  template <typename T>
+  inline
+  void PCurve<T>::insertVisualizer( Visualizer* visualizer ) {
+
+    PCurveVisualizer<T> *visu = dynamic_cast<PCurveVisualizer<T>*>( visualizer );
+    if( !visu )
+      return;
+
+    if( _pcurve_visualizers.exist( visu ) )
+      return;
+
+    _pcurve_visualizers += visu;
+
+    SceneObject::insertVisualizer( visualizer );
+  }
+
 
   template <typename T>
   inline
@@ -320,6 +358,12 @@ namespace GMlib {
     else
       _no_sam = m;
 
+    // Correct derivatives
+    if( d < 1 )
+      d = _no_der;
+    else
+      _no_der = d;
+
 
     // pre-sampel / pre evaluate data for a given parametric curve, if wanted/needed
     preSample( m, 1, getStartP(), getEndP() );
@@ -333,9 +377,21 @@ namespace GMlib {
 
 
     // Replot Visaulizers
-    for( int i = 0; i < this->_visualizers.getSize(); i++ )
-      this->_visualizers[i]->replot( p, m, d );
+    for( int i = 0; i < this->_pcurve_visualizers.getSize(); i++ )
+      this->_pcurve_visualizers[i]->replot( p, m, d );
   }
+
+  template <typename T>
+  void PCurve<T>::removeVisualizer( Visualizer* visualizer ) {
+
+    PCurveVisualizer<T> *visu = dynamic_cast<PCurveVisualizer<T>*>( visualizer );
+    if( visu )
+      _pcurve_visualizers.remove( visu );
+
+    SceneObject::removeVisualizer( visu );
+  }
+
+
 
 
 //  template <typename T>
@@ -502,6 +558,15 @@ namespace GMlib {
   T PCurve<T>::shift( T t ) {
 
     return _tr + _sc * ( t - getStartP() );
+  }
+
+  template <typename T>
+  void PCurve<T>::toggleDefaultVisualizer() {
+
+    if( !_pcurve_visualizers.exist( _default_visualizer ) )
+      enableDefaultVisualizer( true );
+    else
+      enableDefaultVisualizer( false );
   }
 
 
