@@ -321,6 +321,7 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmTriangleSystem_TSTile.c \
     gmTriangleSystem_TSLine.c \
     gmTriangleSystem_TSEdge.c \
+    gmTriangleSystem_TSVEdge.c \
     gmTriangleSystem_TriangleSystem.c \
     gmTriangleSystem_TriangleFacets.c \
     gmSortObject.c \

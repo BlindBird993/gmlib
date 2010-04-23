@@ -5,6 +5,13 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2010-04-23 Jostein Bratlie
+        * Additions to the commit with changelog entry: 2010-04-16 Arnt Roald Kristoffersen
+          - File info header and license/copy statement
+          - Removed #include statement from gmTriangleSystem_TSVEdge.c
+          - Added new file gmTriangleSystem_TSVEdge.c to project file: src.pro
+
+
 2010-04-22 Jostein Bratlie
         * Visualizer system re-write
           - Base moved down to SceneObject
@@ -20,6 +27,7 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
             - PSurfGLSLVisualizer (OpenGL Shader visualizer)
             - PSurfNormalsVisualizer
             - PSurfPointsVisualizer
+          - Now uses VBO techniques for rendering
         * Namespace cleanup
           - All 'using namespace' and 'using' removed
         * PSurf/PCurve cleanup

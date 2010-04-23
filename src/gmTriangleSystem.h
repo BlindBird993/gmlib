@@ -102,15 +102,17 @@ namespace GMlib {
 
     void                              clear(int d=-1);
     void                              computeNormals();
-    Box<T,3>					                getBoundBox() const;
 
-    TSEdge<T>*		                      getEdge(int i)		const;
-    int                               getNoVertices()	const;
-    int                               getNoEdges()		const;
-    int                               getNoTriangles()	const;
+    void                              createVoronoi();
+    Box<T,3>                          getBoundBox() const;
 
-    TSTriangle<T>*	                  getTriangle(int i)	const;
-    TSVertex<T>*		                    getVertex(int i)	const;
+    TSEdge<T>*                        getEdge(int i) const;
+    int                               getNoVertices() const;
+    int                               getNoEdges() const;
+    int                               getNoTriangles() const;
+
+    TSTriangle<T>*                    getTriangle(int i) const;
+    TSVertex<T>*                      getVertex(int i) const;
 
     int                               initRender(); //const;
 
@@ -120,13 +122,11 @@ namespace GMlib {
     bool                              removeVertexNew( TSVertex<T>& v);
 
     void                              render(); // const;
+    void                              renderVoronoi();
 
     bool                              setConstEdge(TSVertex<T> v1, TSVertex<T> v2);
 
     void                              triangulateDelaunay();
-
-	void							  createVoronoi();
-	void							  renderVoronoi();
 
    protected:
     int	                              _dlist_name;
@@ -136,11 +136,11 @@ namespace GMlib {
 
 
   private:
-    ArrayLX< TSEdge<T>* >		            _edges;
+    ArrayLX< TSEdge<T>* >             _edges;
     ArrayLX< TSTriangle<T>* >         _triangles;
-    Array< TSTile<T> *>                 _tmptiles;
-	Array<TSVEdge<T> >			  _voredges;
-	Array<Point<T,2> >			  _vorpnts;
+    Array< TSTile<T> *>               _tmptiles;
+    Array<TSVEdge<T> >                _voredges;
+    Array<Point<T,2> >                _vorpnts;
 
     int                               _d;
 
@@ -149,9 +149,9 @@ namespace GMlib {
     ArrayT<T>                         _v;
     Box<T,3>                          _box;
 
-   TSVertex<T>	                        __v;		// dummy because of MS-VC++ compiler
-   TSEdge<T>			                      __e;		// dummy because of MS-VC++ compiler
-   TSTriangle<T> 	                      __t;		// dummy because of MS-VC++ compiler
+   TSVertex<T>                        __v;		// dummy because of MS-VC++ compiler
+   TSEdge<T>                          __e;		// dummy because of MS-VC++ compiler
+   TSTriangle<T>                      __t;		// dummy because of MS-VC++ compiler
 
     bool                              _fillPolygon(Array<TSEdge<T>*>&);
     bool                              _removeLastVertex();;
@@ -162,12 +162,12 @@ namespace GMlib {
   friend class TriangleSystem<T>;
   private:
     void                              _adjustTriangle( TSTriangle<T>*, bool wider = false );
-    ArrayLX<TSEdge<T>* >&		            _getEdges();
-    TSVertex<T>*                        _find( const Point<T,3>& ) const;
-    TSEdge<T>*                          _find( const Point<T,3>&, const Point<T,3>& ) const;
+    ArrayLX<TSEdge<T>* >&             _getEdges();
+    TSVertex<T>*                      _find( const Point<T,3>& ) const;
+    TSEdge<T>*                        _find( const Point<T,3>&, const Point<T,3>& ) const;
     void                              _insertTriangle( TSTriangle<T>* );
     void                              _removeTriangle( TSTriangle<T>* );
-    ArrayLX<TSTriangle<T>* >&	          _triangle();
+    ArrayLX<TSTriangle<T>* >&         _triangle();
 
 
 
@@ -216,8 +216,8 @@ namespace GMlib {
 
   protected:
     void                        adjust( TSTriangle<T> *t, bool wider = false );
-    TSVertex<T>*                  find( const Point<T,3>& p ) const;
-    TSEdge<T>*                    find( const Point<T,3>& p1, const Point<T,3>& p2 );
+    TSVertex<T>*                find( const Point<T,3>& p ) const;
+    TSEdge<T>*                  find( const Point<T,3>& p1, const Point<T,3>& p2 );
 
 //    int                         getStreamMode();
 
@@ -267,56 +267,54 @@ namespace GMlib {
     ~TSVertex();
 
 
-    bool                  boundary() const;
-    Arrow<T,3>			      getArrow();
+    bool                    boundary() const;
+    Arrow<T,3>              getArrow();
     ArrayT<TSEdge<T>*>&	    getEdges();
-    Point<T,3>			      getNormal() const;
-    Array<TSEdge<T>*>		    getOuterEdges() const;
-    Point<T,2>			      getParameter() const;
-    Point<T,3>			      getPosition() const;
-    T                     getRadius();
-    T                     getRadiusMax();
-    T                     getRadiusMin();
+    Point<T,3>              getNormal() const;
+    Array<TSEdge<T>*>       getOuterEdges() const;
+    Point<T,2>              getParameter() const;
+    Point<T,3>              getPosition() const;
+    T                       getRadius();
+    T                       getRadiusMax();
+    T                       getRadiusMin();
     Array<TSTriangle<T>*>   getTriangles() const;
 
-    bool                  isConst()	const;
-    int                   isInside( TSTriangle<T>* ) const;
+    bool                    isConst()	const;
+    int                     isInside( TSTriangle<T>* ) const;
 
-    void                  setConst( bool c = true );
-    void                  setRadius( T r );
-    void                  setRadiusMax( T r );
-    void                  setRadiusMin( T r );
-    void                  setZ( T z );
+    void                    setConst( bool c = true );
+    void                    setRadius( T r );
+    void                    setRadiusMax( T r );
+    void                    setRadiusMin( T r );
+    void                    setZ( T z );
 
     TSVertex<T>&            operator=(const TSVertex<T>& t);
-    bool                  operator==(const TSVertex<T>& t)	const;
-    bool                  operator<(const TSVertex<T> &t) const;
+    bool                    operator==(const TSVertex<T>& t)	const;
+    bool                    operator<(const TSVertex<T> &t) const;
 
 
 
   private:
 
-    T                     _radius;
-    T                     _maxradius;
-    T                     _minradius;
+    T                       _radius;
+    T                       _maxradius;
+    T                       _minradius;
     ArrayT<TSEdge<T>*>      _edges;
 
-    bool                  _const;
+    bool                    _const;
 
 
-    void                  _set( const Point<T,3>& p, const Vector<T,3>& n );
+    void                    _set( const Point<T,3>& p, const Vector<T,3>& n );
 
 
   friend class TSEdge<T>;
   friend class TriangleFacets<T>;
   private:
-
-    void                  _computeNormal();
-    void                  _deleteEdges();
-    bool                  _insertEdge(TSEdge<T>* e);
-    bool                  _removeEdge(TSEdge<T>* e);
-
-    void                  _set( const TSVertex<T>& v );
+    void                    _computeNormal();
+    void                    _deleteEdges();
+    bool                    _insertEdge(TSEdge<T>* e);
+    bool                    _removeEdge(TSEdge<T>* e);
+    void                    _set( const TSVertex<T>& v );
 
 
 //  #if defined GM_STREAM
@@ -354,40 +352,33 @@ namespace GMlib {
     TSEdge(const TSEdge<T>& e);
     ~TSEdge();
 
-    bool                  boundary() const;
-
-    TSVertex<T>*	          getCommonVertex(const TSEdge<T>&) const;
-    TSVertex<T>*	          getFirstVertex() const;
-
-    Point<T,3>	          getCenterPos();
-    Point<T,2>	          getCenterPos2D();
-    T                     getLength();
-    T                     getLength2D();
+    bool                    boundary() const;
+    TSVertex<T>*            getCommonVertex(const TSEdge<T>&) const;
+    TSVertex<T>*            getFirstVertex() const;
+    Point<T,3>              getCenterPos();
+    Point<T,2>              getCenterPos2D();
+    T                       getLength();
+    T                       getLength2D();
     Array<TSTriangle<T>*>   getTriangle();
-    Vector<T,3>	          getVector();
-    Vector2D<T>	          getVector2D();
-    TSVertex<T>*	          getLastVertex() const;
+    Vector<T,3>             getVector();
+    Vector2D<T>             getVector2D();
+    TSVertex<T>*            getLastVertex() const;
+    TSVertex<T>*            getOtherVertex(const TSVertex<T>&) const;
+    void                    setConst(bool c = true);
 
-    TSVertex<T>*	          getOtherVertex(const TSVertex<T>&) const;
-
-
-    void                  setConst(bool c = true);
-
-
-    bool                  operator <  (const TSEdge<T>& v) const;
-    bool                  operator >  (const TSEdge<T>& v) const;
-    bool                  operator <= (const TSEdge<T>& v) const;
-    bool                  operator >= (const TSEdge<T>& v) const;
+    bool                    operator <  (const TSEdge<T>& v) const;
+    bool                    operator >  (const TSEdge<T>& v) const;
+    bool                    operator <= (const TSEdge<T>& v) const;
+    bool                    operator >= (const TSEdge<T>& v) const;
 
 
   private:
     TSVertex<T>             *_vertex[2];
     TSTriangle<T>           *_triangle[2];
-    bool	                _const;
+    bool                    _const;
 
-
-    bool                  _swap();
-    void                  _upv();
+    bool                    _swap();
+    void                    _upv();
 
 
   friend class TSTriangle<T>;
@@ -395,19 +386,19 @@ namespace GMlib {
   private:
 
     TSEdge<T>*              _getNext();
-    bool                  _hasPoints(const Point<T,3>& , const Point<T,3>&) const;
-    bool                  _isFirst(TSVertex<T>* v);
-    bool                  _isLast(TSVertex<T>* v);
+    bool                    _hasPoints(const Point<T,3>& , const Point<T,3>&) const;
+    bool                    _isFirst(TSVertex<T>* v);
+    bool                    _isLast(TSVertex<T>* v);
 
-    void                  _okDelaunay();
+    void                    _okDelaunay();
 
     TSTriangle<T>*          _getOther(TSTriangle<T>*);
-    bool                  _removeTriangle(TSTriangle<T>*);
-    void                  _reverse();
-    void                  _setTriangle(TSTriangle<T>* t1,TSTriangle<T>* t2);
-    bool                  _split( TSVertex<T>& p );
-    bool                  _swapTriangle(TSTriangle<T>* ot, TSTriangle<T>* nt);
-    bool                  _swapVertex(TSVertex<T>& is_v,TSVertex<T>& new_v);
+    bool                    _removeTriangle(TSTriangle<T>*);
+    void                    _reverse();
+    void                    _setTriangle(TSTriangle<T>* t1,TSTriangle<T>* t2);
+    bool                    _split( TSVertex<T>& p );
+    bool                    _swapTriangle(TSTriangle<T>* ot, TSTriangle<T>* nt);
+    bool                    _swapVertex(TSVertex<T>& is_v,TSVertex<T>& new_v);
 
 
 
@@ -442,32 +433,32 @@ namespace GMlib {
     ~TSTriangle();
 
 
-    T					              getAngleLargest();
-    T					              getAngleSmallest();
-    T					              getArea();
-    T					              getArea2D();
+    T                       getAngleLargest();
+    T                       getAngleSmallest();
+    T                       getArea();
+    T                       getArea2D();
 
-    Point<T,3>			        getCenterPos();
-    Point<T,2>			        getCenterPos2D();
-    T					              getCircum();
-    T					              getCircum2D();
+    Point<T,3>              getCenterPos();
+    Point<T,2>              getCenterPos2D();
+    T                       getCircum();
+    T                       getCircum2D();
 
-    Array<TSEdge<T>*>		      getEdges() const;
-    Vector<T,3>		          getNormal() const;
-    Array<TSVertex<T>*>	      getVertices() const;
+    Array<TSEdge<T>*>       getEdges() const;
+    Vector<T,3>             getNormal() const;
+    Array<TSVertex<T>*>     getVertices() const;
     int	                    isAround(const TSVertex<T>& v) const;
 
 
 
   private:
-    TSEdge<T>                 *_edge[3];
+    TSEdge<T>               *_edge[3];
     Box<unsigned char,2>    _box;
 
 
 
   friend class TSEdge<T>;
   friend class TriangleFacets<T>;
-	Point<T,2>				  _vorpnt;
+    Point<T,2>              _vorpnt;
   private:
 
     T                       _evalZ( const Point2D<T>& p, int deg = 1 ) const;
@@ -519,7 +510,7 @@ namespace GMlib {
 
   private:
     Array< Point<T,2> >   _vorpts;
-    TSVertex<T>             *_vertex;
+    TSVertex<T>           *_vertex;
     T                     _inscribed;
     T                     _circumscribed;
 
@@ -539,7 +530,7 @@ namespace GMlib {
     TSLine( int d = 0);
     TSLine( const Array<TSVertex<T> >& v );
 
-    TSVertex<T> interpolate( int i, double t ) const;
+    TSVertex<T>     interpolate( int i, double t ) const;
   };
 
 
@@ -569,7 +560,7 @@ namespace GMlib {
 // Include TriangleSystem Line class function implementations
 #include "gmTriangleSystem_TSLine.c"
 
-// Include Voronoi Edge class function implementations
+// Include TriangleSystem Voronoi Edge class function implementations
 #include "gmTriangleSystem_TSVEdge.c"
 
 
