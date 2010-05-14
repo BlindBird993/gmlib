@@ -22,61 +22,11 @@
 
 
 
-/*! \file gmPCurveVisualizer.h
+/*! \file gmPBezierTriangle
  *
- *  Interface for the PCurveVisualizer class.
+ *  C++ interface for the Parametric Bezier Triangle header and classes.
  *
- *  \date   2010-04-13
+ *  \date   2010-03-24
  */
 
-
-#ifndef __GMPCURVEVISUALIZER_H__
-#define __GMPCURVEVISUALIZER_H__
-
-#include "gmPoint.h"
-#include "gmDVector.h"
-#include "gmVisualizer.h"
-#include "gmOpenGL.h"
-
-
-namespace GMlib {
-
-  template <typename T>
-  class PCurve;
-
-  template <typename T>
-  class PCurveVisualizer : public Visualizer {
-  public:
-    PCurveVisualizer();
-    ~PCurveVisualizer();
-
-    void          display();
-    std::string   getIdentity() const;
-    virtual void  replot(
-      DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d
-    );
-    void          select();
-    void          set( SceneObject* obj );
-
-  protected:
-    PCurve<T>     *_curve;
-
-    GLuint        _vbo;
-    int           _no_vertices;
-
-  };
-
-
-
-
-
-
-
-} // END namespace GMlib
-
-// Include PCurveVisualizer class function implementations
-#include "gmPCurveVisualizer.c"
-
-
-#endif // __GMPCURVEVISUALIZER_H__
+#include "gmPBezierTriangle.h"

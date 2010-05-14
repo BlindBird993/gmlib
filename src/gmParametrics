@@ -37,6 +37,7 @@
 // Direct subclasses of Parametrics
 #include "gmPCurve"                 // Curve
 #include "gmPSurf"                  // Surface
+#include "gmPTriangle"              // Triangle
 
 // Parametric Curves
 #include "gmPArc"                   // An Arc
@@ -59,6 +60,10 @@
 #include "gmPSphere"                // Sphere
 #include "gmPSteinerSurf"           // The Steiner Surface
 #include "gmPTorus"                 // Torus Surface
+
+// Parametric Triangle Surfaces
+#include "gmPBezierTriangle"        // Bezier Triangle
+#include "gmPERBSTriangle"          // Expo Rational BSpline Triangle
 
 // Trasformation
 #include "gmPTCurve"                // Transformable TCurve (special curve)

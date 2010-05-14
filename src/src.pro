@@ -1,6 +1,18 @@
-HEADERS +=
+HEADERS += \
+    gmPTriangle.h \
+    gmPTriangleVisualizer.h \
+    gmPBezierTriangle.h \
+    gmPERBSTriangle.h
 SOURCES +=
-OTHER_FILES +=
+OTHER_FILES += \
+    gmPTriangle.c \
+    gmPTriangle \
+    gmPTriangleVisualizer.c \
+    gmPTriangleVisualizer \
+    gmPBezierTriangle.c \
+    gmPBezierTriangle \
+    gmPERBSTriangle.c \
+    gmPERBSTriangle
 
 # Module Headers
 HEADERS_MODULES += gmContainer \

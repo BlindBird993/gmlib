@@ -22,61 +22,65 @@
 
 
 
-/*! \file gmPCurveVisualizer.h
+/*! \file gmPTriangleVisualizer.h
  *
- *  Interface for the PCurveVisualizer class.
+ *  Interface for the PTriangleVisualizer class.
  *
- *  \date   2010-04-13
+ *  \date   2010-05-04
  */
 
 
-#ifndef __GMPCURVEVISUALIZER_H__
-#define __GMPCURVEVISUALIZER_H__
+#ifndef __gmPTRIANGLEVISUALIZER_H__
+#define __gmPTRIANGLEVISUALIZER_H__
+
+
 
 #include "gmPoint.h"
 #include "gmDVector.h"
+#include "gmDMatrix.h"
 #include "gmVisualizer.h"
 #include "gmOpenGL.h"
 
+#define PTRIANGLEVERTEX_SIZE 32
 
 namespace GMlib {
 
   template <typename T>
-  class PCurve;
+  class PTriangle;
 
-  template <typename T>
-  class PCurveVisualizer : public Visualizer {
-  public:
-    PCurveVisualizer();
-    ~PCurveVisualizer();
-
-    void          display();
-    std::string   getIdentity() const;
-    virtual void  replot(
-      DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d
-    );
-    void          select();
-    void          set( SceneObject* obj );
-
-  protected:
-    PCurve<T>     *_curve;
-
-    GLuint        _vbo;
-    int           _no_vertices;
-
+  struct PTriangleVertex {
+    float x, y, z;
+    float nx, ny, nz;
+    float padding[2];
   };
 
+  template <typename T>
+  class PTriangleVisualizer : public Visualizer {
+  public:
+    PTriangleVisualizer();
+    ~PTriangleVisualizer();
+    void            display();
+    std::string     getIdentity() const;
+    virtual void    replot(
+      DVector< DMatrix< Vector<T,3> > >& p,int m
+    );
+    void            select();
+    void            set( SceneObject* obj );
 
+  protected:
+    PTriangle<T>    *_triangle;
+    GLuint          _vbo;
 
+    int             _no_vertices;
+    int             _m;
 
-
-
+  }; // END class PTriangleVisualizer
 
 } // END namespace GMlib
 
-// Include PCurveVisualizer class function implementations
-#include "gmPCurveVisualizer.c"
+// Include PTriangleVisualizer class function implementations
+#include "gmPTriangleVisualizer.c"
 
 
-#endif // __GMPCURVEVISUALIZER_H__
+
+#endif // __gmPTRIANGLEVISUALIZER_H__

@@ -5,6 +5,15 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2010-05-14 Jostein Bratlie
+        * Added a parametric triangle implementation and sub implementations
+          - PTriangle
+          - PBezierTriangle
+          - PERBSTriangle
+        * Added visualization for the parametric triangle implementation
+          - PTriangleVisualizer
+
+
 2010-04-23 Jostein Bratlie
         * Additions to the commit with changelog entry: 2010-04-16 Arnt Roald Kristoffersen
           - File info header and license/copy statement
