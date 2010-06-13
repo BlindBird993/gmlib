@@ -1,18 +1,6 @@
-HEADERS += \
-    gmPTriangle.h \
-    gmPTriangleVisualizer.h \
-    gmPBezierTriangle.h \
-    gmPERBSTriangle.h
+HEADERS +=
 SOURCES +=
-OTHER_FILES += \
-    gmPTriangle.c \
-    gmPTriangle \
-    gmPTriangleVisualizer.c \
-    gmPTriangleVisualizer \
-    gmPBezierTriangle.c \
-    gmPBezierTriangle \
-    gmPERBSTriangle.c \
-    gmPERBSTriangle
+OTHER_FILES +=
 
 # Module Headers
 HEADERS_MODULES += gmContainer \
@@ -39,6 +27,7 @@ HEADERS_CPP += gmAngle \
     gmDisplayObject \
     gmDMatrix \
     gmDVector \
+    gmDVectorN \
     gmEvaluatorERBS \
     gmEvaluatorStatic \
     gmGlobal \
@@ -108,7 +97,11 @@ HEADERS_CPP += gmAngle \
     gmFrustum \
     gmGLMatrix \
     gmPCurveGLSLVisualizer \
-    gmPSurfGLSLVisualizer
+    gmPSurfGLSLVisualizer \
+    gmPTriangle \
+    gmPTriangleVisualizer \
+    gmPBezierTriangle \
+    gmPERBSTriangle
 
 
 # ########
@@ -199,7 +192,12 @@ HEADERS += gmAngle.h \
     gmScaleObject.h \
     gmGLMatrix.h \
     gmPSurfGLSLVisualizer.h \
-    gmPCurveGLSLVisualizer.h
+    gmPCurveGLSLVisualizer.h \
+    gmPTriangle.h \
+    gmPTriangleVisualizer.h \
+    gmPBezierTriangle.h \
+    gmPERBSTriangle.h \
+    gmDVectorN.h
 
 # ########
 # Sources
@@ -320,6 +318,7 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmEvaluatorERBS.c \
     gmDVector.c \
     gmDMatrix.c \
+    gmDVectorN.c \
     gmDisplayObject.c \
     gmColor.c \
     gmWindow_ViewSet.c \
@@ -352,7 +351,11 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmScaleObject.c \
     gmGLMatrix.c \
     gmPSurfGLSLVisualizer.c \
-    gmPCurveGLSLVisualizer.c
+    gmPCurveGLSLVisualizer.c \
+    gmPTriangle.c \
+    gmPTriangleVisualizer.c \
+    gmPBezierTriangle.c \
+    gmPERBSTriangle.c
 
 SOURCES_LUA += lua/pcircle_eval.lua \
     lua/psphere_eval.lua

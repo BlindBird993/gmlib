@@ -5,6 +5,11 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2010-06-13 Jostein Bratlie
+        * Implemented the old DVectorN container
+          - Template based N-dimensional conationer.
+
+
 2010-05-14 Jostein Bratlie
         * Added a parametric triangle implementation and sub implementations
           - PTriangle

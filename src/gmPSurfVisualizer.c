@@ -33,6 +33,7 @@
 // local
 #include "gmMaterial.h"
 #include "gmPSurf.h"
+#include "gmOpenGL.h"
 
 
 namespace GMlib {

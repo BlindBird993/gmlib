@@ -22,19 +22,13 @@
 
 
 
-/*! \file gmContainer
+/*! \file gmDVectorN
+ *  \brief gmDVectorN c++ header
  *
- *  C++ interface for the GMlib container headers and the relative classes
+ *  C++ interface for the gmDVectorN.h header and classes.
  *
- *  \date   2008-07-04
+ *  \date   2010-05-19
  */
 
+#include "gmDVectorN.h"
 
-// The GMlib gmArray classes
-#include "gmArray"    // Array
-#include "gmArrayLX"  // Array Large eXtendable
-#include "gmArrayT"   // Array Tiny
-#include "gmDMatrix"  // Dynamic Matrix
-#include "gmDVector"  // Dynamic Vector
-#include "gmDVectorN" // Dynamic NDim Vector
-#include "gmSArray"   // Sortable Array
