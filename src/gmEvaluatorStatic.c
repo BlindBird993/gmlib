@@ -35,7 +35,15 @@ namespace GMlib {
   template <typename T>
   void EvaluatorStatic<T>::evaluateBhp( DMatrix<T>& mat, int d, T t, T scale ) {
 
+    // Initiate result matrix
     mat.setDim( d+1, d+1 );
+
+    // Escape if no derivatives has to be computed
+    if( d < 1 ) {
+
+      mat[0][0] = T(1);
+      return;
+    }
 
     // Compute the Bernstein-Hermite polynomials 1 -> d.
     // One for each row, starting from the bottom up.

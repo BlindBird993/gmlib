@@ -14,6 +14,7 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
         * Added a BFBS basis evaluator (BFBSEvaluator)
         * Replaced the existing ERBS basis evaluator (EvaluatorERBS -> ERBSEvaluator)
 
+
 2010-06-20 Jostein Bratlie
         * Added blending support for the two new visualizers
 
@@ -23,6 +24,10 @@ Here will every change except TYPO FIXES and FORMATTING be recorded.
           - Color visualizer: Visualizing the triangle with a color combination
           - Color-point visualizer: Visualizes some point in the parametric space of the triangle with a color combination
         * Removed left-over debug code from PTriangle/PTriangleVisualizer
+
+
+2010-06-15 Jostein Bratlie
+        * Fixed a bug in the static Bernstein evaluator
 
 
 2010-06-13 Jostein Bratlie
