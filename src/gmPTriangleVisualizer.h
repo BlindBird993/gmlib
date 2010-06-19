@@ -42,6 +42,7 @@
 #include "gmOpenGL.h"
 
 #define PTRIANGLEVERTEX_SIZE 32
+#define PTRIANGLEVERTEXATTRIB_SIZE 32
 
 namespace GMlib {
 
@@ -52,6 +53,11 @@ namespace GMlib {
     float x, y, z;
     float nx, ny, nz;
     float padding[2];
+  };
+
+  struct PTriangleVertexAttributes {
+    float r, g, b, a;
+    float padding[4];
   };
 
   template <typename T>

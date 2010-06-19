@@ -5,6 +5,13 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2010-06-19 Jostein Bratlie
+        * Added two PTriangle Visualizers
+          - Color visualizer: Visualizing the triangle with a color combination
+          - Color-point visualizer: Visualizes some point in the parametric space of the triangle with a color combination
+        * Removed left-over debug code from PTriangle/PTriangleVisualizer
+
+
 2010-06-13 Jostein Bratlie
         * Implemented the old DVectorN container
           - Template based N-dimensional conationer.

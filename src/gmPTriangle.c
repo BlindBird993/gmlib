@@ -29,6 +29,7 @@
  *  \date   2010-03-22
  */
 
+#include <iomanip>
 
 // local
 #include "gmPTriangleVisualizer.h"
@@ -400,28 +401,20 @@ namespace GMlib {
       _no_sam = m;
 
 
-    std::cout << "PTriangle::replot()"<< std::endl;
     // Sample Positions and related Derivatives
     DVector< DMatrix< Vector<T,3> > > p;
     resample( p, m );
 
-    std::cout << "Sampled point data: " << std::endl;
     int i,j,k;
-    for(k=0,i=0; i<m; i++) {
+    for(k=0,i=0; i<m; i++)
       for(j=0;j<=i;j++)
-      {
-        std::cout << " (" << p[k][0][0][0] << "," << p[k][0][0][1] << "," << p[k][0][0][2] << ")";
         k++;
-      }
-      std::cout << std::endl;
-    }
 
 
     // Set The Surrounding Sphere
     setSurroundingSphere( p );
 
     // Replot Visaulizers
-    std::cout << "number of visualizers: " << this->_ptriangle_visualizers.getSize() << std::endl;
     for( int i = 0; i < this->_ptriangle_visualizers.getSize(); i++ )
       this->_ptriangle_visualizers[i]->replot( p, m );
   }
@@ -432,36 +425,20 @@ namespace GMlib {
   void PTriangle<T>::resample(
     DVector< DMatrix < Vector<T,3> > >& p,
     int m
-//    int d1,
-//    int d2,
-//    T s_u,
-//    T s_v,
-//    T e_u,
-//    T e_v
   ) {
-
-//    T du = (e_u-s_u)/(m-1);
-//    T dv = (e_v-s_v)/(m-1);
 
     T u,v,du = T(1)/(m-1);
     p.setDim(_sum(m));
-
-
-    std::cout << "sampling vertex: ";
     int i,j,k;
     for(k=0,i=0; i<m; i++) {
-      for(j=0;j<=i;j++)
-      {
-        std::cout << " " << k;
+      for( j=0; j<=i; j++ ) {
+
         v = j*du;
-        u = (i-j)*du; // i*dv - j*du;
+        u = (i-j)*du;
         eval(u,v,1-u-v);
         p[k++] = _p;
-//        a[k++]=Arrow<T,n>(_p[0][0],UnitVector<T,n>(__n));
       }
     }
-    std::cout << std::endl;
-
   }
 
 
@@ -529,7 +506,6 @@ namespace GMlib {
 
     Sphere<float,3>  s( (p(0)(0)(0)).toFloat() );
 
-//    s += Point<float,3>( p( _sum(m-1))(0)(0) );
     s += Point<float,3>( p( p.getDim()-1)(0)(0) );
     for( int i = 1; i < p.getDim() - 1; i++ )
       s += Point<float,3>( p(i)(0)(0) );

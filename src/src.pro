@@ -1,6 +1,12 @@
-HEADERS +=
+HEADERS += \
+    gmPTriangleColorVisualizer.h \
+    gmPTriangleColorPointVisualizer.h
 SOURCES +=
-OTHER_FILES +=
+OTHER_FILES += \
+    gmPTriangleColorVisualizer \
+    gmPTriangleColorVisualizer.c \
+    gmPTriangleColorPointVisualizer \
+    gmPTriangleColorPointVisualizer.c
 
 # Module Headers
 HEADERS_MODULES += gmContainer \

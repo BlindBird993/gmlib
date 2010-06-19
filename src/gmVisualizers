@@ -35,6 +35,7 @@
 #include "gmVisualizer"
 #include "gmPCurveVisualizer"               // PCurve Visualizer Base
 #include "gmPSurfVisualizer"                // PSurf Visualizer Base
+#include "gmPTriangleVisualizer"            // PTriangleVisualizer Base
 
 
 // Visualizers
@@ -49,6 +50,10 @@
 #include "gmPSurfDerivativesVisualizer"     // PSurf Derivatives Visualizer
 #include "gmPSurfNormalsVisualizer"         // PSurf Normals Visualizer
 #include "gmPSurfPointsVisualizer"          // PSurf Points Visualizer
+
+// PTriangle visualizers( non-glsl )
+#include "gmPTriangleColorVisualizer"       // PTriangle Color Visualizer
+#include "gmPTriangleColorPointVisualizer"  // PTriangle Color-Point Visualizer
 
 // PCurve GLSL Visualizer
 #include "gmPCurveGLSLVisualizer"           // PCurve GLSL Visualizer

@@ -84,7 +84,6 @@ namespace GMlib {
 
     this->_p.setDim(2,2);
 
-    std::cout << "c.dim: " << _c.getDim() << std::endl;
     if( _c.getDim() == 3 ) {
 
       this->_p[0][0]= _c[0]*u + _c[1]*v + _c[2]*w;

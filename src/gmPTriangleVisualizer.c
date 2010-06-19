@@ -29,6 +29,7 @@
  *  \date   2010-04-13
  */
 
+#include <gmPTriangle.h>
 
 namespace GMlib {
 
@@ -53,8 +54,6 @@ namespace GMlib {
   template <typename T>
   inline
   void PTriangleVisualizer<T>::display() {
-
-    std::cout << "displaying obj " << _obj->getName() << " with vbo id: " << _vbo << std::endl;
 
     // Push GL Attributes
     glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT | GL_TEXTURE_BIT ); {
