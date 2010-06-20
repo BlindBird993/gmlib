@@ -36,7 +36,7 @@
 // GMlib includes
 #include "gmPSurf.h"
 #include "gmPBezierSurf.h"
-#include "gmEvaluatorERBS.h"
+#include "gmERBSEvaluator.h"
 
 
 namespace GMlib {
@@ -74,7 +74,7 @@ namespace GMlib {
     bool                                _closed_u;
     bool                                _closed_v;
 
-    EvaluatorERBS<T>                    *_evaluator;
+    ERBSEvaluator<T>                    *_evaluator;
 
     DMatrix< DVector<T> >               _Bu;
     DMatrix< DVector<T> >               _Bv;

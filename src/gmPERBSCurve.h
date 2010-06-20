@@ -33,9 +33,9 @@
 #define __gmPERBSCURVE_H__
 
 
-// GMlib includes+
+// GMlib includes
 #include "gmPCurve.h"
-#include "gmEvaluatorERBS.h"
+#include "gmERBSEvaluator.h"
 
 
 namespace GMlib {
@@ -65,7 +65,7 @@ namespace GMlib {
   protected:
     bool                            _closed;
 
-    EvaluatorERBS<long double>      *_evaluator;
+    ERBSEvaluator<long double>      *_evaluator;
 
     DVector< DVector<T> >           _B;
     DVector< int >                  _tk;

@@ -5,6 +5,10 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+2010-06-21 Jostein Bratlie
+        * Added a new structure for the Freeform surface basis evaluators
+        * Added a BFBS basis evaluator (BFBSEvaluator)
+        * Replaced the existing ERBS basis evaluator (EvaluatorERBS -> ERBSEvaluator)
 
 2010-06-20 Jostein Bratlie
         * Added blending support for the two new visualizers

@@ -22,49 +22,49 @@
 
 
 
-/*! \file gmEvaluatorStatic.c
+/*! \file gmBFBSEvaluator.h
  *
- *  EvaluatorStatic class function implementations
+ *  Interface for the BFBSEvaluator class.
  *
- *  \date   2008-10-31
+ *  \date   2010-06-21
  */
+
+#ifndef __gmBFBSEVALUATOR_H__
+#define __gmBFBSEVALUATOR_H__
+
+
+
+#include "gmBasisEvaluator.h"
 
 
 namespace GMlib {
 
+
   template <typename T>
-  void EvaluatorStatic<T>::evaluateBhp( DMatrix<T>& mat, int d, T t, T scale ) {
+  class BFBSEvaluator : public BasisEvaluator<T> {
+  public:
+    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
 
-    mat.setDim( d+1, d+1 );
-
-    // Compute the Bernstein-Hermite polynomials 1 -> d.
-    // One for each row, starting from the bottom up.
-    mat[d-1][0] = 1 - t;
-    mat[d-1][1] = t;
+    void      setIk( int ik );
+    void      setIkp1( int ikp1 );
+    void      setParameters( int ik, int ikp1 );
 
 
-    for( int i = d-2; i >= 0; i-- ) {
+  protected:
+    int       _ik;
+    int       _ikp1;
 
-      mat[i][0] = ( 1 - t) * mat[i+1][0];
-      for( int j = 1; j < d - i; j++ )
-        mat[i][j] = t * mat[i+1][j-1] + (1 - t) * mat[i+1][j];
-      mat[i][d-i] = t * mat[i+1][d-i-1];
-    }
+    int       getFact( int m );
+    T         getF2( T t );
+    T         getPhi( T t );
 
-    // Compute all the deriatives :P
-    mat[d][0] = -scale;
-    mat[d][1] = scale; 
+  }; // END class BFBSEvaluator
 
-    for( int k = 2; k <= d; k++ ) {
+} // END namespace GMlib
 
-      const double s = k * scale;
-      for( int i = d; i > d - k; i-- ) {
 
-        mat[i][k] = s * mat[i][k-1];
-        for( int j = k - 1; j > 0; j-- )
-          mat[i][j] = s * ( mat[i][j-1] - mat[i][j] );
-        mat[i][0] = - s * mat[i][0];
-      }
-    }
-  }
-}
+// Include BFBSEvaluator class function implementations
+#include "gmBFBSEvaluator.c"
+
+
+#endif // __gmBFBSEVALUATOR_H__

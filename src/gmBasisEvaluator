@@ -22,11 +22,11 @@
 
 
 
-/*! \file gmEvaluatorERBS
+/*! \file gmBasisEvaluator
  *
- *  C++ interface for the ERBS Evaluator header and classes.
+ *  C++ interface for the basis evaluator header and classes.
  *
- *  \date   2008-11-16
+ *  \date   2010-06-20
  */
 
-#include "gmEvaluatorERBS.h"
+#include "gmBasisEvaluator.h"

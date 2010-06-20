@@ -49,7 +49,7 @@ namespace GMlib {
   };
 
   template <typename T>
-  class PTriangleColorPointVisualizer : public GMlib::PTriangleVisualizer<T> {
+  class PTriangleColorPointVisualizer : public PTriangleVisualizer<T> {
   public:
     PTriangleColorPointVisualizer();
     ~PTriangleColorPointVisualizer();
@@ -59,12 +59,12 @@ namespace GMlib {
                 getColorMode() const;
     void        getColors( Color& c1, Color& c2, Color& c3 );
     void        replot(
-        GMlib::DVector< GMlib::DMatrix< GMlib::Vector<T,3> > >& p,
+        DVector< DMatrix< Vector<T,3> > >& p,
         int m
         );
     void        setColorMode( GM_PTRIANGLE_COLORPOINTVISUALIZER_COLOR_MODE color_mode );
     void        setColors( const Color& c1, const Color& c2, const Color& c3 );
-    void        setPoints( const GMlib::DVector< GMlib::Point<T,3> >& points );
+    void        setPoints( const DVector< Point<T,3> >& points );
     void        setTranslucency( double a );
 
   protected:
@@ -78,7 +78,7 @@ namespace GMlib {
     Color       _c2;
     Color       _c3;
 
-    GMlib::DVector< GMlib::Point<T,3> >
+    DVector< Point<T,3> >
                 _points;
 
     float       _point_size;

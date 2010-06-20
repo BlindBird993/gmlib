@@ -35,7 +35,7 @@ namespace GMlib {
   template <typename T>
   PERBSTriangle<T>::PERBSTriangle( PBezierTriangle<T>* c0, PBezierTriangle<T>* c1, PBezierTriangle<T>* c2 ) {
 
-    _basis = new EvaluatorERBS<long double>();
+    _basis = new ERBSEvaluator<long double>();
     _basis->set( 0.0, 1.0 );
 
     _c.setDim( 3 );

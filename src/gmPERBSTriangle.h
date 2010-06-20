@@ -36,7 +36,7 @@
 #include "gmArray.h"
 #include "gmPTriangle.h"
 #include "gmPBezierTriangle.h"
-#include "gmEvaluatorERBS.h"
+#include "gmERBSEvaluator.h"
 
 
 namespace GMlib {
@@ -56,7 +56,7 @@ namespace GMlib {
 
 
   protected:
-    EvaluatorERBS<long double>      *_basis;
+    ERBSEvaluator<long double>      *_basis;
     DVector< PTriangle<T>* >        _c;
 
     void                            eval( T u, T v, T w );

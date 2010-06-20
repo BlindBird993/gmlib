@@ -661,7 +661,7 @@ namespace GMlib {
   inline
   void PERBSSurf<T>::init() {
 
-    _evaluator = new EvaluatorERBS<T>();
+    _evaluator = new ERBSEvaluator<T>();
     _resamp_mode = GM_RESAMPLE_PREEVAL;
     _pre_eval = true;
   }

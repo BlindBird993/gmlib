@@ -60,7 +60,7 @@ namespace GMlib {
                 getColorMode() const;
     void        getColors( Color& c1, Color& c2, Color& c3 );
     void        replot(
-        GMlib::DVector< GMlib::DMatrix< GMlib::Vector<T,3> > >& p,
+        DVector< DMatrix< Vector<T,3> > >& p,
         int m
         );
     void        setColorMode( GM_PTRIANGLE_COLORVISUALIZER_COLOR_MODE color_mode );

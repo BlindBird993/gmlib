@@ -28,7 +28,6 @@ HEADERS_CPP += gmAngle \
     gmDMatrix \
     gmDVector \
     gmDVectorN \
-    gmEvaluatorERBS \
     gmEvaluatorStatic \
     gmGlobal \
     gmGLSL \
@@ -104,6 +103,10 @@ HEADERS_CPP += gmAngle \
     gmPERBSTriangle \
     gmPTriangleColorVisualizer \
     gmPTriangleColorPointVisualizer \
+    gmBasisEvaluator \
+    gmERBSEvaluator \
+    gmBFBSEvaluator \
+    gmPBasisCurve
 
 
 # ########
@@ -121,7 +124,6 @@ HEADERS += gmAngle.h \
     gmDisplayObject.h \
     gmDMatrix.h \
     gmDVector.h \
-    gmEvaluatorERBS.h \
     gmEvaluatorStatic.h \
     gmGlobal.h \
     gmGLSL.h \
@@ -201,7 +203,11 @@ HEADERS += gmAngle.h \
     gmPERBSTriangle.h \
     gmDVectorN.h \
     gmPTriangleColorVisualizer.h \
-    gmPTriangleColorPointVisualizer.h
+    gmPTriangleColorPointVisualizer.h \
+    gmBasisEvaluator.h \
+    gmERBSEvaluator.h \
+    gmBFBSEvaluator.h \
+    gmPBasisCurve.h
 
 # ########
 # Sources
@@ -319,7 +325,6 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmLight_PointLight.c \
     gmLight_Light.c \
     gmEvaluatorStatic.c \
-    gmEvaluatorERBS.c \
     gmDVector.c \
     gmDMatrix.c \
     gmDVectorN.c \
@@ -361,7 +366,11 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmPBezierTriangle.c \
     gmPERBSTriangle.c \
     gmPTriangleColorVisualizer.c \
-    gmPTriangleColorPointVisualizer.c
+    gmPTriangleColorPointVisualizer.c \
+    gmBasisEvaluator.c \
+    gmERBSEvaluator.c \
+    gmBFBSEvaluator.c \
+    gmPBasisCurve.c
 
 SOURCES_LUA += lua/pcircle_eval.lua \
     lua/psphere_eval.lua

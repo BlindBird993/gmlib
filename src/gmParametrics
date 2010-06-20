@@ -42,6 +42,7 @@
 // Parametric Curves
 #include "gmPArc"                   // An Arc
 #include "gmPBSplineCurve"          // BSpline curve
+#include "gmPBasisCurve"            // A curve which can visualize a basis
 #include "gmPBezierCurve"           // Bezier curve
 #include "gmPButterfly"             // The so called "Butterfly" curve
 #include "gmPChrysanthemumCurve"    // The Chrysanthemum cuve
