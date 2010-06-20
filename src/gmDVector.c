@@ -105,6 +105,38 @@ namespace GMlib {
   }
 
 
+  /*! void  DVector<T>::_cpy(const DVector<T>& v)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  template <typename T>
+  inline
+  void  DVector<T>::_cpy(const DVector<T>& v)
+  {
+    if(v._n>4 && v._n>_n)
+    {
+      if (_p != _init) delete [] _p;
+      _p = new T[v._n];
+    }
+    _n = v._n;
+    for(int i=0; i<_n; i++) _p[i] = v._p[i];
+  }
+
+
+  /*! void  DVector<T>::_cpy(const T p[])
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  template <typename T>
+  inline
+  void  DVector<T>::_cpy(const T p[]) {
+
+    for(int i=0; i<_n; i++) _p[i] = p[i];
+  }
+
+
   /*! void DVector<T>::append(const DVector<T>& v)
    *  \brief Pending Documentation
    *
@@ -581,38 +613,6 @@ namespace GMlib {
   inline
   DVector<T>& DVector<T>::operator=(T p[]) {
     _cpy(p); return *this;
-  }
-
-
-  /*! void  DVector<T>::_cpy(const DVector<T>& v)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  template <typename T>
-  inline
-  void  DVector<T>::_cpy(const DVector<T>& v)
-  {
-    if(v._n>4 && v._n>_n)
-    {
-      if (_p != _init) delete [] _p;
-      _p = new T[v._n];
-    }
-    _n = v._n;
-    for(int i=0; i<_n; i++) _p[i] = v._p[i];
-  }
-
-
-  /*! void  DVector<T>::_cpy(const T p[])
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  template <typename T>
-  inline
-  void  DVector<T>::_cpy(const T p[]) {
-
-    for(int i=0; i<_n; i++) _p[i] = _p[i];
   }
 
 }
