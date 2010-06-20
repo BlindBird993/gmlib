@@ -43,6 +43,10 @@ namespace GMlib {
       // Set Point Size
       glPointSize( _point_size );
 
+      // Blending
+      if( !this->_triangle->isOpaque() )
+        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
       // Bind buffers
       glBindBuffer( GL_ARRAY_BUFFER, _vbo_verts );
       glVertexPointer( 3, GL_FLOAT, PTRIANGLEVERTEX_SIZE, (const GLvoid*)0x0 );
@@ -134,8 +138,7 @@ namespace GMlib {
         (*ptr_c).r = c.getRedC();
         (*ptr_c).g = c.getGreenC();
         (*ptr_c).b = c.getBlueC();
-        (*ptr_c).a = 1.0f;
-
+        (*ptr_c).a = c.getAlphaC();
 
         ptr_v++;
         ptr_c++;
@@ -167,6 +170,14 @@ namespace GMlib {
   void PTriangleColorPointVisualizer<T>::setPoints( const DVector< Point<T,3> >& points ) {
 
     _points = points;
+  }
+
+  template <typename T>
+  void PTriangleColorPointVisualizer<T>::setTranslucency( double a ) {
+
+    _c1.setAlpha( a );
+    _c2.setAlpha( a );
+    _c3.setAlpha( a );
   }
 
 

@@ -1,12 +1,6 @@
-HEADERS += \
-    gmPTriangleColorVisualizer.h \
-    gmPTriangleColorPointVisualizer.h
+HEADERS +=
 SOURCES +=
-OTHER_FILES += \
-    gmPTriangleColorVisualizer \
-    gmPTriangleColorVisualizer.c \
-    gmPTriangleColorPointVisualizer \
-    gmPTriangleColorPointVisualizer.c
+OTHER_FILES +=
 
 # Module Headers
 HEADERS_MODULES += gmContainer \
@@ -107,7 +101,9 @@ HEADERS_CPP += gmAngle \
     gmPTriangle \
     gmPTriangleVisualizer \
     gmPBezierTriangle \
-    gmPERBSTriangle
+    gmPERBSTriangle \
+    gmPTriangleColorVisualizer \
+    gmPTriangleColorPointVisualizer \
 
 
 # ########
@@ -203,7 +199,9 @@ HEADERS += gmAngle.h \
     gmPTriangleVisualizer.h \
     gmPBezierTriangle.h \
     gmPERBSTriangle.h \
-    gmDVectorN.h
+    gmDVectorN.h \
+    gmPTriangleColorVisualizer.h \
+    gmPTriangleColorPointVisualizer.h
 
 # ########
 # Sources
@@ -361,7 +359,9 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmPTriangle.c \
     gmPTriangleVisualizer.c \
     gmPBezierTriangle.c \
-    gmPERBSTriangle.c
+    gmPERBSTriangle.c \
+    gmPTriangleColorVisualizer.c \
+    gmPTriangleColorPointVisualizer.c
 
 SOURCES_LUA += lua/pcircle_eval.lua \
     lua/psphere_eval.lua

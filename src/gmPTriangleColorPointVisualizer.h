@@ -65,6 +65,7 @@ namespace GMlib {
     void        setColorMode( GM_PTRIANGLE_COLORPOINTVISUALIZER_COLOR_MODE color_mode );
     void        setColors( const Color& c1, const Color& c2, const Color& c3 );
     void        setPoints( const GMlib::DVector< GMlib::Point<T,3> >& points );
+    void        setTranslucency( double a );
 
   protected:
     GM_PTRIANGLE_COLORPOINTVISUALIZER_COLOR_MODE

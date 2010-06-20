@@ -5,6 +5,11 @@ Changelog
 Here will every change except TYPO FIXES and FORMATTING be recorded.
 
 
+
+2010-06-20 Jostein Bratlie
+        * Added blending support for the two new visualizers
+
+
 2010-06-19 Jostein Bratlie
         * Added two PTriangle Visualizers
           - Color visualizer: Visualizing the triangle with a color combination

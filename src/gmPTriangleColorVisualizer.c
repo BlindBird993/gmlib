@@ -59,6 +59,10 @@ namespace GMlib {
       // Disable lighting
       glDisable( GL_LIGHTING );
 
+      // Blending
+      if( !this->_triangle->isOpaque() )
+        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
       // Bind buffers
       glBindBuffer( GL_ARRAY_BUFFER, this->_vbo );
       glVertexPointer( 3, GL_FLOAT, PTRIANGLEVERTEX_SIZE, (const GLvoid*)0x0 );
@@ -159,7 +163,7 @@ namespace GMlib {
           ptr[idx1].r   = colors[idxp1].getRedC();
           ptr[idx1].g   = colors[idxp1].getGreenC();
           ptr[idx1].b   = colors[idxp1].getBlueC();
-          ptr[idx1].a   = 1.0f;
+          ptr[idx1].a   = colors[idxp1].getAlphaC();
 
 
           int idx2 = (o+j*2+1);
@@ -168,13 +172,13 @@ namespace GMlib {
           ptr[idx2].r   = colors[idxp2].getRedC();
           ptr[idx2].g   = colors[idxp2].getGreenC();
           ptr[idx2].b   = colors[idxp2].getBlueC();
-          ptr[idx2].a   = 1.0f;
+          ptr[idx2].a   = colors[idxp2].getAlphaC();
         }
 
         ptr[o+is-1].r   = colors[o1+is-1].getRedC();
         ptr[o+is-1].g   = colors[o1+is-1].getGreenC();
         ptr[o+is-1].b   = colors[o1+is-1].getBlueC();
-        ptr[o+is-1].a   = 1.0f;
+        ptr[o+is-1].a   = colors[o1+is-1].getAlphaC();
       }
 
     }
@@ -195,6 +199,14 @@ namespace GMlib {
     _c1 = c1;
     _c2 = c2;
     _c3 = c3;
+  }
+
+  template <typename T>
+  void PTriangleColorVisualizer<T>::setTranslucency( double a ) {
+
+    _c1.setAlpha( a );
+    _c2.setAlpha( a );
+    _c3.setAlpha( a );
   }
 
 } // END namespace GMlib
