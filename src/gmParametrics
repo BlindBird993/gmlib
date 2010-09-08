@@ -57,6 +57,7 @@
 #include "gmPCircularSurface"       // Circular Surface
 #include "gmPCylinder"              // Cylinder
 #include "gmPERBSSurf"              // Expo Rational BSpline Surface
+#include "gmPHermiteSurface"        // Hermite interpolated surface
 #include "gmPPlane"                 // Plane
 #include "gmPSphere"                // Sphere
 #include "gmPSteinerSurf"           // The Steiner Surface

@@ -106,7 +106,8 @@ HEADERS_CPP += gmAngle \
     gmBasisEvaluator \
     gmERBSEvaluator \
     gmBFBSEvaluator \
-    gmPBasisCurve
+    gmPBasisCurve \
+    gmPHermiteSurface
 
 
 # ########
@@ -207,7 +208,8 @@ HEADERS += gmAngle.h \
     gmBasisEvaluator.h \
     gmERBSEvaluator.h \
     gmBFBSEvaluator.h \
-    gmPBasisCurve.h
+    gmPBasisCurve.h \
+    gmPHermiteSurface.h
 
 # ########
 # Sources
@@ -370,7 +372,8 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmBasisEvaluator.c \
     gmERBSEvaluator.c \
     gmBFBSEvaluator.c \
-    gmPBasisCurve.c
+    gmPBasisCurve.c \
+    gmPHermiteSurface.c
 
 SOURCES_LUA += lua/pcircle_eval.lua \
     lua/psphere_eval.lua
