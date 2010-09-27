@@ -45,6 +45,58 @@ namespace GMlib {
     init();
   }
 
+  template <typename T>
+  inline
+  PERBSCurve<T>::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed ) {
+
+    this->_type_id = GM_SO_TYPE_CURVE_ERBS;
+
+    init();
+
+    _closed = closed;
+
+    if( _closed ) _c.setDim( c.getDim() + 1 );
+    else          _c.setDim( c.getDim() );
+
+    _t = t;
+
+    for( int i = 0; i < c.getDim(); i++ ) {
+
+      _c[i] = PBezierCurve<T>( c[i], _t[i], _t[i+1], t[i+2] );
+      insertPatch( _c[i] );
+    }
+
+    if( _closed )
+      _c[_c.getDim()-1] = _c[0];
+
+  }
+
+  template <typename T>
+  inline
+  PERBSCurve<T>::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, T start, T end, bool closed ) {
+
+    this->_type_id = GM_SO_TYPE_CURVE_ERBS;
+
+    init();
+
+    _closed = closed;
+
+    if( _closed ) _c.setDim( c.getDim() + 1 );
+    else          _c.setDim( c.getDim() );
+
+    generateKnotVector( start, end );
+
+    for( int i = 0; i < c.getDim(); i++ ) {
+
+      _c[i] = new PBezierCurve<T>( c[i], _t[i], _t[i+1], _t[i+2] );
+      insertPatch( _c[i] );
+    }
+
+    if( _closed )
+      _c[_c.getDim()-1] = _c[0];
+
+  }
+
 
   template <typename T>
   inline
@@ -66,7 +118,6 @@ namespace GMlib {
       _c[i] = new PArc<T>( g->evaluateParent( _t[i+1], 2 ), _t[i], _t[i+1], _t[i+2] );
       insertPatch( _c[i] );
     }
-
 
     // Handle Open/Closed
     int i = no_locals-1;
@@ -268,6 +319,30 @@ namespace GMlib {
 
     const T st  = g->getParStart();
     const T dt  = g->getParDelta() / ( _c.getDim()-1 );
+    const T kvd = _c.getDim() + 2;
+
+    _t.setDim(kvd);
+
+    for( int i = 0; i < kvd - 2; i++ )
+      _t[i+1] = st + i * dt;
+
+    if( isClosed() ) {
+      _t[0] = _t[1] - ( _t[kvd-2] - _t[kvd-3]);
+      _t[kvd-1] = _t[kvd-2] + ( _t[2] - _t[1] );
+    }
+    else {
+      _t[0] = _t[1];
+      _t[kvd-1] = _t[kvd-2];
+    }
+  }
+
+
+  template <typename T>
+  inline
+  void PERBSCurve<T>::generateKnotVector( T start, T end ) {
+
+    const T st  = start;
+    const T dt  = (end - start) / ( _c.getDim()-1 );
     const T kvd = _c.getDim() + 2;
 
     _t.setDim(kvd);

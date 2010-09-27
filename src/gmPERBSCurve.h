@@ -45,6 +45,8 @@ namespace GMlib {
   class PERBSCurve : public PCurve<T> {
   public:
     PERBSCurve(); // Dummy
+    PERBSCurve( DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed = false );
+    PERBSCurve( DVector< DVector< Vector<T,3> > >& c, T startpar = - M_PI, T endpar = - M_PI, bool closed = false );
     PERBSCurve( PCurve<T>* g, int no_locals );
     PERBSCurve( PCurve<T>* g, int no_locals, int d );
     PERBSCurve( const PERBSCurve<T>& copy );
@@ -52,6 +54,7 @@ namespace GMlib {
 
     void                            edit( SceneObject *obj );
     void                            generateKnotVector( PCurve<T>* g );
+    void                            generateKnotVector( T start, T end );
     std::string                     getIdentity() const;
     DVector< PCurve<T>* >&          getLocalPatches();
     int                             getNoLocalPatches() const;
