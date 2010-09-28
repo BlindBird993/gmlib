@@ -36,6 +36,13 @@ namespace GMlib {
 
 
 
+
+  /*! PERBSCurve::PERBSCurve()
+   *  \brief Default Constructor (Dummy)
+   *
+   *  Default constructor.
+   *  Dummy.
+   */
   template <typename T>
   inline
   PERBSCurve<T>::PERBSCurve() {
@@ -45,6 +52,16 @@ namespace GMlib {
     init();
   }
 
+  /*! PERBSCurve::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed )
+   *  \brief Constructor
+   *
+   *  Constructor which creates an ERBS Curve fitting the data c and the knot vector t.
+   *  One local curve will be created for each data "point".
+   *
+   *  \param c Data: Dynamic vector of point data. Where the first vector is the "position" and the consecutive vectors are 1st, 2nd, 3rd, ... derivatives.
+   *  \param t Knot vector for the data-set c.
+   *  \param closed Whether the data of c represents a closed curve.
+   */
   template <typename T>
   inline
   PERBSCurve<T>::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed ) {
@@ -71,6 +88,17 @@ namespace GMlib {
 
   }
 
+  /*! PERBSCurve::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, T start, T end, bool closed )
+   *  \brief Constructor
+   *
+   *  Constructor which creates an ERBS Curve fitting the data c and a knot vector t for the interval start -> end.
+   *  One local curve will be created for each data "point".
+   *
+   *  \param c Data: Dynamic vector of point data. Where the first vector is the "position" and the consecutive vectors are 1st, 2nd, 3rd, ... derivatives.
+   *  \param start Start of the knot vector interval
+   *  \param end End of the knot vector interval
+   *  \param closed Whether the data of c represents a closed curve.
+   */
   template <typename T>
   inline
   PERBSCurve<T>::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, T start, T end, bool closed ) {
@@ -97,7 +125,15 @@ namespace GMlib {
 
   }
 
-
+  /*! PERBSCurve::PERBSCurve( PCurve<T>* g, int no_locals )
+   *  \brief Constructor
+   *
+   *  Constructor which creates an ERBS Curve approximating the curve g.
+   *  This constructor method uses PArc's as local patches.
+   *
+   *  \param g The curve to approximate.
+   *  \param no_locals Number of local patches to create for the approximation.
+   */
   template <typename T>
   inline
   PERBSCurve<T>::PERBSCurve( PCurve<T>* g, int no_locals ) {
@@ -129,7 +165,16 @@ namespace GMlib {
     }
   }
 
-
+  /*! PERBSCurve::PERBSCurve( PCurve<T>* g, int no_locals, int d )
+   *  \brief Constructor
+   *
+   *  Constructor which creates an ERBS Curve approximating the curve g.
+   *  This constructor method uses PBezierCurves' as local patches.
+   *
+   *  \param g The curve to approximate.
+   *  \param no_locals Number of local patches to create for the approximation.
+   *  \param d The degree to use for the local patches, and when evaluating the input curve.
+   */
   template <typename T>
   inline
   PERBSCurve<T>::PERBSCurve( PCurve<T>* g, int no_locals, int d ) {
@@ -162,7 +207,13 @@ namespace GMlib {
     }
   }
 
-
+  /*! PERBSCurve::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T>( copy )
+   *  \brief Copy Constructor
+   *
+   *  Copy Constructor
+   *
+   *  \param copy The curve to copy.
+   */
   template <typename T>
   inline
   PERBSCurve<T>::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T>( copy ) {
@@ -170,7 +221,11 @@ namespace GMlib {
     init();
   }
 
-
+  /*! PERBSCurve::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T>( copy )
+   *  \brief Destructor
+   *
+   *  Destructor
+   */
   template <typename T>
   PERBSCurve<T>::~PERBSCurve() {
 
@@ -312,7 +367,13 @@ namespace GMlib {
     it = (this->_no_sam-1)*(t-this->getParStart())/(this->getParDelta())+0.1;
   }
 
-
+  /*! void PERBSCurve::generateKnotVector( PCurve<T>* g )
+   *  \brief Generates a knot vector
+   *
+   *  Generates a knot vector for the parametric interval of the curve g.
+   *
+   *  \param g The curve to be created a knot vector for.
+   */
   template <typename T>
   inline
   void PERBSCurve<T>::generateKnotVector( PCurve<T>* g ) {
@@ -336,7 +397,14 @@ namespace GMlib {
     }
   }
 
-
+  /*! void PERBSCurve::generateKnotVector( T start, T end )
+   *  \brief Generates a knot vector
+   *
+   *  Generates a knot vector for the interval start, end.
+   *
+   *  \param start The start of the knot vector curve interval
+   *  \param end The end of the knot vector curve interval
+   */
   template <typename T>
   inline
   void PERBSCurve<T>::generateKnotVector( T start, T end ) {
