@@ -78,8 +78,12 @@ namespace GMlib {
     T&			      getSum() const;
     T&			      getSum(int start, int end) const;
     void		      increaseDim(int i, T val=T(0), bool at_end=true);
-    void		      putFirst(T val, int i=1);
-    void		      putFirst(const DVector<T>& v);
+    void		      prepend(T val, int i=1);
+    void		      prepend(const DVector<T>& v);
+    void		      push_back(T val, int i=1);
+    void		      push_back(const DVector<T>& v);
+    void		      push_front(T val, int i=1);
+    void		      push_front(const DVector<T>& v);
     void		      resetDim(int i);
     void		      setDim(int i);
     Array<T>&	    toArray() const;

@@ -45,8 +45,8 @@ namespace GMlib {
   class PERBSCurve : public PCurve<T> {
   public:
     PERBSCurve(); // Dummy
-    PERBSCurve( DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed = false );
-    PERBSCurve( DVector< DVector< Vector<T,3> > >& c, T startpar = - M_PI, T endpar = - M_PI, bool closed = false );
+    PERBSCurve( const DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed = false );
+    PERBSCurve( const DVector< DVector< Vector<T,3> > >& c, T s = T(0), T e = T(1), bool closed = false );
     PERBSCurve( PCurve<T>* g, int no_locals );
     PERBSCurve( PCurve<T>* g, int no_locals, int d );
     PERBSCurve( const PERBSCurve<T>& copy );
@@ -87,6 +87,7 @@ namespace GMlib {
     T                               getStartP();
     virtual void                    init();
     void                            insertPatch( PCurve<T> *patch );
+    void                            padKnotVector();
 
   }; // END class PERBSCurve
 

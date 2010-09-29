@@ -138,9 +138,10 @@ namespace GMlib {
 
 
   /*! void DVector<T>::append(const DVector<T>& v)
-   *  \brief Pending Documentation
    *
-   *  Pending Documentation
+   *  Adds the data v to the end of the vector.
+   *
+   *  \param v Data to be added.
    */
   template <typename T>
   inline
@@ -162,9 +163,11 @@ namespace GMlib {
 
 
   /*! void DVector<T>::append(T val, int i)
-   *  \brief Pending Documentation
    *
-   *  Pending Documentation
+   *  Adds i number of elements with value val to the end of the vector.
+   *
+   *  \param val Value of data to be added.
+   *  \param i Number of data elements to be added.
    */
   template <typename T>
   inline
@@ -175,7 +178,6 @@ namespace GMlib {
 
 
   /*! void DVector<T>::clear(T v)
-   *  \brief All elements set to "v", (dimension not changed).
    *
    *  All elements set to "v", (dimension not changed).
    */
@@ -187,9 +189,10 @@ namespace GMlib {
 
 
   /*! int DVector<T>::getDim() const
-   *  \brief Returning the vector dimention
    *
-   *  Pending Documentation
+   *  Return the dimension of the vector.
+   *
+   *  \return Dimension of the vector.
    */
   template <typename T>
   inline
@@ -199,9 +202,10 @@ namespace GMlib {
 
 
   /*! T DVector<T>::getLength() const
-   *  \brief  Pending Documentation
    *
-   *  Pending Documentation
+   *  Get the length of the vector.
+   *
+   *  \return Length of the vector.
    */
   template <typename T>
   inline
@@ -326,15 +330,16 @@ namespace GMlib {
     }
   }
 
-
-  /*! void DVector<T>::putFirst(const DVector<T>& v)
-   *  \brief Pending Documentation
+  /*! void DVector<T>::prepend(const DVector<T>& v)
    *
-   *  Pending Documentation
+   *  Adds the DVector v to the beginning of the DVector.
+   *
+   *  \param v Data.
    */
   template <typename T>
   inline
-  void DVector<T>::putFirst(const DVector<T>& v) {
+  void DVector<T>::prepend(const DVector<T>& v) {
+
     if(v._n>0)
     {
       int j = _n+v._n;
@@ -352,17 +357,65 @@ namespace GMlib {
     }
   }
 
-
-  /*! void DVector<T>::putFirst(T val, int i)
-   *  \brief Pending Documentation
+  /*! void DVector<T>::prepend(T val, int i)
    *
-   *  Pending Documentation
+   *  Adds i number of elements whith value val to the beginning of the vector.
+   *
+   *  \param val Value of data to be added.
+   *  \param i Number of data elements to be added.
    */
   template <typename T>
   inline
-  void DVector<T>::putFirst(T val, int i) {
+  void DVector<T>::prepend(T val, int i) {
+
     if(i < 1) return;
     increaseDim(i,val,false);
+  }
+
+  /*! void DVector<T>::push_back(const DVector<T>& v)
+   *
+   *  Equivalent to DVector::append(const DVector<T>& v). Provided for stl compatibility.
+   */
+  template <typename T>
+  inline
+  void DVector<T>::push_back(const DVector<T>& v) {
+
+    append( v );
+  }
+
+
+  /*! void DVector<T>::push_back(T val, int i)
+   *
+   *  Equivalent to DVector::append(T val, int i). Provided for stl compatibility.
+   */
+  template <typename T>
+  inline
+  void DVector<T>::push_back(T val, int i) {
+
+    append( val, i );
+  }
+
+  /*! void DVector<T>::push_front(const DVector<T>& v)
+   *
+   *  Equivalent to DVector::prepend(const DVector<T>& v). Provided for stl compatibility.
+   */
+  template <typename T>
+  inline
+  void DVector<T>::push_front(const DVector<T>& v) {
+
+    prepend( v );
+  }
+
+
+  /*! void DVector<T>::push_front(T val, int i)
+   *
+   *  Equivalent to DVector::prepend(T val, int i). Provided for stl compatibility.
+   */
+  template <typename T>
+  inline
+  void DVector<T>::push_front(T val, int i) {
+
+    prepend( val, i );
   }
 
 

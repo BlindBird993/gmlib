@@ -46,9 +46,11 @@ namespace GMlib {
   class PERBSSurf : public PSurf<T> {
   public:
     PERBSSurf(); // Dummy
+    PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, const DVector<T>& u, const DVector<T>& v, bool closed_u = false, bool closed_v = false );
+    PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, T s_u = T(0), T e_u = T(1), T s_v = T(0), T e_v = T(1), bool closed_u = false, bool closed_v = false );
+    PERBSSurf( const DMatrix< PBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v );
     PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 );
     PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e );
-    PERBSSurf( const DMatrix< PBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v );
     PERBSSurf( const PERBSSurf<T>& copy );
     virtual ~PERBSSurf();
 
@@ -105,6 +107,7 @@ namespace GMlib {
     T                                   getStartPV();
     virtual void                        init();
     void                                insertPatch( PSurf<T> *patch );
+    void                                padKnotVector( DVector<T>& kv, bool closed );
 
   }; // END class PERBSSurf
 

@@ -37,8 +37,7 @@ namespace GMlib {
 
 
 
-  /*! PERBSCurve::PERBSCurve()
-   *  \brief Default Constructor (Dummy)
+  /*! PERBSCurve<T>::PERBSCurve()
    *
    *  Default constructor.
    *  Dummy.
@@ -52,19 +51,17 @@ namespace GMlib {
     init();
   }
 
-  /*! PERBSCurve::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed )
-   *  \brief Constructor
+  /*! PERBSCurve<T>::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed )
    *
-   *  Constructor which creates an ERBS Curve fitting the data c and the knot vector t.
-   *  One local curve will be created for each data "point".
+   *  Constructs an ERBS curve interpolating the data points of c, according to the knot vector t.
    *
-   *  \param c Data: Dynamic vector of point data. Where the first vector is the "position" and the consecutive vectors are 1st, 2nd, 3rd, ... derivatives.
+   *  \param c Data set. Each data point consists of { position, 1st derivative, 2nd derivative, ... }.
    *  \param t Knot vector for the data-set c.
    *  \param closed Whether the data of c represents a closed curve.
    */
   template <typename T>
   inline
-  PERBSCurve<T>::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed ) {
+  PERBSCurve<T>::PERBSCurve( const DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed ) : _t(t) {
 
     this->_type_id = GM_SO_TYPE_CURVE_ERBS;
 
@@ -72,11 +69,14 @@ namespace GMlib {
 
     _closed = closed;
 
+    // Set data set dimenstion
     if( _closed ) _c.setDim( c.getDim() + 1 );
     else          _c.setDim( c.getDim() );
 
-    _t = t;
+    // Pad knot vector
+    padKnotVector();
 
+    // Generate local patches (data set)
     for( int i = 0; i < c.getDim(); i++ ) {
 
       _c[i] = PBezierCurve<T>( c[i], _t[i], _t[i+1], t[i+2] );
@@ -88,20 +88,18 @@ namespace GMlib {
 
   }
 
-  /*! PERBSCurve::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, T start, T end, bool closed )
-   *  \brief Constructor
+  /*! PERBSCurve<T>::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, T start, T end, bool closed )
    *
-   *  Constructor which creates an ERBS Curve fitting the data c and a knot vector t for the interval start -> end.
-   *  One local curve will be created for each data "point".
+   *  Constructs an ERBS curve interpolating the data points of c, according to the knot vector t.
    *
-   *  \param c Data: Dynamic vector of point data. Where the first vector is the "position" and the consecutive vectors are 1st, 2nd, 3rd, ... derivatives.
-   *  \param start Start of the knot vector interval
-   *  \param end End of the knot vector interval
+   *  \param c Data set. Each data point consists of { position, 1st derivative, 2nd derivative, ... }.
+   *  \param start Start of the knot vector interval.
+   *  \param end End of the knot vector interval.
    *  \param closed Whether the data of c represents a closed curve.
    */
   template <typename T>
   inline
-  PERBSCurve<T>::PERBSCurve( DVector< DVector< Vector<T,3> > >& c, T start, T end, bool closed ) {
+  PERBSCurve<T>::PERBSCurve( const DVector< DVector< Vector<T,3> > >& c, T start, T end, bool closed ) {
 
     this->_type_id = GM_SO_TYPE_CURVE_ERBS;
 
@@ -116,17 +114,15 @@ namespace GMlib {
 
     for( int i = 0; i < c.getDim(); i++ ) {
 
-      _c[i] = new PBezierCurve<T>( c[i], _t[i], _t[i+1], _t[i+2] );
+      _c[i] = new PBezierCurve<T>( c(i), _t[i], _t[i+1], _t[i+2] );
       insertPatch( _c[i] );
     }
 
     if( _closed )
       _c[_c.getDim()-1] = _c[0];
-
   }
 
-  /*! PERBSCurve::PERBSCurve( PCurve<T>* g, int no_locals )
-   *  \brief Constructor
+  /*! PERBSCurve<T>::PERBSCurve( PCurve<T>* g, int no_locals )
    *
    *  Constructor which creates an ERBS Curve approximating the curve g.
    *  This constructor method uses PArc's as local patches.
@@ -165,8 +161,7 @@ namespace GMlib {
     }
   }
 
-  /*! PERBSCurve::PERBSCurve( PCurve<T>* g, int no_locals, int d )
-   *  \brief Constructor
+  /*! PERBSCurve<T>::PERBSCurve( PCurve<T>* g, int no_locals, int d )
    *
    *  Constructor which creates an ERBS Curve approximating the curve g.
    *  This constructor method uses PBezierCurves' as local patches.
@@ -208,7 +203,6 @@ namespace GMlib {
   }
 
   /*! PERBSCurve::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T>( copy )
-   *  \brief Copy Constructor
    *
    *  Copy Constructor
    *
@@ -221,8 +215,7 @@ namespace GMlib {
     init();
   }
 
-  /*! PERBSCurve::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T>( copy )
-   *  \brief Destructor
+  /*! PERBSCurve<T>::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T>( copy )
    *
    *  Destructor
    */
@@ -255,7 +248,6 @@ namespace GMlib {
 
     PCurve<T>::replot(0);
   }
-
 
   template <typename T>
   inline
@@ -354,7 +346,6 @@ namespace GMlib {
       // Compute the sample position data
       for( int j = 0; j <= i; j++ )
         c1[i] += ( a[j] * B(j) ) * c0[i-j];
-
     }
     this->_p = c1;
   }
@@ -367,8 +358,7 @@ namespace GMlib {
     it = (this->_no_sam-1)*(t-this->getParStart())/(this->getParDelta())+0.1;
   }
 
-  /*! void PERBSCurve::generateKnotVector( PCurve<T>* g )
-   *  \brief Generates a knot vector
+  /*! void PERBSCurve<T>::generateKnotVector( PCurve<T>* g )
    *
    *  Generates a knot vector for the parametric interval of the curve g.
    *
@@ -397,8 +387,7 @@ namespace GMlib {
     }
   }
 
-  /*! void PERBSCurve::generateKnotVector( T start, T end )
-   *  \brief Generates a knot vector
+  /*! void PERBSCurve<T>::generateKnotVector( T start, T end )
    *
    *  Generates a knot vector for the interval start, end.
    *
@@ -529,6 +518,29 @@ namespace GMlib {
     return false;
   }
 
+  /*! void PERBSCurve<T>::padKnotVector()
+   *
+   *  Prepends and appends an element to the internal knot vector.
+   *  Value of the padded elements depends on the whether the data set is closed.
+   */
+  template <typename T>
+  inline
+  void PERBSCurve<T>::padKnotVector() {
+
+    if( _closed ) {
+
+      T d_start, d_end;
+      d_start = _t[1] - _t[0];
+      d_end = _t[_t.getDim()-1] - _t[_t.getDim()-2];
+      _t.prepend( _t[0] - d_end );
+      _t.append( _t[_t.getDim()-1] + d_start );
+    }
+    else {
+
+      _t.prepend( _t[0] );
+      _t.append( _t[_t.getDim()-1] );
+    }
+  }
 
   template <typename T>
   inline

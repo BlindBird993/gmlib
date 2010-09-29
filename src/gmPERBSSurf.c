@@ -34,6 +34,12 @@
 namespace GMlib {
 
 
+
+  /*! PERBSSurf<T>::PERBSSurf()
+   *
+   *  Default constructor.
+   *  Dummy.
+   */
   template <typename T>
   inline
   PERBSSurf<T>::PERBSSurf() {
@@ -43,6 +49,161 @@ namespace GMlib {
     init();
   }
 
+  /*! PERBSSurf<T>::PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, const DVector<T>& u, const DVector<T>& v, bool closed_u, bool closed_v)
+   *
+   *  Creates a Parametric Expo-Rational Surface interpolating the data points provided in c.
+   *  Interpolates according to the knot vectors u and v.
+   *
+   *  \param c Data set. Each data point consists of { position, 1st derivative, 2nd derivative, ... }.
+   *  \param u Knot vector for parametric direction u.
+   *  \param v Knot vector for parametric direction v.
+   *  \param closed_u Whether data set is closed in parametric direction u.
+   *  \param closed_v Whether data set is closed in parametric direction v.
+   */
+  template <typename T>
+  inline
+  PERBSSurf<T>::PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, const DVector<T>& u, const DVector<T>& v, bool closed_u, bool closed_v ) : _u(u), _v(v) {
+
+    this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
+
+    init();
+
+    _closed_u = closed_u;
+    _closed_v = closed_v;
+
+    // Set dimension of data set
+    int udim, vdim;
+
+    if( _closed_u ) udim = c.getDim1() + 1;
+    else            udim = c.getDim1();
+
+    if( _closed_v ) vdim = c.getDim2() + 1;
+    else            vdim = c.getDim2();
+
+    _c.setDim( udim, vdim );
+
+    // knot vectors
+    padKnotVector( _u, _closed_u );
+    padKnotVector( _v, _closed_v );
+
+    // Generate local patches (data set)
+    for( int i = 0; i < c.getDim1(); i++ ) {
+      for( int j = 0; j < c.getDim2(); j++ ) {
+
+        _c[i][j] = new PBezierSurf<T>(
+            c(i)(j),
+            _u[i], _u[i+1], _u[i+2],
+            _v[i], _v[i+1], _v[i+2]
+            );
+        insertPatch( _c[i][j] );
+      }
+    }
+
+    if( _closed_u )
+      for( int j = 0; j < _c.getDim2(); j++ )
+        _c[_c.getDim1()-1][j] = _c[0][j];
+
+    if( _closed_v )
+      for( int i = 0; i < _c.getDim1(); i++ )
+        _c[i][_c.getDim2()-1] = _c[i][0];
+  }
+
+  /*! PERBSSurf<T>::PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, T s_u, T e_u, T s_v, T e_v, bool closed_u, bool closed_v )
+   *
+   *  Creates a Parametric Expo-Rational Surface interpolating the data points provided in c.
+   *  Interpolates according to the knot vectors u and v.
+   *
+   *  \param c Data set. Each data point consists of { position, 1st derivative, 2nd derivative, ... }.
+   *  \param s_u Knot vector interval start (parametric direction u).
+   *  \param e_u Knot vector interval end (parametric direction u).
+   *  \param s_v Knot vector interval start (parametric direction v).
+   *  \param e_v Knot vector interval end (parametric direction v).
+   *  \param closed_u Whether data set is closed in parametric direction u.
+   *  \param closed_v Whether data set is closed in parametric direction v.
+   */
+  template <typename T>
+  inline
+  PERBSSurf<T>::PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, T s_u, T e_u, T s_v, T e_v, bool closed_u , bool closed_v ) {
+
+    this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
+
+    init();
+
+    _closed_u = closed_u;
+    _closed_v = closed_v;
+
+    int udim, vdim;
+
+    if( _closed_u ) udim = c.getDim1() + 1;
+    else            udim = c.getDim1();
+
+    if( _closed_v ) vdim = c.getDim2() + 1;
+    else            vdim = c.getDim2();
+
+    _c.setDim( udim, vdim );
+
+    generateKnotVector(
+        _u,
+        s_u,
+        (e_u - s_u) / (_c.getDim1()-1),
+        _c.getDim1()+2,
+        closed_u
+        );
+
+    generateKnotVector(
+        _v,
+        s_v,
+        (e_v - s_v) / (_c.getDim2()-1),
+        _c.getDim2()+2,
+        closed_v
+        );
+
+    for( int i = 0; i < c.getDim1(); i++ ) {
+      for( int j = 0; j < c.getDim2(); j++ ) {
+
+        _c[i][j] = new PBezierSurf<T>(
+            c(i)(j),
+            _u[i], _u[i+1], _u[i+2],
+            _v[i], _v[i+1], _v[i+2]
+            );
+        insertPatch( _c[i][j] );
+      }
+    }
+
+    if( _closed_u )
+      for( int j = 0; j < _c.getDim2(); j++ )
+        _c[_c.getDim1()-1][j] = _c[0][j];
+
+    if( _closed_v )
+      for( int i = 0; i < _c.getDim1(); i++ )
+        _c[i][_c.getDim2()-1] = _c[i][0];
+  }
+
+  template <typename T>
+  inline
+  PERBSSurf<T>::PERBSSurf( const DMatrix< PBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v ) : _u(u), _v(v) {
+
+    this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
+
+    init();
+
+    _closed_u = closed_u;
+    _closed_v = closed_v;
+
+    // knot vectors
+    padKnotVector( _u, _closed_u );
+    padKnotVector( _v, _closed_v );
+
+
+    // Add local patches
+    _c.setDim( c.getDim1(), c.getDim2() );
+    for( int i = 0; i < c.getDim1(); i++ ) {
+      for( int j = 0; j < c.getDim2(); j++ ) {
+        _c[i][j] = c(i)(j);
+        insertPatch( _c[i][j] );
+      }
+    }
+  }
 
   template <typename T>
   inline
@@ -190,27 +351,6 @@ namespace GMlib {
         _c[i][j]->setMaterial( GMmaterial::Ruby );
       }
     }
-  }
-
-
-  template <typename T>
-  inline
-  PERBSSurf<T>::PERBSSurf( const DMatrix< PBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v ) : _u(u), _v(v) {
-
-    this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
-
-    init();
-
-    _c.setDim( c.getDim1(), c.getDim2() );
-    for( int i = 0; i < c.getDim1(); i++ ) {
-      for( int j = 0; j < c.getDim2(); j++ ) {
-        _c[i][j] = c(i)(j);
-        insertPatch( _c[i][j] );
-      }
-    }
-
-    _closed_u = closed_u;
-    _closed_v = closed_v;
   }
 
 
@@ -704,6 +844,34 @@ namespace GMlib {
           return true;
 
     return false;
+  }
+
+  /*! void PERBSSurf<T>::padKnotVector( DVector<T>& kv, bool closed )
+   *
+   *  Prepends and appends an element to the knot vector.
+   *  Value of the padded elements depends on the whether the data set is
+   *  closed in the knot vector direction.
+   *
+   *  \param kv Knot vector which is to be padded.
+   *  \param closed Whether or not the data set is closed in the knot vectors direction.
+   */
+  template <typename T>
+  inline
+  void PERBSSurf<T>::padKnotVector( DVector<T>& kv, bool closed ) {
+
+    if( closed ) {
+
+      T d_start, d_end;
+      d_start = kv[1] - kv[0];
+      d_end = kv[kv.getDim()-1] - kv[kv.getDim()-2];
+      kv.prepend( kv[0] - d_end );
+      kv.append( kv[kv.getDim()-1] + d_start );
+    }
+    else {
+
+      kv.prepend( kv[0] );
+      kv.append( kv[kv.getDim()-1] );
+    }
   }
 
 
