@@ -32,7 +32,6 @@
 namespace GMlib {
 
   /*! PHermiteSurface<T>::PHermiteSurface( const Array< PCurve<T>* >& c1, const Array<PCurve<T>* >& c2 )
-   *  \brief Default Constructor
    *
    *  Creates a generic Hermite surface from the curves provided in c1 and c2.
    *  It's expected two or four curves in each array. If two curves are given it will create a Coon's patch surface.
@@ -49,8 +48,8 @@ namespace GMlib {
    *  f3: p01 to p11
    *  f4: p10 to p11
    *
-   *  \param c1 Curves describing the boundary in u-direction
-   *  \param c2 Curves describing the boundary in v-direction
+   *  \param[in] c1 Curves describing the boundary in u-direction
+   *  \param[in] c2 Curves describing the boundary in v-direction
    */
   template <typename T>
   PHermiteSurface<T>::PHermiteSurface( const Array< PCurve<T>* >& c1, const Array<PCurve<T>* >& c2 ) {
@@ -73,7 +72,8 @@ namespace GMlib {
   }
 
   /*! PHermiteSurface<T>::~PHermiteSurface()
-   * \brief Destructor!
+   *
+   *  Destructor.
    */
   template <typename T>
   PHermiteSurface<T>::~PHermiteSurface() {
@@ -141,10 +141,10 @@ namespace GMlib {
 
         // bi-linear interpolation
         p -=
-            _b[0][0] * (1.0f - u) * (1.0f - v) +
-            _b[0][1] * (1.0f - u) * v +
-            _b[1][0] * u * (1.0f - v) +
-            _b[1][1] * u * v;
+            _b[0][0] * ( v - 1.0f ) +
+            _b[0][1] * ( -v ) +
+            _b[1][0] * (1.0f - v) +
+            _b[1][1] * v;
 
         this->_p[1][0] = p;
       }
@@ -165,10 +165,10 @@ namespace GMlib {
 
         // bi-linear interpolation
         p -=
-            _b[0][0] * (1.0f - u) * (1.0f - v) +
-            _b[0][1] * (1.0f - u) * v +
-            _b[1][0] * u * (1.0f - v) +
-            _b[1][1] * u * v;
+            _b[0][0] * (u - 1.0f) +
+            _b[0][1] * (1.0f - u) +
+            _b[1][0] * ( -u ) +
+            _b[1][1] * u;
 
         this->_p[0][1] = p;
       }
@@ -228,11 +228,13 @@ namespace GMlib {
   }
 
   /*! T PHermiteSurface<T>::getH( int d, int k, T t )
-   *  \brief Gives the hermite interpolation factor
-   *  \param d Number of curves describing the given boundary
-   *  \param k Curve number k
-   *  \param t Parametric value [0-1]
-   *  \return The hermite interpolation factor [0-1].
+   *
+   *  Gives the hermite interpolation factor
+   *
+   *  \param[in]  d   Number of curves describing the given boundary
+   *  \param[in]  k   Curve number k
+   *  \param[in]  t   Parametric value [0-1]
+   *  \return         The hermite interpolation factor [0-1].
    */
   template <typename T>
   inline
@@ -255,11 +257,13 @@ namespace GMlib {
   }
 
   /*! T PHermiteSurface<T>::getHder( int d, int k, T t )
-   *  \brief Gives the hermite interpolation factor for derivatives
-   *  \param d Number of curves describing the given boundary
-   *  \param k Curve number k
-   *  \param t Parametric value [0-1]
-   *  \return The hermite interpolation factor [0-1].
+   *
+   *  Gives the hermite interpolation factor for derivatives
+   *
+   *  \param[in]  d   Number of curves describing the given boundary
+   *  \param[in]  k   Curve number k
+   *  \param[in]  t   Parametric value [0-1]
+   *  \return     The hermite interpolation factor [0-1].
    */
   template <typename T>
   inline
@@ -291,11 +295,11 @@ namespace GMlib {
   }
 
   /*! bool PHermiteSurface<T>::isValidCoonsPatch()
-   *  \brief Validates the surfaces as a Coon's patch
    *
-   *  Returns whether the surface is classified as a Coon's patch
+   *  Validates the surfaces as a Coon's patch
+   *  Returns whether the surface is classified as a Coon's patch.
    *
-   *  \return returns true if the surfaces is a Coon's patch
+   *  \return Returns true if the surfaces is a Coon's patch
    */
   template <typename T>
   bool PHermiteSurface<T>::isValidCoonsPatch() {
@@ -336,11 +340,11 @@ namespace GMlib {
   }
 
   /*! bool PHermiteSurface<T>::isValidHermiteSurface()
-   *  \brief Validates the surfaces as a Hermite surface
    *
+   *  Validates the surfaces as a Hermite surface
    *  Returns whether the surface is classified as a Hermite surface
    *
-   *  \return returns true if the surfaces is a hermite surface
+   *  \return Returns true if the surfaces is a hermite surface
    */
   template <typename T>
   bool PHermiteSurface<T>::isValidHermiteSurface() {

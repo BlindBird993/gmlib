@@ -149,11 +149,43 @@ namespace GMlib {
     T                             _tr_v;        // Translate v-parametre
     T                             _sc_v;        // Scale v-parametre
 
+
+    /*! virtual void PSurf<T>::eval( T u, T v, int d1, int d2, bool lu , bool lv ) = 0
+     *  Surface evaluator. (Requires implementation in PSurf sub-classes.)
+     *  \param[in]  u   Evaluation parameter in u-direction.
+     *  \param[in]  v   Evaluation parameter in v-direction.
+     *  \param[in]  d1  Number of derivatives to be computed for u.
+     *  \param[in]  d2  Number of derivatives to be computed for v.
+     *  \param[in]  lu  Whether to evaluate from left in u.
+     *  \param[in]  lv  Whether to evaluate from left in v.
+     */
     virtual void                  eval( T u, T v, int d1, int d2, bool lu = true, bool lv = true ) = 0;
+
+    /*! virtual T PSurf<T>::getEndPU() = 0
+     *  Returns the parametric end value in u-direction. (Requires implementation in PSurf sub-classes.)
+     *  \return Parametric end value in u.
+     */
     virtual T                     getEndPU() = 0;
+
+    /*! virtual T PSurf<T>::getEndPV() = 0
+     *  Returns the parametric end value in v-direction. (Requires implementation in PSurf sub-classes.)
+     *  \return Parametric end value in v.
+     */
     virtual T                     getEndPV() = 0;
+
+    /*! virtual T PSurf<T>::getStartPU() = 0
+     *  Returns the parametric start value in u-direction. (Requires implementation in PSurf sub-classes.)
+     *  \return Parametric start value in u.
+     */
     virtual T                     getStartPU() = 0;
+
+
+    /*! virtual T PSurf<T>::getStartPV() = 0
+     *  Returns the parametric start value in v-direction. (Requires implementation in PSurf sub-classes.)
+     *  \return Parametric start value in v.
+     */
     virtual T                     getStartPV() = 0;
+
     T                             shiftU(T u);
     T                             shiftV(T v);
 
