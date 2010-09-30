@@ -798,7 +798,7 @@ namespace GMlib {
     return "PERBSSurf";
   }
 
-  /*! DVector<T>& PERBSSurf<T>::getKnotsV()
+  /*! DVector<T>& PERBSSurf<T>::getKnotsU()
    *
    *  Returns a reference to the u-direction knot vectors.
    *
