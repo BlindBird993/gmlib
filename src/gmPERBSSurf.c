@@ -54,11 +54,11 @@ namespace GMlib {
    *  Creates a Parametric Expo-Rational Surface interpolating the data points provided in c.
    *  Interpolates according to the knot vectors u and v.
    *
-   *  \param c Data set. Each data point consists of { position, 1st derivative, 2nd derivative, ... }.
-   *  \param u Knot vector for parametric direction u.
-   *  \param v Knot vector for parametric direction v.
-   *  \param closed_u Whether data set is closed in parametric direction u.
-   *  \param closed_v Whether data set is closed in parametric direction v.
+   *  \param[in]  c         Data set. Each data point consists of { position, 1st derivative, 2nd derivative, ... }.
+   *  \param[in]  u         Knot vector for parametric direction u.
+   *  \param[in]  v         Knot vector for parametric direction v.
+   *  \param[in]  closed_u  Whether data set is closed in parametric direction u.
+   *  \param[in]  closed_v  Whether data set is closed in parametric direction v.
    */
   template <typename T>
   inline
@@ -93,7 +93,7 @@ namespace GMlib {
         _c[i][j] = new PBezierSurf<T>(
             c(i)(j),
             _u[i], _u[i+1], _u[i+2],
-            _v[i], _v[i+1], _v[i+2]
+            _v[j], _v[j+1], _v[j+2]
             );
         insertPatch( _c[i][j] );
       }
@@ -113,17 +113,17 @@ namespace GMlib {
    *  Creates a Parametric Expo-Rational Surface interpolating the data points provided in c.
    *  Interpolates according to the knot vectors u and v.
    *
-   *  \param c Data set. Each data point consists of { position, 1st derivative, 2nd derivative, ... }.
-   *  \param s_u Knot vector interval start (parametric direction u).
-   *  \param e_u Knot vector interval end (parametric direction u).
-   *  \param s_v Knot vector interval start (parametric direction v).
-   *  \param e_v Knot vector interval end (parametric direction v).
-   *  \param closed_u Whether data set is closed in parametric direction u.
-   *  \param closed_v Whether data set is closed in parametric direction v.
+   *  \param[in]  c         Data set. Each data point consists of { position, 1st derivative, 2nd derivative, ... }.
+   *  \param[in]  u_s       Knot vector interval start (parametric direction u).
+   *  \param[in]  u_e       Knot vector interval end (parametric direction u).
+   *  \param[in]  v_s       Knot vector interval start (parametric direction v).
+   *  \param[in]  v_e       Knot vector interval end (parametric direction v).
+   *  \param[in]  closed_u  Whether data set is closed in parametric direction u.
+   *  \param[in]  closed_v  Whether data set is closed in parametric direction v.
    */
   template <typename T>
   inline
-  PERBSSurf<T>::PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, T s_u, T e_u, T s_v, T e_v, bool closed_u , bool closed_v ) {
+  PERBSSurf<T>::PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, T u_s, T u_e, T v_s, T v_e, bool closed_u , bool closed_v ) {
 
     this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
 
@@ -144,16 +144,16 @@ namespace GMlib {
 
     generateKnotVector(
         _u,
-        s_u,
-        (e_u - s_u) / (_c.getDim1()-1),
+        u_s,
+        (u_e - u_s) / (_c.getDim1()-1),
         _c.getDim1()+2,
         closed_u
         );
 
     generateKnotVector(
         _v,
-        s_v,
-        (e_v - s_v) / (_c.getDim2()-1),
+        v_s,
+        (v_e - v_s) / (_c.getDim2()-1),
         _c.getDim2()+2,
         closed_v
         );
@@ -164,7 +164,7 @@ namespace GMlib {
         _c[i][j] = new PBezierSurf<T>(
             c(i)(j),
             _u[i], _u[i+1], _u[i+2],
-            _v[i], _v[i+1], _v[i+2]
+            _v[j], _v[j+1], _v[j+2]
             );
         insertPatch( _c[i][j] );
       }
@@ -179,6 +179,17 @@ namespace GMlib {
         _c[i][_c.getDim2()-1] = _c[i][0];
   }
 
+  /*! PERBSSurf<T>::PERBSSurf( const DMatrix< PBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v )
+   *
+   *  Creates a Parametric Expo-Rational Surface interpolating the local patches provided in c.
+   *  Interpolates according to the knot vectors u and v.
+   *
+   *  \param[in] c        Local patches. Each BezierSurf is a local patch for an interpolation point.
+   *  \param[in] u        Knot vector for parametric direction u.
+   *  \param[in] v        Knot vector for parametric direction v.
+   *  \param[in] closed_u Whether data set is closed in parametric direction u.
+   *  \param[in] closed_v Whether data set is closed in parametric direction v.
+   */
   template <typename T>
   inline
   PERBSSurf<T>::PERBSSurf( const DMatrix< PBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v ) : _u(u), _v(v) {
@@ -205,6 +216,17 @@ namespace GMlib {
     }
   }
 
+  /*! PERBSSurf<T>::PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 )
+   *
+   *  Creates a Parametric Expo-Rational Surface approximating the surface g.
+   *  Quality of the interpolation is controlled by the number of local patches and number of derivatives.
+   *
+   *  \param[in]  g             The surface to approximate.
+   *  \param[in]  no_locals_u   Number of local patches to create in the u-direction.
+   *  \param[in]  no_locals_v   Number of local patches to create in the v-direction.
+   *  \param[in]  d1            Number of derivatives to use when creating local patches in u.
+   *  \param[in]  d2            Number of derivatives to use when creating local patches in v.
+   */
   template <typename T>
   inline
   PERBSSurf<T>::PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 ) {
@@ -270,7 +292,21 @@ namespace GMlib {
     }
   }
 
-
+  /*! PERBSSurf<T>::PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e )
+   *
+   *  Creates a Parametric Expo-Rational Surface approximating a sub-surface of the surface g.
+   *  Quality of the interpolation is controlled by the number of local patches and number of derivatives.
+   *
+   *  \param[in]  g             The surface to approximate.
+   *  \param[in]  no_locals_u   Number of local patches to create in the u-direction.
+   *  \param[in]  no_locals_v   Number of local patches to create in the v-direction.
+   *  \param[in]  d1            Number of derivatives to use when creating local patches in u.
+   *  \param[in]  d2            Number of derivatives to use when creating local patches in v.
+   *  \param[in]  u_s           The start parameter for the u-direction.
+   *  \param[in]  u_e           The end parameter for the u-direction.
+   *  \param[in]  v_s           The start parameter for the v-direction.
+   *  \param[in]  v_e           The end parameter for the v-direction.
+   */
   template <typename T>
   inline
   PERBSSurf<T>::PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e ) {
@@ -353,7 +389,12 @@ namespace GMlib {
     }
   }
 
-
+  /*! PERBSSurf<T>::PERBSSurf( const PERBSSurf<T>& copy )
+   *
+   *  Copy constructor.
+   *
+   *  \param[in]  copy  Parametric Expo-Rational surface to copy.
+   */
   template <typename T>
   inline
   PERBSSurf<T>::PERBSSurf( const PERBSSurf<T>& copy ) : PSurf<T>( copy ) {
@@ -361,7 +402,10 @@ namespace GMlib {
     init();
   }
 
-
+  /*! PERBSSurf<T>::~PERBSSurf()
+   *
+   *  Destructor
+   */
   template <typename T>
   inline
   PERBSSurf<T>::~PERBSSurf() {
@@ -373,7 +417,6 @@ namespace GMlib {
     if( _evaluator )
       delete _evaluator;
   }
-
 
   template <typename T>
   inline
@@ -503,7 +546,15 @@ namespace GMlib {
     }
   }
 
-
+  /*! void PERBSSurf<T>::findIndex( T u, T v, int& iu, int& iv )
+   *
+   *  Finds a knot vector index pair asociated with a parametric value pair.
+   *
+   *  \param[in]  u   Parametric value for u-direction.
+   *  \param[in]  v   Parametric value for v-direction.
+   *  \param[out] iu  Knot vector index for v.
+   *  \param[out] iv  Knot vector index for u.
+   */
   template <typename T>
   inline
   void PERBSSurf<T>::findIndex( T u, T v, int& iu, int& iv ) {
@@ -512,7 +563,16 @@ namespace GMlib {
     iv = (this->_no_sam_v-1)*(v-this->getParStartV())/(this->getParDeltaV())+0.1;
   }
 
-
+  /*! void PERBSSurf<T>::generateKnotVector( DVector<T>& kv, const T s, const T d, int kvd, bool closed )
+   *
+   *  Generates a linear knot vector.
+   *
+   *  \param[out] kv      Generated knot vector.
+   *  \param[in]  s       Knot vector start value.
+   *  \param[in]  d       Knot vector delta value.
+   *  \param[in]  kvd     Knot vector dimension.
+   *  \param[in]  closed  Whether the data set associated with the knot vector is closed.
+   */
   template <typename T>
   inline
   void PERBSSurf<T>::generateKnotVector( DVector<T>& kv, const T s, const T d, int kvd, bool closed ) {
@@ -535,7 +595,12 @@ namespace GMlib {
     }
   }
 
-
+  /*! void PERBSSurf<T>::generateKnotVector( PSurf<T>* g )
+   *
+   *  Generates a linear knot vector pair for the given surface.
+   *
+   *  \param[in]  g The cure for which the knot vectors is generated.
+   */
   template <typename T>
   inline
   void PERBSSurf<T>::generateKnotVector( PSurf<T>* g ) {
@@ -559,7 +624,16 @@ namespace GMlib {
     );
   }
 
-
+  /*! void PERBSSurf<T>::generateKnotVector( PSurf<T>* g, T u_s, T u_e, T v_s, T v_e )
+   *
+   *  Generates a linear knot vector pair for the sub-surface of the given surface.
+   *
+   *  \param[in]  g   The cure for which the knot vectors is generated.
+   *  \param[in]  u_s The start parameter for the u-direction.
+   *  \param[in]  u_e The end parameter for the u-direction.
+   *  \param[in]  v_s The start parameter for the v-direction.
+   *  \param[in]  v_e The end parameter for the v-direction.
+   */
   template <typename T>
   inline
   void PERBSSurf<T>::generateKnotVector( PSurf<T>* g, T u_s, T u_e, T v_s, T v_e ) {
@@ -590,7 +664,6 @@ namespace GMlib {
     );
   }
 
-
   template <typename T>
   inline
   void PERBSSurf<T>::getB( DVector<T>& B, const DVector<T>& kv, int tk, T t, int d ) {
@@ -602,7 +675,6 @@ namespace GMlib {
     B[1] = - _evaluator->getDer1();
     B[2] = - _evaluator->getDer2();
   }
-
 
   template <typename T>
   inline
@@ -656,7 +728,6 @@ namespace GMlib {
     return c1 ;
   }
 
-
   template <typename T>
   inline
   DMatrix< Vector<T,3> > PERBSSurf<T>::getCPre( T u, T v, int uk, int vk, T du, T dv, int iu, int iv ) {
@@ -706,14 +777,12 @@ namespace GMlib {
     return c1 ;
   }
 
-
   template <typename T>
   inline
   T PERBSSurf<T>::getEndPU() {
 
     return _u[_u.getDim()-2];
   }
-
 
   template <typename T>
   inline
@@ -722,7 +791,6 @@ namespace GMlib {
     return _v[_v.getDim()-2];
   }
 
-
   template <typename T>
   inline
   std::string PERBSSurf<T>::getIdentity() const {
@@ -730,7 +798,12 @@ namespace GMlib {
     return "PERBSSurf";
   }
 
-
+  /*! DVector<T>& PERBSSurf<T>::getKnotsV()
+   *
+   *  Returns a reference to the u-direction knot vectors.
+   *
+   *  \return Knot vector references.
+   */
   template <typename T>
   inline
   DVector<T>& PERBSSurf<T>::getKnotsU() {
@@ -738,7 +811,12 @@ namespace GMlib {
     return _u;
   }
 
-
+  /*! DVector<T>& PERBSSurf<T>::getKnotsV()
+   *
+   *  Returns a reference to the v-direction knot vectors.
+   *
+   *  \return Knot vector references.
+   */
   template <typename T>
   inline
   DVector<T>& PERBSSurf<T>::getKnotsV() {
@@ -746,7 +824,12 @@ namespace GMlib {
     return _v;
   }
 
-
+  /*! DMatrix< PSurf<T>* >& PERBSSurf<T>::getLocalPatches()
+   *
+   *  Returns a reference to the local pathces.
+   *
+   *  \return A reference to the local patches.
+   */
   template <typename T>
   inline
   DMatrix< PSurf<T>* >& PERBSSurf<T>::getLocalPatches() {
@@ -754,7 +837,12 @@ namespace GMlib {
     return _c;
   }
 
-
+  /*! int PERBSSurf<T>::getNoLocalPatchesU() const
+   *
+   *  Returns number of local patches in u-direction.
+   *
+   *  \return Number of local pathces.
+   */
   template <typename T>
   inline
   int PERBSSurf<T>::getNoLocalPatchesU() const {
@@ -763,13 +851,18 @@ namespace GMlib {
   }
 
 
+  /*! int PERBSSurf<T>::getNoLocalPatchesV() const
+   *
+   *  Returns number of local patches in v-direction.
+   *
+   *  \return Number of local pathces.
+   */
   template <typename T>
   inline
   int PERBSSurf<T>::getNoLocalPatchesV() const {
 
     return _c.getDim2();
   }
-
 
   template <typename T>
   inline
@@ -778,7 +871,6 @@ namespace GMlib {
     return _u[1];
   }
 
-
   template <typename T>
   inline
   T PERBSSurf<T>::getStartPV() {
@@ -786,7 +878,10 @@ namespace GMlib {
     return _v[1];
   }
 
-
+  /*! void PERBSSurf<T>::hideLocalPatches()
+   *
+   *  Sets the local patches not visible.
+   */
   template <typename T>
   inline
   void PERBSSurf<T>::hideLocalPatches() {
@@ -795,7 +890,6 @@ namespace GMlib {
       for( int j = 0; j < _c.getDim2(); j++ )
         _c[i][j]->setVisible( false, -1 );
   }
-
 
   template <typename T>
   inline
@@ -806,7 +900,13 @@ namespace GMlib {
     _pre_eval = true;
   }
 
-
+  /*! void PERBSSurf<T>::insertPatch( PSurf<T>* patch )
+   *
+   *  Inserts a patch.
+   *  A helper function for the ERBSSurf class.
+   *
+   *  \param[in]  patch   Patch to insert.
+   */
   template <typename T>
   inline
   void PERBSSurf<T>::insertPatch( PSurf<T>* patch ) {
@@ -817,14 +917,12 @@ namespace GMlib {
     insert( patch );
   }
 
-
   template <typename T>
   inline
   bool PERBSSurf<T>::isClosedU() const {
 
     return _closed_u;
   }
-
 
   template <typename T>
   inline
@@ -833,7 +931,12 @@ namespace GMlib {
     return _closed_v;
   }
 
-
+  /*! bool PERBSSurf<T>::isLocalPatchesVisible() const
+   *
+   *  Returns whether the local pathces is visible.
+   *
+   *  \return Whether the local patches is visible.
+   */
   template <typename T>
   inline
   bool PERBSSurf<T>::isLocalPatchesVisible() const {
@@ -945,7 +1048,10 @@ namespace GMlib {
     _resamp_mode = mode;
   }
 
-
+  /*! void PERBSSurf<T>::showLocalPatches()
+   *
+   *  Makes the local patches visible.
+   */
   template <typename T>
   inline
   void PERBSSurf<T>::showLocalPatches() {
