@@ -43,30 +43,44 @@
 
 namespace GMlib {
 
+  enum GM_SURF_NORMALSVISUALIZER_MODE {
+    GM_SURF_NORMALSVISUALIZER_ALL,
+    GM_SURF_NORMALSVISUALIZER_INTERIOR,
+    GM_SURF_NORMALSVISUALIZER_BOUNDARY
+  };
+
   template <typename T>
   class PSurfNormalsVisualizer : public PSurfVisualizer<T> {
   public:
     PSurfNormalsVisualizer();
     ~PSurfNormalsVisualizer();
 
-    void                          display();
-    const Color&                  getColor() const;
-    std::string                   getIdentity() const;
-    double                        getSize() const;
-    void                          replot(
+    void                              display();
+    const Color&                      getColor() const;
+    std::string                       getIdentity() const;
+    GM_SURF_NORMALSVISUALIZER_MODE    getMode() const;
+    double                            getSize() const;
+    void                              replot(
       DMatrix< DMatrix< Vector<T, 3> > >& p,
       DMatrix< Vector<T, 3> >& normals,
       int m1, int m2, int d1, int d2
     );
-    void                          setColor( const Color& color );
-    void                          setSize( double size = 1.0 );
+    void                              setColor( const Color& color );
+    void                              setMode( GM_SURF_NORMALSVISUALIZER_MODE mode );
+    void                              setSize( double size = 1.0 );
 
-  public:
-    GLuint                        _vbo;
-    int                           _no_elements;
+  protected:
+    GLuint                            _vbo;
+    int                               _no_elements;
 
-    Color                         _color;
-    double                        _size;
+    Color                             _color;
+    double                            _size;
+
+    GM_SURF_NORMALSVISUALIZER_MODE    _mode;
+
+    void                              makePlotAll( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals );
+    void                              makePlotInterior( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals );
+    void                              makePlotBoundary( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals );
 
 
   };
