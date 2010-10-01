@@ -52,16 +52,38 @@
 
 // Parametric Tensor Product Surfaces
 #include "gmPApple"                 // Apple
+#include "gmPApple2"                // Apple
 #include "gmPAsteroidalSphere"      // Asteroidal Sphere
+#include "gmPBenthorns"             // Bent Horns
+#include "gmPBohemianDome"          // Bohemian Dome
+#include "gmPBottle8"               // Bottle 8
+#include "gmPBoysSurface"           // Boy's Surface
 #include "gmPBezierSurf"            // Bezier Surface
 #include "gmPCircularSurface"       // Circular Surface
+#include "gmPCone"                  // Cone
+#include "gmPCrossCap"              // CrossCap
 #include "gmPCylinder"              // Cylinder
+#include "gmPDiniSurface"           // Dini Surface
+#include "gmPEightSurface"          // Eight Surface
+#include "gmPEnnepersSurface"       // Ennepers Surface
 #include "gmPERBSSurf"              // Expo Rational BSpline Surface
+#include "gmPHeart"                 // Heart
+#include "gmPHelicoid"              // Helicoid
 #include "gmPHermiteSurface"        // Hermite interpolated surface
+#include "gmPInsideOutTorus"        // Inside-out Torus
+#include "gmPKleinsBottle"          // Kleins Bottle
+#include "gmPKuenSurface"           // Kuen Surface
+#include "gmPMoebiusStrip"          // Moebius Strip
 #include "gmPPlane"                 // Plane
+#include "gmPSeashell"              // Seashell
+#include "gmPSinSurface"            // Sin Surface
+#include "gmPSlippersSurface"       // Slipper's Surface
 #include "gmPSphere"                // Sphere
 #include "gmPSteinerSurf"           // The Steiner Surface
+#include "gmPSwallowTail"           // Swallow Tail
 #include "gmPTorus"                 // Torus Surface
+#include "gmPTrianguloidTrefoil"    // Trianguloid Trefoil
+#include "gmPWhitneyUmbrella"       // Whitney Umbrella
 
 // Parametric Triangle Surfaces
 #include "gmPBezierTriangle"        // Bezier Triangle

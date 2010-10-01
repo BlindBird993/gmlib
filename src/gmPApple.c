@@ -63,9 +63,9 @@ namespace GMlib {
 
     this->_p.setDim( d1+1, d2+1 );
 
-    this->_p[0][0][0] =	 cos(u) * ( 4 + 3.8 * cos(v) );
-    this->_p[0][0][1] =	 sin(u) * ( 4 + 3.8 * cos(v) );
-    this->_p[0][0][2] =	 ( cos(v) + sin(v) - 1 ) * ( 1 + sin(v) ) * log( 1 - M_PI * v / 10 ) + 7.5 * sin( v );
+    this->_p[0][0][0] =	 _r * ( cos(u) * ( 4 + 3.8 * cos(v) ) );
+    this->_p[0][0][1] =	 _r * ( sin(u) * ( 4 + 3.8 * cos(v) ) );
+    this->_p[0][0][2] =	 _r * ( ( cos(v) + sin(v) - 1 ) * ( 1 + sin(v) ) * log( 1 - M_PI * v / 10 ) + 7.5 * sin( v ) );
 
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {

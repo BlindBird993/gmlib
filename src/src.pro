@@ -107,7 +107,29 @@ HEADERS_CPP += gmAngle \
     gmERBSEvaluator \
     gmBFBSEvaluator \
     gmPBasisCurve \
-    gmPHermiteSurface
+    gmPHermiteSurface \
+    gmPApple2 \
+    gmPBenthorns \
+    gmPBohemianDome \
+    gmPBottle8 \
+    gmPBoysSurface \
+    gmPCone \
+    gmPCrossCap \
+    gmPDiniSurface \
+    gmPEightSurface \
+    gmPEnnepersSurface \
+    gmPHeart \
+    gmPHelicoid \
+    gmPInsideOutTorus \
+    gmPKleinsBottle \
+    gmPKuenSurface \
+    gmPMoebiusStrip \
+    gmPSeashell \
+    gmPSinSurface \
+    gmPSlippersSurface \
+    gmPSwallowTail \
+    gmPTrianguloidTrefoil \
+    gmPWhitneyUmbrella
 
 
 # ########
@@ -209,7 +231,29 @@ HEADERS += gmAngle.h \
     gmERBSEvaluator.h \
     gmBFBSEvaluator.h \
     gmPBasisCurve.h \
-    gmPHermiteSurface.h
+    gmPHermiteSurface.h \
+    gmPApple2.h \
+    gmPBenthorns.h \
+    gmPBohemianDome.h \
+    gmPBottle8.h \
+    gmPBoysSurface.h \
+    gmPCone.h \
+    gmPCrossCap.h \
+    gmPDiniSurface.h \
+    gmPEightSurface.h \
+    gmPEnnepersSurface.h \
+    gmPHeart.h \
+    gmPHelicoid.h \
+    gmPInsideOutTorus.h \
+    gmPKleinsBottle.h \
+    gmPKuenSurface.h \
+    gmPMoebiusStrip.h \
+    gmPSeashell.h \
+    gmPSinSurface.h \
+    gmPSlippersSurface.h \
+    gmPSwallowTail.h \
+    gmPTrianguloidTrefoil.h \
+    gmPWhitneyUmbrella.h
 
 # ########
 # Sources
@@ -373,7 +417,29 @@ SOURCES_TEMPLATES += gmPBSplineSurf.c \
     gmERBSEvaluator.c \
     gmBFBSEvaluator.c \
     gmPBasisCurve.c \
-    gmPHermiteSurface.c
+    gmPHermiteSurface.c \
+    gmPApple2.c \
+    gmPBenthorns.c \
+    gmPBohemianDome.c \
+    gmPBottle8.c \
+    gmPBoysSurface.c \
+    gmPCone.c \
+    gmPCrossCap.c \
+    gmPDiniSurface.c \
+    gmPEightSurface.c \
+    gmPEnnepersSurface.c \
+    gmPHeart.c \
+    gmPHelicoid.c \
+    gmPInsideOutTorus.c \
+    gmPKleinsBottle.c \
+    gmPKuenSurface.c \
+    gmPMoebiusStrip.c \
+    gmPSeashell.c \
+    gmPSinSurface.c \
+    gmPSlippersSurface.c \
+    gmPSwallowTail.c \
+    gmPTrianguloidTrefoil.c \
+    gmPWhitneyUmbrella.c
 
 SOURCES_LUA += lua/pcircle_eval.lua \
     lua/psphere_eval.lua
