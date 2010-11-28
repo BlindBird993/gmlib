@@ -66,6 +66,8 @@ namespace GMlib {
   inline
   void PSphere<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
+    this->_p.setDim( d1+1, d2+1 );
+
     T r = _radius;
     T cos_u = cos(u);
     T cos_v = r * cos(v);
