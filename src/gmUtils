@@ -34,5 +34,6 @@
 
 #include "gmTimer"
 #include "gmRandom"
+#include "gmScript"
 #include "gmStream"
 #include "gmString"

@@ -34,6 +34,7 @@
 #include "gmCoordinateSystem"
 #include "gmLightG"
 #include "gmMaterial"
+#include "gmPathTrack"
 #include "gmSelector"
 #include "gmSelectorGrid"
 #include "gmSphere3D"

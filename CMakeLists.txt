@@ -20,25 +20,24 @@
 # #
 # ###############################################################################
 
-TEMPLATE = subdirs
-CONFIG += ordered
+# Minimum CMake version required
+cmake_minimum_required(VERSION 2.8)
 
-SUBDIRS = \
-  src
-  #doc
+# Global name of the project
+project(GMlib)
 
-OTHER_FILES = \
-  .gitignore \
-  CHANGELOG \
-  COPYING \
-  COPYING.LESSER\
-  INSTALL \
-  README \
-  RELEASE \
-  CMakeLists.txt
+# Version
+set(VERSION_MAJOR 0)
+set(VERSION_MINOR 3)
+set(VERSiON_PATCH 0)
 
+option( GM_GL_EXTENSION "GL Extensions" ON )
 
-OTHER_FILES = \
-  doc/Doxyfile
+# Pass compiler options
+if( GM_GL_EXTENSION )
 
-include ( gmlib_doc.pri )
+  include_directories( /usr/include/GL)
+endif( GM_GL_EXTENSION )
+
+# Process files in the source directory
+add_subdirectory(src)

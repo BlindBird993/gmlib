@@ -1,6 +1,7 @@
 HEADERS +=
 SOURCES +=
-OTHER_FILES +=
+OTHER_FILES += \
+    CMakeLists.txt
 
 # Module Headers
 HEADERS_MODULES += gmContainer \
@@ -457,3 +458,4 @@ OTHER_FILES += \
 include( ../gmlib.pri )
 TARGET = gmlib
 include( ../gmlib_cpp.pri )
+
