@@ -17,6 +17,13 @@
 *.pro.user*
 
 #
+########
+## CMake
+CMakeCache.txt
+cmake_install.cmake
+*/CMakeFiles/*
+
+#
 ########################################
 ## Ignored project files and directories
 Makefile
@@ -26,6 +33,8 @@ object_script.GMlib.Debug
 object_script.GMlib.Release
 include/*
 lib/*
+.kdev4/*
+*.kdev4
 
 #
 ##########################################
