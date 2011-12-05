@@ -524,5 +524,18 @@ add_library( GMlib STATIC
 set_target_properties( GMlib PROPERTIES DEBUG_POSTFIX _debug )
 set_target_properties( GMlib PROPERTIES LINKER_LANGUAGE CXX )
 
+add_custom_command( TARGET GMlib POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E make_directory 
+    ${CMAKE_BINARY_DIR}/build/lib/gmlib/
+  COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_CURRENT_SOURCE_DIR}/libGMlib.a
+    ${CMAKE_BINARY_DIR}/build/lib/gmlib/
+)
 
-find_package(OpenGL REQUIRED)
+add_custom_command( TARGET GMlib POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E make_directory 
+    ${CMAKE_BINARY_DIR}/build/src
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_BINARY_DIR}/build/src
+)

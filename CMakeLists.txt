@@ -29,21 +29,14 @@ project(GMlib)
 # Version
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 3)
-set(VERSiON_PATCH 0)
-
-
-# Pass compiler options (will be deprecated sooon)
-#option( GM_GL_EXTENSION "GL Extensions" ON )
-#if( GM_GL_EXTENSION )
-#
-#  include_directories( /usr/include/GL)
-#endif( GM_GL_EXTENSION )
+set(VERSION_PATCH 1)
 
 # Adjust the CMAKE_MODULE_PATH to include the "local" cmake/Modules directory
-set(CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/Modules")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 #message( "CMAKE_MODULE_PATH: " ${CMAKE_MODULE_PATH} )
 
 # Find OpenGL
+find_package(OpenGL REQUIRED)
 
 # Find GLEW package (local package)
 find_package(Glew REQUIRED)
