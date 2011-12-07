@@ -35,13 +35,6 @@
 
 #include "gmOpenGL.h"
 
-#ifdef GM_GL_EXTENSION
-  #define GM_GPU_GLSL
-#endif
-
-
-#ifdef  GM_GPU_GLSL
-
 
 namespace GMlib {
 
@@ -99,7 +92,5 @@ namespace GMlib {
 
 } // End namespace GMlib
 
-
-#endif // GM_GPU_GLSL
 
 #endif // __gmGPUGLSL_H__

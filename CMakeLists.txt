@@ -43,5 +43,16 @@ find_package(Glew REQUIRED)
 #message( "GLEW Include dir(s): " ${GLEW_INCLUDE_PATH} )
 #message( "GLEW Lib(s): " ${GLEW_LIBRARY} )
 
+
+# Init global source vars
+set( HEADERS_CXX "")
+set( HEADERS "")
+set( HEADERS_I "")
+
 # Process files in the source directory
 add_subdirectory(src)
+
+# 
+#message( STATUS "GMlib Headers C++ : " ${HEADERS_CXX} ) 
+#message( STATUS "GMlib Headers : " ${HEADERS} ) 
+#message( STATUS "GMlib Headers Impl. : " ${HEADERS_I} ) 

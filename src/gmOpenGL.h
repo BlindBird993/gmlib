@@ -72,42 +72,7 @@ typedef unsigned short wchar_t;
 
 
 
-//// OpenGL and extionsion includes
-//#ifdef GM_GL_EXTENSION
-//  #ifdef _WIN32
-//    #include <GL/GLee.h>
-//  #endif
-//#endif
-//
-//// Handle when Glee is not included
-//#ifndef __glee_h_
-//
-//  // Enable Prototype GL Extensions
-//  #ifdef GM_GL_EXTENSION
-//    #ifndef GL_GLEXT_PROTOTYPES
-//      #define GL_GLEXT_PROTOTYPES
-//    #endif
-//  #endif
-//
-//  // Include OGL header
-//  #include <GL/gl.h>
-//
-//  // Include GL Extensions
-//  #ifdef GM_GL_EXTENSION
-//    #include <GL/glext.h>
-//
-//    #ifndef _WIN32
-//      #include <GL/glx.h>
-//      #include <GL/glxext.h>
-//    #endif
-//  #endif
-//#endif
-//
-//// Include OGL Utility header
-//#include <GL/glu.h>
-
-
-// Include Glew header
+// Include Glew header and leave the gl mangling to GLEW
 #include <GL/glew.h>
 
 

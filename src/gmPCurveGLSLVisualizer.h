@@ -39,8 +39,6 @@
 #include "gmPCurveVisualizer"
 
 
-#ifdef GM_GPU_GLSL
-
 namespace GMlib {
 
   namespace GLSL {
@@ -62,8 +60,6 @@ namespace GMlib {
 
 // Include PSurfGLSLVisualizer class function implementations
 #include "gmPCurveGLSLVisualizer.c"
-
-#endif // GM_GPU_GLSL
 
 
 #endif // __GMPCURVEGLSLVISUALIZER_H__

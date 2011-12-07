@@ -32,8 +32,6 @@
 
 #include "gmGLSL.h"
 
-#ifdef GM_GPU_GLSL
-
 
 namespace GMlib {
 
@@ -194,31 +192,8 @@ namespace GMlib {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   } // End namespace GLSL
 
 } // End namespace GMlib
 
 
-#endif // GM_GPU_GLSL_ENABLED

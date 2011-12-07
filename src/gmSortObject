@@ -22,42 +22,12 @@
 
 
 
-/*! \file gmGLPhongShader.h
+/*! \file gmSortObject
+ *  \brief SortObject C++ header
  *
- *  Pending Documentation.
+ *  C++ interface for the SortObject header and classes.
  *
- *  \date   2009-05-23
+ *  \date   2011-12-16
  */
 
-
-#ifndef __gmGLPHONGSHADER_H__
-#define __gmGLPHONGSHADER_H__
-
-
-// GMlib includes
-#include "gmGLSL.h"
-
-
-
-
-namespace GMlib {
-
-  namespace GLSL {
-
-    class GLPhongShader : public GLShader {
-    public:
-      GLPhongShader();
-      ~GLPhongShader();
-
-
-    }; // End GLPhongShader
-
-  } // End namespace GLSL
-
-} // Ene namespace GMlib
-
-
-
-
-#endif // __gmGLPHONGSHADER_H__
-
+#include "gmSortObject.h"

@@ -30,6 +30,12 @@
  */
 
 
+// Evaluators
+#include "gmEvaluatorStatic"
+#include "gmBasisEvaluator"
+#include "gmBFBSEvaluator"
+#include "gmERBSEvaluator"
+
 // The base class of all subclasses of Parameterized Curvss, Surfaces, Volumes, Flows, ..., ..., etc.
 #include "gmParametrics.h"
 

@@ -33,11 +33,11 @@ isEmpty(GMLIB_LIBRARY_BASENAME) {
 
 # #################
 # Configuration
+#
 # GMlib Features
-# GM_GL_EXTENSION enables OpenGL extensions
 # GM_SCRIPT_LUA enables lua scripting support through wrapper classes
- DEFINES += GM_GL_EXTENSION
-# DEFINES = GM_GL_EXTENSION GM_SCRIPT_LUA
+#
+# DEFINES = GM_SCRIPT_LUA
 # DEFINES += GMLIB_LIBRARY_BASENAME=\\\"$$GMLIB_LIBRARY_BASENAME\\\"
 
 
