@@ -881,7 +881,7 @@ add_custom_command( TARGET ${TARGET} POST_BUILD
 #################################
 # Copy src files to "build/src" directory
 foreach(f ${FILES_CPY})
-  add_custom_command( TARGET gmlib POST_BUILD
+  add_custom_command( TARGET ${TARGET} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory
       ${CMAKE_BINARY_DIR}/build/src
     COMMAND ${CMAKE_COMMAND} -E copy 
