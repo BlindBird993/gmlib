@@ -23,8 +23,8 @@
 ####################
 # Define helper vars
 
-# Path(s)
-#set( SRC_ROOT . )
+# Build target
+set( TARGET gmlib )
 
 # Source groups
 set( G_HDRS_CXX "Headers(CXX)" )
@@ -800,7 +800,7 @@ SOURCE_GROUP( "${G_SRCS}\\${M_VISUALIZERS}"     FILES ${VISUALIZERS_SRCS} )
 
 ##########################
 # Add files to the library
-add_library( GMlib STATIC 
+add_library( ${TARGET} STATIC
 
   # gmContainer
   ${CONTAINER_HDRS_CXX} ${CONTAINER_HDRS}
@@ -830,8 +830,8 @@ add_library( GMlib STATIC
   ${VISUALIZERS_HDRS_CXX} ${VISUALIZERS_HDRS} ${VISUALIZERS_SRCS}
 )
 
-set_target_properties( GMlib PROPERTIES DEBUG_POSTFIX _debug )
-set_target_properties( GMlib PROPERTIES LINKER_LANGUAGE CXX )
+set_target_properties( ${TARGET} PROPERTIES DEBUG_POSTFIX _debug )
+set_target_properties( ${TARGET} PROPERTIES LINKER_LANGUAGE CXX )
 
 set( FILES_CPY
 
@@ -869,11 +869,11 @@ set( FILES_CPY
 
 #################################
 # Copy lib file to "build/lib/gmlib" directory
-add_custom_command( TARGET GMlib POST_BUILD
+add_custom_command( TARGET ${TARGET} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E make_directory 
     ${CMAKE_BINARY_DIR}/build/lib/gmlib/
   COMMAND ${CMAKE_COMMAND} -E copy
-    ${CMAKE_BINARY_DIR}/src/libGMlib.a
+    ${CMAKE_BINARY_DIR}/src/lib${TARGET}.a
     ${CMAKE_BINARY_DIR}/build/lib/gmlib/
 )
 
@@ -881,7 +881,7 @@ add_custom_command( TARGET GMlib POST_BUILD
 #################################
 # Copy src files to "build/src" directory
 foreach(f ${FILES_CPY})
-  add_custom_command( TARGET GMlib POST_BUILD
+  add_custom_command( TARGET gmlib POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory
       ${CMAKE_BINARY_DIR}/build/src
     COMMAND ${CMAKE_COMMAND} -E copy 
