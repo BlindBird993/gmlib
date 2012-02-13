@@ -46,7 +46,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCylinder<T>::PCylinder( const PCylinder<T>& copy ) : PCurve<T>(copy) {
+  PCylinder<T>::PCylinder( const PCylinder<T>& copy ) : PSurf<T>(copy) {
 
     _rx = copy._rx;
     _ry = copy._ry;
