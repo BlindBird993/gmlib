@@ -6,6 +6,7 @@
 *.backup
 *.o
 *.lib
+*.a
 *.obj
 *.so
 *.layout
@@ -21,7 +22,9 @@
 ## CMake
 CMakeCache.txt
 cmake_install.cmake
+CMakeFiles/*
 */CMakeFiles/*
+build/*
 
 #
 ########################################

@@ -330,6 +330,7 @@ set( DISPLAYUTILS_HDRS_I
   gmStlObject.c
   gmTriangleSystem_TSEdge.c
   gmTriangleSystem_TSLine.c
+  gmTriangleSystem_TSTile.c
   gmTriangleSystem_TSTriangle.c
   gmTriangleSystem_TSVEdge.c
   gmTriangleSystem_TSVertex.c
