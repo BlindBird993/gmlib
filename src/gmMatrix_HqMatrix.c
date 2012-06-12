@@ -127,7 +127,7 @@ namespace GMlib {
     makeOrtho(u, v, *this);
     Matrix<T,n+1,n+1> x(*this);
     rotateXY(a);
-    basisChange(x);
+    this->basisChange(x);
   }
 
 
@@ -147,7 +147,7 @@ namespace GMlib {
     makeOrtho(u, v, *this);
     SqMatrix<T,n+1> x(*this);
     GM_Static_<T,n>::rot_xy( this->getPtr(), this->getPtr()+(n+1), sina, cosa);
-    basisChange(x);
+    this->basisChange(x);
 
     T x0 = GM_Static_<T,n>::dpr(p.getPtr(),x.getPtr());
     T x1 = GM_Static_<T,n>::dpr(p.getPtr(),x[1].getPtr());
@@ -224,7 +224,7 @@ namespace GMlib {
   inline
   void HqMatrix<T, n>::rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
     HqMatrix<T,n> x(a,u,v);
-    reverseMult( x );
+    this->reverseMult( x );
   }
 
 
@@ -237,7 +237,7 @@ namespace GMlib {
   inline
   void HqMatrix<T, n>::rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const Point<T,n>& p){
     HqMatrix<T,n> x(a,u,v,p);
-    reverseMult( x );
+    this->reverseMult( x );
   }
 
 
@@ -265,7 +265,7 @@ namespace GMlib {
   void HqMatrix<T, n>::translateGlobal(const Vector<T,n> d) {
 
     HqMatrix<T,n> m(d);
-    reverseMult( m );
+    this->reverseMult( m );
   }
 
 
@@ -299,7 +299,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Matrix<T,n+1,n+1>& HqMatrix<T, n>::operator=(const Matrix<T,n+1,n+1>& v) {
-    cpy(v);
+    this->cpy(v);
     return(*this);
   }
 

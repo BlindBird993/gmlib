@@ -127,8 +127,8 @@ namespace GMlib {
   inline
   void TSVertex<T>::_set( const Point<T,3>& p, const Vector<T,3>& n ) {
 
-    setPos(p);
-    setDir(n);
+    this->setPos(p);
+    this->setDir(n);
   }
 
 

@@ -79,7 +79,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void Arrow<T, n>::setPos( const Point<T, n> &v ) {
-    _cpy(v);
+    this->_cpy(v);
   }
 
   template <typename T, int n>

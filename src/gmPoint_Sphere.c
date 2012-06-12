@@ -90,7 +90,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void Sphere<T, n>::resetRadius( T t ) {
-    resetValue(t);
+    this->resetValue(t);
   }
 
   template <typename T, int n>

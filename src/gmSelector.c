@@ -297,7 +297,7 @@ namespace GMlib {
 
     for(int i=0; i<_children.getSize(); i++)
     {
-      Selector<T,n> *s=dynamic_cast<Selector<T,n> *>(_children[i]);
+      Selector<T,n> *s=dynamic_cast<Selector<T,n> *>(this->_children[i]);
       if(s)
         if(s->isEnabled())
           return true;

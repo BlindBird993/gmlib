@@ -81,7 +81,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Point<T, n>& UnitVector<T, n>::operator = ( const Point<T, n> &p ) {
-    _cpy(p);
+    this->_cpy(p);
     return Point<T,n>::operator/=( Point<T,n>::getLength() );
   }
 
@@ -89,7 +89,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Point<T, n>& UnitVector<T, n>::operator = ( const UnitVector<T, n>& uv )	{
-    _cpy(uv);
+    this->_cpy(uv);
     return *this;
   }
 
