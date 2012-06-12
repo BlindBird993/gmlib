@@ -15,7 +15,6 @@
 *.ncb
 *.swp
 *.moc
-*.pro.user*
 
 #
 ########
@@ -25,6 +24,12 @@ cmake_install.cmake
 CMakeFiles/*
 */CMakeFiles/*
 build/*
+
+#
+##################################
+## QMake (Deprecated build-system)
+*.pro*
+*.pri
 
 #
 ########################################
