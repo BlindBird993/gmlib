@@ -251,7 +251,7 @@ namespace GMlib {
     _vertex[1] = &p;
     p._insertEdge(this);
     e2->setConst(_const);
-    insert(e2);
+    this->insert(e2);
 
     // Splitt triangle 0
     if( _triangle[0] != NULL ) {
@@ -264,8 +264,8 @@ namespace GMlib {
       e->_setTriangle( t1, _triangle[0] );
       edg1[1]->_swapTriangle( _triangle[0], t1 );
 
-      insert(e);
-      insert(t1);
+      this->insert(e);
+      this->insert(t1);
 
       this->adjust( _triangle[0] );
     }
@@ -283,10 +283,10 @@ namespace GMlib {
       e2->_setTriangle(t1,t2);
       edg2[2]->_swapTriangle(_triangle[1], t2);
 
-      insert(e);
-      insert(t2);
+      this->insert(e);
+      this->insert(t2);
 
-      adjust(_triangle[1]);
+      this->adjust(_triangle[1]);
     }
 
     if( _triangle[0] != NULL ) {
@@ -332,8 +332,8 @@ namespace GMlib {
     edg1[1]->_setTriangle( edg1[1]->_getOther( _triangle[0] ), _triangle[1] );
     edg2[1]->_setTriangle( edg2[1]->_getOther( _triangle[1] ), _triangle[0] );
 
-    adjust( _triangle[0], true );
-    adjust( _triangle[1], true );
+    this->adjust( _triangle[0], true );
+    this->adjust( _triangle[1], true );
 
     edg1[1]->_okDelaunay();
     edg1[2]->_okDelaunay();

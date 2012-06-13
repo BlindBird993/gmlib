@@ -273,7 +273,7 @@ namespace GMlib {
   bool TriangleFacets<T>::_removeLastVertex() {
 
     (*this)[ this->getSize()-1 ]._deleteEdges();
-    return removeIndex( this->getSize()-1 );
+    return this->removeIndex( this->getSize()-1 );
 
   }
 

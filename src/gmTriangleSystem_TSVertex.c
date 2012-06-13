@@ -93,7 +93,7 @@ namespace GMlib {
       nor += tris[i]->getNormal();
 
     nor /= tris.getSize();
-    setDir( UnitVector3D<T>(nor) );
+    this->setDir( UnitVector3D<T>(nor) );
   }
 
 

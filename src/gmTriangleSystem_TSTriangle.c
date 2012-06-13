@@ -214,19 +214,19 @@ namespace GMlib {
     _edge[1]->_setTriangle( _edge[1]->_getOther(this), t2 );
     _edge[2]->_setTriangle( _edge[2]->_getOther(this), t3 );
 
-    insert( edg1 );
-    insert( edg2 );
-    insert( edg3 );
+    this->insert( edg1 );
+    this->insert( edg2 );
+    this->insert( edg3 );
 
     edg2 = _edge[1];
     _edge[1] = edg1;
     edg1 = _edge[2];
     _edge[2] = edg3;
 
-    insert( t2 );
-    insert( t3 );
+    this->insert( t2 );
+    this->insert( t3 );
 
-    adjust( this );
+    this->adjust( this );
 
     _edge[0]->_okDelaunay();
     edg1->_okDelaunay();

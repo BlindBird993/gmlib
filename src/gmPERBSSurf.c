@@ -914,7 +914,7 @@ namespace GMlib {
     patch->replot( 10, 10 );
     patch->setVisible( false );
     patch->setCollapsed( true );
-    insert( patch );
+    this->insert( patch );
   }
 
   template <typename T>
