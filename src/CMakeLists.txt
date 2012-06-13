@@ -878,6 +878,15 @@ add_custom_command( TARGET ${TARGET} POST_BUILD
     ${CMAKE_BINARY_DIR}/build/lib/gmlib/
 )
 
+############################################################
+# Copy lib file to "lib/gmlib" directory for in-place builds
+add_custom_command( TARGET ${TARGET} POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E make_directory
+    ${CMAKE_BINARY_DIR}/lib/gmlib/
+  COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_BINARY_DIR}/src/lib${TARGET}.a
+    ${CMAKE_BINARY_DIR}/lib/gmlib/
+)
 
 #################################
 # Copy src files to "build/src" directory

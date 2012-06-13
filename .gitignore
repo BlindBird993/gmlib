@@ -15,6 +15,7 @@
 *.ncb
 *.swp
 *.moc
+*.user*
 
 #
 ########
@@ -28,7 +29,7 @@ build/*
 #
 ##################################
 ## QMake (Deprecated build-system)
-*.pro*
+*.pro
 *.pri
 
 #
