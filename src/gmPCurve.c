@@ -366,11 +366,11 @@ namespace GMlib {
 
 
     // pre-sampel / pre evaluate data for a given parametric curve, if wanted/needed
-    preSample( m, 1, getStartP(), getEndP() );
+    preSample( m, d, getStartP(), getEndP() );
 
     // Resample
     DVector< DVector< Vector<T, 3> > > p;
-    resample( p, m, 1, getStartP(), getEndP() );
+    resample( p, m, d, getStartP(), getEndP() );
 
     // Set The Surrounding Sphere
     setSurroundingSphere( p );
@@ -467,6 +467,12 @@ namespace GMlib {
 //    }
 //  }
 
+  template <typename T>
+  inline
+  void PCurve<T>::resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d ) {
+
+    resample( p, m, d, getStartP(), getEndP() );
+  }
 
   template <typename T>
   inline

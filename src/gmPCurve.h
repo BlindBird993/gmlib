@@ -76,6 +76,7 @@ namespace GMlib {
 //    virtual void              resample( Array<Point<T,3> >& a, T eps );	// Always smooth, requires derivatives
 //    virtual void              resample( Array<Point<T,3> >& a, int m );					// Given sampling rate
 //    virtual void              resample( Array<Point<T,3> >& a, int m, T start, T end );	// Given sampling rate
+    void                      resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d );
     virtual void              resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end );
     void                      setDomain( T start, T end );
     void                      setDomainScale( T sc );

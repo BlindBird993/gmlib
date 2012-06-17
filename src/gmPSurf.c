@@ -818,25 +818,14 @@ namespace GMlib {
   template <typename T>
   inline
   void PSurf<T>::resample(
-    DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& /*a*/,
-    int /*m1*/,
-    int /*m2*/,
-    int /*d1*/,
-    int /*d2*/
+    DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a,
+    int m1,
+    int m2,
+    int d1,
+    int d2
   ) {
 
-//    if(m1>0)
-//    for(int i=0; i< _no_sam_p_u.getDim(); i++)
-//      _no_sam_p_u[i]= max(2,int(0.5+(m1*(_sam_p_u[i+1] - _sam_p_u[i]))/(_sam_p_u.back() - _sam_p_u[0])));
-//    if(m2>0)
-//    for(int i=0; i< _no_sam_p_v.getDim(); i++)
-//      _no_sam_p_v[i]= max(2,int(0.5+(m2*(_sam_p_v[i+1] - _sam_p_v[i]))/(_sam_p_v.back() - _sam_p_v[0])));
-//
-//    a.setDim(_no_sam_p_u.getDim(),_no_sam_p_v.getDim());
-//
-//    for(int i = 0; i < a.getDim1(); i++)
-//      for(int j = 0; j < a.getDim2(); j++)
-//        resample(a[i][j],_no_sam_p_u[i],_no_sam_p_v[j], d1, d2, _sam_p_u[i],_sam_p_v[j],_sam_p_u[i+1],_sam_p_v[j+1]);
+    resample( a, m1, m2, d1, d2, getStartPU(), getStartPV(), getEndPU(), getEndPV() );
   }
 
 
