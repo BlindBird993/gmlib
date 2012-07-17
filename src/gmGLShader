@@ -22,11 +22,11 @@
 
 
 
-/*! \file gmPSurfGLSLVisualizer
+/*! \file gmGLShader
  *
- *  C++ interface for the PSurfGLSLVisualizer header and classes.
+ *  C++ interface for the GLShader interfaces
  *
- *  \date   2010-04-15
+ *  \date   2010-11-04
  */
 
-#include "gmPSurfGLSLVisualizer.h"
+#include "gmGLShader.h"

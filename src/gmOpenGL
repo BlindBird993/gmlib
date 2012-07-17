@@ -32,5 +32,6 @@
 #include "gmOpenGL.h"
 
 #include "gmGLMatrix"  //! DEPRECATED: To Be!!
-#include "gmGLSL"       // SHADERS
-
+#include "gmGLProgram"
+#include "gmGLShader"
+#include "gmGLShaderManager"

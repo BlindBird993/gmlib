@@ -22,44 +22,11 @@
 
 
 
-/*! \file gmPCurveGLSLVisualizer.h
+/*! \file gmGLProgram
  *
- *  Interface for the PCurveGLSLVisualizer class.
+ *  C++ interface for the GLProgram interfaces
  *
- *  \date   2010-04-15
+ *  \date   2010-11-04
  */
 
-
-#ifndef __GMPCURVEGLSLVISUALIZER_H__
-#define __GMPCURVEGLSLVISUALIZER_H__
-
-
-// local
-#include "gmGLSL.h"
-#include "gmPCurveVisualizer"
-
-
-namespace GMlib {
-
-  namespace GLSL {
-
-    template <typename T>
-    class PCurveGLSLVisualizer : public PCurveVisualizer<T>, public GLProgram {
-    public:
-      PCurveGLSLVisualizer();
-
-      void          display();
-      std::string   getIdentity() const;
-
-    }; // END class PCurveGLSLVisualizer
-
-
-  } // END namespace GLSL
-
-} // END namespace GMlib
-
-// Include PSurfGLSLVisualizer class function implementations
-#include "gmPCurveGLSLVisualizer.c"
-
-
-#endif // __GMPCURVEGLSLVISUALIZER_H__
+#include "gmGLProgram.h"

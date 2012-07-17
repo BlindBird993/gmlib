@@ -76,7 +76,6 @@ typedef unsigned short wchar_t;
 #include <GL/glew.h>
 
 
-
 // GMlib includes
 #include "gmPoint.h"
 #include "gmPoint2D.h"
@@ -85,6 +84,10 @@ typedef unsigned short wchar_t;
 
 #include "gmMatrix.h"
 #include "gmColor.h"
+
+// STL
+#include <map>
+
 
 namespace GMlib {
 
@@ -99,6 +102,28 @@ namespace GMlib {
   const unsigned int GM_EYE_LINEAR = GL_EYE_LINEAR;
   const unsigned int GM_SPHERE_MAP = GL_SPHERE_MAP;
 
+
+
+  struct GLVertex {
+    GLfloat   x, y, z;
+    GLfloat   nx, ny, nz;
+    GLfloat   s1, t1;
+  };
+
+  inline
+  GLuint getGLVertexPointOffset() {
+    return 0;
+  }
+
+  inline
+  GLuint getGLVertexNormalOffset() {
+    return 3 * sizeof(GLfloat);
+  }
+
+  inline
+  GLuint getGLVertexTexOffset1() {
+    return 6 * sizeof(GLfloat);
+  }
 
   inline
   void glColor(const Color& c) {
@@ -669,6 +694,215 @@ namespace GMlib {
   // SwapBuffers
 
   void swapBuffers(void);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*! \class OGL
+   *
+   *  static OpenGL class
+   */
+  class OGL {
+
+    // Global
+  public:
+    static void                 cleanUp();
+    static void                 init();
+
+    static const std::string&   getLog();
+
+  private:
+    static std::string          _log;
+
+    static void                 _appendLog( const std::string& log );
+    static void                 _clearLog();
+    static bool                 _nameEmpty( const std::string& name, const std::string& type = std::string() );
+
+
+
+    // FrameBufferObject
+  public:
+
+    struct FBOInfo {
+      GLuint    id;
+    };
+
+    static bool                 bindFbo( const std::string& name );
+    static bool                 createFbo( const std::string& name );
+    static bool                 deleteFbo( const std::string& name );
+    static GLuint               getFboId( const std::string& name );
+    static const std::map< std::string, OGL::FBOInfo >    getFbos();
+    static bool                 releaseFbo( const std::string& name );
+
+  private:
+    static std::map< std::string, OGL::FBOInfo >    _fbos;
+
+    static bool                 _fboExists( const std::string& name, bool exist );
+
+
+
+
+
+    // BufferObject
+  public:
+
+    struct BOInfo {
+      GLuint    id;
+      GLenum    target;
+    };
+
+    static bool                 bindBo( const std::string& name );
+    static bool                 createBo( const std::string& name, GLenum target = GL_ARRAY_BUFFER );
+    static bool                 deleteBo( const std::string& name );
+    static GLuint               getBoId( const std::string& name );
+    static GLenum               getBoTarget( const std::string& name );
+    static const std::map< std::string, OGL::BOInfo >    getBos();
+    static bool                 releaseBo( const std::string& name );
+    static bool                 setBoTarget( const std::string& name, GLenum target = GL_ARRAY_BUFFER  );
+
+  private:
+    static std::map< std::string, OGL::BOInfo >    _bos;
+
+    static bool                 _boExists( const std::string& name, bool exist );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Default render buffer
+  public:
+    static void         bindRenderBuffer();
+    static void         clearRenderBuffer();
+    static void         createRenderBuffer();
+    static void         deleteRenderBuffer();
+    static GLuint       getRenderBuffer();
+    static int          getRenderBufferHeight();
+    static int          getRenderBufferWidth();
+    static GLuint       getRenderColorBuffer();
+    static GLuint       getRenderSelectedBuffer();
+    static void         releaseRenderBuffer();
+    static void         setRenderBufferSize( int width, int height );
+
+  private:
+    static GLuint       _render_rbo_color;
+    static GLuint       _render_rbo_selected;
+    static GLuint       _render_rbo_depth;
+
+    static int          _render_fbo_w;
+    static int          _render_fbo_h;
+
+    static bool         _render_exists;
+
+
+    // Selection Buffer
+  public:
+    static void         bindSelectBuffer();
+    static void         clearSelectBuffer();
+    static void         createSelectBuffer();
+    static void         deleteSelectBuffer();
+    static GLuint       getSelectBuffer();
+    static int          getSelectBufferHeight();
+    static int          getSelectBufferWidth();
+    static void         releaseSelectBuffer();
+    static void         setSelectBufferSize( int width, int height );
+
+  private:
+    static GLuint       _select_fbo;
+    static GLuint       _select_rbo_color;
+    static GLuint       _select_rbo_depth;
+
+    static int          _select_fbo_w;
+    static int          _select_fbo_h;
+
+    static bool         _select_exists;
+
+    // Buffer Objects
+  public:
+    static void         createSelectorRepBOs();
+    static void         deleteSelectorRepBOs();
+    static void         createStandardRepBOs();
+    static void         deleteStandardRepBOs();
+
+
+  }; // END class OpenGL
+
+
+
+
+
+  class GLFramebufferObject {
+  public:
+    GLFramebufferObject( const std::string name = "default" );
+    GLFramebufferObject( const GLFramebufferObject& copy );
+    ~GLFramebufferObject();
+
+    void                  bind() const;
+    GLuint                getId() const;
+    std::string           getName() const;
+    void                  release() const;
+
+  protected:
+    std::string           _name;
+    GLuint                _id;
+
+  }; // END class GLFrameBufferObject
+
+
+
+
+  class GLBufferObject {
+  public:
+    GLBufferObject( const std::string name );
+    GLBufferObject( const std::string name, GLenum type );
+    GLBufferObject( const GLBufferObject& copy );
+    ~GLBufferObject();
+
+    void                  bind() const;
+    void                  disableVertexArrayPointer( GLuint vert_loc );
+    void                  enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset );
+    GLuint                getId() const;
+    GLenum                getTarget() const;
+    std::string           getName() const;
+    void                  release() const;
+    void                  setTarget( GLenum target = GL_ARRAY_BUFFER );
+
+  protected:
+    std::string           _name;
+    GLuint                _id;
+    GLenum                _target;
+
+  }; // END class GLBufferObject
 
 
 } // END namespace GMlib

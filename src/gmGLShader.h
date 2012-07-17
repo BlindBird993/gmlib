@@ -22,36 +22,46 @@
 
 
 
-/*! \file gmPSurfGLSLVisualizer.c
+/*! \file gmGLShader.h
  *
- *  Implementation of the PSurfGLSLVisualizer template class.
+ *  Pending Documentation
  *
- *  \date   2010-04-15
+ *  \date   2010-11-04
  */
+
+#ifndef __gmGLSHADER_H__
+#define __gmGLSHADER_H__
+
+
+// STL
+#include <string>
+
+// GMlib
+#include "gmOpenGL.h"
+
 
 namespace GMlib {
 
-  namespace GLSL {
+  class GLShader {
+  public:
+    GLShader( const std::string& name, GLenum type );
+    GLShader( const std::string& name, const std::string& source, GLenum type );
+    GLShader( const GLShader& copy );
+    ~GLShader();
 
-    template <typename T>
-    PSurfGLSLVisualizer<T>::PSurfGLSLVisualizer() {}
+    bool                  compile();
+    std::string           getInfoLog() const;
+    GLuint                getId() const;
+    const std::string&    getName() const;
+    GLenum                getType() const;
+    bool                  isCompiled() const;
+    void                  set( const std::string& source );
 
-    template <typename T>
-    inline
-    void PSurfGLSLVisualizer<T>::display() {
+  protected:
+    std::string           _name;
 
-      begin();
-      PSurfVisualizer<T>::display();
-      end();
-    }
-
-    template <typename T>
-    std::string PSurfGLSLVisualizer<T>::getIdentity() const {
-
-      return "PSurf GLSL Visualizer";
-    }
-
-  } // END namespace GLSL
-
+  }; // END class GLShader
 
 } // END namespace GMlib
+
+#endif // __gmGLSHADER_H__

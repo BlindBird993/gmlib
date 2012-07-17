@@ -22,42 +22,11 @@
 
 
 
-/*! \file gmGLPhongShader.h
+/*! \file gmGLShaderManager
  *
- *  Pending Documentation.
+ *  C++ interface for the GLShaderManager interfaces
  *
- *  \date   2009-05-23
+ *  \date   2010-11-04
  */
 
-
-#ifndef __gmGLPHONGSHADER_H__
-#define __gmGLPHONGSHADER_H__
-
-
-// GMlib includes
-#include "gmGLSL.h"
-
-
-
-
-namespace GMlib {
-
-  namespace GLSL {
-
-    class GLPhongShader : public GLShader {
-    public:
-      GLPhongShader();
-      ~GLPhongShader();
-
-
-    }; // End GLPhongShader
-
-  } // End namespace GLSL
-
-} // Ene namespace GMlib
-
-
-
-
-#endif // __gmGLPHONGSHADER_H__
-
+#include "gmGLShaderManager.h"
