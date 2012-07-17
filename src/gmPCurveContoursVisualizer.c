@@ -33,7 +33,7 @@
 namespace GMlib {
 
   template <typename T>
-  PCurveContoursVisualizer<T>::PCurveContoursVisualizer() {
+  PCurveContoursVisualizer<T>::PCurveContoursVisualizer() : _display( "pcurve_contours" ) {
 
     // Set default mapping
     _mapping = GM_PCURVE_CONTOURSVISUALIZER_X;
@@ -53,37 +53,31 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PCurveContoursVisualizer<T>::display() {
+  void PCurveContoursVisualizer<T>::display( Camera* cam ) {
 
-    // Push GL Attribs
-    glPushAttrib( GL_LIGHTING_BIT | GL_POINT_BIT | GL_LINE_BIT );
+    _display.bind();
 
-    // Disable lighting
-    glDisable( GL_LIGHTING );
+    _display.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
+    _display.setUniform( "u_selected", this->_obj->isSelected() );
 
-    // Binder VBO
-    glBindBuffer( GL_ARRAY_BUFFER, this->_vbo );
-    glVertexPointer( 3, GL_FLOAT, 0, (const GLvoid*)0x0 );
+    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+    GLuint color_loc = _display.getAttributeLocation( "in_color" );
+
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( vert_loc );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_c );
-    glColorPointer( 4, GL_FLOAT, 0, (const GLvoid*) 0x0 );
+    glVertexAttribPointer( color_loc, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( color_loc );
 
-    // Enable vertex array
-    glEnableClientState( GL_VERTEX_ARRAY );
-    glEnableClientState( GL_COLOR_ARRAY );
+    glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
-    // Draw
-    glDrawArrays( GL_LINE_STRIP, 0, this->_no_vertices );
-
-    // Disable vertex array
-    glDisableClientState( GL_COLOR_ARRAY );
-    glDisableClientState( GL_VERTEX_ARRAY );
-
-    // UnBind VBO
+    glDisableVertexAttribArray( color_loc );
+    glDisableVertexAttribArray( vert_loc );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    // Pop GL Attribs
-    glPopAttrib();
+    _display.unbind();
   }
 
   template <typename T>
@@ -187,8 +181,8 @@ namespace GMlib {
     int m, int d
   ) {
 
-    // Replot the default visualizer
-    PCurveVisualizer<T>::replot( p, m, d );
+    PCurveVisualizer<T>::populateLineStripVBO( _vbo_v, _no_vertices, p );
+
 
     T min, max;
     T C; // Color Factor, (map to local)
@@ -238,7 +232,7 @@ namespace GMlib {
     }
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_c );
-    glBufferData( GL_ARRAY_BUFFER, this->_no_vertices * 4 * sizeof(float), 0x0,  GL_DYNAMIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, _no_vertices * 4 * sizeof(float), 0x0,  GL_DYNAMIC_DRAW );
     float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
 
     if( ptr ) {

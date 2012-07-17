@@ -36,9 +36,15 @@
 
 namespace GMlib {
 
-  Visualizer::Visualizer() {}
+  Visualizer::Visualizer() {
 
-  Visualizer::Visualizer( const Visualizer& ) {}
+    _display_mode = DISPLAY_MODE_SHADED;
+  }
+
+  Visualizer::Visualizer( const Visualizer& copy ) {
+
+    _display_mode = copy._display_mode;
+  }
 
   Visualizer::~Visualizer() {}
 
@@ -47,17 +53,47 @@ namespace GMlib {
     _obj = 0x0;
   }
 
+  void Visualizer::display( Camera* /*cam*/ ) {}
+
+  Visualizer::DISPLAY_MODE Visualizer::getDisplayMode() const {
+
+    return _display_mode;
+  }
+
   std::string Visualizer::getIdentity() const {
 
     return "Visualizer Base";
   }
+
+  void Visualizer::glSetDisplayMode() const {
+
+    if( this->_display_mode == Visualizer::DISPLAY_MODE_SHADED )
+      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    else if( this->_display_mode == Visualizer::DISPLAY_MODE_WIREFRAME )
+      glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  }
+
+  void Visualizer::select(Camera* /*cam*/, const Color& /*name*/) {}
 
   void Visualizer::set( SceneObject* obj ) {
 
     _obj = obj;
   }
 
+  void Visualizer::setDisplayMode( Visualizer::DISPLAY_MODE display_mode) {
+
+    _display_mode = display_mode;
+  }
+
   void Visualizer::simulate( double /*dt*/ ) {}
+
+  void Visualizer::toggleDisplayMode() {
+
+    if( _display_mode == Visualizer::DISPLAY_MODE_SHADED )
+      _display_mode = Visualizer::DISPLAY_MODE_WIREFRAME;
+    else
+      _display_mode = Visualizer::DISPLAY_MODE_SHADED;
+  }
 
   bool Visualizer::operator == ( const Visualizer* v ) const {
 

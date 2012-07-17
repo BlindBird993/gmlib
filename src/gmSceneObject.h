@@ -47,8 +47,6 @@
 #include "gmScaleObject.h"
 
 
-
-
 namespace GMlib{
 
 
@@ -85,7 +83,6 @@ namespace GMlib{
     // Volumes
     GM_SO_TYPE_VOLUME                         = 0x3000
   };
-
 
 
 
@@ -150,9 +147,12 @@ namespace GMlib{
     virtual std::string         getIdentity() const;
     const Material&             getMaterial() const;
     Material&                   getMaterial();
+    virtual const HqMatrix<float,3>&  getMatrix() const;
     virtual HqMatrix<float,3>&  getMatrix();
     const HqMatrix<float,3>&    getMatrixGlobal() const;
     const HqMatrix<float,3>&    getMatrixParentGlobal() const;
+    const HqMatrix<float,3>&    getModelViewMatrix( const Camera *cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&    getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
     unsigned int                getName() const;
     SceneObject*                getParent();
     Scene*                      getScene();
@@ -160,6 +160,7 @@ namespace GMlib{
     Sphere<float,3>             getSurroundingSphere() const;
     Sphere<float,3>             getSurroundingSphereClean() const;
     int                         getTypeId();
+    Array<Visualizer*>&         getVisualizers();
     const Array<Visualizer*>&   getVisualizers() const;
     void                        insert(SceneObject* obj);
     virtual void                insertVisualizer( Visualizer* visualizer );
@@ -185,47 +186,57 @@ namespace GMlib{
     void                        setParent(SceneObject* obj);
     void                        setSelected(bool s);
     virtual void                setVisible( bool v, int prop = 0 );
+    void                        setStandardRepVisualizer( Visualizer* visu = 0x0 );
     virtual bool                toggleCollapsed();
     virtual bool                toggleVisible();
     virtual void                translate(const Vector<float,3>& trans_vector);
     virtual void                translateGlobal(const Vector<float,3>& trans_vector);
-
-
-
 
   protected:
 
     friend class Scene;
     friend class Camera;
 
+
     int                         _type_id;
     Array<SceneObject*>	        _children;
-    Scene*                      _scene;		//! Den aktuelle scenen til displayhierarkiet
-    SceneObject*                _parent;	//! the mother in the hierarchy (tree). moved here from private
-    HqMatrix<float,3>           _matrix;	//! The difference matrix from mother to this.
-    HqMatrix<float,3>           _present;	//! The difference matrix from global to this.
-    ScaleObject                 _scale;		//! The scaling for this and the children.
-    bool                        _local_cs;	//! Using local coordinate system, default is true
-    bool                        _active;		//! This variable is only for camera.
-    Sphere<float,3>             _global_sphere;			//! for this object
-    Sphere<float,3>             _global_total_sphere;	//! included all children
+    //! The scene of the display hiearchy
+    Scene*                      _scene;
+    //! the mother in the hierarchy (tree). moved here from private
+    SceneObject*                _parent;
+    //! The difference matrix from mother to this.
+    HqMatrix<float,3>           _matrix;
+    //! The difference matrix from global to this.
+    HqMatrix<float,3>           _present;
+    //! The scaling for this and the children.
+  public:
+    ScaleObject                 _scale;
+  protected:
+    //! Using local coordinate system, default is true
+    bool                        _local_cs;
+    //! This variable is only for camera.
+    bool                        _active;
+    //! for this object
+    Sphere<float,3>             _global_sphere;
+    //! included all children
+    Sphere<float,3>             _global_total_sphere;
     bool                        _selected;
-    bool                        _visible;	//! culling on invisible items
-    bool                        _collapsed;	//! represented by a small cube
-    unsigned int                _collapsed_dlist;
+    //! culling on invisible items
+    bool                        _visible;
+
+    bool                        _collapsed;
+
     Material                    _material;
     Color                       _color;
     bool                        _lighted;
     bool                        _opaque;
+
     Array<Visualizer*>          _visualizers;
+    Visualizer                  *_std_rep_visu;
 
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
-    virtual void                displayCollapsed();
-    virtual void                generateCollapsedDList();
-    virtual void                localDisplay();
-    virtual void                localDisplayActive();
-    virtual void                localDisplaySelection();
-    virtual void                localSelect();
+    virtual void                localDisplay( Camera* cam );
+    virtual void                localSelect( Camera* cam, const Color& name );
     virtual void                localSimulate(double dt);
     void                        reset();
     void                        setSurroundingSphere( const Sphere<float,3>& b );
@@ -240,13 +251,11 @@ namespace GMlib{
     unsigned int                _name;		//! Unic name for this object, used for selecting
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
-    void                        _display();
-    void                        _displayActive();
-    void                        _displaySelection();
+    void                        _display( Camera* cam );
     void                        _fillObj( Array<SceneObject*>& );
     int                         _prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
     virtual void                _prepareDisplay(const HqMatrix<float,3>& m);
-    void                        _select(int what = -1);
+    void                        _select(int what = -1, Camera* cam = 0x0 );
 
 
 

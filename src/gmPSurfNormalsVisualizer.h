@@ -55,7 +55,7 @@ namespace GMlib {
     PSurfNormalsVisualizer();
     ~PSurfNormalsVisualizer();
 
-    void                              display();
+    void                              display( Camera* cam );
     const Color&                      getColor() const;
     std::string                       getIdentity() const;
     GM_SURF_NORMALSVISUALIZER_MODE    getMode() const;
@@ -70,7 +70,8 @@ namespace GMlib {
     void                              setSize( double size = 1.0 );
 
   protected:
-    GLuint                            _vbo;
+    GLProgram                         _display;
+    GLuint                            _vbo_v;
     int                               _no_elements;
 
     Color                             _color;

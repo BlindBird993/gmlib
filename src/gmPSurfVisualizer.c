@@ -30,10 +30,20 @@
  */
 
 
+// STL
+#include <set>
+#include <string>
+#include <iostream>
+
 // local
+#include "gmCamera.h"
 #include "gmMaterial.h"
 #include "gmPSurf.h"
 #include "gmOpenGL.h"
+#include "gmGLProgram.h"
+#include "gmGLShaderManager.h"
+#include "gmLight.h"
+#include "gmScene.h"
 
 
 namespace GMlib {
@@ -42,89 +52,238 @@ namespace GMlib {
   PSurfVisualizer<T>::PSurfVisualizer() {
 
     _surf = 0x0;
-    _tri_strips = 0;
-    _tri_strip_verts = 0;
-
-    _no_vertices = 0;
-    _no_normals = 0;
-    _no_texcoords = 0;
-
-    glGenBuffers( 1, &_vbo_v );
-    glGenBuffers( 1, &_vbo_n );
-    glGenBuffers( 1, &_vbo_t );
   }
 
   template <typename T>
-  PSurfVisualizer<T>::~PSurfVisualizer() {
+  PSurfVisualizer<T>::~PSurfVisualizer() {}
 
-    glDeleteBuffers( 1, &_vbo_v );
-    glDeleteBuffers( 1, &_vbo_n );
-    glDeleteBuffers( 1, &_vbo_t );
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::fillStandardIBO( GLuint ibo_id, int m1, int m2 ) {
+
+    const int no_indices = m1 * m2;
+
+    int index = 0;
+    GLushort indices[no_indices];
+    GLushort* indice_ptr = indices;
+    for( int i = 0; i < m1; i++ )
+      for( int j = 0; j < m2; j++ )
+        *indice_ptr++ = index++;
+
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+  }
+
+  //  template <typename T>
+  //  inline
+  //  void PSurfVisualizer<T>::fillStandardTBO( GLuint tbo_id, GLuint tex_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1, int d2 ) {
+
+  //    // Bind TBO
+  //    glBindBuffer( GL_TEXTURE_BUFFER, tbo_id ); {
+
+  //      // Allocate buffer memory
+  //      int dp = p.getDim1() * p.getDim2();
+  //      glBufferData( GL_TEXTURE_BUFFER, dp * 4 * sizeof(float), 0x0, GL_STATIC_DRAW );
+
+  //      float *ptr = (float*)glMapBuffer( GL_TEXTURE_BUFFER, GL_WRITE_ONLY );
+  //      if( ptr ) {
+
+  //        for( int i = 0; i < p.getDim1(); i++ )
+  //          for( int j = 0; j < p.getDim2(); j++ )
+  //            for( int k = 0; k < 3; k++ )
+  //              ptr[ ( i * p.getDim2() + j ) * 3 + k] = p[i][j][d1][d2][k];
+  //      }
+  //      glUnmapBuffer( GL_TEXTURE_BUFFER );
+
+  //      glBindTexture( GL_TEXTURE_BUFFER, tex_id );
+  //      glTexBuffer( GL_TEXTURE_BUFFER, GL_RGBA32F, tbo_id );
+  //      glBindTexture( GL_TEXTURE_BUFFER, 0x0 );
+
+  //    }glBindBuffer( GL_TEXTURE_BUFFER, 0x0 );
+  //  }
+
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::fillStandardVBO(GLuint vbo_id, const DMatrix<DMatrix<Vector<T, 3> > > &p) {
+
+    int no_verts = p.getDim1() * p.getDim2();
+
+    glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
+    glBufferData( GL_ARRAY_BUFFER, no_verts * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
+    GLVertex *ptr = (GLVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    for( int i = 0; i < p.getDim1(); i++ ) {
+      for( int j = 0; j < p.getDim2(); j++ ) {
+
+        // Vertex
+        ptr->x = p(i)(j)(0)(0)(0);
+        ptr->y = p(i)(j)(0)(0)(1);
+        ptr->z = p(i)(j)(0)(0)(2);
+
+        // Normal
+        const Vector<T,3> n = Vector3D<T>( p(i)(j)(1)(0) )^p(i)(j)(0)(1);
+        ptr->nx = n(0);
+        ptr->ny = n(1);
+        ptr->nz = n(2);
+
+        // Texture coord
+        ptr->s1 = i/float(p.getDim1()-1);
+        ptr->t1 = j/float(p.getDim2()-1);
+
+        // Iterate pointer
+        ptr++;
+      }
+    }
+    glUnmapBuffer( GL_ARRAY_BUFFER );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
   template <typename T>
   inline
-  void PSurfVisualizer<T>::display() {
+  void PSurfVisualizer<T>::fillTriangleStripIBO(GLuint ibo_id, int m1, int m2) {
 
-    // Push GL Attributes
-    glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT | GL_TEXTURE_BIT ); {
+    const int no_indices = (m1-1) * m2 * 2;
+    GLushort indices[no_indices];
+    for( int i = 0; i < m1-1; i++ ) {
 
-      // Get Material Data
-      const Material &m = this->_obj->getMaterial();
+      const int idx_i = i * m2 * 2;
+      for( int j = 0; j < m2; j++ ) {
 
-      // Handle lighting and set Color/Material accordingly
-      if( this->_obj->isLighted() ) {
-
-        glEnable( GL_LIGHTING );
-        m.glSet();
+        const int idx_j = idx_i + (j*2);
+        indices[idx_j]   = i*m2 + j;
+        indices[idx_j+1] = (i+1)*m2 + j;
       }
-      else {
+    }
 
-        glDisable( GL_LIGHTING );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+  }
 
-        // Get Color Data
-        const Color &c = this->_obj->getColor();
-        glColor(c);
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< Vector<T, 3> >& normals ) {
+
+    int no_normals = (normals.getDim1()-1) * normals.getDim2() * 2;
+
+    glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
+    glBufferData( GL_ARRAY_BUFFER, no_normals * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+
+    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    if( ptr ) {
+
+      for( int i = 0; i < normals.getDim1()-1; i++ ) {
+
+        const int idx_i = i * normals.getDim2() * 2;
+        for( int j = 0; j < normals.getDim2(); j++ ) {
+
+
+          // Normals
+          const int idx_j = (idx_i + (j*2)) * 3;
+          const UnitVector<T,3> n1 = normals[ i   ][j];
+          const UnitVector<T,3> n2 = normals[ i+1 ][j];
+          for( int k = 0; k < 3; k++ ) {
+
+            const int idx_k = idx_j + k;
+            ptr[idx_k]   = n1(k);
+            ptr[idx_k+3] = n2(k);
+          }
+        }
       }
+    }
 
+    glUnmapBuffer( GL_ARRAY_BUFFER );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+  }
 
-      // Handle Opacity/Transparency
-//      if( this->_obj->isOpaque() ) {
-//
-//        glBlendFunc(_blend_sfactor, _blend_dfactor);
-//      }
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::fillTriangleStripTexVBO( GLuint vbo_id, int m1, int m2 ) {
 
-      glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-      glVertexPointer( 3, GL_FLOAT, 0, (const GLvoid*)0x0 );
+    int no_tex = (m1-1) * m2 * 2;
 
-      glBindBuffer( GL_ARRAY_BUFFER, _vbo_n );
-      glNormalPointer( GL_FLOAT, 0, (const GLvoid*)0x0 );
+    glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
+    glBufferData( GL_ARRAY_BUFFER, no_tex * 2 * 2 * sizeof(float), 0x0, GL_STATIC_DRAW );
 
-      glBindBuffer( GL_ARRAY_BUFFER, _vbo_t );
-      glTexCoordPointer( 2, GL_FLOAT, 0, (const GLvoid*)0x0 );
+    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    if( ptr ) {
 
+      for( int i = 0; i < m1-1; i++ ) {
 
-      glEnableClientState( GL_VERTEX_ARRAY );
-      glEnableClientState( GL_NORMAL_ARRAY );
+        const int idx_i = i * m2 * 2;
+        for( int j = 0; j < m2; j++ ) {
 
-      if( m.getTextureID() )
-        glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-
-      for( int i = 0; i < _tri_strips; i++ ) {
-
-
-        const int first = i*_tri_strip_verts;
-        glDrawArrays( GL_TRIANGLE_STRIP, first, _tri_strip_verts );
+          // Texture Coords
+          const int idx_k = (idx_i + (j*2)) * 2;
+          ptr[idx_k]   = i / float( m1 - 1 ); // s1
+          ptr[idx_k+1] = j / float( m2 - 1 ); // t1
+          ptr[idx_k+2] = (i+1) / float( m1 - 1 ); // s2
+          ptr[idx_k+3] = j / float( m2 - 1 ); // t2
+        }
       }
+    }
 
-      glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-      glDisableClientState( GL_NORMAL_ARRAY );
-      glDisableClientState( GL_VERTEX_ARRAY );
-      glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    glUnmapBuffer( GL_ARRAY_BUFFER );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+  }
 
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1, int d2 ) {
 
-    // Pop GL Attributes
-    } glPopAttrib();
+    int no_dp;
+    int no_strips;
+    int no_verts_per_strips;
+    PSurfVisualizer<T>::getTriangleStripDataInfo( p, no_dp, no_strips, no_verts_per_strips );
+
+    glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
+    glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(float), 0x0,  GL_DYNAMIC_DRAW );
+
+    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    if( ptr ) {
+
+      for( int i = 0; i < p.getDim1()-1; i++ ) {
+
+        const int idx_i = i * p.getDim2() * 2;
+        for( int j = 0; j < p.getDim2(); j++ ) {
+
+          // Populate data
+          const int idx_j = (idx_i + (j*2)) * 3;
+          for( int k = 0; k < 3; k++ ) {
+
+            const int idx_k = idx_j + k;
+            ptr[idx_k]   = p[ i   ][j][d1][d2][k];
+            ptr[idx_k+3] = p[ i+1 ][j][d1][d2][k];
+          }
+        }
+      }
+    }
+
+    glUnmapBuffer( GL_ARRAY_BUFFER );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+  }
+
+  template <typename T>
+  inline
+  int PSurfVisualizer<T>::getNoIndicesPerTriangleStrip( int /*m1*/, int m2 ) {
+
+    return m2*2;
+  }
+
+  template <typename T>
+  inline
+  int PSurfVisualizer<T>::getNoTriangleStrips( int m1, int /*m2*/ ) {
+
+    return m1-1;
+  }
+
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::getTriangleStripDataInfo( const DMatrix< DMatrix< Vector<T, 3> > >& p, int& no_dp, int& no_strips, int& no_verts_per_strips ) {
+
+    no_dp = (p.getDim1()-1) * p.getDim2() * 2;
+    no_strips = p.getDim1()-1;
+    no_verts_per_strips = p.getDim2()*2;
   }
 
   template <typename T>
@@ -136,89 +295,10 @@ namespace GMlib {
   template <typename T>
   inline
   void PSurfVisualizer<T>::replot(
-    DMatrix< DMatrix< Vector<T, 3> > >& p,
-    DMatrix< Vector<T, 3> >& normals,
+    DMatrix< DMatrix< Vector<T, 3> > >& /*p*/,
+    DMatrix< Vector<T, 3> >& /*normals*/,
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
-  ) {
-
-    _no_vertices = (p.getDim1()-1) * p.getDim2() * 2;
-    _no_normals = _no_vertices;
-    _no_texcoords = _no_vertices;
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glBufferData( GL_ARRAY_BUFFER, _no_vertices * 3 * sizeof(float), 0x0,  GL_DYNAMIC_DRAW );
-    float *vptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_n );
-    glBufferData( GL_ARRAY_BUFFER, _no_normals * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
-    float *nptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_t );
-    glBufferData( GL_ARRAY_BUFFER, _no_texcoords * 2 * 2 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
-    float *tptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-
-    if( vptr && nptr && tptr ) {
-
-      _tri_strips = p.getDim1()-1;
-      _tri_strip_verts = p.getDim2()*2;
-
-      for( int i = 0; i < p.getDim1()-1; i++ ) {
-
-        const int idx_i = i * p.getDim2() * 2;
-
-        for( int j = 0; j < p.getDim2(); j++ ) {
-
-
-          // Vertices and Normals
-          const int idx_j = (idx_i + (j*2)) * 3;
-          const UnitVector<T,3> n1 = normals[ i   ][j];
-          const UnitVector<T,3> n2 = normals[ i+1 ][j];
-          for( int k = 0; k < 3; k++ ) {
-
-            const int idx_k = idx_j + k;
-            vptr[idx_k]   = p[ i   ][j][0][0][k];
-            vptr[idx_k+3] = p[ i+1 ][j][0][0][k];
-            nptr[idx_k]   = n1(k);
-            nptr[idx_k+3] = n2(k);
-          }
-
-          // Texture Coords
-          const int idx_k = (idx_i + (j*2)) * 2;
-          tptr[idx_k]   = i / float( p.getDim1() - 1 ); // s1
-          tptr[idx_k+1] = j / float( p.getDim2() - 1 ); // t1
-          tptr[idx_k+2] = (i+1) / float( p.getDim1() - 1 ); // s2
-          tptr[idx_k+3] = j / float( p.getDim2() - 1 ); // t2
-        }
-      }
-    }
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_n );
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_t );
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-
-  }
-
-  template <typename T>
-  inline
-  void PSurfVisualizer<T>::select() {
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glEnableClientState( GL_VERTEX_ARRAY );
-
-    glVertexPointer( 3, GL_FLOAT, 3*sizeof(float), (const GLvoid*)0 );
-    for( int i = 0; i < _tri_strips; i++ ) {
-
-      glDrawArrays( GL_TRIANGLE_STRIP, i*_tri_strip_verts, _tri_strip_verts );
-    }
-
-    glDisableClientState( GL_VERTEX_ARRAY );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-  }
+  ) {}
 
   template <typename T>
   void PSurfVisualizer<T>::set( SceneObject* obj ) {
@@ -227,13 +307,6 @@ namespace GMlib {
 
     _surf = dynamic_cast<PSurf<T>*>( obj );
   }
-
-//  template <typename T>
-//  void PSurfVisualizer<T>::setGLBlendFunc( GLenum sfactor, GLenum dfactor ) {
-//
-//    _blend_sfactor = sfactor;
-//    _blend_dfactor = dfactor;
-//  }
 
 } // END namespace GMlib
 

@@ -42,8 +42,8 @@ namespace GMlib {
   template <typename T, int n>
   class Selector;
 
-  template <typename T, int n>
-  class SelectorGrid;
+  template <typename T>
+  class SelectorGridVisualizer;
 
 
   template <typename T>
@@ -54,50 +54,50 @@ namespace GMlib {
     PBezierSurf( const PBezierSurf<T>& dpbs );
     virtual ~PBezierSurf();
 
-    virtual void                edit( int selector );
-    DMatrix< Vector<T,3> >&     getControlPoints();
-    int                         getDegreeU() const;
-    int                         getDegreeV() const;
-    std::string                 getIdentity() const;
-    T                           getLocalMapping( T t, T ts, T tt, T te );
-    virtual void                hideSelectors();
-    bool                        isClosedU() const;
-    bool                        isClosedV() const;
-    bool                        isSelectorsVisible() const;
-    void                        preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
-    void                        setClosed( bool closed_u, bool closed_v );
-    void                        setControlPoints( const DMatrix< Vector<T,3> >& cp );
-    void                        setResampleMode( GM_RESAMPLE_MODE mode );
-    void                        setScale( T du, T dv );
-    virtual void                showSelectors( bool grid = false, const Color& _selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
-    void                        updateCoeffs( const Vector<T,3>& d );
+    virtual void                  edit( int selector );
+    DMatrix< Vector<T,3> >&       getControlPoints();
+    int                           getDegreeU() const;
+    int                           getDegreeV() const;
+    std::string                   getIdentity() const;
+    T                             getLocalMapping( T t, T ts, T tt, T te );
+    virtual void                  hideSelectors();
+    bool                          isClosedU() const;
+    bool                          isClosedV() const;
+    bool                          isSelectorsVisible() const;
+    void                          preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
+    void                          setClosed( bool closed_u, bool closed_v );
+    void                          setControlPoints( const DMatrix< Vector<T,3> >& cp );
+    void                          setResampleMode( GM_RESAMPLE_MODE mode );
+    void                          setScale( T du, T dv );
+    virtual void                  showSelectors( bool grid = false, const Color& _selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
+    void                          updateCoeffs( const Vector<T,3>& d );
 
 
   protected:
-    DMatrix< Vector<T,3> >      _c;
-    T                           _su;
-    T                           _sv;
-    DMatrix< DMatrix< T > >     _u;
-    DMatrix< DMatrix< T > >     _v;
-    bool                        _cu;
-    bool                        _cv;
+    DMatrix< Vector<T,3> >        _c;
+    T                             _su;
+    T                             _sv;
+    DMatrix< DMatrix< T > >       _u;
+    DMatrix< DMatrix< T > >       _v;
+    bool                          _cu;
+    bool                          _cv;
 
-    GM_RESAMPLE_MODE            _resamp_mode;
-    bool                        _pre_eval;
+    GM_RESAMPLE_MODE              _resamp_mode;
+    bool                          _pre_eval;
 
-    bool                        _selectors;
-    SelectorGrid<T,3>*			    _sg;
-    DMatrix< Selector<T,3>* >   _s;
-    bool                        _c_moved;
+    bool                          _selectors;
+    SelectorGridVisualizer<T>     *_sgv;
+    DMatrix< Selector<T,3>* >     _s;
+    bool                          _c_moved;
 
-    void	                      eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
-    void	                      evalPre( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
-    void                        findIndex( T u, T v, int& iu, int& iv );
-    T                           getEndPU();
-    T                           getEndPV();
-    T                           getStartPU();
-    T                           getStartPV();
-    virtual void                init();
+    void                          eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
+    void                          evalPre( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
+    void                          findIndex( T u, T v, int& iu, int& iv );
+    T                             getEndPU();
+    T                             getEndPV();
+    T                             getStartPU();
+    T                             getStartPV();
+    virtual void                  init();
 
   }; // END class PBezierSurf
 

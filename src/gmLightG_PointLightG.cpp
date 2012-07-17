@@ -84,11 +84,11 @@ namespace GMlib {
 
   void PointLightG::_makeDisplayList() {
 
-    Sphere3D sp(1.0,12,8);
-    _dlist = glGenLists(1);
-    glNewList(_dlist, GL_COMPILE);
-      sp.display();
-    glEndList();
+//    Sphere3D sp(1.0,12,8);
+//    _dlist = glGenLists(1);
+//    glNewList(_dlist, GL_COMPILE);
+//      sp.display();
+//    glEndList();
   }
 
 

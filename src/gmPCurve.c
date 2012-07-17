@@ -30,6 +30,9 @@
  */
 
 
+// local
+#include "gmPCurveDefaultVisualizer.h"
+
 namespace GMlib {
 
 
@@ -46,9 +49,9 @@ namespace GMlib {
     setNoDer(2);
 
     this->_lighted    = false;
-    _line_width       = 1.0;
+    _line_width       = 3.0;
 
-    _default_visualizer = new PCurveVisualizer<T>();
+    _default_visualizer = new PCurveDefaultVisualizer<T>();
     enableDefaultVisualizer( true );
   }
 
@@ -72,7 +75,7 @@ namespace GMlib {
 
     setNoDer(2);
 
-    _default_visualizer = new PCurveVisualizer<T>();
+    _default_visualizer = new PCurveDefaultVisualizer<T>();
     enableDefaultVisualizer( true );
   }
 
@@ -322,6 +325,8 @@ namespace GMlib {
   inline
   void PCurve<T>::insertVisualizer( Visualizer* visualizer ) {
 
+    SceneObject::insertVisualizer( visualizer );
+
     PCurveVisualizer<T> *visu = dynamic_cast<PCurveVisualizer<T>*>( visualizer );
     if( !visu )
       return;
@@ -330,8 +335,6 @@ namespace GMlib {
       return;
 
     _pcurve_visualizers += visu;
-
-    SceneObject::insertVisualizer( visualizer );
   }
 
 

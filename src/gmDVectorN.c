@@ -436,7 +436,7 @@ namespace GMlib {
   template <class T, int n, class K>
   DVectorN<T,n,K>& DVectorN<T,n,K>::operator+=(const DVectorN<T,n,K>& v) {
 
-    int j = std::min(_n,v._n);
+    int j = std::min<int>(_n,v._n);
     for( int i = 0; i < j; i++ ) this->_pt[i] += v._pt[i];
     return *this;
   }
@@ -444,7 +444,7 @@ namespace GMlib {
   template <class T, int n, class K>
   DVectorN<T,n,K>& DVectorN<T,n,K>::operator-=(const DVectorN<T,n,K>& v) {
 
-    int j = std::min( _n, v._n );
+    int j = std::min<int>( _n, v._n );
     for( int i = 0; i < j; i++ ) this->_pt[i] -= v._pt[i];
     return *this;
   }
@@ -452,7 +452,7 @@ namespace GMlib {
   template <class T, int n, class K>
   DVectorN<T,n,K>& DVectorN<T,n,K>::operator%=(const DVectorN<T,n,K>& v) {
 
-    int j = std::min(_n,v._n);
+    int j = std::min<int>(_n,v._n);
     for( int i = 0; i < j; i++ ) this->_pt[i] %= v._pt[i];
     return *this;
   }

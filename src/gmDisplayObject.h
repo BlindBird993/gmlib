@@ -84,6 +84,8 @@ namespace GMlib {
     virtual Vector<float,3>	  getDir();
     Point<float,3>	          getLockPos();
     double				            getLockDist();
+    const HqMatrix<float,3>&  getMatrixScene() const;
+    const HqMatrix<float,3>&  getMatrixSceneInverse() const;
     virtual Point<float,3>	  getPos();
     virtual Vector<float,3>   getSide();
     virtual Vector<float,3>   getUp();
@@ -122,8 +124,10 @@ namespace GMlib {
 
   protected:
     // Matrices from Scene to this
+  public:
     HqMatrix<float,3>				  _matrix_scene;
     HqMatrix<float,3>				  _matrix_scene_inv;
+  protected:
 
     Point3D<float>		        _pos;
     UnitVector3D<float>	      _dir;

@@ -65,21 +65,25 @@ namespace GMlib {
   public:
     PTriangleVisualizer();
     ~PTriangleVisualizer();
-    void            display();
+
     std::string     getIdentity() const;
     virtual void    replot(
-      DVector< DMatrix< Vector<T,3> > >& p,int m
+      const DVector< DMatrix< Vector<T,3> > >& p,int m
     );
-    void            select();
     void            set( SceneObject* obj );
+
+
+    static void     fillStandardVBO( GLuint vbo_id, const DVector< DMatrix< Vector<T,3> > >& p );
+    static void     fillTriangleIBO( GLuint ibo_id, int m );
+    static void     fillTriangleStripIBO( GLuint ibo_id, int m );
+    static int      getNoIndicesInTriangleStrip( int strip_idx );
+    static int      getNoTriangleStrips( int m );
+    static int      getNoTriangles( int m );
+    static void     getTriangleStripDrawInfo( int strip_idx, int& offset, int& no_indices );
+    static int      getTriangleStripOffset( int strip_idx );
 
   protected:
     PTriangle<T>    *_triangle;
-    GLuint          _vbo;
-
-    int             _no_vertices;
-    int             _m;
-
   }; // END class PTriangleVisualizer
 
 } // END namespace GMlib

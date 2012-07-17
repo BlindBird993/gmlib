@@ -295,7 +295,6 @@ set( DISPLAYUTILS_HDRS_CXX
   gmSelectorGrid
   gmSphere3D
   gmStlObject
-  gmSurroundingSphere
   gmTexture
   gmTriangleSystem
 )
@@ -312,7 +311,6 @@ set( DISPLAYUTILS_HDRS
   gmSelectorGrid.h
   gmSphere3D.h
   gmStlObject.h
-  gmSurroundingSphere.h
   gmTexture.h
   gmTriangleSystem.h
 )
@@ -348,7 +346,6 @@ set( DISPLAYUTILS_SRCS
   gmMaterial_MaterialObjectList.cpp
   gmPathTrack.cpp
   gmStlObject.cpp
-  gmSurroundingSphere.cpp
   gmTexture.cpp
 )
 
@@ -402,15 +399,18 @@ SOURCE_GROUP( "${G_SRCS}\\${M_MISC}"     FILES ${MISC_SRCS} )
 # C++ headers
 set( OPENGL_HDRS_CXX
   gmOpenGL
-
-  gmGLSL
   gmGLMatrix
+  gmGLProgram
+  gmGLShader
+  gmGLShaderManager
 )
 
 # Headers
 set( OPENGL_HDRS
   gmGLMatrix.h
-  gmGLSL.h
+  gmGLProgram.h
+  gmGLShader.h
+  gmGLShaderManager.h
   gmOpenGL.h
 )
 
@@ -422,7 +422,10 @@ set( OPENGL_HDRS_I
 # Sources
 set( OPENGL_SRCS
   gmGLMatrix.cpp
-  gmGLSL.cpp
+  gmGLProgram.cpp
+  gmGLShader.cpp
+  gmGLShaderManager.cpp
+  gmOpenGL.cpp
 )
 
 # Global source vars
@@ -714,32 +717,39 @@ SOURCE_GROUP( "${G_SRCS}\\${M_UTILS}"     FILES ${UTILS_SRCS} )
 set( VISUALIZERS_HDRS_CXX
   gmVisualizers
 
-  # Visualizer Base Classes
+  # Visualizer Base Class
   gmVisualizer
-  gmPCurveVisualizer                # PCurve Visualizer Base
-  gmPSurfVisualizer                 # PSurf Visualizer Base
-  gmPTriangleVisualizer             # PTriangleVisualizer Base
 
   # PCurve Visualizers( non-glsl )
+  gmPCurveVisualizer                # PCurve Visualizer Base
+  gmPCurveDefaultVisualizer
   gmPCurveContoursVisualizer        # PCurve Contours Visualizer
   gmPCurveDerivativesVisualizer     # PCurve Derivatives Visualizer
   gmPCurvePointsVisualizer          # PCurve Points Visualizer
 
   # PSurf Visualizers( non-glsl )
+  gmPSurfVisualizer                 # PSurf Visualizer Base
+  gmPSurfDefaultVisualizer
   gmPSurfContoursVisualizer         # PSurf Contours Visualizer
   gmPSurfDerivativesVisualizer      # PSurf Derivatives Visualizer
   gmPSurfNormalsVisualizer          # PSurf Normals Visualizer
   gmPSurfPointsVisualizer           # PSurf Points Visualizer
 
   # PTriangle visualizers( non-glsl )
+  gmPTriangleVisualizer             # PTriangleVisualizer Base
+  gmPTriangleDefaultVisualizer
   gmPTriangleColorVisualizer        # PTriangle Color Visualizer
   gmPTriangleColorPointVisualizer   # PTriangle Color-Point Visualizer
 
-  # PCurve GLSL Visualizer
-  gmPCurveGLSLVisualizer            # PCurve GLSL Visualizer
+  # TriangeFacets visualizers
+  gmTriangleFacetsVisualizer
+  gmTriangleFacetsDefaultVisualizer
+  gmTriangleFacetsVoronoiVisualizer
 
-  # PSurf GLSL Visualizer
-  gmPSurfGLSLVisualizer             # PSurf GLSL Visualizer
+  # Other visualizers
+  gmSelectorGridVisualizer
+  gmSurroundingSphereVisualizer
+  gmVisualizerStdRep
 )
 
 # Headers
@@ -750,16 +760,23 @@ set( VISUALIZERS_HDRS
   gmPSurfVisualizer.h
   gmPTriangleVisualizer.h
   gmPCurveContoursVisualizer.h
+  gmPCurveDefaultVisualizer.h
   gmPCurveDerivativesVisualizer.h
   gmPCurvePointsVisualizer.h
   gmPSurfContoursVisualizer.h
+  gmPSurfDefaultVisualizer.h
   gmPSurfDerivativesVisualizer.h
   gmPSurfNormalsVisualizer.h
   gmPSurfPointsVisualizer.h
   gmPTriangleColorVisualizer.h
   gmPTriangleColorPointVisualizer.h
-  gmPCurveGLSLVisualizer.h
-  gmPSurfGLSLVisualizer.h
+  gmPTriangleDefaultVisualizer.h
+  gmSelectorGridVisualizer.h
+  gmSurroundingSphereVisualizer.h
+  gmTriangleFacetsVisualizer.h
+  gmTriangleFacetsDefaultVisualizer.h
+  gmTriangleFacetsVoronoiVisualizer.h
+  gmVisualizerStdRep.h
 )
 
 # Header inclues
@@ -769,21 +786,28 @@ set( VISUALIZERS_HDRS_I
   gmPSurfVisualizer.c
   gmPTriangleVisualizer.c
   gmPCurveContoursVisualizer.c
+  gmPCurveDefaultVisualizer.c
   gmPCurveDerivativesVisualizer.c
   gmPCurvePointsVisualizer.c
   gmPSurfContoursVisualizer.c
+  gmPSurfDefaultVisualizer.c
   gmPSurfDerivativesVisualizer.c
   gmPSurfNormalsVisualizer.c
   gmPSurfPointsVisualizer.c
   gmPTriangleColorVisualizer.c
   gmPTriangleColorPointVisualizer.c
-  gmPCurveGLSLVisualizer.c
-  gmPSurfGLSLVisualizer.c
+  gmPTriangleDefaultVisualizer.c
+  gmSelectorGridVisualizer.c
+  gmTriangleFacetsVisualizer.c
+  gmTriangleFacetsDefaultVisualizer.c
+  gmTriangleFacetsVoronoiVisualizer.c
 )
 
 # Sources
 set( VISUALIZERS_SRCS
+  gmSurroundingSphereVisualizer.cpp
   gmVisualizer.cpp
+  gmVisualizerStdRep.cpp
 )
 
 # Global source vars

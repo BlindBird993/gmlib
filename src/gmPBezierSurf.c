@@ -89,16 +89,22 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBezierSurf<T>::~PBezierSurf() {}
+  PBezierSurf<T>::~PBezierSurf() {
+
+    delete _sgv;
+  }
 
 
   template <typename T>
-  void PBezierSurf<T>::edit( int /*selector*/ ) {
+  void PBezierSurf<T>::edit( int /*selector_id*/ ) {
 
     _c_moved = true;
-    this->replot();
+
     if( this->_parent )
       this->_parent->edit( this );
+
+    _sgv->update();
+
     _c_moved = false;
   }
 
@@ -237,10 +243,9 @@ namespace GMlib {
     if( !_selectors )
       return;
 
-    // Remove Selector Grid
-    DisplayObject::remove( _sg );
-    delete _sg;
-    _sg = 0;
+    // Remove Selector Grid Visualizer
+    this->removeVisualizer( _sgv );
+    _sgv->reset();
 
     // Remove Selectors
     for( int i = 0; i < _s.getDim1(); i++ ) {
@@ -259,7 +264,6 @@ namespace GMlib {
   void PBezierSurf<T>::init() {
 
     _selectors = false;
-    _sg = 0;
     _c_moved = false;
 
     _cu = false;
@@ -268,6 +272,8 @@ namespace GMlib {
     _sv = T(1);
     _pre_eval = true;
     _resamp_mode = GM_RESAMPLE_PREEVAL;
+
+    _sgv = new SelectorGridVisualizer<T>;
   }
 
 
@@ -396,8 +402,6 @@ namespace GMlib {
     if( _selectors )
       return;
 
-//    DMatrix< Vector<T, 3> > &c = _l_ref->getControlPoints();
-
     _s.setDim( _c.getDim1(), _c.getDim2() );
     for( int i = 0, s_id = 0; i < _c.getDim1(); i++ ) {
       for( int j = 0; j < _c.getDim2(); j++ ) {
@@ -408,22 +412,10 @@ namespace GMlib {
       }
     }
 
-
     if( grid ) {
 
-//      DMatrix< Vector<T, 3> > &c = _l_ref->getControlPoints();
-
-      _sg = new SelectorGrid<T,3>( _c[0][0], this, grid_color );
-
-      for( int i = 0; i < _c.getDim1(); i++ ) {
-        for( int j = 0; j < _c.getDim2(); j++ ) {
-
-          if(j!=0) _sg->add(_c[i][j-1], _c[i][j]);  // Horisontal lines in grid
-          if(i!=0) _sg->add(_c[i-1][j], _c[i][j]);  // Vertical ilines in grid
-        }
-      }
-
-      DisplayObject::insert( _sg );
+      _sgv->setSelectors( _c );
+      this->insertVisualizer( _sgv );
     }
 
     _selectors = true;
@@ -434,22 +426,22 @@ namespace GMlib {
   inline
   void PBezierSurf<T>::updateCoeffs( const Vector<T,3>& d ) {
 
-		if( _c_moved ) {
+    if( _c_moved ) {
 
-		  HqMatrix<T,3> invmat = this->_matrix;
-		  invmat.invertOrthoNormal();
+      HqMatrix<T,3> invmat = this->_matrix;
+      invmat.invertOrthoNormal();
 
-			Vector<T,3> diff = invmat*d;
-			for( int i = 0; i < _c.getDim1(); i++ ) {
-				for( int j = 0; j < _c.getDim2(); j++ ) {
+      Vector<T,3> diff = invmat*d;
+      for( int i = 0; i < _c.getDim1(); i++ ) {
+        for( int j = 0; j < _c.getDim2(); j++ ) {
 
-					_c[i][j] += diff;
-					_s[i][j]->translate( diff );
-				}
-			}
-			DisplayObject::translate( -d );
-			this->replot();
-		}
+          _c[i][j] += diff;
+          _s[i][j]->translate( diff );
+        }
+      }
+      DisplayObject::translate( -d );
+      this->replot();
+    }
   }
 
 } // END namespace GMlib

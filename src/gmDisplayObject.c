@@ -96,6 +96,18 @@ namespace GMlib {
       return  0.0;
   }
 
+  inline
+  const HqMatrix<float,3>& DisplayObject::getMatrixScene() const {
+
+    return _matrix_scene;
+  }
+
+  inline
+  const HqMatrix<float,3>&  DisplayObject::getMatrixSceneInverse() const {
+
+    return _matrix_scene_inv;
+  }
+
 
   /*! Point<float,3> DisplayObject::getPos()
    *  \brief Pending Documentation

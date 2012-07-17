@@ -33,42 +33,74 @@
 namespace GMlib {
 
   template <typename T>
-  PCurvePointsVisualizer<T>::PCurvePointsVisualizer() {
+  PCurvePointsVisualizer<T>::PCurvePointsVisualizer() : _display( "pcurve" ) {
 
     _size = 1.0;
     _color = GMcolor::BlueViolet;
+
+    _no_elements = 0;
+    glGenBuffers( 1, &_vbo_v );
+  }
+
+  template <typename T>
+  PCurvePointsVisualizer<T>::~PCurvePointsVisualizer() {
+
+    glDeleteBuffers( 1, &_vbo_v );
   }
 
   template <typename T>
   inline
-  void PCurvePointsVisualizer<T>::display() {
+  void PCurvePointsVisualizer<T>::display( Camera* cam ) {
 
-    // Push GL Attribs
-    glPushAttrib( GL_LIGHTING_BIT | GL_POINT_BIT ); {
+    glPointSize( _size );
+    _display.bind();
 
-      // Set Properties
-      glDisable( GL_LIGHTING );
-      glColor( _color );
-      glPointSize( _size );
+    _display.setUniform( "u_mvpmat", cam->getProjectionMatrix() * this->_obj->getModelViewMatrix(cam), 1, true );
+    _display.setUniform( "u_color", _color );
+    _display.setUniform( "u_selected", this->_obj->isSelected() );
 
-      // Binder VBO
-      glBindBuffer( GL_ARRAY_BUFFER, this->_vbo );
-      glVertexPointer( 3, GL_FLOAT, 0, (const GLvoid*)0x0 );
 
-      // Enable vertex array
-      glEnableClientState( GL_VERTEX_ARRAY );
+    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
 
-      // Draw
-      glDrawArrays( GL_POINTS, 0, this->_no_vertices );
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( vert_loc );
 
-      // Disable vertex array
-      glDisableClientState( GL_VERTEX_ARRAY );
+    // Draw
+    glDrawArrays( GL_POINTS, 0, _no_elements );
 
-      // UnBind VBO
-      glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    glDisableVertexAttribArray( vert_loc );
 
-    // Pop GL Attribs
-    } glPopAttrib();
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+    _display.unbind();
+
+//    // Push GL Attribs
+//    glPushAttrib( GL_LIGHTING_BIT | GL_POINT_BIT ); {
+
+//      // Set Properties
+//      glDisable( GL_LIGHTING );
+//      glColor( _color );
+//      glPointSize( _size );
+
+//      // Binder VBO
+//      glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
+//      glVertexPointer( 3, GL_FLOAT, 0, (const GLvoid*)0x0 );
+
+//      // Enable vertex array
+//      glEnableClientState( GL_VERTEX_ARRAY );
+
+//      // Draw
+//      glDrawArrays( GL_POINTS, 0, _no_vertices );
+
+//      // Disable vertex array
+//      glDisableClientState( GL_VERTEX_ARRAY );
+
+//      // UnBind VBO
+//      glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+//    // Pop GL Attribs
+//    } glPopAttrib();
   }
 
   template <typename T>
@@ -87,6 +119,16 @@ namespace GMlib {
   float PCurvePointsVisualizer<T>::getSize() const {
 
     return _size;
+  }
+
+  template <typename T>
+  inline
+  void PCurvePointsVisualizer<T>::replot(
+    DVector< DVector< Vector<T, 3> > >& p,
+    int /*m*/, int /*d*/
+  ) {
+
+    PCurveVisualizer<T>::populateLineStripVBO( _vbo_v, _no_elements, p );
   }
 
   template <typename T>

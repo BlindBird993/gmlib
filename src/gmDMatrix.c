@@ -329,7 +329,7 @@ namespace GMlib {
   template <typename T>
   inline
   void  DMatrix<T>::resetDim(int i, int j) {
-    int m, k = std::min(i,_n);
+    int m, k = std::min<int>(i,_n);
     DVector<T>* tmp = (i>4 ? new DVector<T>[i]:_init);
     for(m=0; m<k; m++)
     {

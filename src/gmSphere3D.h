@@ -35,6 +35,8 @@
 
 #include "gmPoint.h"
 #include "gmArray.h"
+#include "gmOpenGL.h"
+#include "gmGLProgram.h"
 
 
 
@@ -50,15 +52,27 @@ namespace GMlib {
   public:
     Sphere3D(float r=1.0, int m1=7, int m2=5);
     Sphere3D(const Sphere<float,3>& s, int m1=7, int m2=5);
+    Sphere3D( const Sphere3D& copy );
+    ~Sphere3D();
 
-    void                              display();
-    void                              makeSample(int m1, int m2);
+    void        display( const HqMatrix<float,3>& mvpmat, bool selected = false );
+    void        display( const HqMatrix<float,3>& mvmat, const HqMatrix<float,3>& mvpmat, bool selected = false );
+    void        replot(int m1, int m2);
+    void        select( const HqMatrix<float,3>& mvpmat, const Color& color );
 
   private:
-    int                               _m1;
-    int                               _m2;
-    Arrow<float,3>                    _pt[2];
-    Array<Array<Arrow<float,3> > >    _p;
+    GLProgram   _prog_light;
+    GLProgram   _prog_color;
+    GLProgram   _prog_select;
+
+    int         _top_bot_verts;
+    int         _mid_strips;
+    int         _mid_strips_verts;
+    GLuint      _vbo_v;
+    GLuint      _vbo_n;
+
+    int         _m1;
+    int         _m2;
 
   }; // END class Sphere3D
 

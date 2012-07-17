@@ -30,6 +30,8 @@
  *  \date   2008-08-03
  */
 
+#include "gmVisualizer.h"
+
 
 namespace GMlib {
 
@@ -40,101 +42,31 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void SceneObject::_display() {
-    if(!_active) {
-    /*		if(_type_id != GM_SO_TYPE_SELECTOR_GRID)
-      {
-        glPushMatrix();
-        Sphere3D sp(_global_sphere,10,10);
-        sp.display();
-        glPopMatrix();
-      }
-    */
-      glPushMatrix(); {
-        if(_local_cs)
-          glMultMatrix(_present);
-        _scale.glScaling();
-
-        if(_collapsed) {
-
-          glPushAttrib( GL_LIGHTING_BIT ); {
-
-            glDisable( GL_LIGHTING );
-            glColor( Color( 0.6f, 0.6f, 0.6f, 1.0f ) );
-            displayCollapsed();
-
-          } glPopAttrib();
-        }
-        else            localDisplay();
-
-      } glPopMatrix();
-    }
-  }
-
-
-  inline
-  void SceneObject::_displayActive() {
-
+  void SceneObject::_display( Camera* cam ) {
 
     if(!_active) {
 
-      glPushMatrix();
-        if(_local_cs)
-          glMultMatrix(_present);
-        _scale.glScaling();
-
-        if(_collapsed)  displayCollapsed();
-        else            localDisplayActive();
-
-      glPopMatrix();
+      if(_collapsed)
+        _std_rep_visu->display( cam );
+      else
+        localDisplay( cam);
     }
   }
 
-
-  inline
-  void SceneObject::_displaySelection() {
-
-
-    if(!_active) {
-
-      glPushMatrix();
-        if(_local_cs)
-          glMultMatrix(_present);
-        _scale.glScaling();
-
-        if(_collapsed)  displayCollapsed();
-        else            localDisplaySelection();
-
-      glPopMatrix();
-    }
-  }
-
-
-  /*! void SceneObject::_select( int what )
+  /*! void SceneObject::_select( int what, Camera* cam )
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void SceneObject::_select( int what ) {
+  void SceneObject::_select( int what, Camera* cam ) {
 
     if( !_active && ( what == 0 || what == _type_id || ( what < 0 && what + _type_id != 0 ) ) ) {
 
-      glPushMatrix(); {
-
-        if( _local_cs )
-          glMultMatrix( _present );
-
-        _scale.glScaling();
-        Color name(getName());
-        glColor(name);
-
-        if( _collapsed )
-          displayCollapsed();
-        else
-          localSelect();
-
-      } glPopMatrix();
+      if( _collapsed )
+        _std_rep_visu->select( cam, getName() );
+      else
+        localSelect( cam, getName() );
     }
   }
 

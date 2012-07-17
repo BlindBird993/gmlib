@@ -34,6 +34,8 @@
 // STL
 #include <cstdio>
 
+// GMlib
+#include "gmOpenGL.h"
 
 // Header
 #include "gmWindow.h"
@@ -94,6 +96,8 @@ namespace GMlib {
       removeLight(light);
       delete light;
     }
+
+    OGL::cleanUp();
   }
 
 
@@ -105,8 +109,6 @@ namespace GMlib {
     for(int i = 0; i < _sel_objs.getSize(); i++)
       _sel_objs[i]->setSelected( false );
     _sel_objs.clear();
-
-    _active_obj = 0x0;
 
     //_rotation_object  = 0x0;
     //_locked_object    = 0x0
@@ -306,18 +308,7 @@ namespace GMlib {
   void GMWindow::init() {
 
 //    cout << "GMWindow::init()" << endl;
-    //	glClearColor(0.0,0.0,0.0,1.0);
-    glEnable (GL_MULTISAMPLE);  // BB tst
 
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
-    // glEnable(GL_NORMALIZE);
-    // glEnable(GL_ALPHA_TEST);
-    // glAlphaFunc(GL_GREATER,0.1);
-    // glEnable(GL_BLEND);
-    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     if(_sun)
       _sun->scaleDayLight(1.0);
     insertCamera(new Camera(Point3D<float>(10,10,5),Point3D<float>(-10,-10,-5),Vector3D<float>(0,0,-1)));

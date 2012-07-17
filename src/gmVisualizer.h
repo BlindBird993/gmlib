@@ -36,24 +36,37 @@
 // stl
 #include <string>
 
+// GMlib
+#include "gmColor.h"
+#include "gmGLProgram.h"
+
 namespace GMlib {
 
-
+  class Camera;
   class SceneObject;
 
   class Visualizer {
   public:
+    enum DISPLAY_MODE {
+      DISPLAY_MODE_SHADED       = 0x01,
+      DISPLAY_MODE_WIREFRAME    = 0x02
+    };
+
     Visualizer();
     Visualizer( const Visualizer& v );
     virtual ~Visualizer();
 
-    virtual void          display() = 0;
+    virtual void          display( Camera* cam );
+    DISPLAY_MODE          getDisplayMode() const;
     virtual std::string   getIdentity() const;
+    void                  glSetDisplayMode() const;
 
-    virtual void          select() = 0;
+    virtual void          select( Camera* cam, const Color& name = Color() );
     virtual void          set( SceneObject* obj );
+    void                  setDisplayMode( DISPLAY_MODE display_mode );
 
     virtual void          simulate( double dt );
+    void                  toggleDisplayMode();
 
     virtual bool          operator == ( const Visualizer* v ) const;
 
@@ -61,6 +74,7 @@ namespace GMlib {
   protected:
     SceneObject           *_obj;
 
+    DISPLAY_MODE          _display_mode;
 
   private:
     void                  _init();

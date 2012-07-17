@@ -48,33 +48,31 @@ namespace GMlib {
   public:
     PSurfVisualizer();
     ~PSurfVisualizer();
-    void          display();
+
+
     std::string   getIdentity() const;
     virtual void  replot(
       DMatrix< DMatrix< Vector<T, 3> > >& p,
       DMatrix< Vector<T, 3> >& normals,
       int m1, int m2, int d1, int d2
     );
-    void          select();
     void          set( SceneObject* obj );
-//    void          setGLBlendFunc( GLenum sfactor, GLenum dfactor );
+
+
+    static void   fillStandardIBO( GLuint vbo_id, int m1, int m2 );
+//    static void   fillStandardTBO( GLuint tbo_id, GLuint tex_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1 = 0, int d2 = 0 );
+    static void   fillStandardVBO( GLuint vbo_id, const DMatrix< DMatrix< Vector<T, 3> > >& p );
+    static void   fillTriangleStripIBO( GLuint ibo_id, int m1, int m2 );
+    static void   fillTriangleStripTexVBO( GLuint vbo_id, int m1, int m2 );
+    static void   fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< Vector<T, 3> >& normals );
+    static void   fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1 = 0, int d2 = 0 );
+    static int    getNoIndicesPerTriangleStrip( int m1, int m2 );
+    static int    getNoTriangleStrips( int m1, int m2 );
+    static void   getTriangleStripDataInfo( const DMatrix< DMatrix< Vector<T, 3> > >& p, int& no_dp, int& no_strips, int& no_verts_per_strips );
+
 
   protected:
     PSurf<T>      *_surf;
-    GLuint        _vbo_v;
-    GLuint        _vbo_n;
-    GLuint        _vbo_t;
-
-    int           _no_vertices;
-    int           _no_normals;
-    int           _no_texcoords;
-
-    int           _tri_strips;
-    int           _tri_strip_verts;
-//
-//    GLenum                        _blend_sfactor;
-//    GLenum                        _blend_dfactor;
-
 
   }; // END class PSurfVisualizer
 

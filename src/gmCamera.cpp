@@ -32,13 +32,15 @@
 
 // GMlib includes
 #include "gmPoint3D.h"
+#include "gmDVector.h"
 #include "gmCamera.h"
 #include "gmMaterial.h"
 
+#include "gmGLProgram.h"
+
+
 
 namespace GMlib {
-
-
 
 
   Scene	Camera::_default_scene;
@@ -95,6 +97,82 @@ namespace GMlib {
   ) : DisplayObject(pos,dir,up),_scene(&_default_scene) {
 
     resetC(zoom);
+
+    glGenBuffers( 1, &_vbo_quad );
+    glGenBuffers( 1, &_vbo_quad_tex );
+
+    // Gen quad data (vertex)
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
+
+    DVector< GMlib::Point<float,3> > data(4);
+//    data[0] = GMlib::Point3D<float>( 0.25f, 0.25f, 0.0f );
+//    data[1] = GMlib::Point3D<float>( 0.25f, 0.75f, 0.0f );
+//    data[2] = GMlib::Point3D<float>( 0.75f, 0.75f, 0.0f );
+//    data[3] = GMlib::Point3D<float>( 0.75f, 0.25f, 0.0f );
+    data[0] = GMlib::Point3D<float>( 0.0f, 0.0f, 0.0f );
+    data[1] = GMlib::Point3D<float>( 0.0f, 1.0f, 0.0f );
+    data[2] = GMlib::Point3D<float>( 1.0f, 1.0f, 0.0f );
+    data[3] = GMlib::Point3D<float>( 1.0f, 0.0f, 0.0f );
+
+    glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+    // Gen quad data (tex)
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
+
+    DVector< GMlib::Point<float,2> > data_tex(4);
+    data_tex[0] = GMlib::Point2D<float>( 0.0f, 0.0f );
+    data_tex[1] = GMlib::Point2D<float>( 0.0f, 1.0f );
+    data_tex[2] = GMlib::Point2D<float>( 1.0f, 1.0f );
+    data_tex[3] = GMlib::Point2D<float>( 1.0f, 0.0f );
+  //  data_tex[0] = GMlib::Point2D<float>( 0.25f, 0.25f );
+  //  data_tex[1] = GMlib::Point2D<float>( 0.25f, 0.75f );
+  //  data_tex[2] = GMlib::Point2D<float>( 0.75f, 0.75f );
+  //  data_tex[3] = GMlib::Point2D<float>( 0.75f, 0.25f );
+
+    glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+
+
+    glGenBuffers( 1, &_vbo_quad_debug );
+    glGenBuffers( 1, &_vbo_quad_tex_debug );
+
+    // Gen quad data (vertex)
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_debug );
+
+//    DVector< GMlib::Point<float,3> > data(4);
+//    data[0] = GMlib::Point3D<float>( 0.25f, 0.25f, 0.0f );
+//    data[1] = GMlib::Point3D<float>( 0.25f, 0.75f, 0.0f );
+//    data[2] = GMlib::Point3D<float>( 0.75f, 0.75f, 0.0f );
+//    data[3] = GMlib::Point3D<float>( 0.75f, 0.25f, 0.0f );
+//    data[0] = GMlib::Point3D<float>( 0.0f, 0.0f, 0.0f );
+//    data[1] = GMlib::Point3D<float>( 0.0f, 1.0f, 0.0f );
+//    data[2] = GMlib::Point3D<float>( 1.0f, 1.0f, 0.0f );
+//    data[3] = GMlib::Point3D<float>( 1.0f, 0.0f, 0.0f );
+    data[0] = GMlib::Point3D<float>( 0.8f, 0.8f, -0.1f );
+    data[1] = GMlib::Point3D<float>( 0.8f, 1.0f, -0.1f );
+    data[2] = GMlib::Point3D<float>( 1.0f, 1.0f, -0.1f );
+    data[3] = GMlib::Point3D<float>( 1.0f, 0.8f, -0.1f );
+
+    glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+    // Gen quad data (tex)
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex_debug );
+
+//    DVector< GMlib::Point<float,2> > data_tex(4);
+    data_tex[0] = GMlib::Point2D<float>( 0.0f, 0.0f );
+    data_tex[1] = GMlib::Point2D<float>( 0.0f, 1.0f );
+    data_tex[2] = GMlib::Point2D<float>( 1.0f, 1.0f );
+    data_tex[3] = GMlib::Point2D<float>( 1.0f, 0.0f );
+  //  data_tex[0] = GMlib::Point2D<float>( 0.25f, 0.25f );
+  //  data_tex[1] = GMlib::Point2D<float>( 0.25f, 0.75f );
+  //  data_tex[2] = GMlib::Point2D<float>( 0.75f, 0.75f );
+  //  data_tex[3] = GMlib::Point2D<float>( 0.75f, 0.25f );
+
+    glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
 
@@ -103,7 +181,14 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  Camera::~Camera() {}
+  Camera::~Camera() {
+
+    glDeleteBuffers( 1, &_vbo_quad_tex );
+    glDeleteBuffers( 1, &_vbo_quad );
+
+    glDeleteBuffers( 1, &_vbo_quad_tex_debug );
+    glDeleteBuffers( 1, &_vbo_quad_debug );
+  }
 
 
   /*! double Camera::deltaTranslate(DisplayObject *)
@@ -133,14 +218,12 @@ namespace GMlib {
    */
   SceneObject*	Camera::findSelectObject(int x, int y, int type_id) {
 
-    glPushAttrib(GL_ALL_ATTRIB_BITS ); // Save complete state
-      glDisable(GL_COLOR_MATERIAL);glDisable(GL_LIGHTING);glDisable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-    glShadeModel(GL_FLAT);
     Color c;
     select(type_id);
+    OGL::bindSelectBuffer();
     glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
-    glPopAttrib(); // reset state
+    OGL::releaseSelectBuffer();
     return find(c.get());
   }
 
@@ -157,14 +240,13 @@ namespace GMlib {
     int dy=(ymax-ymin)+1;
     if (dx<2 || dy <2) return sel;     // for debugging, shouldn't really be here?
 
-    glPushAttrib(GL_ALL_ATTRIB_BITS ); // Save complete state
-    glDisable(GL_COLOR_MATERIAL);glDisable(GL_LIGHTING);glDisable(GL_BLEND);
+
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-    glShadeModel(GL_FLAT);
     Color* pixels=new Color[dx*dy];
-    _select(type_id);
+    _select(type_id, this );
+    OGL::bindSelectBuffer();
     glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
-    glPopAttrib(); // reset state
+    OGL::releaseSelectBuffer();
 
     int ct=0;
     Color c;
@@ -226,6 +308,16 @@ namespace GMlib {
   }
 
 
+  const HqMatrix<float,3>& Camera::getMatrix() const {
+
+    /*! \todo fix how the matrix is returned */
+    static HqMatrix<float,3> retmat;
+    retmat = _matrix;
+    retmat.invertOrthoNormal();
+    return retmat;
+  }
+
+
   /*! void Camera::go(bool stereo)
    *	\brief Pending Documentation
    *
@@ -233,6 +325,8 @@ namespace GMlib {
    *	Running the Camera.
    */
   void Camera::go(bool stereo) {
+
+    OGL::clearRenderBuffer();
 
     _active = true;
     if (stereo)
@@ -253,6 +347,89 @@ namespace GMlib {
       }
       display();
     }
+
+    // Render render-buffer to standard OGL buffer
+
+    float near_plane = -1.0f;
+    float far_plane = 1.0f;
+
+    float width = 1.0 / _angle_tan;
+    float height = _ratio / _angle_tan;
+
+    float l, r, b, t, n, f;
+    l = 0.0f;
+    r = 1.0;
+    b = 0.0f;
+    t = 1.0;
+    n = near_plane;
+    f = far_plane;
+
+    float A, B, C;
+    A = - ( r + l ) / ( r - l );
+    B = - ( t + b ) / ( t - b );
+    C = - ( f + n ) / ( f - n );
+
+    GMlib::HqMatrix<float,3> ortho_mat;
+
+    ortho_mat[0][0] = 2 / (r - l);
+    ortho_mat[0][1] = 0.0f;
+    ortho_mat[0][2] = 0.0f;
+    ortho_mat[0][3] = A;
+
+    ortho_mat[1][0] = 0.0f;
+    ortho_mat[1][1] = 2 / ( t - b );
+    ortho_mat[1][2] = 0.0f;
+    ortho_mat[1][3] = B;
+
+    ortho_mat[2][0] = 0.0f;
+    ortho_mat[2][1] = 0.0f;
+    ortho_mat[2][2] = - 2.0f / (f-n);
+    ortho_mat[2][3] = C;
+
+    ortho_mat[3][0] = 0.0f;
+    ortho_mat[3][1] = 0.0f;
+    ortho_mat[3][2] = 0.0f;
+    ortho_mat[3][3] = 1.0f;
+
+
+
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    glDisable(GL_DEPTH_TEST);
+
+    GLProgram prog( "render" );
+
+    prog.bind();
+
+    prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
+    prog.setUniform( "u_tex", OGL::getRenderColorBuffer(), (GLenum)GL_TEXTURE0, 0 );
+    prog.setUniform( "u_tex_selected", OGL::getRenderSelectedBuffer(), (GLenum)GL_TEXTURE1, 1 );
+    prog.setUniform( "u_buf_w", float(OGL::getRenderBufferWidth()) );
+    prog.setUniform( "u_buf_h", float(OGL::getRenderBufferHeight()) );
+    prog.setUniform( "u_select_color", _select_color );
+
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GLuint tex_coord_loc = prog.getAttributeLocation( "in_tex_coord" );
+
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( vert_loc );
+
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
+    glVertexAttribPointer( tex_coord_loc, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( tex_coord_loc );
+
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+    glDrawArrays( GL_QUADS, 0, 4 );
+
+    glDisableVertexAttribArray( tex_coord_loc );
+    glDisableVertexAttribArray( vert_loc );
+
+    prog.unbind();
+
+    glEnable(GL_DEPTH_TEST);
+
+
     _active = false;
   }
 
@@ -382,7 +559,7 @@ namespace GMlib {
     _y = h1;
     _w = w2-w1;
     _h = h2-h1;
-  //	glViewport(w1,h1,w2,h2);
+    glViewport(w1,h1,w2,h2);
     _ratio = float(_w)/float(_h);
   //	_setPerspective();
   }
@@ -588,9 +765,6 @@ namespace GMlib {
     _culling = true;
     _blend_sort = true;
     _select_color = GMcolor::Pink;
-    _select_linewidth = 1.2f;
-    _select_active_color = GMcolor::Yellow;
-    _select_active_linewidth = 1.0f;
   }
 
 
@@ -601,15 +775,11 @@ namespace GMlib {
    */
   void Camera::select(int type_id) {
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    setPerspective();
+    OGL::clearSelectBuffer();
+    OGL::bindSelectBuffer();
     glViewport(_x,_y,_w,_h);
-    glPushMatrix();
-      glMultMatrix(_matrix);
-      glMultMatrix(_matrix_scene_inv);
-      _scene->_culling(_frustum);
-      _scene->_select(type_id);
-    glPopMatrix();
+    _scene->_select(type_id, this);
+    OGL::releaseSelectBuffer();
   }
 
 
@@ -624,22 +794,80 @@ namespace GMlib {
     float	hh = _near_plane*_angle_tan;
     float	rr = _ratio*hh;
     _frustum = Frustum(_matrix_scene,_pos,_dir,_up,_side,_angle_tan,_ratio,_near_plane,_far_plane);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glFrustum(-rr, rr, -hh, hh, _near_plane, _far_plane);
-    glMatrixMode(GL_MODELVIEW);
-  }
+
+    float width = 1.0 / _angle_tan;
+    float height = _ratio / _angle_tan;
+
+    float l, r, b, t, n, f;
+    l = -rr;
+    r = rr;
+    b = -hh;
+    t = hh;
+    n = _near_plane;
+    f = _far_plane;
+
+    float A, B, C, D;
+    A =  ( r + l ) / ( r - l );
+    B =  ( t + b ) / ( t - b );
+    C = - ( f + n ) / ( f - n );
+    D = - 2 * f * n / ( f - n );
+
+    _frustum_matrix[0][0] = 2.0f / (r - l);
+    _frustum_matrix[0][1] = 0.0f;
+    _frustum_matrix[0][2] = A;
+    _frustum_matrix[0][3] = 0.0f;
+
+    _frustum_matrix[1][0] = 0.0f;
+    _frustum_matrix[1][1] = 2.0f / ( t - b );
+    _frustum_matrix[1][2] = B;
+    _frustum_matrix[1][3] = 0.0f;
+
+    _frustum_matrix[2][0] = 0.0f;
+    _frustum_matrix[2][1] = 0.0f;
+    _frustum_matrix[2][2] = C;
+    _frustum_matrix[2][3] = D;
+
+    _frustum_matrix[3][0] = 0.0f;
+    _frustum_matrix[3][1] = 0.0f;
+    _frustum_matrix[3][2] = -1.0f;
+    _frustum_matrix[3][3] = 0.0f;
 
 
-  void Camera::setSelectActiveColor( const Color& color ) {
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    glFrustum(-rr, rr, -hh, hh, _near_plane, _far_plane);
+//    glMatrixMode(GL_MODELVIEW);
 
-    _select_active_color = color;
-  }
 
 
-  void Camera::setSelectActiveLineWidth( float width ) {
 
-    _select_active_linewidth = width;
+//    float glpmat[16];
+//    float glmvmat[16];
+
+//    glGetFloatv( GL_PROJECTION_MATRIX, glpmat );
+//    glGetFloatv( GL_MODELVIEW_MATRIX, glmvmat );
+
+//    std::cout << "Camera::_setPerspective() END" << std::endl;
+//    std::cout << "GL_PROJECTION_MATRIX" << std::endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      for( int j = 0; j < 4; j++ ) {
+
+//        std::cout << glpmat[j*4+i] << " ";
+//      }
+//      std::cout << std::endl;
+//    }
+//    std::cout << std::endl;
+
+
+//    std::cout << "GL_MODELVIEW_MATRIX" << std::endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      for( int j = 0; j < 4; j++ ) {
+
+//        std::cout << glmvmat[j*4+i] << " ";
+//      }
+//      std::cout << std::endl;
+//    }
+//    std::cout << std::endl;
   }
 
 
@@ -648,9 +876,4 @@ namespace GMlib {
     _select_color = color;
   }
 
-
-  void Camera::setSelectLineWidth( float width ) {
-
-    _select_linewidth = width;
-  }
-}
+} // END namespace GMlib

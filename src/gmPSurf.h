@@ -48,6 +48,9 @@ namespace GMlib {
   class PSurfVisualizer;
 
   template <typename T>
+  class PSurfDefaultVisualizer;
+
+  template <typename T>
   class PSurf : public Parametrics<T,2> {
   public:
 
@@ -114,7 +117,7 @@ namespace GMlib {
 
   protected:
     Array< PSurfVisualizer<T>* >  _psurf_visualizers;
-    PSurfVisualizer<T>            *_default_visualizer;
+    PSurfDefaultVisualizer<T>    *_default_visualizer;
 
     int                           _no_sam_u;    // Number of samples u for single sampling
     int                           _no_sam_v;    // Number of samples v for single sampling

@@ -32,7 +32,7 @@
 #include <iomanip>
 
 // local
-#include "gmPTriangleVisualizer.h"
+#include "gmPTriangleDefaultVisualizer.h"
 
 namespace GMlib {
 
@@ -48,7 +48,7 @@ namespace GMlib {
     _no_sam  = samples;
     setEval( 0 );
 
-    _default_visualizer = new PTriangleVisualizer<T>();
+    _default_visualizer = new PTriangleDefaultVisualizer<T>();
     enableDefaultVisualizer( true );
   }
 
@@ -77,7 +77,7 @@ namespace GMlib {
 //    _no_sam_u    = copy._no_sam_u;
 //    _no_sam_v    = copy._no_sam_v;
 
-    _default_visualizer = new PTriangleVisualizer<T>();
+    _default_visualizer = new PTriangleDefaultVisualizer<T>();
     enableDefaultVisualizer( true );
   }
 
@@ -333,6 +333,8 @@ namespace GMlib {
   inline
   void PTriangle<T>::insertVisualizer( Visualizer *visualizer ) {
 
+    SceneObject::insertVisualizer( visualizer );
+
     PTriangleVisualizer<T> *visu = dynamic_cast<PTriangleVisualizer<T>*>( visualizer );
     if( !visu )
       return;
@@ -341,8 +343,6 @@ namespace GMlib {
       return;
 
     _ptriangle_visualizers += visu;
-
-    SceneObject::insertVisualizer( visualizer );
   }
 
   template <typename T>

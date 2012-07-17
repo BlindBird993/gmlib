@@ -37,14 +37,6 @@
 namespace GMlib {
 
 
-  template <typename T, int n>
-  int Selector<T,n>::_display_list = 0;
-
-  template <typename T, int n >
-  unsigned int Selector<T,n>::_no_selectors = 0;
-
-
-
   /*! Selector<T,n>::Selector( Point<T,n>& mp, int id, SceneObject* parent, T r, const Color& c, Selector<T,n>* root )
    *  \brief Pending Documentation
    *
@@ -52,7 +44,10 @@ namespace GMlib {
    */
   template <typename T, int n>
   Selector<T,n>::Selector( Point<T,n>& mp, int id, SceneObject* parent, T r, const Color& c, Selector<T,n>* root )
-    : _position(mp) {
+    : _position(mp), _display( "color" ), _select( "select" ),
+    _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
+    _bo_cube_frame_indices( "std_rep_frame_indices" )
+  {
 
     Sphere<float,3> ts(Point<float,3>(float(0)),0.866);
     setSurroundingSphere(ts);
@@ -66,8 +61,6 @@ namespace GMlib {
     _root		= root;
     translate( _position.toFloat() );
     if(r != 1.0) scale(Vector3D<float>(r,r,r));
-    if(!_display_list) _makeDisplayList();
-    _no_selectors++;
   }
 
 
@@ -77,7 +70,11 @@ namespace GMlib {
    *  Pending Documentation
    */
   template <typename T, int n>
-  Selector<T,n>::Selector(const Selector<T,n>& s) : DisplayObject(s), _position( s._position ) {
+  Selector<T,n>::Selector(const Selector<T,n>& s)
+    : DisplayObject(s), _position( s._position ), _display( "color" ), _select( "select" ),
+    _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
+    _bo_cube_frame_indices( "std_rep_frame_indices" )
+   {
 
     _type_id	= GM_SO_TYPE_SELECTOR;
     _id			= s._id;
@@ -86,12 +83,7 @@ namespace GMlib {
     _default	= s._default;
     _marked		= s._marked;
     _root		= s._root;
-    _selected	= false;
-    if(!_display_list) _makeDisplayList();
-    _no_selectors++;
   }
-
-
 
   /*!virtual Selector<T,n>::~Selector()
    *  \brief Pending Documentation
@@ -100,47 +92,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Selector<T,n>::~Selector() {
-
-    _no_selectors--;
-
-    if( _display_list && !_no_selectors ) {
-      glDeleteLists(_display_list, 1);
-      _display_list = 0;
-    }
-  }
-
-
-
-  /*!
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  template <typename T, int n>
-  void Selector<T,n>::_makeDisplayList() {
-
-    _display_list = glGenLists(1);
-
-    Sphere3D rep( 0.07, 10, 10 );
-    glNewList(_display_list, GL_COMPILE);	// Lager displayliste for en kube
-      rep.display();
-//      glBegin(GL_QUAD_STRIP);
-//        glVertex3f( 0.5,-0.5,-0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
-//        glVertex3f( 0.5,-0.5, 0.5 ); glVertex3f( 0.5, 0.5, 0.5 );
-//        glVertex3f(-0.5,-0.5, 0.5 ); glVertex3f(-0.5, 0.5, 0.5 );
-//        glVertex3f(-0.5,-0.5,-0.5 ); glVertex3f(-0.5, 0.5,-0.5 );
-//        glVertex3f( 0.5,-0.5,-0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
-//      glEnd();
-//      glBegin(GL_QUADS);
-//        glVertex3f(-0.5,-0.5,-0.5 ); glVertex3f( 0.5,-0.5,-0.5 );
-//        glVertex3f( 0.5,-0.5, 0.5 ); glVertex3f(-0.5,-0.5, 0.5 );
-//        glVertex3f(-0.5, 0.5,-0.5 ); glVertex3f(-0.5, 0.5, 0.5 );
-//        glVertex3f( 0.5, 0.5, 0.5 ); glVertex3f( 0.5, 0.5,-0.5 );
-//      glEnd();
-    glEndList();
-  }
-
+  Selector<T,n>::~Selector() {}
 
   /*! void Selector<T,n>::allEnable()
    *  \brief Pending Documentation
@@ -272,6 +224,12 @@ namespace GMlib {
     allEnable();
   }
 
+  template <typename T, int n>
+  inline
+  int Selector<T,n>::getId() const {
+
+    return _id;
+  }
 
   /*! std::string	Selector<T,n>::getIdentity() const
    *  \brief Pending Documentation
@@ -283,6 +241,13 @@ namespace GMlib {
   std::string	Selector<T,n>::getIdentity() const {
 
     return "Selector";
+  }
+
+  template <typename T, int n>
+  inline
+  const Point<T,n>& Selector<T,n>::getPosition() const {
+
+    return _position;
   }
 
 
@@ -312,16 +277,48 @@ namespace GMlib {
    *  Pending Documentation
    */
   template <typename T, int n>
-  void Selector<T,n>::localDisplay() {
+  void Selector<T,n>::localDisplay( Camera* cam ) {
 
-    if(_enabled) {
+    if( _enabled ) {
 
-      glPushAttrib( GL_LIGHTING_BIT );
-        glDisable(GL_LIGHTING);
-        if(_selected)	glColor(_marked);
-        else			glColor(_default);
-        glCallList(_display_list);
-      glPopAttrib();
+      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+      _display.bind();
+
+      _display.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
+
+      GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+
+      Color blend_color = GMcolor::LightGreen;
+      blend_color.setAlpha( 0.5 );
+
+      _display.setUniform( "u_selected", isSelected() );
+
+      _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+
+      _bo_cube_frame_indices.bind(); {
+
+        const GLsizei frame_stride = 2 * sizeof(GLushort);
+
+        glLineWidth( 1.0f );
+        _display.setUniform( "u_color", GMcolor::Green );
+        glDrawElements( GL_LINES, 24, GL_UNSIGNED_SHORT, (const GLvoid*)(0x0) );
+
+      } _bo_cube_frame_indices.release();
+
+      glEnable( GL_BLEND ); {
+
+        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+        _display.setUniform( "u_color", blend_color );
+        _bo_cube_indices.bind();
+          glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
+        _bo_cube_indices.release();
+
+      }glDisable( GL_BLEND );
+
+      _bo_cube.disableVertexArrayPointer( vert_loc );
+
+      _display.unbind();
     }
   }
 
@@ -332,10 +329,24 @@ namespace GMlib {
    *  Pending Documentation
    */
   template <typename T, int n>
-  void Selector<T,n>::localSelect() {
+  void Selector<T,n>::localSelect( Camera* cam, const Color& name ) {
 
-    if(_enabled)
-       glCallList(_display_list);
+    if( _enabled ) {
+
+      _select.bind();
+
+      _select.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
+      _select.setUniform( "u_color", name );
+
+      GLuint vert_loc = _select.getAttributeLocation( "in_vertex" );
+      _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+      _bo_cube_indices.bind();
+        glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
+      _bo_cube_indices.release();
+      _bo_cube.disableVertexArrayPointer( vert_loc );
+
+      _select.unbind();
+    }
   }
 
 

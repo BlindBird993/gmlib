@@ -50,28 +50,19 @@ namespace GMlib {
     PCurveVisualizer();
     ~PCurveVisualizer();
 
-    void          display();
     std::string   getIdentity() const;
     virtual void  replot(
       DVector< DVector< Vector<T, 3> > >& p,
       int m, int d
     );
-    void          select();
     void          set( SceneObject* obj );
+
+    static void   populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d = 0 );
 
   protected:
     PCurve<T>     *_curve;
 
-    GLuint        _vbo;
-    int           _no_vertices;
-
-  };
-
-
-
-
-
-
+  }; // END class PCurveVisualizer
 
 } // END namespace GMlib
 

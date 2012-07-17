@@ -34,13 +34,6 @@
 namespace GMlib {
 
 
-  inline
-  SceneObject* Scene::getActiveObject() {
-
-    return _active_obj;
-  }
-
-
   /*! double Scene::getElapsedTime()
    *  \brief Pending Documentation
    *

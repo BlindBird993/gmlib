@@ -29,7 +29,7 @@
  *  \date   2010-04-13
  */
 
-#include <gmPTriangle.h>
+#include "gmPTriangle.h"
 
 namespace GMlib {
 
@@ -38,68 +38,107 @@ namespace GMlib {
   PTriangleVisualizer<T>::PTriangleVisualizer() {
 
     _triangle = 0x0;
-    _m = 0;
-
-    _no_vertices = 0;
-
-    glGenBuffers( 1, &_vbo );
   }
 
   template <typename T>
-  PTriangleVisualizer<T>::~PTriangleVisualizer() {
+  PTriangleVisualizer<T>::~PTriangleVisualizer() {}
 
-    glDeleteBuffers( 1, &_vbo );
+  template <typename T>
+  void  PTriangleVisualizer<T>::fillStandardVBO(GLuint vbo_id, const DVector<DMatrix<Vector<T,3> > > &p) {
+
+    int no_dp = p.getDim();
+
+    GLVertex dp[no_dp];
+    for( int i = 0; i < p.getDim(); i++ ) {
+
+      const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
+
+      dp[i].x   = p(i)(0)(0)(0);
+      dp[i].y   = p(i)(0)(0)(1);
+      dp[i].z   = p(i)(0)(0)(2);
+      dp[i].nx  = n(0);
+      dp[i].ny  = n(1);
+      dp[i].nz  = n(2);
+    }
+
+    glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
+    glBufferData( GL_ARRAY_BUFFER, sizeof(GLVertex) * no_dp, dp, GL_STATIC_DRAW );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
   template <typename T>
-  inline
-  void PTriangleVisualizer<T>::display() {
+  void  PTriangleVisualizer<T>::fillTriangleIBO( GLuint ibo_id, int m ) {
 
-    // Push GL Attributes
-    glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT | GL_TEXTURE_BIT ); {
+    int no_indices = m*m*3;
 
-      // Get Material Data
-      const Material &m = this->_obj->getMaterial();
+    GLushort indices[no_indices];
+    GLushort *iptr = indices;
+    for( int i = 0; i < m; i++ ) {
 
-      // Handle lighting and set Color/Material accordingly
-      if( this->_obj->isLighted() ) {
+      // Index row i and row i+1
+      const int o1 = 0.5 *  i    * (i+1);
+      const int o2 = 0.5 * (i+1) * (i+2);
 
-        glEnable( GL_LIGHTING );
-        m.glSet();
+      // Indices in row i and i+1
+      const int i1 = i+1;
+      const int i2 = i+2;
+
+      // Index in indice data array
+//      const int o = i*i*3;
+
+      // Upper triangles (pointing down)
+      for( int j = 1; j < i+1; j++ ) {
+
+        *iptr++ = o1 + j;
+        *iptr++ = o1 + j - 1;
+        *iptr++ = o2 + j;
+
+
+//        indices[o+j*2]    = o2 +j;
+//        indices[o+j*2+1]  = o1 +j;
       }
-      else {
 
-        glDisable( GL_LIGHTING );
+      // Lower triangles (pointing up)
+      for( int j = 1; j < i+2; j++ ) {
 
-        // Get Color Data
-        const Color &c = this->_obj->getColor();
-        glColor(c);
+        *iptr++ = o2 + j - 1;
+        *iptr++ = o2 + j;
+        *iptr++ = o1 + j - 1;
+      }
+    }
+
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+  }
+
+  template <typename T>
+  void  PTriangleVisualizer<T>::fillTriangleStripIBO( GLuint ibo_id, int m ) {
+
+    m -= 1;
+
+    int no_indices = m*(m+2);
+
+    GLushort indices[no_indices];
+    for( int i = 0; i < m; i++ ) {
+
+      const int o1 = 0.5 *  i    * (i+1);
+      const int o2 = 0.5 * (i+1) * (i+2);
+      const int o = i*(i+2);
+      const int is = 2 * i + 3;
+
+      for( int j = 0; j < is/2; j++ ) {
+
+        indices[o+j*2]    = o2 +j;
+        indices[o+j*2+1]  = o1 +j;
       }
 
-      // Bind buffers
-      glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-      glVertexPointer( 3, GL_FLOAT, PTRIANGLEVERTEX_SIZE, (const GLvoid*)0x0 );
-      glNormalPointer( GL_FLOAT, PTRIANGLEVERTEX_SIZE, (const GLvoid*)12 );
+      indices[o+is-1] = o1+is-1;
+    }
 
-      // Enable client states
-      glEnableClientState( GL_VERTEX_ARRAY );
-      glEnableClientState( GL_NORMAL_ARRAY );
-
-      // Draw
-
-      for( int i = 0; i < _m; i++ )
-        glDrawArrays( GL_TRIANGLE_STRIP, i*(i+2), 2*i+3 );
-
-
-      // Disable client states
-      glDisableClientState( GL_NORMAL_ARRAY );
-      glDisableClientState( GL_VERTEX_ARRAY );
-
-      // Unbind buffers
-      glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    // Pop GL Attributes
-    } glPopAttrib();
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 
   template <typename T>
@@ -110,90 +149,43 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PTriangleVisualizer<T>::replot( DVector< DMatrix< Vector<T,3> > >& p, int m ) {
+  int PTriangleVisualizer<T>::getNoTriangleStrips( int m ) {
 
-    _m = m-1;
-
-    int no_verts = _m*(_m+2); // m^2 + m*2
-    if( _no_vertices != no_verts ) {
-
-      _no_vertices = no_verts;
-
-      // Allocate GPU memory
-      glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-      glBufferData( GL_ARRAY_BUFFER, PTRIANGLEVERTEX_SIZE * _no_vertices, 0x0, GL_DYNAMIC_DRAW );
-      glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-    }
-
-
-    // Fill GPU memory
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    PTriangleVertex *ptr = (PTriangleVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-
-    if( ptr ) {
-
-      for( int i = 0; i < _m; i++ ) {
-
-        int o1 = 0.5 *  i    * (i+1);
-        int o2 = 0.5 * (i+1) * (i+2);
-        int o = i*(i+2);
-        int is = 2 * i + 3; // 0.5 * (i+2) * (i+3) - 0.5 *  i    * (i+1)
-
-        for( int j = 0; j < is/2; j++ ) {
-
-          int idx1 = (o+j*2);
-          int idxp1 = o2 +j;
-          UnitVector<float,3> n1 = Vector3D<float>( p[idxp1][0][1] ) ^ p[idxp1][1][0];
-
-          ptr[idx1].x   = p[idxp1][0][0][0];
-          ptr[idx1].y   = p[idxp1][0][0][1];
-          ptr[idx1].z   = p[idxp1][0][0][2];
-          ptr[idx1].nx  = n1[0];
-          ptr[idx1].ny  = n1[1];
-          ptr[idx1].nz  = n1[2];
-
-
-          int idx2 = (o+j*2+1);
-          int idxp2 = o1 +j;
-          UnitVector<float,3> n2 = Vector3D<float>( p[idxp2][0][1] ) ^ p[idxp2][1][0];
-
-          ptr[idx2].x   = p[idxp2][0][0][0];
-          ptr[idx2].y   = p[idxp2][0][0][1];
-          ptr[idx2].z   = p[idxp2][0][0][2];
-          ptr[idx2].nx  = n2[0];
-          ptr[idx2].ny  = n2[1];
-          ptr[idx2].nz  = n2[2];
-        }
-
-        UnitVector<float,3> norm = Vector3D<float>( p[o1+is-1][0][1] ) ^ p[o1+is-1][1][0];
-
-        ptr[o+is-1].x   = p[o1+is-1][0][0][0];
-        ptr[o+is-1].y   = p[o1+is-1][0][0][1];
-        ptr[o+is-1].z   = p[o1+is-1][0][0][2];
-        ptr[o+is-1].nx  = norm[0];
-        ptr[o+is-1].ny  = norm[1];
-        ptr[o+is-1].nz  = norm[2];
-      }
-    }
-
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    return m-1;
   }
 
   template <typename T>
   inline
-  void PTriangleVisualizer<T>::select() {
+  int PTriangleVisualizer<T>::getNoTriangles(int m) {
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glEnableClientState( GL_VERTEX_ARRAY );
-
-    glVertexPointer( 3, GL_FLOAT, PTRIANGLEVERTEX_SIZE, (const GLvoid*)0x0 );
-    for( int i = 0; i < _m; i++ )
-      glDrawArrays( GL_TRIANGLE_STRIP, i*(i+2), 2*i+3 );
-
-    glDisableClientState( GL_VERTEX_ARRAY );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    return m*m;
   }
+
+  template <typename T>
+  inline
+  int PTriangleVisualizer<T>::getNoIndicesInTriangleStrip( int strip_idx ) {
+
+    return 2*strip_idx+3;
+  }
+
+  template <typename T>
+  inline
+  void PTriangleVisualizer<T>::getTriangleStripDrawInfo( int strip_idx, int& offset, int& no_indices ) {
+
+    offset = strip_idx*(strip_idx+2);
+    no_indices = 2*strip_idx+3;
+  }
+
+  template <typename T>
+  inline
+  int PTriangleVisualizer<T>::getTriangleStripOffset( int strip_idx ) {
+
+    return strip_idx*(strip_idx+2);
+  }
+
+  template <typename T>
+  inline
+  void PTriangleVisualizer<T>::replot( const DVector< DMatrix< Vector<T,3> > >& /*p*/, int /*m*/ ) {}
 
   template <typename T>
   void PTriangleVisualizer<T>::set( SceneObject* obj ) {

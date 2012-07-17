@@ -33,7 +33,7 @@
 namespace GMlib {
 
   template <typename T>
-  PSurfDerivativesVisualizer<T>::PSurfDerivativesVisualizer() {
+  PSurfDerivativesVisualizer<T>::PSurfDerivativesVisualizer() : _display( "color" ) {
 
     _color = GMcolor::Green;
     _u = 1;
@@ -43,44 +43,38 @@ namespace GMlib {
 
     _no_elements = 0;
 
-    glGenBuffers( 1, &_vbo );
+    glGenBuffers( 1, &_vbo_v );
   }
 
   template <typename T>
   PSurfDerivativesVisualizer<T>::~PSurfDerivativesVisualizer() {
 
-    glDeleteBuffers( 1, &_vbo );
+    glDeleteBuffers( 1, &_vbo_v );
   }
 
   template <typename T>
   inline
-  void PSurfDerivativesVisualizer<T>::display() {
+  void PSurfDerivativesVisualizer<T>::display( Camera* cam ) {
 
-    // Push GL Attributes
-    glPushAttrib( GL_LINE_BIT | GL_LIGHTING_BIT );
+    _display.bind();
 
-    // Set Properties
-    glDisable( GL_LIGHTING );
-    glColor( _color );
+    _display.setUniform( "u_mvpmat", cam->getProjectionMatrix() * this->_obj->getModelViewMatrix(cam), 1, true );
+    _display.setUniform( "u_color", _color );
 
-    // Bind VBO
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
+    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
 
-    // Enable Vertex and Normal Array
-    glEnableClientState( GL_VERTEX_ARRAY );
-    glVertexPointer( 3, GL_FLOAT, 0, (GLvoid*)0x0 );
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( vert_loc );
 
     // Draw
     glDrawArrays( GL_LINES, 0, _no_elements );
 
-    // Disable Client States
-    glDisableClientState( GL_VERTEX_ARRAY );
+    glDisableVertexAttribArray( vert_loc );
 
-    // Unbind VBO
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    // Pop GL Attributes
-    glPopAttrib();
+    _display.unbind();
   }
 
   template <typename T>
@@ -140,7 +134,7 @@ namespace GMlib {
     int no_derivatives = p.getDim1() * p.getDim2();
     _no_elements = no_derivatives * 2;
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo);
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v);
     glBufferData( GL_ARRAY_BUFFER, no_derivatives * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
 
 

@@ -34,13 +34,18 @@
 
 
 #include "gmArray.h"
-#include "gmParametrics.h"
 #include "gmDVector.h"
-#include "gmPCurveVisualizer.h"
+#include "gmParametrics.h"
 
 
 
 namespace GMlib {
+
+  template <typename T>
+  class PCurveVisualizer;
+
+  template <typename T>
+  class PCurveDefaultVisualizer;
 
 
   template <typename T>
@@ -90,7 +95,7 @@ namespace GMlib {
 
   protected:
     Array<PCurveVisualizer<T>*>   _pcurve_visualizers;
-    PCurveVisualizer<T>           *_default_visualizer;
+    PCurveDefaultVisualizer<T>    *_default_visualizer;
 
     int                       _no_sam;      // Number of samples for single sampling
     int                       _no_der;      // Number of derivatives

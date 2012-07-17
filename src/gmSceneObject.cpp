@@ -30,15 +30,18 @@
  */
 
 
+#include <string>
+
 #include "gmPoint.h"
 #include "gmLight.h"
 #include "gmSceneObject.h"
+#include "gmCamera.h"
 
 #include "gmVisualizer.h"
+#include "gmVisualizerStdRep.h"
 
 
 namespace GMlib {
-
 
 
 
@@ -82,12 +85,11 @@ namespace GMlib {
     _selected         = false;
     _material         = GMmaterial::Obsidian;
     _color            = GMcolor::Red;
-
     _collapsed        = false;
-    _collapsed_dlist  = 0;
-    generateCollapsedDList();
 
     _children.clear();
+
+    setStandardRepVisualizer();
   }
 
 
@@ -115,8 +117,8 @@ namespace GMlib {
     _material         = d._material;
 
     _collapsed        = d._collapsed;
-    _collapsed_dlist  = 0;
-    generateCollapsedDList();
+
+    setStandardRepVisualizer();
   }
 
 
@@ -136,8 +138,8 @@ namespace GMlib {
       }
     }
 
-    if( _collapsed_dlist )
-      glDeleteLists( _collapsed_dlist, 1 );
+    if(_std_rep_visu)
+      delete _std_rep_visu;
   }
 
 
@@ -242,17 +244,6 @@ namespace GMlib {
   }
 
 
-  /*! void displayCollapsed()
-   *  \brief Display of collapsed object
-   *
-   *  Display of collapsed object
-   */
-  void SceneObject::displayCollapsed() {
-
-    glCallList( _collapsed_dlist );
-  }
-
-
   /*! SceneObject* SceneObject::find(unsigned int name)
    *  \brief Pending Documentation
    *
@@ -267,39 +258,6 @@ namespace GMlib {
       if( (d = _children(i)->find(name)) ) return d;
     return 0;
   }
-
-
-  void SceneObject::generateCollapsedDList() {
-
-    if( _collapsed_dlist )
-      glDeleteLists( _collapsed_dlist, 1 );
-
-    _collapsed_dlist = glGenLists( 1 );
-
-    float ir = 0.07;
-    glNewList( _collapsed_dlist, GL_COMPILE ); {
-
-      glBegin(GL_QUAD_STRIP); {
-
-        glVertex3f( ir,-ir,-ir ); glVertex3f( ir, ir,-ir );
-        glVertex3f( ir,-ir, ir ); glVertex3f( ir, ir, ir );
-        glVertex3f(-ir,-ir, ir ); glVertex3f(-ir, ir, ir );
-        glVertex3f(-ir,-ir,-ir ); glVertex3f(-ir, ir,-ir );
-        glVertex3f( ir,-ir,-ir ); glVertex3f( ir, ir,-ir );
-      } glEnd();
-
-      glBegin(GL_QUADS); {
-
-        glVertex3f(-ir,-ir,-ir ); glVertex3f( ir,-ir,-ir );
-        glVertex3f( ir,-ir, ir ); glVertex3f(-ir,-ir, ir );
-        glVertex3f(-ir, ir,-ir ); glVertex3f(-ir, ir, ir );
-        glVertex3f( ir, ir, ir ); glVertex3f( ir, ir,-ir );
-      } glEnd();
-
-    } glEndList();
-
-  }
-
 
   const Color& SceneObject::getColor() const {
 
@@ -330,6 +288,11 @@ namespace GMlib {
    *
    *  Made specially for Cameras
    */
+  const HqMatrix<float,3>& SceneObject::getMatrix() const	{
+
+    return _matrix;
+  }
+
   HqMatrix<float,3>& SceneObject::getMatrix()	{
 
     return _matrix;
@@ -347,6 +310,30 @@ namespace GMlib {
   }
 
 
+  const HqMatrix<float,3>& SceneObject::getModelViewMatrix( const Camera* cam, bool local_cs ) const {
+
+    static HqMatrix<float,3> mv_mat;
+
+    // Translate to scene coordinates
+    mv_mat = cam->SceneObject::getMatrix() * cam->_matrix_scene;
+
+    // Apply local coordinate system
+    if( _local_cs && local_cs )
+      mv_mat = mv_mat * _present;
+
+    // Scale
+    mv_mat = mv_mat * _scale.getMatrix();
+
+    return mv_mat;
+  }
+
+  const HqMatrix<float,3>& SceneObject::getModelViewProjectionMatrix( const Camera* cam, bool local_cs ) const {
+
+    static HqMatrix<float,3> mv_mat;
+    mv_mat = cam->getProjectionMatrix() * getModelViewMatrix( cam, local_cs );
+    return mv_mat;
+  }
+
   /*! Sphere<float,3>	SceneObject::getSurroundingSphereClean() const
    *  \brief Pending Documentation
    *
@@ -358,15 +345,22 @@ namespace GMlib {
 
     for(int i=0; i< _children.getSize(); i++)
       sp += _children(i)->getSurroundingSphereClean();
-    if(_type_id!=GM_SO_TYPE_CAMERA && _type_id!=GM_SO_TYPE_LIGHT) sp += _global_sphere;
+
+    if(_type_id!=GM_SO_TYPE_CAMERA && _type_id!=GM_SO_TYPE_LIGHT)
+      sp += _global_sphere;
+
     return sp;
+  }
+
+  Array<Visualizer*>& SceneObject::getVisualizers() {
+
+    return _visualizers;
   }
 
   const Array<Visualizer*>& SceneObject::getVisualizers() const {
 
     return _visualizers;
   }
-
 
   /*! void SceneObject::insert(SceneObject* obj)
    *  \brief Pending Documentation
@@ -403,34 +397,21 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localDisplay() {
+  void SceneObject::localDisplay( Camera* cam ) {
 
     for( int i = 0; i < _visualizers.getSize(); ++i )
-      _visualizers[i]->display();
+      _visualizers[i]->display( cam );
   }
-
-
-  void SceneObject::localDisplayActive() {
-
-    localSelect();
-  }
-
-
-  void SceneObject::localDisplaySelection() {
-
-    localSelect();
-  }
-
 
   /*! void localSelect()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  void SceneObject::localSelect()  {
+  void SceneObject::localSelect( Camera* cam, const Color& name )  {
 
     for( int i = 0; i < _visualizers.getSize(); ++i )
-      _visualizers[i]->select();
+      _visualizers[i]->select( cam, name );
   }
 
 
@@ -582,6 +563,16 @@ namespace GMlib {
   void SceneObject::setMatrix( const HqMatrix<float,3>& mat ) {
 
     _matrix = mat;
+  }
+
+  void SceneObject::setStandardRepVisualizer( Visualizer* visu ) {
+
+    if( visu )
+      _std_rep_visu = visu;
+    else
+      _std_rep_visu = new VisualizerStdRep;
+
+    _std_rep_visu->set( this );
   }
 
 

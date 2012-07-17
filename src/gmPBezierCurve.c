@@ -30,6 +30,7 @@
  */
 
 #include "gmEvaluatorStatic.h"
+#include "gmSelectorGridVisualizer.h"
 
 namespace GMlib {
 
@@ -77,7 +78,10 @@ namespace GMlib {
 
 
   template <typename T>
-  PBezierCurve<T>::~PBezierCurve() {}
+  PBezierCurve<T>::~PBezierCurve() {
+
+    delete _sgv;
+  }
 
 
   template <typename T>
@@ -97,13 +101,14 @@ namespace GMlib {
 
 
   template <typename T>
-  void PBezierCurve<T>::edit( int /*selector*/ ) {
+  void PBezierCurve<T>::edit( int /*selector_id*/ ) {
 
     _c_moved = true;
-    PCurve<T>::replot(0,false);
 
     if( this->_parent )
       this->_parent->edit( this );
+
+    _sgv->update();
 
     _c_moved = false;
   }
@@ -188,9 +193,8 @@ namespace GMlib {
       return;
 
     // Remove Selector Grid
-    DisplayObject::remove( _sg );
-    delete _sg;
-    _sg = 0;
+    this->removeVisualizer( _sgv );
+    _sgv->reset();
 
     // Remove Selectors
     for( int i = 0; i < _s.getDim(); i++ ) {
@@ -206,13 +210,14 @@ namespace GMlib {
   void PBezierCurve<T>::init() {
 
     _selectors = false;
-    _sg = 0;
     _c_moved = false;
 
     _scale = T(1);
     _closed = false;
     _pre_eval = true;
     _resamp_mode = GM_RESAMPLE_PREEVAL;
+
+    _sgv = new SelectorGridVisualizer<T>;
   }
 
 
@@ -320,8 +325,6 @@ namespace GMlib {
     if( _selectors )
       return;
 
-//    DVector< Vector<T, 3> > &c = _l_ref->getControlPoints();
-
     _s.setDim( _c.getDim() );
     for( int i = 0, s_id = 0; i < _c.getDim(); i++ ) {
 
@@ -333,12 +336,8 @@ namespace GMlib {
 
     if( grid ) {
 
-      _sg = new SelectorGrid<T,3>( _c[0], this, grid_color );
-
-      for( int i = 1; i < _c.getDim(); i++ )
-          _sg->add(_c[i-1], _c[i]);  // Lines in grid
-
-      DisplayObject::insert( _sg );
+      _sgv->setSelectors( _c );
+      this->insertVisualizer( _sgv );
     }
 
     _selectors = true;
@@ -349,20 +348,20 @@ namespace GMlib {
   inline
   void PBezierCurve<T>::updateCoeffs( const Vector<T,3>& d ) {
 
-		if( _c_moved ) {
+    if( _c_moved ) {
 
-		  HqMatrix<T,3> invmat = this->_matrix;
-		  invmat.invertOrthoNormal();
+      HqMatrix<T,3> invmat = this->_matrix;
+      invmat.invertOrthoNormal();
 
-			Vector<T,3> diff = invmat*d;
-			for( int i = 0; i < _c.getDim(); i++ ) {
+      Vector<T,3> diff = invmat*d;
+      for( int i = 0; i < _c.getDim(); i++ ) {
 
         _c[i] += diff;
         _s[i]->translate( diff );
-			}
-			DisplayObject::translate( -d );
-			this->replot();
-		}
+      }
+      DisplayObject::translate( -d );
+      this->replot();
+    }
   }
 
 

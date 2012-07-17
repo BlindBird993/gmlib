@@ -33,6 +33,7 @@
 
 // local
 #include "gmPoint.h"
+#include "gmMatrix.h"
 
 
 #ifndef __GMSCALEOBJECT_H__
@@ -53,6 +54,7 @@ namespace GMlib {
     ScaleObject(float	s);
     ScaleObject(Point<float,3>	sc);
 
+    const HqMatrix<float,3>&  getMatrix() const;
     float                   getMax() const;
     Point<float,3>const&    getScale();
     void                    glScaling();
@@ -68,6 +70,7 @@ namespace GMlib {
   private:
     bool                    _scaled;
     Point<float,3>          _s;
+    HqMatrix<float,3>       _matrix;
     float                   _max;
 
     void                    _updateMax();

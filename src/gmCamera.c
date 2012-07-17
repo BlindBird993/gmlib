@@ -94,55 +94,32 @@ namespace GMlib {
   inline
   void Camera::display() {
 
+    std::cout << "Camera::display()" << std::endl;
     setPerspective();
     glViewport(_x,_y,_w,_h);
-    glPushMatrix();
-      glMultMatrix(_matrix);
-      glMultMatrix(_matrix_scene_inv);
-
-      if(_coord_sys_visible)
-        drawActiveCam();
+//    glPushMatrix(); {
+//      glMultMatrix(_matrix);
+//      glMultMatrix(_matrix_scene_inv);
 
       // Cull the scene using the camera's frustum
       _scene->_culling( _frustum, _culling );
 
-      // Sort the scene for blending, if required
-      if( _blend_sort )
-        _scene->_blending( this );
+//      // Sort the scene for blending, if required
+//      if( _blend_sort )
+//        _scene->_blending( this );
 
-      // Enable lighting
-      _scene->_lighting();
+//      // Enable lighting
+//      _scene->_lighting();
 
       // Render scene
-      _scene->_display( _blend_sort );
+      OGL::bindRenderBuffer();
+      _scene->_display( _blend_sort, this );
+      OGL::releaseRenderBuffer();
 
+//    } glPopMatrix();
 
-      // Display Selection
-      glPushAttrib( GL_POLYGON_BIT | GL_LINE_BIT | GL_LIGHTING_BIT ); {
-
-        glLineWidth( _select_linewidth );
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glDisable( GL_LIGHTING );
-
-        glColor( _select_color );
-
-        _scene->_displaySelection();
-      } glPopAttrib();
-
-
-      // Display Active
-      glPushAttrib( GL_POLYGON_BIT | GL_LINE_BIT | GL_LIGHTING_BIT ); {
-
-        glLineWidth( _select_active_linewidth );
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glDisable( GL_LIGHTING );
-
-        glColor( _select_active_color );
-
-        _scene->_displayActive();
-      } glPopAttrib();
-
-    glPopMatrix();
+      if(_coord_sys_visible)
+        drawActiveCam();
   }
 
 
@@ -159,28 +136,128 @@ namespace GMlib {
 
 
     /*! \todo check if this is correct and fix if not */
-    cp = _matrix_scene * cp;
-    cp = getMatrix() * cp;
+//    cp = _matrix_scene * cp;
+//    cp = getMatrix() * cp;
 
-  //	GLboolean lg;
-  //	glGetBooleanv(GL_LIGHTING,&lg);
-  //	if(lg) glDisable(GL_LIGHTING);
-    glPushAttrib( GL_LIGHTING );
-    glDisable( GL_LIGHTING );
-    glBegin(GL_LINES); // draw Coordsys
-      glColor( GMcolor::Red );	glPoint(cp); glPoint(cp+Vector3D<float>(0.1,0,0));
-      glColor( GMcolor::Green );	glPoint(cp); glPoint(cp+Vector3D<float>(0,0.1,0));
-      glColor( GMcolor::Blue );	glPoint(cp); glPoint(cp+Vector3D<float>(0,0,0.1));
-    glEnd();
-    if(_locked && ! _lock_object)
-    {
-      glPushMatrix();
-      glTranslate(_lock_pos);
-      glCallList(_display_list+8);
-      glPopMatrix();
-    }
-    glPopAttrib();
-  //	if (lg) glEnable(GL_LIGHTING);
+//  //	GLboolean lg;
+//  //	glGetBooleanv(GL_LIGHTING,&lg);
+//  //	if(lg) glDisable(GL_LIGHTING);
+//    glPushAttrib( GL_LIGHTING );
+//    glDisable( GL_LIGHTING );
+//    glBegin(GL_LINES); // draw Coordsys
+//      glColor( GMcolor::Red );	glPoint(cp); glPoint(cp+Vector3D<float>(0.1,0,0));
+//      glColor( GMcolor::Green );	glPoint(cp); glPoint(cp+Vector3D<float>(0,0.1,0));
+//      glColor( GMcolor::Blue );	glPoint(cp); glPoint(cp+Vector3D<float>(0,0,0.1));
+//    glEnd();
+//    if(_locked && ! _lock_object)
+//    {
+//      glPushMatrix();
+//      glTranslate(_lock_pos);
+//      glCallList(_display_list+8);
+//      glPopMatrix();
+//    }
+//    glPopAttrib();
+//  //	if (lg) glEnable(GL_LIGHTING);
+
+
+
+
+
+
+    // NEW CODE //
+
+
+
+//    HqMatrix<float,3> mat;
+//    mat[0][3] = cp[0];
+//    mat[1][3] = cp[1];
+//    mat[2][3] = cp[2];
+
+
+//    HqMatrix<float,3> proj_mat = getProjectionMatrix();
+
+
+//    HqMatrix<float,3> mv_mat = _matrix_scene_inv * _matrix * mat;
+
+
+//    HqMatrix<float,3> mvpmat = proj_mat * this->SceneObject::getMatrix() * this->_matrix_scene;
+
+
+
+
+//    std::cout << "mat:" << std::endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      for( int j = 0; j < 4; j++ ) {
+
+//        std::cout << mat[i][j] << "  ";
+//      }
+//      std::cout << std::endl;
+//    }
+//    std::cout << std::endl;
+
+//    std::cout << "proj_mat:" << std::endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      for( int j = 0; j < 4; j++ ) {
+
+//        std::cout << proj_mat[i][j] << "  ";
+//      }
+//      std::cout << std::endl;
+//    }
+//    std::cout << std::endl;
+
+//    std::cout << "mv_mat:" << std::endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      for( int j = 0; j < 4; j++ ) {
+
+//        std::cout << mv_mat[i][j] << "  ";
+//      }
+//      std::cout << std::endl;
+//    }
+//    std::cout << std::endl;
+
+
+
+
+//    std::cout << "mvpmat:" << std::endl;
+//    for( int i = 0; i < 4; i++ ) {
+//      for( int j = 0; j < 4; j++ ) {
+
+//        std::cout << mvpmat[i][j] << "  ";
+//      }
+//      std::cout << std::endl;
+//    }
+//    std::cout << std::endl;
+
+
+
+//    GLProgram prog( "color" );
+//    GLBufferObject bo_qs( "std_rep_qs" );
+//    GLBufferObject bo_q( "std_rep_q" );
+
+//    prog.bind();
+
+//    prog.setUniform( "u_mvpmat", mvpmat, 1, true );
+//    prog.setUniform( "u_selected", false );
+
+
+//    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+
+//    prog.setUniform( "u_color", GMcolor::Red );
+//    bo_qs.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+//      glDrawArrays( GL_QUAD_STRIP, 0, 10 );
+//    bo_qs.disableVertexArrayPointer( vert_loc );
+
+//    prog.setUniform( "u_color", GMcolor::Blue );
+//    bo_q.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+//      glDrawArrays( GL_QUADS, 0, 8 );
+//    bo_q.disableVertexArrayPointer( vert_loc );
+
+//    prog.unbind();
+
+//    std::cout << "Info:" << std::endl;
+//    std::cout << " - vert_loc: " << vert_loc << std::endl;
+//    std::cout << " - bo_qs ID: " << bo_qs.getId() << std::endl;
+//    std::cout << " - bo_q  ID: " << bo_q.getId() << std::endl;
   }
 
 
@@ -231,7 +308,6 @@ namespace GMlib {
     return _far_plane;
   }
 
-
   /*! float Camera::getFocalLength() const
    *	\brief Pending Documentation
    *
@@ -241,6 +317,12 @@ namespace GMlib {
   float Camera::getFocalLength() const {
 
     return _focal_length;
+  }
+
+  inline
+  const HqMatrix<float,3>& Camera::getFrustumMatrix() const {
+
+    return _frustum_matrix;
   }
 
 
@@ -268,6 +350,13 @@ namespace GMlib {
   }
 
 
+  inline
+  const HqMatrix<float,3>& Camera::getProjectionMatrix() const {
+
+    return getFrustumMatrix();
+  }
+
+
   /*! float Camera::getRatio() const
    *	\brief Pending Documentation
    *
@@ -277,6 +366,12 @@ namespace GMlib {
   float Camera::getRatio() const {
 
     return _ratio;
+  }
+
+  inline
+  const Color& Camera::getSelectColor() const {
+
+    return _select_color;
   }
 
 

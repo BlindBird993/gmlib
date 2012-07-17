@@ -67,10 +67,16 @@ namespace GMlib {
   template <typename T>
   class PSurfContoursVisualizer : public PSurfVisualizer<T> {
   public:
+    struct Vertex {
+      GLfloat   x, y, z;
+      GLfloat   r, g, b, a;
+      GLfloat   padding;
+    }; // Size 8 * sizeof( GLfloat )
+
     PSurfContoursVisualizer();
     ~PSurfContoursVisualizer();
 
-    void                              display();
+    void                              display( Camera * cam );
     const Array<Color>&               getColors() const;
     std::string                       getIdentity() const;
     GM_PSURF_CONTOURSVISUALIZER_INTERPOLATION_METHOD   getInterpolationMethod() const;
@@ -85,11 +91,19 @@ namespace GMlib {
     void                              setMapping( GM_PSURF_CONTOURSVISUALIZER_MAP mapping );
 
   protected:
+    GLProgram                         _display;
     Array<Color>                      _colors;
     GM_PSURF_CONTOURSVISUALIZER_MAP   _mapping;
     GM_PSURF_CONTOURSVISUALIZER_INTERPOLATION_METHOD   _method;
 
+    GLuint                            _ibo;
     GLuint                            _vbo;
+
+    int                               _tri_strips;
+    GLsizei                           _tri_strip_offset;
+    int                               _indices_per_tri_strip;
+
+
 
     Color                             getColor( T d );
     Color                             getColorInterpolated( T d );

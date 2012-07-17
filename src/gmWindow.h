@@ -166,7 +166,11 @@ namespace GMlib {
 
 
 		void 								_drawBorder();
+
+  public:
 		void 								_drawCamera(bool stereo=false);
+
+  private:
 		bool 								_find(int x, int y, Camera*& cam);
 		bool 								_insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically=true, double d=0.5);
 		void 								_moveBorder(int x, int y);
@@ -262,8 +266,6 @@ namespace GMlib {
     bool			              _stereo;
 
     SceneObject*	          _target;		/// NB!!!! take a look at this variable not used proper today.....
-    //SceneObject*	          _rot_obj;		/// Storing Rotating object from pressed down to move, restored in butten up.
-//    int				              _viewmode;		/// State for Camera moving in plane, the two states acting opposit
     bool			              _running;		/// Used to stor the state of simulation while mouse/keboard temporary turn off simulation
     bool			              _isbig;			/// State of one window functionality have been used (see _mouseDoubleClick on right knob)
     bool			              _default_only;	/// Only default camera present

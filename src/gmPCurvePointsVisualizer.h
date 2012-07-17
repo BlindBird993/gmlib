@@ -46,15 +46,25 @@ namespace GMlib {
   class PCurvePointsVisualizer : public PCurveVisualizer<T> {
   public:
     PCurvePointsVisualizer();
+    ~PCurvePointsVisualizer();
 
-    void              display();
+    void              display( Camera* cam );
     const Color&      getColor() const;
     std::string       getIdentity() const;
     float             getSize() const;
+    void              replot(
+      DVector< DVector< Vector<T, 3> > >& p,
+      int m, int d
+    );
     void              setColor( const Color& color );
     void              setSize( float size );
 
   protected:
+    GLProgram         _display;
+
+    GLuint            _vbo_v;
+    int               _no_elements;
+
     float             _size;
     Color             _color;
   };

@@ -52,6 +52,10 @@ namespace GMlib{
   class SceneObject;
   class Camera;
   class Light;
+  namespace GLSL {
+
+    class GLProgram;
+  }
 
 
 
@@ -107,10 +111,8 @@ namespace GMlib{
     SceneObject*          operator () (int i);
     Scene&                operator =  (const Scene& sc);
 
-
   protected:
     Array<SceneObject*>   _sel_objs;
-    SceneObject           *_active_obj;
 
     bool                  isVisible( SceneObject* obj );
     void                  simulate();
@@ -119,10 +121,8 @@ namespace GMlib{
     friend class Camera;
 
     void                  _lighting();
-    void                  _display( bool blend_sorted );
-    void                  _displayActive();
-    void                  _displaySelection();
-    void                  _select( int type_id );
+    void                  _display( bool blend_sorted, Camera* cam );
+    void                  _select( int type_id, Camera* cam );
     virtual void          _culling( const Frustum& f, bool on = true );
     void                  _blending( Camera* cam );
 
@@ -138,6 +138,7 @@ namespace GMlib{
     bool                  _timer_active;
     double                _timer_time_elapsed;
     double                _timer_time_scale;
+
 
   }; // END class Scene
 

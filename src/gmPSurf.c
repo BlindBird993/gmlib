@@ -35,7 +35,7 @@
 #include <iomanip>
 
 // local
-#include "gmPSurfVisualizer.h"
+#include "gmPSurfDefaultVisualizer.h"
 
 namespace GMlib {
 
@@ -58,7 +58,7 @@ namespace GMlib {
     setNoDer( 2 );
     //_setSam( s1, s2 );
 
-    _default_visualizer = new PSurfVisualizer<T>();
+    _default_visualizer = new PSurfDefaultVisualizer<T>();
     enableDefaultVisualizer( true );
   }
 
@@ -88,7 +88,7 @@ namespace GMlib {
     _no_der_u     = copy._no_sam_u;
     _no_der_v     = copy._no_sam_v;
 
-    _default_visualizer = new PSurfVisualizer<T>();
+    _default_visualizer = new PSurfDefaultVisualizer<T>();
     enableDefaultVisualizer( true );
   }
 
@@ -290,14 +290,14 @@ namespace GMlib {
     int i,j;
 
     for(i = 0; i <= d1; i++) {
-      for(j = 0; j<= std::min(i, d2); j++)	{
+      for(j = 0; j<= std::min<int>(i, d2); j++)	{
         p += _p[i-j][j];
       }
     }
 
     // Origin --> for(;i <= max(d1, d2); i++)
-    for(i = 0; i <= std::max(d1, d2); i++) {
-      for(j = i-d1; j <= std::min(i, d2); j++) {
+    for(i = 0; i <= std::max<int>(d1, d2); i++) {
+      for(j = i-d1; j <= std::min<int>(i, d2); j++) {
         p += _p[i-j][j];
       }
     }
@@ -609,6 +609,8 @@ namespace GMlib {
   inline
   void PSurf<T>::insertVisualizer( Visualizer *visualizer ) {
 
+    SceneObject::insertVisualizer( visualizer );
+
     PSurfVisualizer<T> *visu = dynamic_cast<PSurfVisualizer<T>*>( visualizer );
     if( !visu )
       return;
@@ -617,8 +619,6 @@ namespace GMlib {
       return;
 
     _psurf_visualizers += visu;
-
-    SceneObject::insertVisualizer( visualizer );
   }
 
 

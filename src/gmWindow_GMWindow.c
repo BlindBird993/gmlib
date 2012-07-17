@@ -143,8 +143,8 @@ namespace GMlib {
     if( _active_cam > -1 )
       _cameras[_active_cam]->move(_move);
 
-    simulate();
-    prepare();
+//    simulate();
+//    prepare();
     if(_stereo) {
 
       glDrawBuffer(GL_BACK_LEFT);
@@ -155,8 +155,8 @@ namespace GMlib {
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       _view_set_stack.back()._drawCamera(true);
     }
-    else
-    {
+    else {
+
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       _view_set_stack.back()._drawCamera();
     }
@@ -174,6 +174,8 @@ namespace GMlib {
 
     _w = w; _h = h;
     _view_set_stack.back().prepare(_w,_h);
+    OGL::setRenderBufferSize( _w, _h );
+    OGL::setSelectBufferSize( _w, _h );
   }
 
 

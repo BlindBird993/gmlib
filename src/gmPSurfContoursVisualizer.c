@@ -34,7 +34,7 @@ namespace GMlib {
 
 
   template <typename T>
-  PSurfContoursVisualizer<T>::PSurfContoursVisualizer() {
+  PSurfContoursVisualizer<T>::PSurfContoursVisualizer() : _display( "psurf_contours" ) {
 
     _mapping = GM_PSURF_CONTOURSVISUALIZER_X;
 
@@ -45,52 +45,49 @@ namespace GMlib {
     // Set default interpolation method
     _method = GM_PSURF_CONTOURSVISUALIZER_LINEAR;
 
+    glGenBuffers( 1, &_ibo );
     glGenBuffers( 1, &_vbo );
   }
 
   template <typename T>
   PSurfContoursVisualizer<T>::~PSurfContoursVisualizer() {
 
+    glDeleteBuffers( 1, &_ibo );
     glDeleteBuffers( 1, &_vbo );
   }
 
   template <typename T>
   inline
-  void PSurfContoursVisualizer<T>::display() {
+  void PSurfContoursVisualizer<T>::display( Camera * cam ) {
 
-    // Push GL Attribs
-    glPushAttrib( GL_LIGHTING_BIT | GL_POINT_BIT | GL_LINE_BIT );
+    _display.bind();
 
-    // Disable lighting
-    glDisable( GL_LIGHTING );
+    _display.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
+    _display.setUniform( "u_selected", false );
 
-    glBindBuffer( GL_ARRAY_BUFFER, this->_vbo_v );
-    glVertexPointer( 3, GL_FLOAT, 0, (const GLvoid*)0x0 );
+    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+    GLuint color_loc = _display.getAttributeLocation( "in_color" );
 
+    GLsizei stride = sizeof( Vertex );
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glColorPointer( 4, GL_FLOAT, 0, (const GLvoid*)0x0 );
 
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( vert_loc );
 
+    glVertexAttribPointer( color_loc, 4, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)(3*sizeof(GLfloat)) );
+    glEnableVertexAttribArray( color_loc );
 
-    // Enable Vertex and Normal Array
-    glEnableClientState( GL_VERTEX_ARRAY );
-    glEnableClientState( GL_COLOR_ARRAY );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
+    for( int i = 0; i < _tri_strips; i++ )
+      glDrawElements( GL_TRIANGLE_STRIP, _indices_per_tri_strip, GL_UNSIGNED_SHORT, (const GLvoid*)( i*_tri_strip_offset ) );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
 
-    for( int i = 0; i < this->_tri_strips; i++ ) {
-
-
-      const int first = i*this->_tri_strip_verts;
-      glDrawArrays( GL_TRIANGLE_STRIP, first, this->_tri_strip_verts );
-    }
-
-    // Disable Client States
-    glDisableClientState( GL_COLOR_ARRAY );
-    glDisableClientState( GL_VERTEX_ARRAY );
+    glDisableVertexAttribArray( color_loc );
+    glDisableVertexAttribArray( vert_loc );
 
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    // Pop GL Attribs
-    glPopAttrib();
+    _display.unbind();
   }
 
   template <typename T>
@@ -217,8 +214,12 @@ namespace GMlib {
     int m1, int m2, int d1, int d2
   ) {
 
-    // Replot the default visualizer
-    PSurfVisualizer<T>::replot( p, normals, m1, m2, d1, d2 );
+    _tri_strips = PSurfVisualizer<T>::getNoTriangleStrips( p.getDim1(), p.getDim2() );
+    _indices_per_tri_strip = PSurfVisualizer<T>::getNoIndicesPerTriangleStrip( p.getDim1(), p.getDim2() );
+    _tri_strip_offset =  sizeof(GLushort) * _indices_per_tri_strip;
+
+    PSurfVisualizer<T>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2() );
+
 
     // Color/Material Countours
     DMatrix<double> cmap;
@@ -285,53 +286,56 @@ namespace GMlib {
     }
 
 
-    DMatrix<Color> ccs;
-    ccs.setDim( p.getDim1(), p.getDim2() );
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
+    Vertex data[p.getDim1()*p.getDim2()];
 
+    // Fill vertex point data.
+    for( int i = 0; i < p.getDim1(); i++ ) {
+      for( int j = 0; j < p.getDim2(); j++ ) {
+
+        const int idx = i * p.getDim2() + j;
+        data[idx].x = p[i][j][0][0][0];
+        data[idx].y = p[i][j][0][0][1];
+        data[idx].z = p[i][j][0][0][2];
+      }
+    }
+
+
+    // Fill vertex color data
     switch( _method ) {
     case GM_PSURF_CONTOURSVISUALIZER_NO_INTERPOLATION:
-      for( int i = 0; i < p.getDim1(); i++ )
-        for( int j = 0; j < p.getDim2(); j++ )
-          ccs[i][j] = getColor( cmap[i][j] );
+      for( int i = 0; i < p.getDim1(); i++ ) {
+        for( int j = 0; j < p.getDim2(); j++ ) {
+
+          const int idx = i * p.getDim2() + j;
+          const Color c = getColor( cmap[i][j] );
+          data[idx].r = c.getRedC();
+          data[idx].g = c.getGreenC();
+          data[idx].b = c.getBlueC();
+          data[idx].a = c.getAlphaC();
+        }
+      }
       break;
 
     case GM_PSURF_CONTOURSVISUALIZER_LINEAR:
     default:
-      for( int i = 0; i < p.getDim1(); i++ )
-        for( int j = 0; j < p.getDim2(); j++ )
-          ccs[i][j] = getColorInterpolated( cmap[i][j] );
+      for( int i = 0; i < p.getDim1(); i++ ) {
+        for( int j = 0; j < p.getDim2(); j++ ) {
+
+          const int idx = i * p.getDim2() + j;
+          const Color c = getColorInterpolated( cmap[i][j] );
+          data[idx].r = c.getRedC();
+          data[idx].g = c.getGreenC();
+          data[idx].b = c.getBlueC();
+          data[idx].a = c.getAlphaC();
+        }
+      }
       break;
     }
 
-
-
-
-
-
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glBufferData( GL_ARRAY_BUFFER, this->_no_vertices * 4 * sizeof(float), 0x0,  GL_DYNAMIC_DRAW );
-    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-
-    if( ptr ) {
-
-      // Create Vertex arrays ^^
-      for( int i = 0; i < p.getDim1()-1; i++ ) {
-
-        const int idx_i = i * p.getDim2() * 2;
-        for( int j = 0; j < p.getDim2(); j++ ) {
-
-          const int idx_j = (idx_i + (j*2)) * 4;
-          for( int k = 0; k < 4; k++ ) {
-            ptr[idx_j+k]  =   ccs[i][j].getClampd(k);
-            ptr[idx_j+k+4]  = ccs[i+1][j].getClampd(k);
-          }
-        }
-      }
-    }
-
-    glUnmapBuffer( GL_ARRAY_BUFFER );
+    glBufferData( GL_ARRAY_BUFFER, p.getDim1() * p.getDim2() * sizeof(Vertex), data, GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
   }
 
   template <typename T>

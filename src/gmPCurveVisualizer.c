@@ -33,62 +33,13 @@
 namespace GMlib {
 
   template <typename T>
-  PCurveVisualizer<T>::PCurveVisualizer() {
+      PCurveVisualizer<T>::PCurveVisualizer() {
 
     _curve = 0x0;
-    _no_vertices = 0;
-
-    glGenBuffers( 1, &_vbo );
   }
 
   template <typename T>
-  PCurveVisualizer<T>::~PCurveVisualizer() {
-
-    glDeleteBuffers( 1, &_vbo );
-  }
-
-  template <typename T>
-  inline
-  void PCurveVisualizer<T>::display() {
-
-    // Push GL Attributes
-    glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT | GL_TEXTURE_BIT ); {
-
-      // Disable lighting
-      glDisable( GL_LIGHTING );
-
-      // Get Color Data
-      const Color &c = this->_obj->getColor();
-      glColor(c);
-
-//      // Handle Opacity/Transparency
-//      if( this->_obj->isOpaque() ) {
-//
-//        glBlendFunc(_blend_sfactor, _blend_dfactor);
-//      }
-
-      // GL States
-      glLineWidth( this->_curve->getLineWidth() );
-
-      // Binder VBO
-      glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-      glVertexPointer( 3, GL_FLOAT, 0, (const GLvoid*)0x0 );
-
-      // Enable vertex array
-      glEnableClientState( GL_VERTEX_ARRAY );
-
-      // Draw
-      glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
-
-      // Disable vertex array
-      glDisableClientState( GL_VERTEX_ARRAY );
-
-      // UnBind VBO
-      glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    // Pop GL Attributes
-    } glPopAttrib();
-  }
+  PCurveVisualizer<T>::~PCurveVisualizer() {}
 
   template <typename T>
   std::string PCurveVisualizer<T>::getIdentity() const {
@@ -98,22 +49,19 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PCurveVisualizer<T>::replot(
-    DVector< DVector< Vector<T, 3> > >& p,
-    int /*m*/, int /*d*/
-  ) {
+  void PCurveVisualizer<T>::populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d ) {
 
-    _no_vertices = p.getDim();
+    no_dp = p.getDim();
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glBufferData( GL_ARRAY_BUFFER, _no_vertices * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_id );
+    glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+
     float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-
     if( ptr ) {
 
       for( int i = 0; i < p.getDim(); i++ )
         for( int j = 0; j < 3; j++ )
-          *(ptr++) = p[i][0][j];
+          *(ptr++) = p[i][d][j];
     }
 
     glUnmapBuffer( GL_ARRAY_BUFFER );
@@ -122,24 +70,10 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PCurveVisualizer<T>::select() {
-
-    // Binder VBO
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexPointer( 3, GL_FLOAT, 0, (const GLvoid*)0x0 );
-
-    // Enable vertex array
-    glEnableClientState( GL_VERTEX_ARRAY );
-
-    // Draw
-    glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );//_v.getDim() );
-
-    // Disable vertex array
-    glDisableClientState( GL_VERTEX_ARRAY );
-
-    // UnBind VBO
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-  }
+  void PCurveVisualizer<T>::replot(
+    DVector< DVector< Vector<T, 3> > >& /*p*/,
+    int /*m*/, int /*d*/
+  ) {}
 
   template <typename T>
   void PCurveVisualizer<T>::set( SceneObject* obj ) {

@@ -105,11 +105,15 @@ namespace GMlib {
 		double									getDistanceToObject(int, int);
 		double									getDistanceToObject(SceneObject* obj);
 		float									  getFarPlane() const;
-		float									  getFocalLength() const;
+    float									  getFocalLength() const;
+    const HqMatrix<float,3>&  getFrustumMatrix() const;
 		std::string 						getIdentity() const;
-		HqMatrix<float,3>&			getMatrix();
+    HqMatrix<float,3>&			getMatrix();
+    const HqMatrix<float,3>&  getMatrix() const;
 		float									  getNearPlane() const;
-		float									  getRatio() const;
+    const HqMatrix<float,3>&  getProjectionMatrix() const;
+    float									  getRatio() const;
+    const Color&            getSelectColor() const;
 		void										getViewport(int& w1, int& w2, int& h1, int& h2) const;
 		int											getViewportW() const;
 		int											getViewportH() const;
@@ -129,20 +133,18 @@ namespace GMlib {
 		void										setFocalDist(double focal=50.0);
 		void 										setFrustumVisible(bool visible=true);
 		void										setScene(Scene& s);
-		void										setScene(Scene *s);
-    void                    setSelectActiveColor( const Color& color );
-    void                    setSelectActiveLineWidth( float width );
+    void										setScene(Scene *s);
     void                    setSelectColor( const Color& color );
-    void                    setSelectLineWidth( float width );
 		virtual void 						zoom(float z);
 
 
 	protected:
-		float									_near_plane;
-		float									_far_plane;
-		float									_ratio;
-		Frustum									_frustum;
-		GLMatrix								_frustum_matrix;					// Frustrum matrix
+    float                   _near_plane;
+    float                   _far_plane;
+    float                   _ratio;
+
+    Frustum									_frustum;
+    HqMatrix<float,3>       _frustum_matrix;					// Frustrum matrix
 
 		void										basisChange(
 															const Vector<float,3>& x,
@@ -167,13 +169,9 @@ namespace GMlib {
 
 //	private:
 		static Scene						_default_scene;
-		static unsigned int						_display_list;
+    static unsigned int		  _display_list;
 
     Color                   _select_color;
-    float                   _select_linewidth;
-
-    Color                   _select_active_color;
-    float                   _select_active_linewidth;
 
 		Scene*									_scene;
 		int											_x,_y,_w,_h;					// Viewport position and size.
@@ -188,6 +186,14 @@ namespace GMlib {
 
 		bool                    _culling;
     bool                    _blend_sort;
+
+
+    // Two pass
+    GLuint          _vbo_quad;
+    GLuint          _vbo_quad_tex;
+
+    GLuint          _vbo_quad_debug;
+    GLuint          _vbo_quad_tex_debug;
 	};
 
 }

@@ -55,7 +55,7 @@ namespace GMlib {
     PCurveDerivativesVisualizer();
     ~PCurveDerivativesVisualizer();
 
-    void            display();
+    void            display( Camera* cam );
     const Color&    getColor() const;
     int             getDerivative() const;
     std::string     getIdentity() const;
@@ -74,9 +74,10 @@ namespace GMlib {
     void            setSize( double size = 1.0 );
 
   protected:
+    GLProgram       _display;
     Color           _color;
 
-    GLuint          _vbo;
+    GLuint          _vbo_v;
     int             _no_elements;
 
     GM_PCURVE_DERIVATIVESVISUALIZER_SIZE

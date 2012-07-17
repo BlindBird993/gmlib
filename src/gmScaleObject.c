@@ -70,14 +70,71 @@ namespace GMlib {
   }
 
 
-  /*! void ScaleObject::scale(const Point<float,3>& sc)
+  /*! void ScaleObject::_updateMax()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void ScaleObject::scale(const Point<float,3>& sc) {
-    _scaled=true; _s %= sc; _updateMax();
+  void ScaleObject::_updateMax() {
+    _max = (_s[0] > _s[1] ? ( _s[0]>_s[2] ? _s[0]:_s[2] ):(_s[1]>_s[2] ? _s[1]:_s[2]));
+  }
+
+
+  inline
+  const HqMatrix<float,3>& ScaleObject::getMatrix() const {
+
+    static HqMatrix<float,3> mat;
+
+    mat[0][0] = _s(0);
+    mat[1][1] = _s(1);
+    mat[2][2] = _s(2);
+
+    return mat;
+  }
+
+
+  /*! float ScaleObject::getMax() const
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  inline
+  float ScaleObject::getMax() const {
+    return _max;
+  }
+
+
+  /*! Point<float,3>const& ScaleObject::getScale()
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  inline
+  Point<float,3>const& ScaleObject::getScale() {
+    return _s;
+  }
+
+
+  /*! void ScaleObject::glScaling()
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  inline
+  void ScaleObject::glScaling() {
+    if(_scaled) glScale(_s);
+  }
+
+
+  /*! bool  ScaleObject::isActive()  const
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  inline
+  bool  ScaleObject::isActive()  const {
+    return _scaled;
   }
 
 
@@ -104,47 +161,18 @@ namespace GMlib {
   }
 
 
-  /*! void ScaleObject::glScaling()
+  /*! void ScaleObject::scale(const Point<float,3>& sc)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void ScaleObject::glScaling() {
-    if(_scaled) glScale(_s);
-  }
+  void ScaleObject::scale(const Point<float,3>& sc) {
 
-
-  /*! bool  ScaleObject::isActive()  const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  bool  ScaleObject::isActive()  const {
-    return _scaled;
-  }
-
-
-  /*! float ScaleObject::getMax() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  float ScaleObject::getMax() const {
-    return _max;
-  }
-
-
-  /*! Point<float,3>const& ScaleObject::getScale()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  Point<float,3>const& ScaleObject::getScale() {
-    return _s;
+    _scaled=true;
+    _s %= sc;
+    _matrix.scale( sc );
+    _updateMax();
   }
 
 
@@ -162,17 +190,6 @@ namespace GMlib {
       else return sp;
     }
     else return sp;
-  }
-
-
-  /*! void ScaleObject::_updateMax()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void ScaleObject::_updateMax() {
-    _max = (_s[0] > _s[1] ? ( _s[0]>_s[2] ? _s[0]:_s[2] ):(_s[1]>_s[2] ? _s[1]:_s[2]));
   }
 
 } // END namespace GMlib

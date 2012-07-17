@@ -57,7 +57,7 @@ namespace GMlib {
     PCurveContoursVisualizer();
     ~PCurveContoursVisualizer();
 
-    void                              display();
+    void                              display( Camera* cam );
     const Array<Color>&               getColors() const;
     std::string                       getIdentity() const;
     GM_PCURVE_CONTOURSVISUALIZER_MAP  getMapping() const;
@@ -69,10 +69,14 @@ namespace GMlib {
     void                              setMapping( GM_PCURVE_CONTOURSVISUALIZER_MAP mapping );
 
   protected:
+    GLProgram                         _display;
+
     Array<Color>                      _colors;
     GM_PCURVE_CONTOURSVISUALIZER_MAP  _mapping;
     DVector<Color>                    _c;
 
+    GLuint                            _vbo_v;
+    int                               _no_vertices;
     GLuint                            _vbo_c;
 
     Color                             getColor( T d );

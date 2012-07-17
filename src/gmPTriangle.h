@@ -44,6 +44,9 @@ namespace GMlib {
   class PTriangleVisualizer;
 
   template <typename T>
+  class PTriangleDefaultVisualizer;
+
+  template <typename T>
   class PTriangle : public Parametrics<T,2> {
   public:
     PTriangle( int samples = 20 );
@@ -100,7 +103,7 @@ namespace GMlib {
 
   protected:
     Array< PTriangleVisualizer<T>* >  _ptriangle_visualizers;
-    PTriangleVisualizer<T>            *_default_visualizer;
+    PTriangleDefaultVisualizer<T>     *_default_visualizer;
 
     int                               _no_sam;      //  int				__sam;
     DMatrix< Vector<T,3> >            _p;           //  DMatrix<Vector<T,n> >	__p;

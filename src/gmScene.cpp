@@ -29,7 +29,7 @@
  *  \date   2008-07-23
  */
 
-
+//#include "gmGLSL.h"
 #include "gmScene.h"
 #include "gmSceneObject.h"
 #include "gmLight.h"
@@ -51,7 +51,6 @@ namespace GMlib {
     _timer_time_scale    = 1;
     _timer_time_elapsed  = 0;
     _matrix_stack    += HqMatrix<float,3>();
-    _active_obj = 0x0;
   }
 
 
@@ -66,7 +65,6 @@ namespace GMlib {
     _timer_time_scale = 1;
     _timer_time_elapsed  = 0;
     _matrix_stack += HqMatrix<float,3>();
-    _active_obj = 0x0;
   }
 
 
@@ -80,7 +78,6 @@ namespace GMlib {
     _timer_active   = true;
     _timer_time_scale    = 1;
     _timer_time_elapsed  = 0;
-    _active_obj = 0x0;
   }
 
 
@@ -208,10 +205,6 @@ namespace GMlib {
   void Scene::removeSelection( SceneObject* obj ) {
 
     if( obj ) {
-
-      if( _active_obj == obj )
-        _active_obj = 0x0;
-
       _sel_objs.remove( obj );
     }
   }
@@ -310,53 +303,39 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void Scene::_display( bool blend_sorted ) {
+  void Scene::_display( bool blend_sorted, Camera* cam ) {
 
+    for( int i = 0; i < _disp_objs.getSize(); i++ )
+      _disp_objs[i]->_display( cam );
 
-    glDisable( GL_BLEND );
+//    glDisable( GL_BLEND );
 
-    if( !blend_sorted ) {
+//    if( !blend_sorted ) {
 
-      for( int i = 0; i < _disp_objs.getSize(); i++ )
-        _disp_objs[i]->_display();
-    }
-    else {
+//      for( int i = 0; i < _disp_objs.getSize(); i++ )
+//        _disp_objs[i]->_display( cam );
+//    }
+//    else {
 
-      for( int i = 0; i < _disp_opaque.getSize(); i++ )
-        _disp_opaque[i].getObject()->_display();
+//      for( int i = 0; i < _disp_opaque.getSize(); i++ )
+//        _disp_opaque[i].getObject()->_display( cam );
 
-      glEnable( GL_BLEND );
-      for( int i = 0; i < _disp_translucent.getSize(); i++ ) {
-        _disp_translucent[i].getObject()->_display();
-      }
-    }
+//      glEnable( GL_BLEND );
+//      for( int i = 0; i < _disp_translucent.getSize(); i++ ) {
+//        _disp_translucent[i].getObject()->_display( cam );
+//      }
+//    }
   }
 
-
-  void Scene::_displayActive() {
-
-    if( _active_obj )
-      _active_obj->_displayActive();
-  }
-
-
-  void Scene::_displaySelection() {
-
-    for( int i = 0; i < _sel_objs.getSize(); i++ )
-      if( _sel_objs[i] != _active_obj )
-        _sel_objs[i]->_displaySelection();
-  }
-
-
-  /*! void Scene::_select( int type_id )
+  /*! void Scene::_select( int type_id, Camera* cam )
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  void Scene::_select( int type_id ) {
+  void Scene::_select( int type_id, Camera* cam ) {
 
     for( int i=0; i < _disp_objs.getSize(); i++ )
-      _disp_objs[i]->_select( type_id );
+      _disp_objs[i]->_select( type_id, cam );
   }
 
 

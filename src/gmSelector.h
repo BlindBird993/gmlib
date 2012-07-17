@@ -40,7 +40,6 @@
 
 namespace GMlib{
 
-
   /*! \class Selector gmSelector.h <gmSelector>
    *  \brief Pending Documentation
    *
@@ -53,11 +52,13 @@ namespace GMlib{
     Selector(Point<T,n>& mp, int id, SceneObject* parent, T r=1, const Color& c = Color(0.0,0.0,0.7), Selector<T,n>* root=NULL );
     virtual ~Selector();
 
-    void	                editPos(Vector<float,3> dp);
     void	                disable();
     void	                disableAll();
+    void	                editPos(Vector<float,3> dp);
     void	                enable();
     void	                enableAll();
+    int                   getId() const;
+    const Point<T,n>&     getPosition() const;
     bool	                isEnabled() const;
     bool	                toggle();
     void                  update();
@@ -73,23 +74,27 @@ namespace GMlib{
   protected:
     bool			            _enabled;
     Selector<T,n>*        _root;
-    Color		            _default;
-    Color		            _marked;
+    Color                 _default;
+    Color                 _marked;
+
+    GLProgram             _display;
+    GLProgram             _select;
+
+    // Cube buffer objects
+    GLBufferObject        _bo_cube;
+    GLBufferObject        _bo_cube_indices;
+    GLBufferObject        _bo_cube_frame_indices;
 
     void                  allDisable();
     void                  allEnable();
-    void                  localDisplay();
-    void                  localSelect();
+    void                  localDisplay( Camera* cam );
+    void                  localSelect( Camera* cam, const Color& name );
 
 
   private:
-    static unsigned int   _no_selectors;
-    static int		        _display_list;
     int				            _id;
     SceneObject*	        _parent;
     Point<T,n>&		        _position;
-
-    void                  _makeDisplayList();
 
   }; // END class Selector
 

@@ -46,10 +46,22 @@
 #include "gmDMatrix.h"
 
 #include "gmDisplayObject.h"
+#include "gmGLProgram.h"
 
 
 
 namespace GMlib {
+
+
+
+  template <typename T>
+  class TriangleFacetsVisualizer;
+
+  template <typename T>
+  class TriangleFacetsDefaultVisualizer;
+
+
+
 
   template <typename T>
   class TriangleFacets;
@@ -114,6 +126,9 @@ namespace GMlib {
     TSTriangle<T>*                    getTriangle(int i) const;
     TSVertex<T>*                      getVertex(int i) const;
 
+    const Array<TSVEdge<T> >&         getVoronoiEdges() const;
+    const Array<Point<T,2> >&         getVoronoiPoints() const;
+
     int                               initRender(); //const;
 
     void                              insertLine( TSLine<T>& );
@@ -123,17 +138,27 @@ namespace GMlib {
 
     void                              render(); // const;
     void                              renderVoronoi();
+    void                              replot();
 
     bool                              setConstEdge(TSVertex<T> v1, TSVertex<T> v2);
 
     void                              triangulateDelaunay();
 
+
+    void                              enableDefaultVisualizer( bool enable = true );
+    void                              insertVisualizer( Visualizer *visualizer );
+    void                              removeVisualizer( Visualizer *visualizer );
+    void                              toggleDefaultVisualizer();
+
    protected:
     int	                              _dlist_name;
+    GLuint                            _vbo;
+    GLuint                            _ibo;
+    GLProgram                         _dprog;
+    GLProgram                         _sprog;
 
-    void                              localDisplay();
-    void                              localSelect();
-
+    Array< TriangleFacetsVisualizer<T>* >      _tf_visualizers;
+    TriangleFacetsDefaultVisualizer<T>         *_default_visualizer;
 
   private:
     ArrayLX< TSEdge<T>* >             _edges;

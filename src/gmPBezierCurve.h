@@ -35,11 +35,15 @@
 
 // GMlib includes+
 #include "gmPCurve.h"
-#include "gmSelectorGrid.h"
 
 
 namespace GMlib {
 
+  template <typename T, int n>
+  class Selector;
+
+  template <typename T>
+  class SelectorGridVisualizer;
 
   template <typename T>
   class PBezierCurve : public PCurve<T> {
@@ -49,44 +53,44 @@ namespace GMlib {
     PBezierCurve( const PBezierCurve<T>& copy );
     virtual ~PBezierCurve();
 
-    void                          edit( int selector );
-    DVector< Vector<T,3> >&       getControlPoints();
-    int                           getDegree() const;
-    std::string                   getIdentity() const;
-    T                             getLocalMapping( T t, T ts, T ti, T te );
-    virtual void                  hideSelectors();
-    bool                          isClosed() const;
-    bool                          isSelectorsVisible() const;
-    void                          preSample( int m, int d, T start, T end );
-    void                          setClosed( bool state );
-    void                          setControlPoints( const DVector< Vector<T,3> >& cv );
-    void                          setResampleMode( GM_RESAMPLE_MODE mode );
-    void                          setScale( T d );
-    virtual void                  showSelectors( bool grid = false, const Color& _selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
-    void                          updateCoeffs( const Vector<T,3>& d );
+    void                            edit( int selector );
+    DVector< Vector<T,3> >&         getControlPoints();
+    int                             getDegree() const;
+    std::string                     getIdentity() const;
+    T                               getLocalMapping( T t, T ts, T ti, T te );
+    virtual void                    hideSelectors();
+    bool                            isClosed() const;
+    bool                            isSelectorsVisible() const;
+    void                            preSample( int m, int d, T start, T end );
+    void                            setClosed( bool state );
+    void                            setControlPoints( const DVector< Vector<T,3> >& cv );
+    void                            setResampleMode( GM_RESAMPLE_MODE mode );
+    void                            setScale( T d );
+    virtual void                    showSelectors( bool grid = false, const Color& _selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
+    void                            updateCoeffs( const Vector<T,3>& d );
 
 
   protected:
 
-    DVector< Vector<T, 3> >       _c;
-    T                             _scale;
-    DVector< DMatrix< T > >       _t;
-    bool                          _closed;
+    DVector< Vector<T, 3> >         _c;
+    T                               _scale;
+    DVector< DMatrix< T > >         _t;
+    bool                            _closed;
 
-    GM_RESAMPLE_MODE              _resamp_mode;
-    bool                          _pre_eval;
+    GM_RESAMPLE_MODE                _resamp_mode;
+    bool                            _pre_eval;
 
-    bool                          _selectors;
-    SelectorGrid<T,3>*			      _sg;
-    DVector< Selector<T,3>* >     _s;
-    bool                          _c_moved;
+    bool                            _selectors;
+    SelectorGridVisualizer<T>*      _sgv;
+    DVector< Selector<T,3>* >       _s;
+    bool                            _c_moved;
 
-    void	                        eval( T t, int d = 0, bool l = false );
-    void                          evalPre( T t, int d = 0, bool l = false );
-    void                          findIndex( T t, int& it );
-    T                             getEndP();
-    T                             getStartP();
-    virtual void                  init();
+    void                            eval( T t, int d = 0, bool l = false );
+    void                            evalPre( T t, int d = 0, bool l = false );
+    void                            findIndex( T t, int& it );
+    T                               getEndP();
+    T                               getStartP();
+    virtual void                    init();
   }; // END class PBezierCurve
 
 } // END namepace GMlib

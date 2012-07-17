@@ -33,51 +33,47 @@
 namespace GMlib {
 
   template <typename T>
-  PCurveDerivativesVisualizer<T>::PCurveDerivativesVisualizer() {
+  PCurveDerivativesVisualizer<T>::PCurveDerivativesVisualizer() : _display( "pcurve" ) {
 
     _color = GMcolor::Green;
     _t = 1;
     _mode = GM_PCURVE_DERIVATIVESVISUALIZER_RELATIVE;
     _size = 1.0;
 
-    glGenBuffers( 1, &_vbo );
+    glGenBuffers( 1, &_vbo_v );
   }
 
   template <typename T>
   PCurveDerivativesVisualizer<T>::~PCurveDerivativesVisualizer() {
 
-    glDeleteBuffers( 1, &_vbo );
+    glDeleteBuffers( 1, &_vbo_v );
   }
 
   template <typename T>
   inline
-  void PCurveDerivativesVisualizer<T>::display() {
+  void PCurveDerivativesVisualizer<T>::display( Camera* cam ) {
 
-    // Push GL Attributes
-    glPushAttrib( GL_LINE_BIT | GL_LIGHTING_BIT );
+    _display.bind();
 
-    // Set Properties
-    glDisable( GL_LIGHTING );
-    glColor( _color );
+    _display.setUniform( "u_mvpmat", cam->getProjectionMatrix() * this->_obj->getModelViewMatrix(cam), 1, true );
+    _display.setUniform( "u_color", _color );
+    _display.setUniform( "u_selected", this->_obj->isSelected() );
 
-    // Binder VBO
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexPointer( 3, GL_FLOAT, 0, (const GLvoid*)0x0 );
 
-    // Enable vertex array
-    glEnableClientState( GL_VERTEX_ARRAY );
+    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( vert_loc );
 
     // Draw
     glDrawArrays( GL_LINES, 0, _no_elements );
 
-    // Disable vertex array
-    glDisableClientState( GL_VERTEX_ARRAY );
+    glDisableVertexAttribArray( vert_loc );
 
-    // UnBind VBO
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    // Pop GL Attributes
-    glPopAttrib();
+    _display.unbind();
   }
 
   template <typename T>
@@ -125,7 +121,7 @@ namespace GMlib {
     int no_derivatives = p.getDim();
     _no_elements = no_derivatives * 2;
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
     glBufferData( GL_ARRAY_BUFFER, no_derivatives * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
 
     float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );

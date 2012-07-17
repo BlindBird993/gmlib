@@ -32,8 +32,8 @@
 #include <cmath>
 
 // local
-#include "gmOpenGL.h"
 #include "gmSArray.h"
+#include "gmTriangleFacetsDefaultVisualizer.h"
 
 namespace GMlib {
 
@@ -42,20 +42,36 @@ namespace GMlib {
 
   template <typename T>
   inline
-  TriangleFacets<T>::TriangleFacets( int d ) : ArrayLX<TSVertex<T> >( d > 0 ? d+3 : 0 ), _edges(), _triangles() {
+  TriangleFacets<T>::TriangleFacets( int d )
+    : ArrayLX<TSVertex<T> >( d > 0 ? d+3 : 0 ), _edges(), _triangles(),
+    _dprog("default"), _sprog("select")
+  {
 
     //setStreamMode();
     _dlist_name=0;
+    glGenBuffers( 1, &_vbo );
+    glGenBuffers( 1, &_ibo );
+
+    _default_visualizer = new TriangleFacetsDefaultVisualizer<T>();
+    enableDefaultVisualizer( true );
   }
 
 
   template <typename T>
   inline
-  TriangleFacets<T>::TriangleFacets( const ArrayLX<TSVertex<T> >& v): ArrayLX<TSVertex<T> >(v.size()+3), _edges(),_triangles()	{
+  TriangleFacets<T>::TriangleFacets( const ArrayLX<TSVertex<T> >& v)
+    : ArrayLX<TSVertex<T> >(v.size()+3), _edges(),_triangles(),
+    _dprog("default"), _sprog("select")
+  {
 
     (*this) = v;
     //setStreamMode();
     _dlist_name = 0;
+    glGenBuffers( 1, &_vbo );
+    glGenBuffers( 1, &_ibo );
+
+    _default_visualizer = new TriangleFacetsDefaultVisualizer<T>();
+    enableDefaultVisualizer( true );
   }
 
 
@@ -108,6 +124,12 @@ namespace GMlib {
     std::cout << "Max edger i snitt i Verticene   : " << ((double)r)/i << std::endl;
 
     clear();
+
+    glDeleteBuffers( 1, &_vbo );
+    glDeleteBuffers( 1, &_ibo );
+
+    enableDefaultVisualizer( false );
+    delete _default_visualizer;
   }
 
 
@@ -546,6 +568,18 @@ namespace GMlib {
     return &this->getElement(i);
   }
 
+  template <typename T>
+  const Array<TSVEdge<T> >& TriangleFacets<T>::getVoronoiEdges() const {
+
+    return _voredges;
+  }
+
+  template <typename T>
+  const Array<Point<T,2> >& TriangleFacets<T>::getVoronoiPoints() const {
+
+    return _vorpnts;
+  }
+
 
   // #ifdef __gmOPENGL_H__
 
@@ -699,40 +733,6 @@ namespace GMlib {
     return inserted;
   }
 
-
-  template <typename T>
-  inline
-  void TriangleFacets<T>::localDisplay() {
-
-    glPushAttrib( GL_LIGHTING_BIT ); {
-
-      if( this->isLighted() )
-      {
-        this->_material.glSet();
-      }
-      else
-      {
-        glDisable( GL_LIGHTING );
-        glColor(this->_color);
-      }
-
-      render();
-
-    } glPopAttrib();
-  }
-
-
-  template <typename T>
-  inline
-  void TriangleFacets<T>::localSelect() {
-
-    glBegin( GL_TRIANGLES );
-      for( int i = 0; i < _triangles.size(); i++ )
-        _triangles(i)->_render();
-    glEnd();
-  }
-
-
   template <typename T>
   bool TriangleFacets<T>::removeVertex( TSVertex<T>& v ) {
 
@@ -837,6 +837,60 @@ namespace GMlib {
     // rendring av ikke fungerende versjon
   /*	for (int i=0;i<_tmptiles.size();i++)
       _tmptiles[i]->render();*/
+  }
+
+  template <typename T>
+  void TriangleFacets<T>::replot() {
+
+//    // Fill the VBO
+//    int no_vertices = this->getSize();
+//    GLVertex vertices[no_vertices];
+
+//    for( int i = 0; i < no_vertices; i++ ) {
+
+//      TSVertex<T> *v = getVertex(i);
+//      const Point<T,3> &pos = v->getPos();
+//      const Vector<T,3> &nor = v->getDir();
+
+//      vertices[i].x = pos(0);
+//      vertices[i].y = pos(1);
+//      vertices[i].z = pos(2);
+
+//      vertices[i].nx = nor(0);
+//      vertices[i].ny = nor(1);
+//      vertices[i].nz = nor(2);
+//    }
+
+//    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
+//    glBufferData( GL_ARRAY_BUFFER, no_vertices * sizeof(GLVertex), vertices, GL_STATIC_DRAW );
+//    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+//    int no_indices = this->getNoTriangles() * 3;
+//    GLushort indices[no_indices];
+//    GLushort *iptr = indices;
+
+//    for( int i = 0; i < this->getNoTriangles(); i++ ) {
+
+//      Array< TSVertex<T>* > tri_verts = this->getTriangle(i)->getVertices();
+//      for( int j = 0; j < tri_verts.getSize(); j++ )
+//        for( int k = 0; k < this->getSize(); k++ )
+//          if( tri_verts[j] == getVertex(k) )
+//            *iptr++ = k;
+//    }
+
+//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
+//    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+
+
+    Sphere<float,3> s( getVertex(0)->getPos() );
+    for( int j = 1; j < this->getSize(); j++ )
+      s+= getVertex(j)->getPos();
+    setSurroundingSphere(s);
+
+    // Replot Visaulizers
+    for( int i = 0; i < this->_tf_visualizers.getSize(); i++ )
+      this->_tf_visualizers[i]->replot();
   }
 
  // #endif
@@ -1085,5 +1139,49 @@ namespace GMlib {
   //
   //#endif
 
-}
+  template <typename T>
+  void TriangleFacets<T>::enableDefaultVisualizer( bool enable ) {
+
+    if( !enable )
+      removeVisualizer( _default_visualizer );
+    else
+      insertVisualizer( _default_visualizer );
+  }
+
+  template <typename T>
+  void TriangleFacets<T>::insertVisualizer( Visualizer *visualizer ) {
+
+    SceneObject::insertVisualizer( visualizer );
+
+    TriangleFacetsVisualizer<T> *visu = dynamic_cast<TriangleFacetsVisualizer<T>*>( visualizer );
+    if( !visu )
+      return;
+
+    if( _tf_visualizers.exist( visu ) )
+      return;
+
+    _tf_visualizers += visu;
+  }
+
+
+  template <typename T>
+  void TriangleFacets<T>::removeVisualizer( Visualizer *visualizer ) {
+
+    TriangleFacetsVisualizer<T> *visu = dynamic_cast<TriangleFacetsVisualizer<T>*>( visualizer );
+    if( visu )
+      _tf_visualizers.remove( visu );
+
+    SceneObject::removeVisualizer( visu );
+  }
+
+  template <typename T>
+  void TriangleFacets<T>::toggleDefaultVisualizer() {
+
+    if( !_tf_visualizers.exist( _default_visualizer ) )
+      enableDefaultVisualizer( true );
+    else
+      enableDefaultVisualizer( false );
+  }
+
+} // END namespace GMlib
 
