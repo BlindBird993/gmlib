@@ -94,7 +94,7 @@ namespace GMlib {
   inline
   void Camera::display() {
 
-    std::cout << "Camera::display()" << std::endl;
+//    std::cout << "Camera::display()" << std::endl;
     setPerspective();
     glViewport(_x,_y,_w,_h);
 //    glPushMatrix(); {

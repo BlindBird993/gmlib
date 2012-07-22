@@ -100,12 +100,17 @@ namespace GMlib{
     bool                  isRunning();
     void                  prepare();
     void                  remove(SceneObject* obj);
-    void                  removeSelection( SceneObject* obj );
+    void                  removeSelections();
     void                  resetTime();
 
+    bool                  isSelected( SceneObject* obj ) const;
+    void                  setSelection( SceneObject* obj, bool selected );
+    void                  setSingleSelection( SceneObject* obj );
     void                  setTimeScale(double s);
     void                  start();
     void                  stop();
+
+    void                  toggleSelection( SceneObject* obj );
 
     SceneObject*          operator [] (int i);
     SceneObject*          operator () (int i);

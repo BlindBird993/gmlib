@@ -227,6 +227,11 @@ namespace GMlib {
     return find(c.get());
   }
 
+  SceneObject* Camera::findSelectObject(const Vector<int,2>& pos, int type_id) {
+
+    return findSelectObject( pos(0), (1), type_id );
+  }
+
 
   /*! Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id)
    *	\brief Pending Documentation

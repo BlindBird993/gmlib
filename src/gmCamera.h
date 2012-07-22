@@ -99,7 +99,8 @@ namespace GMlib {
 		virtual double					deltaTranslate(DisplayObject * obj);
 		void                    enableCulling( bool enable = true );
     void                    enableBlendSort( bool enable = true );
-		SceneObject*						findSelectObject(int, int, int type_id=0);
+    SceneObject*						findSelectObject(int, int, int type_id=0);
+    SceneObject*            findSelectObject( const Vector<int,2>& pos, int type_id=0);
 		Array<SceneObject* >		findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
 		float                   getAngleTan() const;
 		double									getDistanceToObject(int, int);

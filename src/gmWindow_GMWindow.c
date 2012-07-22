@@ -42,12 +42,37 @@ namespace GMlib {
    */
   inline
   Camera* GMWindow::getCam() {
+
+    return findCamera( 100, 100 );
+  }
+
+  inline
+  Camera* GMWindow::findCamera( int x, int y ) {
+
     int i;
-    find(100,100,i);
-    if(i>0)
+    find( x, y, i );
+    if( i > 0 )
       return _cameras[i];
-    else
-      return NULL;
+
+    return 0x0;
+  }
+
+  inline
+  Camera* GMWindow::findCamera( const Vector<int,2>& pos ) {
+
+    return findCamera( pos(0), pos(1) );
+  }
+
+  inline
+  int GMWindow::getViewportHeight() const {
+
+    return _h;
+  }
+
+  inline
+  int GMWindow::getViewportWidth() const {
+
+    return _w;
   }
 
 

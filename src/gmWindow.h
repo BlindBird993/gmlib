@@ -205,7 +205,11 @@ namespace GMlib {
 
 
     virtual void            clearScene();
-    Camera*                 getCam();
+    Camera*                 findCamera( int x, int y );
+    Camera*                 findCamera( const Vector<int,2>& pos );
+    Camera*                 getCam();                                 // Deprecate!!
+    int                     getViewportHeight() const;
+    int                     getViewportWidth() const;
     void                    insertCamera(Camera* cam, bool insert_in_scene = false);
 
     void                    insertLight(Light* light, bool insert_in_scene = false);
@@ -257,7 +261,10 @@ namespace GMlib {
     void                    moveBorder(int x, int y);
 
     void                    display();
+
+  public:
     virtual void            init();
+  protected:
     void                    reshape(int w, int h);
     virtual void            swapBuffers();
 

@@ -269,7 +269,7 @@ namespace GMlib {
   template <typename T>
   void Array<T>::insertAlways( const T& t, bool first ) {
 
-    // Expand the array is nessesary
+    // Expand the array if nessesary
     expand();
 
 

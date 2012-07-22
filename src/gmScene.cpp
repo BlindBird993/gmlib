@@ -201,15 +201,6 @@ namespace GMlib {
     if(obj) _scene.remove(obj);
   }
 
-
-  void Scene::removeSelection( SceneObject* obj ) {
-
-    if( obj ) {
-      _sel_objs.remove( obj );
-    }
-  }
-
-
   /*! SceneObject* Scene::operator[]( int i )
    *  \brief Pending Documentation
    *
@@ -248,6 +239,44 @@ namespace GMlib {
     return *this;
   }
 
+  bool Scene::isSelected(SceneObject *obj) const {
+
+    return _sel_objs.exist( obj );
+  }
+
+  void Scene::removeSelections() {
+
+    int no_objs = _sel_objs.getSize();
+
+    // Remove Selections
+    for( int i = 0; i < no_objs; i++ )
+        _sel_objs[i]->setSelected( false );
+
+    // Pop all array elements
+//    _sel_objs.setSize(0);
+    for( int i = 0; i < no_objs; i++ )
+      _sel_objs.pop();
+  }
+
+  void Scene::setSelection( SceneObject* obj, bool selected ) {
+
+    obj->setSelected( selected );
+    if( selected )
+      _sel_objs.insert( obj );
+    else
+      _sel_objs.remove( obj );
+  }
+
+  void Scene::setSingleSelection( SceneObject* obj ) {
+
+    removeSelections();
+    setSelection( obj, true );
+  }
+
+  void Scene::toggleSelection( SceneObject *obj ) {
+
+    setSelection( obj, !isSelected(obj) );
+  }
 
   /*! void Scene::simulate()
    *  \brief Pending Documentation
