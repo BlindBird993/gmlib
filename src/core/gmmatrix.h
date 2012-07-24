@@ -22,10 +22,8 @@
 
 
 
-/*! \file gmMatrix.h
- *  File Description
+/*! \file gmmatrix.h
  *
- *  \date   2008-07-09
  */
 
 
@@ -36,7 +34,7 @@
 #ifndef __gmMATRIX_H__
 #define __gmMATRIX_H__
 
-#include "gmStaticProc2.h"
+#include "gmstaticproc2.h"
 
 namespace GMlib {
 
@@ -430,17 +428,8 @@ namespace GMlib {
 
 } // END namespace GMlib
 
-
-
-// Include Matrix class implementations
-#include "gmMatrix_Matrix.c"
-
-// Include SqMatrix class implementations
-#include "gmMatrix_SqMatrix.c"
-
-// Include HqMatrix class implementations
-#include "gmMatrix_HqMatrix.c"
-
+// Include implementations
+#include "gmmatrix.c"
 
 
 
