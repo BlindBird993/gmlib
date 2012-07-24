@@ -22,18 +22,16 @@
 
 
 
-/*! \file   gmGlobal.h
+/*! \file   gmglobal.h
  *  \brief  GMlib global defines file
  *
  *  This file provides a number of functions and definitions globally used or needed in GMlib.
- *
- *  \date 2009-03-12
  */
 
 
 // Version definitions
-#define GM_VERSION 0x000300
-#define GM_VERSION_STR "0.3.0"
+#define GM_VERSION 0x000400
+#define GM_VERSION_STR "0.4.0"
 
 #define GM_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 

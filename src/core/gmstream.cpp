@@ -26,51 +26,48 @@
  *  \brief Implementation of Separator class.
  *
  *  Implementation of Separator class.
- *
- *  \date   2008-07-02
  */
 
 
 
-#include "gmStream.h"
+#include "gmstream.h"
+using namespace GMlib;
 
 
-namespace GMlib{
+#ifdef GM_STREAM
 
-  namespace GMseparator {
+using namespace GMlib::GMseparator;
 
-    // ****************************
-    // Predefined Separator Objects
-
-
-    /*! extern Separator GMseparator::Element
-     *  \brief  This Separator is used between elements in a class
-     *
-     *  This Separator is used between elements in a class.
-     *  E.g.: Point where each parameter direction is separated.
-     */
-    Separator Element = Separator();
+// ****************************
+// Predefined Separator Objects
 
 
-    /*! extern Separator GMseparator::Object
-     *  \brief  This Separator is used between objects in a class
-     *
-     *  This Separator is used between objects in a class.
-     *  E.g.: Array where each object in the array is separated.
-     */
-    Separator Object = Separator();
+/*! extern Separator GMseparator::Element
+ *  \brief  This Separator is used between elements in a class
+ *
+ *  This Separator is used between elements in a class.
+ *  E.g.: Point where each parameter direction is separated.
+ */
+Separator Element = Separator();
 
-    /*! extern Separator GMseparator::Group
-     *  \brief  This Separator is used between groups
-     *
-     *  This Separator is used between groups.
-     *  For now used in matrix where the row is grouped.
-     */
-    Separator Group = Separator('\n');
 
-  }
+/*! extern Separator GMseparator::Object
+ *  \brief  This Separator is used between objects in a class
+ *
+ *  This Separator is used between objects in a class.
+ *  E.g.: Array where each object in the array is separated.
+ */
+Separator Object = Separator();
 
-}
+/*! extern Separator GMseparator::Group
+ *  \brief  This Separator is used between groups
+ *
+ *  This Separator is used between groups.
+ *  For now used in matrix where the row is grouped.
+ */
+Separator Group = Separator('\n');
+
+#endif
 
 
 
