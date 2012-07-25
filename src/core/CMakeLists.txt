@@ -29,41 +29,24 @@ set( MODULE_TARGET ${LIB_PREFIX}${MODULE} )
 ##################
 # Core Module Files
 
-# C++ headers
-set( HDRS_CXX
-  gmCore
-
-  gmAngle
-  gmMatrix
-  gmPoint
-  gmPoint2D
-  gmPoint3D
-  gmSimplex
-  gmStaticProc
-  gmStaticProc2
-  gmSubSpace
-)
-
 # Headers
 set( HDRS
-  gmAngle.h
-  gmMatrix.h
-  gmPoint.h
-  gmPoint2D.h
-  gmPoint3D.h
-  gmSimplex.h
-  gmStaticProc.h
-  gmStaticProc2.h
-  gmSubSpace.h
+  gmangle.h
+  gmglobal.h
+  gmmatrix.h
+  gmpoint.h
+  gmpoint2d.h
+  gmpoint3d.h
+  gmsimplex.h
+  gmstaticproc.h
+  gmstaticproc2.h
+  gmstream.h
+  gmsubspace.h
 )
 
 # Header includes
 set( HDRS_I
-  gmAngle.c
   gmMatrix.c
-  gmMatrix_Matrix.c
-  gmMatrix_SqMatrix.c
-  gmMatrix_HqMatrix.c
   gmPoint_Arrow.c
   gmPoint_Box.c
   gmPoint_M_I_.c
@@ -96,10 +79,15 @@ set( HDRS_I
   gmSubSpace_SubSpace.c
 )
 
+# Source files
+set( SRCS
+  gmstream.cpp
+)
+
 
 ##########################
 # Add files to the library
-add_library( ${MODULE_TARGET} STATIC ${HDRS} )
+add_library( ${MODULE_TARGET} SHARED ${HDRS} ${SRCS} )
 set_default_target_properties( ${MODULE_TARGET} )
 
 #######################

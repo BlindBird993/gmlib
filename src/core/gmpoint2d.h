@@ -24,15 +24,13 @@
 
 /*! \file gmPoint3D.h
  *  File Description
- *
- *  \date   2008-07-08
  */
 
 #ifndef __gmPOINT2D_H__
 #define __gmPOINT2D_H__
 
-#include "gmPoint.h"
-#include "gmArray.h"
+#include "gmpoint.h"
+#include "gmarray.h"
 
 
 namespace GMlib {

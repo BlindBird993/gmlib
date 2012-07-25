@@ -25,21 +25,20 @@
 /*! \file gmPoint.h
  *
  *  Interface classes for the Point/Vector/UnitVector/Arrow/ScalarPoint/Sphere/Box classes
- *
- *  \date   2008-06-17
  */
 
 #ifndef __gmPOINT_H__
 #define __gmPOINT_H__
 
 
-// System Includes
-#include <memory.h>
 
 // GMlib includes
-#include "gmStaticProc.h"
-#include "gmAngle.h"
-#include "gmStream.h"
+#include "gmstaticproc.h"
+#include "gmangle.h"
+#include "gmstream.h"
+
+// stl
+#include <memory>
 
 
 namespace GMlib {
@@ -801,8 +800,6 @@ namespace GMlib {
 
 
 
-
-
   #ifdef GM_STREAM
 
     /*! T_Stream &operator<<(T_Stream& os, const Box<T,n>& b)
@@ -863,6 +860,9 @@ namespace GMlib {
 
 
 
+
+
+
   //*********************************************************
   //********  The init of I-matrix and SubSpace  ************
   //************   NOT FOR EXTERNAL USE !!!!!!   ************
@@ -887,33 +887,8 @@ namespace GMlib {
 
 
 
-// Include Point class implementations
-#include "gmPoint_Point.c"
-
-// Include Vector class implementations
-#include "gmPoint_Vector.c"
-
-// Include UnitVector class implementations
-#include "gmPoint_UnitVector.c"
-
-// Include Arrow class implementations
-#include "gmPoint_Arrow.c"
-
-// Include ScalarPoint class implementations
-#include "gmPoint_ScalarPoint.c"
-
-// Include Sphere class implementations
-#include "gmPoint_Sphere.c"
-
-// Include Box class implementations
-#include "gmPoint_Box.c"
-
-// Include M_I_ class implementations
-#include "gmPoint_M_I_.c"
-
-
-
-
+// Include implementations
+#include "gmpoint.c"
 
 
 

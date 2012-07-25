@@ -26,7 +26,7 @@ set( LIB_PREFIX "gm" )
 
 ##########################
 # Include helper functions
-#include(../cmake/Functions/custom_functions.cmake)
+include(../cmake/Functions/custom_functions.cmake)
 
 #####################
 # Process each individual module
