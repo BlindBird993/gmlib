@@ -22,12 +22,10 @@
 
 
 
-/*! \file gmSubSpace.c
+/*! \file gmsubspace.c
  *  \brief Implementation of SubSpace template class.
  *
  *  Implementation of SubSpace template class.
- *
- *  \date   2008-07-07
  */
 
 
@@ -237,4 +235,131 @@ namespace GMlib {
     return reinterpret_cast<Vector<T,n>&>( p - getClosestPoint(p));
   }
 
-}
+  /*!
+   *  \brief
+   */
+  template <class T, int n>
+  inline
+  Line<T,n>::Line() : SubSpace<T,n,1> () {}
+
+
+  /*!
+   *  \brief
+   */
+  template <class T, int n>
+  inline
+  Line<T,n>::Line( const Point<T,n>& p ) : SubSpace<T,n,1>(p) {}
+
+
+  /*!
+   *  \brief
+   */
+  template <class T, int n>
+  inline
+  Line<T,n>::Line( const Point<T,n>& p, const Vector<T,n>& v) : SubSpace<T,n,1>(p,v) {}
+
+
+  /*!
+   *  \brief
+   */
+  template <class T, int n>
+  inline
+  Line<T,n>::Line( const Arrow<T,n>& a ) : SubSpace<T,n,1>(a) {}
+
+
+  /*!
+   *  \brief
+   */
+  template <class T, int n>
+  inline
+  Line<T,n>::Line( const SubSpace<T,n,1>& s) :  SubSpace<T,n,1>(s) {}
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Plane<T,n>::Plane() : SubSpace<T,n,2>()	{
+  }
+
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Plane<T,n>::Plane( const Point<T,n>& p ) : SubSpace<T,n,2>(p)	{
+  }
+
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Plane<T,n>::Plane( const Point<T,n>& p, const Vector<T,n>& v ) : SubSpace<T,n,2>(p,v) {
+  }
+
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Plane<T,n>::Plane( const Arrow<T,n>& a ) : SubSpace<T,n,2>(a) {
+  }
+
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Plane<T,n>::Plane( const SubSpace<T,n,2>& s ) : SubSpace<T,n,2>(s) {
+  }
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Cube<T,n>::Cube() : SubSpace<T,n,3>() {
+  }
+
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Cube<T,n>::Cube( const Point<T,n>& p ) : SubSpace<T,n,3>(p) {
+  }
+
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Cube<T,n>::Cube( const Point<T,n>& p, const Vector<T,n>& v ) : SubSpace<T,n,3>(p,v) {
+  }
+
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Cube<T,n>::Cube( const Arrow<T,n>& a ) :  SubSpace<T,n,3>(a) {
+  }
+
+
+  /*!
+   *  \brief  Default constructor
+   */
+  template <class T, int n>
+  inline
+  Cube<T,n>::Cube( const SubSpace<T,n,3>& s ) : SubSpace<T,n,3>(s) {
+  }
+
+} // END namespace GMlib

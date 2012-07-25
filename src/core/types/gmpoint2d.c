@@ -22,10 +22,8 @@
 
 
 
-/*! \file gmPoint2D_Point2D.c
+/*! \file gmpoint2d.c
  *  File Description
- *
- *  \date   2008-07-08
  */
 
 
@@ -192,6 +190,140 @@ namespace GMlib {
     return isInside(arr);
   }
 
-}// end namespace GMlib
+  /*! Vector2D<T>::Vector2D(T d=1)
+   *  \brief  Brief Description
+   *
+   *  Detailed description
+   */
+  template <typename T>
+  inline
+  Vector2D<T>::Vector2D(T d) : Vector<T,2>(d) {}
+
+
+  /*! Vector2D<T>::Vector2D(const T p[2])
+   *  \brief  Brief Description
+   *
+   *  Detailed description
+   */
+  template <typename T>
+  inline
+  Vector2D<T>::Vector2D(const T p[2]) : Vector<T,2>(p) {
+  }
+
+
+  /*! Vector2D<T>::Vector2D(const Point<T,2>& v)
+   *  \brief  Brief Description
+   *
+   *  Detailed description
+   */
+  template <typename T>
+  inline
+  Vector2D<T>::Vector2D(const Point<T,2>& v) : Vector<T,2>(v)	{
+  }
+
+  /*! Vector2D<T>::Vector2D(const T& x,const T& y)
+   *  \brief Brief Description
+   *
+   *  Detailed description
+   */
+  template <typename T>
+  inline
+  Vector2D<T>::Vector2D(const T& x,const T& y) : Vector<T,2>(Point2D<T>(x,y)) {
+  }
+
+
+  /*! T Vector2D<T>::operator^(const Point<T,2>& v) const
+   *  \brief  Semi vector product.
+   *
+   *  Detailed description
+   */
+  template <typename T>
+  inline
+  T Vector2D<T>::operator^(const Point<T,2>& v) const {
+
+    return this->_pt[0]*v(1)-this->_pt[1]*v(0);
+  }
+
+  /*! Vector2D<T,2>	Point<T,2>::getNormal()
+   *  \brief  Return a vector 90 deg. to this.
+   *
+   *  Detailed description
+   */
+  template <typename T>
+  inline
+  Point<T,2>	Vector2D<T>::getNormal() {
+
+    return Vector2D<T>(-this->_pt[1],this->_pt[0]);
+  }
+
+  /*! UnitVector2D<T>::UnitVector2D(T d=1)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  UnitVector2D<T>::UnitVector2D(T d) : UnitVector<T,2>(d) {
+  }
+
+  /*! UnitVector2D<T>::UnitVector2D(const T p[2])
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  UnitVector2D<T>::UnitVector2D(const T p[2]) : UnitVector<T,2>(p) {
+  }
+
+  /*! UnitVector2D<T>::UnitVector2D(const T& x,const T& y)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  UnitVector2D<T>::UnitVector2D(const Point<T,2>& v) : UnitVector<T,2>(v)	{
+  }
+
+  /*! UnitVector2D<T>::UnitVector2D(const T& x,const T& y)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  UnitVector2D<T>::UnitVector2D(const T& x,const T& y) : UnitVector<T,2>(Point2D<T>(x,y)) {
+  }
+
+  /*! T UnitVector2D<T>::operator^(const Point<T,2>& v) const
+   *  \brief  Semi vector product.
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  T UnitVector2D<T>::operator^(const Point<T,2>& v) const {
+    return this->_pt[0]*v(1) - this->_pt[1]*v(0);
+  }
+
+  /*! Point<T,2>  UnitVector2D<T,2>:getNormal()
+   *  \brief  Return a vector 90 deg. to this.
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  Point<T,2>  UnitVector2D<T>::getNormal() {
+    return Vector2D<T>( - this->_pt[1], this->_pt[0] );
+  }
+
+} // end namespace GMlib
 
 

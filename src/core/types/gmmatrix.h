@@ -34,7 +34,7 @@
 #ifndef __gmMATRIX_H__
 #define __gmMATRIX_H__
 
-#include "gmstaticproc2.h"
+#include "../static/gmstaticproc2.h"
 
 namespace GMlib {
 

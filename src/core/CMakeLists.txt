@@ -25,15 +25,20 @@
 # Module setup
 setModule( core )
 
-##################
-# <static> Sub-Module Files
+# module files
+addHeaders( gmglobal.h )
+
+# <containers> sub-module
+add_subdirectory(containers)
+
+# <static> sub-module
 add_subdirectory(static)
 
-##########################
-# <utils> sub-module files
+# <types> sub-module
+add_subdirectory(types)
+
+# <utils> sub-module
 add_subdirectory(utils)
-
-
 
 
 

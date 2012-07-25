@@ -22,8 +22,9 @@
 
 
 
-/*! \file gmPoint_Point.c
+/*! \file gmpoint.c
  *  \brief Implementations for the Point class
+ *
  *  Implementations for the Point class
  */
 

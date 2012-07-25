@@ -22,17 +22,15 @@
 
 
 
-/*! \file gmSimplex.h
+/*! \file gmsimplex.h
  *  File Description
- *
- *  \date   2008-06-17
  */
 
 #ifndef __gmSIMPLEX_H__
 #define __gmSIMPLEX_H__
 
-#include "gmPoint.h"
-#include "gmSubSpace.h"
+#include "gmpoint.h"
+#include "gmsubspace.h"
 
 namespace GMlib {
 
@@ -193,17 +191,8 @@ namespace GMlib {
 
 
 
-// Include Simplex class implementations
-#include "gmSimplex_Simplex.c"
-
-// Include LineSegment class implementations
-#include "gmSimplex_LineSegment.c"
-
-// Include Triangle class implementations
-#include "gmSimplex_Triangle.c"
-
-// Include Tetrahedron class implementations
-#include "gmSimplex_Tetrahedron.c"
+// Include implementations
+#include "gmsimplex.c"
 
 
 

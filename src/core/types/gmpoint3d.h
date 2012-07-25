@@ -22,10 +22,8 @@
 
 
 
-/*! \file gmPoint3D.h
+/*! \file gmpoint3d.h
  *  File Description
- *
- *  \date   2008-07-02
  */
 
 #ifndef __gmPOINT3D_H__
@@ -33,7 +31,7 @@
 
 
 // GMlib includes
-#include "gmPoint.h"
+#include "gmpoint.h"
 
 
 
@@ -41,7 +39,7 @@ namespace GMlib {
 
 
 
-  /*! \class Point3D gmPoint3D.h <gmPoint3D.h>
+  /*! \class Point3D gmpoint3d.h <gmPoint3D>
    *
    *  \brief Point3D class
    *
@@ -73,7 +71,7 @@ namespace GMlib {
 
 
 
-  /*! \class  Vector3D gmPoint3D.h <gmPoint3D.h>
+  /*! \class  Vector3D gmpoint3d.h <gmPoint3D>
    *
    *  \brief  Vector3D class
    *
@@ -103,7 +101,7 @@ namespace GMlib {
 
 
 
-  /*! \class  UnitVector3D gmPoint3D.h <gmPoint3D.h>
+  /*! \class  UnitVector3D gmpoint3d.h <gmPoint3D>
    *
    *  \brief  UnitVector3D class
    *
@@ -133,7 +131,7 @@ namespace GMlib {
 
 
 
-  /*! \class  Plane3D gmPoint3D.h <gmPoint3D.h>
+  /*! \class  Plane3D gmpoint3d.h <gmPoint3D>
    *
    *  \brief  Plane3D class
    *
@@ -161,20 +159,7 @@ namespace GMlib {
 
 
 // Include Point3D class implementations
-#include "gmPoint3D_Point3D.c"
-
-// Include Vector3D class implementations
-#include "gmPoint3D_Vector3D.c"
-
-// Include UnitVector3D class implementations
-#include "gmPoint3D_UnitVector3D.c"
-
-// Include Plane class implementations
-#include "gmPoint3D_Plane3D.c"
-
-
-
-
+#include "gmpoint3d.c"
 
 
 

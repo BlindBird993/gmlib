@@ -22,10 +22,8 @@
 
 
 
-/*! \file gmSimplex_Simplex.c
+/*! \file gmsimplex.c
  *  File Description
- *
- *  \date   2008-06-17
  */
 
 
@@ -235,4 +233,199 @@ namespace GMlib {
     return p;
   }
 
+  /*! LineSegment<T,n,2>::LineSegment()
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  LineSegment<T,n>::LineSegment() : Simplex<T,n,2>() {
+  }
+
+  /*! LineSegment<T,n,2>::LineSegment(const Point<T,n>& p)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+
+  template <typename T, int n>
+  inline
+  LineSegment<T,n>::LineSegment(const Point<T,n>& p) : Simplex<T,n,2>(p) {
+  }
+
+    /*! LineSegment<T,n,2>::LineSegment(const Point<T,n>& p1 ,const Point<T,n>& p2)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  LineSegment<T,n>::LineSegment(const Point<T,n>& p1 ,const Point<T,n>& p2) : Simplex<T,n,2>(p1,p2) {
+  }
+
+    /*! LineSegment<T,n,2>::LineSegment(const Arrow<T,n>& a)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  LineSegment<T,n>::LineSegment(const Arrow<T,n>& a) :  Simplex<T,n,2>(a) {
+  }
+
+    /*! LineSegment<T,n,2>::LineSegment(const SubSpace<T,n,1>& s)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  LineSegment<T,n>::LineSegment(const SubSpace<T,n,1>& s) :  Simplex<T,n,2>(s) {
+  }
+
+    /*! LineSegment<T,n,2>::LineSegment(const Vector<Point<T,n>,1>& s)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  LineSegment<T,n>::LineSegment(const Vector<Point<T,n>,1>& s) :  Simplex<T,n,2>(s)	{}
+
+  /*! Triangle<T,n,3>::Triangle()
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Triangle<T,n>::Triangle() : Simplex<T,n,3>() {
+  }
+
+  /*! Triangle<T,n,3>::Triangle(const Point<T,n>& p)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Triangle<T,n>::Triangle(const Point<T,n>& p) : Simplex<T,n,3>(p) {
+  }
+
+  /*! Triangle<T,n,3>::Triangle(const Arrow<T,n>& a)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Triangle<T,n>::Triangle(const Point<T,n>& p ,const Vector<T,n>& v) : Simplex<T,n,3>(p,v) {
+  }
+
+  /*! Triangle<T,n,3>::Triangle(const Arrow<T,n>& a)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Triangle<T,n>::Triangle(const Arrow<T,n>& a) :  Simplex<T,n,3>(a) {
+  }
+
+  /*! Triangle<T,n,3>::Triangle(const SubSpace<T,n,2>& s)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Triangle<T,n>::Triangle(const SubSpace<T,n,2>& s): Simplex<T,n,3>(s) {
+  }
+
+  /*! Triangle<T,n,3>::Triangle(const Vector<Point<T,n>,3>& s)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Triangle<T,n>::Triangle(const Vector<Point<T,n>,3>& s) :  Simplex<T,n,3>(s)	{
+  }
+
+  /*! Tetrahedron<T,n,4>::Tetrahedron()
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Tetrahedron<T,n>::Tetrahedron() : Simplex<T,n,4>() {
+  }
+
+  /*! Tetrahedron<T,n,4>::Tetrahedron(const Point<T,n>& p)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Tetrahedron<T,n>::Tetrahedron(const Point<T,n>& p) : Simplex<T,n,4>(p) {
+  }
+
+  /*! Tetrahedron<T,n,4>::Tetrahedron(const Point<T,n>& p ,const Vector<T,n>& v)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Tetrahedron<T,n>::Tetrahedron(const Point<T,n>& p ,const Vector<T,n>& v) : Simplex<T,n,4>(p,v) {
+  }
+
+  /*! Tetrahedron<T,n,4>::Tetrahedron(const SubSpace<T,n,3>& s)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Tetrahedron<T,n>::Tetrahedron(const Arrow<T,n>& a) :  Simplex<T,n,4>(a)	{
+  }
+
+  /*! Tetrahedron<T,n,4>::Tetrahedron(const SubSpace<T,n,3>& s)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Tetrahedron<T,n>::Tetrahedron(const SubSpace<T,n,3>& s): Simplex<T,n,4>(s) {
+  }
+
+  /*! Tetrahedron<T,n,4>::Tetrahedron(const Vector<Point<T,n>,4>& s)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  Tetrahedron<T,n>::Tetrahedron(const Vector<Point<T,n>,4>& s) :  Simplex<T,n,4>(s)	{}
 }

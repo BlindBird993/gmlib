@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmSubSpace.h
+/*! \file gmsubspace.h
  *
  *  Interface for the SubSpace, Line, Plane and Cube classes.
- *
- *  \date   2008-07-07
  */
 
 #ifndef __gmSUBSPACE_H__
@@ -35,8 +33,8 @@
 
 
 // GMlib includes
-#include "gmPoint.h"
-#include "gmMatrix.h"
+#include "gmpoint.h"
+#include "gmmatrix.h"
 
 
 namespace GMlib {
@@ -297,18 +295,8 @@ class Cube;
 } // END namespace
 
 
-// Include SubSpace class implementations
-#include "gmSubSpace_SubSpace.c"
-
-// Include Line class implementations
-#include "gmSubSpace_Line.c"
-
-// Include Plane class implementations
-#include "gmSubSpace_Plane.c"
-
-// Include Cube class implementations
-#include "gmSubSpace_Cube.c"
-
+// Include implementations
+#include "gmsubspace.c"
 
 
 

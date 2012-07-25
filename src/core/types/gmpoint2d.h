@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmPoint3D.h
+/*! \file gmpoint3d.h
  *  File Description
  */
 
@@ -30,12 +30,12 @@
 #define __gmPOINT2D_H__
 
 #include "gmpoint.h"
-#include "gmarray.h"
+#include "../containers/gmarray.h"
 
 
 namespace GMlib {
 
-  /*! \class  Point2D gmPoint2D.h <gmPoint2D.h>
+  /*! \class  Point2D gmpoint2d.h <gmPoint2D>
    *
    *  \brief  Point2D class
    *
@@ -64,7 +64,7 @@ namespace GMlib {
 
 
 
-  /*! \class  Vector2D gmPoint2D.h <gmPoint2D.h>
+  /*! \class  Vector2D gmpoint2d.h <gmPoint2D>
    *
    *  \brief  Vector2D class
    *
@@ -87,7 +87,7 @@ namespace GMlib {
 
 
 
-  /*! \class  UnitVector2D gmPoint2D.h <gmPoint2D.h>
+  /*! \class  UnitVector2D gmpoint2d.h <gmPoint2D>
    *
    *  \brief  UnitVector2D class
    *
@@ -152,14 +152,8 @@ namespace GMlib {
 
 } // end namespace GMlib
 
-// Include Point2D class implementations
-#include "gmPoint2D_Point2D.c"
-
-// Include Vector2D class implementations
-#include "gmPoint2D_Vector2D.c"
-
-// Include UnitVector2D class implementations
-#include "gmPoint2D_UnitVector2D.c"
+// Include implementations
+#include "gmpoint.c"
 
 
 

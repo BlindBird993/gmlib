@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmPoint.h
+/*! \file gmpoint.h
  *
  *  Interface classes for the Point/Vector/UnitVector/Arrow/ScalarPoint/Sphere/Box classes
  */
@@ -33,9 +33,9 @@
 
 
 // GMlib includes
-#include "gmstaticproc.h"
 #include "gmangle.h"
-#include "gmstream.h"
+#include "../static/gmstaticproc.h"
+#include "../utils/gmstream.h"
 
 // stl
 #include <memory>

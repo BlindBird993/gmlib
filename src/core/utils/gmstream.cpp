@@ -20,22 +20,18 @@
 **
 **********************************************************************************/
 
-
-
 /*! \file gmstream.cpp
  *  \brief Implementation of Separator class.
  *
  *  Implementation of Separator class.
  */
 
-
-
 #include "gmstream.h"
-using namespace GMlib;
 
 
 #ifdef GM_STREAM
 
+using namespace GMlib;
 using namespace GMlib::GMseparator;
 
 // ****************************
