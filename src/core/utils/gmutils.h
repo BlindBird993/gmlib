@@ -22,53 +22,46 @@
 
 
 
-/*! \file gmTimer.c
- *  \brief Inline mplementation of the GMTimer class.
+/*! \file gmutils.h
  *
- *  Implementation of the GMTimer class.
- *
- *  \date   2008-07-16
+ *  GMUtils
  */
 
-#include "gmTimer.h"
+#ifndef __gmUTILS_H__
+#define __gmUTILS_H__
 
 
 namespace GMlib {
 
+  namespace GMutils {
+
+    template <typename T>
+    T fact( int j )
+    {
+      if ( j <= 0 )
+        return T(1);
+
+      T r=1;
+      for( int i = j; i > 1; i-- )
+        r *= i;
+
+      return r;
+    }
 
 
-  inline
-  GMTimer::GMTimer() {
+    template <typename T>
+    T binomial( int n, int j )
+    {
+           if( n < j )
+             return T(0);
 
-    ftime(&_time);
-  }
-
-
-  inline
-  int GMTimer::getMilli( bool set ) {
-
-    int   diff;
-    timeb newTime;
-
-    ftime(&newTime);
-    diff = (newTime.time - _time.time) * 1000 + newTime.millitm - _time.millitm;
-
-    if(set) { _time = newTime; }
-    return diff;
-  }
+           return fact <T> (n) / (double)( fact <T> (j) * fact <T> (n-j) );
+    }
 
 
-  inline
-  double GMTimer::getSec( bool set ) {
+  } // END namespace GMutils
 
-    return getMilli(set) / 1000.0;
-  }
+} // END namespace GMlib
 
 
-  inline
-  void GMTimer::update() {
-
-    ftime(&_time);
-  }
-
-}
+#endif // __gmUTILS_H__

@@ -22,44 +22,52 @@
 
 
 
-/*! \file gmSortObject.h
- *  File Description
+/*! \file gmrandom.h
  *
- *  \date   2010-01-08
+ *  Interface for the gmRamdon template class.
  */
 
+#ifndef __gmRANDOM_H__
+#define __gmRANDOM_H__
 
-#ifndef __gmSORTOBJECT_H__
-#define __gmSORTOBJECT_H__
+// Numeric includes
+#include <cmath>
+
+// System includes
+#include <cstdlib>
 
 
 namespace GMlib {
 
 
-  template <typename T, typename G>
-  class SortObject {
+  /*! \class  Random gmrandom.h <gmRandom>
+   *  \brief  This is a Random class
+   *
+   *  This is a Random class.
+   */
+  template <typename T>
+  class Random {
   public:
-    SortObject( const T& obj = 0x0, const G& value = G(0) );
+    Random();
+    Random( T vLow, T vHigh );
 
-    const T&    getObject() const;
-    const G&    getValue() const;
-
-    bool    operator < ( const SortObject<T,G>& obj ) const;
-
-  protected:
-    T     _obj;
-    G     _value;
-
-  };
+    T       get();
+    void    set( T vLow, T vHigh );
+    //void    setGauss( float sigma, float sentervalue );
+    void    setSeed( unsigned int s );
 
 
+  private:
+    T     _high, _low;
+
+
+  }; // END class Random
 
 
 } // END namespace
 
 
-// Include SortObject class function implementations
-#include "gmSortObject.c"
+// Including template definition file.
+#include "gmrandom.c"
 
-
-#endif // __gmSORTOBJECT_H__
+#endif // __gmRANDOM_H__

@@ -22,42 +22,41 @@
 
 
 
-/*! \file gmUtils.c
+/*! \file gmsortobject.c
  *
- *  GMUtils
- *
- *  \date   2010-05-16
+ *  Description
  */
 
 
 namespace GMlib {
 
-  namespace GMutils {
 
-    template <typename T>
-    T fact( int j )
-    {
-      if ( j <= 0 )
-        return T(1);
+  template <typename T, typename G>
+  SortObject<T,G>::SortObject( const T& obj, const G& value ) {
 
-      T r=1;
-      for( int i = j; i > 1; i-- )
-        r *= i;
-
-      return r;
-    }
+    _obj = obj;
+    _value = value;
+  }
 
 
-    template <typename T>
-    T binomial( int n, int j )
-    {
-           if( n < j )
-             return T(0);
+  template <typename T, typename G>
+  const T& SortObject<T,G>::getObject() const {
 
-           return fact <T> (n) / (double)( fact <T> (j) * fact <T> (n-j) );
-    }
+    return _obj;
+  }
 
 
-  } // END namespace GMutils
+  template <typename T, typename G>
+  const G& SortObject<T,G>::getValue() const {
+
+    return _value;
+  }
+
+
+  template <typename T, typename G>
+  bool SortObject<T,G>::operator < ( const SortObject<T,G>& obj ) const {
+
+    return _value < obj._value;
+  }
 
 } // END namespace GMlib

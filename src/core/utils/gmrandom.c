@@ -22,43 +22,60 @@
 
 
 
-/*! \file gmSortObject.c
+/*! \file gmrandom.c
+ *  \brief Implementation of the gmRandom template class.
  *
- *  Description
- *
- *  \date   2010-01-08
+ *  Implementation of the gmRandom template class.
  */
+
 
 
 namespace GMlib {
 
+ template <typename T>
+ inline
+ Random<T>::Random() {
 
-  template <typename T, typename G>
-  SortObject<T,G>::SortObject( const T& obj, const G& value ) {
+  _high  = T(1);
+  _low   = T(0);
+ }
 
-    _obj = obj;
-    _value = value;
+
+  template <typename T>
+  inline
+  Random<T>::Random( T vLow, T vHigh ) {
+
+    _high = vHigh;
+    _low  = vLow;
+   }
+
+
+  template <typename T>
+  inline
+  T Random<T>::get() {
+
+    T difference = _high - _low;
+    T value = T(difference * ((double)rand() / (double)RAND_MAX));
+    return (_low + value);
+
+    //return floor(((float)rand( ) /(float)RAND_MAX) * (_high - _low) + _low);
   }
 
 
-  template <typename T, typename G>
-  const T& SortObject<T,G>::getObject() const {
+  template <typename T>
+  inline
+  void Random<T>::set( T vLow, T vHigh ) {
 
-    return _obj;
+    _high = vHigh;
+    _low  = vLow;
   }
 
 
-  template <typename T, typename G>
-  const G& SortObject<T,G>::getValue() const {
+  template <typename T>
+  inline
+  void Random<T>::setSeed( unsigned int s ) {
 
-    return _value;
-  }
-
-
-  template <typename T, typename G>
-  bool SortObject<T,G>::operator < ( const SortObject<T,G>& obj ) const {
-
-    return _value < obj._value;
+    srand(s);
   }
 
 } // END namespace GMlib

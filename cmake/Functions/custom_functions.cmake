@@ -20,6 +20,19 @@
 # #
 # ###############################################################################
 
+
+# Set a library prefix
+macro(setLibPrefix PREFIX)
+  set( LIB_PREFIX ${PREFIX} )
+endmacro(setLibPrefix)
+
+# Setup function for a module
+macro(setModule NAME)
+  set( MODULE ${NAME} )
+  set( MODULE_TARGET ${LIB_PREFIX}${MODULE} )
+  set( MODULE_DIR ${CMAKE_CURRENT_SOURCE_DIR} )
+endmacro(setModule)
+
 # Functions for adding source files and propagating these to the parent directory
 macro(addHeaders)
   addSourceFiles( ${MODULE_DIR} HEADERS ${ARGV} )
@@ -38,11 +51,12 @@ macro(addSourceFiles MOD_DIR VAR)
   file( RELATIVE_PATH REL_PATH "${MOD_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" )
   foreach( SOURCE ${ARGN} )
 
-    list( APPEND ${VAR} "${REL_PATH}/${SOURCE}" )
-    message( "Append source <" ${REL_PATH}/${SOURCE} "> to var <" ${VAR} ">" )
+    if( REL_PATH )
+      list( APPEND ${VAR} "${REL_PATH}/${SOURCE}" )
+    else()
+      list( APPEND ${VAR} ${SOURCE} )
+    endif()
   endforeach()
-
-  message( "Content of " ${VAR} ": " ${${VAR}} )
 
   set( ${VAR} ${${VAR}} PARENT_SCOPE )
 endmacro(addSourceFiles)

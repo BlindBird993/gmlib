@@ -22,62 +22,43 @@
 
 
 
-/*! \file gmRandom.c
- *  \brief Implementation of the gmRandom template class.
+/*! \file gmtimer.h
  *
- *  Implementation of the gmRandom template class.
- *
- *  \date   2008-07-16
+ *  Interface for the GMTimer class.
  */
 
+#ifndef __gmTIMER_H__
+#define __gmTIMER_H__
 
+// System
+#include <sys/timeb.h>
 
 namespace GMlib {
 
- template <typename T>
- inline
- Random<T>::Random() {
 
-  _high  = T(1);
-  _low   = T(0);
- }
+  /*! \class  GMTimer gmTimer.h <gmTimer>
+   *  \brief  This is GMTimer class
+   *
+   *  This is GMTimer class.
+   */
+  class GMTimer {
+  public:
+    GMTimer();
 
-
-  template <typename T>
-  inline
-  Random<T>::Random( T vLow, T vHigh ) {
-
-    _high = vHigh;
-    _low  = vLow;
-   }
+    int     getMilli( bool set = false );
+    double  getSec( bool set = false );
+    void    update();
 
 
-  template <typename T>
-  inline
-  T Random<T>::get() {
-
-    T difference = _high - _low;
-    T value = T(difference * ((double)rand() / (double)RAND_MAX));
-    return (_low + value);
-
-    //return floor(((float)rand( ) /(float)RAND_MAX) * (_high - _low) + _low);
-  }
+  private:
+    timeb   _time;
 
 
-  template <typename T>
-  inline
-  void Random<T>::set( T vLow, T vHigh ) {
+  }; // END class GMTimer
 
-    _high = vHigh;
-    _low  = vLow;
-  }
+} // END namespace GMlib
 
+// Include inline GMTimer class implementations
+#include "gmtimer.c"
 
-  template <typename T>
-  inline
-  void Random<T>::setSeed( unsigned int s ) {
-
-    srand(s);
-  }
-
-}
+#endif // __gmTIMER_H__

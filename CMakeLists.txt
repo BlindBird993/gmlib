@@ -28,8 +28,8 @@ project(GMlib)
 
 # Version
 set(VERSION_MAJOR 0)
-set(VERSION_MINOR 3)
-set(VERSION_PATCH 1)
+set(VERSION_MINOR 4)
+set(VERSION_PATCH 0)
 
 # Adjust the CMAKE_MODULE_PATH to include the "local" cmake/Modules directory
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -44,10 +44,14 @@ find_package(Glew REQUIRED)
 #message( "GLEW Lib(s): " ${GLEW_LIBRARY} )
 
 
-# Init global source vars
-set( HEADERS_CXX "")
-set( HEADERS "")
-set( HEADERS_I "")
+##########################
+# Include helper functions
+include(cmake/Functions/custom_functions.cmake)
+
+########################
+# GMLib library prefix
+setLibPrefix( "gm" )
+
 
 # Process files in the source directory
 add_subdirectory(src)

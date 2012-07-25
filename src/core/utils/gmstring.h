@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmString.h
+/*! \file gmstring.h
  *
  *  Interface for the gmString class.
- *
- *  \date   2008-07-16
  */
 
  /*! \todo
@@ -39,9 +37,8 @@
 #ifndef __gmSTRING_H__
 #define __gmSTRING_H__
 
-//#include <cstdlib> // DEPRECATED ??
 #include <string>
-#include "gmPoint.h"
+#include "../gmpoint.h"
 
 
 namespace GMlib {
@@ -114,7 +111,7 @@ namespace GMlib {
 } // END namespace
 
 // Inlcude inline String class implementations
-#include "gmString.c"
+#include "gmstring.c"
 
 
 

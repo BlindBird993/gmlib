@@ -22,22 +22,47 @@
 
 
 
-/*! \file gmUtils.h
+/*! \file gmtimer.c
+ *  \brief Inline mplementation of the GMTimer class.
  *
- *  GMUtils
- *
- *  \date   2010-05-16
+ *  Implementation of the GMTimer class.
  */
 
-#ifndef __gmUTILS_H__
-#define __gmUTILS_H__
+
+namespace GMlib {
+
+  inline
+  GMTimer::GMTimer() {
+
+    ftime(&_time);
+  }
 
 
+  inline
+  int GMTimer::getMilli( bool set ) {
+
+    int   diff;
+    timeb newTime;
+
+    ftime(&newTime);
+    diff = (newTime.time - _time.time) * 1000 + newTime.millitm - _time.millitm;
+
+    if(set) { _time = newTime; }
+    return diff;
+  }
 
 
-// Include gmlib utility functions
-#include "gmUtils.c"
+  inline
+  double GMTimer::getSec( bool set ) {
+
+    return getMilli(set) / 1000.0;
+  }
 
 
+  inline
+  void GMTimer::update() {
 
-#endif // __gmUTILS_H__
+    ftime(&_time);
+  }
+
+} // END namespace GMlib

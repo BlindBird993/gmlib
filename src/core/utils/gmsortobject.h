@@ -22,46 +22,42 @@
 
 
 
-/*! \file gmTimer.h
- *
- *  Interface for the GMTimer class.
- *
- *  \date   2008-07-16
+/*! \file gmsortsbject.h
+ *  File Description
  */
 
-#ifndef __gmTIMER_H__
-#define __gmTIMER_H__
 
-// System includes
-#include <sys/timeb.h>
+#ifndef __gmSORTOBJECT_H__
+#define __gmSORTOBJECT_H__
 
 
 namespace GMlib {
 
 
-  /*! \class  GMTimer gmTimer.h <gmTimer>
-   *  \brief  This is GMTimer class
-   *
-   *  This is GMTimer class.
-   */
-  class GMTimer {
+  template <typename T, typename G>
+  class SortObject {
   public:
-    GMTimer();
+    SortObject( const T& obj = 0x0, const G& value = G(0) );
 
-    int     getMilli( bool set = false );
-    double  getSec( bool set = false );
-    void    update();
+    const T&    getObject() const;
+    const G&    getValue() const;
+
+    bool        operator < ( const SortObject<T,G>& obj ) const;
+
+  protected:
+    T     _obj;
+    G     _value;
+
+  };
 
 
-  private:
-    timeb   _time;
 
 
-  }; // END class GMTimer
+} // END namespace
 
-} // END namespace GMlib
 
-// Include inline GMTimer class implementations
-#include "gmTimer.c"
+// Include SortObject class function implementations
+#include "gmsortobject.c"
 
-#endif // __gmTIMER_H__
+
+#endif // __gmSORTOBJECT_H__

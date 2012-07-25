@@ -20,38 +20,10 @@
 # #
 # ###############################################################################
 
-########################
-# GMLib library prefix
-set( LIB_PREFIX "gm" )
-
-##########################
-# Include helper functions
-include(../cmake/Functions/custom_functions.cmake)
 
 #####################
 # Process each individual module
 
 # Core
 add_subdirectory(core)
-
-# Container
-#add_subdirectory(container)
-
-# OpenGL
-#add_subdirectory(opengl)
-
-# Parametrics
-#add_subdirectory(parametrics)
-
-# SceneGraph
-#add_subdirectory(scenegraph)
-
-# SceneGraphUtils
-#add_subdirectory(scenegraphutils)
-
-# TriangleSystem
-#add_subdirectory(trianglesystem)
-
-# Utils
-#add_subdirectory(utils)
 

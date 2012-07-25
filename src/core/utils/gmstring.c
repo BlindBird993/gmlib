@@ -22,12 +22,10 @@
 
 
 
-/*! \file gmString.c
+/*! \file gmstring.c
  *  \brief Inline String class implementations.
  *
  *  Inline implementations of the String class.
- *
- *  \date   2008-08-04
  */
 
 
@@ -203,4 +201,4 @@ namespace GMlib {
   }
   */
 
-}
+} // END namespace GMlib

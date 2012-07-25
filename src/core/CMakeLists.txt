@@ -20,14 +20,49 @@
 # #
 # ###############################################################################
 
-set( MODULE core )
 
-#################
-# Module target
-set( MODULE_TARGET ${LIB_PREFIX}${MODULE} )
+##############
+# Module setup
+setModule( core )
 
 ##################
-# Core Module Files
+# <static> Sub-Module Files
+add_subdirectory(static)
+
+##########################
+# <utils> sub-module files
+add_subdirectory(utils)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+message( "Headers: " )
+foreach( HDR ${HEADERS} )
+  message( "- " ${HDR} )
+endforeach( HDR )
+
+message( "Sources: " )
+foreach( SRC ${SOURCES} )
+  message( "- " ${SRC} )
+endforeach( SRC )
+
+message( "Template sources: " )
+foreach( TSRC ${TEMPLATE_SOURCES} )
+  message( "- " ${TSRC} )
+endforeach( TSRC )
+
 
 # Headers
 set( HDRS
@@ -76,15 +111,11 @@ set( HDRS_I
   gmSubSpace_SubSpace.c
 )
 
-# Source files
-set( SRCS
-  utils/gmstream.cpp
-)
 
 
 ##########################
 # Add files to the library
-add_library( ${MODULE_TARGET} SHARED ${HDRS} ${SRCS} )
+add_library( ${MODULE_TARGET} SHARED ${HEADERS} ${SOURCES} )
 set_default_target_properties( ${MODULE_TARGET} )
 
 #######################
