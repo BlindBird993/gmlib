@@ -20,6 +20,36 @@
 # #
 # ###############################################################################
 
+# Functions for adding source files and propagating these to the parent directory
+macro(addHeaders)
+  addSourceFiles( ${MODULE_DIR} HEADERS ${ARGV} )
+endmacro(addHeaders)
+
+macro(addTemplateSources)
+  addSourceFiles( ${MODULE_DIR} TEMPLATE_HEADERS ${ARGV} )
+endmacro(addTemplateSources)
+
+macro(addSources)
+  addSourceFiles( ${MODULE_DIR} SOURCES ${ARGV} )
+endmacro(addSources)
+
+macro(addSourceFiles MOD_DIR VAR)
+
+  file( RELATIVE_PATH REL_PATH "${MOD_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" )
+  foreach( SOURCE ${ARGN} )
+
+    list( APPEND ${VAR} "${REL_PATH}/${SOURCE}" )
+    message( "Append source <" ${REL_PATH}/${SOURCE} "> to var <" ${VAR} ">" )
+  endforeach()
+
+  message( "Content of " ${VAR} ": " ${${VAR}} )
+
+  set( ${VAR} ${${VAR}} PARENT_SCOPE )
+endmacro(addSourceFiles)
+
+
+
+
 # Sets "default" target build properties
 function(set_default_target_properties MODULE_TARGET)
 
@@ -53,4 +83,6 @@ function(add_module_cpy_commands MODULE MODULE_TARGET )
   endforeach(f)
 
 endfunction(add_module_cpy_commands)
+
+
 
