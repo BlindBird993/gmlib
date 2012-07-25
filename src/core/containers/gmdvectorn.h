@@ -22,23 +22,22 @@
 
 
 
-/*! \file gmDVectorN.h
+/*! \file gmdvectorn.h
  *
  *  Dynamic Vector NDim implementation.
- *
- *  \date   2010-05-19
  */
 
 #ifndef __gmDVECTORN_H__
 #define __gmDVECTORN_H__
 
 
-#include "gmPoint.h"
-#include "gmDVector.h"
-#include "gmDMatrix.h"
+// gmlib
+#include "../types/gmpoint.h"
+#include "gmdvector.h"
+#include "gmdmatrix.h"
+
 
 namespace GMlib {
-
 
   template <typename T, int n, class K = float>
   class DVectorN {
@@ -152,13 +151,11 @@ namespace GMlib {
 
 
 
-
-
-}; // END namespace GMlib
+} // END namespace GMlib
 
 
 // Include DVectorN implementations
-#include "gmDVectorN.c"
+#include "gmdvectorn.c"
 
 
 

@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmArrayLX.c
+/*! \file gmarraylx.c
  *
  *  Implementation of Array Large eXtended class.
- *
- *  \date   2008-07-15
  */
 
 
@@ -927,4 +925,4 @@ namespace GMlib {
     return !((*this) == array);
   }
 
-}
+} // END namespace GMlib

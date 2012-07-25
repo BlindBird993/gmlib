@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmDMatrix.h
+/*! \file gmdmatrix.h
  *
  *  Interface for the Dynamic Matrix class.
- *
- *  \date   2008-07-18
  */
 
 
@@ -34,9 +32,9 @@
 #define __gmDMATRIX_H__
 
 
-// GMlib includes
-#include "gmStream.h"
-#include "gmDVector.h"
+// gmlib
+#include "../utils/gmstream.h"
+#include "gmdvector.h"
 
 namespace GMlib{
 
@@ -261,6 +259,6 @@ namespace GMlib{
 } // END namespace GMlib
 
 // Include DMatrix class function implementations
-#include "gmDMatrix.c"
+#include "gmdmatrix.c"
 
 #endif  // __gmDMATRIX_H__

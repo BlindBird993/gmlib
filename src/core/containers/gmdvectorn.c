@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmDVectorN.c
+/*! \file gmdvectorn.c
  *
  *  Implementation of the Dynamic Vector NDim class
- *
- *  \date   2010-05-19
  */
 
 
@@ -577,10 +575,6 @@ namespace GMlib {
 
     return _vect;
   }
-
-
-
-
 
 
 } // END namespace GMlib

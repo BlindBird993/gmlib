@@ -22,19 +22,20 @@
 
 
 
-/*! \file gmArray.c
+/*! \file gmarray.c
  *
  *  Implementation of Array class.
- *
- *  \date   2008-07-03
  */
 
-#include "gmArrayT.h"
+// gmlib
+#include "gmarrayt.h"
+
+// system
+#include <memory.h>
+
 
 
 namespace GMlib {
-
-
 
   template <typename T>
   inline
@@ -777,4 +778,4 @@ namespace GMlib {
     return !((*this) == ar);
   }
 
-}
+} // END namespace GMlib

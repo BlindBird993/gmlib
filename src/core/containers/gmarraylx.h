@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmArrayLX.h
+/*! \file gmarraylx.h
  *
  *  Interface for the gmArrayLX, Large eXpandable Array.
- *
- *  \date   2008-07-14
  */
 
 
@@ -35,16 +33,13 @@
 
 
 // GMlib includes
-#include "gmStream.h"
-
-// STL includes
-#include <vector>
+#include "../utils/gmstream.h"
 
 
 namespace GMlib{
 
 
-  /*! \struct LX_ptr gmArrayLX.h <gmArrayLX>
+  /*! \struct LX_ptr gmarraylx.h <gmArrayLX>
    *  \brief LX Array (auto pointer)
    *
    *  LX Array (auto pointer)
@@ -56,7 +51,7 @@ namespace GMlib{
   };
 
 
-  /*! \class  ArrayLX gmArrayLX.h <gmArrayLX>
+  /*! \class  ArrayLX gmarraylx.h <gmArrayLX>
    *  \brief  This is a gmArrayLX, Array Large eXpandable
    *
    *  This is a gmArrayLX, Array Large eXpandable.
@@ -169,7 +164,7 @@ namespace GMlib{
 } // END namespace GMlib
 
 
-#include "gmArrayLX.c"
+#include "gmarraylx.c"
 
 #endif // __gmARRAYLX_H__
 

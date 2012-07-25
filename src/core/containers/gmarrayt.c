@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmArrayT.c
+/*! \file gmarrayt.c
  *
  *  Implementation of Array Tiny template class.
- *
- *  \date   2008-07-10
  */
 
 
@@ -688,4 +686,4 @@ namespace GMlib {
 
   #endif
 
-}
+} // END namespace GMlib

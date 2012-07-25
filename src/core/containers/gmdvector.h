@@ -26,8 +26,6 @@
  *
  *  Interface for the Dynamic Vector class.
  *
- *  \date   2008-07-17
- *
  *  \todo
  *  - The invariants (stats) for DVector are: \n
  *    if no allocation: pt  = a, \n
@@ -44,7 +42,7 @@
 
 
 // GMlib includes
-#include "gmArray.h"
+#include "gmarray.h"
 
 
 namespace GMlib {
@@ -119,7 +117,7 @@ namespace GMlib {
     void          _cpy( const DVector<T>& v );
     void          _cpy( const T p[] );
 
-  };
+  }; // END class DVector
 
 
 
@@ -206,7 +204,7 @@ namespace GMlib {
 
 
 // Include implementations
-#include "gmDVector.c"
+#include "gmdvector.c"
 
 
 

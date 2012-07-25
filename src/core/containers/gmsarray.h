@@ -22,24 +22,22 @@
 
 
 
-/*! \file gmSArray.h
+/*! \file gmsarray.h
  *
  *  Interface for the SArray class (Sortable Array).
- *
- *  \date   2008-07-09
  */
 
 #ifndef __gmSARRAY_H__
 #define __gmSARRAY_H__
 
 // GMlib includes
-#include "gmArray.h"
+#include "gmarray.h"
 
 
 namespace GMlib {
 
 
-  /*! \class  SArray gmSArray.h <SArray>
+  /*! \class  SArray gmsarray.h <SArray>
    *  \brief  This is a Sortable Array class
    *
    *  This is a Sortable Array class.
@@ -78,7 +76,7 @@ namespace GMlib {
 
 
 // Including template definition file.
-#include "gmSArray.c"
+#include "gmsarray.c"
 
 #endif // __gmARRAYS_H__
 

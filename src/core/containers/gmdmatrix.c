@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmDMatrix.c
+/*! \file gmdmatrix.c
  *
  *  Implementation of the Dynamic Matrix class
- *
- *  \date   2008-07-18
  */
 
 
@@ -635,4 +633,4 @@ namespace GMlib {
       for(int j=0;j<_p[i].dim();j++)	_p[i][j] = p[k++];
   }
 
-}
+} // END namespace GMlib

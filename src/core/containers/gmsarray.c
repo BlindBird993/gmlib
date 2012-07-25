@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmSArray.c
+/*! \file gmsarray.c
  *
  *  Implementation of the Sortable Array class.
- *
- *  \date   2008-07-09
  */
 
 
@@ -241,4 +239,4 @@ namespace GMlib {
     return SArray<T>::operator=(ar);
   }
 
-}
+} // END namespace GMlib

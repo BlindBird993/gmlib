@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmDVector.c
+/*! \file gmdvector.c
  *
  *  Implementation of the Dynamic Vector class
- *
- *  \date   2008-07-17
  */
 
 

@@ -22,22 +22,17 @@
 
 
 
-/*! \file gmArray.h
+/*! \file gmarray.h
  *
  *  Interface for the Array classes.
- *
- *  \date   2008-07-02
  */
 
 
 #ifndef __gmARRAY_H__
 #define __gmARRAY_H__
 
-// System includes
-#include <memory.h>
-
-// GMlib includes
-#include "gmStream.h"
+// GMlib
+#include "../utils/gmstream.h"
 
 
 namespace GMlib {
@@ -195,6 +190,6 @@ namespace GMlib {
 
 
 // Including template definition file.
-#include "gmArray.c"
+#include "gmarray.c"
 
 #endif // __gmARRAY_H__

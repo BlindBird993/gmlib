@@ -39,7 +39,7 @@ macro(addHeaders)
 endmacro(addHeaders)
 
 macro(addTemplateSources)
-  addSourceFiles( ${MODULE_DIR} TEMPLATE_HEADERS ${ARGV} )
+  addSourceFiles( ${MODULE_DIR} TEMPLATE_SOURCES ${ARGV} )
 endmacro(addTemplateSources)
 
 macro(addSources)
@@ -61,6 +61,21 @@ macro(addSourceFiles MOD_DIR VAR)
   set( ${VAR} ${${VAR}} PARENT_SCOPE )
 endmacro(addSourceFiles)
 
+# Function which finalizes the module by setting up linker targest
+# as well as pos-process hooks
+macro(finalizeModule)
+
+  ##########################
+  # Add files to the library
+  add_library( ${MODULE_TARGET} SHARED ${HEADERS} ${SOURCES} )
+  set_default_target_properties( ${MODULE_TARGET} )
+
+  #######################
+  # Post-build copy files
+  #set( FILES_CPY ${HDRS} )
+  #add_module_cpy_commands( ${MODULE} ${MODULE_TARGET} ${FILES_CPY} )
+
+endmacro(finalizeModule)
 
 
 

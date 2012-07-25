@@ -1,3 +1,19 @@
 addHeaders(
+  gmarray.h
+  gmarraylx.h
+  gmarrayt.h
+  gmdmatrix.h
+  gmdvector.h
+  gmdvectorn.h
+  gmsarray.h
+)
 
+addTemplateSources(
+  gmarray.c
+  gmarraylx.c
+  gmarrayt.c
+  gmdmatrix.c
+  gmdvector.c
+  gmdvectorn.c
+  gmsarray.c
 )

@@ -22,18 +22,20 @@
 
 
 
-/*! \file gmArrayT.h
+/*! \file gmarrayt.h
  *
  *  Interface for the Array Tiny class.
- *
- *  \date   2008-07-09
  */
 
 #ifndef __gmARRAYT_H__
 #define __gmARRAYT_H__
 
+
+// gmlib
+#include "../utils/gmstream.h"
+
+// system
 #include <stddef.h>
-#include <iostream>
 
 
 namespace GMlib {
@@ -151,7 +153,7 @@ namespace GMlib {
 
 
 // Including template definition file.
-#include "gmArrayT.c"
+#include "gmarrayt.c"
 
 #endif // __gmARRAYT_H__
 
