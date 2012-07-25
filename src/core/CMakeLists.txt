@@ -38,9 +38,6 @@ set( HDRS
   gmpoint2d.h
   gmpoint3d.h
   gmsimplex.h
-  gmstaticproc.h
-  gmstaticproc2.h
-  gmstream.h
   gmsubspace.h
 )
 
@@ -81,7 +78,7 @@ set( HDRS_I
 
 # Source files
 set( SRCS
-  gmstream.cpp
+  utils/gmstream.cpp
 )
 
 
