@@ -34,7 +34,7 @@
 #ifndef __gmSTATICPROC2_H__
 #define __gmSTATICPROC2_H__
 
-#include "gmPoint.h"
+#include "../types/gmpoint.h"
 
 namespace GMlib {
 

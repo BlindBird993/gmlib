@@ -22,25 +22,26 @@
 
 
 
-/*! \file gmGLProgram.h
+/*! \file gmglprogram.h
  *
  *  Pending Documentation
- *
- *  \date   2010-11-04
  */
 
 #ifndef __gmGLPROGRAM_H__
 #define __gmGLPROGRAM_H__
 
-// STL
+
+// gmlib
+#include "../core/types/gmpoint.h"
+#include "../scenegraph/utils/gmTexture.h"
+#include "gmopengl.h"
+#include "gmglshader.h"
+
+// stl
 #include <string>
 #include <set>
 
-// GMlib
-#include "gmPoint.h"
-#include "gmTexture.h"
-#include "gmOpenGL.h"
-#include "gmGLShader.h"
+
 
 namespace GMlib {
 

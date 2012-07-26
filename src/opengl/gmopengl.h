@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmOpenGL.h
+/*! \file gmopengl.h
  *
  *  GMlib interface to the OpenGL API
- *
- *  \date   2008-07-21
  */
 
 #ifndef __gmOPENGL_H__
@@ -77,13 +75,13 @@ typedef unsigned short wchar_t;
 
 
 // GMlib includes
-#include "gmPoint.h"
-#include "gmPoint2D.h"
-#include "gmPoint3D.h"
-#include "gmStream.h"
+#include "../core/types/gmpoint.h"
+#include "../core/types/gmpoint2d.h"
+#include "../core/types/gmpoint3d.h"
+#include "../core/utils/gmstream.h"
 
-#include "gmMatrix.h"
-#include "gmColor.h"
+#include "../core/types/gmmatrix.h"
+#include "../scenegraph/utils/gmColor.h"
 
 // STL
 #include <map>

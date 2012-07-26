@@ -21,21 +21,29 @@
 # ###############################################################################
 
 
+##############
+# Module setup
+setModule( opengl )
+
+#######
+# Files
 addHeaders(
-  gmangle.h
-  gmmatrix.h
-  gmpoint.h
-  gmpoint2d.h
-  gmpoint3d.h
-  gmsimplex.h
-  gmsubspace.h
+  gmglmatrix.h
+  gmglprogram.h
+  gmglshader.h
+  gmglshadermanager.h
+  gmopengl.h
 )
 
-addTemplateSources(
-  gmmatrix.c
-  gmpoint.c
-  gmpoint2d.c
-  gmpoint3d.c
-  gmsimplex.c
-  gmsubspace.c
+addSources(
+  gmglmatrix.cpp
+  gmglprogram.cpp
+  gmglshader.cpp
+  gmglshadermanager.cpp
+  gmopengl.cpp
 )
+
+#################
+# Finalize module
+finalizeModule()
+

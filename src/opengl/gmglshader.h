@@ -22,22 +22,22 @@
 
 
 
-/*! \file gmGLShader.h
+/*! \file gmglshader.h
  *
  *  Pending Documentation
- *
- *  \date   2010-11-04
  */
 
 #ifndef __gmGLSHADER_H__
 #define __gmGLSHADER_H__
 
 
-// STL
+
+// gmlib
+#include "gmopengl.h"
+
+// stl
 #include <string>
 
-// GMlib
-#include "gmOpenGL.h"
 
 
 namespace GMlib {

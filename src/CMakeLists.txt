@@ -23,7 +23,7 @@
 
 #####################
 # Process each individual module
+add_subdirectory(core)        # Core
+add_subdirectory(opengl)      # OpenGL
 
-# Core
-add_subdirectory(core)
 

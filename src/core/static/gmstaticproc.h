@@ -144,7 +144,7 @@ namespace GMlib {
 
 
 // Include gmPoint for future use
-#include "gmPoint.h"
+#include "../types/gmpoint.h"
 
 namespace GMlib {
 

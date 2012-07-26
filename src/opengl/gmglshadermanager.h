@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmGLShaderManager.h
+/*! \file gmglshadermanager.h
  *
  *  Pending Documentation
- *
- *  \date   2010-11-04
  */
 
 
@@ -34,13 +32,16 @@
 #define __gmGLSHADERMANAGER_H__
 
 
-// STL
+
+// gmlib
+#include "gmopengl.h"
+
+// stl
 #include <string>
 #include <set>
 #include <map>
 
-// GMlib
-#include "gmOpenGL.h"
+
 
 namespace GMlib {
 
