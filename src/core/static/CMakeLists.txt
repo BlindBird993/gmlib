@@ -21,5 +21,7 @@
 # ###############################################################################
 
 
-addHeaders( gmstaticproc.h
-            gmstaticproc2.h )
+addHeaders(
+  gmStaticProc
+  gmStaticProc2
+)

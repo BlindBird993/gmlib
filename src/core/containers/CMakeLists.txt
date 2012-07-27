@@ -22,13 +22,13 @@
 
 
 addHeaders(
-  gmarray.h
-  gmarraylx.h
-  gmarrayt.h
-  gmdmatrix.h
-  gmdvector.h
-  gmdvectorn.h
-  gmsarray.h
+  gmArray
+  gmArrayLX
+  gmArrayT
+  gmDMatrix
+  gmDVector
+  gmDVectorn
+  gmSArray
 )
 
 addTemplateSources(

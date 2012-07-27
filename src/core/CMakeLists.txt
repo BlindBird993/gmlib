@@ -21,22 +21,9 @@
 # ###############################################################################
 
 
-##############
-# Module setup
-setModule( core )
+addHeaders( gmGlobal )
 
-#######
-# Files
-addHeaders( gmglobal.h )
-
-#############
-# Sub modules
-add_subdirectory(containers)    # <containers> sub-module
-add_subdirectory(static)        # <static> sub-module
-add_subdirectory(types)         # <types> sub-module
-add_subdirectory(utils)         # <utils> sub-module
-
-#################
-# Finalize module
-finalizeModule()
-
+addSubDirectory(containers)    # <containers> sub-module
+addSubDirectory(static)        # <static> sub-module
+addSubDirectory(types)         # <types> sub-module
+addSubDirectory(utils)         # <utils> sub-module

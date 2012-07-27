@@ -23,40 +23,37 @@
 # Minimum CMake version required
 cmake_minimum_required(VERSION 2.8)
 
-# Global name of the project
-project(GMlib)
+#############
+# Setup CMAKE
 
-# Version
-set(VERSION_MAJOR 0)
-set(VERSION_MINOR 4)
-set(VERSION_PATCH 0)
+# Set internal cmake dirs
+set( ICMAKE_DIR "${CMAKE_SOURCE_DIR}/cmake" )
+set( ICMAKE_FUNCTION_DIR "${ICMAKE_DIR}/functions" )
+set( ICMAKE_MODULE_DIR "${ICMAKE_DIR}/modules" )
 
-# Adjust the CMAKE_MODULE_PATH to include the "local" cmake/Modules directory
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+include(${ICMAKE_FUNCTION_DIR}/custom_functions.cmake)
+setTemplateDir( "${ICMAKE_DIR}/templates" )
+
+# Update the cmake module path to include custom modules
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ICMAKE_MODULE_DIR} )
 #message( "CMAKE_MODULE_PATH: " ${CMAKE_MODULE_PATH} )
+
+
+#############
+# Setup GMlib
+
+# Setup library - name and version [major,minor,patch]
+setupLibrary( GMlib 0 4 0 )
 
 # Find OpenGL
 find_package(OpenGL REQUIRED)
 
 # Find GLEW package (local package)
 find_package(Glew REQUIRED)
-#message( "GLEW Include dir(s): " ${GLEW_INCLUDE_PATH} )
-#message( "GLEW Lib(s): " ${GLEW_LIBRARY} )
 
-
-##########################
-# Include helper functions
-include(cmake/Functions/custom_functions.cmake)
 
 ########################
 # GMLib library prefix
-setLibPrefix( "gm" )
-
 
 # Process files in the source directory
 add_subdirectory(src)
-
-# 
-#message( STATUS "GMlib Headers C++ : " ${HEADERS_CXX} ) 
-#message( STATUS "GMlib Headers : " ${HEADERS} ) 
-#message( STATUS "GMlib Headers Impl. : " ${HEADERS_I} ) 

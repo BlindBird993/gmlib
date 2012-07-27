@@ -22,13 +22,13 @@
 
 
 addHeaders(
-  gmrandom.h
-  gmsortobject.h
-  gmstream.h
-  gmstring.h
-  gmtimer.h
-  gmutils.h
-  )
+  gmRandom
+  gmSortObject
+  gmStream
+  gmString
+  gmTimer
+  gmUtils
+)
 
 addTemplateSources(
   gmrandom.c

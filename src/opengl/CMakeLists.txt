@@ -20,19 +20,12 @@
 # #
 # ###############################################################################
 
-
-##############
-# Module setup
-setModule( opengl )
-
-#######
-# Files
 addHeaders(
-  gmglmatrix.h
-  gmglprogram.h
-  gmglshader.h
-  gmglshadermanager.h
-  gmopengl.h
+  gmGLMatrix
+  gmGLProgram
+  gmGLShader
+  gmGLShaderManager
+  gmOpenGL
 )
 
 addSources(
@@ -42,8 +35,4 @@ addSources(
   gmglshadermanager.cpp
   gmopengl.cpp
 )
-
-#################
-# Finalize module
-finalizeModule()
 

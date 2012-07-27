@@ -22,13 +22,13 @@
 
 
 addHeaders(
-  gmangle.h
-  gmmatrix.h
-  gmpoint.h
-  gmpoint2d.h
-  gmpoint3d.h
-  gmsimplex.h
-  gmsubspace.h
+  gmAngle
+  gmMatrix
+  gmPoint
+  gmPoint2D
+  gmPoint3D
+  gmSimplex
+  gmSubSpace
 )
 
 addTemplateSources(
