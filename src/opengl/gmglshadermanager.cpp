@@ -29,8 +29,12 @@
 
 
 #include "gmglshadermanager.h"
-
 using namespace GMlib;
+
+
+// stl
+#include <iostream>
+
 
 
 bool GLShaderManager::_initialized = false;

@@ -153,7 +153,7 @@ namespace GMlib {
 } // end namespace GMlib
 
 // Include implementations
-#include "gmpoint.c"
+#include "gmpoint2d.c"
 
 
 

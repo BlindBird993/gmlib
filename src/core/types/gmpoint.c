@@ -29,6 +29,8 @@
  */
 
 
+#include <cstring>
+
 namespace GMlib {
 
 
@@ -468,7 +470,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void Point<T, n>::_cpy( const Point<T, n> &v ) {
-    memcpy( _pt, v._pt, sizeof( Point<T,n> ) );
+    std::memcpy( _pt, v._pt, sizeof( Point<T,n> ) );
   }
 
 

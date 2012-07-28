@@ -85,6 +85,7 @@ typedef unsigned short wchar_t;
 
 // STL
 #include <map>
+#include <string>
 
 
 namespace GMlib {

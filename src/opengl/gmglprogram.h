@@ -33,7 +33,6 @@
 
 // gmlib
 #include "../core/types/gmpoint.h"
-#include "../scenegraph/utils/gmTexture.h"
 #include "gmopengl.h"
 #include "gmglshader.h"
 

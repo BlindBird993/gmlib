@@ -37,8 +37,8 @@
 #include "../static/gmstaticproc.h"
 #include "../utils/gmstream.h"
 
-// stl
-#include <memory>
+//// stl
+//#include <memory>
 
 
 namespace GMlib {
