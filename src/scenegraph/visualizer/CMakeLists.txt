@@ -1,4 +1,4 @@
-# ###############################################################################
+###############################################################################
 # #
 # # Copyright (C) 1994 Narvik University College
 # # Contact: GMlib Online Portal at http://episteme.hin.no
@@ -22,23 +22,14 @@
 
 
 addHeaders(
-  gmColor
-  gmRandom
-  gmSortObject
-  gmStream
-  gmString
-  gmTimer
-  gmUtils
-)
-
-addTemplateSources(
-  gmrandom.c
-  gmsortobject.c
-  gmstring.c
-  gmtimer.c
+  gmSurroundingSphereVisualizer
+  gmVisualizer
+  gmVisualizerStdRep
 )
 
 addSources(
-  gmcolor.cpp
-  gmstream.cpp
+  gmsurroundingspherevisualizer.cpp
+  gmvisualizer.cpp
+  gmvisualizerstdrep.cpp
 )
+

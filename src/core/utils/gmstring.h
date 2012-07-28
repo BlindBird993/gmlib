@@ -38,7 +38,7 @@
 #define __gmSTRING_H__
 
 #include <string>
-#include "../gmpoint.h"
+#include "../types/gmpoint.h"
 
 
 namespace GMlib {

@@ -1,4 +1,4 @@
-# ###############################################################################
+###############################################################################
 # #
 # # Copyright (C) 1994 Narvik University College
 # # Contact: GMlib Online Portal at http://episteme.hin.no
@@ -22,23 +22,19 @@
 
 
 addHeaders(
-  gmColor
-  gmRandom
-  gmSortObject
-  gmStream
-  gmString
-  gmTimer
-  gmUtils
-)
-
-addTemplateSources(
-  gmrandom.c
-  gmsortobject.c
-  gmstring.c
-  gmtimer.c
+  gmArrow3D
+  gmCoordinateSystem
+  gmPathTrack
+  gmPointLightG
+  gmSphere3D
+  gmSpotLightG
+  gmStlObject
 )
 
 addSources(
-  gmcolor.cpp
-  gmstream.cpp
+  gmcoordinatesystem.cpp
+  gmpathtrack.cpp
+  gmpointlightg.cpp
+  gmspotlightg.cpp
+  gmstlobject.cpp
 )

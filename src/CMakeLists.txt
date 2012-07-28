@@ -23,7 +23,8 @@
 
 #####################
 # Process each individual module
-addModule(Core)        # Core
-addModule(OpenGL)      # OpenGL
+addModule(Core)         # Core
+addModule(OpenGL)       # OpenGL
+addModule(SceneGraph)   # SceneGraph
 
 

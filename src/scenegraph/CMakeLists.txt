@@ -22,23 +22,23 @@
 
 
 addHeaders(
-  gmColor
-  gmRandom
-  gmSortObject
-  gmStream
-  gmString
-  gmTimer
-  gmUtils
-)
-
-addTemplateSources(
-  gmrandom.c
-  gmsortobject.c
-  gmstring.c
-  gmtimer.c
+  gmDisplayObject
+  gmFrustum
+  gmScaleObject
+  gmScene
+  gmSceneObject
 )
 
 addSources(
-  gmcolor.cpp
-  gmstream.cpp
+  gmdisplayobject.cpp
+  gmscene.cpp
+  gmsceneobject.cpp
 )
+
+addSubDirectory(camera)           # <camera> sub-module
+addSubDirectory(displayobjects)   # <displayobject> sub-module
+addSubDirectory(light)            # <light> sub-module
+addSubDirectory(selector)         # <selector> sub-module
+addSubDirectory(utils)            # <utils> sub-module
+addSubDirectory(visualizer)       # <visualizer> sub-module
+

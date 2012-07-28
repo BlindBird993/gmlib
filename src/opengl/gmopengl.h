@@ -81,7 +81,7 @@ typedef unsigned short wchar_t;
 #include "../core/utils/gmstream.h"
 
 #include "../core/types/gmmatrix.h"
-#include "../scenegraph/utils/gmColor.h"
+#include "../core/utils/gmcolor.h"
 
 // STL
 #include <map>

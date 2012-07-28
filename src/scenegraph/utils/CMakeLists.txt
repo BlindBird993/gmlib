@@ -22,23 +22,11 @@
 
 
 addHeaders(
-  gmColor
-  gmRandom
-  gmSortObject
-  gmStream
-  gmString
-  gmTimer
-  gmUtils
-)
-
-addTemplateSources(
-  gmrandom.c
-  gmsortobject.c
-  gmstring.c
-  gmtimer.c
+  gmMaterial
+  gmTexture
 )
 
 addSources(
-  gmcolor.cpp
-  gmstream.cpp
+  gmmaterial.cpp
+  gmtexture.cpp
 )
