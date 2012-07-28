@@ -22,13 +22,11 @@
 
 
 
-/*! \file gmStaticProc2.h
+/*! \file gmstaticproc2.h
  *
- * GM_StaticProc2.h: interface for the Static meta programming
+ * gmstaticproc2.h: interface for the Static meta programming
  * to roll out the code usen in:
  * Matrix SqMatrix, HqMatrix classes.
- *
- * \date   2008-07-04
  */
 
 #ifndef __gmSTATICPROC2_H__
@@ -169,14 +167,8 @@ namespace GMlib {
 
 
 
-// Include GM_Static_P_ class implementations
-#include "gmStaticProc2_GM_Static_P_.c"
-
-// Include GM_Static_P2_ class implementations
-#include "gmStaticProc2_GM_Static_P2_.c"
-
-
-
+// Include implementations
+#include "gmstaticproc2.c"
 
 
 

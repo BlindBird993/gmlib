@@ -25,3 +25,9 @@ addHeaders(
   gmStaticProc
   gmStaticProc2
 )
+
+addTemplateSources(
+
+  gmstaticproc.c
+  gmstaticproc2.c
+)

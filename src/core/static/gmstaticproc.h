@@ -22,14 +22,12 @@
 
 
 
-/*! \file gmStaticProc.h
+/*! \file gmstaticproc.h
  *
  *  interface for the Static meta programming
  *  to roll out the code usen in:
  *  Point, Vector, UnitVector, Arrow, Scalarfield, Sphere,
  *  Matrix SqMatrix, HqMatrix classes.
- *
- *  \date   2008-07-02
  */
 
 
@@ -291,25 +289,13 @@ namespace GMlib {
 
 
 
-// Include GM_Static_ class implementations
-#include "gmStaticProc_GM_Static_.c"
-
-// Include GM_Static1_ class implementations
-#include "gmStaticProc_GM_Static1_.c"
-
-// Include GM_Static2_ class implementations
-#include "gmStaticProc_GM_Static2_.c"
-
-// Include GM_Static3_ class implementations
-#include "gmStaticProc_GM_Static3_.c"
-
-// Include GM_Std_ class implementations
-#include "gmStaticProc_GM_Std_.c"
+// Include implementations
+#include "gmstaticproc.c"
 
 
 
 
 
 
-#endif   // __gmStaticProc_H__
+#endif   // __gmSTATICPROC_H__
 
