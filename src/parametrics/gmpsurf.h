@@ -22,24 +22,24 @@
 
 
 
-/*! \file gmPSurf.h
+/*! \file gmpsurf.h
  *
  *  Interface for the PSurf class.
- *
- *  \date   2008-09-04
  */
 
 #ifndef __gmDSURF_H__
 #define __gmDSURF_H__
 
-// STL
-#include <fstream>
 
-// Local
+#include "gmparametrics.h"
+
+// gmlib
 #include "gmArray.h"
 #include "gmDVector.h"
 #include "gmDMatrix.h"
-#include "gmParametrics.h"
+
+// stl
+#include <fstream>
 
 
 namespace GMlib {
@@ -200,12 +200,12 @@ namespace GMlib {
     int                           _sum( int i, int j );
 
 
-  };
+  }; // END class PSurf
 
-}
+} // END namespace GMlib
 
 // Include PSurf class function implementations
-#include "gmPSurf.c"
+#include "gmpsurf.c"
 
 
 #endif  //__gmDSURF_H__

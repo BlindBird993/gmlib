@@ -22,20 +22,19 @@
 
 
 
-/*! \file gmPSurf.c
+/*! \file gmpsurf.c
  *
  *  Implementation of the PSurf template class.
- *
- *  \date   2008-09-04
  */
 
 
-// STL
+// gmlib
+#include "visualizers/gmpsurfdefaultvisualizer.h"
+
+
+// stl
 #include <sstream>
 #include <iomanip>
-
-// local
-#include "gmPSurfDefaultVisualizer.h"
 
 namespace GMlib {
 

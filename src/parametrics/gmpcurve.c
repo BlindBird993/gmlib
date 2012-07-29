@@ -22,16 +22,16 @@
 
 
 
-/*! \file gmPCurve.c
+/*! \file gmpcurve.c
  *
  *  Implementation of the PCurve template class.
- *
- *  \date   2008-09-09
  */
 
 
-// local
-#include "gmPCurveDefaultVisualizer.h"
+// gmlib
+#include "visualizers/gmpcurvedefaultvisualizer.h"
+
+
 
 namespace GMlib {
 

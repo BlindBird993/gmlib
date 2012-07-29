@@ -22,17 +22,16 @@
 
 
 
-/*! \file gmPTriangle.c
+/*! \file gmptriangle.c
  *
  *  Implementation of the PTriangle template class.
- *
- *  \date   2010-03-22
  */
 
-#include <iomanip>
-
 // local
-#include "gmPTriangleDefaultVisualizer.h"
+#include "visualizers/gmptriangledefaultvisualizer.h"
+
+// stl
+#include <iomanip>
 
 namespace GMlib {
 

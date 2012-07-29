@@ -22,17 +22,29 @@
 
 
 
-/*! \file gmParametrics.h
+/*! \file gmparametrics.h
  *
  *  Interface for the Parametrics class.
- *
- *  \date   2009-01-26
  */
 
 #ifndef __gmPARAMETRICS_H__
 #define __gmPARAMETRICS_H__
 
-// Global namespace types
+
+
+
+#include "gmDisplayObject.h"
+
+// gmlib
+#include "gmArray.h"
+#include "gmMaterial.h"
+
+// stl
+#include <string>
+
+
+
+
 namespace GMlib {
 
 
@@ -52,19 +64,6 @@ namespace GMlib {
     GM_DERIVATION_EXPLICIT,
     GM_DERIVATION_DD
   };
-
-} // END namespace GMlib
-
-
-// STL
-#include <string>
-
-// GMlib
-#include "gmArray.h"
-#include "gmMaterial.h"
-#include "gmDisplayObject.h"
-
-namespace GMlib {
 
 
   template <typename T, int n>
@@ -93,7 +92,7 @@ namespace GMlib {
 }
 
 // Include Paramterics class function implementations
-#include "gmParametrics.c"
+#include "gmparametrics.c"
 
 
 

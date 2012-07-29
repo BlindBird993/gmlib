@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmParametrics.c
+/*! \file gmparametrics.c
  *
  *  Implementation of the Parametrics class.
- *
- *  \date   2009-01-26
  */
 
 

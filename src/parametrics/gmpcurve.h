@@ -22,20 +22,20 @@
 
 
 
-/*! \file gmPCurve.h
+/*! \file gmpcurve.h
  *
  *  Interface for the PCurve class.
- *
- *  \date   2008-09-09
  */
 
 #ifndef __gmPCURVE_H__
 #define __gmPCURVE_H__
 
+#include "gmParametrics.h"
 
+
+// gmlib
 #include "gmArray.h"
 #include "gmDVector.h"
-#include "gmParametrics.h"
 
 
 
@@ -131,7 +131,7 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PCurve class function implementations
-#include "gmPCurve.c"
+#include "gmpcurve.c"
 
 
 #endif  // __gmPCURVE_H__

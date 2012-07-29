@@ -22,20 +22,21 @@
 
 
 
-/*! \file gmPTriangle.h
+/*! \file gmptriangle.h
  *
  *  Interface for the PTriangle class.
- *
- *  \date   2010-03-22
  */
 
 #ifndef __gmPTRIANGLE_H__
 #define __gmPTRIANGLE_H__
 
 
+#include "gmparametrics.h"
+
+
+
 #include "gmPoint.h"
 #include "gmDMatrix.h"
-#include "gmParametrics.h"
 
 
 namespace GMlib {
@@ -151,7 +152,7 @@ namespace GMlib {
 
 
 // Include PTriangle class function implementations
-#include "gmPTriangle.c"
+#include "gmptriangle.c"
 
 
 
