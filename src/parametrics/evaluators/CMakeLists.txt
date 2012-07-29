@@ -28,7 +28,7 @@ addHeaders(
 )
 
 addTemplateSources(
-  gmbasisevaulator.c
+  gmbasisevaluator.c
   gmbfbsevaluator.c
   gmerbsevaluator.c
   gmevaluatorstatic.c
