@@ -22,11 +22,46 @@
 
 
 
-/*! \file gmTriangleFacetsDefaultVisualizer
+/*! \file gmtrianglefacetsvisualizer.h
  *
- *  C++ interface for the TriangleFacetsDefaultVisualizer header and classes.
- *
- *  \date   2011-02-07
+ *  Interface for the TriangleFacetsVisualizer class.
  */
 
-#include "gmTriangleFacetsDefaultVisualizer.h"
+
+#ifndef __gmTRIANGLEFACETSVISUALIZER_H__
+#define __gmTRIANGLEFACETSVISUALIZER_H__
+
+
+#include "gmVisualizer.h"
+
+// gmlib
+#include "gmOpenGL.h"
+
+
+namespace GMlib {
+
+  template <typename T>
+  class TriangleFacets;
+
+  template <typename T>
+  class TriangleFacetsVisualizer : public Visualizer {
+  public:
+    TriangleFacetsVisualizer();
+    ~TriangleFacetsVisualizer();
+    std::string   getIdentity() const;
+    virtual void  replot();
+    void          set( SceneObject* obj );
+
+  protected:
+    TriangleFacets<T>      *_tf;
+
+  }; // END class TriangleFacetsVisualizer
+
+} // END namespace GMlib
+
+// Include TriangleFacetsVisualizer class function implementations
+#include "gmtrianglefacetsvisualizer.c"
+
+
+
+#endif // __gmTRIANGLEFACETSVISUALIZER_H__

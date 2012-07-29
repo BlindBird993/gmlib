@@ -22,11 +22,40 @@
 
 
 
-/*! \file gmTriangleFacetsVoronoiVisualizer
+/*! \file gmtrianglefacetsvisualizer.h
  *
- *  C++ interface for the TriangleFacetsVoronoiVisualizer header and classes.
- *
- *  \date   2011-02-07
+ *  TriangleFacetsVisualizer implementations
  */
 
-#include "gmTriangleFacetsVoronoiVisualizer.h"
+namespace GMlib {
+
+  template <typename T>
+  TriangleFacetsVisualizer<T>::TriangleFacetsVisualizer() {
+
+    _tf = 0x0;
+  }
+
+  template <typename T>
+  TriangleFacetsVisualizer<T>::~TriangleFacetsVisualizer() {}
+
+  template <typename T>
+  std::string TriangleFacetsVisualizer<T>::getIdentity() const {
+
+    return "TriangleFacets Visualizer";
+  }
+
+  template <typename T>
+  inline
+  void TriangleFacetsVisualizer<T>::replot() {}
+
+  template <typename T>
+  void TriangleFacetsVisualizer<T>::set( SceneObject* obj ) {
+
+    Visualizer::set( obj );
+
+    _tf = dynamic_cast<TriangleFacets<T>*>( obj );
+  }
+
+
+
+} // END namespace GMlib

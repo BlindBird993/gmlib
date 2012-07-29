@@ -22,47 +22,42 @@
 
 
 
-/*! \file gmTriangleSystem_TSVEdge.c
- *  \brief TSVEdge class function implementations
+/*! \file gmtrianglefacetsvoronoivisualizer.h
  *
- *  \date   2010-04-16
+ *  Interface for the TriangleFacetsVoronoiVisualizer class.
  */
+
+#ifndef __gmTRIANGLEFACETSVORONOIVISUALIZER_H__
+#define __gmTRIANGLEFACETSVORONOIVISUALIZER_H__
+
+
+#include "gmtrianglefacetsvisualizer.h"
 
 
 namespace GMlib {
 
   template <typename T>
-  inline
-  TSVEdge<T>::TSVEdge() {}
+  class TriangleFacetsVoronoiVisualizer : public TriangleFacetsVisualizer<T> {
+  public:
+    TriangleFacetsVoronoiVisualizer();
+    ~TriangleFacetsVoronoiVisualizer();
+    void          display( Camera * cam );
+    std::string   getIdentity() const;
+    virtual void  replot();
 
-  template <typename T>
-  inline
-  TSVEdge<T>::TSVEdge(const Point<T,2> &p, const Point<T,2> &q) {
-    _pnts[0] = p;
-    _pnts[1] = q;
-  }
+  protected:
+    GLuint        _vbo;
+    GLuint        _ibo;
 
-  template <typename T>
-  inline
-  bool TSVEdge<T>::operator==(const TSVEdge<T> &e) const {
+    GLProgram     _dprog;
+    GLProgram     _sprog;
 
-    bool a=false ,b= false;
-    if ((e._pnts[0] == _pnts[0])||(e._pnts[0] == _pnts[1])) a = true;
-    if ((e._pnts[1] == _pnts[0])||(e._pnts[1] == _pnts[1])) b = true;
 
-    return (a && b);
-  }
-
-  template <typename T>
-  inline
-  bool TSVEdge<T>::operator<(const TSVEdge<T> &e) const {
-    return false;
-  }
-
-  template <typename T>
-  inline
-  Point<T,2> const &TSVEdge<T>::operator() (int i) const {
-    return _pnts[i];
-  }
+  }; // END class TriangleFacetsVoronoiVisualizer
 
 } // END namespace GMlib
+
+// Include TriangleFacetsVoronoiVisualizer class function implementations
+#include "gmtrianglefacetsvoronoivisualizer.c"
+
+#endif // __gmTRIANGLEFACETSVORONOIVISUALIZER_H__

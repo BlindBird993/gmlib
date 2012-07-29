@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmTriangleSystem.h
+/*! \file gmtrianglesystem.h
  *
  *  Interface of the Triangle system classes.
- *
- *  \date   2008-10-21
  */
 
 
@@ -36,7 +34,7 @@
 
 
 
-
+// gmlib
 #include "gmPoint3D.h"
 #include "gmPoint2D.h"
 #include "gmArray.h"
@@ -564,29 +562,8 @@ namespace GMlib {
 
 
 
-// Include TriangleFacets class function implementations
-#include "gmTriangleSystem_TriangleFacets.c"
-
-// Include TriangleSystem class function implementations
-#include "gmTriangleSystem_TriangleSystem.c"
-
-// Include TriangleSystem Vertex class function implementations
-#include "gmTriangleSystem_TSVertex.c"
-
-// Include TriangleSystem Edge class function implementations
-#include "gmTriangleSystem_TSEdge.c"
-
-// Include TriangleSystem Triangle class function implementations
-#include "gmTriangleSystem_TSTriangle.c"
-
-// Include TriangleSystem Tile class function implementations
-#include "gmTriangleSystem_TSTile.c"
-
-// Include TriangleSystem Line class function implementations
-#include "gmTriangleSystem_TSLine.c"
-
-// Include TriangleSystem Voronoi Edge class function implementations
-#include "gmTriangleSystem_TSVEdge.c"
+// Include implementations
+#include "gmtrianglesystem.c"
 
 
 

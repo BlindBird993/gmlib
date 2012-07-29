@@ -22,42 +22,43 @@
 
 
 
-/*! \file gmTriangleFacetsVisualizer.h
+/*! \file gmtrianglefacetsdefaultvisualizer.h
  *
- *  TriangleFacetsVisualizer implementations
- *
- *  \date   2011-02-07
+ *  Interface for the TriangleFacetsDefaultVisualizer class.
  */
+
+#ifndef __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
+#define __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
+
+
+#include "gmtrianglefacetsvisualizer.h"
+
 
 namespace GMlib {
 
   template <typename T>
-  TriangleFacetsVisualizer<T>::TriangleFacetsVisualizer() {
+  class TriangleFacetsDefaultVisualizer : public TriangleFacetsVisualizer<T> {
+  public:
+    TriangleFacetsDefaultVisualizer();
+    ~TriangleFacetsDefaultVisualizer();
+    void          display( Camera * cam );
+    std::string   getIdentity() const;
+    virtual void  replot();
+    void          select( Camera * cam, const Color& name );
 
-    _tf = 0x0;
-  }
+  protected:
+    GLuint        _vbo;
+    GLuint        _ibo;
 
-  template <typename T>
-  TriangleFacetsVisualizer<T>::~TriangleFacetsVisualizer() {}
-
-  template <typename T>
-  std::string TriangleFacetsVisualizer<T>::getIdentity() const {
-
-    return "TriangleFacets Visualizer";
-  }
-
-  template <typename T>
-  inline
-  void TriangleFacetsVisualizer<T>::replot() {}
-
-  template <typename T>
-  void TriangleFacetsVisualizer<T>::set( SceneObject* obj ) {
-
-    Visualizer::set( obj );
-
-    _tf = dynamic_cast<TriangleFacets<T>*>( obj );
-  }
+    GLProgram     _dprog;
+    GLProgram     _sprog;
 
 
+  }; // END class TriangleFacetsDefaultVisualizer
 
 } // END namespace GMlib
+
+// Include TriangleFacetsDefaultVisualizer class function implementations
+#include "gmtrianglefacetsdefaultvisualizer.c"
+
+#endif // __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__

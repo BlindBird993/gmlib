@@ -22,19 +22,15 @@
 
 
 
-/*! \file gmTriangleFacetsDefaultVisualizer.h
+/*! \file gmtrianglefacetsvoronoivisualizer.h
  *
- *  TriangleFacetsDefaultVisualizer implementations
- *
- *  \date   2011-02-07
+ *  TriangleFacetsVoronoiVisualizer implementations
  */
-
-#include "gmTriangleSystem.h"
 
 namespace GMlib {
 
   template <typename T>
-  TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer()
+  TriangleFacetsVoronoiVisualizer<T>::TriangleFacetsVoronoiVisualizer()
     : _dprog("default"), _sprog("select")
   {
 
@@ -43,7 +39,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  TriangleFacetsDefaultVisualizer<T>::~TriangleFacetsDefaultVisualizer() {
+  TriangleFacetsVoronoiVisualizer<T>::~TriangleFacetsVoronoiVisualizer() {
 
     glDeleteBuffers( 1, &_vbo );
     glDeleteBuffers( 1, &_ibo );
@@ -51,7 +47,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleFacetsDefaultVisualizer<T>::display( Camera* cam ) {
+  void TriangleFacetsVoronoiVisualizer<T>::display( Camera* cam ) {
 
         this->glSetDisplayMode();
 
@@ -91,9 +87,11 @@ namespace GMlib {
         glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)getGLVertexNormalOffset() );
         glEnableVertexAttribArray( normal_loc );
 
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-        glDrawElements( GL_TRIANGLES, this->_tf->getNoTriangles() * 3, GL_UNSIGNED_SHORT, (const GLvoid*)0x0 );
-        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+        glDrawArrays( GL_LINES, 0, this->_tf->getVoronoiEdges().getSize() * 2 );
+
+//        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
+//        glDrawElements( GL_TRIANGLES, this->_tf->getNoTriangles() * 3, GL_UNSIGNED_SHORT, (const GLvoid*)0x0 );
+//        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
 
         glDisableVertexAttribArray( normal_loc );
         glDisableVertexAttribArray( vert_loc );
@@ -104,81 +102,57 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string TriangleFacetsDefaultVisualizer<T>::getIdentity() const {
+  std::string TriangleFacetsVoronoiVisualizer<T>::getIdentity() const {
 
     return "TriangleFacets Default Visualizer";
   }
 
   template <typename T>
   inline
-  void TriangleFacetsDefaultVisualizer<T>::replot() {
+  void TriangleFacetsVoronoiVisualizer<T>::replot() {
+
+    this->_tf->createVoronoi();
+
+
+    //    Array<Point<T,2> > &vorpnts = this->_tf->getVoronoiPoints();
+    const Array<TSVEdge<T> > &voredges = this->_tf->getVoronoiEdges();
 
     // Fill the VBO
-    int no_vertices = this->_tf->getSize();
+    int no_vertices = voredges.getSize() * 2;
     GLVertex vertices[no_vertices];
 
-    for( int i = 0; i < no_vertices; i++ ) {
+    for( int i = 0; i < no_vertices / 2; i++ ) {
 
-      TSVertex<T> *v = this->_tf->getVertex(i);
-      const Point<T,3> &pos = v->getPos();
-      const Vector<T,3> &nor = v->getDir();
+      for( int j = 0; j < 2; j++ ) {
 
-      vertices[i].x = pos(0);
-      vertices[i].y = pos(1);
-      vertices[i].z = pos(2);
-
-      vertices[i].nx = nor(0);
-      vertices[i].ny = nor(1);
-      vertices[i].nz = nor(2);
+        const int idx = i*2+j;
+        const Point<T,2>  &eep = voredges(i)(j); // Edge end pos
+        vertices[idx].x = eep(0);
+        vertices[idx].y = eep(1);
+        vertices[idx].z = 0;
+      }
     }
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
     glBufferData( GL_ARRAY_BUFFER, no_vertices * sizeof(GLVertex), vertices, GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    int no_indices = this->_tf->getNoTriangles() * 3;
-    GLushort indices[no_indices];
-    GLushort *iptr = indices;
+//    int no_indices = this->_tf->getNoTriangles() * 3;
+//    GLushort indices[no_indices];
+//    GLushort *iptr = indices;
 
-    for( int i = 0; i < this->_tf->getNoTriangles(); i++ ) {
+//    for( int i = 0; i < this->_tf->getNoTriangles(); i++ ) {
 
-      Array< TSVertex<T>* > tri_verts = this->_tf->getTriangle(i)->getVertices();
-      for( int j = 0; j < tri_verts.getSize(); j++ )
-        for( int k = 0; k < this->_tf->getSize(); k++ )
-          if( tri_verts[j] == this->_tf->getVertex(k) )
-            *iptr++ = k;
-    }
+//      Array< TSVertex<T>* > tri_verts = this->_tf->getTriangle(i)->getVertices();
+//      for( int j = 0; j < tri_verts.getSize(); j++ )
+//        for( int k = 0; k < this->_tf->getSize(); k++ )
+//          if( tri_verts[j] == this->_tf->getVertex(k) )
+//            *iptr++ = k;
+//    }
 
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
-  }
-
-  template <typename T>
-  inline
-  void TriangleFacetsDefaultVisualizer<T>::select( Camera * cam, const Color& name ) {
-
-    _sprog.bind();
-
-    _sprog.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-    _sprog.setUniform( "u_color", name );
-
-    GLuint vert_loc = _sprog.getAttributeLocation( "in_vertex" );
-
-    const GLsizei v_size = sizeof(GLVertex);
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
-    glEnableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    glDrawElements( GL_TRIANGLES, this->_tf->getNoTriangles() * 3, GL_UNSIGNED_SHORT, (const GLvoid*)0x0 );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
-
-    glDisableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    _sprog.unbind();
+//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
+//    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 
 
