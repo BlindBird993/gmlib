@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPTriangleDefaultVisualizer.h
+/*! \file gmptriangledefaultvisualizer.h
  *
  *  Interface for the PTriangleDefaultVisualizer class.
- *
- *  \date   2011-02-07
  */
 
 
@@ -34,12 +32,9 @@
 #define __gmPTRIANGLEDEFAULTVISUALIZER_H__
 
 
-#include "gmPTriangleVisualizer.h"
+#include "gmptrianglevisualizer.h"
 
 namespace GMlib {
-
-  template <typename T>
-  class PTriangle;
 
   template <typename T>
   class PTriangleDefaultVisualizer : public PTriangleVisualizer<T> {
@@ -67,7 +62,7 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PTriangleDefaultVisualizer class function implementations
-#include "gmPTriangleDefaultVisualizer.c"
+#include "gmptriangledefaultvisualizer.c"
 
 
 

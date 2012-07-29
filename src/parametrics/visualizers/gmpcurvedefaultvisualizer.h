@@ -22,52 +22,46 @@
 
 
 
-/*! \file gmPCurveVisualizer.h
+/*! \file gmpcurvedefaultvisualizer.h
  *
- *  Interface for the PCurveVisualizer class.
- *
- *  \date   2010-04-13
+ *  Interface for the PCurveDefaultVisualizer class.
  */
 
 
-#ifndef __GMPCURVEVISUALIZER_H__
-#define __GMPCURVEVISUALIZER_H__
+#ifndef __gmPCURVEDEFAULTVISUALIZER_H__
+#define __gmPCURVEDEFAULTVISUALIZER_H__
 
-#include "gmPoint.h"
-#include "gmDVector.h"
-#include "gmVisualizer.h"
-#include "gmOpenGL.h"
+#include "gmpcurvevisualizer.h"
 
 
 namespace GMlib {
 
   template <typename T>
-  class PCurve;
-
-  template <typename T>
-  class PCurveVisualizer : public Visualizer {
+  class PCurveDefaultVisualizer : public PCurveVisualizer<T> {
   public:
-    PCurveVisualizer();
-    ~PCurveVisualizer();
+    PCurveDefaultVisualizer();
+    ~PCurveDefaultVisualizer();
 
+    void          display( Camera* cam );
     std::string   getIdentity() const;
     virtual void  replot(
       DVector< DVector< Vector<T, 3> > >& p,
       int m, int d
     );
-    void          set( SceneObject* obj );
-
-    static void   populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d = 0 );
+    void          select( Camera* cam, const Color& name = Color() );
 
   protected:
-    PCurve<T>     *_curve;
+    GLuint        _vbo_v;
+    int           _no_vertices;
 
-  }; // END class PCurveVisualizer
+    GLProgram     _display;
+    GLProgram     _select;
+
+  }; // END class PCurveDefaultVisualizer
 
 } // END namespace GMlib
 
-// Include PCurveVisualizer class function implementations
-#include "gmPCurveVisualizer.c"
+// Include PCurveDefaultVisualizer class function implementations
+#include "gmpcurvedefaultvisualizer.c"
 
-
-#endif // __GMPCURVEVISUALIZER_H__
+#endif // __gmPCURVEDEFAULTVISUALIZER_H__

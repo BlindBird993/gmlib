@@ -22,18 +22,16 @@
 
 
 
-/*! \file gmPSurfDefaultVisualizer.h
+/*! \file gmpsurfdefaultvisualizer.h
  *
  *  Default PSurf Visualizer
- *
- *  \date   2011-01-17
  */
 
 
 #ifndef __gmPSURFDEFAULTVISUALIZER_H__
 #define __gmPSURFDEFAULTVISUALIZER_H__
 
-#include "gmPSurfVisualizer.h"
+#include "gmpsurfvisualizer.h"
 
 namespace GMlib {
 
@@ -68,7 +66,7 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PSurfDefaultVisualizer class function implementations
-#include "gmPSurfDefaultVisualizer.c"
+#include "gmpsurfdefaultvisualizer.c"
 
 
 #endif // __gmPSURFDEFAULTVISUALIZER_H__

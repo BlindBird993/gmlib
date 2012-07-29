@@ -23,20 +23,13 @@
 
 
 
-/*! \file gmPSurfDefaultVisualizer.c
+/*! \file gmpsurfdefaultvisualizer.c
  *
  *  Implementation of the PSurfDefaultVisualizer template class.
- *
- *  \date   2011-01-17
  */
 
 
-// STL
-#include <set>
-#include <string>
-#include <iostream>
-
-// local
+// gmlib
 #include "gmCamera.h"
 #include "gmMaterial.h"
 #include "gmPSurf.h"
@@ -46,6 +39,11 @@
 #include "gmLight.h"
 #include "gmScene.h"
 
+
+// stl
+#include <set>
+#include <string>
+#include <iostream>
 
 namespace GMlib {
 

@@ -22,21 +22,22 @@
 
 
 
-/*! \file gmPSurfVisualizer.h
+/*! \file gmpsurfvisualizer.h
  *
  *  Interface for the PSurfVisualizer class.
- *
- *  \date   2010-04-13
  */
 
 
 #ifndef __GMPSURFVISUALIZER_H__
 #define __GMPSURFVISUALIZER_H__
 
+#include "gmvisualizer.h"
+
+// gmlib
 #include "gmPoint.h"
 #include "gmDMatrix.h"
-#include "gmVisualizer.h"
 #include "gmOpenGL.h"
+
 
 namespace GMlib {
 
@@ -79,7 +80,7 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PSurfVisualizer class function implementations
-#include "gmPSurfVisualizer.c"
+#include "gmpsurfvisualizer.c"
 
 
 

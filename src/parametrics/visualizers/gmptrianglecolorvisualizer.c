@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPTriangleColorVisualizer.c
+/*! \file gmptrianglecolorvisualizer.c
  *
  *  Implementation of the PTriangleColorVisualizer template class.
- *
- *  \date   2010-06-19
  */
 
 namespace GMlib {

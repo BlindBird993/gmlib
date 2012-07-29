@@ -22,22 +22,21 @@
 
 
 
-/*! \file gmPCurveDerivativesVisualizer.h
+/*! \file gmpcurvederivativesvisualizer.h
  *
  *  Interface for the PCurveDerivativesVisualizer class.
- *
- *  \date   2010-04-13
  */
 
 
 #ifndef __GMPCURVEDERIVATIVESVISUALIZER_H__
 #define __GMPCURVEDERIVATIVESVISUALIZER_H__
 
+#include "gmpcurvevisualizer.h"
 
+// gmlib
 #include "gmPoint.h"
 #include "gmDVector.h"
 #include "gmColor.h"
-#include "gmPCurveVisualizer.h"
 
 
 namespace GMlib {
@@ -92,7 +91,7 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PCurveDerivativesVisualizer class function implementations
-#include "gmPCurveDerivativesVisualizer.c"
+#include "gmpcurvederivativesvisualizer.c"
 
 
 

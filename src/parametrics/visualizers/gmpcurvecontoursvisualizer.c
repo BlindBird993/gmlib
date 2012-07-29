@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPCurveContoursVisualizer.c
+/*! \file gmpcurvecontoursvisualizer.c
  *
  *  Implementation of the PCurveContoursVisualizer template class.
- *
- *  \date   2010-04-13
  */
 
 

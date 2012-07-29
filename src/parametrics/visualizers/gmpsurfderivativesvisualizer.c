@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPSurfDerivativesVisualizer.c
+/*! \file gmpsurfderivativesvisualizer.c
  *
  *  Implementation of the PSurfDerivativesVisualizer template class.
- *
- *  \date   2010-04-13
  */
 
 

@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPTriangleVisualizer.h
+/*! \file gmptrianglevisualizer.h
  *
  *  Interface for the PTriangleVisualizer class.
- *
- *  \date   2010-05-04
  */
 
 
@@ -34,11 +32,12 @@
 #define __gmPTRIANGLEVISUALIZER_H__
 
 
+#include "gmvisualizer.h"
 
+// gmlib
 #include "gmPoint.h"
 #include "gmDVector.h"
 #include "gmDMatrix.h"
-#include "gmVisualizer.h"
 #include "gmOpenGL.h"
 
 #define PTRIANGLEVERTEX_SIZE 32
@@ -84,12 +83,13 @@ namespace GMlib {
 
   protected:
     PTriangle<T>    *_triangle;
+
   }; // END class PTriangleVisualizer
 
 } // END namespace GMlib
 
 // Include PTriangleVisualizer class function implementations
-#include "gmPTriangleVisualizer.c"
+#include "gmptrianglevisualizer.c"
 
 
 

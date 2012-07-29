@@ -23,14 +23,11 @@
 
 
 
-/*! \file gmPTriangleDefaultVisualizer.c
+/*! \file gmptriangledefaultvisualizer.c
  *
  *  Implementation of the PTriangleDefaultVisualizer template class.
- *
- *  \date   2011-02-07
  */
 
-#include <gmPTriangle.h>
 
 namespace GMlib {
 

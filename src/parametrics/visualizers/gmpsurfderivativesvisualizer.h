@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPSurfDerivativesVisualizer.h
+/*! \file gmpsurfderivativesvisualizer.h
  *
  *  Interface for the PSurfDerivativesVisualizer class.
- *
- *  \date   2010-04-13
  */
 
 
@@ -34,11 +32,14 @@
 #define __GMPSURFDERIVATIVESVISUALIZER_H__
 
 
+#include "gmpsurfvisualizer.h"
+
+
+// gmlib
 #include "gmPoint.h"
 #include "gmDVector.h"
 #include "gmDMatrix.h"
 #include "gmColor.h"
-#include "gmPSurfVisualizer.h"
 
 
 
@@ -98,6 +99,6 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PSurfDerivativesVisualizer class function implementations
-#include "gmPSurfDerivativesVisualizer.c"
+#include "gmpsurfderivativesvisualizer.c"
 
 #endif // __GMPSURFDERIVATIVESVISUALIZER_H__

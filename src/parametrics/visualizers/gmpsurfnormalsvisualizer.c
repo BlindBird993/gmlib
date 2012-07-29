@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPSurfNormalsVisualizer.c
+/*! \file gmpsurfnormalsvisualizer.c
  *
  *  Implementation of the PSurfNormalsVisualizer template class.
- *
- *  \date   2010-04-13
  */
 
 

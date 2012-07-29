@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPCurveDerivativesVisualizer.c
+/*! \file gmpcurvederivativesvisualizer.c
  *
  *  Implementation of the PCurveDerivativesVisualizer template class.
- *
- *  \date   2010-04-13
  */
 
 

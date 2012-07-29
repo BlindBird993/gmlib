@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPSurfContoursVisualizer.c
+/*! \file gmpsurfcontoursvisualizer.c
  *
  *  Implementation of the PSurfContoursVisualizer template class.
- *
- *  \date   2010-04-13
  */
 
 

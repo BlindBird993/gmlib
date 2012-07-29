@@ -22,23 +22,22 @@
 
 
 
-/*! \file gmPSurfNormalsVisualizer.h
+/*! \file gmpsurfnormalsvisualizer.h
  *
  *  Interface for the PSurfNormalsVisualizer class.
- *
- *  \date   2010-04-13
  */
 
 
 #ifndef __GMPSURFNORMALSVISUALIZER_H__
 #define __GMPSURFNORMALSVISUALIZER_H__
 
+#include "gmpsurfvisualizer.h"
 
+// gmlib
 #include "gmPoint.h"
 #include "gmDVector.h"
 #include "gmDMatrix.h"
 #include "gmColor.h"
-#include "gmPSurfVisualizer.h"
 
 
 namespace GMlib {
@@ -89,7 +88,7 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PSurfNormalsVisualizer class function implementations
-#include "gmPSurfNormalsVisualizer.c"
+#include "gmpsurfnormalsvisualizer.c"
 
 
 

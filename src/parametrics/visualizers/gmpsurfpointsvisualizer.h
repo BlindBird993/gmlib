@@ -22,39 +22,41 @@
 
 
 
-/*! \file gmPCurvePointsVisualizer.h
+/*! \file gmpsurfpointsvisualizer.h
  *
- *  Interface for the PCurvePointsVisualizer class.
- *
- *  \date   2010-04-13
+ *  Interface for the PSurfPointsVisualizer class.
  */
 
 
-#ifndef __GMPCURVEPOINTSVISUALIZER_H__
-#define __GMPCURVEPOINTSVISUALIZER_H__
+#ifndef __GMPSURFPOINTSVISUALIZER_H__
+#define __GMPSURFPOINTSVISUALIZER_H__
 
+#include "gmpsurfvisualizer.h"
+
+// gmlib
 #include "gmPoint.h"
-#include "gmColor.h"
 #include "gmDVector.h"
-#include "gmPCurveVisualizer.h"
+#include "gmDMatrix.h"
+#include "gmColor.h"
 
 
 namespace GMlib {
 
 
   template <typename T>
-  class PCurvePointsVisualizer : public PCurveVisualizer<T> {
+  class PSurfPointsVisualizer : public PSurfVisualizer<T> {
   public:
-    PCurvePointsVisualizer();
-    ~PCurvePointsVisualizer();
+    PSurfPointsVisualizer();
+    ~PSurfPointsVisualizer();
 
     void              display( Camera* cam );
     const Color&      getColor() const;
     std::string       getIdentity() const;
     float             getSize() const;
     void              replot(
-      DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d
+      DMatrix< DMatrix< Vector<T, 3> > >& p,
+      DMatrix< Vector<T, 3> >& normals,
+      int m1, int m2, int d1, int d2
     );
     void              setColor( const Color& color );
     void              setSize( float size );
@@ -62,17 +64,19 @@ namespace GMlib {
   protected:
     GLProgram         _display;
 
-    GLuint            _vbo_v;
-    int               _no_elements;
-
     float             _size;
     Color             _color;
-  };
+
+    GLuint            _vbo_v;
+    int               _no_points;
+  }; // END class PSurfPointsVisualizer
+
+
 
 } // END namespace GMlib
 
-// Include PCurvePointsVisualizer class function implementations
-#include "gmPCurvePointsVisualizer.c"
+// Include PSurfPointsVisualizer class function implementations
+#include "gmpsurfpointsvisualizer.c"
 
 
-#endif // __GMPCURVEPOINTSVISUALIZER_H__
+#endif // __GMPSURFPOINTSVISUALIZER_H__

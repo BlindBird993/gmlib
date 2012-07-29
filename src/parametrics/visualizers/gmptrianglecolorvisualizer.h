@@ -22,22 +22,21 @@
 
 
 
-/*! \file gmPTriangleColorVisualizer.h
+/*! \file gmptrianglecolorvisualizer.h
  *
  *  Interface for the PTriangleColorVisualizer class.
- *
- *  \date   2010-06-19
  */
 
 
 #ifndef __gmPTRIANGLECOLORVISUALIZER_H__
 #define __gmPTRIANGLECOLORVISUALIZER_H__
 
+#include <gmptrianglevisualizer.h>
 
+// gmlib
 #include <gmPoint.h>
 #include <gmDVector.h>
 #include <gmDMatrix.h>
-#include <gmPTriangleVisualizer.h>
 #include <gmOpenGL.h>
 
 namespace GMlib {
@@ -82,6 +81,6 @@ namespace GMlib {
 
 
 // Include PTriangleColorVisualizer class function implementations
-#include "gmPTriangleColorVisualizer.c"
+#include "gmptrianglecolorvisualizer.c"
 
 #endif // __gmPTRIANGLECOLORVISUALIZER_H__

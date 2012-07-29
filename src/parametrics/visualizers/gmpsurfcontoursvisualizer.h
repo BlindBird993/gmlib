@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPSurfContoursVisualizer.h
+/*! \file gmpsurfcontoursvisualizer.h
  *
  *  Interface for the PSurfContoursVisualizer class.
- *
- *  \date   2010-04-13
  */
 
 
@@ -34,11 +32,14 @@
 #define __GMPSURFCONTOURSVISUALIZER_H__
 
 
+#include "gmpsurfvisualizer.h"
+
+
+// gmlib
 #include "gmPoint.h"
 #include "gmColor.h"
 #include "gmDVector.h"
 #include "gmDMatrix.h"
-#include "gmPSurfVisualizer.h"
 
 
 namespace GMlib {
@@ -118,7 +119,7 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PSurfContoursVisualizer class function implementations
-#include "gmPSurfContoursVisualizer.c"
+#include "gmpsurfcontoursvisualizer.c"
 
 
 #endif // __GMPSURFCONTOURSVISUALIZER_H__

@@ -22,42 +22,39 @@
 
 
 
-/*! \file gmPSurfPointsVisualizer.h
+/*! \file gmpcurvepointsvisualizer.h
  *
- *  Interface for the PSurfPointsVisualizer class.
- *
- *  \date   2010-04-13
+ *  Interface for the PCurvePointsVisualizer class.
  */
 
 
-#ifndef __GMPSURFPOINTSVISUALIZER_H__
-#define __GMPSURFPOINTSVISUALIZER_H__
+#ifndef __GMPCURVEPOINTSVISUALIZER_H__
+#define __GMPCURVEPOINTSVISUALIZER_H__
 
+#include "gmpcurvevisualizer.h"
 
+// gmlib
 #include "gmPoint.h"
-#include "gmDVector.h"
-#include "gmDMatrix.h"
 #include "gmColor.h"
-#include "gmPSurfVisualizer.h"
+#include "gmDVector.h"
 
 
 namespace GMlib {
 
 
   template <typename T>
-  class PSurfPointsVisualizer : public PSurfVisualizer<T> {
+  class PCurvePointsVisualizer : public PCurveVisualizer<T> {
   public:
-    PSurfPointsVisualizer();
-    ~PSurfPointsVisualizer();
+    PCurvePointsVisualizer();
+    ~PCurvePointsVisualizer();
 
     void              display( Camera* cam );
     const Color&      getColor() const;
     std::string       getIdentity() const;
     float             getSize() const;
     void              replot(
-      DMatrix< DMatrix< Vector<T, 3> > >& p,
-      DMatrix< Vector<T, 3> >& normals,
-      int m1, int m2, int d1, int d2
+      DVector< DVector< Vector<T, 3> > >& p,
+      int m, int d
     );
     void              setColor( const Color& color );
     void              setSize( float size );
@@ -65,19 +62,17 @@ namespace GMlib {
   protected:
     GLProgram         _display;
 
+    GLuint            _vbo_v;
+    int               _no_elements;
+
     float             _size;
     Color             _color;
-
-    GLuint            _vbo_v;
-    int               _no_points;
   };
-
-
 
 } // END namespace GMlib
 
-// Include PSurfPointsVisualizer class function implementations
-#include "gmPSurfPointsVisualizer.c"
+// Include PCurvePointsVisualizer class function implementations
+#include "gmpcurvepointsvisualizer.c"
 
 
-#endif // __GMPSURFPOINTSVISUALIZER_H__
+#endif // __GMPCURVEPOINTSVISUALIZER_H__

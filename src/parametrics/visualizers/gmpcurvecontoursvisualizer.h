@@ -22,22 +22,21 @@
 
 
 
-/*! \file gmPCurveContoursVisualizer.h
+/*! \file gmpcurvecontoursvisualizer.h
  *
  *  Interface for the PCurveContoursVisualizer class.
- *
- *  \date   2010-04-13
  */
 
 
 #ifndef __GMPCURVECONTOURSVISUALIZER_H__
 #define __GMPCURVECONTOURSVISUALIZER_H__
 
+#include "gmPCurveVisualizer.h"
 
+// gmlib
 #include "gmPoint.h"
 #include "gmColor.h"
 #include "gmDVector.h"
-#include "gmPCurveVisualizer.h"
 
 
 namespace GMlib {
@@ -88,7 +87,7 @@ namespace GMlib {
 } // END namespace GMlib
 
 // Include PCurveContoursVisualizer class function implementations
-#include "gmPCurveContoursVisualizer.c"
+#include "gmpcurvecontoursvisualizer.c"
 
 
 

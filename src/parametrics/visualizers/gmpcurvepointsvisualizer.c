@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmPCurvePointsVisualizer.c
+/*! \file gmpcurvepointsvisualizer.c
  *
  *  Implementation of the PCurvePointsVisualizer template class.
- *
- *  \date   2010-04-13
  */
 
 
