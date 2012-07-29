@@ -25,7 +25,8 @@ addHeaders(
   gmTriangleSystem
 )
 
-addSources(
+addTemplateSources(
+  gmtrianglesystem.c
 )
 
 addSubDirectory(visualizers)
