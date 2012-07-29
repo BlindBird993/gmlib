@@ -17,6 +17,7 @@
 *.moc
 *.user*
 *.cbp
+*.autosave
 
 #
 ########
