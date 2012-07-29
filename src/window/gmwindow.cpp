@@ -22,29 +22,233 @@
 
 
 
-/*! \file gmWindow_GMWindow.cpp
+/*! \file gmwindow.cpp
  *	\brief Pending Description
- *
- *  Implementation of the View class.
- *
- *  \date   2008-07-28
  */
 
 
-// STL
-#include <cstdio>
+#include "gmwindow.h"
 
-// GMlib
-#include "gmOpenGL.h"
-
-// Header
-#include "gmWindow.h"
 
 
 namespace GMlib {
 
 
 
+  /*! void View::_find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  void View::_find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders) {
+
+    if( _border ) _border->_find( x, y, cam, borders );
+    else
+    {
+      int w1, w2, h1, h2;
+      _camera->getViewport( w1, w2, h1, h2 );
+      if( x >= w1 && x <= w2 && y >= h1 && y <= h2 ) cam=_camera;
+    }
+  }
+
+
+  /*! void View::_prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  void View::_prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders) {
+
+    if( _camera )
+      _camera->reshape( x1, y1, x2, y2 );
+    else
+      _border->_prepare( x1, y1, x2, y2, borders );
+  }
+
+
+  /*! void View::_removeCamera(Camera* cam)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  void View::_removeCamera(Camera* cam) {
+
+    if( _border ) {
+
+      View* view = _border->_hasCamera( cam );
+      if( view ) {
+
+        ViewBorder* border = _border;
+        (*this) = (*view);
+        delete border;
+      }
+      else _border->_removeCamera(cam);
+    }
+  }
+
+
+  /*! void View::_splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   *	Recurciv seek to find object to split
+   */
+  void View::_splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d) {
+
+    if(_camera == cam_to_split)
+      _split( new_cam, split_vertically, d );
+    else if(_border)
+      _border->_splitCamera( cam_to_split, new_cam, split_vertically, d );
+  }
+
+  /*! ViewSet::ViewSet(Camera* cam)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  ViewSet::ViewSet(Camera* cam) : _root(cam) {
+
+    if(cam)	_cameras += cam;
+    _border_color = GMcolor::White;
+  }
+
+
+  /*! ViewSet::ViewSet(const ViewSet& viewset)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  ViewSet::ViewSet(const ViewSet& viewset) {
+
+    int i;
+    _cameras = viewset._cameras;
+    _vp_w = viewset._vp_w;
+    _vp_h = viewset._vp_h;
+    _border_color = viewset._border_color;
+    _root = viewset._root;
+    for( i = 0; i < viewset._borders.getSize(); i++)
+      _borders += new ViewBorder( *( viewset._borders(i)) );
+    _root._corr( _borders ,viewset._borders );
+    for( i = 0; i < _borders.getSize(); i++ )
+      _borders[i]->_corr( _borders, viewset._borders );
+    prepare(_vp_w, _vp_h );
+  }
+
+
+  /*! ViewSet::~ViewSet()
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  ViewSet::~ViewSet() {
+
+    for(int i=0; i<_borders.getSize(); i++)	delete _borders[i];
+  }
+
+
+  /*! ViewSet& ViewSet::operator=(const ViewSet& viewset)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  ViewSet& ViewSet::operator=(const ViewSet& viewset) {
+
+    int i;
+    for(i=0; i<_borders.size(); i++) delete _borders[i];
+    _borders.resetSize();
+    _cameras = viewset._cameras;
+    _vp_w = viewset._vp_w;
+    _vp_h = viewset._vp_h;
+    _border_color = viewset._border_color;
+    _root = viewset._root;
+    for(i=0; i<viewset._borders.getSize(); i++)
+      _borders += new ViewBorder(*(viewset._borders(i)));
+    for(i=0; i<_borders.getSize(); i++)
+      _borders[i]->_corr(_borders, viewset._borders);
+    _root._corr( _borders, viewset._borders);
+    prepare( _vp_w, _vp_h);
+    return *this;
+  }
+
+
+  /*! void ViewSet::_drawCamera(bool stereo)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  void ViewSet::_drawCamera(bool stereo) {
+
+    _drawBorder();
+    for( int i = 0; i < _cameras.getSize(); i++ )
+      _cameras[i]->go( stereo );
+  }
+
+
+  /*! bool ViewSet::_find(int x, int y, Camera*& cam)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   *
+   *	\param[in] x
+   *	\param[in] y
+   *	\param[out] cam
+   *	\return Status result of the search.
+   */
+  bool ViewSet::_find(int x, int y, Camera*& cam) {
+
+    cam = 0;
+    _selected_borders.resetSize();
+    _root._find( x, y, cam, _selected_borders);
+
+    if( _selected_borders.getSize() >0 )
+      return false;
+
+    return true;
+  }
+
+
+  /*! int ViewSet::getSize()
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  int ViewSet::getSize() {
+
+    return _cameras.getSize();
+  }
+
+
+  /*! void ViewSet::_reset()
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  void ViewSet::_reset() {
+
+    _selected_borders.resetSize();
+  }
+
+
+  /*! void ViewSet::_setBorderColor(const Color& bc)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  void ViewSet::_setBorderColor(const Color& bc) {
+
+    _border_color = bc;
+  }
+
+
+  /*! Camera* ViewSet::operator[](int i)
+   *	\brief Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  Camera* ViewSet::operator[](int i) {
+
+    return _cameras[i];
+  }
 
   /*! GMWindow::GMWindow()
    *	\brief Pending Documentation
@@ -341,4 +545,4 @@ namespace GMlib {
     return _running;
   }
 
-}
+} // END namespace GMlib
