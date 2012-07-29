@@ -22,47 +22,48 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpasteroidalsphere.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PAsteroidalSphere surface class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPASTEROIDALSPHERE_H__
+#define __gmPASTEROIDALSPHERE_H__
 
 
-
-#include "gmbasisevaluator.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PAsteroidalSphere : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+    PAsteroidalSphere( T sx = T(1), T sy = T(1), T sz = T(1) );
+    PAsteroidalSphere( const PAsteroidalSphere<T>& copy );
 
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
-
+    std::string   getIdentity() const;
+    void          setConstants( T sx, T sy, T sz );
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T             _a;
+    T             _b;
+    T             _c;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void          eval( T u, T v, int d1, int d2, bool lu, bool lv );
+    T             getEndPU();
+    T             getEndPV();
+    T             getStartPU();
+    T             getStartPV();
+    bool          isClosedU() const;
+    bool          isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PAsteroidalSphere
 
 } // END namespace GMlib
 
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
+// Include PAsteroidalSphere class function implementations
+#include "gmpasteroidalsphere.c"
 
-
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPASTEROIDALSPHERE_H__

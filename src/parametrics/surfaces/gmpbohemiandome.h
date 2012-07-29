@@ -22,47 +22,51 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpbohemiandome.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PBohemianDome class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPBOHEMIANDOME_H__
+#define __gmPBOHEMIANDOME_H__
 
 
-
-#include "gmbasisevaluator.h"
-
+#include "../gmpsurf.h"
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PBohemianDome : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PBohemianDome( T radius = T(5), T domewidth=T(2), T height=T(2) );
+    PBohemianDome( const PBohemianDome<T>& copy );
+    virtual ~PBohemianDome();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T                 _r; // radius
+    T                 _w; // domewidth
+    T                 _h; // height
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PBohemianDome
+
 
 } // END namespace GMlib
 
+// Include PBohemianDome class function implementations
+#include "gmpbohemiandome.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPBOHEMIANDOME_H__
+

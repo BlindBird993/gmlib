@@ -21,8 +21,30 @@
 # ###############################################################################
 
 addHeaders(
+  gmPArc
+  gmPBasisCurve
+  gmPBezierCurve
+  gmPBSplineCurve
+  gmPButterfly
+  gmPChrysanthemumCurve
+  gmPCircle
+  gmPERBSCurve
+  gmPHelicoid
+  gmPRoseCurve
+  gmPTCurve
 )
 
 addTemplateSources(
+  gmparc.c
+  gmpbasiscurve.c
+  gmpbeziercurve.c
+  gmpbsplinecurve.c
+  gmpbutterfly.c
+  gmpchrysanthemumcurve.c
+  gmpcircle.c
+  gmperbscurve.c
+  gmphelicoid.c
+  gmprosecurve.c
+  gmptcurve.c
 )
 

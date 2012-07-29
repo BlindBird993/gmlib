@@ -22,47 +22,47 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpenneperssurface.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PEnnepersSurface class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPENNEPERSSURFACE_H__
+#define __gmPENNEPERSSURFACE_H__
 
-
-
-#include "gmbasisevaluator.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PEnnepersSurface : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PEnnepersSurface();
+    PEnnepersSurface( const PEnnepersSurface<T>& copy );
+    virtual ~PEnnepersSurface();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+  }; // END class PEnnepersSurface
 
-  }; // END class BFBSEvaluator
 
 } // END namespace GMlib
 
+// Include PEnnepersSurface class function implementations
+#include "gmpenneperssurface.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPENNEPERSSURFACE_H__
+

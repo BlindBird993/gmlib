@@ -22,47 +22,57 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmphelicoid.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PHelicoid class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPHELICOID_H__
+#define __gmPHELICOID_H__
 
 
 
-#include "gmbasisevaluator.h"
+#include "gmpsurf.h"
+
+
+// stl
+#include <string>
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PHelicoid : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PHelicoid( T scale_x = T(1), T scale_y = T(1), T scale_z = T(0.32) );
+    PHelicoid( const PHelicoid<T>& copy );
+    virtual ~PHelicoid();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T                 _sx;
+    T                 _sy;
+    T                 _sz;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PHelicoid
+
 
 } // END namespace GMlib
 
+// Include PHelicoid class function implementations
+#include "gmphelicoid.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPHELICOID_H__
+

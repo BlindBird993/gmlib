@@ -22,47 +22,50 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpapple2.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PApple2 class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPAPPLE2_H__
+#define __gmPAPPLE2_H__
 
 
-
-#include "gmbasisevaluator.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PApple2 : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PApple2( T radius = T(1) );
+    PApple2( const PApple2<T>& copy );
+    virtual ~PApple2();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T                 _r;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PApple2
+
 
 } // END namespace GMlib
 
+// Include PApple2 class function implementations
+#include "gmpapple2.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPAPPLE2_H__
+

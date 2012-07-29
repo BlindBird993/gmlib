@@ -22,47 +22,57 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpcylinder.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PCylinder class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPCYLINDER_H__
+#define __gmPCYLINDER_H__
 
 
+#include "../gmpsurf.h"
 
-#include "gmbasisevaluator.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PCylinder : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+    PCylinder( T rx = 4, T ry = 4, T h = 2 );
+    PCylinder( const PCylinder<T>& copy );
+    virtual ~PCylinder();
 
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
-
+    T             getHeight() const;
+    std::string   getIdentity() const;
+    T             getRadiusX() const;
+    T             getRadiusY() const;
+    bool          isClosedU() const;
+    bool          isClosedV() const;
+    void          setConstants( T rx, T ry, T h );
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T             _rx;
+    T             _ry;
+    T             _h;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T             getEndPV();
+    T             getEndPU();
+    T             getStartPU();
+    T             getStartPV();
 
-  }; // END class BFBSEvaluator
+  }; // END class PCylinder
+
 
 } // END namespace GMlib
 
+// Include PCylinder class function implementations
+#include "gmpcylinder.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPCYLINDER_H__
+
+

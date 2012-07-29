@@ -21,8 +21,72 @@
 # ###############################################################################
 
 addHeaders(
+  gmPApple
+  gmPApple2
+  gmPAsteroidalSphere
+  gmPBenthorns
+  gmPBezierSurf
+  gmPBohemianDome
+  gmPBottle8
+  gmPBoysSurface
+  gmPCircularSurface
+  gmPCone
+  gmPCrossCap
+  gmPCylinder
+  gmPDiniSurface
+  gmPEightSurface
+  gmPEnnepersSurface
+  gmPERBSSurf
+  gmPHeart
+  gmPHermiteSurface
+  gmPInsideOutTorus
+  gmPKleinsBottle
+  gmPKuenSurface
+  gmPMoebiusStrip
+  gmPPlane
+  gmPSeashell
+  gmPSinSurface
+  gmPSlippersSurface
+  gmPSphere
+  gmPSteinerSurf
+  gmPSwallowTail
+  gmPTorus
+  gmPTrianguloidTrefoil
+  gmPWhitneyUmbrella
 )
 
 addTemplateSources(
+  gmpapple2.c
+  gmpapple.c
+  gmpasteroidalsphere.c
+  gmpbenthorns.c
+  gmpbeziersurf.c
+  gmpbohemiandome.c
+  gmpbottle8.c
+  gmpboyssurface.c
+  gmpcircularsurface.c
+  gmpcone.c
+  gmpcrosscap.c
+  gmpcylinder.c
+  gmpdinisurface.c
+  gmpeightsurface.c
+  gmpenneperssurface.c
+  gmperbssurf.c
+  gmpheart.c
+  gmphermitesurface.c
+  gmpinsideouttorus.c
+  gmpkleinsbottle.c
+  gmpkuensurface.c
+  gmpmoebiusstrip.c
+  gmpplane.c
+  gmpseashell.c
+  gmpsinsurface.c
+  gmpslipperssurface.c
+  gmpsphere.c
+  gmpsteinersurf.c
+  gmpswallowtail.c
+  gmptorus.c
+  gmptrianguloidtrefoil.c
+  gmpwhitneyumbrella.c
 )
 

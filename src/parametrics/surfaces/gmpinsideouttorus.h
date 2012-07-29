@@ -22,47 +22,51 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpinsideouttorus.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PInsideOutTorus class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPINSIDEOUTTORUS_H__
+#define __gmPINSIDEOUTTORUS_H__
 
-
-
-#include "gmbasisevaluator.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PInsideOutTorus : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PInsideOutTorus( T wheelrad=T(3), T tuberad1=T(1), T tuberad2=T(1) );
+    PInsideOutTorus( const PInsideOutTorus<T>& copy );
+    virtual ~PInsideOutTorus();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T                 _a;		//Wheelradius
+    T                 _b;		//Tuberadius1
+    T                 _c;		//Tuberadius2
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PInsideOutTorus
+
 
 } // END namespace GMlib
 
+// Include PInsideOutTorus class function implementations
+#include "gmpinsideouttorus.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPINSIDEOUTTORUS_H__
+

@@ -22,47 +22,48 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmprosecurve.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PRoseCurve class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPROSECURVE_H__
+#define __gmPROSECURVE_H__
 
 
-
-#include "gmbasisevaluator.h"
+// GMlib includes+
+#include "gmpcurve.h"
 
 
 namespace GMlib {
 
 
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PRoseCurve : public PCurve<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+    PRoseCurve( T radius = T(5) );
+    PRoseCurve( const PRoseCurve<T>& copy );
+    virtual ~PRoseCurve();
 
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    std::string   getIdentity() const;
+    bool          isClosed() const;
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T             _r;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void	        eval(T t, int d, bool l);
+    T             getEndP();
+    T             getStartP();
 
-  }; // END class BFBSEvaluator
+  }; // END PRoseCurve
 
-} // END namespace GMlib
+} // END namepace GMlib
 
-
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
+// Include PRoseCurve class function implementations
+#include "gmprosecurve.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPROSECURVE_H__
+
+

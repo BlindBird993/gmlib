@@ -22,47 +22,47 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpswallowtail.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PSwallowTail class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPSWALLOWTAIL_H__
+#define __gmPSWALLOWTAIL_H__
 
-
-
-#include "gmbasisevaluator.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PSwallowTail : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PSwallowTail();
+    PSwallowTail( const PSwallowTail<T>& copy );
+    virtual ~PSwallowTail();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+  }; // END class PSwallowTail
 
-  }; // END class BFBSEvaluator
 
 } // END namespace GMlib
 
+// Include PSwallowTail class function implementations
+#include "gmpswallowtail.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPSWALLOWTAIL_H__
+

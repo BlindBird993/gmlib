@@ -21,8 +21,12 @@
 # ###############################################################################
 
 addHeaders(
+  gmPBezierTriangle
+  gmPERBSTriangle
 )
 
 addTemplateSources(
+  gmpbeziertriangle.c
+  gmperbstriangle.c
 )
 

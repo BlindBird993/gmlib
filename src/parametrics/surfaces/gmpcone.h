@@ -22,47 +22,51 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpcone.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PCone class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPCONE_H__
+#define __gmPCONE_H__
 
+#include "../gmpsurf.h"
 
-
-#include "gmbasisevaluator.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PCone : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PCone( T radius = T(3), T height = T(5) );
+    PCone( const PCone<T>& copy );
+    virtual ~PCone();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T                 _r;
+    T                 _h;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PCone
+
 
 } // END namespace GMlib
 
+// Include PCone class function implementations
+#include "gmpcone.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPCONE_H__
+

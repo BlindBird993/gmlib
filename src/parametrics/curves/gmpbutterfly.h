@@ -22,47 +22,47 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpbutterfly.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PButterfly class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPBUTTERFLY_H__
+#define __gmPBUTTERFLY_H__
 
 
-
-#include "gmbasisevaluator.h"
+// GMlib includes+
+#include "../gmpcurve.h"
 
 
 namespace GMlib {
 
 
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PButterfly : public PCurve<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+    PButterfly( T size = T(5) );
+    PButterfly( const PButterfly<T>& copy );
+    virtual ~PButterfly();
 
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    std::string   getIdentity() const;
+    bool          isClosed() const;
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T             _size;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void	        eval(T t, int d, bool l);
+    T             getEndP();
+    T             getStartP();
 
-  }; // END class BFBSEvaluator
+  }; // END class PButterfly
 
-} // END namespace GMlib
+} // END namepace GMlib
 
-
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
+// Include PButterfly class function implementations
+#include "gmpbutterfly.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPBUTTERFLY_H__
+

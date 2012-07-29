@@ -22,47 +22,51 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpkleinsbottle.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PKleinsBottle class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPKLEINSBOTTLE_H__
+#define __gmPKLEINSBOTTLE_H__
 
-
-
-#include "gmbasisevaluator.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PKleinsBottle : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PKleinsBottle( T scale_x = T(1), T scale_y = T(1.5), T scale_z = T(4) );
+    PKleinsBottle( const PKleinsBottle<T>& copy );
+    virtual ~PKleinsBottle();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T                 _r;
+    T                 _sx;
+    T                 _sy;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PKleinsBottle
+
 
 } // END namespace GMlib
 
+// Include PKleinsBottle class function implementations
+#include "gmpkleinsbottle.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPKLEINSBOTTLE_H__
+

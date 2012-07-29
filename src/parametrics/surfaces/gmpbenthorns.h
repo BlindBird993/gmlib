@@ -22,47 +22,49 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpbenthorns.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PBentHorns class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPBENTHORNS_H__
+#define __gmPBENTHORNS_H__
 
 
 
-#include "gmbasisevaluator.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PBentHorns : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PBentHorns();
+    PBentHorns( const PBentHorns<T>& copy );
+    virtual ~PBentHorns();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+  }; // END class PBentHorns
 
-  }; // END class BFBSEvaluator
 
 } // END namespace GMlib
 
+// Include PBentHorns class function implementations
+#include "gmpbenthorns.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPBENTHORNS_H__
+

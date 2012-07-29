@@ -22,47 +22,54 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpcircularsurface.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PCircularSurface class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPCircularSurface_H__
+#define __gmPCircularSurface_H__
 
 
+#include "../gmpsurf.h"
 
-#include "gmbasisevaluator.h"
+
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PCircularSurface : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+    PCircularSurface( T radius = T(1) );
+    PCircularSurface( T radius, int s1, int s2 );
+    PCircularSurface( const PCircularSurface<T>& copy );
+    virtual ~PCircularSurface();
 
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
-
+  public:
+    std::string   getIdentity() const;
+    T             getRadius() const;
+    void          setRadius( T radius );
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T             _radius;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T             getEndPV();
+    T             getEndPU();
+    T             getStartPU();
+    T             getStartPV();
+    bool          isClosedU() const;
+    bool          isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PCircularSurface
 
 } // END namespace GMlib
 
+// Include PCircularSurface class function implementations
+#include "gmpcircularsurface.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+
+#endif // __gmPCircularSurface_H__

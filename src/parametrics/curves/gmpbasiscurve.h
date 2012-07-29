@@ -22,47 +22,58 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpbasiscurve.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PBasisCurve class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPBASISCURVE_H__
+#define __gmPBASISCURVE_H__
 
 
+#include "gmpcurve.h"
 
-#include "gmbasisevaluator.h"
+
+#include "../evaluators/gmbasisevaluator.h"
 
 
 namespace GMlib {
 
 
-  template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  enum GM_BASIS_CURVE_DISPLAY {
+    GM_BASIS_CURVE_F      = 0,
+    GM_BASIS_CURVE_D      = 1,
+    GM_BASIS_CURVE_DD     = 2,
+    GM_BASIS_CURVE_DDD    = 3
+  };
+
+
+  template <typename T, typename G = long double>
+  class PBasisCurve : public PCurve<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+    PBasisCurve();
+    ~PBasisCurve();
 
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
-
+    void                            setDisplay( int display );
+    void                            setEvaluator( BasisEvaluator<G>* e );
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    void                            eval( T t, int d, bool l );
+    T                               getEndP();
+    T                               getStartP();
+    bool                            isClosed() const;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+  private:
+    BasisEvaluator<G>     *_B;
+    int                             _d_no;
 
-  }; // END class BFBSEvaluator
+  }; // class ERBSBasisCurve
 
 } // END namespace GMlib
 
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
+// Include PBasisCurve class function implementations
+#include "gmpbasiscurve.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPBASISCURVE_H__

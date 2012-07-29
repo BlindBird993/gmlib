@@ -22,47 +22,43 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpchrysanthemumcurve.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PChrysanthemumCurve class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPCHRYSANTHEMUMCURVE_H__
+#define __gmPCHRYSANTHEMUMCURVE_H__
 
 
-
-#include "gmbasisevaluator.h"
+// GMlib includes+
+#include "../gmpcurve.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PChrysanthemumCurve : public PCurve<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+    PChrysanthemumCurve( T radius = T(1) );
+    PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy );
 
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
-
+    std::string   getIdentity() const;
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T             _r;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void          eval( T t, int d, bool l );
+    T             getEndP();
+    T             getStartP();
+    bool          isClosed() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PChrysanthemumCurve
 
 } // END namespace GMlib
 
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
+// Include PChrysanthemumCurve class function implementations
+#include "gmpchrysanthemumcurve.c"
 
-
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPCHRYSANTHEMUMCURVE_H__

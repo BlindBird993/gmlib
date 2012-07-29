@@ -22,47 +22,47 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpcircle.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PCircle class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPCIRCLE_H__
+#define __gmPCIRCLE_H__
 
 
-
-#include "gmbasisevaluator.h"
+#include "../gmpcurve.h"
 
 
 namespace GMlib {
 
 
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PCircle : public PCurve<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+    PCircle( T radius = T(20) );
+    PCircle( const PCircle<T>& copy );
+    virtual ~PCircle();
 
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    std::string     getIdentity() const;
+    T               getRadius();
+    bool            isClosed() const;
+    void            setRadius( T radius = T(20) );
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T               _r;
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void	          eval(T t, int d, bool l);
+    T               getEndP();
+    T               getStartP();
 
-  }; // END class BFBSEvaluator
+  }; // END class PCircle
 
-} // END namespace GMlib
+} // END namepace GMlib
 
-
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
+// Include PCircle class function implementations
+#include "gmpcircle.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPCIRCLE_H__

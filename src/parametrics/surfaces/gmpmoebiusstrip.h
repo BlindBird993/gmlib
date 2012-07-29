@@ -22,47 +22,50 @@
 
 
 
-/*! \file gmbfbsevaluator.h
+/*! \file gmpmoebiusstrip.h
  *
- *  Interface for the BFBSEvaluator class.
+ *  Interface for the PMoebiusStrip class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef __gmPMOEBIUSSTRIP_H__
+#define __gmPMOEBIUSSTRIP_H__
 
-
-
-#include "gmbasisevaluator.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {
 
-
   template <typename T>
-  class BFBSEvaluator : public BasisEvaluator<T> {
+  class PMoebiusStrip : public PSurf<T> {
   public:
-    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
-
-    void      setIk( int ik );
-    void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    PMoebiusStrip( T radius = T(2), T width = T(1) );
+    PMoebiusStrip( const PMoebiusStrip<T>& copy );
+    virtual ~PMoebiusStrip();
 
 
   protected:
-    int       _ik;
-    int       _ikp1;
+    T                 _r;   // Radius
+    T                 _w;  // Half width
 
-    int       getFact( int m );
-    T         getF2( T t );
-    T         getPhi( T t );
+    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+    T                 getEndPU();
+    T                 getEndPV();
+    std::string       getIdentity() const;
+    T                 getStartPU();
+    T                 getStartPV();
+    virtual void      init();
+    bool              isClosedU() const;
+    bool              isClosedV() const;
 
-  }; // END class BFBSEvaluator
+  }; // END class PMoebiusStrip
+
 
 } // END namespace GMlib
 
+// Include PMoebiusStrip class function implementations
+#include "gmpmoebiusstrip.c"
 
-// Include BFBSEvaluator class function implementations
-#include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // __gmPMOEBIUSSTRIP_H__
+
