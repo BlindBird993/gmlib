@@ -22,11 +22,29 @@
 
 
 
-/*! \file gmBasisEvaluator
+/*! \file gmevaluatorstatic.h
  *
- *  C++ interface for the basis evaluator header and classes.
- *
- *  \date   2010-06-20
+ *  Interface for the EvaluatorStatic class.
  */
 
-#include "gmBasisEvaluator.h"
+#ifndef __gmEVALUATRORSTATIC_H__
+#define __gmEVALUATRORSTATIC_H__
+
+// gmlib
+#include "gmDMatrix.h"
+
+namespace GMlib {
+
+
+  template <typename T>
+  class EvaluatorStatic {
+  public:
+    static void evaluateBhp( DMatrix<T>& mat, int degree, T t, T scale );
+  };
+}
+
+
+// Include function implementations
+#include "gmevaluatorstatic.c"
+
+#endif // __gmEVALUATORSTATIC_H__

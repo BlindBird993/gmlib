@@ -22,22 +22,20 @@
 
 
 
-/*! \file gmBasisEvaluator.h
+/*! \file gmbasisevaluator.h
  *
  *  Interface for the BasisEvaluator class.
- *
- *  \date   2010-06-21
  */
 
 #ifndef __gmBASISEVALUATOR_H__
 #define __gmBASISEVALUATOR_H__
 
-
-// STL
-#include <cmath>
-
+// gmlib
 #include <gmDMatrix.h>
 #include <gmDVector.h>
+
+// stl
+#include <cmath>
 
 
 
@@ -102,7 +100,7 @@ namespace GMlib {
 
 
 // Include BasisEvaluator class function implementations
-#include "gmBasisEvaluator.c"
+#include "gmbasisevaluator.c"
 
 
 #endif // __gmBASISEVALUATOR_H__

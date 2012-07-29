@@ -22,11 +22,47 @@
 
 
 
-/*! \file gmERBSEvaluator
+/*! \file gmbfbsevaluator.h
  *
- *  C++ interface for the ERBS basis evaluator header and classes.
- *
- *  \date   2010-06-20
+ *  Interface for the BFBSEvaluator class.
  */
 
-#include "gmERBSEvaluator.h"
+#ifndef __gmBFBSEVALUATOR_H__
+#define __gmBFBSEVALUATOR_H__
+
+
+
+#include "gmbasisevaluator.h"
+
+
+namespace GMlib {
+
+
+  template <typename T>
+  class BFBSEvaluator : public BasisEvaluator<T> {
+  public:
+    BFBSEvaluator( int m = 1024, int ik = 3, int ikp1 = 3 );
+
+    void      setIk( int ik );
+    void      setIkp1( int ikp1 );
+    void      setParameters( int ik, int ikp1 );
+
+
+  protected:
+    int       _ik;
+    int       _ikp1;
+
+    int       getFact( int m );
+    T         getF2( T t );
+    T         getPhi( T t );
+
+  }; // END class BFBSEvaluator
+
+} // END namespace GMlib
+
+
+// Include BFBSEvaluator class function implementations
+#include "gmBFBSEvaluator.c"
+
+
+#endif // __gmBFBSEVALUATOR_H__

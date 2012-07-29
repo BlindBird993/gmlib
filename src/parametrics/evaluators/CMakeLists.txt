@@ -21,7 +21,15 @@
 # ###############################################################################
 
 addHeaders(
+  gmBasisEvaluator
+  gmBFBSEvaluator
+  gmERBSEvaluator
+  gmEvaluatorStatic
 )
 
 addTemplateSources(
+  gmbasisevaulator.c
+  gmbfbsevaluator.c
+  gmerbsevaluator.c
+  gmevaluatorstatic.c
 )

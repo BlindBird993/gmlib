@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmEvaluatorStatic.c
+/*! \file gmevaluatorstatic.c
  *
  *  EvaluatorStatic class function implementations
- *
- *  \date   2008-10-31
  */
 
 

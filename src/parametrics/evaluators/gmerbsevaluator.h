@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmERBSEvaluator.h
+/*! \file gmerbsevaluator.h
  *
  *  Interface for the ERBSEvaluator class.
- *
- *  \date   2010-06-21
  */
 
 #ifndef __gmERBSEVALUATOR_H__
@@ -35,7 +33,7 @@
 
 
 // GMlib includes
-#include "gmBasisEvaluator.h"
+#include "gmbasisevaluator.h"
 
 
 namespace GMlib {
@@ -75,7 +73,7 @@ namespace GMlib {
 
 
 // Include ERBSEvaluator class function implementations
-#include "gmERBSEvaluator.c"
+#include "gmerbsevaluator.c"
 
 
 

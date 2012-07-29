@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmERBSEvaluator.c
+/*! \file gmerbsevaluator.c
  *
  *  Implementation of the ERBSEvaluator template class.
- *
- *  \date   2010-06-21
  */
 
 

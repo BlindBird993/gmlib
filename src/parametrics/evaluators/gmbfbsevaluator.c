@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmBFBSEvaluator.c
+/*! \file gmbfbsevaluator.c
  *
  *  Implementation of the BFBSEvaluator template class.
- *
- *  \date   2010-06-21
  */
 
 

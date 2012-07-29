@@ -22,11 +22,9 @@
 
 
 
-/*! \file gmBasisEvaluator.c
+/*! \file gmbasisevaluator.c
  *
  *  Implementation of the BasisEvaluator template class.
- *
- *  \date   2010-06-21
  */
 
 
