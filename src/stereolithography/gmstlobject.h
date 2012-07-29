@@ -31,11 +31,11 @@
 #define __gmSTLOBJECT_H__
 
 
-#include "../gmdisplayobject.h"
+#include "../scenegraph/gmdisplayobject.h"
 
 // gmlib
-#include "../../core/containers/gmarraylx.h"
-#include "../../gmPSphere.h"
+#include "../core/containers/gmarraylx.h"
+#include "../gmPSphere.h"
 
 // stl
 #include <string>

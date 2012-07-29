@@ -23,8 +23,12 @@
 
 #####################
 # Process each individual module
-addModule(Core)         # Core
-addModule(OpenGL)       # OpenGL
-addModule(SceneGraph)   # SceneGraph
-
+addModule(Core)                   # Core
+addModule(OpenGL)                 # OpenGL
+#addModule(Parametrics)           # Parametrics
+addModule(SceneGraph)             # SceneGraph
+#addModule(Script)                 # Script
+addModule(StereoLithography)      # STereoLithography
+#addModule(TriangleSystem)        # TriangleSystem
+#addModule(Window)                # Window
 

@@ -1,4 +1,4 @@
-###############################################################################
+# ###############################################################################
 # #
 # # Copyright (C) 1994 Narvik University College
 # # Contact: GMlib Online Portal at http://episteme.hin.no
@@ -22,17 +22,10 @@
 
 
 addHeaders(
-  gmArrow3D
-  gmCoordinateSystem
-  gmPathTrack
-  gmPointLightG
-  gmSphere3D
-  gmSpotLightG
+  gmStlObject
 )
 
 addSources(
-  gmcoordinatesystem.cpp
-  gmpathtrack.cpp
-  gmpointlightg.cpp
-  gmspotlightg.cpp
+  gmstlobject.cpp
 )
+
