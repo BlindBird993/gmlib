@@ -22,14 +22,13 @@
 
 
 
-/*! \file gmPLuaScriptCurve.c
+/*! \file gmpluascriptcurve.c
  *  \brief Inline PLuaScriptCurve class implementations
  *
  *  Implementation of the PLuaScriptCurve class.
- *
- *  \date   2009-09-12
  */
 
+// stl
 #include <sstream>
 
 namespace GMlib {

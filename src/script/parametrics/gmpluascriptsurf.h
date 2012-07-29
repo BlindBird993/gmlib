@@ -22,22 +22,20 @@
 
 
 
-/*! \file gmPLuaScriptCurve.h
+/*! \file gmpluascriptsurf.h
  *
- *  Interface for the gmPLuaScriptCurve class.
- *
- *  \date   2008-09-12
+ *  Interface for the PLuaScriptSurf class.
  */
 
-#ifndef __gmPLUASCRIPTCURVE_H__
-#define __gmPLUASCRIPTCURVE_H__
+#ifndef __gmPLUASCRIPTSURF_H__
+#define __gmPLUASCRIPTSURF_H__
 
-// STL
+#include "../../parametrics/gmpsurf.h"
+#include "../gmscript.h"
+
+// stl
 #include <string>
 
-// GMlib
-#include "gmPCurve.h"
-#include "gmScript.h"
 
 # ifdef GM_SCRIPT_LUA
 
@@ -48,30 +46,39 @@ namespace GMlib {
     namespace Lua {
 
       template <typename T>
-      class PLuaScriptCurve : public PCurve<T>, public LuaScript {
+      class PLuaScriptSurf : public PSurf<T>, public LuaScript {
       public:
-        PLuaScriptCurve();
-        PLuaScriptCurve( const PLuaScriptCurve<T>& copy );
-        virtual ~PLuaScriptCurve();
+        PLuaScriptSurf();
+        PLuaScriptSurf( const PLuaScriptSurf<T>& copy );
+        virtual ~PLuaScriptSurf();
 
-        void            setClosed( bool closed );
-        void            setParEnd( const T& end );
-        void            setParStart( const T& start );
+        void            setClosedU( bool closed );
+        void            setClosedV( bool closed );
+        void            setParEndU( const T& end );
+        void            setParEndV( const T& end );
+        void            setParStartU( const T& start );
+        void            setParStartV( const T& start );
 
       protected:
-        bool            _closed;
-        T               _end;
-        T               _start;
-
         void            constructResult();
-        void            eval(T t, int d, bool l = true );
-        T               getEndP();
+        void            eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
+        T               getEndPV();
+        T               getEndPU();
         std::string     getIdentity() const;
-        T               getStartP();
+        T               getStartPU();
+        T               getStartPV();
         void            init();
-        bool            isClosed() const;
+        bool            isClosedU() const;
+        bool            isClosedV() const;
 
-      }; // END class PLuaScriptCurve
+        bool            _closed_u;
+        bool            _closed_v;
+        T               _end_u;
+        T               _end_v;
+        T               _start_u;
+        T               _start_v;
+
+      }; // END class PLuaScriptSurf
 
     } // END namespace Lua
 
@@ -79,11 +86,10 @@ namespace GMlib {
 
 } // END namespace GMlib
 
-// Include PLuaScriptCurve class function implementations
-#include "gmPLuaScriptCurve.c"
+// Include PLuaScriptSurf class function implementations
+#include "gmpluascriptsurf.c"
 
 # endif // GM_SCRIPT_LUA
 
-#endif // __gmPLUASCRIPTCURVE_H__
-
+#endif // __gmPLUASCRIPTSURF_H__
 

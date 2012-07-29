@@ -22,14 +22,13 @@
 
 
 
-/*! \file gmPLuaScriptSurf.c
+/*! \file gmpluascriptsurf.c
  *  \brief Inline PLuaScriptSurf class implementations
  *
  *  Implementation of the PLuaScriptSurf class.
- *
- *  \date   2009-08-30
  */
 
+// stl
 #include <sstream>
 
 namespace GMlib {

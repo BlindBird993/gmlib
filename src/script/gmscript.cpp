@@ -22,27 +22,146 @@
 
 
 
-/*! \file gmScript_LuaScript.cpp
- *  \brief LuaScript class implementations
+/*! \file gmscript.cpp
+ *  \brief Script class implementations
  *
- *  Implementation of the LuaScript class.
- *
- *  \date   2009-08-30
+ *  Implementation of the Script class.
  */
 
 
 
-#ifdef GM_SCRIPT_LUA
+#include "gmscript.h"
 
-
-#include "gmScript.h"
 
 namespace GMlib {
 
   namespace Script {
 
+    Script::Script() {}
+
+
+    void Script::exec() {}
+
+
+    std::string Script::getErrors() { return ""; }
+
+
     namespace Lua {
 
+      LuaVar::LuaVar() : _type(GM_LUA_VAR_TYPE_NIL) {}
+
+
+      LuaVar::LuaVar( bool b ) : _type( GM_LUA_VAR_TYPE_BOOL ), _var_bool( b ) {}
+
+
+      LuaVar::LuaVar( int num ) : _type( GM_LUA_VAR_TYPE_NUM ), _var_num( num ) {}
+
+
+      LuaVar::LuaVar( float num ) : _type( GM_LUA_VAR_TYPE_NUM ), _var_num( num ) {}
+
+
+      LuaVar::LuaVar( double num ) : _type( GM_LUA_VAR_TYPE_NUM ), _var_num( num ) {}
+
+
+      LuaVar::LuaVar( char* str ) : _type( GM_LUA_VAR_TYPE_STRING ), _var_str( str )  {}
+
+
+      LuaVar::LuaVar( const char* str ) : _type( GM_LUA_VAR_TYPE_STRING ), _var_str( str ) {}
+
+
+      LuaVar::LuaVar( luaC::lua_CFunction func ) : _type( GM_LUA_VAR_TYPE_CFUNC ), _var_func( func ) {}
+
+
+      LuaVar::LuaVar( const LuaVar& copy ) {
+
+        *this = copy;
+      }
+
+
+      LuaVar::~LuaVar() {}
+
+
+      LuaVar& LuaVar::operator = ( const LuaVar& copy ) {
+
+        _type       = copy._type;
+        _var_bool   = copy._var_bool;
+        _var_num    = copy._var_num;
+        _var_str    = copy._var_str;
+
+        return *this;
+      }
+
+
+      const std::string& LuaVar::getName() const {
+
+        return _name;
+      }
+
+
+      void LuaVar::push( luaC::lua_State* L ) const {
+
+        switch(_type) {
+          case GM_LUA_VAR_TYPE_BOOL:
+            luaC::lua_pushboolean( L, _var_bool );
+            break;
+
+          case GM_LUA_VAR_TYPE_NUM:
+            luaC::lua_pushnumber( L, _var_num );
+            break;
+
+          case GM_LUA_VAR_TYPE_STRING:
+            luaC::lua_pushstring( L, _var_str.c_str() );
+            break;
+
+          case GM_LUA_VAR_TYPE_CFUNC:
+            luaC::lua_pushcfunction( L, _var_func );
+            break;
+
+          case GM_LUA_VAR_TYPE_NIL:
+          default:
+            luaC::lua_pushnil( L );
+            break;
+
+
+
+        }
+      }
+
+
+      void LuaVar::setName( const std::string& name ) {
+
+        _name = name;
+      }
+
+
+      bool LuaVar::toBoolean() const {
+
+         return _var_bool;
+      }
+
+
+      double LuaVar::toDouble() const {
+
+        return _var_num;
+      }
+
+
+      float LuaVar::toFloat() const {
+
+        return float(_var_num);
+      }
+
+
+      int LuaVar::toInt() const {
+
+        return int(_var_num);
+      }
+
+
+      std::string LuaVar::toString() const {
+
+        return _var_str;
+      }
 
       LuaScript::LuaScript() {
 
@@ -255,6 +374,3 @@ namespace GMlib {
   } // END namespace Script
 
 } // END namespace GMlib
-
-
-#endif // GM_SCRIPT_LUA

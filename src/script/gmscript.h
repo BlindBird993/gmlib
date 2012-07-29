@@ -22,15 +22,14 @@
 
 
 
-/*! \file gmSimplex.h
+/*! \file gmscript.h
  *  File Description
- *
- *  \date   2009-08-30
  */
 
 #ifndef __gmSCRIPT_H__
 #define __gmSCRIPT_H__
 
+// stl/system
 #include <string>
 #include <stdio.h>
 
