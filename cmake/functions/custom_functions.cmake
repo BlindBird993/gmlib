@@ -76,6 +76,7 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
   set( BUILD_LIB_DIR
        ${BUILD_DIR}/lib/${LIBRARY} )
 
+  include_directories(${BUILD_INCLUDE_DIR})
   message( "Lib build dir:         " ${BUILD_DIR} )
   message( "Lib build/include dir: " ${BUILD_INCLUDE_DIR} )
   message( "Lib build/lib dir:     " ${BUILD_LIB_DIR} )
@@ -107,8 +108,20 @@ macro(addModule NAME)
   # Look for files and stuff in module directory
   add_subdirectory( ${MODULE} )
 
+
+
+
   # Finalize module
   finalizeModule()
+
+  foreach( DEPENDENCY ${ARGN} )
+
+    string(TOLOWER ${DEPENDENCY} DEPENDENCY_LOWER )
+    getModuleTarget( ${DEPENDENCY_LOWER} DEPENDENCY_TARGET )
+    message( "${MODULE_TARGET} depends on <${DEPENDENCY_TARGET}>" )
+    add_dependencies( ${MODULE_TARGET} ${DEPENDENCY_TARGET} )
+
+  endforeach()
 
 endmacro(addModule)
 
@@ -118,12 +131,13 @@ macro(setupModule NAME)
   # set vars
   set( MODULE_NAME ${NAME} )
   string( TOLOWER ${MODULE_NAME} MODULE )
-  set( MODULE_TARGET ${LIB_PREFIX}${MODULE} )
+  getModuleTarget( ${MODULE} MODULE_TARGET )
   set( MODULE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE} )
 
-  message( "Module name: " ${MODULE_NAME} )
-  message( "Module:      " ${MODULE} )
-  message( "Module dir:  " ${MODULE_DIR} )
+  message( "Module name:    " ${MODULE_NAME} )
+  message( "Module:         " ${MODULE} )
+  message( "Module dir:     " ${MODULE_DIR} )
+  message( "Module target:  " ${MODULE_TARGET} )
 
   # Define build directories
   set( MODULE_BUILD_INCLUDE_DIR "${BUILD_INCLUDE_DIR}/${MODULE}" )
@@ -140,6 +154,10 @@ macro(setupModule NAME)
   unset( TEMPLATE_SOURCES CACHE )
 
 endmacro(setupModule)
+
+function(getModuleTarget MODULE_NAME MODULE_TARGET)
+  set( ${MODULE_TARGET} ${LIB_PREFIX}${MODULE_NAME} PARENT_SCOPE )
+endfunction(getModuleTarget)
 
 # Functions for adding source files and propagating these to the parent directory
 macro(addHeaders)
