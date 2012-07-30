@@ -33,10 +33,10 @@
 
 #include "gmparametrics.h"
 
-// gmlib
-#include "gmArray.h"
-#include "gmDVector.h"
-#include "gmDMatrix.h"
+// gmlib::core
+#include <core/containers/gmarray.h>
+#include <core/containers/gmdvector.h>
+#include <core/containers/gmdmatrix.h>
 
 // stl
 #include <fstream>

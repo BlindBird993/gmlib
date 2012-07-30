@@ -29,16 +29,18 @@
  */
 
 
-// gmlib
-#include "gmCamera.h"
-#include "gmMaterial.h"
-#include "gmPSurf.h"
-#include "gmOpenGL.h"
-#include "gmGLProgram.h"
-#include "gmGLShaderManager.h"
-#include "gmLight.h"
-#include "gmScene.h"
+#include "../gmpsurf.h"
 
+// gmlib::opengl
+#include <opengl/gmopengl.h>
+#include <opengl/gmglprogram.h>
+#include <opengl/gmglshadermanager.h>
+
+// gmlib::scenegraph
+#include <scenegraph/gmscene.h>
+#include <scenegraph/camera/gmcamera.h>
+#include <scenegraph/light/gmlight.h>
+#include <scenegraph/utils/gmmaterial.h>
 
 // stl
 #include <set>

@@ -31,11 +31,17 @@
 #define __gmSTLOBJECT_H__
 
 
-#include "../scenegraph/gmdisplayobject.h"
+// gmlib::core
+#include <core/containers/gmarraylx.h>
 
-// gmlib
-#include "../core/containers/gmarraylx.h"
-#include "../gmPSphere.h"
+// gmlib::scenegraph
+#include <scenegraph/gmdisplayobject.h>
+
+// gmlib::parametrics
+#include <parametrics/surfaces/gmpsphere.h>
+
+// gmlib::trianglesystem
+#include <trianglesystem/gmtrianglesystem.h>
 
 // stl
 #include <string>
@@ -113,9 +119,6 @@ namespace GMlib {
 
 
 
-
-
-  #include "../../gmtrianglesystem.h"
 
   inline
   std::string StlObject::getIdentity() const {

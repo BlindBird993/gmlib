@@ -31,7 +31,6 @@
 #define __gmPCHRYSANTHEMUMCURVE_H__
 
 
-// GMlib includes+
 #include "../gmpcurve.h"
 
 

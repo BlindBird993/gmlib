@@ -28,7 +28,6 @@
  */
 
 
-// Header Include
 #include "gmisocamera.h"
 
 namespace GMlib {

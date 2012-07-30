@@ -33,11 +33,13 @@
 
 #include <gmptrianglevisualizer.h>
 
-// gmlib
-#include <gmPoint.h>
-#include <gmDVector.h>
-#include <gmDMatrix.h>
-#include <gmOpenGL.h>
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/containers/gmdvector.h>
+#include <core/containers/gmdmatrix.h>
+
+// gmlib::opengl
+#include <opengl/gmopengl.h>
 
 namespace GMlib {
 

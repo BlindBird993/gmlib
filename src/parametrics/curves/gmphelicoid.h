@@ -34,7 +34,6 @@
 
 #include "gmpsurf.h"
 
-
 // stl
 #include <string>
 

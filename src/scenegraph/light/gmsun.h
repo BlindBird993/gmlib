@@ -32,8 +32,8 @@
 #define __gmSUN_H__
 
 
-// gmlib
 #include "../gmdisplayobject.h"
+#include "gmlight.h"
 
 // stl
 #include <string>

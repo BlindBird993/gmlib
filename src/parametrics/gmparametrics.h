@@ -33,11 +33,12 @@
 
 
 
-#include "gmDisplayObject.h"
+// gmlib::core
+#include <core/containers/gmarray.h>
 
-// gmlib
-#include "gmArray.h"
-#include "gmMaterial.h"
+// gmlib::scenegraph
+#include <scenegraph/gmdisplayobject.h>
+#include <scenegraph/utils/gmmaterial.h>
 
 // stl
 #include <string>

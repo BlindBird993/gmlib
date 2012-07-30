@@ -22,18 +22,16 @@
 
 
 
-/*! \file gmLight_PointLight.cpp
+/*! \file gmpointlight.cpp
  *
  *  Implementation of the PointLight class.
- *
- *  \date   2008-07-25
  */
 
 // System includes
 #include <float.h>
 
 // GMlib includes
-#include "gmLight.h"
+#include "gmpointlight.h"
 
 
 namespace GMlib {

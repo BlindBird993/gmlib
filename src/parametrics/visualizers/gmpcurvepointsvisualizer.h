@@ -33,10 +33,10 @@
 
 #include "gmpcurvevisualizer.h"
 
-// gmlib
-#include "gmPoint.h"
-#include "gmColor.h"
-#include "gmDVector.h"
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/containers/gmdvector.h>
+#include <core/utils/gmcolor.h>
 
 
 namespace GMlib {

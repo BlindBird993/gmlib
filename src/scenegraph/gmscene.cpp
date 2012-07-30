@@ -27,11 +27,11 @@
  *  Implementation of the Scene class.
  */
 
-//#include "gmGLSL.h"
-#include "gmScene.h"
-#include "gmSceneObject.h"
-#include "gmLight.h"
-#include "gmCamera.h"
+#include "gmscene.h"
+
+#include "gmsceneobject.h"
+#include "light/gmlight.h"
+#include "camera/gmcamera.h"
 
 
 namespace GMlib {

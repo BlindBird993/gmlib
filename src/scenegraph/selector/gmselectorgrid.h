@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmSelectorGrid.h
+/*! \file gmselectorgrid.h
  *  \brief Interface to the SelectorGrid class
  *
  *  Interface to the SelectorGrid class
@@ -34,7 +34,9 @@
 
 
 #include "gmselector.h"
-#include "../../core/containers/gmdmatrix.h"
+
+// gmlib::core
+#include <core/containers/gmdmatrix.h>
 
 
 namespace GMlib {

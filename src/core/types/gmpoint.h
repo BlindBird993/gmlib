@@ -32,7 +32,6 @@
 
 
 
-// GMlib includes
 #include "gmangle.h"
 #include "../static/gmstaticproc.h"
 #include "../utils/gmstream.h"

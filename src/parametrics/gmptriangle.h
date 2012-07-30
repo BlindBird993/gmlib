@@ -33,10 +33,9 @@
 
 #include "gmparametrics.h"
 
-
-
-#include "gmPoint.h"
-#include "gmDMatrix.h"
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/containers/gmdmatrix.h>
 
 
 namespace GMlib {

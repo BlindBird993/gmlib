@@ -28,7 +28,6 @@
  */
 
 
-// gmlib
 #include "gmparc.h"
 #include "gmpbeziercurve.h"
 

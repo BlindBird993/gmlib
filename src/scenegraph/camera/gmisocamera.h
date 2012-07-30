@@ -32,9 +32,10 @@
 #define __gmISOCAMERA_H__
 
 
-// GMlib Includes
 #include "gmcamera.h"
-#include "../core/utils/gmstream.h"
+
+// gmlib::core
+#include <core/utils/gmstream.h>
 
 namespace GMlib {
 

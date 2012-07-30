@@ -31,12 +31,14 @@
 #ifndef __GMPCURVEVISUALIZER_H__
 #define __GMPCURVEVISUALIZER_H__
 
-#include "gmVisualizer.h"
 
-// gmlib
-#include "gmPoint.h"
-#include "gmDVector.h"
-#include "gmOpenGL.h"
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/containers/gmdvector.h>
+#include <core/utils/gmcolor.h>
+
+// gmlib::scenegraph
+#include <scenegraph/visualizer/gmvisualizer.h>
 
 
 namespace GMlib {

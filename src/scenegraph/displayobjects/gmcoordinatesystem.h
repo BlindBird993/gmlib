@@ -33,7 +33,6 @@
 
 #include "../gmdisplayobject.h"
 
-
 // stl
 #include <string>
 

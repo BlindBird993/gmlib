@@ -33,7 +33,6 @@
 
 #include "../gmpcurve.h"
 
-// gmlib
 #include "../evaluators/gmerbsevaluator.h"
 
 

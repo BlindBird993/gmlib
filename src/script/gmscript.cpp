@@ -45,7 +45,7 @@ namespace GMlib {
 
     std::string Script::getErrors() { return ""; }
 
-
+#ifdef GM_SCRIPT_LUA
     namespace Lua {
 
       LuaVar::LuaVar() : _type(GM_LUA_VAR_TYPE_NIL) {}
@@ -370,7 +370,7 @@ namespace GMlib {
       }
 
     } // END namespace Lua
-
+#endif // GM_SCRIPT_LUA
   } // END namespace Script
 
 } // END namespace GMlib

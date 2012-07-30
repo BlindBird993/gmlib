@@ -30,12 +30,13 @@
 #ifndef __gmPCURVE_H__
 #define __gmPCURVE_H__
 
-#include "gmParametrics.h"
 
 
-// gmlib
-#include "gmArray.h"
-#include "gmDVector.h"
+#include "gmparametrics.h"
+
+// gmlib::core
+#include <core/containers/gmarray.h>
+#include <core/containers/gmdvector.h>
 
 
 

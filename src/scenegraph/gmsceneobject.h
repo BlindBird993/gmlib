@@ -36,14 +36,14 @@
 #define __gmSCENEOBJECT_H__
 
 
-// local
 #include "gmfrustum.h"
 #include "gmscaleobject.h"
 #include "utils/gmmaterial.h"
-
+#include "visualizer/gmvisualizer.h"
 
 // stl
 #include <string>
+
 
 
 
@@ -91,7 +91,7 @@ namespace GMlib{
 
 
 
-  /*! \class SceneObject gmSceneObject.h <gmSceneObject>
+  /*! \class SceneObject gmsceneobject.h <gmSceneObject>
    *  \brief SceneObject is the base class for anything that steps onto a Scene
    *
    * 	It contains as private, a unique name for indentification used in Select(), and an array containg all its children.
@@ -317,19 +317,6 @@ namespace GMlib{
 
   }; // END class SceneObject
 
-
-
-
-
-
-
-
-
-
-
-
-
-#include "visualizer/gmvisualizer.h"
 
 
 

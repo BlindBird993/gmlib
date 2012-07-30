@@ -26,8 +26,6 @@
  *  \brief TriangleFacets class function implementations
  */
 
-// local
-#include "gmSArray.h"
 #include "visualizers/gmtrianglefacetsdefaultvisualizer.h"
 
 // stl

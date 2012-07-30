@@ -22,14 +22,12 @@
 
 
 
-/*! \file gmLight.cpp
+/*! \file gmlight.cpp
  *
  *  Implementation of Light class.
- *
- *  \date   2008-07-25
  */
 
-#include "gmLight.h"
+#include "gmlight.h"
 
 namespace GMlib {
 

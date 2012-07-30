@@ -36,13 +36,14 @@
 #define __gmSCENE_H__
 
 
-// locale GMlib includes
-#include "gmPoint.h"
-#include "gmTimer.h"
-//#include "gmArray.h" // maby gmSArray.h
-#include "gmSArray.h"
-#include "gmSortObject.h"
-#include "gmFrustum.h"
+// local
+#include "gmfrustum.h"
+
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/utils/gmtimer.h>
+#include <core/containers/gmsarray.h>
+#include <core/utils/gmsortobject.h>
 
 
 namespace GMlib{

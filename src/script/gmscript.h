@@ -29,9 +29,12 @@
 #ifndef __gmSCRIPT_H__
 #define __gmSCRIPT_H__
 
-// stl/system
-#include <string>
+
+// system
 #include <stdio.h>
+
+// stl
+#include <string>
 
 
 namespace GMlib {
@@ -52,8 +55,9 @@ namespace GMlib {
 
 #ifdef GM_SCRIPT_LUA
 
-#include "gmArray.h"
-#include "gmDVector.h"
+// gmlib::core
+#include <core/containers/gmarray.h>
+#include <core/containers/gmdvector.h>
 
 namespace GMlib {
 

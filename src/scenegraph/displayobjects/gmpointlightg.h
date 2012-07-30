@@ -35,7 +35,6 @@
 
 #include "../light/gmpointlight.h"
 
-
 // stl
 #include <string>
 

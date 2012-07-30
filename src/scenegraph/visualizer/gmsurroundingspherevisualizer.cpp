@@ -30,9 +30,6 @@
 
 #include "gmsurroundingspherevisualizer.h"
 
-
-
-// gmlib
 #include "../camera/gmcamera.h"
 #include "../displayobjects/gmsphere3d.h"
 

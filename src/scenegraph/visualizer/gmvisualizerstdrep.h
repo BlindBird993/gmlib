@@ -33,9 +33,11 @@
 
 #include "gmvisualizer.h"
 
-// gmlib
-#include "../utils/gmcolor.h"
-#include "../../opengl/gmopengl.h"
+// gmlib::core
+#include <core/utils/gmcolor.h>
+
+// gmlib::opengl
+#include <opengl/gmopengl.h>
 
 
 namespace GMlib {

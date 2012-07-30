@@ -31,10 +31,11 @@
 #define __gmGLPROGRAM_H__
 
 
-// gmlib
-#include "../core/types/gmpoint.h"
 #include "gmopengl.h"
 #include "gmglshader.h"
+
+// gmlib::core
+#include <core/types/gmpoint.h>
 
 // stl
 #include <string>

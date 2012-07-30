@@ -32,9 +32,11 @@
 #define __gmMATERIAL_H__
 
 #include "gmtexture.h"
-#include "../../core/utils/gmstring.h"
-#include "../../core/containers/gmarray.h"
-#include "../../opengl/gmopengl.h"
+
+// gmlib::core
+#include <core/utils/gmstring.h>
+#include <core/containers/gmarray.h>
+#include <opengl/gmopengl.h>
 
 
 namespace GMlib {

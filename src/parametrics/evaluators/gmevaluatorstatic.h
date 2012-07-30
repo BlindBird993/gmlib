@@ -30,8 +30,9 @@
 #ifndef __gmEVALUATRORSTATIC_H__
 #define __gmEVALUATRORSTATIC_H__
 
-// gmlib
-#include "gmDMatrix.h"
+
+// gmlib::core
+#include <core/containers/gmdmatrix.h>
 
 namespace GMlib {
 

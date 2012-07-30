@@ -32,8 +32,8 @@
 
 // gmlib
 #include "gmglshadermanager.h"
-using namespace GMlib;
 
+namespace GMlib {
 
 
 
@@ -219,3 +219,4 @@ GLProgram& GLProgram::operator = ( const GLProgram& copy ) {
   return *this;
 }
 
+}

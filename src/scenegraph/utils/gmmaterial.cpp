@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmMaterial_Material.cpp
+/*! \file gmmaterial.cpp
  *
  *  Implementation of the Material class.
  */

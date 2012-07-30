@@ -31,11 +31,8 @@
 
 #include "gmtexture.h"
 
-
-
-// local
-
-#include "gmOpenGL.h"
+// gmlib::opengl
+#include <opengl/gmopengl.h>
 
 
 namespace GMlib {

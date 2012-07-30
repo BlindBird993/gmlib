@@ -31,7 +31,6 @@
 #define __gmSPOTLIGHT_H__
 
 
-// gmlib
 #include "gmpointlight.h"
 
 // stl

@@ -122,7 +122,7 @@ namespace GMlib{
 
     void          _indexDecr();
     void          _indexIncr();
-    void          _newRow( int size, T* ptr = NULL );
+    void          _newRow( int size, T* ptr = 0x0 );
 
 
   public:

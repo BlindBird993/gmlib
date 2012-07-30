@@ -30,11 +30,10 @@
 
 #include "gmopengl.h"
 
-
-// gmlib
 #include "gmglshadermanager.h"
-using namespace GMlib;
 
+
+namespace GMlib {
 
 
 std::string OGL::_log;
@@ -862,3 +861,4 @@ void GLBufferObject::setTarget( GLenum target ) {
 }
 
 
+}

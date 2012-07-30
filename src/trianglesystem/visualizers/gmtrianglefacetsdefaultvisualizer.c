@@ -27,6 +27,7 @@
  *  TriangleFacetsDefaultVisualizer implementations
  */
 
+
 #include "../gmtrianglesystem.h"
 
 

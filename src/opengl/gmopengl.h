@@ -70,18 +70,16 @@ typedef unsigned short wchar_t;
 
 
 
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/types/gmpoint2d.h>
+#include <core/types/gmpoint3d.h>
+#include <core/types/gmmatrix.h>
+#include <core/utils/gmcolor.h>
+#include <core/utils/gmstream.h>
+
 // Include Glew header and leave the gl mangling to GLEW
 #include <GL/glew.h>
-
-
-// GMlib includes
-#include "../core/types/gmpoint.h"
-#include "../core/types/gmpoint2d.h"
-#include "../core/types/gmpoint3d.h"
-#include "../core/utils/gmstream.h"
-
-#include "../core/types/gmmatrix.h"
-#include "../core/utils/gmcolor.h"
 
 // STL
 #include <map>

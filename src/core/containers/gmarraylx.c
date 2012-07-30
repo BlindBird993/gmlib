@@ -46,7 +46,7 @@ namespace GMlib {
 
     _max_elements = _no_elements = _no_ptrs = _no1 = _no2 = 0;
     _size_incr = inc;
-    _ptr = NULL;
+    _ptr = 0x0;
       if (n > 0)	_newRow(n);
   }
 
@@ -66,7 +66,7 @@ namespace GMlib {
     _max_elements = _no_elements = _no_ptrs = _no1 = _no2 = 0;
     if(inc == 0)	_size_incr = array._size_incr;
     else			_size_incr = inc;
-    _ptr = NULL;
+    _ptr = 0x0;
 
     if( array.size() > 0)
     {
@@ -95,7 +95,7 @@ namespace GMlib {
   {
     _max_elements = _no_elements = _no_ptrs = _no1 = _no2 = 0;
     _size_incr = inc;
-    _ptr = NULL;
+    _ptr = 0x0;
 
     if (n>0)
     {
@@ -121,7 +121,7 @@ namespace GMlib {
   template<typename T>
   ArrayLX<T>::~ArrayLX() {
     for(int i=0; i<_no_ptrs; i++)
-      if(_ptr[i].size > 0) {delete [] _ptr[i].ptr; _ptr[i].ptr=NULL; }
+      if(_ptr[i].size > 0) {delete [] _ptr[i].ptr; _ptr[i].ptr=0x0; }
     if(_no_ptrs > 0) delete [] _ptr;
   }
 
@@ -151,11 +151,11 @@ namespace GMlib {
   inline
   void  ArrayLX<T>::clear( int inc ) {
     for(int i=0; i<_no_ptrs; i++)
-      if(_ptr[i].size > 0) {delete [] _ptr[i].ptr; _ptr[i].ptr=NULL; }
+      if(_ptr[i].size > 0) {delete [] _ptr[i].ptr; _ptr[i].ptr=0x0; }
 
-    if(_no_ptrs > 0 && _ptr != NULL) delete _ptr;
+    if(_no_ptrs > 0 && _ptr != 0x0) delete _ptr;
     _max_elements = _no_elements = _no_ptrs = _no1 = _no2 =0;
-    _ptr = NULL;
+    _ptr = 0x0;
     if( inc >0 )	_size_incr = inc;
   }
 
@@ -546,7 +546,7 @@ namespace GMlib {
       for(i=0; i<_no_ptrs-1; i++)
       {
         newptr[i]  = _ptr[i];
-        _ptr[i].ptr = NULL;
+        _ptr[i].ptr = 0x0;
         _ptr[i].size = 0;
       }
       newptr[i].ptr = new T[idx];
@@ -761,7 +761,7 @@ namespace GMlib {
     for(i=0; i<_no_ptrs-1; i++)
     {
       newptr[i]  = _ptr[i];
-      _ptr[i].ptr = NULL;
+      _ptr[i].ptr = 0x0;
       _ptr[i].size = 0;
     }
     if(ptr)	newptr[i].ptr    = ptr;

@@ -29,6 +29,8 @@
 
 #include "gmwindow.h"
 
+// stl
+#include <cstdio>
 
 
 namespace GMlib {

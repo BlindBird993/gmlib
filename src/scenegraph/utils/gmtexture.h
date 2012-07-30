@@ -31,16 +31,11 @@
 #ifndef __gmTEXTURE_H__
 #define __gmTEXTURE_H__
 
+// gmlib::core
+#include <core/utils/gmcolor.h>
 
-// Locale GMlib includes
-#include "../../opengl/gmopengl.h"
-
-
-
-// STL includes
+// stl
 #include <map>
-#include <string>
-
 
 
 namespace GMlib {
@@ -72,7 +67,7 @@ namespace GMlib {
     void                            setGenMode( unsigned int texture_gen_mode );
 
     Texture&                        operator = ( const Texture& texture );
-    const Color&                  operator()(int i, int j) const;
+    const Color&                    operator()(int i, int j) const;
     bool                            operator == ( const Texture& texture ) const;
 
 

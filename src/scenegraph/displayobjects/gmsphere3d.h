@@ -31,10 +31,13 @@
 #define __gmSPHERE3D_H__
 
 
-#include "../../core/types/gmpoint.h"
-#include "../../core/containers/gmarray.h"
-#include "../../opengl/gmopengl.h"
-#include "../../opengl/gmglprogram.h"
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/containers/gmarray.h>
+
+// gmlib::opengl
+#include <opengl/gmopengl.h>
+#include <opengl/gmglprogram.h>
 
 
 namespace GMlib {

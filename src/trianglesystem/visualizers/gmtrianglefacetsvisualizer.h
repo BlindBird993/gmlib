@@ -32,10 +32,11 @@
 #define __gmTRIANGLEFACETSVISUALIZER_H__
 
 
-#include "gmVisualizer.h"
+// gmlib::scenegraph
+#include <scenegraph/visualizer/gmvisualizer.h>
 
-// gmlib
-#include "gmOpenGL.h"
+// gmlib::opengl
+#include <opengl/gmopengl.h>
 
 
 namespace GMlib {

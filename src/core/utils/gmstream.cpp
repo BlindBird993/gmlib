@@ -31,7 +31,9 @@
 
 #ifdef GM_STREAM
 
-using namespace GMlib;
+
+namespace GMlib {
+
 using namespace GMlib::GMseparator;
 
 // ****************************
@@ -62,6 +64,8 @@ Separator Object = Separator();
  *  For now used in matrix where the row is grouped.
  */
 Separator Group = Separator('\n');
+
+}
 
 #endif
 

@@ -32,10 +32,11 @@
 #define __gmPHERMITESURFACE_H__
 
 
-#include <../gmpsurf.h>
+#include "../gmpsurf.h"
+#include "../gmpcurve.h"
 
-#include <gmArray.h>
-#include <gmPCurve.h>
+// gmlib::core
+#include <core/containers/gmarray.h>
 
 namespace GMlib {
 

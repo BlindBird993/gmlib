@@ -31,9 +31,6 @@
 #define __gmPAPPLE_H__
 
 
-
-#include <string>
-
 #include "../gmpsurf.h"
 
 

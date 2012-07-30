@@ -31,7 +31,6 @@
 #define __gmPBUTTERFLY_H__
 
 
-// GMlib includes+
 #include "../gmpcurve.h"
 
 

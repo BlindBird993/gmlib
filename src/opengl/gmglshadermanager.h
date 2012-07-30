@@ -33,7 +33,6 @@
 
 
 
-// gmlib
 #include "gmopengl.h"
 
 // stl

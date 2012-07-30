@@ -30,9 +30,10 @@
 #ifndef __gmBASISEVALUATOR_H__
 #define __gmBASISEVALUATOR_H__
 
-// gmlib
-#include <gmDMatrix.h>
-#include <gmDVector.h>
+
+// gmlib::core
+#include <core/containers/gmdmatrix.h>
+#include <core/containers/gmdvector.h>
 
 // stl
 #include <cmath>

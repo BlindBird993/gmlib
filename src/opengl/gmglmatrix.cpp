@@ -29,9 +29,10 @@
  */
 
 
-// header
 #include "gmglmatrix.h"
-using namespace GMlib;
+
+
+namespace GMlib {
 
 
 /*! Point<float,3> GLMatrix::operator *(const Point<float,3>& p) const
@@ -118,3 +119,4 @@ Sphere<float,3> GLMatrix::operator *(const Sphere<float,3>& b) const {
   return lp;
 }
 
+}

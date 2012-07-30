@@ -30,8 +30,6 @@
 
 #include "gmcoordinatesystem.h"
 
-
-// gmlib
 #include "gmsphere3d.h"
 
 

@@ -34,9 +34,9 @@
 
 #include "../gmptriangle.h"
 
-// gmlib
-#include "gmSelector.h"
-#include "gmSelectorGrid.h"
+// gmlib::scenegraph
+#include <scenegraph/selector/gmselector.h>
+#include <scenegraph/selector/gmselectorgrid.h>
 
 
 namespace GMlib {

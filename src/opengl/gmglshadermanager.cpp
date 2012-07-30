@@ -29,12 +29,12 @@
 
 
 #include "gmglshadermanager.h"
-using namespace GMlib;
-
 
 // stl
 #include <iostream>
 
+
+namespace GMlib{
 
 
 bool GLShaderManager::_initialized = false;
@@ -1226,3 +1226,4 @@ bool GLShaderManager::setShaderSource( const std::string& name, const std::strin
   return true;
 }
 
+}

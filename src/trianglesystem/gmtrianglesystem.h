@@ -34,18 +34,20 @@
 
 
 
-// gmlib
-#include "gmPoint3D.h"
-#include "gmPoint2D.h"
-#include "gmArray.h"
-#include "gmArrayT.h"
-#include "gmArrayLX.h"
-#include "gmSArray.h"
-#include "gmDMatrix.h"
+// gmlib::core
+#include <core/types/gmpoint3d.h>
+#include <core/types/gmpoint2d.h>
+#include <core/containers/gmarray.h>
+#include <core/containers/gmarrayt.h>
+#include <core/containers/gmarraylx.h>
+#include <core/containers/gmsarray.h>
+#include <core/containers/gmdmatrix.h>
 
-#include "gmDisplayObject.h"
-#include "gmGLProgram.h"
+// gmlib::opengl
+#include <opengl/gmglprogram.h>
 
+// gmlib::scenegraph
+#include <scenegraph/gmdisplayobject.h>
 
 
 namespace GMlib {

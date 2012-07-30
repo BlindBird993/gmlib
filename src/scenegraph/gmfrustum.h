@@ -31,9 +31,9 @@
 #ifndef __GMFRUSTUM_H__
 #define __GMFRUSTUM_H__
 
-// local
-#include "../core/types/gmpoint.h"
-#include "../core/types/gmmatrix.h"
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/types/gmmatrix.h>
 
 
 namespace GMlib {

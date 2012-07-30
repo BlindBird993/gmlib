@@ -32,13 +32,18 @@
 #define __gmPTRIANGLEVISUALIZER_H__
 
 
-#include "gmvisualizer.h"
-
 // gmlib
-#include "gmPoint.h"
-#include "gmDVector.h"
-#include "gmDMatrix.h"
-#include "gmOpenGL.h"
+#include <core/types/gmpoint.h>
+#include <core/containers/gmdvector.h>
+#include <core/containers/gmdmatrix.h>
+
+// gmlib::opengl
+#include <opengl/gmopengl.h>
+
+// gmlib::scenegraph
+#include <scenegraph/visualizer/gmvisualizer.h>
+
+
 
 #define PTRIANGLEVERTEX_SIZE 32
 #define PTRIANGLEVERTEXATTRIB_SIZE 32

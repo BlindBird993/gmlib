@@ -29,6 +29,7 @@
 
 #include "gmvisualizerstdrep.h"
 
+#include "../gmsceneobject.h"
 
 
 namespace GMlib {

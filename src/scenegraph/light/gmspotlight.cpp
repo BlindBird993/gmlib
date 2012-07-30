@@ -22,18 +22,16 @@
 
 
 
-/*! \file gmLight_SpotLight.cpp
+/*! \file gmspotlight.cpp
  *
  *  Implementation of the SpotLight class.
- *
- *  \date   2008-07-25
  */
 
-// System includes
-#include <float.h>
 
-// GMlib includes
-#include "gmLight.h"
+#include "gmspotlight.h"
+
+// system
+#include <float.h>
 
 
 namespace GMlib {

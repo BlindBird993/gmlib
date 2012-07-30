@@ -33,11 +33,11 @@
 
 #include "gmpsurfvisualizer.h"
 
-// gmlib
-#include "gmPoint.h"
-#include "gmDVector.h"
-#include "gmDMatrix.h"
-#include "gmColor.h"
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/containers/gmdvector.h>
+#include <core/containers/gmdmatrix.h>
+#include <core/utils/gmcolor.h>
 
 
 namespace GMlib {

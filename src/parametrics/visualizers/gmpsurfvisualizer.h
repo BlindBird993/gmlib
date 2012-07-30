@@ -31,12 +31,16 @@
 #ifndef __GMPSURFVISUALIZER_H__
 #define __GMPSURFVISUALIZER_H__
 
-#include "gmvisualizer.h"
 
-// gmlib
-#include "gmPoint.h"
-#include "gmDMatrix.h"
-#include "gmOpenGL.h"
+// gmlib::core
+#include <core/types/gmpoint.h>
+#include <core/containers/gmdmatrix.h>
+
+// gmlib::opengl
+#include <opengl/gmopengl.h>
+
+// gmlib::scenegraph
+#include <scenegraph/visualizer/gmvisualizer.h>
 
 
 namespace GMlib {

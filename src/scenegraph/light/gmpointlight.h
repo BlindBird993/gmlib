@@ -31,7 +31,6 @@
 #define __gmPOINTLIGHT_H__
 
 
-// gmlib
 #include "gmlight.h"
 #include "../gmdisplayobject.h"
 

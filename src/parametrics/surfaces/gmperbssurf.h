@@ -32,9 +32,8 @@
 
 #include "../gmpsurf.h"
 
-// gmlib
 #include "gmpbeziersurf.h"
-#include "gmerbsevaluator.h"
+#include "../evaluators/gmerbsevaluator.h"
 
 
 namespace GMlib {

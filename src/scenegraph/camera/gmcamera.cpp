@@ -22,21 +22,22 @@
 
 
 
-/*! \file gmCamera.cpp
+/*! \file gmcamera.cpp
  *
  *  Implementation of the Camera class.
- *
- *  \date   2008-07-26
  */
 
 
-// GMlib includes
-#include "gmPoint3D.h"
-#include "gmDVector.h"
-#include "gmCamera.h"
-#include "gmMaterial.h"
+#include "gmcamera.h"
 
-#include "gmGLProgram.h"
+#include "../utils/gmmaterial.h"
+
+// gmlib::core
+#include <core/types/gmpoint3d.h>
+#include <core/containers/gmdvector.h>
+
+// gmlib::opengl
+#include <opengl/gmglprogram.h>
 
 
 

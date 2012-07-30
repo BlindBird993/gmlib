@@ -31,9 +31,11 @@
 #ifndef __GMGLMATRIX_H__
 #define __GMGLMATRIX_H__
 
-// local
-#include "../core/types/gmpoint.h"
+
 #include "gmopengl.h"
+
+// gmlib::core
+#include <core/types/gmpoint.h>
 
 
 namespace GMlib {

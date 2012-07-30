@@ -28,15 +28,15 @@
  */
 
 
-#include "gmsceneobject.cpp"
+#include "gmsceneobject.h"
 
+#include "light/gmlight.h"
+#include "camera/gmcamera.h"
+#include "visualizer/gmvisualizer.h"
+#include "visualizer/gmvisualizerstdrep.h"
 
-// gmlib
-#include "gmPoint.h"
-#include "gmLight.h"
-#include "gmCamera.h"
-#include "gmVisualizer.h"
-#include "gmVisualizerStdRep.h"
+// gmlib::core
+#include <core/types/gmpoint.h>
 
 // stl
 #include <string>

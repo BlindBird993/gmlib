@@ -31,13 +31,16 @@
 #define __gmVISUALIZER_H__
 
 
+// gmlib::core
+#include <core/utils/gmcolor.h>
 
-// gmlib
-#include "../../core/utils/gmcolor.h"
-#include "../../opengl/gmglprogram.h"
+// gmlib::opengl
+#include <opengl/gmglprogram.h>
 
 // stl
 #include <string>
+
+
 
 
 namespace GMlib {

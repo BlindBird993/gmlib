@@ -27,11 +27,15 @@
  *  Implementation of the PBezierSurf template class.
  */
 
-// gmlib
-#include "gmDMatrix.h"
-#include "gmEvaluatorStatic.h"
-#include "gmSelector.h"
-#include "gmSelectorGrid.h"
+
+#include "../evaluators/gmevaluatorstatic.h"
+
+// gmlib::core
+#include <core/containers/gmdmatrix.h>
+
+// gmlib::scenegraph
+#include <scenegraph/selector/gmselector.h>
+#include <scenegraph/selector/gmselectorgrid.h>
 
 namespace GMlib {
 

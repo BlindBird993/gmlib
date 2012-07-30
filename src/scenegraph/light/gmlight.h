@@ -32,13 +32,13 @@
 #ifndef __gmLIGHT_H__
 #define __gmLIGHT_H__
 
+#include "../gmfrustum.h"
 
-// gmlib
-#include "../gmdisplayobject.h"
+// gmlib::core
+#include <core/utils/gmcolor.h>
 
-// stl
-#include <string>
-
+// gmlib::opengl
+#include <opengl/gmopengl.h>
 
 namespace GMlib{
 

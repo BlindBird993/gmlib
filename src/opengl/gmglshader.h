@@ -31,8 +31,6 @@
 #define __gmGLSHADER_H__
 
 
-
-// gmlib
 #include "gmopengl.h"
 
 // stl

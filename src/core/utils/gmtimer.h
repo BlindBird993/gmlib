@@ -30,7 +30,7 @@
 #ifndef __gmTIMER_H__
 #define __gmTIMER_H__
 
-// System
+// system
 #include <sys/timeb.h>
 
 namespace GMlib {

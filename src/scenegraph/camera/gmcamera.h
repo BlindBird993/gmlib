@@ -34,11 +34,11 @@
 #ifndef __gmCAMERA_H__
 #define __gmCAMERA_H__
 
+#include "../gmdisplayobject.h"
+#include "../gmscene.h"
 
-// GMlib
-#include "gmdisplayobject.h"
-#include "gmscene.h"
-#include "../core/utils/gmstream.h"
+// gmlib::core
+#include <core/utils/gmstream.h>
 
 
 namespace GMlib {

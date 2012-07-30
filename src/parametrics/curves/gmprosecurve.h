@@ -31,7 +31,6 @@
 #define __gmPROSECURVE_H__
 
 
-// GMlib includes+
 #include "gmpcurve.h"
 
 

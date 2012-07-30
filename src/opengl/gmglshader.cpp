@@ -30,11 +30,10 @@
 
 #include"gmglshader.h"
 
-
-// gmlib
 #include "gmglshadermanager.h"
-using namespace GMlib;
 
+
+namespace GMlib {
 
 
 
@@ -101,3 +100,4 @@ void GLShader::set( const std::string& source ) {
   GLShaderManager::setShaderSource( _name, source );
 }
 
+}

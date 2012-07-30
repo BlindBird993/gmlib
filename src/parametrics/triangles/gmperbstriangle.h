@@ -32,10 +32,11 @@
 
 #include "../gmptriangle.h"
 
-// gmlib
-#include "gmArray.h"
-#include "gmPBezierTriangle.h"
-#include "gmERBSEvaluator.h"
+#include "gmpbeziertriangle.h"
+#include "../evaluators/gmerbsevaluator.h"
+
+// gmlib::core
+#include <core/containers/gmarray.h>
 
 
 namespace GMlib {

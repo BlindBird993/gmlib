@@ -32,15 +32,14 @@
 #define __gmWINDOW_H__
 
 
-// GMlib includes
-#include "gmCamera.h"
-#include "gmLight.h"
-#include "gmMaterial.h"
+// gmlib::scenegraph
+#include <scenegraph/camera/gmcamera.h>
 
-
+// gmlib::scenegraph - might be removed as light and is implemented with different mechanisms...
+#include <scenegraph/light/gmlight.h>
+#include <scenegraph/light/gmsun.h>
 
 namespace GMlib {
-
 
   class View;
   class ViewBorder;

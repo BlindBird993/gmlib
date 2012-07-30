@@ -22,16 +22,13 @@
 
 
 
-/*! \file gmLight_Sun.cpp
+/*! \file gmsun.cpp
  *
  *  Implementation of the Sun class.
- *
- *  \date   2008-07-25
  */
 
 
-// GMlib includes
-#include "gmLight.h"
+#include "gmsun.h"
 
 
 namespace GMlib {
