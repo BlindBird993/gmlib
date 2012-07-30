@@ -21,14 +21,32 @@
 # ###############################################################################
 
 
-#####################
+################################
 # Process each individual module
-addModule(Core)                   # Core
-addModule(OpenGL)                 # OpenGL
-addModule(Parametrics)           # Parametrics
-addModule(SceneGraph)             # SceneGraph
-addModule(Script)                 # Script
-addModule(StereoLithography)      # STereoLithography
-addModule(TriangleSystem)        # TriangleSystem
-addModule(Window)                # Window
+# addModule( ModuleName [DependModuleName 1] [DependModuleName 2] ... )
+
+
+# Add core module
+addModule(Core)
+
+# Add OpenGL module
+addModule(OpenGL Core)
+
+# Add SceneGraph moudle
+addModule(SceneGraph Core OpenGL)
+
+# Add Parametrics module
+addModule(Parametrics Core OpenGL SceneGraph)
+
+# Add TringleSystem module
+addModule(TriangleSystem Core OpenGL SceneGraph)
+
+# Add STereoLithography module
+addModule(StereoLithography Core SceneGraph Parametrics TriangleSystem)
+
+# Add Window module
+addModule(Window Core OpenGL SceneGraph)
+
+# Add Script module
+addModule(Script Core)
 
