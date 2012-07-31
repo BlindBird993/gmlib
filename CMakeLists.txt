@@ -32,6 +32,7 @@ set( ICMAKE_FUNCTION_DIR "${ICMAKE_DIR}/functions" )
 set( ICMAKE_MODULE_DIR "${ICMAKE_DIR}/modules" )
 
 include(${ICMAKE_FUNCTION_DIR}/custom_functions.cmake)
+setFunctionDir( "${ICMAKE_DIR}/functions" )
 setTemplateDir( "${ICMAKE_DIR}/templates" )
 
 # Update the cmake module path to include custom modules

@@ -43,6 +43,12 @@ endmacro(setModuleSuffix)
 macro(setTemplateDir DIR)
   set( ICMAKE_TEMPLATE_DIR ${DIR} )
 endmacro(setTemplateDir)
+
+# Set template dir
+macro(setFunctionDir DIR)
+  set( ICMAKE_FUNCTION_DIR ${DIR} )
+endmacro(setFunctionDir)
+
 # Setup library
 macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
 
@@ -75,6 +81,8 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
        ${BUILD_DIR}/include/${LIBRARY} )
   set( BUILD_LIB_DIR
        ${BUILD_DIR}/lib/${LIBRARY} )
+  set( BUILD_TMP_DIR
+       ${BUILD_DIR}/tmp )
 
   # If out of source dir, add build/include/{library} to include paths else add src/
   file( RELATIVE_PATH BIN_SRC_RELPATH "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}" )
@@ -92,6 +100,7 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
   execute_process(
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_INCLUDE_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_TMP_DIR}
   )
 
   # Set a file config/generate message
@@ -284,53 +293,96 @@ endmacro(addSubDirectory)
 # Copy module headers to build/include directory
 function(createModuleCopyCmds)
 
-  # IF OUT OF SOURCE BUILD ... DO!!
-  file( RELATIVE_PATH BIN_SRC_RELPATH "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}" )
-  if( BIN_SRC_RELPATH )
+  # Generate configure commands, which will create redirect headers to source files
+  foreach( HDR_SET ${HEADERS} )
 
-    # Copy headers
-    foreach( HDR_SET ${HEADERS} )
-      list( GET ${HDR_SET} 1 HDR_FILE )
-      list( GET ${HDR_SET} 2 HDR_LOC )
+    list( GET ${HDR_SET} 1 HDR_FILE )
+    list( GET ${HDR_SET} 2 HDR_LOC )
 
-      extractHeaderRelPath( ${HDR_LOC} HDR_LOC_MOD )
-      if( HDR_LOC_MOD )
-        add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_SOURCE_DIR}/src/${MODULE}/${HDR_LOC_MOD}/${HDR_FILE}
-            ${MODULE_BUILD_INCLUDE_DIR}/${HDR_LOC_MOD}/${HDR_FILE}
-        )
-      else()
-        add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_SOURCE_DIR}/src/${MODULE}/${HDR_FILE}
-            ${MODULE_BUILD_INCLUDE_DIR}/${HDR_FILE}
-        )
-      endif()
-    endforeach()
+    extractHeaderRelPath( ${HDR_LOC} HDR_LOC_MOD )
+    if( HDR_LOC_MOD )
 
-    # Copy template source files
-    foreach( SRC_SET ${TEMPLATE_SOURCES} )
-      list( GET ${SRC_SET} 0 SRC_FILE )
-      list( GET ${SRC_SET} 1 SRC_LOC )
+      set( OUTFILE ${MODULE_BUILD_INCLUDE_DIR}/${HDR_LOC_MOD}/${HDR_FILE} )
+      set( OUTFILE_DIR ${MODULE_BUILD_INCLUDE_DIR}/${HDR_LOC_MOD} )
 
-      extractHeaderRelPath( ${SRC_LOC} SRC_LOC_MOD )
-      if( SRC_LOC_MOD )
-        add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_SOURCE_DIR}/src/${MODULE}/${SRC_LOC_MOD}/${SRC_FILE}
-            ${MODULE_BUILD_INCLUDE_DIR}/${SRC_LOC_MOD}/${SRC_FILE}
-        )
-      else()
-        add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-          COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_SOURCE_DIR}/src/${MODULE}/${SRC_FILE}
-            ${MODULE_BUILD_INCLUDE_DIR}/${SRC_FILE}
-        )
-      endif()
-    endforeach()
+      file( RELATIVE_PATH
+        FILE_RELPATH
+        ${MODULE_BUILD_INCLUDE_DIR}/${HDR_LOC_MOD}
+        ${CMAKE_SOURCE_DIR}/src/${MODULE}/${HDR_LOC_MOD}
+      )
+    else()
 
-  endif()
+      set( OUTFILE ${MODULE_BUILD_INCLUDE_DIR}/${HDR_FILE} )
+      set( OUTFILE_DIR ${MODULE_BUILD_INCLUDE_DIR} )
+
+      file( RELATIVE_PATH
+        FILE_RELPATH
+        ${MODULE_BUILD_INCLUDE_DIR}
+        ${CMAKE_SOURCE_DIR}/src/${MODULE}
+      )
+    endif()
+
+    message( "Create custom configure command..." )
+    message( "-DIF=\"${ICMAKE_TEMPLATE_DIR}/redirect_header.h\"" )
+    message( "-DOF=\"${OUTFILE}\"" )
+#    add_custom_command( TARGET ${MODULE_TARGET} PRE_BUILD
+#      COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTFILE_DIR}
+#      COMMAND ${CMAKE_COMMAND}
+#        -DIF="${ICMAKE_TEMPLATE_DIR}/redirect_header.h" -DOF="${OUTFILE}"
+#        -DVAR_HEADER_INCLUDES="program files/testpath/${HDR_FILE}"
+#        -P ${ICMAKE_FUNCTION_DIR}/configure_file.cmake
+#    )
+
+  endforeach()
+
+  # Generate PRE_BUILD cmake configure script which generates redirect headers
+  unset( HEADERS_TXT )
+  list( APPEND HEADERS_TXT "set( TEMPLATE_LOC \"${ICMAKE_TEMPLATE_DIR}/redirect_header.h\" )\n" )
+  list( APPEND HEADERS_TXT "unset( HEADERS )\n" )
+  foreach( HDR_SET ${HEADERS} )
+
+    list( GET ${HDR_SET} 0 HDR_NAME )
+    list( GET ${HDR_SET} 1 HDR_FILE )
+    list( GET ${HDR_SET} 2 HDR_LOC )
+
+    set( GET_VAR "${HDR_NAME}" )
+
+    extractHeaderRelPath( ${HDR_LOC} HDR_LOC_MOD )
+    if( HDR_LOC_MOD )
+      set( GEN_DIR "${MODULE_BUILD_INCLUDE_DIR}/${HDR_LOC_MOD}" )
+      set( GEN_INCLUDE_DIR "#include \"${CMAKE_SOURCE_DIR}/src/${MODULE}/${HDR_LOC_MOD}\"" )
+      set( GEN_FILE "${HDR_FILE}" )
+    else()
+      set( GEN_DIR "${MODULE_BUILD_INCLUDE_DIR}" )
+      set( GEN_INCLUDE_DIR "#include \"${CMAKE_SOURCE_DIR}/src/${MODULE}\"" )
+      set( GEN_FILE "ark${HDR_FILE}kar" )
+    endif()
+
+#    list( APPEND HEADERS_TXT "unset( HDR_SET )\n" )
+    list( APPEND HEADERS_TXT "list( APPEND ${GET_VAR} \"${GEN_DIR}\" )\n" )
+    list( APPEND HEADERS_TXT "list( APPEND ${GET_VAR} \"${GEN_INCLUDE_DIR}\" )\n" )
+    list( APPEND HEADERS_TXT "list( APPEND ${GET_VAR} \"${GEN_FILE}\" )\n" )
+    list( APPEND HEADERS_TXT "list( APPEND HEADERS ${GET_VAR} )\n" )
+  endforeach()
+
+  JOIN( "${HEADERS_TXT}" "" VAR_HEADERS_TXT )
+#  message( "--------------------------------------------------------------------" )
+#  message( "VAR_HEADERS_TXT" )
+#  message( "--------------------------------------------------------------------" )
+#  message( "${VAR_HEADERS_TXT}" )
+#  message( "--------------------------------------------------------------------" )
+  configure_file(
+    ${ICMAKE_TEMPLATE_DIR}/gen_conf_function.cmake
+    ${BUILD_TMP_DIR}/${MODULE}_conf.cmake
+    @ONLY
+  )
+
+  add_custom_command( TARGET ${MODULE_TARGET} PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -P ${BUILD_TMP_DIR}/${MODULE}_conf.cmake
+  )
+
+
+
 
   # Copy buildt library
   add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
@@ -338,6 +390,7 @@ function(createModuleCopyCmds)
       ${CMAKE_BINARY_DIR}/src/lib${MODULE_TARGET}.a
       ${BUILD_LIB_DIR}/lib${MODULE_TARGET}.a
   )
+
 
 
 
@@ -481,10 +534,10 @@ function(generateModuleCXXHeaders)
     endif()
 
     # Generate individual CXX Header
-    unset( VAR_CXX_HEADER_INCLUDES )
-    set( VAR_CXX_HEADER_INCLUDES ${HEADER_INCLUDE} )
+    unset( VAR_HEADER_INCLUDES )
+    set( VAR_HEADER_INCLUDES ${HEADER_INCLUDE} )
     configure_file(
-      ${ICMAKE_TEMPLATE_DIR}/cxxheader.h
+      ${ICMAKE_TEMPLATE_DIR}/namespace_header.h
       ${MODULE_BUILD_INCLUDE_DIR}/${CXX_HDR}
       @ONLY
     )
@@ -492,11 +545,11 @@ function(generateModuleCXXHeaders)
   endforeach()
 
   # Generate module CXX Header
-  unset( VAR_CXX_HEADER_INCLUDES )
-  JOIN( "${CXX_HEADER_INCLUDES}" "" VAR_CXX_HEADER_INCLUDES )
+  unset( VAR_HEADER_INCLUDES )
+  JOIN( "${CXX_HEADER_INCLUDES}" "" VAR_HEADER_INCLUDES )
   set( MODULE_CXX_HEADER_FILE "${BUILD_INCLUDE_DIR}/${LIB_PREFIX}${MODULE_NAME}${MODULE_SUFFIX}" )
   configure_file(
-    ${ICMAKE_TEMPLATE_DIR}/cxxmoduleheader.h
+    ${ICMAKE_TEMPLATE_DIR}/redirect_header.h
     ${MODULE_CXX_HEADER_FILE}
     @ONLY
   )
