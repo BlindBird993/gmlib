@@ -33,7 +33,7 @@ addModule(Core)
 addModule(OpenGL Core)
 
 # Add SceneGraph moudle
-addModule(SceneGraph Core OpenGL)
+addModule(Scenegraph Core OpenGL)
 
 # Add Parametrics module
 addModule(Parametrics Core OpenGL SceneGraph)

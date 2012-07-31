@@ -24,9 +24,8 @@
 ## CMake
 CMakeCache.txt
 cmake_install.cmake
-CMakeFiles/*
-*/CMakeFiles/*
-build/*
+CMakeFiles/
+build/
 
 #
 ##################################
@@ -42,9 +41,9 @@ Makefile.Debug
 Makefile.Release
 object_script.GMlib.Debug
 object_script.GMlib.Release
-include/*
-lib/*
-.kdev4/*
+include/
+lib/
+.kdev4/
 *.kdev4
 
 #

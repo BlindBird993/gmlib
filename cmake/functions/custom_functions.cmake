@@ -76,7 +76,14 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
   set( BUILD_LIB_DIR
        ${BUILD_DIR}/lib/${LIBRARY} )
 
-  include_directories(${BUILD_INCLUDE_DIR})
+  # If out of source dir, add build/include/{library} to include paths else add src/
+  file( RELATIVE_PATH BIN_SRC_RELPATH "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}" )
+  if( BIN_SRC_RELPATH )
+    include_directories(${BUILD_INCLUDE_DIR})
+  else()
+    include_directories(${CMAKE_SOURCE_DIR}/src)
+  endif()
+
   message( "Lib build dir:         " ${BUILD_DIR} )
   message( "Lib build/include dir: " ${BUILD_INCLUDE_DIR} )
   message( "Lib build/lib dir:     " ${BUILD_LIB_DIR} )
@@ -323,15 +330,14 @@ function(createModuleCopyCmds)
       endif()
     endforeach()
 
-    # Copy buildt library
-    add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_BINARY_DIR}/src/lib${MODULE_TARGET}.a
-        ${BUILD_LIB_DIR}/lib${MODULE_TARGET}.a
-    )
-
   endif()
 
+  # Copy buildt library
+  add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+      ${CMAKE_BINARY_DIR}/src/lib${MODULE_TARGET}.a
+      ${BUILD_LIB_DIR}/lib${MODULE_TARGET}.a
+  )
 
 
 
