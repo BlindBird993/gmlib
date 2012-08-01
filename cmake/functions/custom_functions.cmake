@@ -52,6 +52,9 @@ endmacro(setFunctionDir)
 # Setup library
 macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
 
+  # Clear cache
+  unset( LIBRARY_MODULE_TARGETS CACHE )
+
   # Library name
   set( LIBRARY_NAME ${NAME} )
   string( TOLOWER ${LIBRARY_NAME} LIBRARY )
@@ -68,9 +71,17 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
   set( LIBRARY_VERSION_MAJOR ${VERSION_MAJOR} )
   set( LIBRARY_VERSION_MINOR ${VERSION_MINOR} )
   set( LIBRARY_VERSION_PATCH ${VERSION_PATCH} )
+  set( LIBRARY_VERSION ${LIBRARY_VERSION_MAJOR}.${LIBRARY_VERSION_MINOR} )
+  if( LIBRARY_VERSION_PATCH )
+    set( LIBRARY_VERSION ${LIBRARY_VERSION}.${LIBRARY_VERSION_PATCH} )
+  endif()
+  set( LIBRARY_VERSION_STR ${LIBRARY}-${LIBRARY_VERSION} )
+
+  # Library dir, for use when dealing with build dirs
+  set( LIBRARY_DIR ${LIBRARY_VERSION_STR} )
 
   # Namespace
-  if( NOT DISABLE_NAMESPACE )
+  if( ${LIBRARY_NAME_UPPER}_NAMESPACE )
     set( VAR_NAMESPACE_OPEN  "namespace ${LIBRARY_NAME} {" )
     set( VAR_NAMESPACE_CLOSE "}" )
   endif()
@@ -78,9 +89,11 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
   # Define build directories
   set( BUILD_DIR ${CMAKE_BINARY_DIR}/build )
   set( BUILD_INCLUDE_DIR
-       ${BUILD_DIR}/include/${LIBRARY} )
+       ${BUILD_DIR}/include/${LIBRARY_DIR} )
   set( BUILD_LIB_DIR
-       ${BUILD_DIR}/lib/${LIBRARY} )
+       ${BUILD_DIR}/lib/${LIBRARY_DIR} )
+  set( BUILD_CMAKE_DIR
+       ${BUILD_DIR}/lib/cmake/${LIBRARY_DIR} )
   set( BUILD_TMP_DIR
        ${BUILD_DIR}/tmp )
 
@@ -440,6 +453,8 @@ function(addModuleLibrary)
   getModuleTargetSources( TARGET_SOURCES )
   message( "Current source dir: " ${CMAKE_CURRENT_SOURCE_DIR} )
   add_library( ${MODULE_TARGET} STATIC ${TARGET_HEADERS} ${TARGET_SOURCES} )
+
+  set( LIBRARY_MODULE_TARGETS ${LIBRARY_MODULE_TARGETS} ${MODULE_TARGET} CACHE INTERNAL "My cache" )
 endfunction(addModuleLibrary)
 
 function(getModuleTargetHeaders TARGET_HEADERS )

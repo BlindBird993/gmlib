@@ -57,7 +57,54 @@ find_package(Glew REQUIRED)
 # GMLib library prefix
 
 # Disable the use of the GMlib namespace
-set( DISABLE_NAMESPACE TRUE )
+option( GMLIB_NAMESPACE "Set to TRUE to enable the <GMlib> namespace." FALSE )
 
 # Process files in the source directory
 add_subdirectory(src)
+
+
+###############################
+# Create cmake config directory
+execute_process( COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_CMAKE_DIR} )
+
+######################
+# Generate config file
+message( "Generating config file" )
+file( RELATIVE_PATH INC_RELPATH ${BUILD_CMAKE_DIR} ${BUILD_INCLUDE_DIR} )
+file( RELATIVE_PATH LIB_RELPATH ${BUILD_CMAKE_DIR} ${BUILD_LIB_DIR} )
+
+set( VAR_LIBRARY ${LIBRARY_NAME} )
+set( VAR_INC_RELPATH ${INC_RELPATH} )
+set( VAR_LIB_RELPATH ${LIB_RELPATH} )
+
+#list( REVERSE LIBRARY_MODULE_TARGETS )
+#foreach( MODULE_TRG ${LIBRARY_MODULE_TARGETS} )
+#
+#  message( "Module TRG: " ${MODULE_TRG} )
+#  set( VAR_LIBS ${VAR_LIBS} ${BUILD_LIB_DIR}/${LIB_RELPATH}/lib${MODULE_TRG}.a )
+#endforeach()
+
+list( REVERSE LIBRARY_MODULE_TARGETS )
+foreach( MODULE_TRG ${LIBRARY_MODULE_TARGETS} )
+
+  message( "Module TRG: " ${MODULE_TRG} )
+  set( VAR_LIBS "${VAR_LIBS} -l${MODULE_TRG}" )
+endforeach()
+
+
+configure_file(
+  ${ICMAKE_DIR}/templates/config.cmake.in
+  ${BUILD_CMAKE_DIR}/gmlib-config.cmake
+  @ONLY
+)
+
+##############################
+# Generate version config file
+set( VAR_LIBRARY_VERSION ${LIBRARY_VERSION} )
+
+configure_file(
+  ${ICMAKE_DIR}/templates/config_version.cmake.in
+  ${BUILD_CMAKE_DIR}/gmlib-config-version.cmake
+  @ONLY
+)
+message( "Library version: " ${LIBRARY_VERSION_STR} )
