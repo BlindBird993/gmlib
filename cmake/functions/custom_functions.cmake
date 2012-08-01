@@ -322,23 +322,12 @@ function(createModuleCopyCmds)
       )
     endif()
 
-    message( "Create custom configure command..." )
-    message( "-DIF=\"${ICMAKE_TEMPLATE_DIR}/redirect_header.h\"" )
-    message( "-DOF=\"${OUTFILE}\"" )
-#    add_custom_command( TARGET ${MODULE_TARGET} PRE_BUILD
-#      COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTFILE_DIR}
-#      COMMAND ${CMAKE_COMMAND}
-#        -DIF="${ICMAKE_TEMPLATE_DIR}/redirect_header.h" -DOF="${OUTFILE}"
-#        -DVAR_HEADER_INCLUDES="program files/testpath/${HDR_FILE}"
-#        -P ${ICMAKE_FUNCTION_DIR}/configure_file.cmake
-#    )
-
   endforeach()
 
   # Generate PRE_BUILD cmake configure script which generates redirect headers
   unset( HEADERS_TXT )
   list( APPEND HEADERS_TXT "set( VAR_GENERATE_MESSAGE \"${VAR_GENERATE_MESSAGE}\" )\n" )
-  list( APPEND HEADERS_TXT "set( TEMPLATE_LOC \"${ICMAKE_TEMPLATE_DIR}/redirect_header.h\" )\n" )
+  list( APPEND HEADERS_TXT "set( TEMPLATE_LOC \"${ICMAKE_TEMPLATE_DIR}/redirect_header.h.in\" )\n" )
   list( APPEND HEADERS_TXT "unset( HEADERS )\n" )
   foreach( HDR_SET ${HEADERS} )
 
@@ -373,7 +362,7 @@ function(createModuleCopyCmds)
 #  message( "${VAR_HEADERS_TXT}" )
 #  message( "--------------------------------------------------------------------" )
   configure_file(
-    ${ICMAKE_TEMPLATE_DIR}/gen_conf_function.cmake
+    ${ICMAKE_TEMPLATE_DIR}/gen_redirect_header.cmake.in
     ${BUILD_TMP_DIR}/${MODULE}_conf.cmake
     @ONLY
   )
@@ -538,7 +527,7 @@ function(generateModuleCXXHeaders)
     unset( VAR_HEADER_INCLUDES )
     set( VAR_HEADER_INCLUDES ${HEADER_INCLUDE} )
     configure_file(
-      ${ICMAKE_TEMPLATE_DIR}/namespace_header.h
+      ${ICMAKE_TEMPLATE_DIR}/namespace_header.h.in
       ${MODULE_BUILD_INCLUDE_DIR}/${CXX_HDR}
       @ONLY
     )
@@ -550,7 +539,7 @@ function(generateModuleCXXHeaders)
   JOIN( "${CXX_HEADER_INCLUDES}" "" VAR_HEADER_INCLUDES )
   set( MODULE_CXX_HEADER_FILE "${BUILD_INCLUDE_DIR}/${LIB_PREFIX}${MODULE_NAME}${MODULE_SUFFIX}" )
   configure_file(
-    ${ICMAKE_TEMPLATE_DIR}/redirect_header.h
+    ${ICMAKE_TEMPLATE_DIR}/redirect_header.h.in
     ${MODULE_CXX_HEADER_FILE}
     @ONLY
   )
@@ -562,35 +551,4 @@ function(outputVarTest OUTPUT_VAR)
 
   set( ${OUTPUT_VAR} "test" PARENT_SCOPE )
 endfunction(outputVarTest)
-
-
-# POST_BUILD
-# Copies generated module files and sources after module build
-# Files to be compied are passed as arguments to the end of the function call
-#function(add_module_cpy_commands MODULE MODULE_TARGET )
-#
-#  add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-#    COMMAND ${CMAKE_COMMAND} -E make_directory
-#      ${CMAKE_BINARY_DIR}/build/lib/gmlib/
-#    COMMAND ${CMAKE_COMMAND} -E copy
-#      ${CMAKE_BINARY_DIR}/modules/${MODULE}/lib${MODULE_TARGET}.a
-#      ${CMAKE_BINARY_DIR}/build/lib/gmlib/lib${MODULE_TARGET}.a
-#    COMMAND ${CMAKE_COMMAND} -E copy
-#      ${CMAKE_BINARY_DIR}/modules/${MODULE}/lib${MODULE_TARGET}.a
-#      ${CMAKE_BINARY_DIR}/lib/gmlib/lib${MODULE_TARGET}.a
-#  )
-#
-#  foreach(f ${ARGN})
-#    add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-#      COMMAND ${CMAKE_COMMAND} -E make_directory
-#        ${CMAKE_BINARY_DIR}/build/modules/${MODULE}
-#      COMMAND ${CMAKE_COMMAND} -E copy
-#        ${CMAKE_CURRENT_SOURCE_DIR}/${f}
-#        ${CMAKE_BINARY_DIR}/build/modules/${MODULE}/${f}
-#    )
-#  endforeach(f)
-#
-#endfunction(add_module_cpy_commands)
-
-
 
