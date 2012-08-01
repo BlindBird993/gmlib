@@ -56,5 +56,8 @@ find_package(Glew REQUIRED)
 ########################
 # GMLib library prefix
 
+# Disable the use of the GMlib namespace
+set( DISABLE_NAMESPACE TRUE )
+
 # Process files in the source directory
 add_subdirectory(src)

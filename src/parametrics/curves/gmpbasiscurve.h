@@ -31,7 +31,7 @@
 #define __gmPBASISCURVE_H__
 
 
-#include "gmpcurve.h"
+#include "../gmpcurve.h"
 
 
 #include "../evaluators/gmbasisevaluator.h"

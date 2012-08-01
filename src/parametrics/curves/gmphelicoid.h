@@ -32,7 +32,7 @@
 
 
 
-#include "gmpsurf.h"
+#include "../gmpsurf.h"
 
 // stl
 #include <string>

@@ -30,7 +30,7 @@
 #ifndef __gmPSINSURFACE_H__
 #define __gmPSINSURFACE_H__
 
-#include "gmpsurf.h"
+#include "../gmpsurf.h"
 
 
 namespace GMlib {

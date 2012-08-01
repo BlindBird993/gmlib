@@ -31,7 +31,7 @@
 #ifndef __gmPTRIANGLECOLORVISUALIZER_H__
 #define __gmPTRIANGLECOLORVISUALIZER_H__
 
-#include <gmptrianglevisualizer.h>
+#include "gmptrianglevisualizer.h"
 
 // gmlib::core
 #include <core/types/gmpoint.h>
