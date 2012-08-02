@@ -72,7 +72,7 @@ namespace GMlib {
 
 
 
-  /*! \class  Point gmPoint.h <gmPoint>
+  /*! \class  Point gmpoint.h <gmPoint>
    *  \brief  The Static Point Class
    *
    *  A template Point, the Point is static i.e. the dimentions
@@ -257,7 +257,7 @@ namespace GMlib {
 
 
 
-  /*! \class Vector gmPoint.h <gmPoint>
+  /*! \class Vector gmpoint.h <gmPoint>
    *  \brief The Static Vector Class
    *
    *	A template Vector, the Vector is static i.e. the dimentions
@@ -311,7 +311,7 @@ namespace GMlib {
 
 
 
-  /*! \class UnitVector gmPoint.h <gmPoint>
+  /*! \class UnitVector gmpoint.h <gmPoint>
    *  \brief The Static UnitVector class
    *
    *	A template UnitVector, the UnitVector is static i.e. the dimentions
@@ -383,7 +383,7 @@ namespace GMlib {
 
 
 
-  /*! \class Arrow gmPoint.h <gmPoint>
+  /*! \class Arrow gmpoint.h <gmPoint>
    *  \brief The Static Arrow class
    *
    *	A template Arrow, the Arrow is static i.e. the dimentions
@@ -508,7 +508,7 @@ namespace GMlib {
 
 
 
-  /*! \class ScalarPoint gmPoint.h <gmPoint>
+  /*! \class ScalarPoint gmpoint.h <gmPoint>
    *  \brief The Static ScalarPoint class
    *	A template ScalarPoint, the ScalarPoint is static i.e. the dimentions
    *	can not be change. The template type must be clean, i.e. is not allocating
@@ -623,7 +623,7 @@ namespace GMlib {
 
 
 
-  /*! \class Sphere gmPoint.h <gmPoint>
+  /*! \class Sphere gmpoint.h <gmPoint>
    *  \brief The Static Sphere class
    *	A template Sphere, the Sphere is static i.e. the dimentions
    *	can not be change. The template type must be clean, i.e. is not allocating
@@ -743,7 +743,7 @@ namespace GMlib {
 
 
 
-  /*! \class Box gmPoint.h <gmPoint>
+  /*! \class Box gmpoint.h <gmPoint>
    *  \brief The Static Box class
    *	A template Box, the Box is static i.e. the dimentions
    *	can not be change. The template type must be clean, i.e. is not allocating
@@ -866,7 +866,7 @@ namespace GMlib {
   //********  The init of I-matrix and SubSpace  ************
   //************   NOT FOR EXTERNAL USE !!!!!!   ************
   //*********************************************************
-  /*! \class M_I_ gmPoint.h <gmPoint>
+  /*! \class M_I_ gmpoint.h <gmPoint>
    *  \brief The init of I-matrix and SubSpace
    *
    *	NOT FOR EXTERNAL USE !!!!!!

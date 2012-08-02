@@ -41,7 +41,7 @@
 
 namespace GMlib {
 
-  /*! \class  GM_Static_ gmStaticProc.h <gmStaticProc>
+  /*! \class  GM_Static_ gmstaticproc.h <gmStaticProc>
    *  \brief  For Point and Vectors ( 1 dimentional)
    *
    *  For Point and Vectors ( 1 dimentional)
@@ -115,7 +115,7 @@ namespace GMlib {
 
 
 
-  /*! \class  GM_Static1_ gmStaticProc.h <gmStaticProc>
+  /*! \class  GM_Static1_ gmstaticproc.h <gmStaticProc>
    *  \brief  Pending Documentation
    *
    *  For Point and Vectors ( 1 dimentional)
@@ -149,7 +149,7 @@ namespace GMlib {
   ///////////////////////////////////////////////////////////
   // For Vectors in Matrices ( column-vectors, using strides)
 
-  /*! \class GM_Static2_ gmStaticProc.h <gmStaticProc>
+  /*! \class GM_Static2_ gmstaticproc.h <gmStaticProc>
    *  \brief Pending Documentation
    *
    *  For Vectors in Matrices ( column-vectors, using strides)
@@ -203,7 +203,7 @@ namespace GMlib {
   // For Diagonals in Matrices or homogenius matrix (using strides m+1)
 
 
-  /*! \class GM_Static3_ gmStaticProc.h <gmStaticProc>
+  /*! \class GM_Static3_ gmstaticproc.h <gmStaticProc>
    *  \brief Pending Documentation
    *
    *  For Diagonals in Matrices or homogenius matrix (using strides m+1)
@@ -263,7 +263,7 @@ namespace GMlib {
 
 
 
-  /*! \class GM_Std_ gmStaticProc.h <gmStaticProc>
+  /*! \class GM_Std_ gmstaticproc.h <gmStaticProc>
    *  \brief Pending Documentation
    *
    *  For Diagonals in Matrices or homogenius matrix (using strides m+1)

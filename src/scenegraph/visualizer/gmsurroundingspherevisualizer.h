@@ -22,7 +22,7 @@
 
 
 
-/*! \file surroundingspherevisualizer.h
+/*! \file gmsurroundingspherevisualizer.h
  *
  *  Header for the SurroundingSphereVisualizer class.
  */

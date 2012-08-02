@@ -49,7 +49,7 @@ namespace GMlib {
 
 
 
-  /*! \class Material gmMaterial.h <gmMaterial>
+  /*! \class Material gmmaterial.h <gmMaterial>
    *  \brief The Material class
    *
    *  containing:
@@ -205,7 +205,7 @@ namespace GMlib {
 
 
 
-  /*! \class MaterialObject gmMaterial.h <gmMaterial>
+  /*! \class MaterialObject gmmaterial.h <gmMaterial>
    *  \brief The MaterialObject class
    *
    *  containing:
@@ -252,7 +252,7 @@ namespace GMlib {
 
 
 
-  /*! \class MaterialObjectList gmMaterial.h <gmMaterial>
+  /*! \class MaterialObjectList gmmaterial.h <gmMaterial>
    *  \brief List of materialObjects class
    *
    *  containing:

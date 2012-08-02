@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmTexture.cpp
+/*! \file gmtexture.cpp
  *	\brief Pending Description
  *
  *  Implementation of the Texture class.

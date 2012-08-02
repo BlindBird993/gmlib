@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmPSurfVisualizer.c
+/*! \file gmpsurfvisualizer.c
  *
  *  Implementation of the PSurfVisualizer template class.
  */

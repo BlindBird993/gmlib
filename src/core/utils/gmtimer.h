@@ -36,7 +36,7 @@
 namespace GMlib {
 
 
-  /*! \class  GMTimer gmTimer.h <gmTimer>
+  /*! \class  GMTimer gmtimer.h <gmTimer>
    *  \brief  This is GMTimer class
    *
    *  This is GMTimer class.

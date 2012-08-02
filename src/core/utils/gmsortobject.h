@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmsortsbject.h
+/*! \file gmsortobject.h
  *  File Description
  */
 

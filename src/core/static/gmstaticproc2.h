@@ -36,7 +36,7 @@
 
 namespace GMlib {
 
-  /*! \class  GM_Static_P_ gmStaticProc2.h <gmStaticProc2.h>
+  /*! \class  GM_Static_P_ gmstaticproc2.h <gmStaticProc2.h>
    *  \brief  For Matrices ( 2 dimentional)
    *
    *  Detailed Description of class
@@ -63,7 +63,7 @@ namespace GMlib {
   }; // END class GM_Static_P_
 
 
-  /*! \class  GM_Static_P_ gmStaticProc2.h <gmStaticProc2.h>
+  /*! \class  GM_Static_P_ gmstaticproc2.h <gmStaticProc2.h>
    *  \brief  For Matrices ( 2 dimentional)
    *
    *  Detailed Description of class
@@ -103,7 +103,7 @@ namespace GMlib {
   void v_eq_m_x_v(T *a, Point<T,m>* b, const Point<T,m>& c) {}
 
 
-  /*! \class  GM_Static_P2_ gmStaticProc2.h <gmStaticProc2.h>
+  /*! \class  GM_Static_P2_ gmstaticproc2.h <gmStaticProc2.h>
    *  \brief
    *
    *  Detailed Description of class
@@ -128,7 +128,7 @@ namespace GMlib {
   }; // END class GM_Static_P2_
 
 
-  /*! \class  GM_Static_P2_ gmStaticProc2.h <gmStaticProc2.h>
+  /*! \class  GM_Static_P2_ gmstaticproc2.h <gmStaticProc2.h>
    *  \brief
    *
    *  Detailed Description of class
@@ -151,7 +151,7 @@ namespace GMlib {
   }; // END class GM_Static_P2_<T, 1, m, k> "Terminator"
 
 
-  /*! \class  GM_Static_P2_ gmStaticProc2.h <gmStaticProc2.h>
+  /*! \class  GM_Static_P2_ gmstaticproc2.h <gmStaticProc2.h>
    *  \brief  a = b^T	matrix transposeing
    *
    *  Detailed Description of class

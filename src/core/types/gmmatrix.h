@@ -56,7 +56,7 @@ namespace GMlib {
 
 
 
-  /*! \class  Matrix gmMatrix.h <gmMatrix.h>
+  /*! \class  Matrix gmmatrix.h <gmMatrix.h>
    *
    *  \brief  The Static Matrix class
    *

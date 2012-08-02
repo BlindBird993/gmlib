@@ -47,7 +47,7 @@ namespace GMlib {
   class GMWindow;
 
 
-  /*! \class View gmWindow.h <gmWindow>
+  /*! \class View gmwindow.h <gmWindow>
    *  \brief Pending Documentation
    *
    *  Pending Documentation
@@ -86,7 +86,7 @@ namespace GMlib {
 
 
 
-  /*! \class ViewBorder gmWindow.h <gmWindow>
+  /*! \class ViewBorder gmwindow.h <gmWindow>
    *  \brief Pending Documentation
    *
    *  Pending Documentation
@@ -129,7 +129,7 @@ namespace GMlib {
 
 
 
-  /*! \class ViewSet gmWindow.h <gmWindow>
+  /*! \class ViewSet gmwindow.h <gmWindow>
    *  \brief Pending Documentation
    *
    *  Pending Documentation

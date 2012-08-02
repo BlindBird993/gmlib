@@ -41,7 +41,7 @@
 namespace GMlib {
 
 
-  /*! \class  ArrayT gmArrayT.h <gmArrayT>
+  /*! \class  ArrayT gmarrayt.h <gmArrayT>
    *  \brief  This is Array Tiny class
    *
    *  This is Array Tiny class.

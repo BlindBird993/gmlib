@@ -53,7 +53,7 @@ template <class T, int n>
 class Cube;
 
 
-  /*! \class  SubSpace gmSubSpace.h <gmSubSpace>
+  /*! \class  SubSpace gmsubspace.h <gmSubSpace>
    *  \brief  The Static SubSpace class
    *
    *  The Static SubSpace class.
@@ -118,7 +118,7 @@ class Cube;
 
 
 
-  /*! \class  Line gmSubSpace.h <gmSubSpace>
+  /*! \class  Line gmsubspace.h <gmSubSpace>
    *  \brief  The Static Line class
    *
    *  The Static Line class.
@@ -146,7 +146,7 @@ class Cube;
 
 
 
-  /*! \class  Plane gmSubSpace.h <gmSubSpace>
+  /*! \class  Plane gmsubspace.h <gmSubSpace>
    *  \brief  The Static Plane class
    *
    *  The Static Plane class.
@@ -175,7 +175,7 @@ class Cube;
 
 
 
-  /*! \class  Cube gmSubSpace.h <gmSubSpace>
+  /*! \class  Cube gmsubspace.h <gmSubSpace>
    *  \brief  The Static Cube class
    *
    *  The Static Cube class.

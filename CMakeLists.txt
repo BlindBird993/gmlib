@@ -23,28 +23,44 @@
 # Minimum CMake version required
 cmake_minimum_required(VERSION 2.8)
 
-#############
-# Setup CMAKE
 
-# Set internal cmake dirs
-set( ICMAKE_DIR "${CMAKE_SOURCE_DIR}/cmake" )
-set( ICMAKE_FUNCTION_DIR "${ICMAKE_DIR}/functions" )
-set( ICMAKE_MODULE_DIR "${ICMAKE_DIR}/modules" )
+########################
+# Build options
 
-include(${ICMAKE_FUNCTION_DIR}/custom_functions.cmake)
-setFunctionDir( "${ICMAKE_DIR}/functions" )
-setTemplateDir( "${ICMAKE_DIR}/templates" )
+# Namespace options
+option( GMLIB_NAMESPACE "Set to TRUE to enable the <GMlib> namespace." FALSE )
+option( GMLIB_MODULE_NAMESPACES "Set to TRUE to enable pr. module namespace." FALSE )
 
-# Update the cmake module path to include custom modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ICMAKE_MODULE_DIR} )
-#message( "CMAKE_MODULE_PATH: " ${CMAKE_MODULE_PATH} )
+# Build shared libs instead of static libs
+option( GMLIB_SHARED_LIBS "Build shared libs instead of static libs." TRUE )
+if( GMLIB_SHARED_LIBS )
+  set( BUILD_SHARED_LIBS TRUE )
+else()
+  set( BUILD_SHARED_LIBS FALSE )
+endif()
 
+# Build documentation
+option( GMLIB_DOXYGEN "Create build target for doxygen documentation." FALSE )
+
+
+#############################
+# Setup && Load EnhancedCMake
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake )
+#include( ${CMAKE_SOURCE_DIR}/cmake/enhanced.cmake )
+include( enhanced )
+setupEnhancedCMake( ${CMAKE_SOURCE_DIR}/cmake/ )
+message( "CMakeModulePath: " ${CMAKE_MODULE_PATH} )
 
 #############
 # Setup GMlib
 
 # Setup library - name and version [major,minor,patch]
 setupLibrary( GMlib 0 4 0 )
+
+
+
+#############################
+# Find 3rd party dependencies
 
 # Find OpenGL
 find_package(OpenGL REQUIRED)
@@ -53,20 +69,8 @@ find_package(OpenGL REQUIRED)
 find_package(Glew REQUIRED)
 
 
-########################
-# GMLib library prefix
-
-# Disable the use of the GMlib namespace
-option( GMLIB_NAMESPACE "Set to TRUE to enable the <GMlib> namespace." FALSE )
-
-option( GMLIB_SHARED_LIBS "Build shared libs instead of static libs." FALSE )
-if( GMLIB_SHARED_LIBS )
-  set( BUILD_SHARED_LIBS TRUE )
-else()
-  set( BUILD_SHARED_LIBS FALSE )
-endif()
-
-# Process files in the source directory
+################################
+# Create source code build rules
 add_subdirectory(src)
 
 
@@ -100,7 +104,7 @@ endforeach()
 
 
 configure_file(
-  ${ICMAKE_DIR}/templates/config.cmake.in
+  ${ECMAKE_TEMPLATE_DIR}/config.cmake.in
   ${BUILD_CMAKE_DIR}/gmlib-config.cmake
   @ONLY
 )
@@ -110,8 +114,25 @@ configure_file(
 set( VAR_LIBRARY_VERSION ${LIBRARY_VERSION} )
 
 configure_file(
-  ${ICMAKE_DIR}/templates/config_version.cmake.in
+  ${ECMAKE_TEMPLATE_DIR}/config_version.cmake.in
   ${BUILD_CMAKE_DIR}/gmlib-config-version.cmake
   @ONLY
 )
+
+###########################
+# BUILD GMlib documentation
+if( GMLIB_DOXYGEN )
+
+  ##################################
+  # Create documentation build rules
+  add_subdirectory(doc)
+
+endif()
+
+
+
+
+
+
+
 message( "Library version: " ${LIBRARY_VERSION_STR} )

@@ -45,7 +45,7 @@ namespace GMlib {
   class ArrayT;
 
 
-  /*! \class  Array gmArray.h <gmArray>
+  /*! \class  Array gmarray.h <gmArray>
    *  \brief  Interface for the Array classes
    *
    *  Interface for the Array classes.

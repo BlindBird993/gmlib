@@ -20,6 +20,26 @@
 # #
 # ###############################################################################
 
+# Set local cmake dir: where on could find custom functions, modules, templates, etc.
+macro(setupEnhancedCMake ENHANCED_CMAKE_PATH)
+
+  # Set EnhancedCMake Root Path
+  if( ENHANCED_CMAKE_PATH )
+    set( ENHANCED_CMAKE_PATH )
+  else()
+    get_filename_component( ENHANCED_CMAKE_PATH ${CMAKE_CURRENT_LIST_FILE} PATH )
+  endif()
+  message( "Enahanced CMake Path: " ${ENHANCED_CMAKE_PATH} )
+
+  # Set EnhancedCmake paths
+  set( ECMAKE_MODULE_DIR "${ENHANCED_CMAKE_PATH}/modules" )
+  set( ECMAKE_TEMPLATE_DIR "${ENHANCED_CMAKE_PATH}/templates" )
+
+  # Update CMake module path to include the EnhancedCMake module path
+  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECMAKE_MODULE_DIR} )
+
+endmacro(setupEnhancedCMake)
+
 # JOIN function to join lists
 # ref: Andrey Kamaev - stackoverflow.com
 # http://stackoverflow.com/questions/7172670/best-shortest-way-to-join-a-list-in-cmake
@@ -28,6 +48,7 @@ function(JOIN VALUES GLUE OUTPUT)
   string (REGEX REPLACE "[\\](.)" "\\1" _TMP_STR "${_TMP_STR}") #fixes escaping
   set (${OUTPUT} "${_TMP_STR}" PARENT_SCOPE)
 endfunction()
+
 
 # Set a library prefix
 macro(setLibPrefix PREFIX)
@@ -38,16 +59,6 @@ endmacro(setLibPrefix)
 macro(setModuleSuffix SUFFIX)
   set( MODULE_SUFFIX ${SUFFIX} )
 endmacro(setModuleSuffix)
-
-# Set template dir
-macro(setTemplateDir DIR)
-  set( ICMAKE_TEMPLATE_DIR ${DIR} )
-endmacro(setTemplateDir)
-
-# Set template dir
-macro(setFunctionDir DIR)
-  set( ICMAKE_FUNCTION_DIR ${DIR} )
-endmacro(setFunctionDir)
 
 # Setup library
 macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
@@ -99,6 +110,8 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
     ${BUILD_DIR}/lib/cmake/${LIBRARY_DIR} )
   set( BUILD_TMP_DIR
     ${BUILD_DIR}/tmp )
+  set( BUILD_DOC_DIR
+    ${BUILD_DIR}/doc/${LIBRARY_DIR} )
 
   # Set output vars (THESE ARE CMAKE_VARS)
   set( LIBRARY_OUTPUT_PATH ${BUILD_LIB_DIR} )
@@ -128,6 +141,7 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_BIN_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_CMAKE_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_TMP_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_DOC_DIR}
   )
 
   # Set a file config/generate message
@@ -190,6 +204,11 @@ macro(setupModule NAME)
     COMMAND ${CMAKE_COMMAND} -E make_directory ${MODULE_BUILD_INCLUDE_DIR}
   )
 
+  # Module Namespace
+  if( ${LIBRARY_NAME_UPPER}_MODULE_NAMESPACES )
+    set( VAR_MODULE_NAMESPACE_OPEN  "namespace ${MODULE_NAME} {" )
+    set( VAR_MODULE_NAMESPACE_CLOSE "}" )
+  endif()
 
   # Clear cache
   unset( HEADERS CACHE )
@@ -354,7 +373,7 @@ function(createModuleCopyCmds)
   # Generate PRE_BUILD cmake configure script which generates redirect headers
   unset( HEADERS_TXT )
   list( APPEND HEADERS_TXT "set( VAR_GENERATE_MESSAGE \"${VAR_GENERATE_MESSAGE}\" )\n" )
-  list( APPEND HEADERS_TXT "set( TEMPLATE_LOC \"${ICMAKE_TEMPLATE_DIR}/redirect_header.h.in\" )\n" )
+  list( APPEND HEADERS_TXT "set( TEMPLATE_LOC \"${ECMAKE_TEMPLATE_DIR}/redirect_header.h.in\" )\n" )
   list( APPEND HEADERS_TXT "unset( HEADERS )\n" )
   foreach( HDR_SET ${HEADERS} )
 
@@ -389,7 +408,7 @@ function(createModuleCopyCmds)
 #  message( "${VAR_HEADERS_TXT}" )
 #  message( "--------------------------------------------------------------------" )
   configure_file(
-    ${ICMAKE_TEMPLATE_DIR}/gen_redirect_header.cmake.in
+    ${ECMAKE_TEMPLATE_DIR}/gen_redirect_header.cmake.in
     ${BUILD_TMP_DIR}/${MODULE}_conf.cmake
     @ONLY
   )
@@ -530,7 +549,7 @@ function(generateModuleCXXHeaders)
     unset( VAR_HEADER_INCLUDES )
     set( VAR_HEADER_INCLUDES ${HEADER_INCLUDE} )
     configure_file(
-      ${ICMAKE_TEMPLATE_DIR}/namespace_header.h.in
+      ${ECMAKE_TEMPLATE_DIR}/namespace_header.h.in
       ${MODULE_BUILD_INCLUDE_DIR}/${CXX_HDR}
       @ONLY
     )
@@ -542,7 +561,7 @@ function(generateModuleCXXHeaders)
   JOIN( "${CXX_HEADER_INCLUDES}" "" VAR_HEADER_INCLUDES )
   set( MODULE_CXX_HEADER_FILE "${BUILD_INCLUDE_DIR}/${LIB_PREFIX}${MODULE_NAME}${MODULE_SUFFIX}" )
   configure_file(
-    ${ICMAKE_TEMPLATE_DIR}/redirect_header.h.in
+    ${ECMAKE_TEMPLATE_DIR}/redirect_header.h.in
     ${MODULE_CXX_HEADER_FILE}
     @ONLY
   )
@@ -554,4 +573,34 @@ function(outputVarTest OUTPUT_VAR)
 
   set( ${OUTPUT_VAR} "test" PARENT_SCOPE )
 endfunction(outputVarTest)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

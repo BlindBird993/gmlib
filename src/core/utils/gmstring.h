@@ -43,7 +43,7 @@
 
 namespace GMlib {
 
-  /*! \class  String gmString.h <gmString>
+  /*! \class  String gmstring.h <gmString>
    *  \brief  This is a String class
    *
    *  This is a String class

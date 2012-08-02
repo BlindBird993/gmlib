@@ -22,7 +22,7 @@
 
 
 
-/*! \file surroundingspherevisualizer.cpp
+/*! \file gmsurroundingspherevisualizer.cpp
  *
  *  Implementations for the SurroundingSphereVisualizer class.
  */

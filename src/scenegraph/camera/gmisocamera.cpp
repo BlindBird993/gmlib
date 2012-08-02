@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmIsoCamera.cpp
+/*! \file gmisocamera.cpp
  *
  *  Implementation of the IsoCamera class.
  */

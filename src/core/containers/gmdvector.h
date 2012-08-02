@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmDVector.h
+/*! \file gmdvector.h
  *
  *  Interface for the Dynamic Vector class.
  *
@@ -48,7 +48,7 @@
 namespace GMlib {
 
 
-  /*! \class DVector<T>
+  /*! \class DVector gmdvector.h <gmDVector>
    *  \brief Interface for the Dynamic Vector class.
    *
    *  Interface for the Dynamic Vector class.

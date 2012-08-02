@@ -46,7 +46,7 @@ namespace GMlib {
   template <typename T, int n>
   class Tetrahedron;
 
-  /*! \class  Simplex gmSimplex.h <gmSimplex.h>
+  /*! \class  Simplex gmsimplex.h <gmSimplex.h>
    *
    *  \brief  interface for the Simplex, LineSegment, Triangle, Tetrahedron classes.
    *
@@ -107,7 +107,7 @@ namespace GMlib {
   }
 
 
-  /*! \class LineSegment gmSimplex.h <gmSimplex.h>
+  /*! \class LineSegment gmsimplex.h <gmSimplex.h>
    *
    *  \brief The Static LineSegment class
    *
@@ -136,7 +136,7 @@ namespace GMlib {
 
 
 
-  /*!	\class Triangle gmSimplex.h <gmSimplex.h>
+  /*!	\class Triangle gmsimplex.h <gmSimplex.h>
   *
   *  \brief The Static LineSegment class
 	*
@@ -167,7 +167,7 @@ namespace GMlib {
 
 
 
-  /*!	\class Tetrahedron gmSimplex.h <gmSimplex.h>
+  /*!	\class Tetrahedron gmsimplex.h <gmSimplex.h>
   *
   *  \brief The Static Tetrahedron class
 	*

@@ -88,7 +88,7 @@ namespace GMlib {
   class TSVEdge;
 
 
-  /** \class  TriangleFacets gmTriangleSystem.h <gmTriangleSystem>
+  /** \class  TriangleFacets gmtrianglesystem.h <gmTriangleSystem>
    *  \brief  The storage class of the Triangle system
    *
    *  This is the main class. Here you can make, adjust
@@ -229,7 +229,7 @@ namespace GMlib {
 
 
 
-  /** \class TriangleSystem gmTriangleSystem.h <gmTriangleSystem>
+  /** \class TriangleSystem gmtrianglesystem.h <gmTriangleSystem>
    *  \brief The TriangleSystem base class
    *
    *  The base class for vertices, edges and triangles
@@ -364,7 +364,7 @@ namespace GMlib {
 
 
 
-  /** \class TSEdge gmTriangleSystem.h <gmTriangleSystem>
+  /** \class TSEdge gmtrianglesystem.h <gmTriangleSystem>
    *  \brief The TSEdge class
    *
    *  The edge class defined by 2 vertices, can be fixed
@@ -444,7 +444,7 @@ namespace GMlib {
 
 
 
-  /** \class  TSTriangle gmTriangleSystem.h <gmTriangleSystem>
+  /** \class  TSTriangle gmtrianglesystem.h <gmTriangleSystem>
    *  \brief  The TriangleSystem Trangle class
    *
    *  The triangle class defined by 3 edges
@@ -513,7 +513,7 @@ namespace GMlib {
 
 
 
-  /** \class  TSTile gmTriangleSystem.h <gmTriangleSystem>
+  /** \class  TSTile gmtrianglesystem.h <gmTriangleSystem>
    *  \brief  The TSTile class
    *
    *  The tile class defined by vertex, and dual of its triangles
@@ -544,7 +544,7 @@ namespace GMlib {
 
 
 
-  /** \class  TSLine gmTriangleSystem.h <gmTriangleSystem>
+  /** \class  TSLine gmtrianglesystem.h <gmTriangleSystem>
    *  \brief  The TSLine class
    *
    *  TSLine

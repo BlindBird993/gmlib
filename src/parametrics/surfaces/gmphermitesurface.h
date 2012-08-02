@@ -41,7 +41,7 @@
 namespace GMlib {
 
   
-  /*! \class PHermiteSurface gmPHermiteSurface.h <gmPHermiteSurface>
+  /*! \class PHermiteSurface gmphermitesurface.h <gmPHermiteSurface>
    *  \brief Parametric tensor-product generic Hermite surface
    *
    *  A parametric tensor-product generic Hermite surface class.

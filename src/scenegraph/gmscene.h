@@ -58,7 +58,7 @@ namespace GMlib{
 
 
 
-  /*! \class Scene gmScene.h <gmScene>
+  /*! \class Scene gmscene.h <gmScene>
    *  \brief Pending Documentation cleanup, and general documentation
    *
    *	Inneholder: Scenen er startnoden i ojecttreet
