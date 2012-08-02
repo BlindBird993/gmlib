@@ -96,8 +96,7 @@ INPUT                  = @VAR_SOURCE_PATH@
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cpp \
-                         *.h \
-                         *.doxydoc
+                         *.h
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO

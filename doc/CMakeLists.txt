@@ -29,7 +29,7 @@ if(DOXYGEN_FOUND)
   set( VAR_LIBRARY_NAME         ${LIBRARY_NAME} )
   set( VAR_LIBRARY_VERSION      ${LIBRARY_VERSION} )
   set( VAR_DOXYGEN_OUTPUT_DIR   ${BUILD_DOC_DIR} )
-  set( VAR_SOURCE_PATH          "${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/doc" )
+  set( VAR_SOURCE_PATH          "${CMAKE_SOURCE_DIR}/src" )
 #  set( VAR_SOURCE_PATH          ${BUILD_SRC_DIR} )
 
   # configure doxyfile
