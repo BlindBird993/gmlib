@@ -59,13 +59,20 @@ find_package(Glew REQUIRED)
 # Disable the use of the GMlib namespace
 option( GMLIB_NAMESPACE "Set to TRUE to enable the <GMlib> namespace." FALSE )
 
+option( GMLIB_SHARED_LIBS "Build shared libs instead of static libs." FALSE )
+if( GMLIB_SHARED_LIBS )
+  set( BUILD_SHARED_LIBS TRUE )
+else()
+  set( BUILD_SHARED_LIBS FALSE )
+endif()
+
 # Process files in the source directory
 add_subdirectory(src)
 
 
 ###############################
 # Create cmake config directory
-execute_process( COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_CMAKE_DIR} )
+#execute_process( COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_CMAKE_DIR} )
 
 ######################
 # Generate config file

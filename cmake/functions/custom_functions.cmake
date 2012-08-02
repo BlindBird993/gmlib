@@ -87,15 +87,27 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
   endif()
 
   # Define build directories
-  set( BUILD_DIR ${CMAKE_BINARY_DIR}/build )
+  set( BUILD_DIR
+    ${CMAKE_BINARY_DIR}/build )
   set( BUILD_INCLUDE_DIR
-       ${BUILD_DIR}/include/${LIBRARY_DIR} )
+    ${BUILD_DIR}/include/${LIBRARY_DIR} )
   set( BUILD_LIB_DIR
-       ${BUILD_DIR}/lib/${LIBRARY_DIR} )
+    ${BUILD_DIR}/lib/${LIBRARY_DIR} )
+  set( BUILD_BIN_DIR
+    ${BUILD_DIR}/bin/${LIBRARY_DIR} )
   set( BUILD_CMAKE_DIR
-       ${BUILD_DIR}/lib/cmake/${LIBRARY_DIR} )
+    ${BUILD_DIR}/lib/cmake/${LIBRARY_DIR} )
   set( BUILD_TMP_DIR
-       ${BUILD_DIR}/tmp )
+    ${BUILD_DIR}/tmp )
+
+  # Set output vars (THESE ARE CMAKE_VARS)
+  set( LIBRARY_OUTPUT_PATH ${BUILD_LIB_DIR} )
+  set( EXECUTABLE_OUTPUT_PATH ${BUILD_BIN_DIR} )
+  # These vars is supposed to supercede the two previous
+  # (anyways, it should result in the same bahavious)
+  set( ARCHIVE_OUTPUT_DIRECTORY ${BUILD_LIB_DIR} )
+  set( LIBRARY_OUTPUT_DIRECTORY ${BUILD_LIB_DIR} )
+  set( RUNTIME_OUTPUT_DIRECTORY ${BUILD_BIN_DIR} )
 
   # If out of source dir, add build/include/{library} to include paths else add src/
   file( RELATIVE_PATH BIN_SRC_RELPATH "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}" )
@@ -113,6 +125,8 @@ macro(setupLibrary NAME VERSION_MAJOR VERSION_MINOR VERSION_PATCH )
   execute_process(
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_INCLUDE_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_BIN_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_CMAKE_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_TMP_DIR}
   )
 
@@ -384,32 +398,6 @@ function(createModuleCopyCmds)
     COMMAND ${CMAKE_COMMAND} -P ${BUILD_TMP_DIR}/${MODULE}_conf.cmake
   )
 
-
-
-
-  # Copy buildt library
-  add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-      ${CMAKE_BINARY_DIR}/src/lib${MODULE_TARGET}.a
-      ${BUILD_LIB_DIR}/lib${MODULE_TARGET}.a
-  )
-
-
-
-
-#  add_custom_command( TARGET ${MODULE_TARGET} POST_BUILD
-#    COMMAND ${CMAKE_COMMAND} -E make_directory
-#      ${CMAKE_BINARY_DIR}/build/lib/gmlib/
-#    COMMAND ${CMAKE_COMMAND} -E copy
-#      ${CMAKE_BINARY_DIR}/modules/${MODULE}/lib${MODULE_TARGET}.a
-#      ${CMAKE_BINARY_DIR}/build/lib/gmlib/lib${MODULE_TARGET}.a
-#    COMMAND ${CMAKE_COMMAND} -E copy
-#      ${CMAKE_BINARY_DIR}/modules/${MODULE}/lib${MODULE_TARGET}.a
-#      ${CMAKE_BINARY_DIR}/lib/gmlib/lib${MODULE_TARGET}.a
-#  )
-
-
-
 endfunction(createModuleCopyCmds)
 
 # Helper function for printing file info
@@ -452,7 +440,7 @@ function(addModuleLibrary)
   getModuleTargetHeaders( TARGET_HEADERS )
   getModuleTargetSources( TARGET_SOURCES )
   message( "Current source dir: " ${CMAKE_CURRENT_SOURCE_DIR} )
-  add_library( ${MODULE_TARGET} STATIC ${TARGET_HEADERS} ${TARGET_SOURCES} )
+  add_library( ${MODULE_TARGET} ${TARGET_HEADERS} ${TARGET_SOURCES} )
 
   set( LIBRARY_MODULE_TARGETS ${LIBRARY_MODULE_TARGETS} ${MODULE_TARGET} CACHE INTERNAL "My cache" )
 endfunction(addModuleLibrary)
