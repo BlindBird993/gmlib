@@ -42,6 +42,9 @@ endif()
 # Build documentation
 option( GMLIB_DOXYGEN "Create build target for doxygen documentation." FALSE )
 
+# Turn on unit-test creation
+option( GMLIB_TEST "Create unit tests." FALSE )
+
 
 #############################
 # Setup && Load EnhancedCMake
@@ -51,12 +54,8 @@ include( enhanced )
 setupEnhancedCMake( ${CMAKE_SOURCE_DIR}/cmake/ )
 message( "CMakeModulePath: " ${CMAKE_MODULE_PATH} )
 
-#############
-# Setup GMlib
-
 # Setup library - name and version [major,minor,patch]
 setupLibrary( GMlib 0 4 0 )
-
 
 
 #############################
@@ -71,53 +70,8 @@ find_package(Glew REQUIRED)
 
 ################################
 # Create source code build rules
-add_subdirectory(src)
+setSourceRootDir(src)
 
-
-###############################
-# Create cmake config directory
-#execute_process( COMMAND ${CMAKE_COMMAND} -E make_directory ${BUILD_CMAKE_DIR} )
-
-######################
-# Generate config file
-message( "Generating config file" )
-file( RELATIVE_PATH INC_RELPATH ${BUILD_CMAKE_DIR} ${BUILD_INCLUDE_DIR} )
-file( RELATIVE_PATH LIB_RELPATH ${BUILD_CMAKE_DIR} ${BUILD_LIB_DIR} )
-
-set( VAR_LIBRARY ${LIBRARY_NAME} )
-set( VAR_INC_RELPATH ${INC_RELPATH} )
-set( VAR_LIB_RELPATH ${LIB_RELPATH} )
-
-#list( REVERSE LIBRARY_MODULE_TARGETS )
-#foreach( MODULE_TRG ${LIBRARY_MODULE_TARGETS} )
-#
-#  message( "Module TRG: " ${MODULE_TRG} )
-#  set( VAR_LIBS ${VAR_LIBS} ${BUILD_LIB_DIR}/${LIB_RELPATH}/lib${MODULE_TRG}.a )
-#endforeach()
-
-list( REVERSE LIBRARY_MODULE_TARGETS )
-foreach( MODULE_TRG ${LIBRARY_MODULE_TARGETS} )
-
-  message( "Module TRG: " ${MODULE_TRG} )
-  set( VAR_LIBS "${VAR_LIBS} -l${MODULE_TRG}" )
-endforeach()
-
-
-configure_file(
-  ${ECMAKE_TEMPLATE_DIR}/config.cmake.in
-  ${BUILD_CMAKE_DIR}/gmlib-config.cmake
-  @ONLY
-)
-
-##############################
-# Generate version config file
-set( VAR_LIBRARY_VERSION ${LIBRARY_VERSION} )
-
-configure_file(
-  ${ECMAKE_TEMPLATE_DIR}/config_version.cmake.in
-  ${BUILD_CMAKE_DIR}/gmlib-config-version.cmake
-  @ONLY
-)
 
 ###########################
 # BUILD GMlib documentation
@@ -130,6 +84,11 @@ if( GMLIB_DOXYGEN )
 endif()
 
 
+
+#  add_executable(foo test/core/containers/gmarray/foo.cpp)
+#  target_link_libraries(foo ${GTEST_BOTH_LIBRARIES} ${GMLIB_LIBRARIES} )
+
+#  add_test(AllTestsInFoo ${BUILD_BIN_DIR}/foo)
 
 
 

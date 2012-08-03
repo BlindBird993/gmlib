@@ -21,24 +21,5 @@
 # ###############################################################################
 
 
-addHeaders(
-  gmArray
-  gmArrayLX
-  gmArrayT
-  gmDMatrix
-  gmDVector
-  gmDVectorn
-  gmSArray
-)
 
-addTemplateSources(
-  gmarray.c
-  gmarraylx.c
-  gmarrayt.c
-  gmdmatrix.c
-  gmdvector.c
-  gmdvectorn.c
-  gmsarray.c
-)
-
-addTestDir(test)
+addTest(gmarray_tests)

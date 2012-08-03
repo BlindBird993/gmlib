@@ -27,6 +27,11 @@ cmake_install.cmake
 CMakeFiles/
 build/
 
+########
+## CTest
+CTestTestfile.cmake
+Testing/
+
 #
 ##################################
 ## QMake (Deprecated build-system)
