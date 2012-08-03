@@ -383,19 +383,14 @@ macro(addTemplateSources)
 endmacro(addTemplateSources)
 
 macro(addSources)
-  addSourceFiles( ${MODULE_DIR} SOURCES ${ARGV} )
+  addSourceFiles( SOURCES ${ARGV} )
 endmacro(addSources)
 
-macro(addSourceFiles MOD_DIR VAR)
+macro(addSourceFiles VAR)
 
-  file( RELATIVE_PATH REL_PATH "${MOD_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" )
+  file( RELATIVE_PATH REL_PATH "${LIBRARY_SOURCE_ROOT}" "${CMAKE_CURRENT_SOURCE_DIR}" )
   foreach( SOURCE ${ARGN} )
-
-    if( REL_PATH )
-      list( APPEND ${VAR} "${REL_PATH}/${SOURCE}" )
-    else()
-      list( APPEND ${VAR} ${SOURCE} )
-    endif()
+    list( APPEND ${VAR} "${REL_PATH}/${SOURCE}" )
   endforeach()
 
   set( ${VAR} ${${VAR}} CACHE INTERNAL "Enhanced" )
@@ -430,13 +425,14 @@ endmacro(addSourceFiles2)
 macro(addSourceFiles3 MOD_DIR VAR)
 
   file( RELATIVE_PATH REL_PATH "${MOD_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" )
+  file( RELATIVE_PATH REL_PATH2 "${LIBRARY_SOURCE_ROOT}" "${CMAKE_CURRENT_SOURCE_DIR}" )
   foreach( SOURCE ${ARGN} )
 
     # find unique id if two tests in different paths is named the same
-    #getSafePathStr( ${REL_PATH} UNIQUE_PATH )
+    getSafePathStr( ${REL_PATH2} UNIQUE_PATH )
 
     # unique source entry var name
-    set( SOURCE_ENTRY "SOURCE_ENTRY_${SOURCE}" )
+    set( SOURCE_ENTRY "SOURCE_ENTRY_${SOURCE}_${UNIQUE_PATH}" )
 
     # build entry (name,header,relative path) e.g.: [gmGlobal;gmGlobal.h;core]
     list( APPEND ${SOURCE_ENTRY} ${SOURCE} )
@@ -610,9 +606,8 @@ endfunction(printModuleSourceFiles)
 function(addModuleLibrary)
 
   getModuleTargetHeaders( TARGET_HEADERS )
-  getModuleTargetSources( TARGET_SOURCES )
   #message( "Current source dir: " ${CMAKE_CURRENT_SOURCE_DIR} )
-  add_library( ${MODULE_TARGET} ${TARGET_HEADERS} ${TARGET_SOURCES} )
+  add_library( ${MODULE_TARGET} ${TARGET_HEADERS} ${SOURCES} )
 
   set( LIBRARY_MODULE_TARGETS ${LIBRARY_MODULE_TARGETS} ${MODULE_TARGET} CACHE INTERNAL "Enhanced" )
 endfunction(addModuleLibrary)
@@ -636,18 +631,6 @@ function(getModuleTargetHeaders TARGET_HEADERS )
 
   set( ${TARGET_HEADERS} ${THEADERS} PARENT_SCOPE )
 endfunction(getModuleTargetHeaders)
-
-function(getModuleTargetSources TARGET_SOURCES)
-
-  unset(TSOURCES)
-  foreach( SRC ${SOURCES} )
-
-    set( TSOURCE ${MODULE}/${SRC} )
-    list( APPEND TSOURCES ${TSOURCE} )
-  endforeach()
-
-  set( ${TARGET_SOURCES} ${TSOURCES} PARENT_SCOPE )
-endfunction(getModuleTargetSources)
 
 function(extractHeaderRelPath HDR_REL_PATH_ENTRY HDR_REL_PATH )
   string( SUBSTRING ${HDR_REL_PATH_ENTRY} 7 -1 REL_PATH )
