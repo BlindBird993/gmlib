@@ -71,7 +71,7 @@ namespace GMlib {
 
     _prog.bind();
 
-    GMlib::HqMatrix<float,3> mvpmat;
+    HqMatrix<float,3> mvpmat;
     mvpmat = cam->getProjectionMatrix();
     mvpmat = this->_obj->getModelViewProjectionMatrix(cam);
 

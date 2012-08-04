@@ -69,7 +69,7 @@ namespace GMlib {
         _dprog.setUniform( "u_selected", this->_obj->isSelected() );
         _dprog.setUniform( "u_lighted", this->_obj->isLighted() );
         _dprog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
-        _dprog.setUniform( "u_light_dif", GMlib::Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
+        _dprog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
         _dprog.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
 
         // Get Material Data

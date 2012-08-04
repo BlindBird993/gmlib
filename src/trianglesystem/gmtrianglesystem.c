@@ -1612,7 +1612,7 @@ namespace GMlib {
   //inline
   //ostream& TSVertex<T>::_prOut(ostream& out)const
   //{
-  //	out << getPosition() << GMlib::GMseparator::Group;
+  //	out << getPosition() << GMseparator::Group;
   ////	if(  ) out << dir() << "\n ";
   //
   //	return out;

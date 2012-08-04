@@ -133,7 +133,7 @@ namespace GMlib {
             for( int j = 0; j < 3; j++ )
               *(ptr++) = p[i][0][j];
 
-            const GMlib::Vector<T,3> v = p[i][der] * _size;
+            const Vector<T,3> v = p[i][der] * _size;
             for( int j = 0; j < 3; j++ )
               *(ptr++) = p[i][0][j] + v(j);
           }
@@ -147,7 +147,7 @@ namespace GMlib {
             for( int j = 0; j < 3; j++ )
               *(ptr++) = p[i][0][j];
 
-            const GMlib::Vector<T,3> v = p[i][der].getNormalized() * _size;
+            const Vector<T,3> v = p[i][der].getNormalized() * _size;
             for( int j = 0; j < 3; j++ )
               *(ptr++) = p[i][0][j] + v(j);
           }
@@ -162,7 +162,7 @@ namespace GMlib {
             for( int j = 0; j < 3; j++ )
               *(ptr++) = p[i][0][j];
 
-            const GMlib::UnitVector<T,3> uv = p[i][der];
+            const UnitVector<T,3> uv = p[i][der];
             for( int j = 0; j < 3; j++ )
               *(ptr++) = p[i][0][j] + uv(j);
           }

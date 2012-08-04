@@ -131,7 +131,7 @@ namespace GMlib {
           for( int k = 0; k < 3; k++ )
             *(ptr++) = p[i][j][0][0][k];
 
-          const GMlib::Vector<T,3> N = normals[i][j].getNormalized() * _size;
+          const Vector<T,3> N = normals[i][j].getNormalized() * _size;
           for( int k = 0; k < 3; k++ )
             *(ptr++) = p[i][j][0][0][k] + N(k);
         }
@@ -166,7 +166,7 @@ namespace GMlib {
           for( int k = 0; k < 3; k++ )
             *(ptr++) = p[i][j][0][0][k];
 
-          const GMlib::Vector<T,3> N = normals[i][j].getNormalized() * _size;
+          const Vector<T,3> N = normals[i][j].getNormalized() * _size;
           for( int k = 0; k < 3; k++ )
             *(ptr++) = p[i][j][0][0][k] + N(k);
         }
@@ -203,7 +203,7 @@ namespace GMlib {
         for( int k = 0; k < 3; k++ )
           *(ptr++) = p[i][j][0][0][k];
 
-        const GMlib::Vector<T,3> N1 = normals[i][j].getNormalized() * _size;
+        const Vector<T,3> N1 = normals[i][j].getNormalized() * _size;
         for( int k = 0; k < 3; k++ )
           *(ptr++) = p[i][j][0][0][k] + N1(k);
 
@@ -212,7 +212,7 @@ namespace GMlib {
         for( int k = 0; k < 3; k++ )
           *(ptr++) = p[i][j][0][0][k];
 
-        const GMlib::Vector<T,3> N2 = normals[i][j].getNormalized() * _size;
+        const Vector<T,3> N2 = normals[i][j].getNormalized() * _size;
         for( int k = 0; k < 3; k++ )
           *(ptr++) = p[i][j][0][0][k] + N2(k);
 
@@ -225,7 +225,7 @@ namespace GMlib {
         for( int k = 0; k < 3; k++ )
           *(ptr++) = p[i][j][0][0][k];
 
-        const GMlib::Vector<T,3> N1 = normals[i][j].getNormalized() * _size;
+        const Vector<T,3> N1 = normals[i][j].getNormalized() * _size;
         for( int k = 0; k < 3; k++ )
           *(ptr++) = p[i][j][0][0][k] + N1(k);
 
@@ -234,7 +234,7 @@ namespace GMlib {
         for( int k = 0; k < 3; k++ )
           *(ptr++) = p[i][j][0][0][k];
 
-        const GMlib::Vector<T,3> N2 = normals[i][j].getNormalized() * _size;
+        const Vector<T,3> N2 = normals[i][j].getNormalized() * _size;
         for( int k = 0; k < 3; k++ )
           *(ptr++) = p[i][j][0][0][k] + N2(k);
       }
