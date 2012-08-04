@@ -670,13 +670,13 @@ function(generateModuleCXXHeaders)
     endif()
 
     # Define header include relative path
-    file( RELATIVE_PATH BIN_SRC_RELPATH "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}" )
-    if( BIN_SRC_RELPATH )
+#    file( RELATIVE_PATH BIN_SRC_RELPATH "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}" )
+#    if( BIN_SRC_RELPATH )
       set( HEADER_INCLUDE "#include \"${HDR_RELPATH_FILE}\"" )
-    else()
-      file( RELATIVE_PATH MOD_SRC_CURRENT_RELPATH "${MODULE_BUILD_INCLUDE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}" )
-      set( HEADER_INCLUDE "#include \"${MOD_SRC_CURRENT_RELPATH}/${HDR_RELPATH_FILE}\"" )
-    endif()
+#   else()
+#      file( RELATIVE_PATH MOD_SRC_CURRENT_RELPATH "${MODULE_BUILD_INCLUDE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/${MODULE}" )
+#      set( HEADER_INCLUDE "#include \"${MOD_SRC_CURRENT_RELPATH}/${HDR_RELPATH_FILE}\"" )
+#    endif()
 
     # Generate individual CXX Header
     unset( VAR_HEADER_INCLUDES )
