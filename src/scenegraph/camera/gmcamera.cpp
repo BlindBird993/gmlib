@@ -105,15 +105,15 @@ namespace GMlib {
     // Gen quad data (vertex)
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
 
-    DVector< GMlib::Point<float,3> > data(4);
-//    data[0] = GMlib::Point3D<float>( 0.25f, 0.25f, 0.0f );
-//    data[1] = GMlib::Point3D<float>( 0.25f, 0.75f, 0.0f );
-//    data[2] = GMlib::Point3D<float>( 0.75f, 0.75f, 0.0f );
-//    data[3] = GMlib::Point3D<float>( 0.75f, 0.25f, 0.0f );
-    data[0] = GMlib::Point3D<float>( 0.0f, 0.0f, 0.0f );
-    data[1] = GMlib::Point3D<float>( 0.0f, 1.0f, 0.0f );
-    data[2] = GMlib::Point3D<float>( 1.0f, 1.0f, 0.0f );
-    data[3] = GMlib::Point3D<float>( 1.0f, 0.0f, 0.0f );
+    DVector< Point<float,3> > data(4);
+//    data[0] = Point3D<float>( 0.25f, 0.25f, 0.0f );
+//    data[1] = Point3D<float>( 0.25f, 0.75f, 0.0f );
+//    data[2] = Point3D<float>( 0.75f, 0.75f, 0.0f );
+//    data[3] = Point3D<float>( 0.75f, 0.25f, 0.0f );
+    data[0] = Point3D<float>( 0.0f, 0.0f, 0.0f );
+    data[1] = Point3D<float>( 0.0f, 1.0f, 0.0f );
+    data[2] = Point3D<float>( 1.0f, 1.0f, 0.0f );
+    data[3] = Point3D<float>( 1.0f, 0.0f, 0.0f );
 
     glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
@@ -121,15 +121,15 @@ namespace GMlib {
     // Gen quad data (tex)
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
 
-    DVector< GMlib::Point<float,2> > data_tex(4);
-    data_tex[0] = GMlib::Point2D<float>( 0.0f, 0.0f );
-    data_tex[1] = GMlib::Point2D<float>( 0.0f, 1.0f );
-    data_tex[2] = GMlib::Point2D<float>( 1.0f, 1.0f );
-    data_tex[3] = GMlib::Point2D<float>( 1.0f, 0.0f );
-  //  data_tex[0] = GMlib::Point2D<float>( 0.25f, 0.25f );
-  //  data_tex[1] = GMlib::Point2D<float>( 0.25f, 0.75f );
-  //  data_tex[2] = GMlib::Point2D<float>( 0.75f, 0.75f );
-  //  data_tex[3] = GMlib::Point2D<float>( 0.75f, 0.25f );
+    DVector< Point<float,2> > data_tex(4);
+    data_tex[0] = Point2D<float>( 0.0f, 0.0f );
+    data_tex[1] = Point2D<float>( 0.0f, 1.0f );
+    data_tex[2] = Point2D<float>( 1.0f, 1.0f );
+    data_tex[3] = Point2D<float>( 1.0f, 0.0f );
+  //  data_tex[0] = Point2D<float>( 0.25f, 0.25f );
+  //  data_tex[1] = Point2D<float>( 0.25f, 0.75f );
+  //  data_tex[2] = Point2D<float>( 0.75f, 0.75f );
+  //  data_tex[3] = Point2D<float>( 0.75f, 0.25f );
 
     glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
@@ -142,19 +142,19 @@ namespace GMlib {
     // Gen quad data (vertex)
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_debug );
 
-//    DVector< GMlib::Point<float,3> > data(4);
-//    data[0] = GMlib::Point3D<float>( 0.25f, 0.25f, 0.0f );
-//    data[1] = GMlib::Point3D<float>( 0.25f, 0.75f, 0.0f );
-//    data[2] = GMlib::Point3D<float>( 0.75f, 0.75f, 0.0f );
-//    data[3] = GMlib::Point3D<float>( 0.75f, 0.25f, 0.0f );
-//    data[0] = GMlib::Point3D<float>( 0.0f, 0.0f, 0.0f );
-//    data[1] = GMlib::Point3D<float>( 0.0f, 1.0f, 0.0f );
-//    data[2] = GMlib::Point3D<float>( 1.0f, 1.0f, 0.0f );
-//    data[3] = GMlib::Point3D<float>( 1.0f, 0.0f, 0.0f );
-    data[0] = GMlib::Point3D<float>( 0.8f, 0.8f, -0.1f );
-    data[1] = GMlib::Point3D<float>( 0.8f, 1.0f, -0.1f );
-    data[2] = GMlib::Point3D<float>( 1.0f, 1.0f, -0.1f );
-    data[3] = GMlib::Point3D<float>( 1.0f, 0.8f, -0.1f );
+//    DVector< Point<float,3> > data(4);
+//    data[0] = Point3D<float>( 0.25f, 0.25f, 0.0f );
+//    data[1] = Point3D<float>( 0.25f, 0.75f, 0.0f );
+//    data[2] = Point3D<float>( 0.75f, 0.75f, 0.0f );
+//    data[3] = Point3D<float>( 0.75f, 0.25f, 0.0f );
+//    data[0] = Point3D<float>( 0.0f, 0.0f, 0.0f );
+//    data[1] = Point3D<float>( 0.0f, 1.0f, 0.0f );
+//    data[2] = Point3D<float>( 1.0f, 1.0f, 0.0f );
+//    data[3] = Point3D<float>( 1.0f, 0.0f, 0.0f );
+    data[0] = Point3D<float>( 0.8f, 0.8f, -0.1f );
+    data[1] = Point3D<float>( 0.8f, 1.0f, -0.1f );
+    data[2] = Point3D<float>( 1.0f, 1.0f, -0.1f );
+    data[3] = Point3D<float>( 1.0f, 0.8f, -0.1f );
 
     glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
@@ -162,15 +162,15 @@ namespace GMlib {
     // Gen quad data (tex)
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex_debug );
 
-//    DVector< GMlib::Point<float,2> > data_tex(4);
-    data_tex[0] = GMlib::Point2D<float>( 0.0f, 0.0f );
-    data_tex[1] = GMlib::Point2D<float>( 0.0f, 1.0f );
-    data_tex[2] = GMlib::Point2D<float>( 1.0f, 1.0f );
-    data_tex[3] = GMlib::Point2D<float>( 1.0f, 0.0f );
-  //  data_tex[0] = GMlib::Point2D<float>( 0.25f, 0.25f );
-  //  data_tex[1] = GMlib::Point2D<float>( 0.25f, 0.75f );
-  //  data_tex[2] = GMlib::Point2D<float>( 0.75f, 0.75f );
-  //  data_tex[3] = GMlib::Point2D<float>( 0.75f, 0.25f );
+//    DVector< Point<float,2> > data_tex(4);
+    data_tex[0] = Point2D<float>( 0.0f, 0.0f );
+    data_tex[1] = Point2D<float>( 0.0f, 1.0f );
+    data_tex[2] = Point2D<float>( 1.0f, 1.0f );
+    data_tex[3] = Point2D<float>( 1.0f, 0.0f );
+  //  data_tex[0] = Point2D<float>( 0.25f, 0.25f );
+  //  data_tex[1] = Point2D<float>( 0.25f, 0.75f );
+  //  data_tex[2] = Point2D<float>( 0.75f, 0.75f );
+  //  data_tex[3] = Point2D<float>( 0.75f, 0.25f );
 
     glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
@@ -375,7 +375,7 @@ namespace GMlib {
     B = - ( t + b ) / ( t - b );
     C = - ( f + n ) / ( f - n );
 
-    GMlib::HqMatrix<float,3> ortho_mat;
+    HqMatrix<float,3> ortho_mat;
 
     ortho_mat[0][0] = 2 / (r - l);
     ortho_mat[0][1] = 0.0f;
