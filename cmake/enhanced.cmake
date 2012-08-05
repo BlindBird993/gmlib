@@ -182,6 +182,13 @@ macro(setSourceRootDir NAME)
 
 endmacro(setSourceRootDir)
 
+macro(addDefinitions DEF)
+
+  add_definitions( ${DEF} )
+  list( APPEND DEFINITIONS ${DEF} )
+
+endmacro(addDefinitions)
+
 function(generateConfig)
 
   # Helper vars
@@ -193,6 +200,13 @@ function(generateConfig)
   set( VAR_INC_RELPATH ${INC_RELPATH} )
   set( VAR_LIB_RELPATH ${LIB_RELPATH} )
 
+  set( VAR_DEFINITIONS "add_definitions( " )
+  foreach( DEF ${DEFINITIONS} )
+    set( VAR_DEFINITIONS "${VAR_DEFINITIONS} ${DEF}" )
+  endforeach()
+  set( VAR_DEFINITIONS "${VAR_DEFINITIONS} )" )
+
+  # Reverse dependency sorted modul-targets
   list( REVERSE LIBRARY_MODULE_TARGETS )
   foreach( MODULE_TRG ${LIBRARY_MODULE_TARGETS} )
 
@@ -200,6 +214,7 @@ function(generateConfig)
     set( VAR_LIBS "${VAR_LIBS} -l${MODULE_TRG}" )
   endforeach()
 
+  # Write config file
   configure_file(
     ${ECMAKE_TEMPLATE_DIR}/config.cmake.in
     ${BUILD_CMAKE_DIR}/${LIBRARY}-config.cmake

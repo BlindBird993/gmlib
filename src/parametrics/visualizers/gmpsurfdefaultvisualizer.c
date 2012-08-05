@@ -45,7 +45,6 @@
 // stl
 #include <set>
 #include <string>
-#include <iostream>
 
 namespace GMlib {
 

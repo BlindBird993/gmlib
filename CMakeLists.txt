@@ -27,6 +27,9 @@ cmake_minimum_required(VERSION 2.8)
 ########################
 # Build options
 
+# Core types stream operators
+option( GMLIB_STREAM "Enable output stream operators for core types." TRUE )
+
 # Namespace options
 option( GMLIB_NAMESPACE "Set to TRUE to enable the <GMlib> namespace." FALSE )
 option( GMLIB_MODULE_NAMESPACES "Set to TRUE to enable pr. module namespace." FALSE )
@@ -57,6 +60,10 @@ message( "CMakeModulePath: " ${CMAKE_MODULE_PATH} )
 # Setup library - name and version [major,minor,patch]
 setupLibrary( GMlib 0 4 0 )
 
+# add GM_STREAM definition
+if( GMLIB_STREAM )
+  addDefinitions( -DGM_STREAM )
+endif()
 
 #############################
 # Find 3rd party dependencies

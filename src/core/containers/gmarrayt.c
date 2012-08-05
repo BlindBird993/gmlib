@@ -650,21 +650,21 @@ namespace GMlib {
 
   template <typename T>
   inline
-  ostream& ArrayT<T>::_printOut( ostream& out ) const {
+  std::ostream& ArrayT<T>::_printOut( std::ostream& out ) const {
 
     out << size() << "\n";
 
     for(int i = 0; i < _no_elements; i++)
       out << (*this)(i) << ' ';
 
-    out << endl;
+    out << std::endl;
     return out;
   }
 
 
   template <typename T>
   inline
-  istream& ArrayT<T>::_printIn( istream& in ) {
+  std::istream& ArrayT<T>::_printIn( std::istream& in ) {
 
     int no;
     in >> no;
@@ -679,7 +679,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void ArrayT<T>::print( char prompt[], ostream& out ) const {
+  void ArrayT<T>::print( char prompt[], std::ostream& out ) const {
 
     out << prompt << ": " << (*this) << "\n";
   }

@@ -199,36 +199,36 @@ namespace GMlib {
 
 
   private:
-    istream& _printIn( istream& in );
-    ostream& _printOut( ostream& out ) const;
+    std::istream& _printIn( std::istream& in );
+    std::ostream& _printOut( std::ostream& out ) const;
 
 
   public:
     friend
-    ostream& operator << ( ostream& out, const GLMatrix& v ) {
+    std::ostream& operator << ( std::ostream& out, const GLMatrix& v ) {
 
       return v._printOut( out );
     }
 
     friend
-    ostream& operator << ( ostream& out, const GLMatrix* v ) {
+    std::ostream& operator << ( std::ostream& out, const GLMatrix* v ) {
 
       return v->_printOut( out );
     }
 
     friend
-    istream& operator >> ( istream& in, GLMatrix& v ) {
+    std::istream& operator >> ( std::istream& in, GLMatrix& v ) {
 
       return v._printIn (in );
     }
 
     friend
-    istream& operator >> ( istream& in, GLMatrix* v ) {
+    std::istream& operator >> ( std::istream& in, GLMatrix* v ) {
 
       return v->_printIn( in );
     }
 
-    void print( char prompt[] = "GLMatrix", ostream & out = std::cout ) const;
+    void print( char prompt[] = "GLMatrix", std::ostream & out = std::cout ) const;
 
     #endif
 
@@ -859,7 +859,7 @@ namespace GMlib {
   #ifdef GM_STREAM
 
   inline
-  istream& GLMatrix::_printIn( istream& in ) {
+  std::istream& GLMatrix::_printIn( std::istream& in ) {
 
     in >> _matrix[0] >> _matrix[4] >> _matrix[8] >> _matrix[12]
        >> _matrix[1] >> _matrix[5] >> _matrix[9] >> _matrix[13]
@@ -870,7 +870,7 @@ namespace GMlib {
 
 
   inline
-  ostream& GLMatrix::_printOut( ostream& out ) const {
+  std::ostream& GLMatrix::_printOut( std::ostream& out ) const {
 
     out << _matrix[0] << "  " << _matrix[4] << "  " << _matrix[8] << "  " << _matrix[12] << "\n";
     out << _matrix[1] << "  " << _matrix[5] << "  " << _matrix[9] << "  " << _matrix[13] << "\n";
@@ -881,7 +881,7 @@ namespace GMlib {
 
 
   inline
-  void GLMatrix::print( char prompt[], ostream & out ) const {
+  void GLMatrix::print( char prompt[], std::ostream & out ) const {
 
     out << prompt << ": " << (*this) << "\n";
   }

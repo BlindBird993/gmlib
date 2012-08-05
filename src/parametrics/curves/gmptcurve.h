@@ -35,10 +35,6 @@
 // gmlib::core
 #include <core/types/gmangle.h>
 
-// stl
-#include <iostream>
-
-
 
 namespace GMlib {
 

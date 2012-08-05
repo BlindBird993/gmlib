@@ -201,19 +201,19 @@ namespace GMlib {
 
 //  public:
 //    int  getStreamMode() const;
-//    void print( string prompt = " TriangleFacets<T>", ostream& out = std::cout ) const;
+//    void print( string prompt = " TriangleFacets<T>", std::ostream& out = std::cout ) const;
 //    void setStreamMode( int i = 1 );
 //
-//    friend ostream& operator<<(ostream& out, const  TriangleFacets<T>& v) {
+//    friend std::ostream& operator<<(std::ostream& out, const  TriangleFacets<T>& v) {
 //      return v._prOut(out);
 //    }
-//    friend ostream& operator<<(ostream& out, const  TriangleFacets<T>* v) {
+//    friend std::ostream& operator<<(std::ostream& out, const  TriangleFacets<T>* v) {
 //      return v->_prOut(out);
 //    }
-//    friend istream& operator>>(istream& in,  TriangleFacets<T>& v) {
-//      return istream >> v;
+//    friend std::istream& operator>>(std::istream& in,  TriangleFacets<T>& v) {
+//      return std::istream >> v;
 //    }
-//    friend istream& operator>>(istream& in,  TriangleFacets<T>* v) {
+//    friend std::istream& operator>>(std::istream& in,  TriangleFacets<T>* v) {
 //      return v->_prIn(in);
 //    }
 //
@@ -221,8 +221,8 @@ namespace GMlib {
 //  private:
 //    int _stream_mode;
 //
-//    ostream& _prOut(ostream& out) const;
-//    istream& _prIn(istream& in);
+//    std::ostream& _prOut(std::ostream& out) const;
+//    std::istream& _prIn(std::istream& in);
 
   #endif
   };
@@ -346,17 +346,17 @@ namespace GMlib {
 //
 //
 //  public:
-//    friend ostream&       operator<<(ostream& out, const TSVertex<T>& v) { return v._prOut(out); }
-//    friend ostream&       operator<<(ostream& out, const TSVertex<T>* v) { return v->_prOut(out); }
-//    friend istream&       operator>>(istream& in, TSVertex<T>& v)	{ return v._prIn(in); }
-//    friend istream&       operator>>(istream& in, TSVertex<T>* v)	{ return v->_prIn(in); }
+//    friend std::ostream&       operator<<(std::ostream& out, const TSVertex<T>& v) { return v._prOut(out); }
+//    friend std::ostream&       operator<<(std::ostream& out, const TSVertex<T>* v) { return v->_prOut(out); }
+//    friend std::istream&       operator>>(std::istream& in, TSVertex<T>& v)	{ return v._prIn(in); }
+//    friend std::istream&       operator>>(std::istream& in, TSVertex<T>* v)	{ return v->_prIn(in); }
 //
-//    void                  print(char prompt[]="TSVertex<T>", ostream & out = std::cout) const
+//    void                  print(char prompt[]="TSVertex<T>", std::ostream & out = std::cout) const
 //    { out << prompt << ": " << (*this) << "\n"; }
 //
 //  private:
-//    ostream&              _prOut(ostream& out)const;
-//    istream&              _prIn(istream& in);
+//    std::ostream&              _prOut(std::ostream& out)const;
+//    std::istream&              _prIn(std::istream& in);
 //
 //  #endif
 
@@ -429,16 +429,16 @@ namespace GMlib {
 
 //  #if defined GM_STREAM
 //  private:
-//    ostream& _prOut(ostream& out)const;
-//    istream& _prIn(istream& in);
+//    std::ostream& _prOut(std::ostream& out)const;
+//    std::istream& _prIn(std::istream& in);
 //  public:
 //
-//    friend ostream& operator<<(ostream& out, const TSEdge<T>& v);
-//    friend ostream& operator<<(ostream& out, const TSEdge<T>* v);
-//    friend istream& operator>>(istream& in, TSEdge<T>& v);
-//    friend istream& operator>>(istream& in, TSEdge<T>* v);
+//    friend std::ostream& operator<<(std::ostream& out, const TSEdge<T>& v);
+//    friend std::ostream& operator<<(std::ostream& out, const TSEdge<T>* v);
+//    friend std::istream& operator>>(std::istream& in, TSEdge<T>& v);
+//    friend std::istream& operator>>(std::istream& in, TSEdge<T>* v);
 //
-//    void print(char prompt[]="TSEdge<T>", ostream & out = std::cout) const;
+//    void print(char prompt[]="TSEdge<T>", std::ostream & out = std::cout) const;
 //  #endif
   };
 
@@ -498,16 +498,16 @@ namespace GMlib {
 
 //  #if defined GM_STREAM
 //  public:
-//    friend ostream& operator << ( ostream& out, const TSTriangle<T>& v );
-//    friend ostream& operator << ( ostream& out, const TSTriangle<T>* v );
-//    friend istream& operator >> ( istream& in, TSTriangle<T>& v );
-//    friend istream& operator >> ( istream& in, TSTriangle<T>* v );
+//    friend std::ostream& operator << ( std::ostream& out, const TSTriangle<T>& v );
+//    friend std::ostream& operator << ( std::ostream& out, const TSTriangle<T>* v );
+//    friend std::istream& operator >> ( std::istream& in, TSTriangle<T>& v );
+//    friend std::istream& operator >> ( std::istream& in, TSTriangle<T>* v );
 //
-//    void print( char prompt[] = "TSTriangle<T>", ostream & out = std::cout ) const;
+//    void print( char prompt[] = "TSTriangle<T>", std::ostream & out = std::cout ) const;
 //
 //  private:
-//    ostream& _prOut( ostream& out )const;
-//    istream& _prIn( istream& in );
+//    std::ostream& _prOut( std::ostream& out )const;
+//    std::istream& _prIn( std::istream& in );
 //  #endif
   };
 

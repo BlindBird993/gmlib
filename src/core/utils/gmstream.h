@@ -31,57 +31,13 @@
 #ifndef __gmSTREAM_H__
 #define __gmSTREAM_H__
 
-// Define GM_STREAM and open for GMlibs template stream operators
-//#define GM_STREAM
 
 #ifdef GM_STREAM
+#include <iostream>
 
 namespace GMlib {
 
-  // *****************************
-  // IOSTREAM overloaded operators
 
-  /*! T_Stream& operator << ( T_Stream &out, const Separator &s)
-   *  \brief
-   *
-   *  If Separator's flag for a binary stream has been set
-   *  then nothing will be sendt to the stream. The stram
-   *  will alsp be left untouch if the Separator is '' <- nothing.
-   *
-   *  \return T_Stream
-   */
-  template< typename T_Stream >
-  T_Stream& operator << ( T_Stream &out, const Separator &s ) {
-
-    if( !s.getBinary())
-      out << s.getSeparator();
-    return out;
-  }
-
-
-  /*! T_Stream& operator >> ( T_Stream &in, Separator &s )
-   *  \brief
-   *
-   *  If Separator's flag for a binary stream has been set
-   *  then nothing will be retrieved from the stream.
-   *
-   *  \return T_Stream
-   */
-  template< typename T_Stream >
-  T_Stream& operator >> ( T_Stream &in, Separator &s ) {
-
-    if( s.getBinary() )
-      return in;
-
-    if( s.getSeparator() != ' ' && s.getSeparator() != '\t' && s.getSeparator() != '\n') {
-
-      unsigned int tmp;
-
-      in >> tmp;
-      s.setSeparator(tmp);
-    }
-    return in;
-  }
 
 
 
@@ -188,7 +144,50 @@ namespace GMlib {
     extern Separator Group;
   }
 
+  // *****************************
+  // IOSTREAM overloaded operators
 
+  /*! T_Stream& operator << ( T_Stream &out, const Separator &s)
+   *  \brief
+   *
+   *  If Separator's flag for a binary stream has been set
+   *  then nothing will be sendt to the stream. The stram
+   *  will alsp be left untouch if the Separator is '' <- nothing.
+   *
+   *  \return T_Stream
+   */
+  template< typename T_Stream >
+  T_Stream& operator << ( T_Stream &out, const Separator &s ) {
+
+    if( !s.getBinary())
+      out << s.getSeparator();
+    return out;
+  }
+
+
+  /*! T_Stream& operator >> ( T_Stream &in, Separator &s )
+   *  \brief
+   *
+   *  If Separator's flag for a binary stream has been set
+   *  then nothing will be retrieved from the stream.
+   *
+   *  \return T_Stream
+   */
+  template< typename T_Stream >
+  T_Stream& operator >> ( T_Stream &in, Separator &s ) {
+
+    if( s.getBinary() )
+      return in;
+
+    if( s.getSeparator() != ' ' && s.getSeparator() != '\t' && s.getSeparator() != '\n') {
+
+      unsigned int tmp;
+
+      in >> tmp;
+      s.setSeparator(tmp);
+    }
+    return in;
+  }
 
 } // END namespace
 

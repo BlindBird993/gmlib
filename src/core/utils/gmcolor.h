@@ -31,9 +31,10 @@
 #define __gmCOLOR_H__
 
 
+#include "gmstream.h"
+
 // stl
 #include <algorithm>
-
 
 
 namespace GMlib {
@@ -157,17 +158,17 @@ namespace GMlib {
 
   private:
 
-    istream& _printIn( istream& in );
-    ostream& _printOut( ostream& out ) const;
+    std::istream& _printIn( std::istream& in );
+    std::ostream& _printOut( std::ostream& out ) const;
 
     friend
-    ostream& operator << ( ostream& out, const Color& v ) {
+    std::ostream& operator << ( std::ostream& out, const Color& v ) {
 
       return v._printOut( out );
     }
 
     friend
-    istream& operator >> ( istream& in, Color& v ) {
+    std::istream& operator >> ( std::istream& in, Color& v ) {
 
       return v._printIn(in);
     }

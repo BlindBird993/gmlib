@@ -27,10 +27,6 @@
  */
 
 
-// stl
-#include <iostream>
-
-
 namespace GMlib {
 
 
@@ -227,9 +223,7 @@ namespace GMlib {
     Point<T,n+1> pp = p;
     pp[n] = T(1);
     SqMatrix<T,n+1> ms = v.multTransMe();
-    std::cout << "MS:\n" << ms << std::endl;
     ms.invert();
-    std::cout << "MS:\n" << ms << std::endl;
     //	UnitVector<T,m> x = ms*(pp*v);
     //cout << "X:\n" << x << endl << endl;
 

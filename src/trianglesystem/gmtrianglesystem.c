@@ -1086,14 +1086,14 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void TriangleFacets<T>::print( string prompt = " TriangleFacets<T>", ostream& out = cout ) const {
+  //void TriangleFacets<T>::print( string prompt = " TriangleFacets<T>", std::ostream& out = cout ) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}
   //
   //
   //template <typename T>
-  //ostream& TriangleFacets<T>::_prOut(ostream& out) const {
+  //std::ostream& TriangleFacets<T>::_prOut(std::ostream& out) const {
   //
   //	const ArrayLX< TSVertex<T> >& vertex = *this;
   //	if( _stream_mode == 1 || _stream_mode == 4 || _stream_mode == 5 || _stream_mode == 7 )
@@ -1107,7 +1107,7 @@ namespace GMlib {
   //
   //
   //template <typename T>
-  //istream& TriangleFacets<T>::_prIn(istream& in) {
+  //std::istream& TriangleFacets<T>::_prIn(std::istream& in) {
   //
   //	__e.set(*this);
   //
@@ -1566,7 +1566,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& TSVertex<T>::operator<<(ostream& out, const TSVertex<T>& v) {
+  //std::ostream& TSVertex<T>::operator<<(std::ostream& out, const TSVertex<T>& v) {
   //
   //  return v._prOut(out);
   //}
@@ -1574,7 +1574,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& TSVertex<T>::operator<<(ostream& out, const TSVertex<T>* v) {
+  //std::ostream& TSVertex<T>::operator<<(std::ostream& out, const TSVertex<T>* v) {
   //
   //  return v->_prOut(out);
   //}
@@ -1582,7 +1582,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& TSVertex<T>::operator>>(istream& in, TSVertex<T>& v)	{
+  //std::istream& TSVertex<T>::operator>>(std::istream& in, TSVertex<T>& v)	{
   //
   //  return v._prIn(in);
   //}
@@ -1590,7 +1590,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& TSVertex<T>::operator>>(istream& in, TSVertex<T>* v)	{
+  //std::istream& TSVertex<T>::operator>>(std::istream& in, TSVertex<T>* v)	{
   //
   //  return v->_prIn(in);
   //}
@@ -1599,7 +1599,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void TSVertex<T>::print(char prompt[]="TSVertex<T>", ostream & out = std::cout) const {
+  //void TSVertex<T>::print(char prompt[]="TSVertex<T>", std::ostream & out = std::cout) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}
@@ -1610,7 +1610,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& TSVertex<T>::_prOut(ostream& out)const
+  //std::ostream& TSVertex<T>::_prOut(std::ostream& out)const
   //{
   //	out << getPosition() << GMseparator::Group;
   ////	if(  ) out << dir() << "\n ";
@@ -1621,7 +1621,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& TSVertex<T>::_prIn(istream& in)
+  //std::istream& TSVertex<T>::_prIn(std::istream& in)
   //{
   //	Point<T,3> p;
   //	in >> p; setPos(p);
@@ -2161,7 +2161,7 @@ namespace GMlib {
   //
   //template <template T>
   //inline
-  //ostream& TSEdge<T>::_prOut(ostream& out)const
+  //std::ostream& TSEdge<T>::_prOut(std::ostream& out)const
   //{
   //	out << (*_vertex[0]) << " " << (*_vertex[1])
   //		<< " " << _const << "\n ";
@@ -2171,7 +2171,7 @@ namespace GMlib {
   //
   //template <template T>
   //inline
-  //istream& TSEdge<T>::_prIn(istream& in)
+  //std::istream& TSEdge<T>::_prIn(std::istream& in)
   //{
   //	Point<T,3> p1, p2;
   //	in >> p1 >> p2 >> _const;
@@ -2184,7 +2184,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& TSEdge<T>::operator<<( ostream& out, const TSEdge<T>& v ) {
+  //std::ostream& TSEdge<T>::operator<<( std::ostream& out, const TSEdge<T>& v ) {
   //
   //  return v._prOut(out);
   //}
@@ -2192,7 +2192,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& TSEdge<T>::operator<<( ostream& out, const TSEdge<T>* v ) {
+  //std::ostream& TSEdge<T>::operator<<( std::ostream& out, const TSEdge<T>* v ) {
   //
   //  return v->_prOut(out);
   //}
@@ -2200,7 +2200,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& TSEdge<T>::operator >> ( istream& in, TSEdge<T>& v )	{
+  //std::istream& TSEdge<T>::operator >> ( std::istream& in, TSEdge<T>& v )	{
   //
   //  return v._prIn(in);
   //}
@@ -2208,7 +2208,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& TSEdge<T>::operator>>( istream& in, TSEdge<T>* v ) {
+  //std::istream& TSEdge<T>::operator>>( std::istream& in, TSEdge<T>* v ) {
   //
   //  return v->_prIn(in);
   //}
@@ -2216,7 +2216,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void print(char prompt[]="TSEdge<T>", ostream & out = std::cout) const {
+  //void print(char prompt[]="TSEdge<T>", std::ostream & out = std::cout) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}
@@ -2587,7 +2587,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& TSTriangle<T>::operator << ( ostream& out, const TSTriangle<T>& v ) {
+  //std::ostream& TSTriangle<T>::operator << ( std::ostream& out, const TSTriangle<T>& v ) {
   //
   //  return v._prOut(out);
   //}
@@ -2595,7 +2595,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //ostream& TSTriangle<T>::operator << ( ostream& out, const TSTriangle<T>* v ) {
+  //std::ostream& TSTriangle<T>::operator << ( std::ostream& out, const TSTriangle<T>* v ) {
   //
   //  return v->_prOut(out);
   //}
@@ -2603,7 +2603,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& TSTriangle<T>::operator>>( istream& in, TSTriangle<T>& v ) {
+  //std::istream& TSTriangle<T>::operator>>( std::istream& in, TSTriangle<T>& v ) {
   //
   //  return v._prIn(in);
   //}
@@ -2611,7 +2611,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //istream& TSTriangle<T>::operator >> ( istream& in, TSTriangle<T>* v ) {
+  //std::istream& TSTriangle<T>::operator >> ( std::istream& in, TSTriangle<T>* v ) {
   //
   //  return v->_prIn(in);
   //}
@@ -2619,7 +2619,7 @@ namespace GMlib {
   //
   //template <typename T>
   //inline
-  //void TSTriangle<T>::print( char prompt[] = "TSTriangle<T>", ostream & out = std::cout ) const {
+  //void TSTriangle<T>::print( char prompt[] = "TSTriangle<T>", std::ostream & out = std::cout ) const {
   //
   //  out << prompt << ": " << (*this) << "\n";
   //}
@@ -2629,7 +2629,7 @@ namespace GMlib {
   //
   //template <class T>
   //inline
-  //ostream& TSTriangle<T>::_prOut(ostream& out)const {
+  //std::ostream& TSTriangle<T>::_prOut(std::ostream& out)const {
   //
   //	Array<TSVertex<T>*> v = getVertices();
   //	out << (*v[0]) << " " << (*v[1]) << " " << (*v[2]) << " ";
@@ -2640,7 +2640,7 @@ namespace GMlib {
   //
   //template <class T>
   //inline
-  //istream& TSTriangle<T>::_prIn(istream& in) {
+  //std::istream& TSTriangle<T>::_prIn(std::istream& in) {
   //
   //	Point<T,3> p1, p2, p3;
   //	in >> p1 >> p2 >> p3;

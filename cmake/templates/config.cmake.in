@@ -16,3 +16,6 @@ include_directories( ${LIB_CMAKE_DIR}/${INC_RELPATH} )
 string( TOUPPER ${LIBRARY} LIBRARY_UPPER )
 set( ${LIBRARY_UPPER}_LIBRARIES "-L${LIB_CMAKE_DIR}/@VAR_LIB_RELPATH@ @VAR_LIBS@" )
 
+########
+# Set definitions
+@VAR_DEFINITIONS@

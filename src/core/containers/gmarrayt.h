@@ -126,24 +126,24 @@ namespace GMlib {
   #ifdef GM_STREAM
 
   private:
-    ostream& _printOut( ostream& out ) const;
-    istream& _printIn( istream& in ) ;
+    std::ostream& _printOut( std::ostream& out ) const;
+    std::istream& _printIn( std::istream& in ) ;
 
 
   public:
     friend
-    ostream& operator << ( ostream& out, const ArrayT<T>& ar ) {
+    std::ostream& operator << ( std::ostream& out, const ArrayT<T>& ar ) {
 
       return ar._printOut( out );
     }
 
     friend
-    istream& operator >> ( istream& in, ArrayT<T>& ar ) {
+    std::istream& operator >> ( std::istream& in, ArrayT<T>& ar ) {
 
       return ar._printIn( in );
     }
 
-    void print( char prompt[] = "ArrayT<T>", ostream& out = std::cout ) const;
+    void print( char prompt[] = "ArrayT<T>", std::ostream& out = std::cout ) const;
 
   #endif
 
