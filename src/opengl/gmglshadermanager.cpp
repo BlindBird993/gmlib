@@ -30,6 +30,9 @@
 
 #include "gmglshadermanager.h"
 
+// stl
+#include <iostream>
+
 
 namespace GMlib{
 

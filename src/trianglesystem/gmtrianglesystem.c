@@ -30,6 +30,7 @@
 
 // stl
 #include <cmath>
+#include <iostream>
 
 
 namespace GMlib {

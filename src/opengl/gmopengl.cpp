@@ -396,13 +396,13 @@ void OGL::clearRenderBuffer() {
   float cc[4];
   glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
   Color c = GMcolor::Black;
-  glClearColor( c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC() );
+  glClearColor( c );
 
   bindFbo( "render_fbo_selected" );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   releaseFbo( "render_fbo_selected" );
 
-  glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
+  ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
 }
 
 void OGL::clearSelectBuffer() {
@@ -410,7 +410,10 @@ void OGL::clearSelectBuffer() {
   if( !_select_exists )
     return;
 
+  const Color &c = GMcolor::Black;
+
   glBindFramebuffer( GL_FRAMEBUFFER, OGL::_select_fbo );
+  glClearColor( c );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
 }

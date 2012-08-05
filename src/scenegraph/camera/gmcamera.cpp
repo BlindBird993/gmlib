@@ -230,7 +230,7 @@ namespace GMlib {
 
   SceneObject* Camera::findSelectObject(const Vector<int,2>& pos, int type_id) {
 
-    return findSelectObject( pos(0), (1), type_id );
+    return findSelectObject( pos(0), pos(1), type_id );
   }
 
 

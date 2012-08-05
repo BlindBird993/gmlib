@@ -128,6 +128,12 @@ namespace GMlib {
     glColor4ubv( c.getRgba() );
   }
 
+  inline
+  void glClearColor( const Color& c ) {
+
+    ::glClearColor( GLclampf(c.getRedC()), GLclampf(c.getGreenC()), GLclampf(c.getBlueC()), GLclampf(c.getAlphaC()) );
+  }
+
 
   //*************************************************
   //********** overloaded Light functions ***********
