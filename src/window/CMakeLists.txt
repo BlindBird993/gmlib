@@ -22,10 +22,14 @@
 
 
 addHeaders(
+  gmView
+  gmViewSet
   gmWindow
 )
 
 addSources(
+  gmview.cpp
+  gmviewset.cpp
   gmwindow.cpp
 )
 
