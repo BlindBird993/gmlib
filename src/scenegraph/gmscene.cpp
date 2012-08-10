@@ -318,7 +318,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void Scene::_lighting() {
+  void Scene::lighting() {
 
     for( int i=0; i < _lights.getSize(); i++ )
       _lights[i]->lighting();
@@ -330,7 +330,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void Scene::_display( bool blend_sorted, Camera* cam ) {
+  void Scene::display( bool blend_sorted, Camera* cam ) {
 
     for( int i = 0; i < _disp_objs.getSize(); i++ )
       _disp_objs[i]->_display( cam );
@@ -359,7 +359,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void Scene::_select( int type_id, Camera* cam ) {
+  void Scene::select( int type_id, Camera* cam ) {
 
     for( int i=0; i < _disp_objs.getSize(); i++ )
       _disp_objs[i]->_select( type_id, cam );
@@ -372,7 +372,7 @@ namespace GMlib {
    *  Pending Documentation
    *  Culling of light is now possible
    */
-  void Scene::_culling( const Frustum& f, bool on ) {
+  void Scene::culling( const Frustum& f, bool on ) {
 
     int i;
     _disp_objs.resetSize();
@@ -386,7 +386,7 @@ namespace GMlib {
   }
 
 
-  void Scene::_blending( Camera *cam ) {
+  void Scene::blending( Camera *cam ) {
 
     _disp_opaque.resetSize();
     _disp_translucent.resetSize();

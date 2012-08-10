@@ -39,6 +39,9 @@
 #include <scenegraph/light/gmlight.h>
 #include <scenegraph/light/gmsun.h>
 
+// stl
+#include <iostream>
+
 namespace GMlib {
 
   class View;
@@ -66,14 +69,14 @@ namespace GMlib {
 		ViewBorder*		_border;
 
 
-		void 					_corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow);
-		void 					_find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders);
-		int  					_getSize(bool split_vertically = true);
-		bool 					_isCamera(Camera* cam);
-		void 					_prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders);
-		void 					_removeCamera(Camera* cam);
-		void 					_split(Camera* new_cam, bool split_vertically, double d);
-		void 					_splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d);
+    void 					corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow);
+    void 					find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders);
+    int  					getSize(bool split_vertically = true);
+    bool 					isCamera(Camera* cam);
+    void 					prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders);
+    void 					removeCamera(Camera* cam);
+    void 					split(Camera* new_cam, bool split_vertically, double d);
+    void 					splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d);
 
 	}; // END class View
 
@@ -106,16 +109,16 @@ namespace GMlib {
 		View			_child_lt;
 		View			_child_rb;
 
-		void 			_corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow);
-		void 			_display();
-		void 			_find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders);
-		int  			_getSize(bool vertical=true);
-		View* 		_hasCamera(Camera* cam);
-		bool 			_isVertical();
-		void 			_move(int x, int y);
-		void 			_prepare( int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders );
-		void 			_removeCamera(Camera* cam);
-		void 			_splitCamera(Camera* cam_to_split, Camera* new_cam, bool vertical, double d);
+    void 			corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow);
+    void 			display();
+    void 			find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders);
+    int  			getSize(bool vertical=true);
+    View* 		hasCamera(Camera* cam);
+    bool 			isVertical();
+    void 			move(int x, int y);
+    void 			prepare( int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders );
+    void 			removeCamera(Camera* cam);
+    void 			splitCamera(Camera* cam_to_split, Camera* new_cam, bool vertical, double d);
 
 
 	}; // END class ViewBorder
@@ -162,18 +165,18 @@ namespace GMlib {
 		Array<ViewBorder*>	_selected_borders;
 
 
-		void 								_drawBorder();
+    void 								drawBorder();
 
   public:
-		void 								_drawCamera(bool stereo=false);
+    void 								drawCamera(bool stereo=false);
 
   private:
-		bool 								_find(int x, int y, Camera*& cam);
-		bool 								_insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically=true, double d=0.5);
-		void 								_moveBorder(int x, int y);
-		void 								_removeCamera(int i);
-		void 								_reset();
-    void 								_setBorderColor(const Color& bc);
+    bool 								find(int x, int y, Camera*& cam);
+    bool 								insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically=true, double d=0.5);
+    void 								moveBorder(int x, int y);
+    void 								removeCamera(int i);
+    void 								reset();
+    void 								setBorderColor(const Color& bc);
 
 		Camera* 						operator[](int i);
 
@@ -195,25 +198,31 @@ namespace GMlib {
    */
   class GMWindow : public Scene {
   public:
-    GMWindow();
+    GMWindow( bool init_default_cam = true );
     GMWindow(const GMWindow&);
 
     virtual ~GMWindow();
 
 
+    void                    addToViewSet( int cam_idx, int split_cam_idx, bool split_vertically=true, double d=0.5 );
+    void                    addViewSet( int cam_idx );
     virtual void            clearScene();
     Camera*                 findCamera( int x, int y );
     Camera*                 findCamera( const Vector<int,2>& pos );
-    Camera*                 getCam();                                 // Deprecate!!
+    int                     getCameraIndex( Camera* cam ) const;
     int                     getViewportHeight() const;
     int                     getViewportWidth() const;
+    int                     getViewSetStackSize() const;
     void                    insertCamera(Camera* cam, bool insert_in_scene = false);
 
     void                    insertLight(Light* light, bool insert_in_scene = false);
     void                    insertSun();
     bool                    isRunning() const;
     bool                    isStereoEnabled() const;
-    void                    popViewSet(int i);
+    void                    popView(int cam_idx);
+    void                    popViewSet();
+    void                    prepareViewSets();
+
     bool                    removeCamera(Camera * cam);
     bool                    removeLight(Light* light);
     void                    removeSun();
@@ -221,7 +230,7 @@ namespace GMlib {
 
     void                    scaleDayLight(double d);
     void                    setSunDirection(Angle d);
-    void                    setViewSet(int new_c, int old_c=1, bool split_vertically=true, double d=0.5);
+
 
     virtual bool            toggleRun();
     bool                    toggleStereo();
@@ -272,7 +281,6 @@ namespace GMlib {
     SceneObject*	          _target;		/// NB!!!! take a look at this variable not used proper today.....
     bool			              _running;		/// Used to stor the state of simulation while mouse/keboard temporary turn off simulation
     bool			              _isbig;			/// State of one window functionality have been used (see _mouseDoubleClick on right knob)
-    bool			              _default_only;	/// Only default camera present
 
 
 
@@ -339,7 +347,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void View::_corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow) {
+  void View::corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow) {
 
     if( _border )
       _border = nw[ow.index(_border)];
@@ -352,10 +360,10 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  int View::_getSize( bool split_vertically ) {
+  int View::getSize( bool split_vertically ) {
 
     if( _border )
-      return _border->_getSize( split_vertically );
+      return _border->getSize( split_vertically );
     else {
 
       int w1, w2, h1, h2;
@@ -374,7 +382,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  bool View::_isCamera(Camera* cam)	{
+  bool View::isCamera(Camera* cam)	{
 
     return _camera == cam;
   }
@@ -387,7 +395,7 @@ namespace GMlib {
    *	Splitting this in two
    */
   inline
-  void View::_split(Camera* new_cam, bool split_vertically, double d) {
+  void View::split(Camera* new_cam, bool split_vertically, double d) {
 
     if(_camera) {
 
@@ -429,10 +437,10 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewBorder::_corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow) {
+  void ViewBorder::corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow) {
 
-    _child_lt._corr( nw, ow );
-    _child_rb._corr( nw, ow );
+    _child_lt.corr( nw, ow );
+    _child_rb.corr( nw, ow );
   }
 
 
@@ -442,7 +450,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewBorder::_display() {
+  void ViewBorder::display() {
 
     glRecti( _x1, _y1, _x2, _y2 );
   }
@@ -454,12 +462,12 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewBorder::_find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders) {
+  void ViewBorder::find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders) {
 
     if(x>(_x1-5) && x<(_x2+5) && y>(_y1-5) && y<(_y2+5)) borders += this;
 
-    _child_lt._find(x,y,cam,borders);
-    _child_rb._find(x,y,cam,borders);
+    _child_lt.find(x,y,cam,borders);
+    _child_rb.find(x,y,cam,borders);
   }
 
 
@@ -469,12 +477,12 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  int  ViewBorder::_getSize(bool vertical) {
+  int  ViewBorder::getSize(bool vertical) {
 
     if(vertical == _vertical)
-      return _child_lt._getSize(vertical) + _child_rb._getSize(vertical);
+      return _child_lt.getSize(vertical) + _child_rb.getSize(vertical);
     else
-      return std::min<int>( _child_lt._getSize(vertical), _child_rb._getSize(vertical) );
+      return std::min<int>( _child_lt.getSize(vertical), _child_rb.getSize(vertical) );
   }
 
 
@@ -484,11 +492,11 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  View* ViewBorder::_hasCamera(Camera* cam) {
+  View* ViewBorder::hasCamera(Camera* cam) {
 
-    if(_child_lt._isCamera(cam))
+    if(_child_lt.isCamera(cam))
       return &_child_rb;
-    else if(_child_rb._isCamera(cam))
+    else if(_child_rb.isCamera(cam))
       return &_child_lt;
     else
       return 0;
@@ -501,7 +509,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  bool ViewBorder::_isVertical() {
+  bool ViewBorder::isVertical() {
 
     return _vertical;
   }
@@ -513,10 +521,10 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewBorder::_move(int x, int y) {
+  void ViewBorder::move(int x, int y) {
 
-    int l_size = _child_lt._getSize(_vertical);
-    int r_size = _child_rb._getSize(_vertical);
+    int l_size = _child_lt.getSize(_vertical);
+    int r_size = _child_rb.getSize(_vertical);
 
     if(_vertical) {
 
@@ -541,7 +549,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewBorder::_prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders) {
+  void ViewBorder::prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders) {
 
     borders.insert(this);
     if(_vertical) {
@@ -550,8 +558,8 @@ namespace GMlib {
       _x2 = _x1 + 2;
       _y1 = y1-2;
       _y2 = y2+2;
-      _child_lt._prepare( x1, y1, _x1, y2, borders );
-      _child_rb._prepare( _x2, y1, x2, y2, borders );
+      _child_lt.prepare( x1, y1, _x1, y2, borders );
+      _child_rb.prepare( _x2, y1, x2, y2, borders );
     }
     else {
 
@@ -559,8 +567,8 @@ namespace GMlib {
       _y2 = _y1 + 2;
       _x1 = x1-2;
       _x2 = x2+2;
-      _child_lt._prepare( x1, y1, x2, _y1, borders );
-      _child_rb._prepare( x1, _y2, x2, y2, borders );
+      _child_lt.prepare( x1, y1, x2, _y1, borders );
+      _child_rb.prepare( x1, _y2, x2, y2, borders );
     }
   }
 
@@ -571,10 +579,10 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewBorder::_removeCamera(Camera* cam) {
+  void ViewBorder::removeCamera(Camera* cam) {
 
-    _child_lt._removeCamera(cam);
-    _child_rb._removeCamera(cam);
+    _child_lt.removeCamera(cam);
+    _child_rb.removeCamera(cam);
   }
 
 
@@ -584,10 +592,10 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewBorder::_splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d) {
+  void ViewBorder::splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d) {
 
-    _child_lt._splitCamera( cam_to_split, new_cam, split_vertically, d );
-    _child_rb._splitCamera( cam_to_split, new_cam, split_vertically, d );
+    _child_lt.splitCamera( cam_to_split, new_cam, split_vertically, d );
+    _child_rb.splitCamera( cam_to_split, new_cam, split_vertically, d );
   }
 
   /*! Point2D<int> ViewSet::getViewPortSize()
@@ -622,20 +630,20 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewSet::_drawBorder() {
+  void ViewSet::drawBorder() {
 
-    if(_borders.getSize()>0)
-    {
-      glDisable(GL_LIGHTING);
-      glMatrixMode(GL_PROJECTION);
-      glLoadIdentity();
-      glOrtho( 0, _vp_w, 0, _vp_h, -1, 1 );
-      glMatrixMode(GL_MODELVIEW);
-      glViewport( 0, 0, _vp_w, _vp_h );
-      glColor( _border_color );
-      for( int i=0; i< _borders.getSize(); i++ ) _borders[i]->_display();
-      glEnable(GL_LIGHTING);
-    }
+//    if(_borders.getSize()>0)
+//    {
+//      glDisable(GL_LIGHTING);
+//      glMatrixMode(GL_PROJECTION);
+//      glLoadIdentity();
+//      glOrtho( 0, _vp_w, 0, _vp_h, -1, 1 );
+//      glMatrixMode(GL_MODELVIEW);
+//      glViewport( 0, 0, _vp_w, _vp_h );
+//      glColor( _border_color );
+//      for( int i=0; i< _borders.getSize(); i++ ) _borders[i]->display();
+//      glEnable(GL_LIGHTING);
+//    }
   }
 
 
@@ -645,7 +653,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  bool ViewSet::_insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d) {
+  bool ViewSet::insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d) {
 
     if(_cameras.exist(new_cam))
       return false;
@@ -655,11 +663,11 @@ namespace GMlib {
     {
       _cameras += new_cam;
       if(_cameras.getSize()>2)
-        _root._splitCamera(cam_to_split,new_cam,split_vertically,d);
+        _root.splitCamera(cam_to_split,new_cam,split_vertically,d);
       else
-        _root._split( new_cam,split_vertically,d);
+        _root.split( new_cam,split_vertically,d);
       _borders.resetSize();
-      _root._prepare( 0, 0,_vp_w, _vp_h, _borders);
+      _root.prepare( 0, 0,_vp_w, _vp_h, _borders);
       return true;
     }
   }
@@ -671,10 +679,10 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewSet::_moveBorder(int x, int y) {
+  void ViewSet::moveBorder(int x, int y) {
 
     for( int i = 0; i < _selected_borders.getSize(); i++ )
-      _selected_borders[i]->_move(x,y);
+      _selected_borders[i]->move(x,y);
     prepare(_vp_w,_vp_h);
   }
 
@@ -687,9 +695,10 @@ namespace GMlib {
   inline
   void ViewSet::prepare(int w, int h) {
 
+    std::cout << "ViewSet::prepare (w,h): (" << w << "," << h << ")" << std::endl;
     _vp_w = w; _vp_h = h;
     _borders.resetSize();
-    _root._prepare(0,0, _vp_w, _vp_h, _borders );
+    _root.prepare(0,0, _vp_w, _vp_h, _borders );
   }
 
 
@@ -704,7 +713,7 @@ namespace GMlib {
     if(_cameras.getSize() > 1)
     {
       int i = _cameras.getIndex(cam);
-      if(i>=0) _removeCamera(i);
+      if(i>=0) removeCamera(i);
     }
   }
 
@@ -715,25 +724,14 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void ViewSet::_removeCamera(int i) {
+  void ViewSet::removeCamera(int i) {
 
     if( _cameras.getSize() > 1 ){
 
-      _root._removeCamera(_cameras[i]);
+      _root.removeCamera(_cameras[i]);
       _cameras.removeIndex(i);
       prepare( _vp_w,_vp_h );
     }
-  }
-
-  /*! Camera* GMWindow::getCam()
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  Camera* GMWindow::getCam() {
-
-    return findCamera( 100, 100 );
   }
 
   inline
@@ -754,6 +752,15 @@ namespace GMlib {
   }
 
   inline
+  int GMWindow::getCameraIndex( Camera* cam ) const {
+
+    if( !_cameras.exist( cam ) )
+      return -1;
+
+    return _cameras.index( cam );
+  }
+
+  inline
   int GMWindow::getViewportHeight() const {
 
     return _h;
@@ -763,6 +770,12 @@ namespace GMlib {
   int GMWindow::getViewportWidth() const {
 
     return _w;
+  }
+
+  inline
+  int GMWindow::getViewSetStackSize() const {
+
+    return _view_set_stack.getSize();
   }
 
 
@@ -860,21 +873,21 @@ namespace GMlib {
 
 //    simulate();
 //    prepare();
-    if(_stereo) {
+//    if(_stereo) {
 
-      glDrawBuffer(GL_BACK_LEFT);
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      _view_set_stack.back()._drawCamera();
-      swapBuffers();
-      glDrawBuffer(GL_BACK_RIGHT);
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      _view_set_stack.back()._drawCamera(true);
-    }
-    else {
+//      glDrawBuffer(GL_BACK_LEFT);
+//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//      _view_set_stack.back()._drawCamera();
+//      swapBuffers();
+//      glDrawBuffer(GL_BACK_RIGHT);
+//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//      _view_set_stack.back()._drawCamera(true);
+//    }
+//    else {
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      _view_set_stack.back()._drawCamera();
-    }
+      _view_set_stack.back().drawCamera();
+//    }
     swapBuffers();
   }
 
@@ -932,12 +945,12 @@ namespace GMlib {
     if(x<0 || x>_w || y<0 || y>_h)		// Outside window
     {
       index = 0;
-      _view_set_stack.back()._reset();
+      _view_set_stack.back().reset();
       return false;
     }
 
     Camera* cam;
-    if(_view_set_stack.back()._find(x,y,cam))		// Camera found
+    if(_view_set_stack.back().find(x,y,cam))		// Camera found
     {
       index = _cameras.index(cam);
       return true;
@@ -959,7 +972,7 @@ namespace GMlib {
   void GMWindow::moveBorder(int x, int y) {
 
     if(x>0 && x <_w && y>0 && y<_h)
-      (_view_set_stack.back())._moveBorder(x,y);
+      (_view_set_stack.back()).moveBorder(x,y);
   }
 
 } // END namespace GMlib

@@ -124,11 +124,11 @@ namespace GMlib{
   private:
     friend class Camera;
 
-    void                  _lighting();
-    void                  _display( bool blend_sorted, Camera* cam );
-    void                  _select( int type_id, Camera* cam );
-    virtual void          _culling( const Frustum& f, bool on = true );
-    void                  _blending( Camera* cam );
+    void                  lighting();
+    void                  display( bool blend_sorted, Camera* cam );
+    void                  select( int type_id, Camera* cam );
+    virtual void          culling( const Frustum& f, bool on = true );
+    void                  blending( Camera* cam );
 
     Array<SceneObject*>   _scene;
     Array<SceneObject*>	  _disp_objs;

@@ -39,7 +39,8 @@
 // gmlib::opengl
 #include <opengl/gmglprogram.h>
 
-
+//stl
+#include <iostream>
 
 namespace GMlib {
 
@@ -334,17 +335,29 @@ namespace GMlib {
 
     OGL::clearRenderBuffer();
 
+
+//    OGL::bindFbo( "render_fbo" );
+//    Color cc = Color(getName()*5000000);
+//    if( getName() == 5 )
+//      glClearColor( GMcolor::Blue );
+//    else
+//      glClearColor( GMcolor::Red );
+//    std::cout << "Name: " << getName() << std::endl;
+//    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+//    OGL::releaseFbo( "render_fbo" );
+
+
     _active = true;
-    if (stereo)
-    {
-      Point3D<float>		tmp_pos  = _pos  - _eye_dist*_side;
-      UnitVector3D<float>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
-      UnitVector3D<float>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
-      basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
-      display();
-      basisChange(_side, _up, _dir, _pos);						// Back to left eye
-    }
-    else
+//    if (stereo)
+//    {
+//      Point3D<float>		tmp_pos  = _pos  - _eye_dist*_side;
+//      UnitVector3D<float>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
+//      UnitVector3D<float>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
+//      basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
+//      display();
+//      basisChange(_side, _up, _dir, _pos);						// Back to left eye
+//    }
+//    else
     {
       if(_locked)
       {
@@ -453,72 +466,71 @@ namespace GMlib {
    */
   void Camera::localDisplay() {
 
-    static Material lins(
-      Color( 0.19125f,  0.0735f,  0.0225f,    1.0f ),
-      Color( 0.5038f,   0.27048f,  0.0828f,   1.0f ),
-      Color( 0.256777f, 0.137622f, 0.086014f, 1.0f ),
-      12.8f
-    );
+//    static Material lins(
+//      Color( 0.19125f,  0.0735f,  0.0225f,    1.0f ),
+//      Color( 0.5038f,   0.27048f,  0.0828f,   1.0f ),
+//      Color( 0.256777f, 0.137622f, 0.086014f, 1.0f ),
+//      12.8f
+//    );
 
-    static Material rubb(
-      Color( 0.105882f, 0.058824f, 0.103725f, 1.0f ),
-      Color( 0.427451f, 0.470588f, 0.501176f, 1.0f ),
-      Color( 0.333333f, 0.333333f, 0.501569f, 1.0f ),
-      9.84615f
-    );
+//    static Material rubb(
+//      Color( 0.105882f, 0.058824f, 0.103725f, 1.0f ),
+//      Color( 0.427451f, 0.470588f, 0.501176f, 1.0f ),
+//      Color( 0.333333f, 0.333333f, 0.501569f, 1.0f ),
+//      9.84615f
+//    );
 
-    //PolishedSilver.glSet();
-    glCallList(_display_list);
-    glCallList(_display_list+2);
-    rubb.glSet();
-  //  GMmaterial::PolishedBronze.glSet();
-    glCallList(_display_list+1);
-    glCallList(_display_list+3);
-  //	GMmaterial::PolishedRed.glSet();
-    lins.glSet();
-    glCallList(_display_list+4);
-    if(_frustum_visible) {
+//    //PolishedSilver.glSet();
+//    glCallList(_display_list);
+//    glCallList(_display_list+2);
+//    rubb.glSet();
+//  //  GMmaterial::PolishedBronze.glSet();
+//    glCallList(_display_list+1);
+//    glCallList(_display_list+3);
+//  //	GMmaterial::PolishedRed.glSet();
+//    lins.glSet();
+//    glCallList(_display_list+4);
+//    if(_frustum_visible) {
 
-      Color		col( 1.0f, 1.0f, 1.0f, 1.0f ); // hvit
-      Point3D<float> p1(0,0,-_near_plane);
-      Point3D<float> p2(0,0,-_far_plane);
-      Vector3D<float> v1(0,_angle_tan*_near_plane,0);
-      Vector3D<float> v2(-_ratio*_angle_tan*_near_plane,0,0);
-      Vector3D<float> v3(0,_angle_tan*_far_plane,0);
-      Vector3D<float> v4(-_ratio*_angle_tan*_far_plane,0,0);
-      Point3D<float> p1m(p1-v1);
-      Point3D<float> p2m(p2-v3);
-      p1 += v1;
-      p2 += v3;
-      GLboolean lg;
-      glGetBooleanv(GL_LIGHTING,&lg);
-      if(lg) glDisable(GL_LIGHTING);
-      glColor(col);
-      glBegin(GL_LINE_LOOP);
-        glPoint(p1+v2);	glPoint(p1-v2);	glPoint(p1m-v2);	glPoint(p1m+v2);
-      glEnd();
-      glBegin(GL_LINE_LOOP);
-        glPoint(p2+v4);	glPoint(p2-v4);	glPoint(p2m-v4);	glPoint(p2m+v4);
-      glEnd();
-      glBegin(GL_LINES);
-        glPoint(p1 +v2);	glPoint(p2 +v4);	glPoint(p1 -v2);	glPoint(p2 -v4);
-        glPoint(p1m-v2);	glPoint(p2m-v4);	glPoint(p1m+v2);	glPoint(p2m+v4);
-      glEnd();
-      if(lg) glEnable(GL_LIGHTING);
-    }
-    if(_locked && !_lock_object) {
+//      Color		col( 1.0f, 1.0f, 1.0f, 1.0f ); // hvit
+//      Point3D<float> p1(0,0,-_near_plane);
+//      Point3D<float> p2(0,0,-_far_plane);
+//      Vector3D<float> v1(0,_angle_tan*_near_plane,0);
+//      Vector3D<float> v2(-_ratio*_angle_tan*_near_plane,0,0);
+//      Vector3D<float> v3(0,_angle_tan*_far_plane,0);
+//      Vector3D<float> v4(-_ratio*_angle_tan*_far_plane,0,0);
+//      Point3D<float> p1m(p1-v1);
+//      Point3D<float> p2m(p2-v3);
+//      p1 += v1;
+//      p2 += v3;
+//      GLboolean lg;
+//      glGetBooleanv(GL_LIGHTING,&lg);
+//      if(lg) glDisable(GL_LIGHTING);
+//      glColor(col);
+//      glBegin(GL_LINE_LOOP);
+//        glPoint(p1+v2);	glPoint(p1-v2);	glPoint(p1m-v2);	glPoint(p1m+v2);
+//      glEnd();
+//      glBegin(GL_LINE_LOOP);
+//        glPoint(p2+v4);	glPoint(p2-v4);	glPoint(p2m-v4);	glPoint(p2m+v4);
+//      glEnd();
+//      glBegin(GL_LINES);
+//        glPoint(p1 +v2);	glPoint(p2 +v4);	glPoint(p1 -v2);	glPoint(p2 -v4);
+//        glPoint(p1m-v2);	glPoint(p2m-v4);	glPoint(p1m+v2);	glPoint(p2m+v4);
+//      glEnd();
+//      if(lg) glEnable(GL_LIGHTING);
+//    }
+//    if(_locked && !_lock_object) {
 
-      GLboolean lg;
-      glGetBooleanv(GL_LIGHTING,&lg);
-      if(lg) glDisable(GL_LIGHTING);
-      glPushMatrix();
-      HqMatrix<float,3> invmat = _present; invmat.invertOrthoNormal();
-      glTranslate(invmat*_lock_pos);
-      glColor(GMcolor::Green);
-      glCallList(_display_list+8);
-      glPopMatrix();
-      if(lg) glEnable(GL_LIGHTING);
-    }
+//      GLboolean lg;
+//      glGetBooleanv(GL_LIGHTING,&lg);
+//      if(lg) glDisable(GL_LIGHTING);
+//      glPushMatrix();
+//      HqMatrix<float,3> invmat = _present; invmat.invertOrthoNormal();
+//      glTranslate(invmat*_lock_pos);
+//      glColor(GMcolor::Green);
+//      glCallList(_display_list+8);
+//      glPopMatrix();
+//      if(lg) glEnable(GL_LIGHTING);
   }
 
 
@@ -530,9 +542,9 @@ namespace GMlib {
    */
   void Camera::localSelect() {
 
-    if(!_active) {
-      glCallList(_display_list+9);
-    }
+//    if(!_active) {
+//      glCallList(_display_list+9);
+//    }
   }
 
 
@@ -565,9 +577,7 @@ namespace GMlib {
     _y = h1;
     _w = w2-w1;
     _h = h2-h1;
-    glViewport(w1,h1,w2,h2);
     _ratio = float(_w)/float(_h);
-  //	_setPerspective();
   }
 
 
@@ -781,10 +791,12 @@ namespace GMlib {
    */
   void Camera::select(int type_id) {
 
+    std::cout << "Camera::select()" << std::endl;
     OGL::clearSelectBuffer();
     OGL::bindSelectBuffer();
     glViewport(_x,_y,_w,_h);
-    _scene->_select(type_id, this);
+     std::cout << "  viewport(x,y,w,h): (" << _x << ", " << _y << ", " << _w << ", " << _h << ")" << std::endl;
+    _scene->select(type_id, this);
     OGL::releaseSelectBuffer();
   }
 

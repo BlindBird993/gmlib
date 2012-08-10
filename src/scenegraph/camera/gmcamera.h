@@ -40,6 +40,9 @@
 // gmlib::core
 #include <core/utils/gmstream.h>
 
+// stl
+#include <iostream>
+
 
 namespace GMlib {
 
@@ -259,15 +262,16 @@ namespace GMlib {
   inline
   void Camera::display() {
 
-//    std::cout << "Camera::display()" << std::endl;
+    std::cout << "Camera::display()" << std::endl;
     setPerspective();
     glViewport(_x,_y,_w,_h);
+    std::cout << "  viewport(x,y,w,h): (" << _x << ", " << _y << ", " << _w << ", " << _h << ")" << std::endl;
 //    glPushMatrix(); {
 //      glMultMatrix(_matrix);
 //      glMultMatrix(_matrix_scene_inv);
 
       // Cull the scene using the camera's frustum
-      _scene->_culling( _frustum, _culling );
+      _scene->culling( _frustum, _culling );
 
 //      // Sort the scene for blending, if required
 //      if( _blend_sort )
@@ -278,7 +282,7 @@ namespace GMlib {
 
       // Render scene
       OGL::bindRenderBuffer();
-      _scene->_display( _blend_sort, this );
+      _scene->display( _blend_sort, this );
       OGL::releaseRenderBuffer();
 
 //    } glPopMatrix();
