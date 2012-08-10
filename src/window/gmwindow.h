@@ -210,6 +210,7 @@ namespace GMlib {
     Camera*                 findCamera( int x, int y );
     Camera*                 findCamera( const Vector<int,2>& pos );
     int                     getCameraIndex( Camera* cam ) const;
+    const Color&            getSelectColor() const;
     int                     getViewportHeight() const;
     int                     getViewportWidth() const;
     int                     getViewSetStackSize() const;
@@ -229,6 +230,7 @@ namespace GMlib {
     void                    reset();
 
     void                    scaleDayLight(double d);
+    void                    setSelectColor( const Color& color );
     void                    setSunDirection(Angle d);
 
 
@@ -282,6 +284,10 @@ namespace GMlib {
     bool			              _running;		/// Used to stor the state of simulation while mouse/keboard temporary turn off simulation
     bool			              _isbig;			/// State of one window functionality have been used (see _mouseDoubleClick on right knob)
 
+    Color                   _select_color;
+
+    GLuint          _vbo_quad;
+    GLuint          _vbo_quad_tex;
 
 
   }; // END class GMWindow
@@ -886,8 +892,92 @@ namespace GMlib {
 //    else {
 
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      OGL::clearRenderBuffer();
+      OGL::bindRenderBuffer();
       _view_set_stack.back().drawCamera();
+      OGL::releaseRenderBuffer();
 //    }
+
+
+
+    // Render render-buffer to standard OGL buffer
+
+    float near_plane = -1.0f;
+    float far_plane = 1.0f;
+
+    float l, r, b, t, n, f;
+    l = 0.0f;
+    r = 1.0f;
+    b = 0.0f;
+    t = 1.0f;
+    n = near_plane;
+    f = far_plane;
+
+    float A, B, C;
+    A = - ( r + l ) / ( r - l );
+    B = - ( t + b ) / ( t - b );
+    C = - ( f + n ) / ( f - n );
+
+    HqMatrix<float,3> ortho_mat;
+
+    ortho_mat[0][0] = 2 / (r - l);
+    ortho_mat[0][1] = 0.0f;
+    ortho_mat[0][2] = 0.0f;
+    ortho_mat[0][3] = A;
+
+    ortho_mat[1][0] = 0.0f;
+    ortho_mat[1][1] = 2 / ( t - b );
+    ortho_mat[1][2] = 0.0f;
+    ortho_mat[1][3] = B;
+
+    ortho_mat[2][0] = 0.0f;
+    ortho_mat[2][1] = 0.0f;
+    ortho_mat[2][2] = - 2.0f / (f-n);
+    ortho_mat[2][3] = C;
+
+    ortho_mat[3][0] = 0.0f;
+    ortho_mat[3][1] = 0.0f;
+    ortho_mat[3][2] = 0.0f;
+    ortho_mat[3][3] = 1.0f;
+
+
+    glViewport( 0, 0, _w, _h );
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    glDisable(GL_DEPTH_TEST);
+
+    GLProgram prog( "render" );
+
+    prog.bind();
+
+    prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
+    prog.setUniform( "u_tex", OGL::getRenderColorBuffer(), (GLenum)GL_TEXTURE0, 0 );
+    prog.setUniform( "u_tex_selected", OGL::getRenderSelectedBuffer(), (GLenum)GL_TEXTURE1, 1 );
+    prog.setUniform( "u_buf_w", float(OGL::getRenderBufferWidth()) );
+    prog.setUniform( "u_buf_h", float(OGL::getRenderBufferHeight()) );
+    prog.setUniform( "u_select_color", _select_color );
+
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GLuint tex_coord_loc = prog.getAttributeLocation( "in_tex_coord" );
+
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( vert_loc );
+
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
+    glVertexAttribPointer( tex_coord_loc, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( tex_coord_loc );
+
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+    glDrawArrays( GL_QUADS, 0, 4 );
+
+    glDisableVertexAttribArray( tex_coord_loc );
+    glDisableVertexAttribArray( vert_loc );
+
+    prog.unbind();
+
+    glEnable(GL_DEPTH_TEST);
+
     swapBuffers();
   }
 

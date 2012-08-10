@@ -252,11 +252,11 @@ namespace GMlib{
     unsigned int                _name;		//! Unic name for this object, used for selecting
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
-    void                        _display( Camera* cam );
-    void                        _fillObj( Array<SceneObject*>& );
-    int                         _prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
-    virtual void                _prepareDisplay(const HqMatrix<float,3>& m);
-    void                        _select(int what = -1, Camera* cam = 0x0 );
+    void                        display( Camera* cam );
+    void                        fillObj( Array<SceneObject*>& );
+    int                         prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
+    virtual void                prepareDisplay(const HqMatrix<float,3>& m);
+    void                        select(int what = -1, Camera* cam = 0x0 );
 
 
 
@@ -326,7 +326,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  void SceneObject::_display( Camera* cam ) {
+  void SceneObject::display( Camera* cam ) {
 
     if(!_active) {
 
@@ -343,7 +343,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  void SceneObject::_select( int what, Camera* cam ) {
+  void SceneObject::select( int what, Camera* cam ) {
 
     if( !_active && ( what == 0 || what == _type_id || ( what < 0 && what + _type_id != 0 ) ) ) {
 

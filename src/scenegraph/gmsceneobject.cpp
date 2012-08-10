@@ -149,12 +149,12 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::_fillObj( Array<SceneObject*>& disp_objs ) {
+  void SceneObject::fillObj( Array<SceneObject*>& disp_objs ) {
 
     if(_sphere.isValid())
       disp_objs += this;
     for(int i=0; i< _children.getSize(); i++)
-      _children[i]->_fillObj(disp_objs);
+      _children[i]->fillObj(disp_objs);
   }
 
 
@@ -163,7 +163,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
+  int SceneObject::prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
 
     int nr = 1;
     _scene  = s;
@@ -175,7 +175,7 @@ namespace GMlib {
 
     mat.push();
 
-    _prepareDisplay(mat.back());
+    prepareDisplay(mat.back());
     mat.back() = mat.back() * getMatrix();
 
     _present = mat.back();
@@ -191,7 +191,7 @@ namespace GMlib {
     }
     for( int i = 0; i < _children.getSize(); i++ ) {
 
-      nr += _children[i]->_prepare(obj,mat,s,this);
+      nr += _children[i]->prepare(obj,mat,s,this);
       _global_total_sphere += _children[i]->getSurroundingSphere();
     }
 
@@ -205,7 +205,7 @@ namespace GMlib {
    *
    *  Made specially for DisplayObject's
    */
-  void SceneObject::_prepareDisplay( const HqMatrix<float,3>& /*mat*/ ) {}
+  void SceneObject::prepareDisplay( const HqMatrix<float,3>& /*mat*/ ) {}
 
 
   /*! void culling( Array<SceneObject*>&, const Frustum& );

@@ -182,7 +182,7 @@ namespace GMlib {
     _lights.resetSize();
 
     for(int i=0; i < _scene.getSize(); i++)
-      no_disp_obj += _scene[i]->_prepare( _lights, _matrix_stack, this );
+      no_disp_obj += _scene[i]->prepare( _lights, _matrix_stack, this );
 
     if( _disp_objs.getMaxSize() < no_disp_obj )
       _disp_objs.setMaxSize( no_disp_obj );
@@ -333,7 +333,7 @@ namespace GMlib {
   void Scene::display( bool blend_sorted, Camera* cam ) {
 
     for( int i = 0; i < _disp_objs.getSize(); i++ )
-      _disp_objs[i]->_display( cam );
+      _disp_objs[i]->display( cam );
 
 //    glDisable( GL_BLEND );
 
@@ -362,7 +362,7 @@ namespace GMlib {
   void Scene::select( int type_id, Camera* cam ) {
 
     for( int i=0; i < _disp_objs.getSize(); i++ )
-      _disp_objs[i]->_select( type_id, cam );
+      _disp_objs[i]->select( type_id, cam );
   }
 
 
@@ -382,7 +382,7 @@ namespace GMlib {
         _scene[i]->culling( _disp_objs, f );
     else
       for( i = 0; i < _scene.getSize(); i++ )
-        _scene[i]->_fillObj( _disp_objs );
+        _scene[i]->fillObj( _disp_objs );
   }
 
 

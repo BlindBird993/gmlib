@@ -115,7 +115,6 @@ namespace GMlib {
 		float									  getNearPlane() const;
     const HqMatrix<float,3>&  getProjectionMatrix() const;
     float									  getRatio() const;
-    const Color&            getSelectColor() const;
 		void										getViewport(int& w1, int& w2, int& h1, int& h2) const;
 		int											getViewportW() const;
 		int											getViewportH() const;
@@ -136,7 +135,6 @@ namespace GMlib {
 		void 										setFrustumVisible(bool visible=true);
 		void										setScene(Scene& s);
     void										setScene(Scene *s);
-    void                    setSelectColor( const Color& color );
 		virtual void 						zoom(float z);
 
 
@@ -173,7 +171,6 @@ namespace GMlib {
 		static Scene						_default_scene;
     static unsigned int		  _display_list;
 
-    Color                   _select_color;
 
 		Scene*									_scene;
 		int											_x,_y,_w,_h;					// Viewport position and size.
@@ -266,26 +263,12 @@ namespace GMlib {
     setPerspective();
     glViewport(_x,_y,_w,_h);
     std::cout << "  viewport(x,y,w,h): (" << _x << ", " << _y << ", " << _w << ", " << _h << ")" << std::endl;
-//    glPushMatrix(); {
-//      glMultMatrix(_matrix);
-//      glMultMatrix(_matrix_scene_inv);
 
       // Cull the scene using the camera's frustum
       _scene->culling( _frustum, _culling );
 
-//      // Sort the scene for blending, if required
-//      if( _blend_sort )
-//        _scene->_blending( this );
-
-//      // Enable lighting
-//      _scene->_lighting();
-
       // Render scene
-      OGL::bindRenderBuffer();
       _scene->display( _blend_sort, this );
-      OGL::releaseRenderBuffer();
-
-//    } glPopMatrix();
 
       if(_coord_sys_visible)
         drawActiveCam();
@@ -537,11 +520,6 @@ namespace GMlib {
     return _ratio;
   }
 
-  inline
-  const Color& Camera::getSelectColor() const {
-
-    return _select_color;
-  }
 
 
   /*!
