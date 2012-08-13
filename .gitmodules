@@ -1,0 +1,3 @@
+[submodule "ecmake"]
+	path = ecmake
+	url = git://gitorious.hin.no/ecmake/ecmake.git

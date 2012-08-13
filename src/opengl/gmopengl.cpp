@@ -32,6 +32,9 @@
 
 #include "gmglshadermanager.h"
 
+// stl
+#include <iostream>
+
 
 namespace GMlib {
 
@@ -292,6 +295,15 @@ GLenum OGL::getBoTarget(const std::string &name) {
 }
 
 void OGL::init() {
+
+  // Init GLEW
+  GLenum err = glewInit();
+  if( err == GLEW_OK )
+    std::cout << "GLEW Init OK - using GLEW version " << glewGetString(GLEW_VERSION) << std::endl;
+  else
+    std::cout << "GLEW Init FAILED!!" << std::endl;
+  std::cout << std::flush;
+
 
   GLShaderManager::init();
   createRenderBuffer();

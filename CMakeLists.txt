@@ -49,20 +49,17 @@ option( GMLIB_DOXYGEN "Create build target for doxygen documentation." FALSE )
 option( GMLIB_TEST "Create unit tests." FALSE )
 
 
-#############################
-# Setup && Load EnhancedCMake
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake )
-#include( ${CMAKE_SOURCE_DIR}/cmake/enhanced.cmake )
-include( enhanced )
-setupEnhancedCMake( ${CMAKE_SOURCE_DIR}/cmake/ )
-message( "CMakeModulePath: " ${CMAKE_MODULE_PATH} )
+##############################
+# EnhancedCMake: Setup && Load
+include( ecmake/enhanced.cmake )
+setupEnhancedCMake( ${CMAKE_SOURCE_DIR}/ecmake )
 
 # Setup library - name and version [major,minor,patch]
 setupLibrary( GMlib 0 4 0 )
 
 # add GM_STREAM definition
 if( GMLIB_STREAM )
-  addDefinitions( -DGM_STREAM )
+  addDefinitions( GM_STREAM )
 endif()
 
 #############################
@@ -70,15 +67,26 @@ endif()
 
 # Find OpenGL
 find_package(OpenGL REQUIRED)
+if( OPENGL_FOUND )
+  addCustomConfigLine( "set(OPENGL_FOUND ${OPENGL_FOUND})" )
+  addCustomConfigLine( "set(OPENGL_INCLUDE_DIR ${OPENGL_INCLUDE_DIR})" )
+  addCustomConfigLine( "set(OPENGL_LIBRARIES ${OPENGL_LIBRARIES})" )
+endif( OPENGL_FOUND )
 
 # Find GLEW package (local package)
-find_package(Glew REQUIRED)
-
+include(cmake/modules/FindGlew.cmake)
+if( GLEW_FOUND )
+  message( "GLEW FOUND!" )
+  addCustomConfigLine( "set(GLEW_FOUND ${GLEW_FOUND})" )
+  addCustomConfigLine( "set(GLEW_INCLUDE_PATH ${GLEW_INCLUDE_PATH})" )
+  addCustomConfigLine( "set(GLEW_LIBRARY ${GLEW_LIBRARY})" )
+else( GLEW_FOUND )
+  message( "GLEW NOT FOUND!" )
+endif( GLEW_FOUND )
 
 ################################
 # Create source code build rules
 setSourceRootDir(src)
-
 
 ###########################
 # BUILD GMlib documentation
@@ -90,15 +98,9 @@ if( GMLIB_DOXYGEN )
 
 endif()
 
-
-
-#  add_executable(foo test/core/containers/gmarray/foo.cpp)
-#  target_link_libraries(foo ${GTEST_BOTH_LIBRARIES} ${GMLIB_LIBRARIES} )
-
-#  add_test(AllTestsInFoo ${BUILD_BIN_DIR}/foo)
-
-
-
+#########################
+# ECMake: Finalize Module
+finalizeLibrary()
 
 
 message( "Library version: " ${LIBRARY_VERSION_STR} )
