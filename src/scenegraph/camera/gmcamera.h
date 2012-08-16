@@ -193,7 +193,6 @@ namespace GMlib {
 
     GLuint          _vbo_quad_debug;
     GLuint          _vbo_quad_tex_debug;
-
   }; // END class Camera
 
 

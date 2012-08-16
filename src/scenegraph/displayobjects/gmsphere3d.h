@@ -58,12 +58,11 @@ namespace GMlib {
     void        display( const HqMatrix<float,3>& mvpmat, bool selected = false );
     void        display( const HqMatrix<float,3>& mvmat, const HqMatrix<float,3>& mvpmat, bool selected = false );
     void        replot(int m1, int m2);
-    void        select( const HqMatrix<float,3>& mvpmat, const Color& color );
+    void        select();
 
   private:
     GLProgram   _prog_light;
     GLProgram   _prog_color;
-    GLProgram   _prog_select;
 
     int         _top_bot_verts;
     int         _mid_strips;
@@ -90,7 +89,7 @@ namespace GMlib {
    */
   inline
   Sphere3D::Sphere3D(float r, int m1, int m2) : Sphere<float,3>(Point<float,3>(float(0)),r),
-  _prog_light("default"), _prog_color("color"), _prog_select("select") {
+  _prog_light("default"), _prog_color("color") {
 
     glGenBuffers( 1, &_vbo_v );
     glGenBuffers( 1, &_vbo_n );
@@ -105,7 +104,7 @@ namespace GMlib {
    */
   inline
   Sphere3D::Sphere3D(const Sphere<float,3>& s, int m1, int m2) : Sphere<float,3>(s),
-  _prog_light("default"), _prog_color("color"), _prog_select("select")  {
+  _prog_light("default"), _prog_color("color")  {
 
     glGenBuffers( 1, &_vbo_v );
     glGenBuffers( 1, &_vbo_n );
@@ -114,7 +113,7 @@ namespace GMlib {
 
   inline
   Sphere3D::Sphere3D( const Sphere3D& copy ): Sphere<float,3>( copy ),
-  _prog_light("default"), _prog_color("color"), _prog_select("select")  {
+  _prog_light("default"), _prog_color("color")  {
 
     glGenBuffers( 1, &_vbo_v );
     glGenBuffers( 1, &_vbo_n );
@@ -207,15 +206,9 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Sphere3D::select( const HqMatrix<float,3>& mvpmat, const Color& sel_color ) {
+  void Sphere3D::select() {
 
-    _prog_select.bind();
-
-
-    _prog_select.setUniform( "u_mvpmat", mvpmat, 1, true );
-    _prog_color.setUniform( "u_color", sel_color );
-
-    GLuint vert_loc = _prog_select.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = GLProgram( "select" ).getAttributeLocation( "in_vertex" );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
     glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
@@ -230,8 +223,6 @@ namespace GMlib {
       glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
 
     glDisableVertexAttribArray( vert_loc );
-
-    _prog_select.unbind();
   }
 
   /*! void Sphere3D::replot(int m1, int m2)

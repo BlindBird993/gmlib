@@ -35,7 +35,7 @@
 namespace GMlib {
 
   VisualizerStdRep::VisualizerStdRep()
-    : _display( "color" ), _select( "select" ),
+    : _display( "color" ),
     _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
     _bo_cube_frame_indices( "std_rep_frame_indices" )
   {}
@@ -103,14 +103,9 @@ namespace GMlib {
     return "SceneObject Standard Representation Visualizer";
   }
 
-  void VisualizerStdRep::select(Camera *cam, const Color &name) {
+  void VisualizerStdRep::select() {
 
-    _select.bind();
-
-    _select.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-    _select.setUniform( "u_color", name );
-
-    GLuint vert_loc = _select.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = getSelectProgram().getAttributeLocation( "in_vertex" );
     _bo_cube.bind();
     _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
     _bo_cube_indices.bind();
@@ -118,8 +113,6 @@ namespace GMlib {
     _bo_cube_indices.release();
     _bo_cube.disableVertexArrayPointer( vert_loc );
     _bo_cube.release();
-
-    _select.unbind();
   }
 
 } // END namespace GMlib

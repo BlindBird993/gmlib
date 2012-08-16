@@ -47,19 +47,14 @@ namespace GMlib {
       DMatrix< Vector<T, 3> >& normals,
       int m1, int m2, int d1, int d2
     );
-    void          select( Camera * cam, const Color& name );
+    void          select();
 
   protected:
     GLVertex2DBufferObject    _vbo;
     TriangleStripIBO          _ibo;
     GLuint                    _tex;
 
-    int                       _tri_strips;
-    GLsizei                   _tri_strip_offset;
-    int                       _indices_per_tri_strip;
-
     GLProgram                 _display;
-    GLProgram                 _select;
 
   }; // END class PSurfDefaultVisualizer
 

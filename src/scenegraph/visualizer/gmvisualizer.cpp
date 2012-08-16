@@ -31,6 +31,7 @@
 
 #include "gmvisualizer.h"
 
+#include "../gmsceneobject.h"
 
 
 
@@ -65,6 +66,11 @@ namespace GMlib {
     return "Visualizer Base";
   }
 
+  const GLProgram& Visualizer::getSelectProgram() const {
+
+    return _obj->getSelectProgram();
+  }
+
   void Visualizer::glSetDisplayMode() const {
 
     if( this->_display_mode == Visualizer::DISPLAY_MODE_SHADED )
@@ -73,7 +79,7 @@ namespace GMlib {
       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   }
 
-  void Visualizer::select(Camera* /*cam*/, const Color& /*name*/) {}
+  void Visualizer::select() {}
 
   void Visualizer::set( SceneObject* obj ) {
 

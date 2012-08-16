@@ -712,12 +712,18 @@ namespace GMlib {
    */
   void Camera::select(int type_id) {
 
+    const GLProgram &select_prog = getSelectProgram();
+
     std::cout << "Camera::select()" << std::endl;
     OGL::clearSelectBuffer();
     OGL::bindSelectBuffer();
     glViewport(_x,_y,_w,_h);
      std::cout << "  viewport(x,y,w,h): (" << _x << ", " << _y << ", " << _w << ", " << _h << ")" << std::endl;
+
+    select_prog.bind();
     _scene->select(type_id, this);
+    select_prog.unbind();
+
     OGL::releaseSelectBuffer();
   }
 

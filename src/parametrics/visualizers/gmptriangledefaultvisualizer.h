@@ -46,11 +46,10 @@ namespace GMlib {
     virtual void    replot(
       const DVector< DMatrix< Vector<T,3> > >& p,int m
     );
-    void            select( Camera* cam, const Color& name );
+    void            select();
 
   protected:
     GLProgram       _dprog;
-    GLProgram       _sprog;
 
     GLuint          _vbo;
     GLuint          _ibo;

@@ -31,7 +31,7 @@
 namespace GMlib {
 
   template <typename T>
-  PCurveDefaultVisualizer<T>::PCurveDefaultVisualizer() : _display( "pcurve" ), _select( "select" ), _vbo() {
+  PCurveDefaultVisualizer<T>::PCurveDefaultVisualizer() : _display( "pcurve" ), _vbo() {
 
     _no_vertices = 0;
   }
@@ -83,14 +83,9 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PCurveDefaultVisualizer<T>::select( Camera* cam, const Color& name ) {
+  void PCurveDefaultVisualizer<T>::select() {
 
-    _select.bind();
-
-    _select.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-    _select.setUniform( "u_color", name );
-
-    GLuint vert_loc = _select.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
     _vbo.enableVertexPointer( vert_loc );
@@ -98,8 +93,6 @@ namespace GMlib {
 
     _vbo.disableVertexPointer( vert_loc );
     _vbo.release();
-
-    _select.unbind();
   }
 
 

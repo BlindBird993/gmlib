@@ -61,7 +61,7 @@ namespace GMlib {
     const Point<float,3>&  scale,
     const Vector<float,3>& rot_axel,
     Angle a
-  ) :_scale(scale) {
+  ) :_scale(scale),_select_prog("select") {
 
     _parent = 0;
     _matrix.translate(trans_vector);
@@ -99,25 +99,25 @@ namespace GMlib {
    *
    *  Copy constructor
    */
-  SceneObject::SceneObject( const SceneObject& d ) {
+  SceneObject::SceneObject( const SceneObject& copy ) : _select_prog("select") {
 
     _parent           = 0;
-    _matrix	          = d._matrix;
-    _children	        = d._children;
-    _lighted          = d._lighted;
-    _opaque           = d._opaque;
-    _sphere	          = d._sphere;
-    _scale            = d._scale;
+    _matrix	          = copy._matrix;
+    _children	        = copy._children;
+    _lighted          = copy._lighted;
+    _opaque           = copy._opaque;
+    _sphere	          = copy._sphere;
+    _scale            = copy._scale;
     _name	            = _free_name++;
     _active	          = false;
-    _local_cs         = d._local_cs;
-    _type_id          = d._type_id;
-    _visible          = d._visible;
-    _selected         = d._selected;
-    _color            = d._color;
-    _material         = d._material;
+    _local_cs         = copy._local_cs;
+    _type_id          = copy._type_id;
+    _visible          = copy._visible;
+    _selected         = copy._selected;
+    _color            = copy._color;
+    _material         = copy._material;
 
-    _collapsed        = d._collapsed;
+    _collapsed        = copy._collapsed;
 
     setStandardRepVisualizer();
   }
@@ -409,10 +409,10 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localSelect( Camera* cam, const Color& name )  {
+  void SceneObject::localSelect()  {
 
     for( int i = 0; i < _visualizers.getSize(); ++i )
-      _visualizers[i]->select( cam, name );
+      _visualizers[i]->select();
   }
 
 

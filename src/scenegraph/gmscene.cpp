@@ -354,7 +354,7 @@ namespace GMlib {
 //    }
   }
 
-  /*! void Scene::_select( int type_id, Camera* cam )
+  /*! void Scene::select( int type_id, Camera* cam )
    *  \brief Pending Documentation
    *
    *  Pending Documentation

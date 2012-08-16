@@ -76,7 +76,6 @@ namespace GMlib{
     Color                 _marked;
 
     GLProgram             _display;
-    GLProgram             _select;
 
     // Cube buffer objects
     GLBufferObject        _bo_cube;
@@ -86,7 +85,7 @@ namespace GMlib{
     void                  allDisable();
     void                  allEnable();
     void                  localDisplay( Camera* cam );
-    void                  localSelect( Camera* cam, const Color& name );
+    void                  localSelect();
 
 
   private:

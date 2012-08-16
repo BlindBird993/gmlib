@@ -47,13 +47,13 @@ namespace GMlib {
     GLShader( const GLShader& copy );
     ~GLShader();
 
-    bool                  compile();
+    bool                  compile() const;
     std::string           getInfoLog() const;
     GLuint                getId() const;
     const std::string&    getName() const;
     GLenum                getType() const;
     bool                  isCompiled() const;
-    void                  set( const std::string& source );
+    void                  set( const std::string& source ) const;
 
   protected:
     std::string           _name;

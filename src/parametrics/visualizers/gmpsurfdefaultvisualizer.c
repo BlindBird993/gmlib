@@ -49,11 +49,7 @@
 namespace GMlib {
 
   template <typename T>
-  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _display( "default" ), _select( "select" ), _vbo(), _ibo() {
-
-    _tri_strips = 0;
-    _tri_strip_offset = 0;
-    _indices_per_tri_strip = 0;
+  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _display( "default" ), _vbo(), _ibo() {
 
     glGenTextures( 1, &_tex );
   }
@@ -128,25 +124,15 @@ namespace GMlib {
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
   ) {
 
-    _tri_strips = PSurfVisualizer<T>::getNoTriangleStrips( p.getDim1(), p.getDim2() );
-
-    _indices_per_tri_strip = PSurfVisualizer<T>::getNoIndicesPerTriangleStrip( p.getDim1(), p.getDim2() );
-    _tri_strip_offset =  sizeof(GLushort) * _indices_per_tri_strip;
-
     _vbo.fill(p);
     _ibo.fill( p.getDim1(), p.getDim2() );
   }
 
   template <typename T>
   inline
-  void PSurfDefaultVisualizer<T>::select( Camera * cam, const Color& name ) {
+  void PSurfDefaultVisualizer<T>::select() {
 
-    _select.bind();
-
-    _select.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-    _select.setUniform( "u_color", name );
-
-    GLuint vert_loc = _select.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
     _vbo.enableVertexPointer( vert_loc );
@@ -155,8 +141,6 @@ namespace GMlib {
 
     _vbo.disableVertexPointer( vert_loc );
     _vbo.release();
-
-    _select.unbind();
   }
 
 } // END namespace GMlib

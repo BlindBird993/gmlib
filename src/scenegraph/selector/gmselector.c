@@ -42,7 +42,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   Selector<T,n>::Selector( Point<T,n>& mp, int id, SceneObject* parent, T r, const Color& c, Selector<T,n>* root )
-    : _position(mp), _display( "color" ), _select( "select" ),
+    : _position(mp), _display( "color" ),
     _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
     _bo_cube_frame_indices( "std_rep_frame_indices" )
   {
@@ -69,7 +69,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   Selector<T,n>::Selector(const Selector<T,n>& s)
-    : DisplayObject(s), _position( s._position ), _display( "color" ), _select( "select" ),
+    : DisplayObject(s), _position( s._position ), _display( "color" ),
     _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
     _bo_cube_frame_indices( "std_rep_frame_indices" )
    {
@@ -327,23 +327,16 @@ namespace GMlib {
    *  Pending Documentation
    */
   template <typename T, int n>
-  void Selector<T,n>::localSelect( Camera* cam, const Color& name ) {
+  void Selector<T,n>::localSelect() {
 
     if( _enabled ) {
 
-      _select.bind();
-
-      _select.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
-      _select.setUniform( "u_color", name );
-
-      GLuint vert_loc = _select.getAttributeLocation( "in_vertex" );
+      GLuint vert_loc = getSelectProgram().getAttributeLocation( "in_vertex" );
       _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
       _bo_cube_indices.bind();
         glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
       _bo_cube_indices.release();
       _bo_cube.disableVertexArrayPointer( vert_loc );
-
-      _select.unbind();
     }
   }
 

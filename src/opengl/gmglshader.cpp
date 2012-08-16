@@ -65,7 +65,7 @@ GLShader::GLShader(const GLShader &copy) {
 
 GLShader::~GLShader() {}
 
-bool GLShader::compile() {
+bool GLShader::compile() const {
 
   return GLShaderManager::compileShader( _name );
 }
@@ -95,7 +95,7 @@ bool GLShader::isCompiled() const {
   return true;
 }
 
-void GLShader::set( const std::string& source ) {
+void GLShader::set( const std::string& source ) const {
 
   GLShaderManager::setShaderSource( _name, source );
 }

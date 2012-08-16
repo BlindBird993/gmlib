@@ -62,9 +62,10 @@ namespace GMlib {
     virtual void          display( Camera* cam );
     DISPLAY_MODE          getDisplayMode() const;
     virtual std::string   getIdentity() const;
+    const GLProgram&      getSelectProgram() const;
     void                  glSetDisplayMode() const;
 
-    virtual void          select( Camera* cam, const Color& name = Color() );
+    virtual void          select();
     virtual void          set( SceneObject* obj );
     void                  setDisplayMode( DISPLAY_MODE display_mode );
 

@@ -34,8 +34,7 @@ namespace GMlib {
 
   template <typename T>
   PTriangleDefaultVisualizer<T>::PTriangleDefaultVisualizer()
-    : _dprog("default"), _sprog("select")
-  {
+    : _dprog("default")  {
 
     _no_triangles= 0;
 
@@ -134,14 +133,9 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PTriangleDefaultVisualizer<T>::select( Camera* cam, const Color& name ) {
+  void PTriangleDefaultVisualizer<T>::select() {
 
-    _sprog.bind();
-
-    _sprog.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-    _sprog.setUniform( "u_color", name );
-
-    GLuint vert_loc = _sprog.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     const GLsizei v_size = sizeof(GLVertex2D);
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
@@ -157,8 +151,6 @@ namespace GMlib {
     glDisableVertexAttribArray( vert_loc );
 
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    _sprog.unbind();
   }
 
 } // END namespace GMlib

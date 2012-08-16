@@ -157,6 +157,7 @@ namespace GMlib{
     unsigned int                getName() const;
     SceneObject*                getParent();
     Scene*                      getScene();
+    const GLProgram&            getSelectProgram() const;
     bool                        getSelected();
     Sphere<float,3>             getSurroundingSphere() const;
     Sphere<float,3>             getSurroundingSphereClean() const;
@@ -237,7 +238,7 @@ namespace GMlib{
 
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                localDisplay( Camera* cam );
-    virtual void                localSelect( Camera* cam, const Color& name );
+    virtual void                localSelect();
     virtual void                localSimulate(double dt);
     void                        reset();
     void                        setSurroundingSphere( const Sphere<float,3>& b );
@@ -252,11 +253,14 @@ namespace GMlib{
     unsigned int                _name;		//! Unic name for this object, used for selecting
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
+    GLProgram                   _select_prog;
+
     void                        display( Camera* cam );
     void                        fillObj( Array<SceneObject*>& );
     int                         prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
     virtual void                prepareDisplay(const HqMatrix<float,3>& m);
     void                        select(int what = -1, Camera* cam = 0x0 );
+
 
 
 
@@ -347,10 +351,13 @@ namespace GMlib{
 
     if( !_active && ( what == 0 || what == _type_id || ( what < 0 && what + _type_id != 0 ) ) ) {
 
+      const GLProgram &select_prog = getSelectProgram();
+      select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
+      select_prog.setUniform( "u_color", Color(getName()) );
       if( _collapsed )
-        _std_rep_visu->select( cam, getName() );
+        _std_rep_visu->select();
       else
-        localSelect( cam, getName() );
+        localSelect();
     }
   }
 
@@ -490,6 +497,12 @@ namespace GMlib{
   Scene* SceneObject::getScene() {
 
     return _scene;
+  }
+
+  inline
+  const GLProgram &SceneObject::getSelectProgram() const {
+
+    return _select_prog;
   }
 
 

@@ -51,11 +51,10 @@ namespace GMlib {
 
     void              display( Camera* cam );
     std::string       getIdentity() const;
-    void              select( Camera* cam, const Color& name = Color() );
+    void              select();
 
   protected:
     GLProgram         _display;
-    GLProgram         _select;
 
     // Cube buffer objects
     GLBufferObject    _bo_cube;

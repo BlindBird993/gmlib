@@ -62,7 +62,7 @@ GLProgram::GLProgram( const GLProgram &copy ) {
 
 GLProgram::~GLProgram() {}
 
-bool GLProgram::addShader( const std::string& name, const std::string& source, GLenum type, bool compile ) {
+bool GLProgram::addShader( const std::string& name, const std::string& source, GLenum type, bool compile ) const {
 
 
   if( !GLShaderManager::createShader( name, type ) )
@@ -83,7 +83,7 @@ bool GLProgram::addShader( const std::string& name, const std::string& source, G
   return ret;
 }
 
-bool GLProgram::addShader( const GLShader& shader ) {
+bool GLProgram::addShader( const GLShader& shader ) const {
 
   return GLShaderManager::addShaderToProgram( _name, shader.getName() );
 }
@@ -150,22 +150,22 @@ bool GLProgram::link() const {
   return GLShaderManager::linkProgram( _name );
 }
 
-bool GLProgram::removeShader(const std::string &name) {
+bool GLProgram::removeShader(const std::string &name) const {
 
   return GLShaderManager::removeShaderFromProgram( _name, name );
 }
 
-bool GLProgram::removeShader( GLShader* shader ) {
+bool GLProgram::removeShader( GLShader* shader ) const {
 
   return GLShaderManager::removeShaderFromProgram( _name, shader->getName() );
 }
 
-void GLProgram::setUniform(const std::string &name, bool b) {
+void GLProgram::setUniform(const std::string &name, bool b) const {
 
   glUniform1i( getUniformLocation(name), b );
 }
 
-void GLProgram::setUniform(const std::string& name, const Color &c) {
+void GLProgram::setUniform(const std::string& name, const Color &c) const {
 
   glUniform4f(
       getUniformLocation( name ),
@@ -173,7 +173,7 @@ void GLProgram::setUniform(const std::string& name, const Color &c) {
       );
 }
 
-void GLProgram::setUniform(const std::string& name, const HqMatrix<float, 3> &matrix, int count, bool transpose) {
+void GLProgram::setUniform(const std::string& name, const HqMatrix<float, 3> &matrix, int count, bool transpose) const {
 
   glUniformMatrix4fv(
       getUniformLocation( name ),
@@ -181,7 +181,7 @@ void GLProgram::setUniform(const std::string& name, const HqMatrix<float, 3> &ma
       );
 }
 
-void GLProgram::setUniform(const std::string &name, const Point<float, 3> &p) {
+void GLProgram::setUniform(const std::string &name, const Point<float, 3> &p) const {
 
   glUniform3fv(
       getUniformLocation(name),
@@ -189,19 +189,19 @@ void GLProgram::setUniform(const std::string &name, const Point<float, 3> &p) {
       );
 }
 
-void GLProgram::setUniform(const std::string &name, GLuint tex_id, GLenum tex_unit, GLuint tex_nr ) {
+void GLProgram::setUniform(const std::string &name, GLuint tex_id, GLenum tex_unit, GLuint tex_nr ) const {
 
   glActiveTexture( tex_unit );
   glBindTexture( GL_TEXTURE_2D, tex_id );
   glUniform1i( getUniformLocation( name ), tex_nr );
 }
 
-void GLProgram::setUniform(const std::string &name, float f) {
+void GLProgram::setUniform(const std::string &name, float f) const {
 
   glUniform1f( getUniformLocation( name ), f );
 }
 
-void GLProgram::setUniform( const std::string& name, int i ) {
+void GLProgram::setUniform( const std::string& name, int i ) const {
 
   glUniform1i( getUniformLocation( name ), i );
 }

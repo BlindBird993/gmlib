@@ -48,14 +48,13 @@ namespace GMlib {
       DVector< DVector< Vector<T, 3> > >& p,
       int m, int d
     );
-    void          select( Camera* cam, const Color& name = Color() );
+    void          select();
 
   protected:
     GLVertex1DBufferObject      _vbo;
     int           _no_vertices;
 
     GLProgram     _display;
-    GLProgram     _select;
 
   }; // END class PCurveDefaultVisualizer
 
