@@ -119,32 +119,32 @@ namespace GMlib {
   inline
   void IsoCamera::drawActiveCam() {
 
-    int i,ih,iw;
-    iw = _horisontal/_gw;
-    ih = _ratio*_horisontal/_gh;
-    Point3D<float> cp=_pos+(0.99*_near_plane+0.01*_far_plane)*_dir;
-    GLboolean lg;
-    glGetBooleanv(GL_LIGHTING,&lg);
-    if(lg) glDisable(GL_LIGHTING);
-    Color gr(120,120,120);
-    glColor(gr);
-    glBegin(GL_LINES);
-      Vector<float,3> dside = _gw*_side;
-      Vector<float,3> dup   = _gh*_up;
-      Vector<float,3> side  = ih*dside;
-      Vector<float,3> up    = iw*dup;
-      for(i=-iw; i<=iw; i++)
-      {
-        glPoint(cp+double(i)*dup-side);
-        glPoint(cp+double(i)*dup+side);
-      }
-      for(i=-ih; i<=ih; i++)
-      {
-        glPoint(cp-up+double(i)*dside);
-        glPoint(cp+up+double(i)*dside);
-      }
-    glEnd();
-    if (lg) glEnable(GL_LIGHTING);
+//    int i,ih,iw;
+//    iw = _horisontal/_gw;
+//    ih = _ratio*_horisontal/_gh;
+//    Point3D<float> cp=_pos+(0.99*_near_plane+0.01*_far_plane)*_dir;
+//    GLboolean lg;
+//    glGetBooleanv(GL_LIGHTING,&lg);
+//    if(lg) glDisable(GL_LIGHTING);
+//    Color gr(120,120,120);
+//    glColor(gr);
+//    glBegin(GL_LINES);
+//      Vector<float,3> dside = _gw*_side;
+//      Vector<float,3> dup   = _gh*_up;
+//      Vector<float,3> side  = ih*dside;
+//      Vector<float,3> up    = iw*dup;
+//      for(i=-iw; i<=iw; i++)
+//      {
+//        glPoint(cp+double(i)*dup-side);
+//        glPoint(cp+double(i)*dup+side);
+//      }
+//      for(i=-ih; i<=ih; i++)
+//      {
+//        glPoint(cp-up+double(i)*dside);
+//        glPoint(cp+up+double(i)*dside);
+//      }
+//    glEnd();
+//    if (lg) glEnable(GL_LIGHTING);
   }
 
 

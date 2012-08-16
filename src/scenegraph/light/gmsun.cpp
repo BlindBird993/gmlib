@@ -77,10 +77,10 @@ namespace GMlib {
    */
   void Sun::lighting() {
 
-    glPushMatrix();
-      glMultMatrix(_present);
-      glLightSun(_dir);
-    glPopMatrix();
+//    glPushMatrix();
+//      glMultMatrix(_present);
+//      glLightSun(_dir);
+//    glPopMatrix();
   }
 
 

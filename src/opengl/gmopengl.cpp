@@ -33,328 +33,360 @@
 #include "gmglshadermanager.h"
 
 // stl
+#include <limits>
 #include <iostream>
 
 
 namespace GMlib {
 
 
-std::string OGL::_log;
-std::map< std::string, OGL::FBOInfo >   OGL::_fbos;
-std::map< std::string, OGL::BOInfo >   OGL::_bos;
+  std::string OGL::_log;
+  OGL::FBOMap   OGL::_fbos;
+  OGL::BOMap    OGL::_bos;
 
-GLuint OGL::_select_fbo = 0;
-GLuint OGL::_select_rbo_color = 0;
-GLuint OGL::_select_rbo_depth = 0;
-int OGL::_select_fbo_h = 0;
-int OGL::_select_fbo_w = 0;
+  GLuint OGL::_select_fbo = 0;
+  GLuint OGL::_select_rbo_color = 0;
+  GLuint OGL::_select_rbo_depth = 0;
+  int OGL::_select_fbo_h = 0;
+  int OGL::_select_fbo_w = 0;
 
-bool OGL::_select_exists = false;
+  bool OGL::_select_exists = false;
 
 
-//  GLuint OGL::_render_fbo = 0;
-GLuint OGL::_render_rbo_color = 0;
-GLuint OGL::_render_rbo_selected = 0;
-GLuint OGL::_render_rbo_depth = 0;
-int OGL::_render_fbo_h = 0;
-int OGL::_render_fbo_w = 0;
+  //  GLuint OGL::_render_fbo = 0;
+  GLuint OGL::_render_rbo_color = 0;
+  GLuint OGL::_render_rbo_selected = 0;
+  GLuint OGL::_render_rbo_depth = 0;
+  int OGL::_render_fbo_h = 0;
+  int OGL::_render_fbo_w = 0;
 
-bool OGL::_render_exists = false;
+  bool OGL::_render_exists = false;
 
-void OGL::_appendLog(const std::string &log) {
+  void OGL::_appendLog(const std::string &log) {
 
-  _log.append( log );
-  _log.append( "\n" );
-}
+    _log.append( log );
+    _log.append( "\n" );
+  }
 
-void OGL::_clearLog() {
+  void OGL::_clearLog() {
 
-  _log.clear();
-}
+    _log.clear();
+  }
 
-bool OGL::_nameEmpty( const std::string& name, const std::string& type ) {
+  bool OGL::_nameEmpty( const std::string& name, const std::string& type ) {
 
-  if( name.empty() ) {
+    if( name.empty() ) {
 
-    std::string log;
-    log.append( type );
-    log.append( " name empty." );
-    _appendLog( log );
+      std::string log;
+      log.append( type );
+      log.append( " name empty." );
+      _appendLog( log );
+
+      return true;
+    }
+
+    return false;
+  }
+
+  bool OGL::_boExists(const std::string &name, bool exist) {
+
+    bool bo_ex = _bos.find(name) != _bos.end();
+
+    if( bo_ex != exist ) {
+
+      std::string log;
+      log.append( "BO " );
+      log.append( name );
+
+      if( exist == false )
+        log.append( " exists." );
+      else if( exist == true )
+        log.append( " does not exist." );
+
+      _appendLog( log );
+    }
+
+    return bo_ex;
+  }
+
+  bool OGL::_fboExists(const std::string &name, bool exist) {
+
+    bool fbo_ex = _fbos.find(name) != _fbos.end();
+
+    if( fbo_ex != exist ) {
+
+      std::string log;
+      log.append( "FBO " );
+      log.append( name );
+
+      if( exist == false )
+        log.append( " exists." );
+      else if( exist == true )
+        log.append( " does not exist." );
+
+      _appendLog( log );
+    }
+
+    return fbo_ex;
+  }
+
+  bool OGL::bindFbo(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "FBO" ) )
+      return false;
+
+    if( !_fboExists(name, true) )
+      return false;
+
+    glBindFramebuffer( GL_FRAMEBUFFER, _fbos[name].id );
 
     return true;
   }
 
-  return false;
-}
+  bool OGL::bindBo(const std::string &name) {
 
-bool OGL::_boExists(const std::string &name, bool exist) {
+    _clearLog();
 
-  bool bo_ex = _bos.find(name) != _bos.end();
+    if( _nameEmpty( name, "VBO" ) )
+      return false;
 
-  if( bo_ex != exist ) {
+    if( !_boExists(name, true) )
+      return false;
 
-    std::string log;
-    log.append( "BO " );
-    log.append( name );
+    glBindBuffer( _bos[name].target, _bos[name].id );
 
-    if( exist == false )
-      log.append( " exists." );
-    else if( exist == true )
-      log.append( " does not exist." );
-
-    _appendLog( log );
+    return true;
   }
 
-  return bo_ex;
-}
+  void OGL::cleanUp() {
 
-bool OGL::_fboExists(const std::string &name, bool exist) {
-
-  bool fbo_ex = _fbos.find(name) != _fbos.end();
-
-  if( fbo_ex != exist ) {
-
-    std::string log;
-    log.append( "FBO " );
-    log.append( name );
-
-    if( exist == false )
-      log.append( " exists." );
-    else if( exist == true )
-      log.append( " does not exist." );
-
-    _appendLog( log );
+    deleteStandardRepBOs();
+    deleteSelectBuffer();
+    deleteRenderBuffer();
+    GLShaderManager::cleanUp();
   }
 
-  return fbo_ex;
-}
+  GLuint OGL::createFbo() {
 
-bool OGL::bindFbo(const std::string &name) {
+    GLuint id;
+    glGenFramebuffers( 1, &id );
+    return id;
+  }
 
-  _clearLog();
+  bool OGL::createFbo(const std::string &name) {
 
-  if( _nameEmpty( name, "FBO" ) )
-    return false;
+    _clearLog();
 
-  if( !_fboExists(name, true) )
-    return false;
+    if( _nameEmpty( name, "FBO" ) )
+      return false;
 
-  glBindFramebuffer( GL_FRAMEBUFFER, _fbos[name].id );
+    if( _fboExists(name, false) )
+      return false;
 
-  return true;
-}
+    FBOInfo fbo;
+    glGenFramebuffers( 1, &fbo.id );
 
-bool OGL::bindBo(const std::string &name) {
+    _fbos[name] = fbo;
 
-  _clearLog();
+    return true;
+  }
 
-  if( _nameEmpty( name, "VBO" ) )
-    return false;
+  GLuint OGL::createBo() {
 
-  if( !_boExists(name, true) )
-    return false;
+    GLuint id;
+    glGenBuffers( 1, &id );
+    return id;
+  }
 
-  glBindBuffer( _bos[name].target, _bos[name].id );
+  bool OGL::createBo(const std::string &name, GLenum target ) {
 
-  return true;
-}
+    _clearLog();
 
-void OGL::cleanUp() {
+    if( _nameEmpty( name, "BO" ) )
+      return false;
 
-  deleteStandardRepBOs();
-  deleteSelectBuffer();
-  deleteRenderBuffer();
-  GLShaderManager::cleanUp();
-}
+    if( _boExists(name, false) )
+      return false;
 
-bool OGL::createFbo(const std::string &name) {
+    BOInfo bo;
+    glGenBuffers( 1, &bo.id );
+    bo.target = target;
 
-  _clearLog();
+    _bos[name] = bo;
 
-  if( _nameEmpty( name, "FBO" ) )
-    return false;
+    return true;
+  }
 
-  if( _fboExists(name, false) )
-    return false;
+  void OGL::deleteFbo(GLuint id) {
 
-  FBOInfo fbo;
-  glGenFramebuffers( 1, &fbo.id );
+    glDeleteFramebuffers( 1, &id );
+  }
 
-  _fbos[name] = fbo;
+  bool OGL::deleteFbo(const std::string &name) {
 
-  return true;
-}
+    _clearLog();
 
-bool OGL::createBo(const std::string &name, GLenum target ) {
+    if( _nameEmpty( name, "FBO" ) )
+      return false;
 
-  _clearLog();
+    if( !_fboExists(name, true) )
+      return false;
 
-  if( _nameEmpty( name, "BO" ) )
-    return false;
+    // Detach "render" buffers
 
-  if( _boExists(name, false) )
-    return false;
+    glDeleteFramebuffers( 1, &(_fbos[name].id) );
 
-  BOInfo bo;
-  glGenBuffers( 1, &bo.id );
-  bo.target = target;
+    _fbos.erase( name );
 
-  _bos[name] = bo;
+    return true;
+  }
 
-  return true;
-}
+  void OGL::deleteBo(GLuint id) {
 
-bool OGL::deleteFbo(const std::string &name) {
+    glDeleteBuffers( 1, &id );
+  }
 
-  _clearLog();
+  bool OGL::deleteBo(const std::string &name) {
 
-  if( _nameEmpty( name, "FBO" ) )
-    return false;
+    _clearLog();
 
-  if( !_fboExists(name, true) )
-    return false;
+    if( _nameEmpty( name, "BO" ) )
+      return false;
 
-  // Detach "render" buffers
+    if( !_boExists(name, true) )
+      return false;
 
-  glDeleteFramebuffers( 1, &(_fbos[name].id) );
+    glDeleteBuffers( 1, &(_bos[name].id) );
 
-  _fbos.erase( name );
+    _bos.erase( name );
 
-  return true;
-}
+    return true;
+  }
 
-bool OGL::deleteBo(const std::string &name) {
+  GLuint OGL::getFboId(const std::string &name) {
 
-  _clearLog();
+    _clearLog();
 
-  if( _nameEmpty( name, "BO" ) )
-    return false;
+    if( _nameEmpty(name, "FBO") )
+      return false;
 
-  if( !_boExists(name, true) )
-    return false;
+    if( !_fboExists(name, true) )
+      return false;
 
-  glDeleteBuffers( 1, &(_bos[name].id) );
+    return _fbos[name].id;
+  }
 
-  _bos.erase( name );
+  const OGL::FBOMap &OGL::getFbos() {
 
-  return true;
-}
+    return _fbos;
+  }
 
-GLuint OGL::getFboId(const std::string &name) {
+  const std::string& OGL::getLog() {
 
-  _clearLog();
+    return _log;
+  }
 
-  if( _nameEmpty(name, "FBO") )
-    return false;
+  GLuint OGL::getBoId(const std::string &name) {
 
-  if( !_fboExists(name, true) )
-    return false;
+    _clearLog();
 
-  return _fbos[name].id;
-}
+    if( _nameEmpty(name, "BO") )
+      return -1;
 
-const std::map< std::string, OGL::FBOInfo > OGL::getFbos() {
+    if( !_boExists(name, true) )
+      return -1;
 
-  return _fbos;
-}
+    return _bos[name].id;
+  }
 
-const std::string& OGL::getLog() {
+  const OGL::BOMap &OGL::getBos() {
 
-  return _log;
-}
+    return _bos;
+  }
 
-GLuint OGL::getBoId(const std::string &name) {
+  GLenum OGL::getBoTarget(const std::string &name) {
 
-  _clearLog();
+    _clearLog();
 
-  if( _nameEmpty(name, "BO") )
-    return -1;
+    if( _nameEmpty(name, "BO") )
+      return GL_NONE;
 
-  if( !_boExists(name, true) )
-    return -1;
+    if( !_boExists(name, true) )
+      return GL_NONE;
 
-  return _bos[name].id;
-}
+    return _bos[name].target;
+  }
 
-const std::map< std::string, OGL::BOInfo > OGL::getBos() {
+  void OGL::init() {
 
-  return _bos;
-}
+    // Init GLEW
+    GLenum err = glewInit();
+    if( err == GLEW_OK )
+      std::cout << "GLEW Init OK - using GLEW version " << glewGetString(GLEW_VERSION) << std::endl;
+    else
+      std::cout << "GLEW Init FAILED!!" << std::endl;
+    std::cout << std::flush;
 
-GLenum OGL::getBoTarget(const std::string &name) {
 
-  _clearLog();
+    GLShaderManager::init();
+    createRenderBuffer();
+    createSelectBuffer();
+    createStandardRepBOs();
+  }
 
-  if( _nameEmpty(name, "BO") )
-    return GL_NONE;
+  bool OGL::releaseFbo(const std::string &name) {
 
-  if( !_boExists(name, true) )
-    return GL_NONE;
+    _clearLog();
 
-  return _bos[name].target;
-}
+    if( _nameEmpty( name, "FBO" ) )
+      return false;
 
-void OGL::init() {
+    if( !_fboExists(name, true) )
+      return false;
 
-  // Init GLEW
-  GLenum err = glewInit();
-  if( err == GLEW_OK )
-    std::cout << "GLEW Init OK - using GLEW version " << glewGetString(GLEW_VERSION) << std::endl;
-  else
-    std::cout << "GLEW Init FAILED!!" << std::endl;
-  std::cout << std::flush;
+    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
 
+    return true;
+  }
 
-  GLShaderManager::init();
-  createRenderBuffer();
-  createSelectBuffer();
-  createStandardRepBOs();
-}
+  bool OGL::releaseBo(const std::string &name) {
 
-bool OGL::releaseFbo(const std::string &name) {
+    _clearLog();
 
-  _clearLog();
+    if( _nameEmpty( name, "FBO" ) )
+      return false;
 
-  if( _nameEmpty( name, "FBO" ) )
-    return false;
+    if( !_boExists(name, true) )
+      return false;
 
-  if( !_fboExists(name, true) )
-    return false;
+    glBindFramebuffer( _bos[name].target, 0x0 );
 
-  glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+    return true;
+  }
 
-  return true;
-}
+  bool OGL::setBoTarget(const std::string &name, GLenum target) {
 
-bool OGL::releaseBo(const std::string &name) {
+    _clearLog();
 
-  _clearLog();
+    if( _nameEmpty( name, "FBO" ) )
+      return false;
 
-  if( _nameEmpty( name, "FBO" ) )
-    return false;
+    if( !_boExists(name, true) )
+      return false;
 
-  if( !_boExists(name, true) )
-    return false;
+    _bos[name].target = target;
 
-  glBindFramebuffer( _bos[name].target, 0x0 );
+    return true;
+  }
 
-  return true;
-}
 
-bool OGL::setBoTarget(const std::string &name, GLenum target) {
 
-  _clearLog();
 
-  if( _nameEmpty( name, "FBO" ) )
-    return false;
 
-  if( !_boExists(name, true) )
-    return false;
 
-  _bos[name].target = target;
 
-  return true;
-}
 
 
 
@@ -376,413 +408,550 @@ bool OGL::setBoTarget(const std::string &name, GLenum target) {
 
 
 
+  void OGL::bindRenderBuffer() {
 
+    bindFbo( "render_fbo" );
 
+    GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+    glDrawBuffers( 2, buffers );
+  }
 
+  void OGL::bindSelectBuffer() {
 
+    glBindFramebuffer( GL_FRAMEBUFFER, OGL::_select_fbo );
+  }
 
+  void OGL::clearRenderBuffer() {
 
+    if( !_render_exists )
+      return;
 
-void OGL::bindRenderBuffer() {
+    bindFbo( "render_fbo" );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    releaseFbo( "render_fbo" );
 
-  bindFbo( "render_fbo" );
+    float cc[4];
+    glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
+    Color c = GMcolor::Black;
+    glClearColor( c );
 
-  GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-  glDrawBuffers( 2, buffers );
-}
+    bindFbo( "render_fbo_selected" );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    releaseFbo( "render_fbo_selected" );
 
-void OGL::bindSelectBuffer() {
+    ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
+  }
 
-  glBindFramebuffer( GL_FRAMEBUFFER, OGL::_select_fbo );
-}
+  void OGL::clearSelectBuffer() {
 
-void OGL::clearRenderBuffer() {
+    if( !_select_exists )
+      return;
 
-  if( !_render_exists )
-    return;
+    const Color &c = GMcolor::Black;
 
-  bindFbo( "render_fbo" );
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-  releaseFbo( "render_fbo" );
+    glBindFramebuffer( GL_FRAMEBUFFER, OGL::_select_fbo );
+    glClearColor( c );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+  }
 
-  float cc[4];
-  glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
-  Color c = GMcolor::Black;
-  glClearColor( c );
+  void OGL::createRenderBuffer() {
 
-  bindFbo( "render_fbo_selected" );
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-  releaseFbo( "render_fbo_selected" );
+    if( _render_exists )
+      return;
 
-  ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
-}
+    // Create a render FBO
+    createFbo( "render_fbo" );
 
-void OGL::clearSelectBuffer() {
+    // Create a render color RBO
+    glGenTextures( 1, &_render_rbo_color );
+    glBindTexture( GL_TEXTURE_2D, _render_rbo_color ); {
 
-  if( !_select_exists )
-    return;
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    } glBindTexture( GL_TEXTURE_2D, 0x0 );
 
-  const Color &c = GMcolor::Black;
+    // Create a render color RBO
+    glGenTextures( 1, &_render_rbo_selected );
+    glBindTexture( GL_TEXTURE_2D, _render_rbo_selected ); {
 
-  glBindFramebuffer( GL_FRAMEBUFFER, OGL::_select_fbo );
-  glClearColor( c );
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-  glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
-}
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    } glBindTexture( GL_TEXTURE_2D, 0x0 );
 
-void OGL::createRenderBuffer() {
+    // Create a render depth RBO
+    glGenRenderbuffers( 1, &_render_rbo_depth );
 
-  if( _render_exists )
-    return;
+    // Bind render buffers to frame buffer.
+    bindFbo( "render_fbo" ); {
 
-  // Create a render FBO
-  createFbo( "render_fbo" );
+      glBindRenderbuffer( GL_RENDERBUFFER, _render_rbo_depth );
+      glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _render_rbo_depth );
+      glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
 
-  // Create a render color RBO
-  glGenTextures( 1, &_render_rbo_color );
-  glBindTexture( GL_TEXTURE_2D, _render_rbo_color ); {
+      glBindTexture( GL_TEXTURE_2D, _render_rbo_color );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_color, 0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  } glBindTexture( GL_TEXTURE_2D, 0x0 );
+      glBindTexture( GL_TEXTURE_2D, _render_rbo_selected );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _render_rbo_selected, 0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
 
-  // Create a render color RBO
-  glGenTextures( 1, &_render_rbo_selected );
-  glBindTexture( GL_TEXTURE_2D, _render_rbo_selected ); {
+    } releaseFbo( "render_fbo" );
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-  } glBindTexture( GL_TEXTURE_2D, 0x0 );
+    // Create a render FBO which only contains the selected texture as a rendering target
+    // and one for the color.
+    // This is mainly for individual clearing of the buffers.
+    createFbo( "render_fbo_color" );
 
-  // Create a render depth RBO
-  glGenRenderbuffers( 1, &_render_rbo_depth );
+    bindFbo( "render_fbo_color" ); {
 
-  // Bind render buffers to frame buffer.
-  bindFbo( "render_fbo" ); {
+      glBindTexture( GL_TEXTURE_2D, _render_rbo_color );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_color, 0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
+    } releaseFbo( "render_fbo_color" );
+
+    createFbo( "render_fbo_selected" );
+
+    bindFbo( "render_fbo_selected" ); {
+
+      glBindTexture( GL_TEXTURE_2D, _render_rbo_selected );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_selected, 0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
+    } releaseFbo( "render_fbo_selected" );
+
+
+
+    _render_exists = true;
+  }
+
+  void OGL::createSelectBuffer() {
+
+    if( _select_exists )
+      return;
+
+    // Create a selection FBO
+    glGenFramebuffers( 1, &_select_fbo );
+
+    // Create a selection color RBO
+    glGenRenderbuffers( 1, &_select_rbo_color );
+
+    // Create a selection depth RBO
+    glGenRenderbuffers( 1, &_select_rbo_depth );
+
+    // Bind render buffers to frame buffer.
+    glBindFramebuffer( GL_FRAMEBUFFER, _select_fbo ); {
+
+      glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_depth );
+      glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _select_rbo_depth );
+
+      glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_color );
+      glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _select_rbo_color );
+
+      glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
+
+    } glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+
+    _select_exists = true;
+  }
+
+  void OGL::createSelectorRepBOs() {
+
+  //    float ir = 0.07;
+
+  //    createBo( )
+  }
+
+  void OGL::createStandardRepBOs() {
+
+    float ir = 0.07;
+
+    createBo( "std_rep_cube", GL_ARRAY_BUFFER );
+    createBo( "std_rep_cube_indices", GL_ELEMENT_ARRAY_BUFFER );
+    createBo( "std_rep_frame_indices", GL_ELEMENT_ARRAY_BUFFER );
+
+    // Vertices
+    GLfloat cube[] = {
+
+    /* 0 */     -ir,    -ir,    -ir,      // Back/Left/Down
+    /* 1 */      ir,    -ir,    -ir,
+    /* 2 */      ir,     ir,    -ir,
+    /* 3 */     -ir,     ir,    -ir,
+    /* 4 */     -ir,    -ir,     ir,      // Front/Left/Down
+    /* 5 */      ir,    -ir,     ir,
+    /* 6 */      ir,     ir,     ir,
+    /* 7 */     -ir,     ir,     ir
+    };
+
+    // Indice Coords
+    GLushort cube_indices[] = {
+
+      4,  5,  6,  7,    // Front
+      1,  2,  6,  5,    // Right
+      0,  1,  5,  4,    // Bottom
+      0,  3,  2,  1,    // Back
+      0,  4,  7,  3,    // Left
+      2,  3,  7,  6     // Top
+    };
+
+    // Frame indice coords
+    GLushort frame_indices [] = {
+
+      0,  1,    // x-axis
+      0,  3,    // y-axis
+      0,  4,    // z-axis
+
+      // Remaining frame
+      2,  3,
+      2,  1,
+      2,  6,
+
+      7,  6,
+      7,  4,
+      7,  3,
+
+      5,  4,
+      5,  6,
+      5,  1
+
+    };
+
+    OGL::bindBo( "std_rep_cube" );
+    glBufferData( GL_ARRAY_BUFFER, 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
+    OGL::releaseBo( "std_rep_cube" );
+
+    OGL::bindBo( "std_rep_cube_indices" );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
+    OGL::releaseBo( "std_rep_cube_indices" );
+
+    OGL::bindBo( "std_rep_frame_indices" );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
+    OGL::releaseBo( "std_rep_frame_indices" );
+  }
+
+  void OGL::deleteRenderBuffer() {
+
+    if( !_render_exists )
+      return;
+
+    // Delete the buffers used for the render buffer
+    deleteFbo( "render_fbo" );
+    glDeleteTextures( 1, &_render_rbo_color );
+    glDeleteTextures( 1, &_render_rbo_selected );
+    glDeleteRenderbuffers( 1, &_render_rbo_depth );
+
+    _render_exists = false;
+  }
+
+  void OGL::deleteSelectBuffer() {
+
+    if( !_select_exists )
+      return;
+
+    // Delete the buffers used for the selection buffer
+    glDeleteFramebuffers( 1, &_select_fbo );
+    glDeleteRenderbuffers( 1, &_select_rbo_color );
+    glDeleteRenderbuffers( 1, &_select_rbo_depth );
+
+    _select_exists = false;
+  }
+
+  void OGL::deleteStandardRepBOs() {
+
+    deleteBo( "std_rep_cube");
+    deleteBo( "std_rep_cube_indices");
+    deleteBo( "std_rep_frame_indices" );
+  }
+
+  GLuint OGL::getRenderBuffer() {
+
+
+    return getFboId( "render_fbo" );
+  }
+
+  GLuint OGL::getSelectBuffer() {
+
+    return _select_fbo;
+  }
+
+  int OGL::getRenderBufferHeight() {
+
+    return _render_fbo_h;
+  }
+
+  int OGL::getSelectBufferHeight() {
+
+    return _select_fbo_h;
+  }
+
+  int OGL::getRenderBufferWidth() {
+
+    return _render_fbo_w;
+  }
+
+  int OGL::getSelectBufferWidth() {
+
+    return _select_fbo_w;
+  }
+
+  GLuint OGL::getRenderColorBuffer() {
+
+    return _render_rbo_color;
+  }
+
+  GLuint OGL::getRenderSelectedBuffer() {
+
+    return _render_rbo_selected;
+  }
+
+  void OGL::releaseRenderBuffer() {
+
+    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+  }
+
+  void OGL::releaseSelectBuffer() {
+
+    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+  }
+
+  void OGL::setRenderBufferSize(int width, int height) {
+
+    _render_fbo_w = width;
+    _render_fbo_h = height;
 
     glBindRenderbuffer( GL_RENDERBUFFER, _render_rbo_depth );
-    glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _render_rbo_depth );
+    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _render_fbo_w, _render_fbo_h );
     glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
 
-    glBindTexture( GL_TEXTURE_2D, _render_rbo_color );
-    glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_color, 0 );
+    glBindTexture( GL_TEXTURE_2D, _render_rbo_color);
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, _render_fbo_w, _render_fbo_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
     glBindTexture( GL_TEXTURE_2D, 0x0 );
 
-    glBindTexture( GL_TEXTURE_2D, _render_rbo_selected );
-    glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _render_rbo_selected, 0 );
+    glBindTexture( GL_TEXTURE_2D, _render_rbo_selected);
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, _render_fbo_w, _render_fbo_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
     glBindTexture( GL_TEXTURE_2D, 0x0 );
+  }
 
-  } releaseFbo( "render_fbo" );
+  void OGL::setSelectBufferSize(int width, int height) {
 
-  // Create a render FBO which only contains the selected texture as a rendering target
-  // and one for the color.
-  // This is mainly for individual clearing of the buffers.
-  createFbo( "render_fbo_color" );
-
-  bindFbo( "render_fbo_color" ); {
-
-    glBindTexture( GL_TEXTURE_2D, _render_rbo_color );
-    glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_color, 0 );
-    glBindTexture( GL_TEXTURE_2D, 0x0 );
-  } releaseFbo( "render_fbo_color" );
-
-  createFbo( "render_fbo_selected" );
-
-  bindFbo( "render_fbo_selected" ); {
-
-    glBindTexture( GL_TEXTURE_2D, _render_rbo_selected );
-    glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_selected, 0 );
-    glBindTexture( GL_TEXTURE_2D, 0x0 );
-  } releaseFbo( "render_fbo_selected" );
-
-
-
-  _render_exists = true;
-}
-
-void OGL::createSelectBuffer() {
-
-  if( _select_exists )
-    return;
-
-  // Create a selection FBO
-  glGenFramebuffers( 1, &_select_fbo );
-
-  // Create a selection color RBO
-  glGenRenderbuffers( 1, &_select_rbo_color );
-
-  // Create a selection depth RBO
-  glGenRenderbuffers( 1, &_select_rbo_depth );
-
-  // Bind render buffers to frame buffer.
-  glBindFramebuffer( GL_FRAMEBUFFER, _select_fbo ); {
+    _select_fbo_w = width;
+    _select_fbo_h = height;
 
     glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_depth );
-    glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _select_rbo_depth );
-
+    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _select_fbo_w, _select_fbo_h );
     glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_color );
-    glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _select_rbo_color );
-
+    glRenderbufferStorage( GL_RENDERBUFFER, GL_RGB, _select_fbo_w, _select_fbo_h );
     glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
+  }
 
-  } glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
 
-  _select_exists = true;
-}
 
-void OGL::createSelectorRepBOs() {
 
-//    float ir = 0.07;
 
-//    createBo( )
-}
 
-void OGL::createStandardRepBOs() {
 
-  float ir = 0.07;
 
-  createBo( "std_rep_cube", GL_ARRAY_BUFFER );
-  createBo( "std_rep_cube_indices", GL_ELEMENT_ARRAY_BUFFER );
-  createBo( "std_rep_frame_indices", GL_ELEMENT_ARRAY_BUFFER );
 
-  // Vertices
-  GLfloat cube[] = {
 
-  /* 0 */     -ir,    -ir,    -ir,      // Back/Left/Down
-  /* 1 */      ir,    -ir,    -ir,
-  /* 2 */      ir,     ir,    -ir,
-  /* 3 */     -ir,     ir,    -ir,
-  /* 4 */     -ir,    -ir,     ir,      // Front/Left/Down
-  /* 5 */      ir,    -ir,     ir,
-  /* 6 */      ir,     ir,     ir,
-  /* 7 */     -ir,     ir,     ir
-  };
 
-  // Indice Coords
-  GLushort cube_indices[] = {
 
-    4,  5,  6,  7,    // Front
-    1,  2,  6,  5,    // Right
-    0,  1,  5,  4,    // Bottom
-    0,  3,  2,  1,    // Back
-    0,  4,  7,  3,    // Left
-    2,  3,  7,  6     // Top
-  };
 
-  // Frame indice coords
-  GLushort frame_indices [] = {
 
-    0,  1,    // x-axis
-    0,  3,    // y-axis
-    0,  4,    // z-axis
 
-    // Remaining frame
-    2,  3,
-    2,  1,
-    2,  6,
 
-    7,  6,
-    7,  4,
-    7,  3,
 
-    5,  4,
-    5,  6,
-    5,  1
 
-  };
 
-  OGL::bindBo( "std_rep_cube" );
-  glBufferData( GL_ARRAY_BUFFER, 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
-  OGL::releaseBo( "std_rep_cube" );
 
-  OGL::bindBo( "std_rep_cube_indices" );
-  glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
-  OGL::releaseBo( "std_rep_cube_indices" );
 
-  OGL::bindBo( "std_rep_frame_indices" );
-  glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
-  OGL::releaseBo( "std_rep_frame_indices" );
-}
 
-void OGL::deleteRenderBuffer() {
 
-  if( !_render_exists )
-    return;
+  GLuintCMap GLFramebufferObject::_ids;
 
-  // Delete the buffers used for the render buffer
-  deleteFbo( "render_fbo" );
-  glDeleteTextures( 1, &_render_rbo_color );
-  glDeleteTextures( 1, &_render_rbo_selected );
-  glDeleteRenderbuffers( 1, &_render_rbo_depth );
+  GLFramebufferObject::GLFramebufferObject() {
 
-  _render_exists = false;
-}
+    _name = "";
 
-void OGL::deleteSelectBuffer() {
+    _id = OGL::createFbo();
+    _valid = true;
 
-  if( !_select_exists )
-    return;
+    _ids[_id] = 1;
+  }
 
-  // Delete the buffers used for the selection buffer
-  glDeleteFramebuffers( 1, &_select_fbo );
-  glDeleteRenderbuffers( 1, &_select_rbo_color );
-  glDeleteRenderbuffers( 1, &_select_rbo_depth );
+  GLFramebufferObject::GLFramebufferObject(const std::string name) {
 
-  _select_exists = false;
-}
+    _name = name;
 
-void OGL::deleteStandardRepBOs() {
+    _valid = OGL::createFbo( name );
+    _id = OGL::getFboId( name );
 
-  deleteBo( "std_rep_cube");
-  deleteBo( "std_rep_cube_indices");
-  deleteBo( "std_rep_frame_indices" );
-}
+    _ids[_id] = 1;
+  }
 
-GLuint OGL::getRenderBuffer() {
+  GLFramebufferObject::GLFramebufferObject(const GLFramebufferObject &copy) {
 
+    _name = copy._name;
+    _id = copy._id;
 
-  return getFboId( "render_fbo" );
-}
+    _ids[_id]++;
+  }
 
-GLuint OGL::getSelectBuffer() {
+  GLFramebufferObject::~GLFramebufferObject() {
 
-  return _select_fbo;
-}
+    _ids[_id]--;
+    if( _ids.count(_id) <= 0 )
+      OGL::deleteFbo( _id );
+  }
 
-int OGL::getRenderBufferHeight() {
+  void GLFramebufferObject::bind() const {
 
-  return _render_fbo_h;
-}
+    glBindFramebuffer( GL_FRAMEBUFFER, _id );
+  }
 
-int OGL::getSelectBufferHeight() {
+  GLuint GLFramebufferObject::getId() const {
 
-  return _select_fbo_h;
-}
+    return _id;
+  }
 
-int OGL::getRenderBufferWidth() {
+  std::string GLFramebufferObject::getName() const {
 
-  return _render_fbo_w;
-}
+    return _name;
+  }
 
-int OGL::getSelectBufferWidth() {
+  bool GLFramebufferObject::isValid() const {
 
-  return _select_fbo_w;
-}
+    return _valid;
+  }
 
-GLuint OGL::getRenderColorBuffer() {
+  void GLFramebufferObject::release() const {
 
-  return _render_rbo_color;
-}
+    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+  }
 
-GLuint OGL::getRenderSelectedBuffer() {
 
-  return _render_rbo_selected;
-}
 
-void OGL::releaseRenderBuffer() {
 
-  glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
-}
 
-void OGL::releaseSelectBuffer() {
 
-  glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
-}
 
-void OGL::setRenderBufferSize(int width, int height) {
 
-  _render_fbo_w = width;
-  _render_fbo_h = height;
 
-  glBindRenderbuffer( GL_RENDERBUFFER, _render_rbo_depth );
-  glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _render_fbo_w, _render_fbo_h );
-  glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
 
-  glBindTexture( GL_TEXTURE_2D, _render_rbo_color);
-  glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, _render_fbo_w, _render_fbo_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-  glBindTexture( GL_TEXTURE_2D, 0x0 );
 
-  glBindTexture( GL_TEXTURE_2D, _render_rbo_selected);
-  glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, _render_fbo_w, _render_fbo_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-  glBindTexture( GL_TEXTURE_2D, 0x0 );
-}
 
-void OGL::setSelectBufferSize(int width, int height) {
 
-  _select_fbo_w = width;
-  _select_fbo_h = height;
 
-  glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_depth );
-  glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _select_fbo_w, _select_fbo_h );
-  glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_color );
-  glRenderbufferStorage( GL_RENDERBUFFER, GL_RGB, _select_fbo_w, _select_fbo_h );
-  glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
-}
 
+  GLuintCMap GLBufferObject::_ids;
 
+  GLBufferObject::GLBufferObject( GLenum target ) {
 
+    _name = "";
+    _id = OGL::createBo();
+    _target = target;
+    _valid = true;
 
+    _ids[_id] = 1;
+  }
 
+  GLBufferObject::GLBufferObject( const std::string name ) {
 
+    _name = name;
 
+    _valid = OGL::createBo( _name, GL_ARRAY_BUFFER );
 
+    _target = OGL::getBoTarget( _name );
+    _id = OGL::getBoId( _name );
 
+    _ids[_id] = 1;
+  }
 
+  GLBufferObject::GLBufferObject( const std::string name, GLenum target ) {
 
+    _name = name;
+    _target = target;
 
+    _valid = OGL::createBo( _name, _target );
+    _id = OGL::getBoId( _name );
 
+    _ids[_id] = 1;
+  }
 
+  GLBufferObject::GLBufferObject( const GLBufferObject& copy ) {
 
+    _name = copy._name;
+    _id   = copy._id;
+    _target = copy._target;
+    _valid = copy._valid;
 
+    _ids[_id]++;
+  }
 
+  GLBufferObject::~GLBufferObject() {
 
+    _ids[_id]--;
+    if( _ids.count(_id) <= 0 )
+      OGL::deleteBo(_id);
+  }
 
+  void GLBufferObject::bind() const {
 
+    glBindBuffer( _target, _id );
+  }
 
+  void GLBufferObject::createBufferData(GLsizeiptr size, const GLvoid *data, GLenum usage) {
 
+    glBufferData( _target, size, data, usage );
+  }
 
+  void GLBufferObject::disableVertexArrayPointer( GLuint vert_loc ) {
 
+    glDisableVertexAttribArray( vert_loc );
+  //  release();
+  }
 
+  void GLBufferObject::enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) {
 
-GLFramebufferObject::GLFramebufferObject(const std::string name) {
+  //  bind();
+    glVertexAttribPointer( vert_loc, size, type, normalized, stride, offset );
+    glEnableVertexAttribArray( vert_loc );
 
-  _name = name;
+  }
 
-  OGL::createFbo( name );
-  _id = OGL::getFboId( name );
-}
+  GLuint GLBufferObject::getId() const {
 
-GLFramebufferObject::GLFramebufferObject(const GLFramebufferObject &copy) {
+    return _id;
+  }
 
-  _name = copy._name;
-  _id = copy._id;
-}
+  GLenum GLBufferObject::getTarget() const {
 
-GLFramebufferObject::~GLFramebufferObject() {}
+    return _target;
+  }
 
-void GLFramebufferObject::bind() const {
+  std::string GLBufferObject::getName() const {
 
-  glBindFramebuffer( GL_FRAMEBUFFER, _id );
-}
+    return _name;
+  }
 
-GLuint GLFramebufferObject::getId() const {
+  bool GLBufferObject::isValid() const {
 
-  return _id;
-}
+    return _valid;
+  }
 
-std::string GLFramebufferObject::getName() const {
+  void GLBufferObject::release() const {
 
-  return _name;
-}
+    glBindBuffer( _target, 0x0 );
+  }
 
-void GLFramebufferObject::release() const {
+  void GLBufferObject::setTarget( GLenum target ) {
 
-  glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
-}
+    _target = target;
+    OGL::setBoTarget( _name, _target );
+  }
 
 
 
@@ -802,78 +971,290 @@ void GLFramebufferObject::release() const {
 
 
 
-GLBufferObject::GLBufferObject( const std::string name ) {
+  GLVertex1DBufferObject::GLVertex1DBufferObject() : GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex1D) ) {
+  }
 
-  _name = name;
+  GLVertex1DBufferObject::GLVertex1DBufferObject(const std::string &name) :
+    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex1D) ) {
+  }
 
-  OGL::createBo( _name, GL_ARRAY_BUFFER );
+  void GLVertex1DBufferObject::disable(GLuint vert_loc, GLuint tex_loc) {
 
-  _target = OGL::getBoTarget( _name );
-  _id = OGL::getBoId( _name );
-}
+    disableVertexPointer( vert_loc );
+    disableTexPointer( tex_loc );
+  }
 
-GLBufferObject::GLBufferObject( const std::string name, GLenum target ) {
+  void GLVertex1DBufferObject::disableTexPointer(GLuint tex_loc) {
 
-  _name = name;
-  _target = target;
+    disableVertexPointer( tex_loc );
+  }
 
-  OGL::createBo( _name, _target );
-  _id = OGL::getBoId( _name );
-}
+  void GLVertex1DBufferObject::disableVertexPointer(GLuint vert_loc) {
 
-GLBufferObject::GLBufferObject( const GLBufferObject& copy ) {
+    disableVertexArrayPointer( vert_loc );
+  }
 
-  _name = copy._name;
-  _id   = copy._id;
-  _target = copy._target;
-}
+  void GLVertex1DBufferObject::enable(GLuint vert_loc, GLuint tex_loc) {
 
-GLBufferObject::~GLBufferObject() {}
+    enableVertexPointer( vert_loc );
+    enableTexPointer( tex_loc );
+  }
 
-void GLBufferObject::bind() const {
+  void GLVertex1DBufferObject::enableTexPointer(GLuint tex_loc) {
 
-  glBindBuffer( _target, _id );
-}
+    enableVertexArrayPointer(tex_loc, 2, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)GLVertex1D::getTexOffset() );
+  }
 
-void GLBufferObject::disableVertexArrayPointer( GLuint vert_loc ) {
+  void GLVertex1DBufferObject::enableVertexPointer(GLuint vert_loc) {
 
-  glDisableVertexAttribArray( vert_loc );
-  release();
-}
+    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)GLVertex1D::getPointOffset() );
+  }
 
-void GLBufferObject::enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) {
+  void GLVertex1DBufferObject::fill(const DVector<DVector<Vector<float, 3> > > &p) {
 
-  bind();
-  glVertexAttribPointer( vert_loc, size, type, normalized, stride, offset );
-  glEnableVertexAttribArray( vert_loc );
+    const int no_verts = p.getDim();
 
-}
+    bind();
+    createBufferData( no_verts * sizeof(GLVertex1D), 0x0, GL_STATIC_DRAW );
 
-GLuint GLBufferObject::getId() const {
+    GLVertex1D *ptr = (GLVertex1D*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    if( ptr )
+      for( int i = 0; i < p.getDim(); i++ )
+        *(ptr++) = GLVertex1D( p(i)(0), i/float(p.getDim()-1) );
 
-  return _id;
-}
+    glUnmapBuffer( GL_ARRAY_BUFFER );
+    release();
 
-GLenum GLBufferObject::getTarget() const {
+  }
 
-  return _target;
-}
 
-std::string GLBufferObject::getName() const {
 
-  return _name;
-}
 
-void GLBufferObject::release() const {
 
-  glBindBuffer( _target, 0x0 );
-}
 
-void GLBufferObject::setTarget( GLenum target ) {
 
-  _target = target;
-  OGL::setBoTarget( _name, _target );
-}
+
+
+
+
+
+
+
+
+
+  GLVertex2DBufferObject::GLVertex2DBufferObject() : GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex2D) ) {
+  }
+
+  GLVertex2DBufferObject::GLVertex2DBufferObject(const std::string &name) :
+    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex2D) ) {
+  }
+
+  void GLVertex2DBufferObject::disable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
+
+    disableVertexPointer( vert_loc );
+    disableNormalPointer( normal_loc );
+    disableTexPointer( tex_loc );
+  }
+
+  void GLVertex2DBufferObject::disableNormalPointer(GLuint normal_loc) {
+
+    disableVertexPointer( normal_loc );
+  }
+
+  void GLVertex2DBufferObject::disableTexPointer(GLuint tex_loc) {
+
+    disableVertexPointer( tex_loc );
+  }
+
+  void GLVertex2DBufferObject::disableVertexPointer(GLuint vert_loc) {
+
+    disableVertexArrayPointer( vert_loc );
+  }
+
+  void GLVertex2DBufferObject::enable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
+
+    enableVertexPointer( vert_loc );
+    enableNormalPointer( normal_loc );
+    enableTexPointer( tex_loc );
+  }
+
+  void GLVertex2DBufferObject::enableNormalPointer(GLuint normal_loc) {
+
+    enableVertexArrayPointer(normal_loc, 3, GL_FLOAT, GL_TRUE,   _v_size, (GLvoid*)GLVertex2D::getNormalOffset() );
+  }
+
+  void GLVertex2DBufferObject::enableTexPointer(GLuint tex_loc) {
+
+    enableVertexArrayPointer(tex_loc,    2, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)GLVertex2D::getTexOffset() );
+  }
+
+  void GLVertex2DBufferObject::enableVertexPointer(GLuint vert_loc) {
+
+    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)GLVertex2D::getPointOffset() );
+  }
+
+  void GLVertex2DBufferObject::fill(const DMatrix<DMatrix<Vector<float,3> > > &p) {
+
+    const int no_verts = p.getDim1() * p.getDim2();
+
+    bind();
+    createBufferData( no_verts * sizeof(GLVertex2D), 0x0, GL_STATIC_DRAW );
+    GLVertex2D *ptr = (GLVertex2D*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    for( int i = 0; i < p.getDim1(); i++ ) {
+      for( int j = 0; j < p.getDim2(); j++ ) {
+
+        *(ptr++) =
+            GLVertex2D(
+              p(i)(j)(0)(0),
+              Vector3D<float>( p(i)(j)(1)(0) )^p(i)(j)(0)(1),
+              Point2D<float>( i/float(p.getDim1()-1), j/float(p.getDim2()-1) ) );
+
+      }
+    }
+    glUnmapBuffer( GL_ARRAY_BUFFER );
+
+    release();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  IndexBufferObject::IndexBufferObject() : GLBufferObject( GL_ELEMENT_ARRAY_BUFFER ) {
+
+    _type = GL_UNSIGNED_INT;
+    _type_size = sizeof(GLuint);
+  }
+
+  IndexBufferObject::IndexBufferObject(const std::string &name) :
+    GLBufferObject( name, GL_ELEMENT_ARRAY_BUFFER ) {
+  }
+
+  void IndexBufferObject::createBufferData(unsigned int no_indices, const GLvoid *data, GLenum usage) {
+
+    GLBufferObject::createBufferData( no_indices * _type_size, data, usage );
+  }
+
+  void IndexBufferObject::draw() {}
+
+  const GLenum &IndexBufferObject::getMode() const {
+
+    return _mode;
+  }
+
+  const GLenum &IndexBufferObject::getType() const {
+
+    return _type;
+  }
+
+  const GLsizei &IndexBufferObject::getTypeSize() const {
+
+    return _type_size;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  TriangleStripIBO::TriangleStripIBO() : IndexBufferObject() {
+
+    init();
+  }
+
+  TriangleStripIBO::TriangleStripIBO(const std::string &name) :
+    IndexBufferObject(name) {
+
+    init();
+  }
+
+  void TriangleStripIBO::draw() {
+
+    bind();
+    for( int i = 0; i < _no_strips; ++i )
+      glDrawElements( GL_TRIANGLE_STRIP, _no_indices_per_strip, getType(), (const GLvoid*)(i * _strip_size) );
+    release();
+  }
+
+  void TriangleStripIBO::fill( int m1, int m2 ) {
+
+    _no_strips = m1 - 1;
+    _no_indices_per_strip = m2 * 2;
+
+    int no_indices = _no_strips * _no_indices_per_strip;
+
+    GLuint indices[no_indices];
+    for( int i = 0; i < m1-1; i++ ) {
+
+      const int idx_i = i * m2 * 2;
+      for( int j = 0; j < m2; j++ ) {
+
+        const int idx_j = idx_i + (j*2);
+        indices[idx_j]   = i*m2 + j;
+        indices[idx_j+1] = (i+1)*m2 + j;
+      }
+    }
+
+    bind();
+    createBufferData( no_indices, indices, GL_STATIC_DRAW );
+    release();
+
+    // Strip size must be set after createBufferData( ... ) is called
+    // as the type size is defined by the createBufferData function
+    _strip_size = getTypeSize() * _no_indices_per_strip;
+  }
+
+  void TriangleStripIBO::init() {
+
+    _no_strips = 0;
+    _no_indices_per_strip = 0;
+    _strip_size = 0;
+  }
+
+
+
+
+
+
+
+
+
+
 
 
 }

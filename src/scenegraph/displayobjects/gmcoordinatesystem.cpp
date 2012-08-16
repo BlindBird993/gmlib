@@ -54,93 +54,93 @@ namespace GMlib {
 
   void CoordinateSystem::localDisplay() {
 
-    glPushMatrix(); {
+//    glPushMatrix(); {
 
 
 
 
-      if( this->_parent ) {
+//      if( this->_parent ) {
 
-        HqMatrix<float,3> matrix = getMatrixGlobal();
-        matrix.invertOrthoNormal();
-        glMultMatrix( matrix );
+//        HqMatrix<float,3> matrix = getMatrixGlobal();
+//        matrix.invertOrthoNormal();
+//        glMultMatrix( matrix );
 
-        HqMatrix<float,3> tm;
-        Point<float,3> pos;
+//        HqMatrix<float,3> tm;
+//        Point<float,3> pos;
 
-        DisplayObject *dispo = dynamic_cast<DisplayObject*>(this->_parent);
-        if( !dispo ) {
-          HqMatrix<float,3> somat = this->_parent->getMatrixGlobal();
-          pos[0] = somat[0][3];
-          pos[1] = somat[1][3];
-          pos[2] = somat[2][3];
-        }
-        else
-         pos = dispo->getPos();
-        tm.translateGlobal( pos + _pos );
+//        DisplayObject *dispo = dynamic_cast<DisplayObject*>(this->_parent);
+//        if( !dispo ) {
+//          HqMatrix<float,3> somat = this->_parent->getMatrixGlobal();
+//          pos[0] = somat[0][3];
+//          pos[1] = somat[1][3];
+//          pos[2] = somat[2][3];
+//        }
+//        else
+//         pos = dispo->getPos();
+//        tm.translateGlobal( pos + _pos );
 
-        glMultMatrix( tm );
-
-
-        switch( _cs ) {
-          case GM_COORDSYS_GLOBAL:
-          break;
-
-          case GM_COORDSYS_PARENT:
-          if( this->_parent->getParent() ) {
-
-            HqMatrix<float,3> mat = this->_parent->getParent()->getMatrixGlobal();
-            mat[0][3] = 0.0f;
-            mat[1][3] = 0.0f;
-            mat[2][3] = 0.0f;
-            glMultMatrix( mat );
-          }
-          break;
-
-          case GM_COORDSYS_LOCAL:
-          default: {
-
-            HqMatrix<float,3> mat = this->_parent->getMatrixGlobal();
-            mat[0][3] = 0.0f;
-            mat[1][3] = 0.0f;
-            mat[2][3] = 0.0f;
-            glMultMatrix( mat );
-          }
-          break;
-        }
-      }
+//        glMultMatrix( tm );
 
 
+//        switch( _cs ) {
+//          case GM_COORDSYS_GLOBAL:
+//          break;
 
-      // Push GL Attributes
-      glPushAttrib( GL_LIGHTING_BIT ); {
+//          case GM_COORDSYS_PARENT:
+//          if( this->_parent->getParent() ) {
 
-        // Disable Lighting
-        glDisable( GL_LIGHTING );
+//            HqMatrix<float,3> mat = this->_parent->getParent()->getMatrixGlobal();
+//            mat[0][3] = 0.0f;
+//            mat[1][3] = 0.0f;
+//            mat[2][3] = 0.0f;
+//            glMultMatrix( mat );
+//          }
+//          break;
 
-        glBegin( GL_LINES ); {
+//          case GM_COORDSYS_LOCAL:
+//          default: {
 
-          // X (red)
-          glColor( GMcolor::Red );
-          glPoint( Point3D<float>( 0.0f, 0.0f, 0.0f ) );
-          glPoint( Point3D<float>( 1.0f, 0.0f, 0.0f ) );
+//            HqMatrix<float,3> mat = this->_parent->getMatrixGlobal();
+//            mat[0][3] = 0.0f;
+//            mat[1][3] = 0.0f;
+//            mat[2][3] = 0.0f;
+//            glMultMatrix( mat );
+//          }
+//          break;
+//        }
+//      }
 
-          // Y (green)
-          glColor( GMcolor::Green );
-          glPoint( Point3D<float>( 0.0f, 0.0f, 0.0f ) );
-          glPoint( Point3D<float>( 0.0f, 1.0f, 0.0f ) );
 
-          // Z (blue)
-          glColor( GMcolor::Blue );
-          glPoint( Point3D<float>( 0.0f, 0.0f, 0.0f ) );
-          glPoint( Point3D<float>( 0.0f, 0.0f, 1.0f ) );
 
-        } glEnd();
+//      // Push GL Attributes
+//      glPushAttrib( GL_LIGHTING_BIT ); {
 
-      // Pop GL Attributes
-      } glPopAttrib();
+//        // Disable Lighting
+//        glDisable( GL_LIGHTING );
 
-    } glPopMatrix();
+//        glBegin( GL_LINES ); {
+
+//          // X (red)
+//          glColor( GMcolor::Red );
+//          glPoint( Point3D<float>( 0.0f, 0.0f, 0.0f ) );
+//          glPoint( Point3D<float>( 1.0f, 0.0f, 0.0f ) );
+
+//          // Y (green)
+//          glColor( GMcolor::Green );
+//          glPoint( Point3D<float>( 0.0f, 0.0f, 0.0f ) );
+//          glPoint( Point3D<float>( 0.0f, 1.0f, 0.0f ) );
+
+//          // Z (blue)
+//          glColor( GMcolor::Blue );
+//          glPoint( Point3D<float>( 0.0f, 0.0f, 0.0f ) );
+//          glPoint( Point3D<float>( 0.0f, 0.0f, 1.0f ) );
+
+//        } glEnd();
+
+//      // Pop GL Attributes
+//      } glPopAttrib();
+
+//    } glPopMatrix();
   }
 
 

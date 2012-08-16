@@ -49,23 +49,17 @@
 namespace GMlib {
 
   template <typename T>
-  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _display( "default" ), _select( "select" ) {
+  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _display( "default" ), _select( "select" ), _vbo(), _ibo() {
 
     _tri_strips = 0;
     _tri_strip_offset = 0;
     _indices_per_tri_strip = 0;
-
-    glGenBuffers( 1, &_ibo );
-    glGenBuffers( 1, &_vbo );
 
     glGenTextures( 1, &_tex );
   }
 
   template <typename T>
   PSurfDefaultVisualizer<T>::~PSurfDefaultVisualizer() {
-
-    glDeleteBuffers( 1, &_ibo );
-    glDeleteBuffers( 1, &_vbo );
 
     glDeleteBuffers( 1, &_tex );
   }
@@ -107,27 +101,12 @@ namespace GMlib {
     GLuint tex_loc = _display.getAttributeLocation( "in_tex" );
 
 
-    const GLsizei v_size = sizeof(GLVertex);
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
-    glEnableVertexAttribArray( vert_loc );
+    _vbo.bind();
+    _vbo.enable( vert_loc, normal_loc, tex_loc );
 
-    glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)getGLVertexNormalOffset() );
-    glEnableVertexAttribArray( normal_loc );
+    _ibo.draw();
 
-    glVertexAttribPointer( tex_loc, 2, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexTexOffset1() );
-    glEnableVertexAttribArray( tex_loc );
-
-
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    for( int i = 0; i < _tri_strips; i++ )
-      glDrawElements( GL_TRIANGLE_STRIP, _indices_per_tri_strip, GL_UNSIGNED_SHORT, (const GLvoid*)( i*_tri_strip_offset ) );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
-
-
-    glDisableVertexAttribArray( tex_loc );
-    glDisableVertexAttribArray( normal_loc );
-    glDisableVertexAttribArray( vert_loc );
+    _vbo.disable( vert_loc, normal_loc, tex_loc );
 
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
@@ -154,8 +133,8 @@ namespace GMlib {
     _indices_per_tri_strip = PSurfVisualizer<T>::getNoIndicesPerTriangleStrip( p.getDim1(), p.getDim2() );
     _tri_strip_offset =  sizeof(GLushort) * _indices_per_tri_strip;
 
-    PSurfVisualizer<T>::fillStandardVBO( _vbo, p );
-    PSurfVisualizer<T>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2() );
+    _vbo.fill(p);
+    _ibo.fill( p.getDim1(), p.getDim2() );
   }
 
   template <typename T>
@@ -169,21 +148,13 @@ namespace GMlib {
 
     GLuint vert_loc = _select.getAttributeLocation( "in_vertex" );
 
-    const GLsizei v_size = sizeof(GLVertex);
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
-    glEnableVertexAttribArray( vert_loc );
+    _vbo.bind();
+    _vbo.enableVertexPointer( vert_loc );
 
+    _ibo.draw();
 
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    for( int i = 0; i < _tri_strips; i++ )
-      glDrawElements( GL_TRIANGLE_STRIP, _indices_per_tri_strip, GL_UNSIGNED_SHORT, (const GLvoid*)( i*_tri_strip_offset ) );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
-
-
-    glDisableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.disableVertexPointer( vert_loc );
+    _vbo.release();
 
     _select.unbind();
   }

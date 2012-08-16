@@ -109,8 +109,8 @@ namespace GMlib {
     int no_verts = p.getDim1() * p.getDim2();
 
     glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
-    glBufferData( GL_ARRAY_BUFFER, no_verts * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
-    GLVertex *ptr = (GLVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    glBufferData( GL_ARRAY_BUFFER, no_verts * sizeof(GLVertex2D), 0x0, GL_STATIC_DRAW );
+    GLVertex2D *ptr = (GLVertex2D*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
     for( int i = 0; i < p.getDim1(); i++ ) {
       for( int j = 0; j < p.getDim2(); j++ ) {
 
@@ -126,8 +126,8 @@ namespace GMlib {
         ptr->nz = n(2);
 
         // Texture coord
-        ptr->s1 = i/float(p.getDim1()-1);
-        ptr->t1 = j/float(p.getDim2()-1);
+        ptr->s = i/float(p.getDim1()-1);
+        ptr->t = j/float(p.getDim2()-1);
 
         // Iterate pointer
         ptr++;

@@ -83,12 +83,12 @@ namespace GMlib {
         GLuint normal_loc = _dprog.getAttributeLocation( "in_normal" );
 
 
-        const GLsizei v_size = sizeof(GLVertex);
+        const GLsizei v_size = sizeof(GLVertex2D);
         glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-        glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
+        glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)GLVertex2D::getPointOffset() );
         glEnableVertexAttribArray( vert_loc );
 
-        glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)getGLVertexNormalOffset() );
+        glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)GLVertex2D::getNormalOffset() );
         glEnableVertexAttribArray( normal_loc );
 
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
@@ -115,7 +115,7 @@ namespace GMlib {
 
     // Fill the VBO
     int no_vertices = this->_tf->getSize();
-    GLVertex vertices[no_vertices];
+    GLVertex2D vertices[no_vertices];
 
     for( int i = 0; i < no_vertices; i++ ) {
 
@@ -133,7 +133,7 @@ namespace GMlib {
     }
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glBufferData( GL_ARRAY_BUFFER, no_vertices * sizeof(GLVertex), vertices, GL_STATIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, no_vertices * sizeof(GLVertex2D), vertices, GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
     int no_indices = this->_tf->getNoTriangles() * 3;
@@ -165,9 +165,9 @@ namespace GMlib {
 
     GLuint vert_loc = _sprog.getAttributeLocation( "in_vertex" );
 
-    const GLsizei v_size = sizeof(GLVertex);
+    const GLsizei v_size = sizeof(GLVertex2D);
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)GLVertex2D::getPointOffset() );
     glEnableVertexAttribArray( vert_loc );
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );

@@ -182,45 +182,45 @@ namespace GMlib {
 
 
 
-    if( _dlist ) {
+//    if( _dlist ) {
 
-      glDeleteLists( _dlist, 2 );
-      _dlist = 0;
-    }
+//      glDeleteLists( _dlist, 2 );
+//      _dlist = 0;
+//    }
 
 
-    // make display lists
-    _dlist = glGenLists( 2 );
+//    // make display lists
+//    _dlist = glGenLists( 2 );
 
-    glPushAttrib( GL_POINT_BIT );
+//    glPushAttrib( GL_POINT_BIT );
 
-    glNewList( _dlist, GL_COMPILE ); {
+//    glNewList( _dlist, GL_COMPILE ); {
 
-      if( e == GL_POINTS )
-        glPointSize( _point_size );
+//      if( e == GL_POINTS )
+//        glPointSize( _point_size );
 
-      glBegin( e ); {
+//      glBegin( e ); {
 
-        for( int i = 0; i < _normals.getSize(); i++) {
-          glNormal( _normals[i] );                // STL file only carries one normal
-          for( int j = 0; j < 3; j++ )            // for each triangle, makes a facet shading,
-            glPoint( _vertices[ 3*i+j ] );        // they must be averaged for true smooth surfaces.
-        }
-      } glEnd();
-    } glEndList();
+//        for( int i = 0; i < _normals.getSize(); i++) {
+//          glNormal( _normals[i] );                // STL file only carries one normal
+//          for( int j = 0; j < 3; j++ )            // for each triangle, makes a facet shading,
+//            glPoint( _vertices[ 3*i+j ] );        // they must be averaged for true smooth surfaces.
+//        }
+//      } glEnd();
+//    } glEndList();
 
-    // Build a new list for selection
-    glNewList( _dlist+1, GL_COMPILE ); {
-      glBegin( GL_TRIANGLES ); {
+//    // Build a new list for selection
+//    glNewList( _dlist+1, GL_COMPILE ); {
+//      glBegin( GL_TRIANGLES ); {
 
-        for( int i = 0; i < _normals.getSize(); i++ ) {
-          for( int j = 0;j < 3; j++ )
-            glPoint( _vertices[ 3*i+j ] );
-        }
-      } glEnd();
-    } glEndList();
+//        for( int i = 0; i < _normals.getSize(); i++ ) {
+//          for( int j = 0;j < 3; j++ )
+//            glPoint( _vertices[ 3*i+j ] );
+//        }
+//      } glEnd();
+//    } glEndList();
 
-    glPopAttrib();
+//    glPopAttrib();
   }
 
 

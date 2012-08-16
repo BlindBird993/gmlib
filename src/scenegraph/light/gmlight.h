@@ -280,7 +280,7 @@ namespace GMlib{
   inline
   void Light::glLight( GLenum pn, const Color& co) {
 
-    GMlib::glLight(_light_name, pn, co);
+//    GMlib::glLight(_light_name, pn, co);
   }
 
 
@@ -292,7 +292,7 @@ namespace GMlib{
   inline
   void Light::glLight( GLenum pn, float f ) {
 
-    GMlib::glLight(_light_name, pn, f);
+//    GMlib::glLight(_light_name, pn, f);
   }
 
 
@@ -304,7 +304,7 @@ namespace GMlib{
   inline
   void Light::glLight( GLenum pn, int f ) {
 
-    GMlib::glLight(_light_name, pn, f);
+//    GMlib::glLight(_light_name, pn, f);
   }
 
 
@@ -316,7 +316,7 @@ namespace GMlib{
   inline
   void Light::glLightDir( const Vector<float,3>& dir ) {
 
-    GMlib::glLightDir(_light_name, dir);
+//    GMlib::glLightDir(_light_name, dir);
   }
 
 
@@ -328,7 +328,7 @@ namespace GMlib{
   inline
   void Light::glLightPos( const Point<float,3>& pos ) {
 
-    GMlib::glLightPos(_light_name, pos);
+//    GMlib::glLightPos(_light_name, pos);
   }
 
 
@@ -340,7 +340,7 @@ namespace GMlib{
   inline
   void Light::glLightSun( const Vector<float,3>& pos ) {
 
-    GMlib::glLightSun(_light_name, pos);
+//    GMlib::glLightSun(_light_name, pos);
   }
 
 }	// END namespace GMlib

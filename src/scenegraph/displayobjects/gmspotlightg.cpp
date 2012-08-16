@@ -87,64 +87,64 @@ namespace GMlib {
   void SpotLightG::_makeDisplayList() {
 
 
-    int i;
-    double k = 3.3;
-    double b = k/sqrt(1+pow(tan(_cutoff.getRad()),2));
-    double a = sqrt(k*k-b*b);
-    if(_cutoff.getDeg()>90) b = -b;
+//    int i;
+//    double k = 3.3;
+//    double b = k/sqrt(1+pow(tan(_cutoff.getRad()),2));
+//    double a = sqrt(k*k-b*b);
+//    if(_cutoff.getDeg()>90) b = -b;
 
-    Vector3D<float> d = _dir;
-    Vector3D<float> n = d^d.getLinIndVec();
-    d.setLength(b);
-    n.setLength(a);
-    UnitVector3D<float> n2 = -d;
-    if(_cutoff.getDeg()!=90) n2 = Vector3D<float>((b/a)*n-(a/b)*d);
-    GLMatrix m1(Angle(30),_pos,_dir);
-    GLMatrix m2(Angle(-30),_pos,_dir);
+//    Vector3D<float> d = _dir;
+//    Vector3D<float> n = d^d.getLinIndVec();
+//    d.setLength(b);
+//    n.setLength(a);
+//    UnitVector3D<float> n2 = -d;
+//    if(_cutoff.getDeg()!=90) n2 = Vector3D<float>((b/a)*n-(a/b)*d);
+//    GLMatrix m1(Angle(30),_pos,_dir);
+//    GLMatrix m2(Angle(-30),_pos,_dir);
 
-    Array<Point<float,3> > p1;
-    p1 += _pos;
-    p1 += _pos+d+n;
-    for(i=1; i<12; i++) p1 += m1*p1.back();
+//    Array<Point<float,3> > p1;
+//    p1 += _pos;
+//    p1 += _pos+d+n;
+//    for(i=1; i<12; i++) p1 += m1*p1.back();
 
-    Vector3D<float> bb=0.6*d;
-    if(b<0.0) bb.setLength(0.0);
-    Array<Point<float,3> > p2;
-    p2 += _pos+bb+0.1*_dir;
-    p2 += _pos+0.6*d+0.6*n;
-    for(i=1; i<12; i++) p2 += m2*p2.back();
+//    Vector3D<float> bb=0.6*d;
+//    if(b<0.0) bb.setLength(0.0);
+//    Array<Point<float,3> > p2;
+//    p2 += _pos+bb+0.1*_dir;
+//    p2 += _pos+0.6*d+0.6*n;
+//    for(i=1; i<12; i++) p2 += m2*p2.back();
 
-    Array<Vector<float,3> > v1;
-    v1 += UnitVector<float,3>(-d);
-    v1 += n2;
-    for(i=1; i<12; i++) v1 += m1*v1.back();
+//    Array<Vector<float,3> > v1;
+//    v1 += UnitVector<float,3>(-d);
+//    v1 += n2;
+//    for(i=1; i<12; i++) v1 += m1*v1.back();
 
-    Array<Vector<float,3> > v2;
-    v2 += UnitVector<float,3>(d);
-    v2 += UnitVector<float,3>(d+n);
-    for(i=1; i<12; i++) v2 += m2*v2.back();
-
-
-
-    if( _dlist )
-      glDeleteLists( _dlist, 2 );
-
-    _dlist = glGenLists( 2 );
-
-    glNewList(_dlist, GL_COMPILE); // The Light Box
-      glBegin(GL_TRIANGLE_FAN);
-        for(i=0; i<p1.size(); i++) { glNormal(v1[i]); glPoint(p1[i]); }
-        glNormal(v1[1]); glPoint(p1[1]);
-      glEnd();
-    glEndList();
+//    Array<Vector<float,3> > v2;
+//    v2 += UnitVector<float,3>(d);
+//    v2 += UnitVector<float,3>(d+n);
+//    for(i=1; i<12; i++) v2 += m2*v2.back();
 
 
-    glNewList( _dlist+1, GL_COMPILE );  // The Light
-      glBegin(GL_TRIANGLE_FAN);
-        for(i=0; i<p2.size(); i++) { glNormal(v2[i]); glPoint(p2[i]); }
-        glNormal(v2[1]); glPoint(p2[1]);
-      glEnd();
-    glEndList();
+
+//    if( _dlist )
+//      glDeleteLists( _dlist, 2 );
+
+//    _dlist = glGenLists( 2 );
+
+//    glNewList(_dlist, GL_COMPILE); // The Light Box
+//      glBegin(GL_TRIANGLE_FAN);
+//        for(i=0; i<p1.size(); i++) { glNormal(v1[i]); glPoint(p1[i]); }
+//        glNormal(v1[1]); glPoint(p1[1]);
+//      glEnd();
+//    glEndList();
+
+
+//    glNewList( _dlist+1, GL_COMPILE );  // The Light
+//      glBegin(GL_TRIANGLE_FAN);
+//        for(i=0; i<p2.size(); i++) { glNormal(v2[i]); glPoint(p2[i]); }
+//        glNormal(v2[1]); glPoint(p2[1]);
+//      glEnd();
+//    glEndList();
 
   }
 
@@ -165,24 +165,24 @@ namespace GMlib {
 
   void SpotLightG::localDisplay() {
 
-    // Draw Casing
-    glPushAttrib( GL_POINT_BIT | GL_LIGHTING_BIT ); {
+//    // Draw Casing
+//    glPushAttrib( GL_POINT_BIT | GL_LIGHTING_BIT ); {
 
-      GMmaterial::Bronze.glSet();
-      glCallList( _dlist );
+//      GMmaterial::Bronze.glSet();
+//      glCallList( _dlist );
 
-    } glPopAttrib();
+//    } glPopAttrib();
 
 
-    // Draw Light
-    glPushAttrib( GL_LIGHTING_BIT ); {
+//    // Draw Light
+//    glPushAttrib( GL_LIGHTING_BIT ); {
 
-      glDisable( GL_LIGHTING );
+//      glDisable( GL_LIGHTING );
 
-      glColor(getAmbient());
-      glCallList( _dlist+1 );
+//      glColor(getAmbient());
+//      glCallList( _dlist+1 );
 
-    } glPopAttrib();
+//    } glPopAttrib();
   }
 
 

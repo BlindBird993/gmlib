@@ -51,23 +51,23 @@ namespace GMlib {
 
   void PathTrack::localDisplay() {
 
-    int k = _recent_path.size() - _element;
+//    int k = _recent_path.size() - _element;
 
-    glPushAttrib( GL_LIGHTING_BIT ); {
+//    glPushAttrib( GL_LIGHTING_BIT ); {
 
-      glDisable(GL_LIGHTING);
-      glColor( _color );
+//      glDisable(GL_LIGHTING);
+////      glColor( _color );
 
-      glEnableClientState(GL_VERTEX_ARRAY); {
+//      glEnableClientState(GL_VERTEX_ARRAY); {
 
-        glVertexPointer( 3, GL_FLOAT, 0, _recent_path[0].getPtr() );
-        glDrawArrays( GL_LINE_STRIP, 0, _element );
+//        glVertexPointer( 3, GL_FLOAT, 0, _recent_path[0].getPtr() );
+//        glDrawArrays( GL_LINE_STRIP, 0, _element );
 
-        if( _path_full && k )
-          glDrawArrays( GL_LINE_STRIP, _element, k );
+//        if( _path_full && k )
+//          glDrawArrays( GL_LINE_STRIP, _element, k );
 
-      } glDisableClientState( GL_VERTEX_ARRAY );
-    } glPopAttrib();
+//      } glDisableClientState( GL_VERTEX_ARRAY );
+//    } glPopAttrib();
   }
 
 

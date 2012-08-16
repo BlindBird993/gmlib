@@ -87,12 +87,12 @@ namespace GMlib {
     GLuint tex_loc = _dprog.getAttributeLocation( "in_tex" );
 
 
-    const GLsizei v_size = sizeof(GLVertex);
+    const GLsizei v_size = sizeof(GLVertex2D);
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)GLVertex2D::getPointOffset() );
     glEnableVertexAttribArray( vert_loc );
 
-    glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)getGLVertexNormalOffset() );
+    glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)GLVertex2D::getNormalOffset() );
     glEnableVertexAttribArray( normal_loc );
 
 
@@ -143,9 +143,9 @@ namespace GMlib {
 
     GLuint vert_loc = _sprog.getAttributeLocation( "in_vertex" );
 
-    const GLsizei v_size = sizeof(GLVertex);
+    const GLsizei v_size = sizeof(GLVertex2D);
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)GLVertex2D::getPointOffset() );
     glEnableVertexAttribArray( vert_loc );
 
 

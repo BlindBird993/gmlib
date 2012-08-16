@@ -75,15 +75,15 @@ namespace GMlib {
    */
   void Material::glSet() const {
 
-    glMaterial(_sided,GL_AMBIENT,_amb);
-    glMaterial(_sided,GL_DIFFUSE,_dif);
-    glMaterial(_sided,GL_SPECULAR,_spc);
-    glMaterial(_sided,GL_SHININESS,_shininess);
+//    glMaterial(_sided,GL_AMBIENT,_amb);
+//    glMaterial(_sided,GL_DIFFUSE,_dif);
+//    glMaterial(_sided,GL_SPECULAR,_spc);
+//    glMaterial(_sided,GL_SHININESS,_shininess);
 
-    if( _texture.isValid() ) {
-      glEnable( _texture.getDimension() );
-      glBindTexture( _texture.getDimension(), _texture.getTextureId() );
-    }
+//    if( _texture.isValid() ) {
+//      glEnable( _texture.getDimension() );
+//      glBindTexture( _texture.getDimension(), _texture.getTextureId() );
+//    }
   }
 
 
@@ -94,10 +94,10 @@ namespace GMlib {
    */
   void Material::glSetInverse() const {
 
-    glMaterial(GL_FRONT,GL_AMBIENT,_amb.getInverse());
-    glMaterial(GL_FRONT,GL_DIFFUSE,_dif.getInverse());
-    glMaterial(GL_FRONT,GL_SPECULAR,_spc.getInverse());
-    glMaterial(GL_FRONT,GL_SHININESS,128 - _shininess);
+//    glMaterial(GL_FRONT,GL_AMBIENT,_amb.getInverse());
+//    glMaterial(GL_FRONT,GL_DIFFUSE,_dif.getInverse());
+//    glMaterial(GL_FRONT,GL_SPECULAR,_spc.getInverse());
+//    glMaterial(GL_FRONT,GL_SHININESS,128 - _shininess);
   }
 
 

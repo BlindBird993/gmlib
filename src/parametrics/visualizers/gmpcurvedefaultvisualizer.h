@@ -51,7 +51,7 @@ namespace GMlib {
     void          select( Camera* cam, const Color& name = Color() );
 
   protected:
-    GLuint        _vbo_v;
+    GLVertex1DBufferObject      _vbo;
     int           _no_vertices;
 
     GLProgram     _display;

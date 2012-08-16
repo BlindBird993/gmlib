@@ -59,6 +59,7 @@ namespace GMlib {
 
     _display.setUniform( "u_selected", this->_obj->isSelected() );
 
+    _bo_cube.bind();
     _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
 
     _bo_cube_frame_indices.bind(); {
@@ -92,6 +93,7 @@ namespace GMlib {
     }glDisable( GL_BLEND );
 
     _bo_cube.disableVertexArrayPointer( vert_loc );
+    _bo_cube.release();
 
     _display.unbind();
   }
@@ -109,11 +111,13 @@ namespace GMlib {
     _select.setUniform( "u_color", name );
 
     GLuint vert_loc = _select.getAttributeLocation( "in_vertex" );
+    _bo_cube.bind();
     _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
     _bo_cube_indices.bind();
       glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
     _bo_cube_indices.release();
     _bo_cube.disableVertexArrayPointer( vert_loc );
+    _bo_cube.release();
 
     _select.unbind();
   }

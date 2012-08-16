@@ -98,14 +98,14 @@ namespace GMlib {
 
   void PointLightG::localDisplay() {
 
-    glPushAttrib( GL_LIGHTING_BIT ); {
+//    glPushAttrib( GL_LIGHTING_BIT ); {
 
-      glDisable( GL_LIGHTING );
+//      glDisable( GL_LIGHTING );
 
-      glColor(getAmbient());
-      glCallList( _dlist );
+//      glColor(getAmbient());
+//      glCallList( _dlist );
 
-    } glPopAttrib();
+//    } glPopAttrib();
   }
 
 

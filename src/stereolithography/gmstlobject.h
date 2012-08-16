@@ -189,22 +189,22 @@ namespace GMlib {
   inline
   void StlObject::localDisplay() {
 
-    glPushAttrib( GL_LIGHTING_BIT );
+//    glPushAttrib( GL_LIGHTING_BIT );
 
-    if( this->isLighted() )
-    {
-      this->_material.glSet();
-    }
-    else
-    {
-      glDisable( GL_LIGHTING );
-      glColor(this->_color);
-    }
+//    if( this->isLighted() )
+//    {
+//      this->_material.glSet();
+//    }
+//    else
+//    {
+//      glDisable( GL_LIGHTING );
+//      glColor(this->_color);
+//    }
 
-    if( _dlist )
-      glCallList( _dlist );
+//    if( _dlist )
+//      glCallList( _dlist );
 
-    glPopAttrib();
+//    glPopAttrib();
   }
 
 

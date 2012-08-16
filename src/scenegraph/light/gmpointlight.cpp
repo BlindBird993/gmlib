@@ -179,11 +179,11 @@ namespace GMlib {
    */
   void PointLight::lighting() {
 
-    glPushMatrix();
-    // _present.inverse2().mult();
-    glMultMatrix(_present);
-    glLightPos(_pos);
-    glPopMatrix();
+//    glPushMatrix();
+//    // _present.inverse2().mult();
+//    glMultMatrix(_present);
+//    glLightPos(_pos);
+//    glPopMatrix();
   }
 
 }

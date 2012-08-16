@@ -197,7 +197,7 @@ namespace GMlib {
    */
   inline
   void ScaleObject::glScaling() {
-    if(_scaled) glScale(_s);
+//    if(_scaled) glScale(_s);
   }
 
 

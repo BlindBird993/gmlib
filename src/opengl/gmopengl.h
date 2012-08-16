@@ -71,6 +71,7 @@ typedef unsigned short wchar_t;
 
 
 // gmlib::core
+#include <core/containers/gmdmatrix.h>
 #include <core/types/gmpoint.h>
 #include <core/types/gmpoint2d.h>
 #include <core/types/gmpoint3d.h>
@@ -101,32 +102,13 @@ namespace GMlib {
 
 
 
-  struct GLVertex {
-    GLfloat   x, y, z;
-    GLfloat   nx, ny, nz;
-    GLfloat   s1, t1;
-  };
 
-  inline
-  GLuint getGLVertexPointOffset() {
-    return 0;
-  }
 
-  inline
-  GLuint getGLVertexNormalOffset() {
-    return 3 * sizeof(GLfloat);
-  }
+//  inline
+//  void glColor(const Color& c) {
 
-  inline
-  GLuint getGLVertexTexOffset1() {
-    return 6 * sizeof(GLfloat);
-  }
-
-  inline
-  void glColor(const Color& c) {
-
-    glColor4ubv( c.getRgba() );
-  }
+//    glColor4ubv( c.getRgba() );
+//  }
 
   inline
   void glClearColor( const Color& c ) {
@@ -135,562 +117,562 @@ namespace GMlib {
   }
 
 
-  //*************************************************
-  //********** overloaded Light functions ***********
-  //*************************************************
+//  //*************************************************
+//  //********** overloaded Light functions ***********
+//  //*************************************************
 
-  inline
-  void glLight(GLenum li, GLenum pn, const Color& co) {
-
-    float f[4];
-    f[0] = float(co.getRedC());
-    f[1] = float(co.getGreenC());
-    f[2] = float(co.getBlueC());
-    f[3] = float(co.getAlphaC());
-    glLightfv(li,pn,f);
-  }
-
-  inline
-  void glLightSun(GLenum li, const Point<float,3>& pos) {
-
-    float f[4];
-    f[0] = pos(0);
-    f[1] = pos(1);
-    f[2] = pos(2);
-    f[3] = float(0.0);
-    glLightfv(li,GL_POSITION,f);
-  }
-
-  inline
-  void glLightPos(GLenum li, const Point<float,3>& pos) {
-
-    float f[4];
-    f[0] = pos(0);
-    f[1] = pos(1);
-    f[2] = pos(2);
-    f[3] = float(1.0);
-    glLightfv(li,GL_POSITION,f);
-  }
-
-
-  inline
-  void glLightDir(GLenum li, const Vector<float,3>& dir) {
-
-    float f[3];
-    f[0] = dir(0);
-    f[1] = dir(1);
-    f[2] = dir(2);
-    glLightfv(li,GL_SPOT_DIRECTION,f);
-  }
-
-
-  inline
-  void glLight(GLenum li,GLenum pn, float f) {
-
-    glLightf(li,pn,f);
-  }
-
-  inline
-  void glLight(GLenum li,GLenum pn, int f) {
-
-    glLighti(li,pn,f);
-  }
-
-
-  //***************************************************
-  //********** overloaded glMaterial functions ********
-  //***************************************************
-
-  inline
-  void glMaterial(GLenum li,GLenum pn, const Color& co) {
-
-    float f[4];
-    f[0] = float(co.getRedC());
-    f[1] = float(co.getGreenC());
-    f[2] = float(co.getBlueC());
-    f[3] = float(co.getAlphaC());
-    glMaterialfv(li,pn,f);
-  }
-
-  inline
-  void glMaterial(GLenum li,GLenum pn, const Point<float,3>& co) {
-
-    glMaterialfv(li,pn,(float*)(&co));
-  }
-
-  inline
-  void glMaterial(GLenum li,GLenum pn, float f) {
-
-    glMaterialf(li,pn,f);
-  }
-
-  inline
-  void glMaterial(GLenum li,GLenum pn, int f) {
-
-    glMateriali(li,pn,f);
-  }
-
-  //*************************************************
-  //********** overloaded Transformation functions **
-  //*************************************************
-
-  //*************float******************
-  inline
-  void glScale(const Point<float,3>& p) {
-
-    glScalef(p(0),p(1),p(2));
-  }
-
-  inline
-  void glRotate(Angle a, const Vector<float,3>& p) {
-
-    glRotatef(float(180*a.getRad()/M_PI),p(0),p(1),p(2));
-  }
-
-  inline
-  void glTranslate(const Point<float,3>& p) {
-
-    glTranslatef(p(0),p(1),p(2));
-  }
-
-
-  //**************double******************
-  inline
-  void glScale(const Point<double,3>& p) {
-
-    glScaled(p(0),p(1),p(2));
-  }
-
-  inline
-  void glRotate(Angle a, const Vector<double,3>& p) {
-
-    glRotated(float(180*a.getRad()/M_PI),p(0),p(1),p(2));
-  }
-
-  inline
-  void glTranslate(const Point<double,3>& p) {
-
-    glTranslated(p(0),p(1),p(2));
-  }
-
-
-  //*************************************************
-  //********** overloaded Matrix functions **********
-  //*************************************************
-//
 //  inline
-//  void glLoadMatrix(const GLMatrix& m)
-//  {
-//    glLoadMatrixf(m.getPtr());
+//  void glLight(GLenum li, GLenum pn, const Color& co) {
+
+//    float f[4];
+//    f[0] = float(co.getRedC());
+//    f[1] = float(co.getGreenC());
+//    f[2] = float(co.getBlueC());
+//    f[3] = float(co.getAlphaC());
+//    glLightfv(li,pn,f);
 //  }
-//
+
 //  inline
-//  void glMultMatrix(const GLMatrix& m)
-//  {
-//    glMultMatrixf(m.getPtr());
+//  void glLightSun(GLenum li, const Point<float,3>& pos) {
+
+//    float f[4];
+//    f[0] = pos(0);
+//    f[1] = pos(1);
+//    f[2] = pos(2);
+//    f[3] = float(0.0);
+//    glLightfv(li,GL_POSITION,f);
+//  }
+
+//  inline
+//  void glLightPos(GLenum li, const Point<float,3>& pos) {
+
+//    float f[4];
+//    f[0] = pos(0);
+//    f[1] = pos(1);
+//    f[2] = pos(2);
+//    f[3] = float(1.0);
+//    glLightfv(li,GL_POSITION,f);
 //  }
 
 
-  inline
-  void glLoadMatrix(const HqMatrix<float,3>& m) {
+//  inline
+//  void glLightDir(GLenum li, const Vector<float,3>& dir) {
 
-    glLoadMatrixf(m.getTransposed().getPtr());
-  }
+//    float f[3];
+//    f[0] = dir(0);
+//    f[1] = dir(1);
+//    f[2] = dir(2);
+//    glLightfv(li,GL_SPOT_DIRECTION,f);
+//  }
 
 
-  inline
-  void glMultMatrix(const HqMatrix<float,3>& m) {
+//  inline
+//  void glLight(GLenum li,GLenum pn, float f) {
 
-    glMultMatrixf(m.getTransposed().getPtr());
-  }
+//    glLightf(li,pn,f);
+//  }
 
+//  inline
+//  void glLight(GLenum li,GLenum pn, int f) {
 
-  inline
-  void glLoadMatrix(const HqMatrix<double,3>& m) {
+//    glLighti(li,pn,f);
+//  }
 
-    glLoadMatrixd(m.getTransposed().getPtr());
-  }
 
+//  //***************************************************
+//  //********** overloaded glMaterial functions ********
+//  //***************************************************
 
-  inline
-  void glMultMatrix(const HqMatrix<double,3>& m) {
+//  inline
+//  void glMaterial(GLenum li,GLenum pn, const Color& co) {
 
-    glMultMatrixd(m.getTransposed().getPtr());
-  }
+//    float f[4];
+//    f[0] = float(co.getRedC());
+//    f[1] = float(co.getGreenC());
+//    f[2] = float(co.getBlueC());
+//    f[3] = float(co.getAlphaC());
+//    glMaterialfv(li,pn,f);
+//  }
 
+//  inline
+//  void glMaterial(GLenum li,GLenum pn, const Point<float,3>& co) {
 
+//    glMaterialfv(li,pn,(float*)(&co));
+//  }
 
-  //********************************
-  //********  DIMENSION  2 *********
-  //********************************
+//  inline
+//  void glMaterial(GLenum li,GLenum pn, float f) {
 
-  //*********************************************************
-  //********** Point<double,2>:based gl-functions ***********
-  //*********************************************************
+//    glMaterialf(li,pn,f);
+//  }
 
-  inline
-  void glPoint(const Point<double,2>& p)
-  {
-    glVertex2dv((double *)&p);
-  }
+//  inline
+//  void glMaterial(GLenum li,GLenum pn, int f) {
 
-  inline
-  void glPoint(Point<double,2>* p)
-  {
-    glVertex2dv((double *)p);
-  }
+//    glMateriali(li,pn,f);
+//  }
 
+//  //*************************************************
+//  //********** overloaded Transformation functions **
+//  //*************************************************
 
-  //*********************************************************
-  //********** Point<float,2>:based gl-functions ************
-  //*********************************************************
+//  //*************float******************
+//  inline
+//  void glScale(const Point<float,3>& p) {
 
-  inline
-  void glPoint(const Point<float,2>& p)
-  {
-    glVertex2fv((float *)&p);
-  }
+//    glScalef(p(0),p(1),p(2));
+//  }
 
-  inline
-  void glPoint(Point<float,2>* p)
-  {
-    glVertex2fv((float *)p);
-  }
+//  inline
+//  void glRotate(Angle a, const Vector<float,3>& p) {
 
-  inline
-  void glTexCoord( float coord ) {
-    glTexCoord1f( coord );
-  }
-
-  inline
-  void glTexCoord(const Point<float,2>& p)
-  {
-    glTexCoord2fv((float *)&p);
-  }
-
-  //*********************************************************
-  //********** Point<int,2>:based gl-functions **************
-  //*********************************************************
+//    glRotatef(float(180*a.getRad()/M_PI),p(0),p(1),p(2));
+//  }
 
-  inline
-  void glPoint(const Point<int,2>& p)
-  {
-    glVertex2iv((int *)&p);
-  }
-
-  inline
-  void glPoint(Point<int,2>* p)
-  {
-    glVertex2iv((int *)p);
-  }
-
-
-  //*********************************************************
-  //********** Point<short,2>:based gl-functions ************
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<short,2>& p)
-  {
-    glVertex2sv((short *)&p);
-  }
-
-  inline
-  void glPoint(Point<short,2>* p)
-  {
-    glVertex2sv((short *)p);
-  }
-
-
-
-
-  //********************************
-  //********  DIMENSION  3 *********
-  //********************************
-
-  //*********************************************************
-  //********** Point<double,3>:based gl-functions ***********
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<double,3>& p)
-  {
-    glVertex3dv((double *)&p);
-  }
-
-  inline
-  void glVector(const Vector<double,3>& p)
-  {
-    double a[4];
-    memcpy(a, p.getPtr(),3);
-    a[3] = 0;
-    glVertex4dv(a);
-  }
-
-  inline
-  void glNormal(const Vector<double,3>& v)
-  {
-    glNormal3dv((double *)&v);
-  }
-
-  inline
-  void glVertex(const Arrow<double,3>& p)
-  {
-    glNormal3dv((double *)(p.getDir().getPtr()));
-    glVertex3dv((double *)&p);
-  }
-
-
-  inline
-  void glPoint(Point<double,3>* p)
-  {
-    glVertex3dv((double *)p);
-  }
-
-  inline
-  void glVector(Vector<double,3>* p)
-  {
-    double a[4];
-    memcpy(a,p,3);
-    a[3] = 0;
-    glVertex4dv(a);
-  }
-
-  inline
-  void glNormal(Vector<double,3>* v)
-  {
-    glNormal3dv((double *)v);
-  }
-
-  inline
-  void glVertex(Arrow<double,3>* p)
-  {
-    glNormal3dv((double *)(p->getDir().getPtr()));
-    glVertex3dv((double *)p);
-
-  }
-
-  //*********************************************************
-  //********** Point<float,3>:based gl-functions ************
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<float,3>& p)
-  {
-    glVertex3fv((float *)&p);
-  }
-
-  inline
-  void glVector(const Vector<float,3>& p)
-  {
-    float a[4];
-    memcpy(a,p.getPtr(),3);
-    a[3] = 0;
-    glVertex4fv(a);
-  }
-
-  inline
-  void glNormal(const Vector<float,3>& v)
-  {
-    glNormal3fv((float *)&v);
-  }
-
-  inline
-  void glVertex(const Arrow<float,3>& p)
-  {
-    glNormal3fv((float *)(p.getDir().getPtr()));
-    glVertex3fv((float *)&p);
-  }
-
-
-  inline
-  void glPoint(Point<float,3>* p)
-  {
-    glVertex3fv((float *)p);
-  }
-
-  inline
-  void glVector(Vector<float,3>* p)
-  {
-    float a[4];
-    memcpy(a,p,3);
-    a[3] = 0;
-    glVertex4fv(a);
-  }
-
-  inline
-  void glNormal(Vector<float,3>* v)
-  {
-    glNormal3fv((float *)v);
-  }
-
-  inline
-  void glVertex(Arrow<float,3>* p)
-  {
-    glNormal3fv((float *)(p->getDir().getPtr()));
-    glVertex3fv((float *)p);
-  }
-
-
-  //*********************************************************
-  //********** Point<int,3>:based gl-functions **************
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<int,3>& p)
-  {
-    glVertex3iv((int *)&p);
-  }
-
-  inline
-  void glNormal(const Vector<int,3>& v)
-  {
-    glNormal3iv((int *)&v);
-  }
-
-  inline
-  void glVertex(const Arrow<int,3>& p)
-  {
-    glNormal3iv((int *)(p.getDir().getPtr()));
-    glVertex3iv((int *)&p);
-  }
-
-
-  inline
-  void glPoint(Point<int,3>* p)
-  {
-    glVertex3iv((int *)p);
-  }
-
-  inline
-  void glNormal(Vector<int,3>* v)
-  {
-    glNormal3iv((int *)v);
-  }
-
-  inline
-  void glVertex(Arrow<int,3>* p)
-  {
-    glNormal3iv((int *)(p->getDir().getPtr()));
-    glVertex3iv((int *)p);
-  }
-
-
-  //*********************************************************
-  //********** Point<short,3>:based gl-functions ************
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<short,3>& p)
-  {
-    glVertex3sv((short *)&p);
-  }
-
-  inline
-  void glNormal(const Vector<short,3>& v)
-  {
-    glNormal3sv((short *)&v);
-  }
-
-  inline
-  void glVertex(const Arrow<short,3>& p)
-  {
-    glNormal3sv((short *)(p.getDir().getPtr()));
-    glVertex3sv((short *)&p);
-  }
-
-
-  inline
-  void glPoint(Point<short,3>* p)
-  {
-    glVertex3sv((short *)p);
-  }
-
-  inline
-  void glNormal(Vector<short,3>* v)
-  {
-    glNormal3sv((short *)v);
-  }
-
-  inline
-  void glVertex(Arrow<short,3>* p)
-  {
-    glNormal3sv((short *)(p->getDir().getPtr()));
-    glVertex3sv((short *)p);
-  }
-
-
-
-  //********************************
-  //********  DIMENSION  4 *********
-  //********************************
-
-  //*********************************************************
-  //********** Point<double,4>:based gl-functions ***********
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<double,4>& p)
-  {
-    glVertex4dv((double *)&p);
-  }
-
-  inline
-  void glPoint(Point<double,4>* p)
-  {
-    glVertex4dv((double *)p);
-  }
-
-
-  //*********************************************************
-  //********** Point<float,4>:based gl-functions ************
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<float,4>& p)
-  {
-    glVertex4fv((float *)&p);
-  }
-
-  inline
-  void glPoint(Point<float,4>* p)
-  {
-    glVertex4fv((float *)p);
-  }
-
-
-  //*********************************************************
-  //********** Point<int,4>:based gl-functions **************
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<int,4>& p)
-  {
-    glVertex4iv((int *)&p);
-  }
-
-  inline
-  void glPoint(Point<int,4>* p)
-  {
-    glVertex4iv((int *)p);
-  }
-
-
-  //*********************************************************
-  //********** Point<short,4>:based gl-functions ************
-  //*********************************************************
-
-  inline
-  void glPoint(const Point<short,4>& p)
-  {
-    glVertex4sv((short *)&p);
-  }
-
-  inline
-  void glPoint(Point<short,4>* p)
-  {
-    glVertex4sv((short *)p);
-  }
+//  inline
+//  void glTranslate(const Point<float,3>& p) {
+
+//    glTranslatef(p(0),p(1),p(2));
+//  }
+
+
+//  //**************double******************
+//  inline
+//  void glScale(const Point<double,3>& p) {
+
+//    glScaled(p(0),p(1),p(2));
+//  }
+
+//  inline
+//  void glRotate(Angle a, const Vector<double,3>& p) {
+
+//    glRotated(float(180*a.getRad()/M_PI),p(0),p(1),p(2));
+//  }
+
+//  inline
+//  void glTranslate(const Point<double,3>& p) {
+
+//    glTranslated(p(0),p(1),p(2));
+//  }
+
+
+//  //*************************************************
+//  //********** overloaded Matrix functions **********
+//  //*************************************************
+////
+////  inline
+////  void glLoadMatrix(const GLMatrix& m)
+////  {
+////    glLoadMatrixf(m.getPtr());
+////  }
+////
+////  inline
+////  void glMultMatrix(const GLMatrix& m)
+////  {
+////    glMultMatrixf(m.getPtr());
+////  }
+
+
+//  inline
+//  void glLoadMatrix(const HqMatrix<float,3>& m) {
+
+//    glLoadMatrixf(m.getTransposed().getPtr());
+//  }
+
+
+//  inline
+//  void glMultMatrix(const HqMatrix<float,3>& m) {
+
+//    glMultMatrixf(m.getTransposed().getPtr());
+//  }
+
+
+//  inline
+//  void glLoadMatrix(const HqMatrix<double,3>& m) {
+
+//    glLoadMatrixd(m.getTransposed().getPtr());
+//  }
+
+
+//  inline
+//  void glMultMatrix(const HqMatrix<double,3>& m) {
+
+//    glMultMatrixd(m.getTransposed().getPtr());
+//  }
+
+
+
+//  //********************************
+//  //********  DIMENSION  2 *********
+//  //********************************
+
+//  //*********************************************************
+//  //********** Point<double,2>:based gl-functions ***********
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<double,2>& p)
+//  {
+//    glVertex2dv((double *)&p);
+//  }
+
+//  inline
+//  void glPoint(Point<double,2>* p)
+//  {
+//    glVertex2dv((double *)p);
+//  }
+
+
+//  //*********************************************************
+//  //********** Point<float,2>:based gl-functions ************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<float,2>& p)
+//  {
+//    glVertex2fv((float *)&p);
+//  }
+
+//  inline
+//  void glPoint(Point<float,2>* p)
+//  {
+//    glVertex2fv((float *)p);
+//  }
+
+//  inline
+//  void glTexCoord( float coord ) {
+//    glTexCoord1f( coord );
+//  }
+
+//  inline
+//  void glTexCoord(const Point<float,2>& p)
+//  {
+//    glTexCoord2fv((float *)&p);
+//  }
+
+//  //*********************************************************
+//  //********** Point<int,2>:based gl-functions **************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<int,2>& p)
+//  {
+//    glVertex2iv((int *)&p);
+//  }
+
+//  inline
+//  void glPoint(Point<int,2>* p)
+//  {
+//    glVertex2iv((int *)p);
+//  }
+
+
+//  //*********************************************************
+//  //********** Point<short,2>:based gl-functions ************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<short,2>& p)
+//  {
+//    glVertex2sv((short *)&p);
+//  }
+
+//  inline
+//  void glPoint(Point<short,2>* p)
+//  {
+//    glVertex2sv((short *)p);
+//  }
+
+
+
+
+//  //********************************
+//  //********  DIMENSION  3 *********
+//  //********************************
+
+//  //*********************************************************
+//  //********** Point<double,3>:based gl-functions ***********
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<double,3>& p)
+//  {
+//    glVertex3dv((double *)&p);
+//  }
+
+//  inline
+//  void glVector(const Vector<double,3>& p)
+//  {
+//    double a[4];
+//    memcpy(a, p.getPtr(),3);
+//    a[3] = 0;
+//    glVertex4dv(a);
+//  }
+
+//  inline
+//  void glNormal(const Vector<double,3>& v)
+//  {
+//    glNormal3dv((double *)&v);
+//  }
+
+//  inline
+//  void glVertex(const Arrow<double,3>& p)
+//  {
+//    glNormal3dv((double *)(p.getDir().getPtr()));
+//    glVertex3dv((double *)&p);
+//  }
+
+
+//  inline
+//  void glPoint(Point<double,3>* p)
+//  {
+//    glVertex3dv((double *)p);
+//  }
+
+//  inline
+//  void glVector(Vector<double,3>* p)
+//  {
+//    double a[4];
+//    memcpy(a,p,3);
+//    a[3] = 0;
+//    glVertex4dv(a);
+//  }
+
+//  inline
+//  void glNormal(Vector<double,3>* v)
+//  {
+//    glNormal3dv((double *)v);
+//  }
+
+//  inline
+//  void glVertex(Arrow<double,3>* p)
+//  {
+//    glNormal3dv((double *)(p->getDir().getPtr()));
+//    glVertex3dv((double *)p);
+
+//  }
+
+//  //*********************************************************
+//  //********** Point<float,3>:based gl-functions ************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<float,3>& p)
+//  {
+//    glVertex3fv((float *)&p);
+//  }
+
+//  inline
+//  void glVector(const Vector<float,3>& p)
+//  {
+//    float a[4];
+//    memcpy(a,p.getPtr(),3);
+//    a[3] = 0;
+//    glVertex4fv(a);
+//  }
+
+//  inline
+//  void glNormal(const Vector<float,3>& v)
+//  {
+//    glNormal3fv((float *)&v);
+//  }
+
+//  inline
+//  void glVertex(const Arrow<float,3>& p)
+//  {
+//    glNormal3fv((float *)(p.getDir().getPtr()));
+//    glVertex3fv((float *)&p);
+//  }
+
+
+//  inline
+//  void glPoint(Point<float,3>* p)
+//  {
+//    glVertex3fv((float *)p);
+//  }
+
+//  inline
+//  void glVector(Vector<float,3>* p)
+//  {
+//    float a[4];
+//    memcpy(a,p,3);
+//    a[3] = 0;
+//    glVertex4fv(a);
+//  }
+
+//  inline
+//  void glNormal(Vector<float,3>* v)
+//  {
+//    glNormal3fv((float *)v);
+//  }
+
+//  inline
+//  void glVertex(Arrow<float,3>* p)
+//  {
+//    glNormal3fv((float *)(p->getDir().getPtr()));
+//    glVertex3fv((float *)p);
+//  }
+
+
+//  //*********************************************************
+//  //********** Point<int,3>:based gl-functions **************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<int,3>& p)
+//  {
+//    glVertex3iv((int *)&p);
+//  }
+
+//  inline
+//  void glNormal(const Vector<int,3>& v)
+//  {
+//    glNormal3iv((int *)&v);
+//  }
+
+//  inline
+//  void glVertex(const Arrow<int,3>& p)
+//  {
+//    glNormal3iv((int *)(p.getDir().getPtr()));
+//    glVertex3iv((int *)&p);
+//  }
+
+
+//  inline
+//  void glPoint(Point<int,3>* p)
+//  {
+//    glVertex3iv((int *)p);
+//  }
+
+//  inline
+//  void glNormal(Vector<int,3>* v)
+//  {
+//    glNormal3iv((int *)v);
+//  }
+
+//  inline
+//  void glVertex(Arrow<int,3>* p)
+//  {
+//    glNormal3iv((int *)(p->getDir().getPtr()));
+//    glVertex3iv((int *)p);
+//  }
+
+
+//  //*********************************************************
+//  //********** Point<short,3>:based gl-functions ************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<short,3>& p)
+//  {
+//    glVertex3sv((short *)&p);
+//  }
+
+//  inline
+//  void glNormal(const Vector<short,3>& v)
+//  {
+//    glNormal3sv((short *)&v);
+//  }
+
+//  inline
+//  void glVertex(const Arrow<short,3>& p)
+//  {
+//    glNormal3sv((short *)(p.getDir().getPtr()));
+//    glVertex3sv((short *)&p);
+//  }
+
+
+//  inline
+//  void glPoint(Point<short,3>* p)
+//  {
+//    glVertex3sv((short *)p);
+//  }
+
+//  inline
+//  void glNormal(Vector<short,3>* v)
+//  {
+//    glNormal3sv((short *)v);
+//  }
+
+//  inline
+//  void glVertex(Arrow<short,3>* p)
+//  {
+//    glNormal3sv((short *)(p->getDir().getPtr()));
+//    glVertex3sv((short *)p);
+//  }
+
+
+
+//  //********************************
+//  //********  DIMENSION  4 *********
+//  //********************************
+
+//  //*********************************************************
+//  //********** Point<double,4>:based gl-functions ***********
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<double,4>& p)
+//  {
+//    glVertex4dv((double *)&p);
+//  }
+
+//  inline
+//  void glPoint(Point<double,4>* p)
+//  {
+//    glVertex4dv((double *)p);
+//  }
+
+
+//  //*********************************************************
+//  //********** Point<float,4>:based gl-functions ************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<float,4>& p)
+//  {
+//    glVertex4fv((float *)&p);
+//  }
+
+//  inline
+//  void glPoint(Point<float,4>* p)
+//  {
+//    glVertex4fv((float *)p);
+//  }
+
+
+//  //*********************************************************
+//  //********** Point<int,4>:based gl-functions **************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<int,4>& p)
+//  {
+//    glVertex4iv((int *)&p);
+//  }
+
+//  inline
+//  void glPoint(Point<int,4>* p)
+//  {
+//    glVertex4iv((int *)p);
+//  }
+
+
+//  //*********************************************************
+//  //********** Point<short,4>:based gl-functions ************
+//  //*********************************************************
+
+//  inline
+//  void glPoint(const Point<short,4>& p)
+//  {
+//    glVertex4sv((short *)&p);
+//  }
+
+//  inline
+//  void glPoint(Point<short,4>* p)
+//  {
+//    glVertex4sv((short *)p);
+//  }
 
 
   // ***********
@@ -719,7 +701,7 @@ namespace GMlib {
 
 
 
-
+  typedef std::map< GLuint, int > GLuintCMap;
 
 
 
@@ -752,17 +734,21 @@ namespace GMlib {
       GLuint    id;
     };
 
-    static bool                 bindFbo( const std::string& name );
-    static bool                 createFbo( const std::string& name );
-    static bool                 deleteFbo( const std::string& name );
-    static GLuint               getFboId( const std::string& name );
-    static const std::map< std::string, OGL::FBOInfo >    getFbos();
-    static bool                 releaseFbo( const std::string& name );
+    typedef std::map< std::string, OGL::FBOInfo >   FBOMap;
+
+    static bool               bindFbo( const std::string& name );
+    static GLuint             createFbo();
+    static bool               createFbo( const std::string& name );
+    static void               deleteFbo( GLuint id );
+    static bool               deleteFbo( const std::string& name );
+    static GLuint             getFboId( const std::string& name );
+    static const FBOMap&      getFbos();
+    static bool               releaseFbo( const std::string& name );
 
   private:
-    static std::map< std::string, OGL::FBOInfo >    _fbos;
+    static FBOMap             _fbos;
 
-    static bool                 _fboExists( const std::string& name, bool exist );
+    static bool               _fboExists( const std::string& name, bool exist );
 
 
 
@@ -776,14 +762,18 @@ namespace GMlib {
       GLenum    target;
     };
 
-    static bool                 bindBo( const std::string& name );
-    static bool                 createBo( const std::string& name, GLenum target = GL_ARRAY_BUFFER );
-    static bool                 deleteBo( const std::string& name );
-    static GLuint               getBoId( const std::string& name );
-    static GLenum               getBoTarget( const std::string& name );
-    static const std::map< std::string, OGL::BOInfo >    getBos();
-    static bool                 releaseBo( const std::string& name );
-    static bool                 setBoTarget( const std::string& name, GLenum target = GL_ARRAY_BUFFER  );
+    typedef std::map< std::string, OGL::BOInfo >    BOMap;
+
+    static bool             bindBo( const std::string& name );
+    static GLuint           createBo();
+    static bool             createBo( const std::string& name, GLenum target = GL_ARRAY_BUFFER );
+    static void             deleteBo( GLuint id );
+    static bool             deleteBo( const std::string& name );
+    static GLuint           getBoId( const std::string& name );
+    static GLenum           getBoTarget( const std::string& name );
+    static const BOMap&     getBos();
+    static bool             releaseBo( const std::string& name );
+    static bool             setBoTarget( const std::string& name, GLenum target = GL_ARRAY_BUFFER  );
 
   private:
     static std::map< std::string, OGL::BOInfo >    _bos;
@@ -863,21 +853,27 @@ namespace GMlib {
 
 
 
-
   class GLFramebufferObject {
   public:
-    GLFramebufferObject( const std::string name = "default" );
+    explicit GLFramebufferObject();
+    explicit GLFramebufferObject( const std::string name );
     GLFramebufferObject( const GLFramebufferObject& copy );
     ~GLFramebufferObject();
 
-    void                  bind() const;
-    GLuint                getId() const;
-    std::string           getName() const;
-    void                  release() const;
+    void                    bind() const;
+    GLuint                  getId() const;
+    std::string             getName() const;
+    bool                    isValid() const;
+    void                    release() const;
 
   protected:
-    std::string           _name;
-    GLuint                _id;
+    std::string             _name;
+    GLuint                  _id;
+    bool                    _valid;
+
+  private:
+    static GLuintCMap       _ids;
+
 
   }; // END class GLFrameBufferObject
 
@@ -886,27 +882,180 @@ namespace GMlib {
 
   class GLBufferObject {
   public:
-    GLBufferObject( const std::string name );
-    GLBufferObject( const std::string name, GLenum type );
+    explicit GLBufferObject( GLenum type = GL_ARRAY_BUFFER );
+    explicit GLBufferObject( const std::string name );
+    explicit GLBufferObject( const std::string name, GLenum type );
     GLBufferObject( const GLBufferObject& copy );
     ~GLBufferObject();
 
-    void                  bind() const;
-    void                  disableVertexArrayPointer( GLuint vert_loc );
-    void                  enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset );
-    GLuint                getId() const;
-    GLenum                getTarget() const;
-    std::string           getName() const;
-    void                  release() const;
-    void                  setTarget( GLenum target = GL_ARRAY_BUFFER );
+    void                    bind() const;
+    void                    createBufferData( GLsizeiptr size, const GLvoid* data, GLenum usage );
+    void                    disableVertexArrayPointer( GLuint vert_loc );
+    void                    enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset );
+    GLuint                  getId() const;
+    GLenum                  getTarget() const;
+    std::string             getName() const;
+    bool                    isValid() const;
+    void                    release() const;
+    void                    setTarget( GLenum target = GL_ARRAY_BUFFER );
 
   protected:
-    std::string           _name;
-    GLuint                _id;
-    GLenum                _target;
+    std::string             _name;
+    GLuint                  _id;
+    GLenum                  _target;
+    bool                    _valid;
+
+  private:
+    static GLuintCMap       _ids;
 
   }; // END class GLBufferObject
 
+
+  struct GLVertex {
+    GLfloat   x, y, z;
+
+    GLVertex( const Point<float,3>& p ) {
+
+      x = p(0);
+      y = p(1);
+      z = p(2);
+    }
+
+    static GLuint getPointOffset() { return 0; }
+
+  }; // END struct GLVertex
+
+  struct GLVertex1D : GLVertex {
+    GLfloat   s;
+
+    GLVertex1D( const Point<float,3>& p, float tex ) : GLVertex(p) {
+
+      s = tex;
+    }
+
+    static GLuint getTexOffset() { return sizeof(GLVertex); }
+
+  }; // END struct GLVertex1D
+
+  struct GLVertex2D : GLVertex {
+    GLfloat   nx, ny, nz;
+    GLfloat   s, t;
+
+    GLVertex2D( const Point<float,3>& p, const Vector<float,3>& n, const Point<float,2>& tex ) : GLVertex(p) {
+
+      nx = n(0);
+      ny = n(1);
+      nz = n(2);
+
+      s = tex(0);
+      t = tex(1);
+    }
+
+    static GLuint getNormalOffset() { return sizeof(GLVertex); }
+    static GLuint getTexOffset() { return getNormalOffset() + 3 * sizeof(GLfloat); }
+
+  }; // END struc GLVectex2D
+
+  struct GLVertex3D : GLVertex {
+    GLfloat   s, t, r;
+
+    GLVertex3D( const Point<float,3>& p, const Point<float,3>& tex ) : GLVertex(p) {
+
+      s = tex(0);
+      t = tex(1);
+      r = tex(2);
+    }
+
+
+    static GLuint getTexOffset() { return sizeof(GLVertex); }
+
+  }; // END struct GLVertex
+
+
+
+
+  class GLVertex1DBufferObject : public GLBufferObject {
+  public:
+    explicit GLVertex1DBufferObject();
+    explicit GLVertex1DBufferObject( const std::string& name );
+
+    void      disable( GLuint vert_loc, GLuint tex_loc );
+    void      disableTexPointer(GLuint tex_loc );
+    void      disableVertexPointer( GLuint vert_loc );
+    void      enable( GLuint vert_loc, GLuint tex_loc );
+    void      enableTexPointer(GLuint tex_loc );
+    void      enableVertexPointer( GLuint vert_loc );
+    void      fill( const DVector< DVector< Vector<float, 3> > >& p );
+
+  private:
+    const GLsizei   _v_size;
+
+  }; // END class GLVertex2DBufferObject
+
+
+  class GLVertex2DBufferObject : public GLBufferObject {
+  public:
+    explicit GLVertex2DBufferObject();
+    explicit GLVertex2DBufferObject( const std::string& name );
+
+    void      disable( GLuint vert_loc, GLuint normal_loc, GLuint tex_loc );
+    void      disableNormalPointer(GLuint normal_loc );
+    void      disableTexPointer(GLuint tex_loc );
+    void      disableVertexPointer( GLuint vert_loc );
+    void      enable( GLuint vert_loc, GLuint normal_loc, GLuint tex_loc );
+    void      enableNormalPointer(GLuint normal_loc );
+    void      enableTexPointer(GLuint tex_loc );
+    void      enableVertexPointer( GLuint vert_loc );
+    void      fill( const DMatrix< DMatrix< Vector<float,3> > >& p );
+
+  private:
+    const GLsizei   _v_size;
+
+  }; // END class GLVertex2DBufferObject
+
+
+  /*! class IndexBufferObject : public GLBufferObject
+   *
+   *
+   * \todo Might be optimized for smaller groups of indices
+   * \todo by changing the buffer representation
+   * \todo to unisgned byte or unsigned short
+   */
+  class IndexBufferObject : public GLBufferObject {
+  public:
+    explicit IndexBufferObject();
+    explicit IndexBufferObject( const std::string& name );
+
+    void              createBufferData( unsigned int no_indices, const GLvoid* data, GLenum usage );
+
+    virtual void      draw();
+    const GLenum&     getMode() const;
+    const GLenum&     getType() const;
+    const GLsizei&    getTypeSize() const;
+
+  private:
+    GLenum      _mode;
+    GLenum      _type;
+    GLsizei     _type_size;
+
+  }; // END class IndexBufferObject
+
+  class TriangleStripIBO : public IndexBufferObject {
+  public:
+    explicit TriangleStripIBO();
+    explicit TriangleStripIBO( const std::string& name );
+
+    virtual void      draw();
+    virtual void      fill(int m1, int m2);
+
+  private:
+    int       _no_strips;
+    int       _no_indices_per_strip;
+    GLsizei   _strip_size;
+
+    void      init();
+
+  }; // END class TriangleStripIBO
 
 } // END namespace GMlib
 

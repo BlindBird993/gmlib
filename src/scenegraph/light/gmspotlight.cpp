@@ -128,11 +128,11 @@ namespace GMlib {
    */
   void SpotLight::lighting() {
 
-    glPushMatrix();
-      glMultMatrix(_present);
-      glLightPos(_pos);
-      glLightDir(_dir);
-    glPopMatrix();
+//    glPushMatrix();
+//      glMultMatrix(_present);
+//      glLightPos(_pos);
+//      glLightDir(_dir);
+//    glPopMatrix();
   }
 
 

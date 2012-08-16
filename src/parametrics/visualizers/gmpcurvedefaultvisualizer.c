@@ -31,18 +31,13 @@
 namespace GMlib {
 
   template <typename T>
-  PCurveDefaultVisualizer<T>::PCurveDefaultVisualizer() : _display( "pcurve" ), _select( "select" ) {
+  PCurveDefaultVisualizer<T>::PCurveDefaultVisualizer() : _display( "pcurve" ), _select( "select" ), _vbo() {
 
     _no_vertices = 0;
-
-    glGenBuffers( 1, &_vbo_v );
   }
 
   template <typename T>
-  PCurveDefaultVisualizer<T>::~PCurveDefaultVisualizer() {
-
-    glDeleteBuffers( 1, &_vbo_v );
-  }
+  PCurveDefaultVisualizer<T>::~PCurveDefaultVisualizer() {}
 
   template <typename T>
   inline
@@ -59,14 +54,12 @@ namespace GMlib {
 
     GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc );
-
+    _vbo.bind();
+    _vbo.enableVertexPointer( vert_loc );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
-    glDisableVertexAttribArray( vert_loc );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.disableVertexPointer( vert_loc );
+    _vbo.release();
 
     _display.unbind();
   }
@@ -84,7 +77,8 @@ namespace GMlib {
     int /*m*/, int /*d*/
   ) {
 
-    PCurveVisualizer<T>::populateLineStripVBO( _vbo_v, _no_vertices, p );
+    _no_vertices = p.getDim();
+    _vbo.fill( p );
   }
 
   template <typename T>
@@ -98,16 +92,13 @@ namespace GMlib {
 
     GLuint vert_loc = _select.getAttributeLocation( "in_vertex" );
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-
-    glEnableVertexAttribArray( vert_loc );
-
+    _vbo.bind();
+    _vbo.enableVertexPointer( vert_loc );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
-    glDisableVertexAttribArray( vert_loc );
+    _vbo.disableVertexPointer( vert_loc );
+    _vbo.release();
 
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
     _select.unbind();
   }
 

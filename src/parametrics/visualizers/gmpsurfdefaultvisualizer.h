@@ -50,16 +50,16 @@ namespace GMlib {
     void          select( Camera * cam, const Color& name );
 
   protected:
-    GLuint        _vbo;
-    GLuint        _ibo;
-    GLuint        _tex;
+    GLVertex2DBufferObject    _vbo;
+    TriangleStripIBO          _ibo;
+    GLuint                    _tex;
 
-    int           _tri_strips;
-    GLsizei       _tri_strip_offset;
-    int           _indices_per_tri_strip;
+    int                       _tri_strips;
+    GLsizei                   _tri_strip_offset;
+    int                       _indices_per_tri_strip;
 
-    GLProgram     _display;
-    GLProgram     _select;
+    GLProgram                 _display;
+    GLProgram                 _select;
 
   }; // END class PSurfDefaultVisualizer
 

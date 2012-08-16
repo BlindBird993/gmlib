@@ -521,162 +521,162 @@ namespace GMlib {
    */
   void Camera::makeGraphics() {
 
-    int i;
-    Point<float,3>		p[18];
-    UnitVector<float,3>	v[18];
+//    int i;
+//    Point<float,3>		p[18];
+//    UnitVector<float,3>	v[18];
 
-    p[0] = Point3D<float>(0.07,0.1,0.3);		p[4] = Point3D<float>(-0.07,0.1,0.3);
-    p[1] = Point3D<float>(0.07,0.1,-0.3);		p[5] = Point3D<float>(-0.07,0.1,-0.3);
-    p[2] = Point3D<float>(0.07,-0.1,-0.3);	p[6] = Point3D<float>(-0.07,-0.1,-0.3);
-    p[3] = Point3D<float>(0.07,-0.1,0.3);		p[7] = Point3D<float>(-0.07,-0.1,0.3);
+//    p[0] = Point3D<float>(0.07,0.1,0.3);		p[4] = Point3D<float>(-0.07,0.1,0.3);
+//    p[1] = Point3D<float>(0.07,0.1,-0.3);		p[5] = Point3D<float>(-0.07,0.1,-0.3);
+//    p[2] = Point3D<float>(0.07,-0.1,-0.3);	p[6] = Point3D<float>(-0.07,-0.1,-0.3);
+//    p[3] = Point3D<float>(0.07,-0.1,0.3);		p[7] = Point3D<float>(-0.07,-0.1,0.3);
 
-    v[0] = Vector3D<float>(1,0,0);
-    v[1] = Vector3D<float>(0,1,0);
-    v[2] = Vector3D<float>(-1,0,0);
-    v[3] = Vector3D<float>(0,-1,0);
-    v[4] = Vector3D<float>(0,0,1);
-    v[5] = Vector3D<float>(0,0,-1);
+//    v[0] = Vector3D<float>(1,0,0);
+//    v[1] = Vector3D<float>(0,1,0);
+//    v[2] = Vector3D<float>(-1,0,0);
+//    v[3] = Vector3D<float>(0,-1,0);
+//    v[4] = Vector3D<float>(0,0,1);
+//    v[5] = Vector3D<float>(0,0,-1);
 
-    _display_list = glGenLists(10);
+//    _display_list = glGenLists(10);
 
-    // Lager displayliste for display
-    glNewList(_display_list, GL_COMPILE);
-      glBegin(GL_QUADS);
-        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
-        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
-        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
-        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
-        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
-        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
-      glEnd();
-    glEndList();
+//    // Lager displayliste for display
+//    glNewList(_display_list, GL_COMPILE);
+//      glBegin(GL_QUADS);
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
+//        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
+//        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
+//        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
+//        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
+//      glEnd();
+//    glEndList();
 
-    glNewList(_display_list+9, GL_COMPILE);
-      glBegin(GL_QUADS);
-        glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
-        glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
-        glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
-        glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
-        glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
-        glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
-      glEnd();
-    glEndList();
+//    glNewList(_display_list+9, GL_COMPILE);
+//      glBegin(GL_QUADS);
+//        glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
+//        glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
+//        glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
+//        glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
+//        glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
+//      glEnd();
+//    glEndList();
 
-    p[0] = Point3D<float>(0.1,0.1,0.1);	p[4] = Point3D<float>(-0.1,0.1,0.1);
-    p[1] = Point3D<float>(0.1,0.1,-0.1);	p[5] = Point3D<float>(-0.1,0.1,-0.1);
-    p[2] = Point3D<float>(0.1,-0.1,-0.1);	p[6] = Point3D<float>(-0.1,-0.1,-0.1);
-    p[3] = Point3D<float>(0.1,-0.1,0.1);	p[7] = Point3D<float>(-0.1,-0.1,0.1);
+//    p[0] = Point3D<float>(0.1,0.1,0.1);	p[4] = Point3D<float>(-0.1,0.1,0.1);
+//    p[1] = Point3D<float>(0.1,0.1,-0.1);	p[5] = Point3D<float>(-0.1,0.1,-0.1);
+//    p[2] = Point3D<float>(0.1,-0.1,-0.1);	p[6] = Point3D<float>(-0.1,-0.1,-0.1);
+//    p[3] = Point3D<float>(0.1,-0.1,0.1);	p[7] = Point3D<float>(-0.1,-0.1,0.1);
 
-    glNewList(_display_list+8, GL_COMPILE);	//	For lock at Point.
-      glBegin(GL_QUADS);
-        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
-        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
-        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
-        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
-        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
-        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
-      glEnd();
-    glEndList();
+//    glNewList(_display_list+8, GL_COMPILE);	//	For lock at Point.
+//      glBegin(GL_QUADS);
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
+//        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
+//        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
+//        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
+//        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
+//      glEnd();
+//    glEndList();
 
-    p[0] = Point3D<float>(0.02,-0.1,-0.02);	p[4] = Point3D<float>(-0.02,-0.1,-0.02);
-    p[1] = Point3D<float>(0.02,-0.1,-0.08);	p[5] = Point3D<float>(-0.02,-0.1,-0.08);
-    p[2] = Point3D<float>(0.02,-0.25,-0.06);	p[6] = Point3D<float>(-0.02,-0.25,-0.06);
-    p[3] = Point3D<float>(0.02,-0.25,0.0);	p[7] = Point3D<float>(-0.02,-0.25,0.0);
+//    p[0] = Point3D<float>(0.02,-0.1,-0.02);	p[4] = Point3D<float>(-0.02,-0.1,-0.02);
+//    p[1] = Point3D<float>(0.02,-0.1,-0.08);	p[5] = Point3D<float>(-0.02,-0.1,-0.08);
+//    p[2] = Point3D<float>(0.02,-0.25,-0.06);	p[6] = Point3D<float>(-0.02,-0.25,-0.06);
+//    p[3] = Point3D<float>(0.02,-0.25,0.0);	p[7] = Point3D<float>(-0.02,-0.25,0.0);
 
-    glNewList(_display_list+1, GL_COMPILE);	//	For handtak.
-      glBegin(GL_QUADS);
-        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
-        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
-        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
-        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
-        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
-        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
-      glEnd();
-    glEndList();
+//    glNewList(_display_list+1, GL_COMPILE);	//	For handtak.
+//      glBegin(GL_QUADS);
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
+//        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
+//        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
+//        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
+//        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
+//      glEnd();
+//    glEndList();
 
-    p[0] = Point3D<float>(-0.016,0.12,0.09);	p[4] = Point3D<float>(-0.054,0.12,0.09);
-    p[1] = Point3D<float>(-0.016,0.12,0.05);	p[5] = Point3D<float>(-0.054,0.12,0.05);
-    p[2] = Point3D<float>(-0.016,0.1,0.05);	p[6] = Point3D<float>(-0.054,0.1,0.05);
-    p[3] = Point3D<float>(-0.016,0.1,0.09);	p[7] = Point3D<float>(-0.054,0.1,0.09);
+//    p[0] = Point3D<float>(-0.016,0.12,0.09);	p[4] = Point3D<float>(-0.054,0.12,0.09);
+//    p[1] = Point3D<float>(-0.016,0.12,0.05);	p[5] = Point3D<float>(-0.054,0.12,0.05);
+//    p[2] = Point3D<float>(-0.016,0.1,0.05);	p[6] = Point3D<float>(-0.054,0.1,0.05);
+//    p[3] = Point3D<float>(-0.016,0.1,0.09);	p[7] = Point3D<float>(-0.054,0.1,0.09);
 
-    glNewList(_display_list+2, GL_COMPILE);
-      glBegin(GL_QUADS);						//	For søker del 1
-        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
-        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
-        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
-        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
-      glEnd();
+//    glNewList(_display_list+2, GL_COMPILE);
+//      glBegin(GL_QUADS);						//	For søker del 1
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
+//        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
+//        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
+//      glEnd();
 
-      p[0] = Point3D<float>(-0.015,0.16,0.35);
-      p[1] = Point3D<float>(-0.015,0.16,0.0);
-      p[2] = Point3D<float>(-0.015,0.12,0.0);
-      p[3] = Point3D<float>(-0.015,0.12,0.35);
-      p[4] = Point3D<float>(-0.055,0.16,0.35);
-      p[5] = Point3D<float>(-0.055,0.16,0.0);
-      p[6] = Point3D<float>(-0.055,0.12,0.0);
-      p[7] = Point3D<float>(-0.055,0.12,0.35);
+//      p[0] = Point3D<float>(-0.015,0.16,0.35);
+//      p[1] = Point3D<float>(-0.015,0.16,0.0);
+//      p[2] = Point3D<float>(-0.015,0.12,0.0);
+//      p[3] = Point3D<float>(-0.015,0.12,0.35);
+//      p[4] = Point3D<float>(-0.055,0.16,0.35);
+//      p[5] = Point3D<float>(-0.055,0.16,0.0);
+//      p[6] = Point3D<float>(-0.055,0.12,0.0);
+//      p[7] = Point3D<float>(-0.055,0.12,0.35);
 
-      glBegin(GL_QUADS);		//	For søker del 2
-        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
-        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
-        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
-        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
-        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
-        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
-      glEnd();
-    glEndList();
+//      glBegin(GL_QUADS);		//	For søker del 2
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
+//        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
+//        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
+//        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
+//        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
+//      glEnd();
+//    glEndList();
 
-    GLMatrix mat(Angle(M_PI_4),Point3D<float>(-0.035,0.14,0.0),UnitVector3D<float>(0,0,-1));
-    p[1]  = Point3D<float>(-0.055,0.16,0.35);		v[1]  = Vector3D<float>(-1,1,0);
-    p[5]  = Point3D<float>(-0.015,0.16,0.35);		v[5]  = Vector3D<float>(1,1,0);
-    p[9]  = Point3D<float>(-0.015,0.12,0.35);		v[9]  = Vector3D<float>(1,-1,0);
-    p[13] = Point3D<float>(-0.055,0.12,0.35);		v[13] = Vector3D<float>(-1,-1,0);
-    p[17] = Point3D<float>(-0.055,0.16,0.35);		v[17] = Vector3D<float>(-1,1,0);
+//    GLMatrix mat(Angle(M_PI_4),Point3D<float>(-0.035,0.14,0.0),UnitVector3D<float>(0,0,-1));
+//    p[1]  = Point3D<float>(-0.055,0.16,0.35);		v[1]  = Vector3D<float>(-1,1,0);
+//    p[5]  = Point3D<float>(-0.015,0.16,0.35);		v[5]  = Vector3D<float>(1,1,0);
+//    p[9]  = Point3D<float>(-0.015,0.12,0.35);		v[9]  = Vector3D<float>(1,-1,0);
+//    p[13] = Point3D<float>(-0.055,0.12,0.35);		v[13] = Vector3D<float>(-1,-1,0);
+//    p[17] = Point3D<float>(-0.055,0.16,0.35);		v[17] = Vector3D<float>(-1,1,0);
 
-    p[3]  = Point3D<float>(-0.035,0.16,0.35);		v[3]  = Vector3D<float>(0,1,0);
-    p[7]  = Point3D<float>(-0.015,0.14,0.35);		v[7]  = Vector3D<float>(1,0,0);
-    p[11] = Point3D<float>(-0.035,0.12,0.35);		v[11] = Vector3D<float>(0,-1,0);
-    p[15] = Point3D<float>(-0.055,0.14,0.35);		v[15] = Vector3D<float>(-1,0,0);
+//    p[3]  = Point3D<float>(-0.035,0.16,0.35);		v[3]  = Vector3D<float>(0,1,0);
+//    p[7]  = Point3D<float>(-0.015,0.14,0.35);		v[7]  = Vector3D<float>(1,0,0);
+//    p[11] = Point3D<float>(-0.035,0.12,0.35);		v[11] = Vector3D<float>(0,-1,0);
+//    p[15] = Point3D<float>(-0.055,0.14,0.35);		v[15] = Vector3D<float>(-1,0,0);
 
-    p[0] = p[1] + Vector3D<float>(-0.01,0.01,0.05); v[0] = v[1] + Vector3D<float>(0.0,0.0,0.02);
+//    p[0] = p[1] + Vector3D<float>(-0.01,0.01,0.05); v[0] = v[1] + Vector3D<float>(0.0,0.0,0.02);
 
-    for(i=2; i<18;i+=2)
-    {
-      p[i] = mat*p[i-2];
-      v[i] = mat*v[i-2];
-    }
+//    for(i=2; i<18;i+=2)
+//    {
+//      p[i] = mat*p[i-2];
+//      v[i] = mat*v[i-2];
+//    }
 
-    glNewList(_display_list+3, GL_COMPILE);
-      glBegin(GL_TRIANGLE_STRIP);		//	For søker del 3
-        for(i=0; i<18;i++)
-        {
-          glNormal(v[i]); glPoint(p[i]);
-        }
-      glEnd();
-    glEndList();
+//    glNewList(_display_list+3, GL_COMPILE);
+//      glBegin(GL_TRIANGLE_STRIP);		//	For søker del 3
+//        for(i=0; i<18;i++)
+//        {
+//          glNormal(v[i]); glPoint(p[i]);
+//        }
+//      glEnd();
+//    glEndList();
 
-    // The lence
-    GLMatrix mat2(Angle(M_PI_4),UnitVector3D<float>(0,0,1));
-    Point3D<float> cp(0,0,-0.3);
-    p[0] = cp + Vector3D<float>(0.0,0.05,0.0);
-    p[1] = cp + Vector3D<float>(0.0,0.08,-0.2);
-    v[0] = Vector3D<float>(0.0,1.0,0.15);
+//    // The lence
+//    GLMatrix mat2(Angle(M_PI_4),UnitVector3D<float>(0,0,1));
+//    Point3D<float> cp(0,0,-0.3);
+//    p[0] = cp + Vector3D<float>(0.0,0.05,0.0);
+//    p[1] = cp + Vector3D<float>(0.0,0.08,-0.2);
+//    v[0] = Vector3D<float>(0.0,1.0,0.15);
 
-    for(i=2; i<18;i+=2)
-    {
-      p[i]   = mat2*p[i-2];
-      p[i+1] = mat2*p[i-1];
-      v[i]   = mat2*v[i-2];
-    }
+//    for(i=2; i<18;i+=2)
+//    {
+//      p[i]   = mat2*p[i-2];
+//      p[i+1] = mat2*p[i-1];
+//      v[i]   = mat2*v[i-2];
+//    }
 
-    glNewList(_display_list+4, GL_COMPILE);
-      glBegin(GL_TRIANGLE_STRIP);		//	For Linse
-        for(i=0; i<18;i+=2)
-        {
-          glNormal(v[i]); glPoint(p[i]); glPoint(p[i+1]);
-        }
-      glEnd();
-    glEndList();
+//    glNewList(_display_list+4, GL_COMPILE);
+//      glBegin(GL_TRIANGLE_STRIP);		//	For Linse
+//        for(i=0; i<18;i+=2)
+//        {
+//          glNormal(v[i]); glPoint(p[i]); glPoint(p[i+1]);
+//        }
+//      glEnd();
+//    glEndList();
 
   }
 
