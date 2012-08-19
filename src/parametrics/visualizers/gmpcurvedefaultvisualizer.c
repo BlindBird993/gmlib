@@ -31,7 +31,7 @@
 namespace GMlib {
 
   template <typename T>
-  PCurveDefaultVisualizer<T>::PCurveDefaultVisualizer() : _display( "pcurve" ), _vbo() {
+  PCurveDefaultVisualizer<T>::PCurveDefaultVisualizer() : _vbo() {
 
     _no_vertices = 0;
   }
@@ -41,18 +41,16 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PCurveDefaultVisualizer<T>::display( Camera* cam ) {
+  void PCurveDefaultVisualizer<T>::display() {
 
     // GL States
     glLineWidth( this->_curve->getLineWidth() );
 
-    _display.bind();
+    const GLProgram &prog = this->getRenderProgram();
+    prog.setUniform( "u_color", this->_obj->getColor() );
+    prog.setUniform( "u_selected", this->_obj->isSelected() );
 
-    _display.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-    _display.setUniform( "u_color", this->_obj->getColor() );
-    _display.setUniform( "u_selected", this->_obj->isSelected() );
-
-    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
     _vbo.enableVertexPointer( vert_loc );
@@ -60,8 +58,6 @@ namespace GMlib {
 
     _vbo.disableVertexPointer( vert_loc );
     _vbo.release();
-
-    _display.unbind();
   }
 
   template <typename T>

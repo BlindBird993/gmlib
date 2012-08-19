@@ -59,15 +59,18 @@ namespace GMlib {
     Visualizer( const Visualizer& v );
     virtual ~Visualizer();
 
-    virtual void          display( Camera* cam );
+    virtual void          display();
     DISPLAY_MODE          getDisplayMode() const;
     virtual std::string   getIdentity() const;
+    const GLProgram&      getRenderProgram() const;
     const GLProgram&      getSelectProgram() const;
     void                  glSetDisplayMode() const;
 
     virtual void          select();
     virtual void          set( SceneObject* obj );
     void                  setDisplayMode( DISPLAY_MODE display_mode );
+    void                  setRenderProgram( const GLProgram& prog );
+    void                  setSelectProgram( const GLProgram& prog );
 
     virtual void          simulate( double dt );
     void                  toggleDisplayMode();
@@ -79,6 +82,8 @@ namespace GMlib {
     SceneObject           *_obj;
 
     DISPLAY_MODE          _display_mode;
+
+    GLProgram             _render_prog;
 
   private:
     void                  _init();

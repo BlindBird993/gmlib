@@ -41,17 +41,13 @@ namespace GMlib {
   public:
     TriangleFacetsVoronoiVisualizer();
     ~TriangleFacetsVoronoiVisualizer();
-    void          display( Camera * cam );
+    void          display();
     std::string   getIdentity() const;
     virtual void  replot();
 
   protected:
     GLuint        _vbo;
     GLuint        _ibo;
-
-    GLProgram     _dprog;
-    GLProgram     _sprog;
-
 
   }; // END class TriangleFacetsVoronoiVisualizer
 

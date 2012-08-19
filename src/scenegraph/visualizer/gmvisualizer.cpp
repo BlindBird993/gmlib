@@ -37,12 +37,13 @@
 
 namespace GMlib {
 
-  Visualizer::Visualizer() {
+  Visualizer::Visualizer() : _render_prog("default") {
 
     _display_mode = DISPLAY_MODE_SHADED;
   }
 
-  Visualizer::Visualizer( const Visualizer& copy ) {
+  Visualizer::Visualizer( const Visualizer& copy ) :
+    _render_prog( copy._render_prog ) {
 
     _display_mode = copy._display_mode;
   }
@@ -54,7 +55,7 @@ namespace GMlib {
     _obj = 0x0;
   }
 
-  void Visualizer::display( Camera* /*cam*/ ) {}
+  void Visualizer::display() {}
 
   Visualizer::DISPLAY_MODE Visualizer::getDisplayMode() const {
 
@@ -64,6 +65,11 @@ namespace GMlib {
   std::string Visualizer::getIdentity() const {
 
     return "Visualizer Base";
+  }
+
+  const GLProgram &Visualizer::getRenderProgram() const {
+
+    return _render_prog;
   }
 
   const GLProgram& Visualizer::getSelectProgram() const {
@@ -89,6 +95,16 @@ namespace GMlib {
   void Visualizer::setDisplayMode( Visualizer::DISPLAY_MODE display_mode) {
 
     _display_mode = display_mode;
+  }
+
+  void Visualizer::setRenderProgram(const GLProgram &prog) {
+
+    _render_prog = prog;
+  }
+
+  void Visualizer::setSelectProgram(const GLProgram &prog)
+  {
+    _obj->setSelectProgram( prog );
   }
 
   void Visualizer::simulate( double /*dt*/ ) {}

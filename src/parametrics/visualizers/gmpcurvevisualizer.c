@@ -34,6 +34,7 @@ namespace GMlib {
       PCurveVisualizer<T>::PCurveVisualizer() {
 
     _curve = 0x0;
+    setRenderProgram( GLProgram("color") );
   }
 
   template <typename T>

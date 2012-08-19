@@ -46,14 +46,13 @@ namespace GMlib {
     SelectorGridVisualizer();
     ~SelectorGridVisualizer();
 
-    void                          display( Camera* cam );
+    void                          display();
     void                          reset();
     void                          setSelectors( DVector< Vector<T,3> >& c );
     void                          setSelectors( DMatrix< Vector<T,3> >& c );
     void                          update();
 
   protected:
-    GLProgram                     _prog;
     GLuint                        _ibo;
     GLuint                        _vbo;
     int                           _no_indices;

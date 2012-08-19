@@ -31,7 +31,9 @@ namespace GMlib {
 
 
   template <typename T>
-  SelectorGridVisualizer<T>::SelectorGridVisualizer() : _prog( "color" ) {
+  SelectorGridVisualizer<T>::SelectorGridVisualizer() {
+
+    setRenderProgram( GLProgram("color") );
 
     _no_indices = 0;
 
@@ -67,21 +69,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void SelectorGridVisualizer<T>::display( Camera* cam ) {
+  void SelectorGridVisualizer<T>::display() {
 
-    _prog.bind();
-
-    HqMatrix<float,3> mvpmat;
-    mvpmat = cam->getProjectionMatrix();
-    mvpmat = this->_obj->getModelViewProjectionMatrix(cam);
-
-    _prog.setUniform( "u_mvpmat", mvpmat, 1, true );
-
-    _prog.setUniform( "u_color", GMcolor::LightGreen );
-    _prog.setUniform( "u_selected", false );
+    const GLProgram &prog = this->getRenderProgram();
+    prog.setUniform( "u_color", GMcolor::LightGreen );
+    prog.setUniform( "u_selected", false );
 
 
-    GLuint vert_loc = _prog.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
     glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0x0 );
     glEnableVertexAttribArray( vert_loc );
@@ -92,9 +87,6 @@ namespace GMlib {
 
     glDisableVertexAttribArray( vert_loc );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-
-    _prog.unbind();
   }
 
   template <typename T>

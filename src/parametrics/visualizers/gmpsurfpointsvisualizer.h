@@ -49,7 +49,7 @@ namespace GMlib {
     PSurfPointsVisualizer();
     ~PSurfPointsVisualizer();
 
-    void              display( Camera* cam );
+    void              display();
     const Color&      getColor() const;
     std::string       getIdentity() const;
     float             getSize() const;
@@ -62,7 +62,6 @@ namespace GMlib {
     void              setSize( float size );
 
   protected:
-    GLProgram         _display;
 
     float             _size;
     Color             _color;

@@ -30,9 +30,7 @@
 namespace GMlib {
 
   template <typename T>
-  TriangleFacetsVoronoiVisualizer<T>::TriangleFacetsVoronoiVisualizer()
-    : _dprog("default"), _sprog("select")
-  {
+  TriangleFacetsVoronoiVisualizer<T>::TriangleFacetsVoronoiVisualizer() {
 
     glGenBuffers( 1, &_ibo );
     glGenBuffers( 1, &_vbo );
@@ -49,56 +47,49 @@ namespace GMlib {
   inline
   void TriangleFacetsVoronoiVisualizer<T>::display( Camera* cam ) {
 
-        this->glSetDisplayMode();
+    this->glSetDisplayMode();
 
-        Array< Light* > lights = this->_obj->getScene()->getLights();
-    //    std::cout << "No. Lights: " << lights.getSize() << std::endl;
-    //    _display.setUniform( "u_light_pos", lights[0]->get );
+//    Array< Light* > lights = this->_obj->getScene()->getLights();
+//    std::cout << "No. Lights: " << lights.getSize() << std::endl;
 
-        _dprog.bind();
+    const GLProgram &prog = this->getRenderProgram();
 
-        const HqMatrix<float,3> &mvmat = this->_obj->getModelViewMatrix(cam);
-        _dprog.setUniform( "u_mvmat", mvmat, 1, true );
-        _dprog.setUniform( "u_mvpmat", cam->getProjectionMatrix() * mvmat, 1, true );
+    prog.setUniform( "u_color", this->_obj->getColor() );
+    prog.setUniform( "u_selected", this->_obj->isSelected() );
+    prog.setUniform( "u_lighted", this->_obj->isLighted() );
+    prog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
+    prog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
+    prog.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
 
-        _dprog.setUniform( "u_color", this->_obj->getColor() );
-        _dprog.setUniform( "u_selected", this->_obj->isSelected() );
-        _dprog.setUniform( "u_lighted", this->_obj->isLighted() );
-        _dprog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
-        _dprog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
-        _dprog.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
+    // Get Material Data
+    const Material &m = this->_obj->getMaterial();
+    prog.setUniform( "u_amb", m.getAmb() );
+    prog.setUniform( "u_dif", m.getDif() );
+    prog.setUniform( "u_spc", m.getSpc() );
+    prog.setUniform( "u_shin", m.getShininess() );
 
-        // Get Material Data
-        const Material &m = this->_obj->getMaterial();
-        _dprog.setUniform( "u_amb", m.getAmb() );
-        _dprog.setUniform( "u_dif", m.getDif() );
-        _dprog.setUniform( "u_spc", m.getSpc() );
-        _dprog.setUniform( "u_shin", m.getShininess() );
-
-        GLuint vert_loc = _dprog.getAttributeLocation( "in_vertex" );
-        GLuint normal_loc = _dprog.getAttributeLocation( "in_normal" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
 
 
-        const GLsizei v_size = sizeof(GLVertex);
-        glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-        glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
-        glEnableVertexAttribArray( vert_loc );
+    const GLsizei v_size = sizeof(GLVertex);
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
+    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)getGLVertexPointOffset() );
+    glEnableVertexAttribArray( vert_loc );
 
-        glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)getGLVertexNormalOffset() );
-        glEnableVertexAttribArray( normal_loc );
+    glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)getGLVertexNormalOffset() );
+    glEnableVertexAttribArray( normal_loc );
 
-        glDrawArrays( GL_LINES, 0, this->_tf->getVoronoiEdges().getSize() * 2 );
+    glDrawArrays( GL_LINES, 0, this->_tf->getVoronoiEdges().getSize() * 2 );
 
 //        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
 //        glDrawElements( GL_TRIANGLES, this->_tf->getNoTriangles() * 3, GL_UNSIGNED_SHORT, (const GLvoid*)0x0 );
 //        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
 
-        glDisableVertexAttribArray( normal_loc );
-        glDisableVertexAttribArray( vert_loc );
+    glDisableVertexAttribArray( normal_loc );
+    glDisableVertexAttribArray( vert_loc );
 
-        glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-        _dprog.unbind();
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
   template <typename T>

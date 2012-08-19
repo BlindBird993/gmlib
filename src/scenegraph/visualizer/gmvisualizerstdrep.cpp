@@ -34,30 +34,30 @@
 
 namespace GMlib {
 
-  VisualizerStdRep::VisualizerStdRep()
-    : _display( "color" ),
+  VisualizerStdRep::VisualizerStdRep() :
     _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
-    _bo_cube_frame_indices( "std_rep_frame_indices" )
-  {}
+    _bo_cube_frame_indices( "std_rep_frame_indices" ) {
+
+    setRenderProgram( GLProgram( "color" ) );
+  }
 
   VisualizerStdRep::~VisualizerStdRep() {}
 
-  void VisualizerStdRep::display(Camera *cam) {
+  void VisualizerStdRep::display() {
 
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
-    _display.bind();
 
-    _display.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-//    _display.setUniform( "u_selected", this->_obj->isSelected() );
+    const GLProgram &prog = this->getRenderProgram();
+//    prog.setUniform( "u_selected", this->_obj->isSelected() );
 
 
-    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     Color blend_color = GMcolor::LightGrey;
     blend_color.setAlpha( 0.5 );
 
-    _display.setUniform( "u_selected", this->_obj->isSelected() );
+    prog.setUniform( "u_selected", this->_obj->isSelected() );
 
     _bo_cube.bind();
     _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
@@ -67,17 +67,17 @@ namespace GMlib {
       const GLsizei frame_stride = 2 * sizeof(GLushort);
 
       glLineWidth( 2.0f );
-      _display.setUniform( "u_color", GMcolor::Red );
+      prog.setUniform( "u_color", GMcolor::Red );
       glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(0x0) );
 
-      _display.setUniform( "u_color", GMcolor::Green );
+      prog.setUniform( "u_color", GMcolor::Green );
       glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(frame_stride) );
 
-      _display.setUniform( "u_color", GMcolor::Blue );
+      prog.setUniform( "u_color", GMcolor::Blue );
       glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(2*frame_stride) );
 
       glLineWidth( 1.0f );
-      _display.setUniform( "u_color", GMcolor::Grey );
+      prog.setUniform( "u_color", GMcolor::Grey );
       glDrawElements( GL_LINES, 18, GL_UNSIGNED_SHORT, (const GLvoid*)(3*frame_stride) );
 
     } _bo_cube_frame_indices.release();
@@ -85,7 +85,7 @@ namespace GMlib {
     glEnable( GL_BLEND ); {
 
       glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-      _display.setUniform( "u_color", blend_color );
+      prog.setUniform( "u_color", blend_color );
       _bo_cube_indices.bind();
         glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
       _bo_cube_indices.release();
@@ -94,8 +94,6 @@ namespace GMlib {
 
     _bo_cube.disableVertexArrayPointer( vert_loc );
     _bo_cube.release();
-
-    _display.unbind();
   }
 
   std::string VisualizerStdRep::getIdentity() const {

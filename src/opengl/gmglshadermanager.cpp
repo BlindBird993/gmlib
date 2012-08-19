@@ -76,12 +76,6 @@ bool GLShaderManager::_initPrograms() {
   if( !linkProgram( "select" ) )
     return false;
 
-  createProgram( "pcurve" );
-  addShaderToProgram( "pcurve", "pcurve_vs" );
-  addShaderToProgram( "pcurve", "pcurve_fs" );
-  if( !linkProgram( "pcurve" ) )
-    return false;
-
   createProgram( "pcurve_contours" );
   addShaderToProgram( "pcurve_contours", "pcurve_contours_vs" );
   addShaderToProgram( "pcurve_contours", "pcurve_contours_fs" );
@@ -294,56 +288,6 @@ bool GLShaderManager::_initShaders() {
   if( !compileShader( "color_fs" ) )
     return false;
 
-
-
-  /////////////////////////
-  // Default PCurve Shaders
-
-  // Vertex shader
-  createShader( "pcurve_vs",  GL_VERTEX_SHADER );
-  setShaderSource(
-      "pcurve_vs",
-
-      "#version 150 core\n"
-      "\n"
-      "uniform mat4 u_mvpmat;\n"
-      "\n"
-      "in vec4 in_vertex;\n"
-      "\n"
-      "out vec4 gl_Position;\n"
-      "\n"
-      "void main() {\n"
-      "\n"
-      "  gl_Position = u_mvpmat * in_vertex;\n"
-      "}\n"
-      );
-
-  if( !compileShader( "pcurve_vs" ) )
-    return false;
-
-
-  // Fragment shader
-  createShader( "pcurve_fs", GL_FRAGMENT_SHADER );
-  setShaderSource(
-      "pcurve_fs",
-
-      "#version 150 core\n"
-      "\n"
-      "uniform vec4 u_color;\n"
-      "uniform bool u_selected;\n"
-      "\n"
-      "out vec4 gl_FragData[2];\n"
-      "\n"
-      "void main() {\n"
-      "\n"
-      "  gl_FragData[0] = u_color;\n"
-      "  gl_FragData[1] = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-      "  if( u_selected )\n"
-      "    gl_FragData[1] = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
-      "}\n"
-      );
-  if( !compileShader( "pcurve_fs" ) )
-    return false;
 
 
 

@@ -41,7 +41,7 @@ namespace GMlib {
   public:
     PTriangleDefaultVisualizer();
     ~PTriangleDefaultVisualizer();
-    void            display( Camera* cam );
+    void            display();
     std::string     getIdentity() const;
     virtual void    replot(
       const DVector< DMatrix< Vector<T,3> > >& p,int m
@@ -49,8 +49,6 @@ namespace GMlib {
     void            select();
 
   protected:
-    GLProgram       _dprog;
-
     GLuint          _vbo;
     GLuint          _ibo;
 

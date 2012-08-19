@@ -99,7 +99,8 @@ namespace GMlib {
    *
    *  Copy constructor
    */
-  SceneObject::SceneObject( const SceneObject& copy ) : _select_prog("select") {
+  SceneObject::SceneObject( const SceneObject& copy ) :
+    _select_prog( copy._select_prog ) {
 
     _parent           = 0;
     _matrix	          = copy._matrix;
@@ -335,6 +336,11 @@ namespace GMlib {
     return mv_mat;
   }
 
+  const HqMatrix<float,3>& SceneObject::getProjectionMatrix( const Camera* cam ) const {
+
+    return cam->getProjectionMatrix();
+  }
+
   /*! Sphere<float,3>	SceneObject::getSurroundingSphereClean() const
    *  \brief Pending Documentation
    *
@@ -398,11 +404,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localDisplay( Camera* cam ) {
-
-    for( int i = 0; i < _visualizers.getSize(); ++i )
-      _visualizers[i]->display( cam );
-  }
+  void SceneObject::localDisplay( Camera* cam ) {  }
 
   /*! void localSelect()
    *  \brief Pending Documentation
@@ -564,6 +566,11 @@ namespace GMlib {
   void SceneObject::setMatrix( const HqMatrix<float,3>& mat ) {
 
     _matrix = mat;
+  }
+
+  void SceneObject::setSelectProgram(const GLProgram &prog) {
+
+    _select_prog = prog;
   }
 
   void SceneObject::setStandardRepVisualizer( Visualizer* visu ) {

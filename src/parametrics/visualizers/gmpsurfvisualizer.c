@@ -51,6 +51,7 @@ namespace GMlib {
   PSurfVisualizer<T>::PSurfVisualizer() {
 
     _surf = 0x0;
+    setRenderProgram( GLProgram("default") );
   }
 
   template <typename T>

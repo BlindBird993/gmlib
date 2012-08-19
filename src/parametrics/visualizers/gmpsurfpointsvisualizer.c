@@ -31,7 +31,9 @@
 namespace GMlib {
 
   template <typename T>
-  PSurfPointsVisualizer<T>::PSurfPointsVisualizer() : _display( "color" ) {
+  PSurfPointsVisualizer<T>::PSurfPointsVisualizer() {
+
+    this->setRenderProgram( GLProgram("color") );
 
     _size = 1.0;
     _color = GMcolor::BlueViolet;
@@ -48,15 +50,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfPointsVisualizer<T>::display( Camera* cam ) {
-
-    _display.bind();
-
-    _display.setUniform( "u_mvpmat", cam->getProjectionMatrix() * this->_obj->getModelViewMatrix(cam), 1, true );
-    _display.setUniform( "u_color", _color );
+  void PSurfPointsVisualizer<T>::display() {
 
 
-    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+    const GLProgram &prog = this->getRenderProgram();
+    prog.setUniform( "u_color", _color );
+
+
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
     glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
@@ -69,7 +70,6 @@ namespace GMlib {
 
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    _display.unbind();
   }
 
   template <typename T>

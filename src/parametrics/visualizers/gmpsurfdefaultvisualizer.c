@@ -49,7 +49,7 @@
 namespace GMlib {
 
   template <typename T>
-  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _display( "default" ), _vbo(), _ibo() {
+  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _vbo(), _ibo() {
 
     glGenTextures( 1, &_tex );
   }
@@ -62,7 +62,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfDefaultVisualizer<T>::display( Camera* cam ) {
+  void PSurfDefaultVisualizer<T>::display() {
 
     this->glSetDisplayMode();
 
@@ -70,44 +70,36 @@ namespace GMlib {
 //    std::cout << "No. Lights: " << lights.getSize() << std::endl;
 //    _display.setUniform( "u_light_pos", lights[0]->get );
 
-    _display.bind();
 
-    const HqMatrix<float,3> &mvmat = this->_obj->getModelViewMatrix(cam);
-    _display.setUniform( "u_mvmat", mvmat, 1, true );
-    _display.setUniform( "u_mvpmat", cam->getProjectionMatrix() * mvmat, 1, true );
+    const GLProgram &prog = this->getRenderProgram();
 
-    _display.setUniform( "u_color", this->_obj->getColor() );
-    _display.setUniform( "u_selected", this->_obj->isSelected() );
-    _display.setUniform( "u_lighted", this->_obj->isLighted() );
-    _display.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
-    _display.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
-    _display.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
+    prog.setUniform( "u_color", this->_obj->getColor() );
+    prog.setUniform( "u_selected", this->_obj->isSelected() );
+    prog.setUniform( "u_lighted", this->_obj->isLighted() );
+    prog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
+    prog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
+    prog.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
 
     // Get Material Data
     const Material &m = this->_obj->getMaterial();
-    _display.setUniform( "u_amb", m.getAmb() );
-    _display.setUniform( "u_dif", m.getDif() );
-    _display.setUniform( "u_spc", m.getSpc() );
-    _display.setUniform( "u_shin", m.getShininess() );
+    prog.setUniform( "u_amb", m.getAmb() );
+    prog.setUniform( "u_dif", m.getDif() );
+    prog.setUniform( "u_spc", m.getSpc() );
+    prog.setUniform( "u_shin", m.getShininess() );
 
-    _display.setUniform( "u_tex", (GLuint)m.getTextureID(), (GLenum)GL_TEXTURE0, 0 );
+    prog.setUniform( "u_tex", (GLuint)m.getTextureID(), (GLenum)GL_TEXTURE0, 0 );
 
-    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
-    GLuint normal_loc = _display.getAttributeLocation( "in_normal" );
-    GLuint tex_loc = _display.getAttributeLocation( "in_tex" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
+    GLuint tex_loc = prog.getAttributeLocation( "in_tex" );
 
 
     _vbo.bind();
     _vbo.enable( vert_loc, normal_loc, tex_loc );
-
     _ibo.draw();
-
     _vbo.disable( vert_loc, normal_loc, tex_loc );
+    _vbo.release();
 
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-
-    _display.unbind();
   }
 
   template <typename T>

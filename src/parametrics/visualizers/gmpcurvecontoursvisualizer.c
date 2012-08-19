@@ -31,7 +31,9 @@
 namespace GMlib {
 
   template <typename T>
-  PCurveContoursVisualizer<T>::PCurveContoursVisualizer() : _display( "pcurve_contours" ) {
+  PCurveContoursVisualizer<T>::PCurveContoursVisualizer() {
+
+    this->setRenderProgram( GLProgram("pcurve_contours" ) );
 
     // Set default mapping
     _mapping = GM_PCURVE_CONTOURSVISUALIZER_X;
@@ -51,15 +53,13 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PCurveContoursVisualizer<T>::display( Camera* cam ) {
+  void PCurveContoursVisualizer<T>::display() {
 
-    _display.bind();
+    const GLProgram &prog = this->getRenderProgram();
+    prog.setUniform( "u_selected", this->_obj->isSelected() );
 
-    _display.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-    _display.setUniform( "u_selected", this->_obj->isSelected() );
-
-    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
-    GLuint color_loc = _display.getAttributeLocation( "in_color" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GLuint color_loc = prog.getAttributeLocation( "in_color" );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
     glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
@@ -75,7 +75,6 @@ namespace GMlib {
     glDisableVertexAttribArray( vert_loc );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    _display.unbind();
   }
 
   template <typename T>

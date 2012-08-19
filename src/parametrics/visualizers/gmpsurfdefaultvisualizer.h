@@ -40,7 +40,7 @@ namespace GMlib {
   public:
     PSurfDefaultVisualizer();
     ~PSurfDefaultVisualizer();
-    void          display( Camera * cam );
+    void          display();
     std::string   getIdentity() const;
     virtual void  replot(
       DMatrix< DMatrix< Vector<T, 3> > >& p,
@@ -53,8 +53,6 @@ namespace GMlib {
     GLVertex2DBufferObject    _vbo;
     TriangleStripIBO          _ibo;
     GLuint                    _tex;
-
-    GLProgram                 _display;
 
   }; // END class PSurfDefaultVisualizer
 

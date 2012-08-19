@@ -33,8 +33,7 @@ namespace GMlib {
 
 
   template <typename T>
-  PTriangleDefaultVisualizer<T>::PTriangleDefaultVisualizer()
-    : _dprog("default")  {
+  PTriangleDefaultVisualizer<T>::PTriangleDefaultVisualizer() {
 
     _no_triangles= 0;
 
@@ -51,7 +50,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PTriangleDefaultVisualizer<T>::display( Camera* cam ) {
+  void PTriangleDefaultVisualizer<T>::display() {
 
     this->glSetDisplayMode();
 
@@ -59,31 +58,28 @@ namespace GMlib {
 //    std::cout << "No. Lights: " << lights.getSize() << std::endl;
 //    _dprog.setUniform( "u_light_pos", lights[0]->get );
 
-    _dprog.bind();
 
-    const HqMatrix<float,3> &mvmat = this->_obj->getModelViewMatrix(cam);
-    _dprog.setUniform( "u_mvmat", mvmat, 1, true );
-    _dprog.setUniform( "u_mvpmat", cam->getProjectionMatrix() * mvmat, 1, true );
+    const GLProgram &prog = this->getRenderProgram();
 
-    _dprog.setUniform( "u_color", this->_obj->getColor() );
-    _dprog.setUniform( "u_selected", this->_obj->isSelected() );
-    _dprog.setUniform( "u_lighted", this->_obj->isLighted() );
-    _dprog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
-    _dprog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
-    _dprog.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
+    prog.setUniform( "u_color", this->_obj->getColor() );
+    prog.setUniform( "u_selected", this->_obj->isSelected() );
+    prog.setUniform( "u_lighted", this->_obj->isLighted() );
+    prog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
+    prog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
+    prog.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
 
     // Get Material Data
     const Material &m = this->_obj->getMaterial();
-    _dprog.setUniform( "u_amb", m.getAmb() );
-    _dprog.setUniform( "u_dif", m.getDif() );
-    _dprog.setUniform( "u_spc", m.getSpc() );
-    _dprog.setUniform( "u_shin", m.getShininess() );
+    prog.setUniform( "u_amb", m.getAmb() );
+    prog.setUniform( "u_dif", m.getDif() );
+    prog.setUniform( "u_spc", m.getSpc() );
+    prog.setUniform( "u_shin", m.getShininess() );
 
-    _dprog.setUniform( "u_tex", (GLuint)m.getTextureID(), (GLenum)GL_TEXTURE0, 0 );
+    prog.setUniform( "u_tex", (GLuint)m.getTextureID(), (GLenum)GL_TEXTURE0, 0 );
 
-    GLuint vert_loc = _dprog.getAttributeLocation( "in_vertex" );
-    GLuint normal_loc = _dprog.getAttributeLocation( "in_normal" );
-    GLuint tex_loc = _dprog.getAttributeLocation( "in_tex" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
+    GLuint tex_loc = prog.getAttributeLocation( "in_tex" );
 
 
     const GLsizei v_size = sizeof(GLVertex2D);
@@ -109,7 +105,6 @@ namespace GMlib {
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
 
-    _dprog.unbind();
   }
 
   template <typename T>

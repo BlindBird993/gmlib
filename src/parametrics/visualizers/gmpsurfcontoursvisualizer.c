@@ -32,7 +32,9 @@ namespace GMlib {
 
 
   template <typename T>
-  PSurfContoursVisualizer<T>::PSurfContoursVisualizer() : _display( "psurf_contours" ) {
+  PSurfContoursVisualizer<T>::PSurfContoursVisualizer() {
+
+    this->setRenderProgram("psurf_contours" );
 
     _mapping = GM_PSURF_CONTOURSVISUALIZER_X;
 
@@ -56,15 +58,13 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfContoursVisualizer<T>::display( Camera * cam ) {
+  void PSurfContoursVisualizer<T>::display() {
 
-    _display.bind();
+    const GLProgram &prog = this->getRenderProgram();
+    prog.setUniform( "u_selected", false );
 
-    _display.setUniform( "u_mvpmat", this->_obj->getModelViewProjectionMatrix(cam), 1, true );
-    _display.setUniform( "u_selected", false );
-
-    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
-    GLuint color_loc = _display.getAttributeLocation( "in_color" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GLuint color_loc = prog.getAttributeLocation( "in_color" );
 
     GLsizei stride = sizeof( Vertex );
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
@@ -85,7 +85,6 @@ namespace GMlib {
 
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    _display.unbind();
   }
 
   template <typename T>

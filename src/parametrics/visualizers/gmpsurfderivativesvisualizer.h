@@ -60,7 +60,7 @@ namespace GMlib {
     PSurfDerivativesVisualizer();
     ~PSurfDerivativesVisualizer();
 
-    void            display( Camera* cam );
+    void            display();
     const Color&    getColor() const;
     int             getDerivativeU() const;
     int             getDerivativeV() const;
@@ -80,8 +80,6 @@ namespace GMlib {
     void            setSize( double size = 1.0 );
 
   protected:
-    GLProgram       _display;
-
     Color           _color;
 
     GLuint          _vbo_v;

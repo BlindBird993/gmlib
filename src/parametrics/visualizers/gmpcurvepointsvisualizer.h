@@ -48,7 +48,7 @@ namespace GMlib {
     PCurvePointsVisualizer();
     ~PCurvePointsVisualizer();
 
-    void              display( Camera* cam );
+    void              display();
     const Color&      getColor() const;
     std::string       getIdentity() const;
     float             getSize() const;

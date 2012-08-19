@@ -77,7 +77,7 @@ namespace GMlib {
     PSurfContoursVisualizer();
     ~PSurfContoursVisualizer();
 
-    void                              display( Camera * cam );
+    void                              display();
     const Array<Color>&               getColors() const;
     std::string                       getIdentity() const;
     GM_PSURF_CONTOURSVISUALIZER_INTERPOLATION_METHOD   getInterpolationMethod() const;
@@ -92,7 +92,6 @@ namespace GMlib {
     void                              setMapping( GM_PSURF_CONTOURSVISUALIZER_MAP mapping );
 
   protected:
-    GLProgram                         _display;
     Array<Color>                      _colors;
     GM_PSURF_CONTOURSVISUALIZER_MAP   _mapping;
     GM_PSURF_CONTOURSVISUALIZER_INTERPOLATION_METHOD   _method;

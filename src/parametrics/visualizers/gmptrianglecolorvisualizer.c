@@ -51,41 +51,41 @@ namespace GMlib {
   inline
   void PTriangleColorVisualizer<T>::display() {
 
-    // Push GL Attributes
-    glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT | GL_TEXTURE_BIT ); {
+//    // Push GL Attributes
+//    glPushAttrib( GL_LIGHTING_BIT | GL_LINE_BIT | GL_TEXTURE_BIT ); {
 
-      // Disable lighting
-      glDisable( GL_LIGHTING );
+//      // Disable lighting
+//      glDisable( GL_LIGHTING );
 
-      // Blending
-      if( !this->_triangle->isOpaque() )
-        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//      // Blending
+//      if( !this->_triangle->isOpaque() )
+//        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-      // Bind buffers
-      glBindBuffer( GL_ARRAY_BUFFER, this->_vbo );
-      glVertexPointer( 3, GL_FLOAT, PTRIANGLEVERTEX_SIZE, (const GLvoid*)0x0 );
+//      // Bind buffers
+//      glBindBuffer( GL_ARRAY_BUFFER, this->_vbo );
+//      glVertexPointer( 3, GL_FLOAT, PTRIANGLEVERTEX_SIZE, (const GLvoid*)0x0 );
 
-      glBindBuffer( GL_ARRAY_BUFFER, _vbo_color );
-      glColorPointer( 4, GL_FLOAT, PTRIANGLEVERTEXATTRIB_SIZE, (const GLvoid*)0x0 );
+//      glBindBuffer( GL_ARRAY_BUFFER, _vbo_color );
+//      glColorPointer( 4, GL_FLOAT, PTRIANGLEVERTEXATTRIB_SIZE, (const GLvoid*)0x0 );
 
-      // Enable client states
-      glEnableClientState( GL_VERTEX_ARRAY );
-      glEnableClientState( GL_COLOR_ARRAY );
+//      // Enable client states
+//      glEnableClientState( GL_VERTEX_ARRAY );
+//      glEnableClientState( GL_COLOR_ARRAY );
 
-      // Draw
-      for( int i = 0; i < this->_m; i++ )
-        glDrawArrays( GL_TRIANGLE_STRIP, i*(i+2), 2*i+3 );
+//      // Draw
+//      for( int i = 0; i < this->_m; i++ )
+//        glDrawArrays( GL_TRIANGLE_STRIP, i*(i+2), 2*i+3 );
 
 
-      // Disable client states
-      glDisableClientState( GL_VERTEX_ARRAY );
-      glDisableClientState( GL_COLOR_ARRAY );
+//      // Disable client states
+//      glDisableClientState( GL_VERTEX_ARRAY );
+//      glDisableClientState( GL_COLOR_ARRAY );
 
-      // Unbind buffers
-      glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+//      // Unbind buffers
+//      glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    // Pop GL Attributes
-    } glPopAttrib();
+//    // Pop GL Attributes
+//    } glPopAttrib();
   }
 
   template <typename T>

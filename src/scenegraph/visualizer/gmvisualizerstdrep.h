@@ -49,12 +49,11 @@ namespace GMlib {
     VisualizerStdRep();
     ~VisualizerStdRep();
 
-    void              display( Camera* cam );
+    void              display();
     std::string       getIdentity() const;
     void              select();
 
   protected:
-    GLProgram         _display;
 
     // Cube buffer objects
     GLBufferObject    _bo_cube;

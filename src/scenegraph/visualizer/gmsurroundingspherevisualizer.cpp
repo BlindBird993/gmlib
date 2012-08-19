@@ -37,7 +37,7 @@
 
 namespace GMlib {
 
-  SurroundingSphereVisualizer::SurroundingSphereVisualizer() : _display("default") {
+  SurroundingSphereVisualizer::SurroundingSphereVisualizer() {
 
     _wireframe = true;
     _spheres = CLEAN_SPHERE;
@@ -53,9 +53,31 @@ namespace GMlib {
     delete _sphere;
   }
 
-  void SurroundingSphereVisualizer::_displaySphere(const Sphere<float, 3> &ss, Camera* cam ) {
+  void SurroundingSphereVisualizer::display(){
 
-    const HqMatrix<float,3> mvmat = this->_obj->getModelViewMatrix(cam);
+    int poly_mode;
+    glGetIntegerv( GL_POLYGON_MODE, &poly_mode );
+    if( _wireframe )
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    // Display Clean Surrounding Sphere
+    if( (_spheres & CLEAN_SPHERE) == CLEAN_SPHERE ) {
+
+      displaySphere( _obj->getSurroundingSphere() );
+    }
+
+    // Display Surrounding Sphere
+    if( (_spheres & TOTAL_SPHERE) == TOTAL_SPHERE ) {
+
+      displaySphere( _obj->getSurroundingSphere() );
+    }
+
+    glPolygonMode(GL_FRONT_AND_BACK, poly_mode);
+  }
+
+  void SurroundingSphereVisualizer::displaySphere(const Sphere<float, 3> &ss ) {
 
     float r = ss.getRadius();
     Point<float,3> pos = ss.getPos();
@@ -69,39 +91,6 @@ namespace GMlib {
     ss_scale_mat[2][3] = pos[2];
 
 //   _sphere->display( cam->getProjectionMatrix() * mvmat * ss_scale_mat );
-  }
-
-  void SurroundingSphereVisualizer::display(Camera* cam){
-
-//    _display.bind();
-
-//    _display.setUniform( "u_selected", false );
-//    _display.setUniform( "u_lighted", false );
-
-    int poly_mode;
-    glGetIntegerv( GL_POLYGON_MODE, &poly_mode );
-    if( _wireframe )
-      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    else
-      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-    // Display Clean Surrounding Sphere
-    if( (_spheres & CLEAN_SPHERE) == CLEAN_SPHERE ) {
-
-//      _display.setUniform( "u_color", _cs_color );
-      _displaySphere( _obj->getSurroundingSphere(), cam );
-    }
-
-    // Display Surrounding Sphere
-    if( (_spheres & TOTAL_SPHERE) == TOTAL_SPHERE ) {
-
-//      _display.setUniform( "u_color", _ts_color );
-      _displaySphere( _obj->getSurroundingSphere(), cam );
-    }
-
-    glPolygonMode(GL_FRONT_AND_BACK, poly_mode);
-
-//    _display.unbind();
   }
 
   void SurroundingSphereVisualizer::enableCleanSphere( bool enable ) {

@@ -41,18 +41,14 @@ namespace GMlib {
   public:
     TriangleFacetsDefaultVisualizer();
     ~TriangleFacetsDefaultVisualizer();
-    void          display( Camera * cam );
+    void          display();
     std::string   getIdentity() const;
     virtual void  replot();
-    void          select( Camera * cam, const Color& name );
+    void          select();
 
   protected:
     GLuint        _vbo;
     GLuint        _ibo;
-
-    GLProgram     _dprog;
-    GLProgram     _sprog;
-
 
   }; // END class TriangleFacetsDefaultVisualizer
 

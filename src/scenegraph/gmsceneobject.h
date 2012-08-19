@@ -156,6 +156,7 @@ namespace GMlib{
     const HqMatrix<float,3>&    getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
     unsigned int                getName() const;
     SceneObject*                getParent();
+    const HqMatrix<float,3>&    getProjectionMatrix( const Camera* cam ) const;
     Scene*                      getScene();
     const GLProgram&            getSelectProgram() const;
     bool                        getSelected();
@@ -187,6 +188,7 @@ namespace GMlib{
     void                        setOpaque( bool o );
     void                        setParent(SceneObject* obj);
     void                        setSelected(bool s);
+    void                        setSelectProgram( const GLProgram& prog );
     virtual void                setVisible( bool v, int prop = 0 );
     void                        setStandardRepVisualizer( Visualizer* visu = 0x0 );
     virtual bool                toggleCollapsed();
@@ -324,6 +326,13 @@ namespace GMlib{
 
 
 
+
+
+
+
+
+
+
   /*! void SceneObject::_display()
    *  \brief Pending Documentation
    *
@@ -334,10 +343,32 @@ namespace GMlib{
 
     if(!_active) {
 
-      if(_collapsed)
-        _std_rep_visu->display( cam );
-      else
-        localDisplay( cam);
+      const HqMatrix<float,3> &mvmat = getModelViewMatrix(cam);
+      const HqMatrix<float,3> &pmat = getProjectionMatrix(cam);
+
+      if(_collapsed) {
+
+        const GLProgram &prog = _std_rep_visu->getRenderProgram();
+        prog.bind();
+        prog.setUniform( "u_mvmat", mvmat, 1, true );
+        prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
+        _std_rep_visu->display();
+        prog.unbind();
+      }
+      else {
+
+        for( int i = 0; i < _visualizers.getSize(); ++i ) {
+
+          const GLProgram &prog = _visualizers[i]->getRenderProgram();
+          prog.bind();
+          prog.setUniform( "u_mvmat", mvmat, 1, true );
+          prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
+          _visualizers[i]->display();
+          prog.unbind();
+        }
+
+        localDisplay(cam);
+      }
     }
   }
 
@@ -354,6 +385,7 @@ namespace GMlib{
       const GLProgram &select_prog = getSelectProgram();
       select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
       select_prog.setUniform( "u_color", Color(getName()) );
+
       if( _collapsed )
         _std_rep_visu->select();
       else
@@ -491,7 +523,6 @@ namespace GMlib{
 
     return _parent;
   }
-
 
   inline
   Scene* SceneObject::getScene() {

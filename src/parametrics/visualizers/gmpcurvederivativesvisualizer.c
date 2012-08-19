@@ -31,7 +31,7 @@
 namespace GMlib {
 
   template <typename T>
-  PCurveDerivativesVisualizer<T>::PCurveDerivativesVisualizer() : _display( "pcurve" ) {
+  PCurveDerivativesVisualizer<T>::PCurveDerivativesVisualizer() {
 
     _color = GMcolor::Green;
     _t = 1;
@@ -49,16 +49,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PCurveDerivativesVisualizer<T>::display( Camera* cam ) {
+  void PCurveDerivativesVisualizer<T>::display() {
 
-    _display.bind();
-
-    _display.setUniform( "u_mvpmat", cam->getProjectionMatrix() * this->_obj->getModelViewMatrix(cam), 1, true );
-    _display.setUniform( "u_color", _color );
-    _display.setUniform( "u_selected", this->_obj->isSelected() );
+    const GLProgram &prog = this->getRenderProgram();
+    prog.setUniform( "u_color", _color );
+    prog.setUniform( "u_selected", this->_obj->isSelected() );
 
 
-    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
     glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
@@ -70,8 +68,6 @@ namespace GMlib {
     glDisableVertexAttribArray( vert_loc );
 
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    _display.unbind();
   }
 
   template <typename T>

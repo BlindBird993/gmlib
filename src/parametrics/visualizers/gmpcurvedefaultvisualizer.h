@@ -42,7 +42,7 @@ namespace GMlib {
     PCurveDefaultVisualizer();
     ~PCurveDefaultVisualizer();
 
-    void          display( Camera* cam );
+    void          display();
     std::string   getIdentity() const;
     virtual void  replot(
       DVector< DVector< Vector<T, 3> > >& p,
@@ -53,8 +53,6 @@ namespace GMlib {
   protected:
     GLVertex1DBufferObject      _vbo;
     int           _no_vertices;
-
-    GLProgram     _display;
 
   }; // END class PCurveDefaultVisualizer
 

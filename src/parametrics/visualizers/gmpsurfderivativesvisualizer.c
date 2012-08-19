@@ -31,7 +31,9 @@
 namespace GMlib {
 
   template <typename T>
-  PSurfDerivativesVisualizer<T>::PSurfDerivativesVisualizer() : _display( "color" ) {
+  PSurfDerivativesVisualizer<T>::PSurfDerivativesVisualizer() {
+
+    this->setRenderProgram( GLProgram( "color" ) );
 
     _color = GMcolor::Green;
     _u = 1;
@@ -52,14 +54,12 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfDerivativesVisualizer<T>::display( Camera* cam ) {
+  void PSurfDerivativesVisualizer<T>::display() {
 
-    _display.bind();
+    const GLProgram &prog = this->getRenderProgram();
+    prog.setUniform( "u_color", _color );
 
-    _display.setUniform( "u_mvpmat", cam->getProjectionMatrix() * this->_obj->getModelViewMatrix(cam), 1, true );
-    _display.setUniform( "u_color", _color );
-
-    GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
     glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
@@ -72,7 +72,6 @@ namespace GMlib {
 
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-    _display.unbind();
   }
 
   template <typename T>
