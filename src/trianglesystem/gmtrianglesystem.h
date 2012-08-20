@@ -129,14 +129,11 @@ namespace GMlib {
     const Array<TSVEdge<T> >&         getVoronoiEdges() const;
     const Array<Point<T,2> >&         getVoronoiPoints() const;
 
-    int                               initRender(); //const;
-
     void                              insertLine( TSLine<T>& );
     bool                              insertVertex( TSVertex<T>&, bool c = false );
     bool                              removeVertex( TSVertex<T>& v );
     bool                              removeVertexNew( TSVertex<T>& v);
 
-    void                              render(); // const;
     void                              renderVoronoi();
     void                              replot();
 

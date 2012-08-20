@@ -579,34 +579,6 @@ namespace GMlib {
   }
 
 
-  // #ifdef __gmOPENGL_H__
-
-  template <typename T>
-  inline
-  int TriangleFacets<T>::initRender() {
-
-    if( _dlist_name )
-      glDeleteLists( _dlist_name, 1 );
-
-    _dlist_name = glGenLists(1);
-    glNewList( _dlist_name, GL_COMPILE );
-      glBegin( GL_TRIANGLES );
-        for( int i = 0; i < _triangles.size(); i++ )
-          _triangles(i)->_render();
-      glEnd();
-    glEndList();
-
-    Sphere<float,3> s( getVertex(0)->getPos() );
-    for( int j = 1; j < this->getSize(); j++ )
-      s+= getVertex(j)->getPos();
-    setSurroundingSphere(s);
-
-    return _dlist_name;
-  }
-
-  // #endif
-
-
   template <typename T>
   void TriangleFacets<T>::insertLine( TSLine<T>& pwl ) {
 
@@ -764,16 +736,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleFacets<T>::render() {
-
-    if( !_dlist_name )
-      initRender();
-
-    glCallList( _dlist_name );
-  }
-
-  template <typename T>
-  inline
   void TriangleFacets<T>::renderVoronoi() {
 
   // /*
@@ -839,48 +801,6 @@ namespace GMlib {
 
   template <typename T>
   void TriangleFacets<T>::replot() {
-
-//    // Fill the VBO
-//    int no_vertices = this->getSize();
-//    GLVertex vertices[no_vertices];
-
-//    for( int i = 0; i < no_vertices; i++ ) {
-
-//      TSVertex<T> *v = getVertex(i);
-//      const Point<T,3> &pos = v->getPos();
-//      const Vector<T,3> &nor = v->getDir();
-
-//      vertices[i].x = pos(0);
-//      vertices[i].y = pos(1);
-//      vertices[i].z = pos(2);
-
-//      vertices[i].nx = nor(0);
-//      vertices[i].ny = nor(1);
-//      vertices[i].nz = nor(2);
-//    }
-
-//    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-//    glBufferData( GL_ARRAY_BUFFER, no_vertices * sizeof(GLVertex), vertices, GL_STATIC_DRAW );
-//    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-//    int no_indices = this->getNoTriangles() * 3;
-//    GLushort indices[no_indices];
-//    GLushort *iptr = indices;
-
-//    for( int i = 0; i < this->getNoTriangles(); i++ ) {
-
-//      Array< TSVertex<T>* > tri_verts = this->getTriangle(i)->getVertices();
-//      for( int j = 0; j < tri_verts.getSize(); j++ )
-//        for( int k = 0; k < this->getSize(); k++ )
-//          if( tri_verts[j] == getVertex(k) )
-//            *iptr++ = k;
-//    }
-
-//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-//    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
-//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
-
-
     Sphere<float,3> s( getVertex(0)->getPos() );
     for( int j = 1; j < this->getSize(); j++ )
       s+= getVertex(j)->getPos();
