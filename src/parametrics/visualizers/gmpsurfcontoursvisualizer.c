@@ -34,7 +34,7 @@ namespace GMlib {
   template <typename T>
   PSurfContoursVisualizer<T>::PSurfContoursVisualizer() {
 
-    this->setRenderProgram("psurf_contours" );
+    this->setRenderProgram( GLProgram("psurf_contours") );
 
     _mapping = GM_PSURF_CONTOURSVISUALIZER_X;
 

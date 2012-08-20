@@ -33,7 +33,7 @@ namespace GMlib {
   template <typename T>
   PSurfNormalsVisualizer<T>::PSurfNormalsVisualizer() {
 
-    this->setRenderProgram( "color" );
+    this->setRenderProgram( GLProgram("color") );
 
     _color = GMcolor::Black;
     _size = 1.0;
