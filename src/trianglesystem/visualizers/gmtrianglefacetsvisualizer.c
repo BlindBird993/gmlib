@@ -39,6 +39,34 @@ namespace GMlib {
   TriangleFacetsVisualizer<T>::~TriangleFacetsVisualizer() {}
 
   template <typename T>
+  void GMlib::TriangleFacetsVisualizer<T>::fillStandardVBO(
+      GLVertexBufferObject<GMlib::GLVertexNormal> &vbo,
+      unsigned int &no_vertices, const GMlib::TriangleFacets<T> *tf) {
+
+    no_vertices = tf->getSize();
+    GLVertexNormal vertices[no_vertices];
+
+    for( int i = 0; i < no_vertices; i++ ) {
+
+      TSVertex<float> *v = tf->getVertex(i);
+      const Point<float,3> &pos = v->getPos();
+      const Vector<float,3> &nor = v->getDir();
+
+      vertices[i].x = pos(0);
+      vertices[i].y = pos(1);
+      vertices[i].z = pos(2);
+
+      vertices[i].nx = nor(0);
+      vertices[i].ny = nor(1);
+      vertices[i].nz = nor(2);
+    }
+
+    vbo.bind();
+    vbo.createBufferData( no_vertices * sizeof(GLVertexNormal), vertices, GL_STATIC_DRAW );
+    vbo.unbind();
+  }
+
+  template <typename T>
   std::string TriangleFacetsVisualizer<T>::getIdentity() const {
 
     return "TriangleFacets Visualizer";

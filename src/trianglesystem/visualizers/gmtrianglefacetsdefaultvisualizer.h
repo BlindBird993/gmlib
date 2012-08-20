@@ -47,8 +47,10 @@ namespace GMlib {
     void          select();
 
   protected:
-    GLVertexBufferObject2D    _vbo;
-    TrianglesIBO              _ibo;
+    GLVertexBufferObject<GLVertexNormal>    _vbo;
+    TrianglesIBO                            _ibo;
+
+    unsigned int                            _no_indices;
 
   }; // END class TriangleFacetsDefaultVisualizer
 

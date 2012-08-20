@@ -59,7 +59,9 @@ namespace GMlib {
     );
     void          set( SceneObject* obj );
 
-    static void   populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d = 0 );
+    static void   fillStandardVBO( GLVertexBufferObject<GLVertex>& vbo, unsigned int& no_vertices,
+                                   DVector< DVector< Vector<T, 3> > >& p, int d = 0);
+//    static void   populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d = 0 );
 
   protected:
     PCurve<T>     *_curve;

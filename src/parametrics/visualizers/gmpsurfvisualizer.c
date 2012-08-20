@@ -75,6 +75,44 @@ namespace GMlib {
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::fillStandardVBO(GLVertexBufferObject<GLVertexNormalTex2D>& vbo,
+                                         unsigned int &no_vertices,
+                                         const DMatrix<DMatrix<Vector<T,3> > > &p) {
+
+    no_vertices = p.getDim1() * p.getDim2();
+
+    vbo.bind();
+    vbo.createBufferData( no_vertices * sizeof(GLVertexNormalTex2D), 0x0, GL_STATIC_DRAW );
+    GLVertexNormalTex2D *ptr = vbo.mapBuffer<GLVertexNormalTex2D>();
+//    GLVertexNormalTex2D *ptr = (GLVertexNormalTex2D*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    for( int i = 0; i < p.getDim1(); i++ ) {
+      for( int j = 0; j < p.getDim2(); j++ ) {
+
+        // vertex position
+        ptr->x = p(i)(j)(0)(0)(0);
+        ptr->y = p(i)(j)(0)(0)(1);
+        ptr->z = p(i)(j)(0)(0)(2);
+
+        // normals
+        const Vector<float,3> n = Vector3D<float>( p(i)(j)(1)(0) )^p(i)(j)(0)(1);
+        ptr->nx = n(0);
+        ptr->ny = n(1);
+        ptr->nz = n(2);
+
+        // tex coords
+        ptr->s = i/float(p.getDim1()-1);
+        ptr->t = j/float(p.getDim2()-1);
+
+        ptr++;
+      }
+    }
+    vbo.unmapBuffer();
+
+    vbo.unbind();
+  }
+
   //  template <typename T>
   //  inline
   //  void PSurfVisualizer<T>::fillStandardTBO( GLuint tbo_id, GLuint tex_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1, int d2 ) {

@@ -49,15 +49,15 @@
 namespace GMlib {
 
   template <typename T>
-  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _vbo(), _ibo() {
+  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _vbo(), _ibo(), _no_vertices(0) {
 
-    glGenTextures( 1, &_tex );
+    glGenTextures( 1, &_texture );
   }
 
   template <typename T>
   PSurfDefaultVisualizer<T>::~PSurfDefaultVisualizer() {
 
-    glDeleteBuffers( 1, &_tex );
+    glDeleteBuffers( 1, &_texture );
   }
 
   template <typename T>
@@ -95,10 +95,16 @@ namespace GMlib {
 
 
     _vbo.bind();
-    _vbo.enable( vert_loc, normal_loc, tex_loc );
+    _vbo.enable( vert_loc,    3, GL_FLOAT, GL_FALSE,  (const GLvoid*)0x0 );
+    _vbo.enable( normal_loc,  3, GL_FLOAT, GL_TRUE,   (const GLvoid*)(3*sizeof(GLfloat)) );
+    _vbo.enable( tex_loc,     2, GL_FLOAT, GL_FALSE,  (const GLvoid*)(6*sizeof(GLfloat)) );
+
     _ibo.draw();
-    _vbo.disable( vert_loc, normal_loc, tex_loc );
-    _vbo.release();
+
+    _vbo.disable( vert_loc );
+    _vbo.disable( normal_loc );
+    _vbo.disable( tex_loc );
+    _vbo.unbind();
 
   }
 
@@ -116,7 +122,8 @@ namespace GMlib {
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
   ) {
 
-    _vbo.fill(p);
+    PSurfVisualizer<T>::fillStandardVBO( _vbo, _no_vertices, p );
+//    _vbo.fill(p);
     _ibo.fill( p.getDim1(), p.getDim2() );
   }
 
@@ -127,12 +134,12 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enableVertexPointer( vert_loc );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
 
     _ibo.draw();
 
-    _vbo.disableVertexPointer( vert_loc );
-    _vbo.release();
+    _vbo.disable( vert_loc );
+    _vbo.unbind();
   }
 
 } // END namespace GMlib

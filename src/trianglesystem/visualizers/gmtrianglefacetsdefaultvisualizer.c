@@ -34,7 +34,8 @@
 namespace GMlib {
 
   template <typename T>
-  TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() : _vbo(), _ibo() {}
+  TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() :
+    _vbo(), _ibo(), _no_indices(0) {}
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::~TriangleFacetsDefaultVisualizer() {}
@@ -65,12 +66,12 @@ namespace GMlib {
     GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
 
     _vbo.bind();
-    _vbo.enableVertexPointer(vert_loc);
-    _vbo.enableNormalPointer(normal_loc);
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
+    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, (const GLvoid*)0x0 );
     _ibo.draw();
-    _vbo.disableNormalPointer(normal_loc);
-    _vbo.disableVertexPointer(vert_loc);
-    _vbo.release();
+    _vbo.disable( vert_loc );
+    _vbo.disable( normal_loc );
+    _vbo.unbind();
   }
 
   template <typename T>
@@ -83,8 +84,8 @@ namespace GMlib {
   inline
   void TriangleFacetsDefaultVisualizer<T>::replot() {
 
-
-   _vbo.fill( this->_tf );
+    TriangleFacetsVisualizer<T>::fillStandardVBO( _vbo, _no_indices, this->_tf );
+//   _vbo.fill( this->_tf );
    _ibo.fill( this->_tf );
 
 //    // Fill the VBO
@@ -135,10 +136,10 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enableVertexPointer(vert_loc);
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
     _ibo.draw();
-    _vbo.disableVertexPointer(vert_loc);
-    _vbo.release();
+    _vbo.disable( vert_loc );
+    _vbo.unbind();
   }
 
 

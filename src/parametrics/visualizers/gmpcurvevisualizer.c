@@ -28,6 +28,11 @@
  */
 
 
+// gmlib::opengl
+#include <opengl/gmopengl.h>
+#include <opengl/gmglprogram.h>
+#include <opengl/gmglshadermanager.h>
+
 namespace GMlib {
 
   template <typename T>
@@ -41,31 +46,55 @@ namespace GMlib {
   PCurveVisualizer<T>::~PCurveVisualizer() {}
 
   template <typename T>
+  void PCurveVisualizer<T>::fillStandardVBO(
+      GLVertexBufferObject<GMlib::GLVertex> &vbo, unsigned int &no_vertices,
+      DVector< DVector< Vector<T, 3> > >& p, int d ) {
+
+    no_vertices = p.getDim();
+
+    vbo.bind();
+    vbo.createBufferData( no_vertices * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
+
+    GLVertex *ptr = vbo.mapBuffer<GLVertex>();
+    if( ptr ) {
+      for( int i = 0; i < p.getDim(); i++ ) {
+
+        ptr->x = p(i)(d)(0);
+        ptr->y = p(i)(d)(1);
+        ptr->z = p(i)(d)(2);
+        ptr++;
+      }
+    }
+
+    vbo.unmapBuffer();
+    vbo.unbind();
+  }
+  template <typename T>
   std::string PCurveVisualizer<T>::getIdentity() const {
 
     return "PCurve Visualizer";
   }
 
-  template <typename T>
-  inline
-  void PCurveVisualizer<T>::populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d ) {
+//  template <typename T>
+//  inline
+//  void PCurveVisualizer<T>::populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d ) {
 
-    no_dp = p.getDim();
+//    no_dp = p.getDim();
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_id );
-    glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+//    glBindBuffer( GL_ARRAY_BUFFER, _vbo_id );
+//    glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
 
-    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-    if( ptr ) {
+//    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+//    if( ptr ) {
 
-      for( int i = 0; i < p.getDim(); i++ )
-        for( int j = 0; j < 3; j++ )
-          *(ptr++) = p[i][d][j];
-    }
+//      for( int i = 0; i < p.getDim(); i++ )
+//        for( int j = 0; j < 3; j++ )
+//          *(ptr++) = p[i][d][j];
+//    }
 
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-  }
+//    glUnmapBuffer( GL_ARRAY_BUFFER );
+//    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+//  }
 
   template <typename T>
   inline
@@ -81,6 +110,7 @@ namespace GMlib {
 
     _curve = dynamic_cast<PCurve<T>*>( obj );
   }
+
 
 
 } // END namespace GMlib

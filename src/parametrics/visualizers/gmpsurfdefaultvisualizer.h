@@ -50,9 +50,11 @@ namespace GMlib {
     void          select();
 
   protected:
-    GLVertexBufferObject2D    _vbo;
+    GLVertexBufferObject<GLVertexNormalTex2D>    _vbo;
     TriangleStripIBO          _ibo;
-    GLuint                    _tex;
+    GLuint                    _texture;
+
+    unsigned int              _no_vertices;
 
   }; // END class PSurfDefaultVisualizer
 

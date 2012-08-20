@@ -868,7 +868,7 @@ namespace GMlib {
     GLuint                  getId() const;
     std::string             getName() const;
     bool                    isValid() const;
-    void                    release() const;
+    void                    unbind() const;
 
   protected:
     std::string             _name;
@@ -900,7 +900,10 @@ namespace GMlib {
     GLenum                  getTarget() const;
     std::string             getName() const;
     bool                    isValid() const;
-    void                    release() const;
+    template <typename T>
+    T*                      mapBuffer( GLenum access = GL_WRITE_ONLY ) const;
+    void                    unbind() const;
+    void                    unmapBuffer() const;
     void                    setTarget( GLenum target = GL_ARRAY_BUFFER );
 
   protected:
@@ -916,66 +919,97 @@ namespace GMlib {
 
 
 
+  template <typename T>
+  inline
+  T* GLBufferObject::mapBuffer(GLenum access ) const {
+
+    (T*)glMapBuffer( _target, access );
+  }
 
 
-  class GLVertexBufferObject1D : public GLBufferObject {
+
+
+
+
+
+
+
+
+
+  template <typename T>
+  class GLVertexBufferObject : public GLBufferObject {
   public:
-    struct GLVertex {
-      GLfloat   x, y, z;
-      GLfloat   s;
-    };
+    explicit GLVertexBufferObject();
+    explicit GLVertexBufferObject( const std::string& name );
 
-  public:
-    explicit GLVertexBufferObject1D();
-    explicit GLVertexBufferObject1D( const std::string& name );
-
-    void      disable( GLuint vert_loc, GLuint tex_loc );
-    void      disableTexPointer(GLuint tex_loc );
-    void      disableVertexPointer( GLuint vert_loc );
-    void      enable( GLuint vert_loc, GLuint tex_loc );
-    void      enableTexPointer(GLuint tex_loc );
-    void      enableVertexPointer( GLuint vert_loc );
-    void      fill( const DVector< DVector< Vector<float, 3> > >& p );
-
-    static GLuint   getPointOffset();
-    static GLuint   getTexOffset();
+    void    enable( GLuint index, GLint size, GLenum type, bool normalize, const GLvoid* offset );
+    void    disable( GLuint index );
 
   private:
-    const GLsizei   _v_size;
+    GLsizei     _stride;
 
-  }; // END class GLVertex2DBufferObject
+  }; // END class GLVertexBufferObject
 
 
-  class GLVertexBufferObject2D : public GLBufferObject {
-  public:
-    struct GLVertex {
-      GLfloat   x, y, z;
-      GLfloat   nx, ny, nz;
-      GLfloat   s, t;
-    };
 
-  public:
-    explicit GLVertexBufferObject2D();
-    explicit GLVertexBufferObject2D( const std::string& name );
+  template <typename T>
+  inline
+  GLVertexBufferObject<T>::GLVertexBufferObject() :
+    GLBufferObject( GL_ARRAY_BUFFER ), _stride( sizeof(T) ) {}
 
-    void      disable( GLuint vert_loc, GLuint normal_loc, GLuint tex_loc );
-    void      disableNormalPointer(GLuint normal_loc );
-    void      disableTexPointer(GLuint tex_loc );
-    void      disableVertexPointer( GLuint vert_loc );
-    void      enable( GLuint vert_loc, GLuint normal_loc, GLuint tex_loc );
-    void      enableNormalPointer(GLuint normal_loc );
-    void      enableTexPointer(GLuint tex_loc );
-    void      enableVertexPointer( GLuint vert_loc );
-    void      fill( const DMatrix< DMatrix< Vector<float,3> > >& p );
-    void      fill( const TriangleFacets<float>* tf );
+  template <typename T>
+  inline
+  GLVertexBufferObject<T>::GLVertexBufferObject( const std::string& name ) :
+    GLBufferObject( name, GL_ARRAY_BUFFER ), _stride( sizeof(T) ) {}
 
-    static GLuint   getPointOffset();
-    static GLuint   getNormalOffset();
-    static GLuint   getTexOffset();
-  private:
-    const GLsizei   _v_size;
+  template <typename T>
+  inline
+  void GLVertexBufferObject<T>::enable(GLuint index, GLint size, GLenum type,
+                                  bool normalize, const GLvoid *offset) {
 
-  }; // END class GLVertex2DBufferObject
+    this->enableVertexArrayPointer( index, size, type, normalize, _stride, offset );
+  }
+
+  template <typename T>
+  inline
+  void GLVertexBufferObject<T>::disable(GLuint index) {
+
+    this->disableVertexArrayPointer( index );
+  }
+
+
+
+
+  struct GLVertex {
+    GLfloat x, y, z;
+  };
+
+  struct GLNormal {
+    GLfloat nx, ny, nz;
+  };
+
+  struct GLTex1D {
+    GLfloat s;
+  };
+
+  struct GLTex2D : GLTex1D {
+    GLfloat t;
+  };
+
+  struct GLTex3D : GLTex2D {
+    GLfloat r;
+  };
+
+  struct GLVertexNormal : GLVertex, GLNormal {};
+  struct GLVertexNormalTex2D : GLVertex, GLNormal, GLTex2D {};
+  struct GLVertexTex1D : GLVertex, GLTex1D {};
+  struct GLVertexTex2D : GLVertex, GLTex2D {};
+
+
+
+
+
+
 
 
   /*! class IndexBufferObject : public GLBufferObject

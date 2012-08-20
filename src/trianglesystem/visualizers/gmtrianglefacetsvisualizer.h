@@ -53,6 +53,12 @@ namespace GMlib {
     virtual void  replot();
     void          set( SceneObject* obj );
 
+
+    static void   fillStandardVBO(  GLVertexBufferObject<GLVertexNormal>& vbo,
+                                    unsigned int& no_vertices,
+                                    const TriangleFacets<T>* tf );
+
+
   protected:
     TriangleFacets<T>      *_tf;
 

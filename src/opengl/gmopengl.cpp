@@ -830,7 +830,7 @@ namespace GMlib {
     return _valid;
   }
 
-  void GLFramebufferObject::release() const {
+  void GLFramebufferObject::unbind() const {
 
     glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
   }
@@ -945,106 +945,20 @@ namespace GMlib {
     return _valid;
   }
 
-  void GLBufferObject::release() const {
-
-    glBindBuffer( _target, 0x0 );
-  }
-
   void GLBufferObject::setTarget( GLenum target ) {
 
     _target = target;
     OGL::setBoTarget( _name, _target );
   }
 
+  void GLBufferObject::unbind() const {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  GLVertexBufferObject1D::GLVertexBufferObject1D() : GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
+    glBindBuffer( _target, 0x0 );
   }
 
-  GLVertexBufferObject1D::GLVertexBufferObject1D(const std::string &name) :
-    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
-  }
+  void GLBufferObject::unmapBuffer() const {
 
-  void GLVertexBufferObject1D::disable(GLuint vert_loc, GLuint tex_loc) {
-
-    disableVertexPointer( vert_loc );
-    disableTexPointer( tex_loc );
-  }
-
-  void GLVertexBufferObject1D::disableTexPointer(GLuint tex_loc) {
-
-    disableVertexPointer( tex_loc );
-  }
-
-  void GLVertexBufferObject1D::disableVertexPointer(GLuint vert_loc) {
-
-    disableVertexArrayPointer( vert_loc );
-  }
-
-  void GLVertexBufferObject1D::enable(GLuint vert_loc, GLuint tex_loc) {
-
-    enableVertexPointer( vert_loc );
-    enableTexPointer( tex_loc );
-  }
-
-  void GLVertexBufferObject1D::enableTexPointer(GLuint tex_loc) {
-
-    enableVertexArrayPointer(tex_loc, 2, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)getTexOffset() );
-  }
-
-  void GLVertexBufferObject1D::enableVertexPointer(GLuint vert_loc) {
-
-    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)getPointOffset() );
-  }
-
-  void GLVertexBufferObject1D::fill(const DVector<DVector<Vector<float, 3> > > &p) {
-
-    const int no_verts = p.getDim();
-
-    bind();
-    createBufferData( no_verts * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
-
-    GLVertex *ptr = (GLVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-    if( ptr ) {
-      for( int i = 0; i < p.getDim(); i++ ) {
-
-        ptr->x = p(i)(0)(0);
-        ptr->y = p(i)(0)(1);
-        ptr->z = p(i)(0)(2);
-        ptr->s = i/float(p.getDim()-1);
-        ptr++;
-      }
-    }
-
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    release();
-
-  }
-
-  GLuint GLVertexBufferObject1D::getPointOffset() {
-
-    return 0;
-  }
-
-  GLuint GLVertexBufferObject1D::getTexOffset() {
-
-    return 3 * sizeof(GLfloat);
+    glUnmapBuffer( _target );
   }
 
 
@@ -1059,134 +973,225 @@ namespace GMlib {
 
 
 
-  GLVertexBufferObject2D::GLVertexBufferObject2D() :
-    GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
-  }
 
-  GLVertexBufferObject2D::GLVertexBufferObject2D(const std::string &name) :
-    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
-  }
 
-  void GLVertexBufferObject2D::disable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
 
-    disableVertexPointer( vert_loc );
-    disableNormalPointer( normal_loc );
-    disableTexPointer( tex_loc );
-  }
 
-  void GLVertexBufferObject2D::disableNormalPointer(GLuint normal_loc) {
 
-    disableVertexPointer( normal_loc );
-  }
 
-  void GLVertexBufferObject2D::disableTexPointer(GLuint tex_loc) {
+//  GLVertexBufferObject1D::GLVertexBufferObject1D() : GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
+//  }
 
-    disableVertexPointer( tex_loc );
-  }
+//  GLVertexBufferObject1D::GLVertexBufferObject1D(const std::string &name) :
+//    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
+//  }
 
-  void GLVertexBufferObject2D::disableVertexPointer(GLuint vert_loc) {
+//  void GLVertexBufferObject1D::disable(GLuint vert_loc, GLuint tex_loc) {
 
-    disableVertexArrayPointer( vert_loc );
-  }
+//    disableVertexPointer( vert_loc );
+//    disableTexPointer( tex_loc );
+//  }
 
-  void GLVertexBufferObject2D::enable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
+//  void GLVertexBufferObject1D::disableTexPointer(GLuint tex_loc) {
 
-    enableVertexPointer( vert_loc );
-    enableNormalPointer( normal_loc );
-    enableTexPointer( tex_loc );
-  }
+//    disableVertexPointer( tex_loc );
+//  }
 
-  void GLVertexBufferObject2D::enableNormalPointer(GLuint normal_loc) {
+//  void GLVertexBufferObject1D::disableVertexPointer(GLuint vert_loc) {
 
-    enableVertexArrayPointer(normal_loc, 3, GL_FLOAT, GL_TRUE, _v_size,
-                             (GLvoid*)getNormalOffset() );
-  }
+//    disableVertexArrayPointer( vert_loc );
+//  }
 
-  void GLVertexBufferObject2D::enableTexPointer(GLuint tex_loc) {
+//  void GLVertexBufferObject1D::enable(GLuint vert_loc, GLuint tex_loc) {
 
-    enableVertexArrayPointer(tex_loc, 2, GL_FLOAT, GL_FALSE, _v_size,
-                             (GLvoid*)getTexOffset() );
-  }
+//    enableVertexPointer( vert_loc );
+//    enableTexPointer( tex_loc );
+//  }
 
-  void GLVertexBufferObject2D::enableVertexPointer(GLuint vert_loc) {
+//  void GLVertexBufferObject1D::enableTexPointer(GLuint tex_loc) {
 
-    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE, _v_size,
-                             (GLvoid*)getPointOffset() );
-  }
+//    enableVertexArrayPointer(tex_loc, 2, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)getTexOffset() );
+//  }
 
-  void GLVertexBufferObject2D::fill(const DMatrix<DMatrix<Vector<float,3> > > &p) {
+//  void GLVertexBufferObject1D::enableVertexPointer(GLuint vert_loc) {
 
-    const int no_verts = p.getDim1() * p.getDim2();
+//    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)getPointOffset() );
+//  }
 
-    bind();
-    createBufferData( no_verts * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
-    GLVertex *ptr = (GLVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-    for( int i = 0; i < p.getDim1(); i++ ) {
-      for( int j = 0; j < p.getDim2(); j++ ) {
+//  void GLVertexBufferObject1D::fill(const DVector<DVector<Vector<float, 3> > > &p) {
 
-        // vertex position
-        ptr->x = p(i)(j)(0)(0)(0);
-        ptr->y = p(i)(j)(0)(0)(1);
-        ptr->z = p(i)(j)(0)(0)(2);
+//    const int no_verts = p.getDim();
 
-        // normals
-        const Vector<float,3> n = Vector3D<float>( p(i)(j)(1)(0) )^p(i)(j)(0)(1);
-        ptr->nx = n(0);
-        ptr->ny = n(1);
-        ptr->nz = n(2);
+//    bind();
+//    createBufferData( no_verts * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
 
-        // tex coords
-        ptr->s = i/float(p.getDim1()-1);
-        ptr->t = j/float(p.getDim2()-1);
+//    GLVertex *ptr = (GLVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+//    if( ptr ) {
+//      for( int i = 0; i < p.getDim(); i++ ) {
 
-        ptr++;
-      }
-    }
-    glUnmapBuffer( GL_ARRAY_BUFFER );
+//        ptr->x = p(i)(0)(0);
+//        ptr->y = p(i)(0)(1);
+//        ptr->z = p(i)(0)(2);
+//        ptr->s = i/float(p.getDim()-1);
+//        ptr++;
+//      }
+//    }
 
-    release();
-  }
+//    glUnmapBuffer( GL_ARRAY_BUFFER );
+//    release();
 
-  void GLVertexBufferObject2D::fill(const TriangleFacets<float> *tf) {
+//  }
 
-    // Fill the VBO
-    int no_vertices = tf->getSize();
-    GLVertex vertices[no_vertices];
+//  GLuint GLVertexBufferObject1D::getPointOffset() {
 
-    for( int i = 0; i < no_vertices; i++ ) {
+//    return 0;
+//  }
 
-      TSVertex<float> *v = tf->getVertex(i);
-      const Point<float,3> &pos = v->getPos();
-      const Vector<float,3> &nor = v->getDir();
+//  GLuint GLVertexBufferObject1D::getTexOffset() {
 
-      vertices[i].x = pos(0);
-      vertices[i].y = pos(1);
-      vertices[i].z = pos(2);
+//    return 3 * sizeof(GLfloat);
+//  }
 
-      vertices[i].nx = nor(0);
-      vertices[i].ny = nor(1);
-      vertices[i].nz = nor(2);
-    }
 
-    bind();
-    createBufferData( no_vertices * sizeof(GLVertex), vertices, GL_STATIC_DRAW );
-    release();
-  }
 
-  GLuint GLVertexBufferObject2D::getPointOffset() {
 
-    return 0;
-  }
 
-  GLuint GLVertexBufferObject2D::getNormalOffset() {
 
-    return 3 * sizeof(GLfloat);
-  }
 
-  GLuint GLVertexBufferObject2D::getTexOffset() {
 
-    return 6 * sizeof(GLfloat);
-  }
+
+
+
+
+
+//  GLVertexBufferObject2D::GLVertexBufferObject2D() :
+//    GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
+//  }
+
+//  GLVertexBufferObject2D::GLVertexBufferObject2D(const std::string &name) :
+//    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
+//  }
+
+//  void GLVertexBufferObject2D::disable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
+
+//    disableVertexPointer( vert_loc );
+//    disableNormalPointer( normal_loc );
+//    disableTexPointer( tex_loc );
+//  }
+
+//  void GLVertexBufferObject2D::disableNormalPointer(GLuint normal_loc) {
+
+//    disableVertexPointer( normal_loc );
+//  }
+
+//  void GLVertexBufferObject2D::disableTexPointer(GLuint tex_loc) {
+
+//    disableVertexPointer( tex_loc );
+//  }
+
+//  void GLVertexBufferObject2D::disableVertexPointer(GLuint vert_loc) {
+
+//    disableVertexArrayPointer( vert_loc );
+//  }
+
+//  void GLVertexBufferObject2D::enable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
+
+//    enableVertexPointer( vert_loc );
+//    enableNormalPointer( normal_loc );
+//    enableTexPointer( tex_loc );
+//  }
+
+//  void GLVertexBufferObject2D::enableNormalPointer(GLuint normal_loc) {
+
+//    enableVertexArrayPointer(normal_loc, 3, GL_FLOAT, GL_TRUE, _v_size,
+//                             (GLvoid*)getNormalOffset() );
+//  }
+
+//  void GLVertexBufferObject2D::enableTexPointer(GLuint tex_loc) {
+
+//    enableVertexArrayPointer(tex_loc, 2, GL_FLOAT, GL_FALSE, _v_size,
+//                             (GLvoid*)getTexOffset() );
+//  }
+
+//  void GLVertexBufferObject2D::enableVertexPointer(GLuint vert_loc) {
+
+//    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE, _v_size,
+//                             (GLvoid*)getPointOffset() );
+//  }
+
+//  void GLVertexBufferObject2D::fill(const DMatrix<DMatrix<Vector<float,3> > > &p) {
+
+//    const int no_verts = p.getDim1() * p.getDim2();
+
+//    bind();
+//    createBufferData( no_verts * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
+//    GLVertex *ptr = (GLVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+//    for( int i = 0; i < p.getDim1(); i++ ) {
+//      for( int j = 0; j < p.getDim2(); j++ ) {
+
+//        // vertex position
+//        ptr->x = p(i)(j)(0)(0)(0);
+//        ptr->y = p(i)(j)(0)(0)(1);
+//        ptr->z = p(i)(j)(0)(0)(2);
+
+//        // normals
+//        const Vector<float,3> n = Vector3D<float>( p(i)(j)(1)(0) )^p(i)(j)(0)(1);
+//        ptr->nx = n(0);
+//        ptr->ny = n(1);
+//        ptr->nz = n(2);
+
+//        // tex coords
+//        ptr->s = i/float(p.getDim1()-1);
+//        ptr->t = j/float(p.getDim2()-1);
+
+//        ptr++;
+//      }
+//    }
+//    glUnmapBuffer( GL_ARRAY_BUFFER );
+
+//    release();
+//  }
+
+//  void GLVertexBufferObject2D::fill(const TriangleFacets<float> *tf) {
+
+//    // Fill the VBO
+//    int no_vertices = tf->getSize();
+//    GLVertex vertices[no_vertices];
+
+//    for( int i = 0; i < no_vertices; i++ ) {
+
+//      TSVertex<float> *v = tf->getVertex(i);
+//      const Point<float,3> &pos = v->getPos();
+//      const Vector<float,3> &nor = v->getDir();
+
+//      vertices[i].x = pos(0);
+//      vertices[i].y = pos(1);
+//      vertices[i].z = pos(2);
+
+//      vertices[i].nx = nor(0);
+//      vertices[i].ny = nor(1);
+//      vertices[i].nz = nor(2);
+//    }
+
+//    bind();
+//    createBufferData( no_vertices * sizeof(GLVertex), vertices, GL_STATIC_DRAW );
+//    release();
+//  }
+
+//  GLuint GLVertexBufferObject2D::getPointOffset() {
+
+//    return 0;
+//  }
+
+//  GLuint GLVertexBufferObject2D::getNormalOffset() {
+
+//    return 3 * sizeof(GLfloat);
+//  }
+
+//  GLuint GLVertexBufferObject2D::getTexOffset() {
+
+//    return 6 * sizeof(GLfloat);
+//  }
 
 
 
@@ -1274,7 +1279,7 @@ namespace GMlib {
 
     bind();
     glDrawElements( GL_TRIANGLES, _no_indices, getType(), (const GLvoid*)0x0 );
-    release();
+    unbind();
   }
 
   void TrianglesIBO::fill(const TriangleFacets<float> *tf) {
@@ -1332,7 +1337,7 @@ namespace GMlib {
     bind();
     for( int i = 0; i < _no_strips; ++i )
       glDrawElements( GL_TRIANGLE_STRIP, _no_indices_per_strip, getType(), (const GLvoid*)(i * _strip_size) );
-    release();
+    unbind();
   }
 
   void TriangleStripIBO::fill( int m1, int m2 ) {
@@ -1356,7 +1361,7 @@ namespace GMlib {
 
     bind();
     createBufferData( no_indices, indices, GL_STATIC_DRAW );
-    release();
+    unbind();
 
     // Strip size must be set after createBufferData( ... ) is called
     // as the type size is defined by the createBufferData function

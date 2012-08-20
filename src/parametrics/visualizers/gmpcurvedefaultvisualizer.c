@@ -53,11 +53,11 @@ namespace GMlib {
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enableVertexPointer( vert_loc );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
-    _vbo.disableVertexPointer( vert_loc );
-    _vbo.release();
+    _vbo.disable( vert_loc );
+    _vbo.unbind();
   }
 
   template <typename T>
@@ -73,8 +73,7 @@ namespace GMlib {
     int /*m*/, int /*d*/
   ) {
 
-    _no_vertices = p.getDim();
-    _vbo.fill( p );
+    PCurveVisualizer<T>::fillStandardVBO( _vbo, _no_vertices, p );
   }
 
   template <typename T>
@@ -84,11 +83,11 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enableVertexPointer( vert_loc );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
-    _vbo.disableVertexPointer( vert_loc );
-    _vbo.release();
+    _vbo.disable( vert_loc );
+    _vbo.unbind();
   }
 
 

@@ -302,7 +302,7 @@ namespace GMlib {
         _display.setUniform( "u_color", GMcolor::Green );
         glDrawElements( GL_LINES, 24, GL_UNSIGNED_SHORT, (const GLvoid*)(0x0) );
 
-      } _bo_cube_frame_indices.release();
+      } _bo_cube_frame_indices.unbind();
 
       glEnable( GL_BLEND ); {
 
@@ -310,7 +310,7 @@ namespace GMlib {
         _display.setUniform( "u_color", blend_color );
         _bo_cube_indices.bind();
           glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
-        _bo_cube_indices.release();
+        _bo_cube_indices.unbind();
 
       }glDisable( GL_BLEND );
 
@@ -335,7 +335,7 @@ namespace GMlib {
       _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
       _bo_cube_indices.bind();
         glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
-      _bo_cube_indices.release();
+      _bo_cube_indices.unbind();
       _bo_cube.disableVertexArrayPointer( vert_loc );
     }
   }
