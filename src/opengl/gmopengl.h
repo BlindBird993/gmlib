@@ -89,6 +89,10 @@ typedef unsigned short wchar_t;
 
 namespace GMlib {
 
+  template <typename T>
+  class TriangleFacets;
+
+
 
   /***********
    * Constants
@@ -911,73 +915,19 @@ namespace GMlib {
   }; // END class GLBufferObject
 
 
-  struct GLVertex {
-    GLfloat   x, y, z;
-
-    GLVertex( const Point<float,3>& p ) {
-
-      x = p(0);
-      y = p(1);
-      z = p(2);
-    }
-
-    static GLuint getPointOffset() { return 0; }
-
-  }; // END struct GLVertex
-
-  struct GLVertex1D : GLVertex {
-    GLfloat   s;
-
-    GLVertex1D( const Point<float,3>& p, float tex ) : GLVertex(p) {
-
-      s = tex;
-    }
-
-    static GLuint getTexOffset() { return sizeof(GLVertex); }
-
-  }; // END struct GLVertex1D
-
-  struct GLVertex2D : GLVertex {
-    GLfloat   nx, ny, nz;
-    GLfloat   s, t;
-
-    GLVertex2D( const Point<float,3>& p, const Vector<float,3>& n, const Point<float,2>& tex ) : GLVertex(p) {
-
-      nx = n(0);
-      ny = n(1);
-      nz = n(2);
-
-      s = tex(0);
-      t = tex(1);
-    }
-
-    static GLuint getNormalOffset() { return sizeof(GLVertex); }
-    static GLuint getTexOffset() { return getNormalOffset() + 3 * sizeof(GLfloat); }
-
-  }; // END struc GLVectex2D
-
-  struct GLVertex3D : GLVertex {
-    GLfloat   s, t, r;
-
-    GLVertex3D( const Point<float,3>& p, const Point<float,3>& tex ) : GLVertex(p) {
-
-      s = tex(0);
-      t = tex(1);
-      r = tex(2);
-    }
-
-
-    static GLuint getTexOffset() { return sizeof(GLVertex); }
-
-  }; // END struct GLVertex
 
 
 
-
-  class GLVertex1DBufferObject : public GLBufferObject {
+  class GLVertexBufferObject1D : public GLBufferObject {
   public:
-    explicit GLVertex1DBufferObject();
-    explicit GLVertex1DBufferObject( const std::string& name );
+    struct GLVertex {
+      GLfloat   x, y, z;
+      GLfloat   s;
+    };
+
+  public:
+    explicit GLVertexBufferObject1D();
+    explicit GLVertexBufferObject1D( const std::string& name );
 
     void      disable( GLuint vert_loc, GLuint tex_loc );
     void      disableTexPointer(GLuint tex_loc );
@@ -987,16 +937,26 @@ namespace GMlib {
     void      enableVertexPointer( GLuint vert_loc );
     void      fill( const DVector< DVector< Vector<float, 3> > >& p );
 
+    static GLuint   getPointOffset();
+    static GLuint   getTexOffset();
+
   private:
     const GLsizei   _v_size;
 
   }; // END class GLVertex2DBufferObject
 
 
-  class GLVertex2DBufferObject : public GLBufferObject {
+  class GLVertexBufferObject2D : public GLBufferObject {
   public:
-    explicit GLVertex2DBufferObject();
-    explicit GLVertex2DBufferObject( const std::string& name );
+    struct GLVertex {
+      GLfloat   x, y, z;
+      GLfloat   nx, ny, nz;
+      GLfloat   s, t;
+    };
+
+  public:
+    explicit GLVertexBufferObject2D();
+    explicit GLVertexBufferObject2D( const std::string& name );
 
     void      disable( GLuint vert_loc, GLuint normal_loc, GLuint tex_loc );
     void      disableNormalPointer(GLuint normal_loc );
@@ -1007,7 +967,11 @@ namespace GMlib {
     void      enableTexPointer(GLuint tex_loc );
     void      enableVertexPointer( GLuint vert_loc );
     void      fill( const DMatrix< DMatrix< Vector<float,3> > >& p );
+    void      fill( const TriangleFacets<float>* tf );
 
+    static GLuint   getPointOffset();
+    static GLuint   getNormalOffset();
+    static GLuint   getTexOffset();
   private:
     const GLsizei   _v_size;
 
@@ -1039,6 +1003,23 @@ namespace GMlib {
     GLsizei     _type_size;
 
   }; // END class IndexBufferObject
+
+
+  class TrianglesIBO : public IndexBufferObject {
+  public:
+    explicit TrianglesIBO();
+    explicit TrianglesIBO( const std::string& name );
+
+    virtual void      draw();
+    virtual void      fill(const TriangleFacets<float> *tf );
+
+  private:
+    int       _no_indices;
+
+    void      init();
+
+  }; // END class TrianglesIBO
+
 
   class TriangleStripIBO : public IndexBufferObject {
   public:

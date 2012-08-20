@@ -2348,12 +2348,12 @@ namespace GMlib {
 
     //glColor4f(0.0, 0.3, a, 1.0);
   /* NY KODE FOR TEXTUREBRUK 1/9 -2001 (MARTIN)*/
-    glTexCoord2f((v[0]->getPosition()[0])/100, (v[0]->getPosition()[1])/100);
-    glVertex((Arrow<T,3>*)v[0]);
-    glTexCoord2f((v[1]->getPosition()[0])/100, (v[1]->getPosition()[1])/100);
-    glVertex((Arrow<T,3>*)v[1]);
-    glTexCoord2f((v[2]->getPosition()[0])/100, (v[2]->getPosition()[1])/100);
-    glVertex((Arrow<T,3>*)v[2]);
+//    glTexCoord2f((v[0]->getPosition()[0])/100, (v[0]->getPosition()[1])/100);
+//    glVertex((Arrow<T,3>*)v[0]);
+//    glTexCoord2f((v[1]->getPosition()[0])/100, (v[1]->getPosition()[1])/100);
+//    glVertex((Arrow<T,3>*)v[1]);
+//    glTexCoord2f((v[2]->getPosition()[0])/100, (v[2]->getPosition()[1])/100);
+//    glVertex((Arrow<T,3>*)v[2]);
   }
 
  // #endif

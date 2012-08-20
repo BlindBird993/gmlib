@@ -32,6 +32,9 @@
 
 #include "gmglshadermanager.h"
 
+// gmlib::trianglesystem
+#include <trianglesystem/gmtrianglesystem.h>
+
 // stl
 #include <limits>
 #include <iostream>
@@ -971,149 +974,218 @@ namespace GMlib {
 
 
 
-  GLVertex1DBufferObject::GLVertex1DBufferObject() : GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex1D) ) {
+  GLVertexBufferObject1D::GLVertexBufferObject1D() : GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
   }
 
-  GLVertex1DBufferObject::GLVertex1DBufferObject(const std::string &name) :
-    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex1D) ) {
+  GLVertexBufferObject1D::GLVertexBufferObject1D(const std::string &name) :
+    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
   }
 
-  void GLVertex1DBufferObject::disable(GLuint vert_loc, GLuint tex_loc) {
+  void GLVertexBufferObject1D::disable(GLuint vert_loc, GLuint tex_loc) {
 
     disableVertexPointer( vert_loc );
     disableTexPointer( tex_loc );
   }
 
-  void GLVertex1DBufferObject::disableTexPointer(GLuint tex_loc) {
+  void GLVertexBufferObject1D::disableTexPointer(GLuint tex_loc) {
 
     disableVertexPointer( tex_loc );
   }
 
-  void GLVertex1DBufferObject::disableVertexPointer(GLuint vert_loc) {
+  void GLVertexBufferObject1D::disableVertexPointer(GLuint vert_loc) {
 
     disableVertexArrayPointer( vert_loc );
   }
 
-  void GLVertex1DBufferObject::enable(GLuint vert_loc, GLuint tex_loc) {
+  void GLVertexBufferObject1D::enable(GLuint vert_loc, GLuint tex_loc) {
 
     enableVertexPointer( vert_loc );
     enableTexPointer( tex_loc );
   }
 
-  void GLVertex1DBufferObject::enableTexPointer(GLuint tex_loc) {
+  void GLVertexBufferObject1D::enableTexPointer(GLuint tex_loc) {
 
-    enableVertexArrayPointer(tex_loc, 2, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)GLVertex1D::getTexOffset() );
+    enableVertexArrayPointer(tex_loc, 2, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)getTexOffset() );
   }
 
-  void GLVertex1DBufferObject::enableVertexPointer(GLuint vert_loc) {
+  void GLVertexBufferObject1D::enableVertexPointer(GLuint vert_loc) {
 
-    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)GLVertex1D::getPointOffset() );
+    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)getPointOffset() );
   }
 
-  void GLVertex1DBufferObject::fill(const DVector<DVector<Vector<float, 3> > > &p) {
+  void GLVertexBufferObject1D::fill(const DVector<DVector<Vector<float, 3> > > &p) {
 
     const int no_verts = p.getDim();
 
     bind();
-    createBufferData( no_verts * sizeof(GLVertex1D), 0x0, GL_STATIC_DRAW );
+    createBufferData( no_verts * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
 
-    GLVertex1D *ptr = (GLVertex1D*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-    if( ptr )
-      for( int i = 0; i < p.getDim(); i++ )
-        *(ptr++) = GLVertex1D( p(i)(0), i/float(p.getDim()-1) );
+    GLVertex *ptr = (GLVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    if( ptr ) {
+      for( int i = 0; i < p.getDim(); i++ ) {
+
+        ptr->x = p(i)(0)(0);
+        ptr->y = p(i)(0)(1);
+        ptr->z = p(i)(0)(2);
+        ptr->s = i/float(p.getDim()-1);
+        ptr++;
+      }
+    }
 
     glUnmapBuffer( GL_ARRAY_BUFFER );
     release();
 
   }
 
+  GLuint GLVertexBufferObject1D::getPointOffset() {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  GLVertex2DBufferObject::GLVertex2DBufferObject() : GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex2D) ) {
+    return 0;
   }
 
-  GLVertex2DBufferObject::GLVertex2DBufferObject(const std::string &name) :
-    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex2D) ) {
+  GLuint GLVertexBufferObject1D::getTexOffset() {
+
+    return 3 * sizeof(GLfloat);
   }
 
-  void GLVertex2DBufferObject::disable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
+
+
+
+
+
+
+
+
+
+
+
+
+  GLVertexBufferObject2D::GLVertexBufferObject2D() :
+    GLBufferObject( GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
+  }
+
+  GLVertexBufferObject2D::GLVertexBufferObject2D(const std::string &name) :
+    GLBufferObject( name, GL_ARRAY_BUFFER ), _v_size( sizeof(GLVertex) ) {
+  }
+
+  void GLVertexBufferObject2D::disable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
 
     disableVertexPointer( vert_loc );
     disableNormalPointer( normal_loc );
     disableTexPointer( tex_loc );
   }
 
-  void GLVertex2DBufferObject::disableNormalPointer(GLuint normal_loc) {
+  void GLVertexBufferObject2D::disableNormalPointer(GLuint normal_loc) {
 
     disableVertexPointer( normal_loc );
   }
 
-  void GLVertex2DBufferObject::disableTexPointer(GLuint tex_loc) {
+  void GLVertexBufferObject2D::disableTexPointer(GLuint tex_loc) {
 
     disableVertexPointer( tex_loc );
   }
 
-  void GLVertex2DBufferObject::disableVertexPointer(GLuint vert_loc) {
+  void GLVertexBufferObject2D::disableVertexPointer(GLuint vert_loc) {
 
     disableVertexArrayPointer( vert_loc );
   }
 
-  void GLVertex2DBufferObject::enable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
+  void GLVertexBufferObject2D::enable(GLuint vert_loc, GLuint normal_loc, GLuint tex_loc) {
 
     enableVertexPointer( vert_loc );
     enableNormalPointer( normal_loc );
     enableTexPointer( tex_loc );
   }
 
-  void GLVertex2DBufferObject::enableNormalPointer(GLuint normal_loc) {
+  void GLVertexBufferObject2D::enableNormalPointer(GLuint normal_loc) {
 
-    enableVertexArrayPointer(normal_loc, 3, GL_FLOAT, GL_TRUE,   _v_size, (GLvoid*)GLVertex2D::getNormalOffset() );
+    enableVertexArrayPointer(normal_loc, 3, GL_FLOAT, GL_TRUE, _v_size,
+                             (GLvoid*)getNormalOffset() );
   }
 
-  void GLVertex2DBufferObject::enableTexPointer(GLuint tex_loc) {
+  void GLVertexBufferObject2D::enableTexPointer(GLuint tex_loc) {
 
-    enableVertexArrayPointer(tex_loc,    2, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)GLVertex2D::getTexOffset() );
+    enableVertexArrayPointer(tex_loc, 2, GL_FLOAT, GL_FALSE, _v_size,
+                             (GLvoid*)getTexOffset() );
   }
 
-  void GLVertex2DBufferObject::enableVertexPointer(GLuint vert_loc) {
+  void GLVertexBufferObject2D::enableVertexPointer(GLuint vert_loc) {
 
-    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE,  _v_size, (GLvoid*)GLVertex2D::getPointOffset() );
+    enableVertexArrayPointer(vert_loc, 3, GL_FLOAT, GL_FALSE, _v_size,
+                             (GLvoid*)getPointOffset() );
   }
 
-  void GLVertex2DBufferObject::fill(const DMatrix<DMatrix<Vector<float,3> > > &p) {
+  void GLVertexBufferObject2D::fill(const DMatrix<DMatrix<Vector<float,3> > > &p) {
 
     const int no_verts = p.getDim1() * p.getDim2();
 
     bind();
-    createBufferData( no_verts * sizeof(GLVertex2D), 0x0, GL_STATIC_DRAW );
-    GLVertex2D *ptr = (GLVertex2D*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    createBufferData( no_verts * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
+    GLVertex *ptr = (GLVertex*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
     for( int i = 0; i < p.getDim1(); i++ ) {
       for( int j = 0; j < p.getDim2(); j++ ) {
 
-        *(ptr++) =
-            GLVertex2D(
-              p(i)(j)(0)(0),
-              Vector3D<float>( p(i)(j)(1)(0) )^p(i)(j)(0)(1),
-              Point2D<float>( i/float(p.getDim1()-1), j/float(p.getDim2()-1) ) );
+        // vertex position
+        ptr->x = p(i)(j)(0)(0)(0);
+        ptr->y = p(i)(j)(0)(0)(1);
+        ptr->z = p(i)(j)(0)(0)(2);
 
+        // normals
+        const Vector<float,3> n = Vector3D<float>( p(i)(j)(1)(0) )^p(i)(j)(0)(1);
+        ptr->nx = n(0);
+        ptr->ny = n(1);
+        ptr->nz = n(2);
+
+        // tex coords
+        ptr->s = i/float(p.getDim1()-1);
+        ptr->t = j/float(p.getDim2()-1);
+
+        ptr++;
       }
     }
     glUnmapBuffer( GL_ARRAY_BUFFER );
 
     release();
+  }
+
+  void GLVertexBufferObject2D::fill(const TriangleFacets<float> *tf) {
+
+    // Fill the VBO
+    int no_vertices = tf->getSize();
+    GLVertex vertices[no_vertices];
+
+    for( int i = 0; i < no_vertices; i++ ) {
+
+      TSVertex<float> *v = tf->getVertex(i);
+      const Point<float,3> &pos = v->getPos();
+      const Vector<float,3> &nor = v->getDir();
+
+      vertices[i].x = pos(0);
+      vertices[i].y = pos(1);
+      vertices[i].z = pos(2);
+
+      vertices[i].nx = nor(0);
+      vertices[i].ny = nor(1);
+      vertices[i].nz = nor(2);
+    }
+
+    bind();
+    createBufferData( no_vertices * sizeof(GLVertex), vertices, GL_STATIC_DRAW );
+    release();
+  }
+
+  GLuint GLVertexBufferObject2D::getPointOffset() {
+
+    return 0;
+  }
+
+  GLuint GLVertexBufferObject2D::getNormalOffset() {
+
+    return 3 * sizeof(GLfloat);
+  }
+
+  GLuint GLVertexBufferObject2D::getTexOffset() {
+
+    return 6 * sizeof(GLfloat);
   }
 
 
@@ -1187,6 +1259,58 @@ namespace GMlib {
 
 
 
+  TrianglesIBO::TrianglesIBO() : IndexBufferObject() {
+
+    init();
+  }
+
+  TrianglesIBO::TrianglesIBO(const std::string &name) :
+    IndexBufferObject( name ) {
+
+    init();
+  }
+
+  void TrianglesIBO::draw() {
+
+    bind();
+    glDrawElements( GL_TRIANGLES, _no_indices, getType(), (const GLvoid*)0x0 );
+    release();
+  }
+
+  void TrianglesIBO::fill(const TriangleFacets<float> *tf) {
+
+    _no_indices = tf->getNoTriangles() * 3;
+
+    GLuint indices[_no_indices];
+    GLuint *iptr = indices;
+
+    for( int i = 0; i < tf->getNoTriangles(); i++ ) {
+
+      Array< TSVertex<float>* > tri_verts = tf->getTriangle(i)->getVertices();
+      for( int j = 0; j < tri_verts.getSize(); j++ )
+        for( int k = 0; k < tf->getSize(); k++ )
+          if( tri_verts[j] == tf->getVertex(k) )
+            *iptr++ = k;
+    }
+
+    createBufferData( _no_indices, indices, GL_STATIC_DRAW );
+  }
+
+  void TrianglesIBO::init() {
+
+    _no_indices = 0;
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1249,12 +1373,4 @@ namespace GMlib {
 
 
 
-
-
-
-
-
-
-
-
-}
+} // END namespace GMlib

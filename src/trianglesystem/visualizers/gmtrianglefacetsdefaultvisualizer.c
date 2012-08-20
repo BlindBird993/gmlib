@@ -34,29 +34,16 @@
 namespace GMlib {
 
   template <typename T>
-  TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() {
-
-    glGenBuffers( 1, &_ibo );
-    glGenBuffers( 1, &_vbo );
-  }
+  TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() : _vbo(), _ibo() {}
 
   template <typename T>
-  TriangleFacetsDefaultVisualizer<T>::~TriangleFacetsDefaultVisualizer() {
-
-    glDeleteBuffers( 1, &_vbo );
-    glDeleteBuffers( 1, &_ibo );
-  }
+  TriangleFacetsDefaultVisualizer<T>::~TriangleFacetsDefaultVisualizer() {}
 
   template <typename T>
   inline
   void TriangleFacetsDefaultVisualizer<T>::display() {
 
     this->glSetDisplayMode();
-
-    Array< Light* > lights = this->_obj->getScene()->getLights();
-//    std::cout << "No. Lights: " << lights.getSize() << std::endl;
-//    _display.setUniform( "u_light_pos", lights[0]->get );
-
 
     const GLProgram &prog = this->getRenderProgram();
 
@@ -77,23 +64,13 @@ namespace GMlib {
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
     GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
 
-
-    const GLsizei v_size = sizeof(GLVertex2D);
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)GLVertex2D::getPointOffset() );
-    glEnableVertexAttribArray( vert_loc );
-
-    glVertexAttribPointer( normal_loc, 3, GL_FLOAT, GL_TRUE, v_size, (GLvoid*)GLVertex2D::getNormalOffset() );
-    glEnableVertexAttribArray( normal_loc );
-
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    glDrawElements( GL_TRIANGLES, this->_tf->getNoTriangles() * 3, GL_UNSIGNED_SHORT, (const GLvoid*)0x0 );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
-
-    glDisableVertexAttribArray( normal_loc );
-    glDisableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.bind();
+    _vbo.enableVertexPointer(vert_loc);
+    _vbo.enableNormalPointer(normal_loc);
+    _ibo.draw();
+    _vbo.disableNormalPointer(normal_loc);
+    _vbo.disableVertexPointer(vert_loc);
+    _vbo.release();
   }
 
   template <typename T>
@@ -106,45 +83,49 @@ namespace GMlib {
   inline
   void TriangleFacetsDefaultVisualizer<T>::replot() {
 
-    // Fill the VBO
-    int no_vertices = this->_tf->getSize();
-    GLVertex2D vertices[no_vertices];
 
-    for( int i = 0; i < no_vertices; i++ ) {
+   _vbo.fill( this->_tf );
+   _ibo.fill( this->_tf );
 
-      TSVertex<T> *v = this->_tf->getVertex(i);
-      const Point<T,3> &pos = v->getPos();
-      const Vector<T,3> &nor = v->getDir();
+//    // Fill the VBO
+//    int no_vertices = this->_tf->getSize();
+//    GLVertex2D vertices[no_vertices];
 
-      vertices[i].x = pos(0);
-      vertices[i].y = pos(1);
-      vertices[i].z = pos(2);
+//    for( int i = 0; i < no_vertices; i++ ) {
 
-      vertices[i].nx = nor(0);
-      vertices[i].ny = nor(1);
-      vertices[i].nz = nor(2);
-    }
+//      TSVertex<T> *v = this->_tf->getVertex(i);
+//      const Point<T,3> &pos = v->getPos();
+//      const Vector<T,3> &nor = v->getDir();
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glBufferData( GL_ARRAY_BUFFER, no_vertices * sizeof(GLVertex2D), vertices, GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+//      vertices[i].x = pos(0);
+//      vertices[i].y = pos(1);
+//      vertices[i].z = pos(2);
 
-    int no_indices = this->_tf->getNoTriangles() * 3;
-    GLushort indices[no_indices];
-    GLushort *iptr = indices;
+//      vertices[i].nx = nor(0);
+//      vertices[i].ny = nor(1);
+//      vertices[i].nz = nor(2);
+//    }
 
-    for( int i = 0; i < this->_tf->getNoTriangles(); i++ ) {
+//    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
+//    glBufferData( GL_ARRAY_BUFFER, no_vertices * sizeof(GLVertex2D), vertices, GL_STATIC_DRAW );
+//    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
-      Array< TSVertex<T>* > tri_verts = this->_tf->getTriangle(i)->getVertices();
-      for( int j = 0; j < tri_verts.getSize(); j++ )
-        for( int k = 0; k < this->_tf->getSize(); k++ )
-          if( tri_verts[j] == this->_tf->getVertex(k) )
-            *iptr++ = k;
-    }
+//    int no_indices = this->_tf->getNoTriangles() * 3;
+//    GLushort indices[no_indices];
+//    GLushort *iptr = indices;
 
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+//    for( int i = 0; i < this->_tf->getNoTriangles(); i++ ) {
+
+//      Array< TSVertex<T>* > tri_verts = this->_tf->getTriangle(i)->getVertices();
+//      for( int j = 0; j < tri_verts.getSize(); j++ )
+//        for( int k = 0; k < this->_tf->getSize(); k++ )
+//          if( tri_verts[j] == this->_tf->getVertex(k) )
+//            *iptr++ = k;
+//    }
+
+//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
+//    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 
   template <typename T>
@@ -153,18 +134,11 @@ namespace GMlib {
 
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
-    const GLsizei v_size = sizeof(GLVertex2D);
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, v_size, (GLvoid*)GLVertex2D::getPointOffset() );
-    glEnableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    glDrawElements( GL_TRIANGLES, this->_tf->getNoTriangles() * 3, GL_UNSIGNED_SHORT, (const GLvoid*)0x0 );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
-
-    glDisableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.bind();
+    _vbo.enableVertexPointer(vert_loc);
+    _ibo.draw();
+    _vbo.disableVertexPointer(vert_loc);
+    _vbo.release();
   }
 
 

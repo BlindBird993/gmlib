@@ -69,7 +69,6 @@ namespace GMlib {
     void                              setSize( double size = 1.0 );
 
   protected:
-    GLProgram                         _display;
     GLuint                            _vbo_v;
     int                               _no_elements;
 

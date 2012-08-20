@@ -51,7 +51,7 @@ namespace GMlib {
     void          select();
 
   protected:
-    GLVertex1DBufferObject      _vbo;
+    GLVertexBufferObject1D      _vbo;
     int           _no_vertices;
 
   }; // END class PCurveDefaultVisualizer

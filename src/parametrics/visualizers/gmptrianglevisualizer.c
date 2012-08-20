@@ -45,70 +45,70 @@ namespace GMlib {
   template <typename T>
   void  PTriangleVisualizer<T>::fillStandardVBO(GLuint vbo_id, const DVector<DMatrix<Vector<T,3> > > &p) {
 
-    int no_dp = p.getDim();
+//    int no_dp = p.getDim();
 
-    GLVertex dp[no_dp];
-    for( int i = 0; i < p.getDim(); i++ ) {
+//    GLVertex dp[no_dp];
+//    for( int i = 0; i < p.getDim(); i++ ) {
 
-      const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
+//      const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
 
-      dp[i].x   = p(i)(0)(0)(0);
-      dp[i].y   = p(i)(0)(0)(1);
-      dp[i].z   = p(i)(0)(0)(2);
-      dp[i].nx  = n(0);
-      dp[i].ny  = n(1);
-      dp[i].nz  = n(2);
-    }
+//      dp[i].x   = p(i)(0)(0)(0);
+//      dp[i].y   = p(i)(0)(0)(1);
+//      dp[i].z   = p(i)(0)(0)(2);
+//      dp[i].nx  = n(0);
+//      dp[i].ny  = n(1);
+//      dp[i].nz  = n(2);
+//    }
 
-    glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
-    glBufferData( GL_ARRAY_BUFFER, sizeof(GLVertex) * no_dp, dp, GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+//    glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
+//    glBufferData( GL_ARRAY_BUFFER, sizeof(GLVertex) * no_dp, dp, GL_STATIC_DRAW );
+//    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
   template <typename T>
   void  PTriangleVisualizer<T>::fillTriangleIBO( GLuint ibo_id, int m ) {
 
-    int no_indices = m*m*3;
+//    int no_indices = m*m*3;
 
-    GLushort indices[no_indices];
-    GLushort *iptr = indices;
-    for( int i = 0; i < m; i++ ) {
+//    GLushort indices[no_indices];
+//    GLushort *iptr = indices;
+//    for( int i = 0; i < m; i++ ) {
 
-      // Index row i and row i+1
-      const int o1 = 0.5 *  i    * (i+1);
-      const int o2 = 0.5 * (i+1) * (i+2);
+//      // Index row i and row i+1
+//      const int o1 = 0.5 *  i    * (i+1);
+//      const int o2 = 0.5 * (i+1) * (i+2);
 
-      // Indices in row i and i+1
-      const int i1 = i+1;
-      const int i2 = i+2;
+//      // Indices in row i and i+1
+//      const int i1 = i+1;
+//      const int i2 = i+2;
 
-      // Index in indice data array
-//      const int o = i*i*3;
+//      // Index in indice data array
+////      const int o = i*i*3;
 
-      // Upper triangles (pointing down)
-      for( int j = 1; j < i+1; j++ ) {
+//      // Upper triangles (pointing down)
+//      for( int j = 1; j < i+1; j++ ) {
 
-        *iptr++ = o1 + j;
-        *iptr++ = o1 + j - 1;
-        *iptr++ = o2 + j;
+//        *iptr++ = o1 + j;
+//        *iptr++ = o1 + j - 1;
+//        *iptr++ = o2 + j;
 
 
-//        indices[o+j*2]    = o2 +j;
-//        indices[o+j*2+1]  = o1 +j;
-      }
+////        indices[o+j*2]    = o2 +j;
+////        indices[o+j*2+1]  = o1 +j;
+//      }
 
-      // Lower triangles (pointing up)
-      for( int j = 1; j < i+2; j++ ) {
+//      // Lower triangles (pointing up)
+//      for( int j = 1; j < i+2; j++ ) {
 
-        *iptr++ = o2 + j - 1;
-        *iptr++ = o2 + j;
-        *iptr++ = o1 + j - 1;
-      }
-    }
+//        *iptr++ = o2 + j - 1;
+//        *iptr++ = o2 + j;
+//        *iptr++ = o1 + j - 1;
+//      }
+//    }
 
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
+//    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 
   template <typename T>

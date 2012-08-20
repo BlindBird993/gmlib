@@ -105,41 +105,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfVisualizer<T>::fillStandardVBO(GLuint vbo_id, const DMatrix<DMatrix<Vector<T, 3> > > &p) {
-
-    int no_verts = p.getDim1() * p.getDim2();
-
-    glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
-    glBufferData( GL_ARRAY_BUFFER, no_verts * sizeof(GLVertex2D), 0x0, GL_STATIC_DRAW );
-    GLVertex2D *ptr = (GLVertex2D*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-    for( int i = 0; i < p.getDim1(); i++ ) {
-      for( int j = 0; j < p.getDim2(); j++ ) {
-
-        // Vertex
-        ptr->x = p(i)(j)(0)(0)(0);
-        ptr->y = p(i)(j)(0)(0)(1);
-        ptr->z = p(i)(j)(0)(0)(2);
-
-        // Normal
-        const Vector<T,3> n = Vector3D<T>( p(i)(j)(1)(0) )^p(i)(j)(0)(1);
-        ptr->nx = n(0);
-        ptr->ny = n(1);
-        ptr->nz = n(2);
-
-        // Texture coord
-        ptr->s = i/float(p.getDim1()-1);
-        ptr->t = j/float(p.getDim2()-1);
-
-        // Iterate pointer
-        ptr++;
-      }
-    }
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-  }
-
-  template <typename T>
-  inline
   void PSurfVisualizer<T>::fillTriangleStripIBO(GLuint ibo_id, int m1, int m2) {
 
     const int no_indices = (m1-1) * m2 * 2;

@@ -47,8 +47,8 @@ namespace GMlib {
     void          select();
 
   protected:
-    GLuint        _vbo;
-    GLuint        _ibo;
+    GLVertexBufferObject2D    _vbo;
+    TrianglesIBO              _ibo;
 
   }; // END class TriangleFacetsDefaultVisualizer
 
