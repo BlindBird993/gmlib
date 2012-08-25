@@ -260,11 +260,6 @@ namespace GMlib {
       _view_set_stack.pop();
   }
 
-  void GMWindow::prepareViewSets() {
-
-    _view_set_stack.back().prepare( _w, _h );
-  }
-
 
   /*! bool GMWindow::removeCamera(Camera *)
    *	\brief Pending Documentation

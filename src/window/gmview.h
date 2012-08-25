@@ -31,7 +31,8 @@
 
 
 
-
+// gmlib::core
+#include <core/types/gmpoint.h>
 
 // gmlib::scenegraph
 #include <scenegraph/camera/gmcamera.h>
@@ -86,6 +87,7 @@ namespace GMlib {
     ViewBorder(Camera* cam_to_split, Camera* new_cam, bool v, double r);
     ViewBorder(const ViewBorder& w);
 
+    Box<int,2>    getBounds() const;
   private:
     friend class ViewSet;
     friend class View;
@@ -263,7 +265,7 @@ namespace GMlib {
   {}
 
 
-  /*! void ViewBorder::_corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow)
+  /*! void ViewBorder::corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -276,7 +278,7 @@ namespace GMlib {
   }
 
 
-  /*! void ViewBorder::_display()
+  /*! void ViewBorder::display()
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -288,7 +290,7 @@ namespace GMlib {
   }
 
 
-  /*! void ViewBorder::_find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders)
+  /*! void ViewBorder::find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -302,8 +304,16 @@ namespace GMlib {
     _child_rb.find(x,y,cam,borders);
   }
 
+  inline
+  Box<int,2>  ViewBorder::getBounds() const {
 
-  /*! int  ViewBorder::_getSize(bool vertical)
+    Box<int,2> box( Point2D<int>( _x1, _y1 ) );
+    box.insert( Point2D<int>( _x2, _y2 ) );
+    return box;
+//    return Box<float,3>( Point2D<float>(_x1,_y1), Point2D<float>(_x2,_y2) );
+  }
+
+  /*! int  ViewBorder::getSize(bool vertical)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -318,7 +328,7 @@ namespace GMlib {
   }
 
 
-  /*! View* ViewBorder::_hasCamera(Camera* cam)
+  /*! View* ViewBorder::hasCamera(Camera* cam)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -335,7 +345,7 @@ namespace GMlib {
   }
 
 
-  /*! bool ViewBorder::_isVertical()
+  /*! bool ViewBorder::isVertical()
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -347,7 +357,7 @@ namespace GMlib {
   }
 
 
-  /*! void ViewBorder::_move(int x, int y)
+  /*! void ViewBorder::move(int x, int y)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -375,7 +385,7 @@ namespace GMlib {
   }
 
 
-  /*! void ViewBorder::_prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders)
+  /*! void ViewBorder::prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -405,7 +415,7 @@ namespace GMlib {
   }
 
 
-  /*! void ViewBorder::_removeCamera(Camera* cam)
+  /*! void ViewBorder::removeCamera(Camera* cam)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
@@ -418,7 +428,7 @@ namespace GMlib {
   }
 
 
-  /*! void ViewBorder::_splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d)
+  /*! void ViewBorder::splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d)
    *	\brief Pending Documentation
    *
    *	Pending Documentation

@@ -50,7 +50,7 @@ namespace GMlib {
     void          select();
 
   protected:
-    GLVertexBufferObject<GLVertexNormalTex2D>    _vbo;
+    GLVertexBufferObject      _vbo;
     TriangleStripIBO          _ibo;
     GLuint                    _texture;
 

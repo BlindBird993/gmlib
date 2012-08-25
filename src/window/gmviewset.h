@@ -48,6 +48,10 @@ namespace GMlib {
    *  Pending Documentation
    */
   class ViewSet {
+    struct GLBorder {
+      GLViewVertex    v[4]; // corners
+    }; // END struct GLBorder
+
   public:
     ViewSet(Camera* cam=0);
     ViewSet(const ViewSet& viewset);
@@ -61,6 +65,11 @@ namespace GMlib {
     ViewSet& 						operator=(const ViewSet& viewset);
     bool 								operator<(const ViewSet& viewset)const;
 
+  protected:
+    void                prepareGraphics();
+
+    GLVertexBufferObject      _vbo;
+    int                       _no_borders;
 
   private:
     friend class GMWindow;
@@ -147,18 +156,26 @@ namespace GMlib {
   inline
   void ViewSet::drawBorder() {
 
-//    if(_borders.getSize()>0)
-//    {
-//      glDisable(GL_LIGHTING);
-//      glMatrixMode(GL_PROJECTION);
-//      glLoadIdentity();
-//      glOrtho( 0, _vp_w, 0, _vp_h, -1, 1 );
-//      glMatrixMode(GL_MODELVIEW);
-//      glViewport( 0, 0, _vp_w, _vp_h );
-//      glColor( _border_color );
-//      for( int i=0; i< _borders.getSize(); i++ ) _borders[i]->display();
-//      glEnable(GL_LIGHTING);
-//    }
+    if( _no_borders > 0 ) {
+
+
+      GLProgram prog( "color" );
+
+      prog.setUniform( "u_color", _border_color );
+
+      GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+      _vbo.bind();
+//      _vbo.enable( vert_loc, 2, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
+      glVertexAttribPointer( vert_loc, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+      glEnableVertexAttribArray( vert_loc );
+      glPointSize( 10.0f );
+      glDrawArrays( GL_QUADS, 0, _no_borders * 4 );
+
+      glDisableVertexAttribArray( vert_loc );
+
+      _vbo.unbind();
+
+    }
   }
 
 
@@ -183,6 +200,7 @@ namespace GMlib {
         _root.split( new_cam,split_vertically,d);
       _borders.resetSize();
       _root.prepare( 0, 0,_vp_w, _vp_h, _borders);
+      prepareGraphics();
       return true;
     }
   }
@@ -230,6 +248,8 @@ namespace GMlib {
       int i = _cameras.getIndex(cam);
       if(i>=0) removeCamera(i);
     }
+
+    prepareGraphics();
   }
 
 

@@ -77,7 +77,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfVisualizer<T>::fillStandardVBO(GLVertexBufferObject<GLVertexNormalTex2D>& vbo,
+  void PSurfVisualizer<T>::fillStandardVBO(GLVertexBufferObject &vbo,
                                          unsigned int &no_vertices,
                                          const DMatrix<DMatrix<Vector<T,3> > > &p) {
 

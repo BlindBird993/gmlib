@@ -66,8 +66,8 @@ namespace GMlib {
     GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
-    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, (const GLvoid*)0x0 );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GLVertexNormal), (const GLvoid*)0x0 );
+    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GLVertexNormal), (const GLvoid*)sizeof(GLVertex) );
     _ibo.draw();
     _vbo.disable( vert_loc );
     _vbo.disable( normal_loc );
@@ -136,7 +136,7 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertexNormal), (const GLvoid*)0x0 );
     _ibo.draw();
     _vbo.disable( vert_loc );
     _vbo.unbind();

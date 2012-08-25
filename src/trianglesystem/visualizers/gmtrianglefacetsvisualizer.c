@@ -39,8 +39,8 @@ namespace GMlib {
   TriangleFacetsVisualizer<T>::~TriangleFacetsVisualizer() {}
 
   template <typename T>
-  void GMlib::TriangleFacetsVisualizer<T>::fillStandardVBO(
-      GLVertexBufferObject<GMlib::GLVertexNormal> &vbo,
+  void TriangleFacetsVisualizer<T>::fillStandardVBO(
+      GLVertexBufferObject &vbo,
       unsigned int &no_vertices, const GMlib::TriangleFacets<T> *tf) {
 
     no_vertices = tf->getSize();

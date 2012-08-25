@@ -54,7 +54,7 @@ namespace GMlib {
     void          set( SceneObject* obj );
 
 
-    static void   fillStandardVBO(  GLVertexBufferObject<GLVertexNormal>& vbo,
+    static void   fillStandardVBO(  GLVertexBufferObject& vbo,
                                     unsigned int& no_vertices,
                                     const TriangleFacets<T>* tf );
 

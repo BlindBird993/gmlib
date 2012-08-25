@@ -244,6 +244,12 @@ namespace GMlib {
     return _stereo;
   }
 
+  inline
+  void GMWindow::prepareViewSets() {
+
+    _view_set_stack.back().prepare( _w, _h );
+    _view_set_stack.back().prepareGraphics();
+  }
 
   /*! void GMWindow::removeSun()
    *	\brief Pending Documentation
@@ -327,8 +333,6 @@ namespace GMlib {
       OGL::releaseRenderBuffer();
 //    }
 
-
-
     // Render render-buffer to standard OGL buffer
 
     float near_plane = -1.0f;
@@ -405,6 +409,18 @@ namespace GMlib {
 
     prog.unbind();
 
+
+    GLProgram color_prog( "color" );
+    color_prog.bind();
+
+    color_prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
+    color_prog.setUniform( "u_selected", false );
+
+    _view_set_stack.back().drawBorder();
+
+    color_prog.unbind();
+
+
     glEnable(GL_DEPTH_TEST);
 
     swapBuffers();
@@ -420,7 +436,7 @@ namespace GMlib {
   void GMWindow::reshape(int w, int h) {
 
     _w = w; _h = h;
-    _view_set_stack.back().prepare(_w,_h);
+    prepareViewSets();
     OGL::setRenderBufferSize( _w, _h );
     OGL::setSelectBufferSize( _w, _h );
   }

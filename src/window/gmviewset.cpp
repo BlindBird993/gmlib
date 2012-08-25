@@ -37,7 +37,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  ViewSet::ViewSet(Camera* cam) : _root(cam) {
+  ViewSet::ViewSet(Camera* cam) : _root(cam), _vbo() {
 
     if(cam)	_cameras += cam;
     _border_color = GMcolor::White;
@@ -49,7 +49,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  ViewSet::ViewSet(const ViewSet& viewset) {
+  ViewSet::ViewSet(const ViewSet& viewset) : _vbo() {
 
     int i;
     _cameras = viewset._cameras;
@@ -109,7 +109,7 @@ namespace GMlib {
    */
   void ViewSet::drawCamera(bool stereo) {
 
-    drawBorder();
+//    drawBorder();
     for( int i = 0; i < _cameras.getSize(); i++ )
       _cameras[i]->go( stereo );
   }
@@ -148,6 +148,33 @@ namespace GMlib {
     return _cameras.getSize();
   }
 
+  void ViewSet::prepareGraphics() {
+
+    _no_borders = _borders.size();
+    GLBorder data[_no_borders];
+    for( int i = 0; i < _no_borders; ++i ) {
+
+      const float w_fact = 1.0f/float(_vp_w);
+      const float h_fact = 1.0f/float(_vp_h);
+      const Box<int,2> &bounds = _borders[i]->getBounds();
+
+      data[i].v[0].x = w_fact * bounds.getPointMin()(0);
+      data[i].v[0].y = h_fact * bounds.getPointMin()(1);
+
+      data[i].v[1].x = w_fact * bounds.getPointMin()(0);
+      data[i].v[1].y = h_fact * bounds.getPointMax()(1);
+
+      data[i].v[2].x = w_fact * bounds.getPointMax()(0);
+      data[i].v[2].y = h_fact * bounds.getPointMax()(1);
+
+      data[i].v[3].x = w_fact * bounds.getPointMax()(0);
+      data[i].v[3].y = h_fact * bounds.getPointMin()(1);
+    }
+
+    _vbo.bind();
+    _vbo.createBufferData(_no_borders * sizeof(GLBorder), data, GL_STATIC_DRAW);
+    _vbo.unbind();
+  }
 
   /*! void ViewSet::_reset()
    *	\brief Pending Documentation

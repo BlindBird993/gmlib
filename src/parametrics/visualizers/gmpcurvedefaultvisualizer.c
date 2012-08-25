@@ -53,7 +53,7 @@ namespace GMlib {
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertex), (const GLvoid*)0x0 );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
     _vbo.disable( vert_loc );
@@ -83,7 +83,7 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertex), (const GLvoid*)0x0 );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
     _vbo.disable( vert_loc );

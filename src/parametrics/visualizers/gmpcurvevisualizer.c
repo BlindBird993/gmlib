@@ -47,7 +47,7 @@ namespace GMlib {
 
   template <typename T>
   void PCurveVisualizer<T>::fillStandardVBO(
-      GLVertexBufferObject<GMlib::GLVertex> &vbo, unsigned int &no_vertices,
+      GLVertexBufferObject &vbo, unsigned int &no_vertices,
       DVector< DVector< Vector<T, 3> > >& p, int d ) {
 
     no_vertices = p.getDim();

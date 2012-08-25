@@ -919,6 +919,12 @@ namespace GMlib {
 
 
 
+  inline
+  void GLBufferObject::bind() const {
+
+    glBindBuffer( _target, _id );
+  }
+
   template <typename T>
   inline
   T* GLBufferObject::mapBuffer(GLenum access ) const {
@@ -926,6 +932,11 @@ namespace GMlib {
     (T*)glMapBuffer( _target, access );
   }
 
+  inline
+  void GLBufferObject::unbind() const {
+
+    glBindBuffer( _target, 0x0 );
+  }
 
 
 
@@ -936,49 +947,42 @@ namespace GMlib {
 
 
 
-  template <typename T>
+
   class GLVertexBufferObject : public GLBufferObject {
   public:
     explicit GLVertexBufferObject();
     explicit GLVertexBufferObject( const std::string& name );
 
-    void    enable( GLuint index, GLint size, GLenum type, bool normalize, const GLvoid* offset );
+    void    enable(GLuint index, GLint size, GLenum type, bool normalize, GLsizei stride, const GLvoid* offset );
     void    disable( GLuint index );
-
-  private:
-    GLsizei     _stride;
 
   }; // END class GLVertexBufferObject
 
 
 
-  template <typename T>
-  inline
-  GLVertexBufferObject<T>::GLVertexBufferObject() :
-    GLBufferObject( GL_ARRAY_BUFFER ), _stride( sizeof(T) ) {}
 
-  template <typename T>
   inline
-  GLVertexBufferObject<T>::GLVertexBufferObject( const std::string& name ) :
-    GLBufferObject( name, GL_ARRAY_BUFFER ), _stride( sizeof(T) ) {}
+  void GLVertexBufferObject::enable(GLuint index, GLint size, GLenum type,
+                                  bool normalize, GLsizei stride, const GLvoid *offset) {
 
-  template <typename T>
-  inline
-  void GLVertexBufferObject<T>::enable(GLuint index, GLint size, GLenum type,
-                                  bool normalize, const GLvoid *offset) {
-
-    this->enableVertexArrayPointer( index, size, type, normalize, _stride, offset );
+    this->enableVertexArrayPointer( index, size, type, normalize, stride, offset );
   }
 
-  template <typename T>
   inline
-  void GLVertexBufferObject<T>::disable(GLuint index) {
+  void GLVertexBufferObject::disable(GLuint index) {
 
     this->disableVertexArrayPointer( index );
   }
 
 
 
+
+
+
+
+  struct GLViewVertex {
+    GLclampf x, y;
+  };
 
   struct GLVertex {
     GLfloat x, y, z;
