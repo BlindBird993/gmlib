@@ -29,7 +29,7 @@
 
 #include "gmwindow.h"
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmdvector.h>
 
 // stl

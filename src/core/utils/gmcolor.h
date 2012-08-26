@@ -1013,7 +1013,7 @@ namespace GMlib {
     extern Color Yellow;
     extern Color YellowGreen;
 
-  } // END namespace GMlib::Color
+  } // END namespace GMcolor
 
 
 } // END namespace GMlib

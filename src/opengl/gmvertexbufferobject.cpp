@@ -22,41 +22,17 @@
 
 
 
-/*! \file gmtrianglefacetsdefaultvisualizer.h
- *
- *  Interface for the TriangleFacetsDefaultVisualizer class.
- */
-
-#ifndef __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-#define __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-
-
-#include "gmtrianglefacetsvisualizer.h"
-
-// gmlib
+#include "gmvertexbufferobject.h"
 
 
 namespace GMlib {
 
-  template <typename T>
-  class TriangleFacetsDefaultVisualizer : public TriangleFacetsVisualizer<T> {
-  public:
-    TriangleFacetsDefaultVisualizer();
-    ~TriangleFacetsDefaultVisualizer();
-    void          display();
-    std::string   getIdentity() const;
-    virtual void  replot();
-    void          select();
+  VertexBufferObject::VertexBufferObject() :
+    BufferObject( GL_ARRAY_BUFFER ) {}
 
-  protected:
-    VertexBufferObject        _vbo;
-    TrianglesIBO              _ibo;
+  VertexBufferObject::VertexBufferObject( const std::string& name ) :
+    BufferObject( name, GL_ARRAY_BUFFER ) {}
 
-  }; // END class TriangleFacetsDefaultVisualizer
 
 } // END namespace GMlib
 
-// Include TriangleFacetsDefaultVisualizer class function implementations
-#include "gmtrianglefacetsdefaultvisualizer.c"
-
-#endif // __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__

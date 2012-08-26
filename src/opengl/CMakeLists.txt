@@ -21,18 +21,26 @@
 # ###############################################################################
 
 addHeaders(
+  gmBufferObject
+  gmFramebufferObject
   gmGLMatrix
   gmGLProgram
   gmGLShader
   gmGLShaderManager
+  gmIndexBufferObject
   gmOpenGL
+  gmVertexBufferObject
 )
 
 addSources(
+  gmbufferobject.cpp
+  gmframebufferobject.cpp
   gmglmatrix.cpp
   gmglprogram.cpp
   gmglshader.cpp
   gmglshadermanager.cpp
+  gmindexbufferobject.cpp
   gmopengl.cpp
+  gmvertexbufferobject.cpp
 )
 

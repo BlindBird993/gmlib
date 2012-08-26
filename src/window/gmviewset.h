@@ -32,9 +32,10 @@
 
 #include "gmview.h"
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmarray.h>
 #include <core/types/gmpoint2d.h>
+#include <opengl/gmvertexbufferobject.h>
 
 namespace GMlib {
 
@@ -68,7 +69,7 @@ namespace GMlib {
   protected:
     void                prepareGraphics();
 
-    GLVertexBufferObject      _vbo;
+    VertexBufferObject        _vbo;
     int                       _no_borders;
 
   private:
@@ -217,6 +218,7 @@ namespace GMlib {
     for( int i = 0; i < _selected_borders.getSize(); i++ )
       _selected_borders[i]->move(x,y);
     prepare(_vp_w,_vp_h);
+    prepareGraphics();
   }
 
 

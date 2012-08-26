@@ -40,7 +40,7 @@ namespace GMlib {
 
   template <typename T>
   void TriangleFacetsVisualizer<T>::fillStandardVBO(
-      GLVertexBufferObject &vbo, const GMlib::TriangleFacets<T> *tf) {
+      VertexBufferObject &vbo, const TriangleFacets<T> *tf) {
 
     int no_vertices = tf->getSize();
     GLVertexNormal vertices[no_vertices];

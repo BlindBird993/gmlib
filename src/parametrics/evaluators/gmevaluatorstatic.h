@@ -31,7 +31,7 @@
 #define __gmEVALUATRORSTATIC_H__
 
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmdmatrix.h>
 
 namespace GMlib {

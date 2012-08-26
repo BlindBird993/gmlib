@@ -32,11 +32,10 @@
 #define __gmTRIANGLEFACETSVISUALIZER_H__
 
 
-// gmlib::scene
+// gmlib
 #include <scene/visualizer/gmvisualizer.h>
-
-// gmlib::opengl
-#include <opengl/gmopengl.h>
+#include <opengl/gmvertexbufferobject.h>
+#include <opengl/gmindexbufferobject.h>
 
 
 namespace GMlib {
@@ -54,7 +53,7 @@ namespace GMlib {
     void          set( SceneObject* obj );
 
 
-    static void   fillStandardVBO( GLVertexBufferObject& vbo,
+    static void   fillStandardVBO( VertexBufferObject& vbo,
                                    const TriangleFacets<T>* tf );
     static void   fillStandardIBO( TrianglesIBO& ibo,
                                    const TriangleFacets<T>* tf );

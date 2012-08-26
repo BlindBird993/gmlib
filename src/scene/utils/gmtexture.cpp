@@ -31,7 +31,7 @@
 
 #include "gmtexture.h"
 
-// gmlib::opengl
+// gmlib
 #include <opengl/gmopengl.h>
 
 

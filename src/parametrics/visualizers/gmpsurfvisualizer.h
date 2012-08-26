@@ -32,14 +32,10 @@
 #define __GMPSURFVISUALIZER_H__
 
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint.h>
 #include <core/containers/gmdmatrix.h>
-
-// gmlib::opengl
-#include <opengl/gmopengl.h>
-
-// gmlib::scene
+#include <opengl/gmvertexbufferobject.h>
 #include <scene/visualizer/gmvisualizer.h>
 
 
@@ -66,7 +62,7 @@ namespace GMlib {
 
     static void   fillStandardIBO( GLuint vbo_id, int m1, int m2 );
 //    static void   fillStandardTBO( GLuint tbo_id, GLuint tex_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1 = 0, int d2 = 0 );
-    static void   fillStandardVBO(GLVertexBufferObject &vbo,
+    static void   fillStandardVBO(VertexBufferObject &vbo,
                                   unsigned int &no_vertices,
                                   const DMatrix< DMatrix< Vector<T, 3> > >& p );
     static void   fillTriangleStripIBO( GLuint ibo_id, int m1, int m2 );

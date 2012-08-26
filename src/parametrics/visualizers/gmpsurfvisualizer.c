@@ -30,13 +30,11 @@
 
 #include "../gmpsurf.h"
 
-// gmlib::scene
+// gmlib
 #include <scene/gmscene.h>
 #include <scene/camera/gmcamera.h>
 #include <scene/light/gmlight.h>
 #include <scene/utils/gmmaterial.h>
-
-// gmlib::opengl
 #include <opengl/gmopengl.h>
 #include <opengl/gmglprogram.h>
 #include <opengl/gmglshadermanager.h>
@@ -77,7 +75,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfVisualizer<T>::fillStandardVBO(GLVertexBufferObject &vbo,
+  void PSurfVisualizer<T>::fillStandardVBO(VertexBufferObject &vbo,
                                          unsigned int &no_vertices,
                                          const DMatrix<DMatrix<Vector<T,3> > > &p) {
 

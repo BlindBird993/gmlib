@@ -34,7 +34,7 @@
 
 #include "../gmptriangle.h"
 
-// gmlib::scene
+// gmlib
 #include <scene/selector/gmselector.h>
 #include <scene/selector/gmselectorgrid.h>
 

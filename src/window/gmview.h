@@ -31,10 +31,8 @@
 
 
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint.h>
-
-// gmlib::scene
 #include <scene/camera/gmcamera.h>
 
 

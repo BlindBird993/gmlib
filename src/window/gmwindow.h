@@ -35,7 +35,7 @@
 #include "gmview.h"
 #include "gmviewset.h"
 
-// gmlib::scene
+// gmlib
 #include <scene/camera/gmcamera.h>
 
 // gmlib::scene - might be removed as light and is implemented with different mechanisms...
@@ -77,6 +77,7 @@ namespace GMlib {
     void                    insertSun();
     bool                    isRunning() const;
     bool                    isStereoEnabled() const;
+    void                    moveBorder(int x, int y);
     void                    popView(int cam_idx);
     void                    popViewSet();
     void                    prepareViewSets();
@@ -123,7 +124,6 @@ namespace GMlib {
     virtual void            message( const std::string& str);
     virtual void            message( SceneObject* d);
     virtual void            message( Point<float,3>& p);
-    void                    moveBorder(int x, int y);
 
     void                    display();
 

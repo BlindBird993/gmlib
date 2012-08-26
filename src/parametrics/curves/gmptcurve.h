@@ -32,7 +32,7 @@
 
 #include "../gmpcurve.h"
 
-// gmlib::core
+// gmlib
 #include <core/types/gmangle.h>
 
 

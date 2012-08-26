@@ -33,10 +33,8 @@
 
 
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmarray.h>
-
-// gmlib::scene
 #include <scene/gmdisplayobject.h>
 #include <scene/utils/gmmaterial.h>
 

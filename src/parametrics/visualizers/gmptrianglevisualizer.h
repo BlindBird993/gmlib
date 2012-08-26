@@ -36,11 +36,7 @@
 #include <core/types/gmpoint.h>
 #include <core/containers/gmdvector.h>
 #include <core/containers/gmdmatrix.h>
-
-// gmlib::opengl
 #include <opengl/gmopengl.h>
-
-// gmlib::scene
 #include <scene/visualizer/gmvisualizer.h>
 
 

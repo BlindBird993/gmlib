@@ -33,7 +33,7 @@
 
 #include "gmparametrics.h"
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmarray.h>
 #include <core/containers/gmdvector.h>
 #include <core/containers/gmdmatrix.h>

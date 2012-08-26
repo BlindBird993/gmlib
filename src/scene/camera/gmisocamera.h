@@ -34,7 +34,7 @@
 
 #include "gmcamera.h"
 
-// gmlib::core
+// gmlib
 #include <core/utils/gmstream.h>
 
 namespace GMlib {

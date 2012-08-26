@@ -31,7 +31,7 @@
 #define __gmBASISEVALUATOR_H__
 
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmdmatrix.h>
 #include <core/containers/gmdvector.h>
 

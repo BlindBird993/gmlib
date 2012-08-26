@@ -39,7 +39,7 @@
 // local
 #include "gmfrustum.h"
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint.h>
 #include <core/utils/gmtimer.h>
 #include <core/containers/gmsarray.h>

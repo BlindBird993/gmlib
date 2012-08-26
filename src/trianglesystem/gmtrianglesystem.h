@@ -34,7 +34,7 @@
 
 
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint3d.h>
 #include <core/types/gmpoint2d.h>
 #include <core/containers/gmarray.h>
@@ -42,11 +42,7 @@
 #include <core/containers/gmarraylx.h>
 #include <core/containers/gmsarray.h>
 #include <core/containers/gmdmatrix.h>
-
-// gmlib::opengl
 #include <opengl/gmglprogram.h>
-
-// gmlib::scene
 #include <scene/gmdisplayobject.h>
 
 

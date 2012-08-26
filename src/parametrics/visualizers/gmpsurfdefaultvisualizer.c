@@ -31,12 +31,10 @@
 
 #include "../gmpsurf.h"
 
-// gmlib::opengl
+// gmlib
 #include <opengl/gmopengl.h>
 #include <opengl/gmglprogram.h>
 #include <opengl/gmglshadermanager.h>
-
-// gmlib::scene
 #include <scene/gmscene.h>
 #include <scene/camera/gmcamera.h>
 #include <scene/light/gmlight.h>

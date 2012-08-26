@@ -37,7 +37,7 @@
 #include "../gmdisplayobject.h"
 #include "../gmscene.h"
 
-// gmlib::core
+// gmlib
 #include <core/utils/gmstream.h>
 
 // stl

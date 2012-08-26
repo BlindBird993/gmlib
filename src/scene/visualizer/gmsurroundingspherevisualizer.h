@@ -33,10 +33,8 @@
 
 #include "gmvisualizer.h"
 
-// gmlib::core
+// gmlib
 #include <core/utils/gmcolor.h>
-
-// gmlib::opengl
 #include <opengl/gmopengl.h>
 
 

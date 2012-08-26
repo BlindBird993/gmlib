@@ -31,7 +31,7 @@
 #ifndef __gmTEXTURE_H__
 #define __gmTEXTURE_H__
 
-// gmlib::core
+// gmlib
 #include <core/utils/gmcolor.h>
 
 // stl

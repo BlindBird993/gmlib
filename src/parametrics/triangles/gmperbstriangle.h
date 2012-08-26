@@ -35,7 +35,7 @@
 #include "gmpbeziertriangle.h"
 #include "../evaluators/gmerbsevaluator.h"
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmarray.h>
 
 

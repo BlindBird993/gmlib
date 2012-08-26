@@ -35,7 +35,7 @@
 #include "../gmpsurf.h"
 #include "../gmpcurve.h"
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmarray.h>
 
 namespace GMlib {

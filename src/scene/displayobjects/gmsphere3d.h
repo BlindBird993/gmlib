@@ -31,11 +31,9 @@
 #define __gmSPHERE3D_H__
 
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint.h>
 #include <core/containers/gmarray.h>
-
-// gmlib::opengl
 #include <opengl/gmopengl.h>
 #include <opengl/gmglprogram.h>
 

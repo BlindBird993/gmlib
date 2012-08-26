@@ -28,11 +28,9 @@
  */
 
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint.h>
 #include <core/types/gmmatrix.h>
-
-// gmlib::opengl
 #include <opengl/gmopengl.h>
 
 

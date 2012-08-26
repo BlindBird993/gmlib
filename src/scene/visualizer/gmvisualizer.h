@@ -31,10 +31,8 @@
 #define __gmVISUALIZER_H__
 
 
-// gmlib::core
+// gmlib
 #include <core/utils/gmcolor.h>
-
-// gmlib::opengl
 #include <opengl/gmglprogram.h>
 
 // stl

@@ -28,7 +28,7 @@
  */
 
 
-// gmlib::opengl
+// gmlib
 #include <opengl/gmopengl.h>
 #include <opengl/gmglprogram.h>
 #include <opengl/gmglshadermanager.h>
@@ -47,7 +47,7 @@ namespace GMlib {
 
   template <typename T>
   void PCurveVisualizer<T>::fillStandardVBO(
-      GLVertexBufferObject &vbo, unsigned int &no_vertices,
+      VertexBufferObject &vbo, unsigned int &no_vertices,
       DVector< DVector< Vector<T, 3> > >& p, int d ) {
 
     no_vertices = p.getDim();

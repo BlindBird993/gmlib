@@ -33,7 +33,7 @@
 
 #include "gmtexture.h"
 
-// gmlib::core
+// gmlib
 #include <core/utils/gmstring.h>
 #include <core/containers/gmarray.h>
 #include <opengl/gmopengl.h>

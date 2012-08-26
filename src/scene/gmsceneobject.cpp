@@ -35,7 +35,7 @@
 #include "visualizer/gmvisualizer.h"
 #include "visualizer/gmvisualizerstdrep.h"
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint.h>
 
 // stl

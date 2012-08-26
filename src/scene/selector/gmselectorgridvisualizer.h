@@ -32,7 +32,7 @@
 
 #include "../visualizer/gmvisualizer.h"
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmdmatrix.h>
 
 namespace GMlib {

@@ -32,11 +32,9 @@
 
 #include "../utils/gmmaterial.h"
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint3d.h>
 #include <core/containers/gmdvector.h>
-
-// gmlib::opengl
 #include <opengl/gmglprogram.h>
 
 //stl

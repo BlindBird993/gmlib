@@ -40,7 +40,7 @@
 
 #include "gmsceneobject.h"
 
-// gmlib::opengl
+// gmlib
 #include <opengl/gmglmatrix.h>
 
 // stl

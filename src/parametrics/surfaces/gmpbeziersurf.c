@@ -30,10 +30,8 @@
 
 #include "../evaluators/gmevaluatorstatic.h"
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmdmatrix.h>
-
-// gmlib::scene
 #include <scene/selector/gmselector.h>
 #include <scene/selector/gmselectorgrid.h>
 

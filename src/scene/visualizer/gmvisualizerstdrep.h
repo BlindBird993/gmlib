@@ -33,11 +33,9 @@
 
 #include "gmvisualizer.h"
 
-// gmlib::core
+// gmlib
 #include <core/utils/gmcolor.h>
-
-// gmlib::opengl
-#include <opengl/gmopengl.h>
+#include <opengl/gmbufferobject.h>
 
 
 namespace GMlib {
@@ -56,9 +54,9 @@ namespace GMlib {
   protected:
 
     // Cube buffer objects
-    GLBufferObject    _bo_cube;
-    GLBufferObject    _bo_cube_indices;
-    GLBufferObject    _bo_cube_frame_indices;
+    BufferObject    _bo_cube;
+    BufferObject    _bo_cube_indices;
+    BufferObject    _bo_cube_frame_indices;
 
   }; // END class VisualizerStdRep
 

@@ -55,7 +55,7 @@ namespace GMlib {
 
 #ifdef GM_SCRIPT_LUA
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmarray.h>
 #include <core/containers/gmdvector.h>
 

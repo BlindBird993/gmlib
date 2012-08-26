@@ -35,7 +35,7 @@
 
 #include "gmselector.h"
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmdmatrix.h>
 
 

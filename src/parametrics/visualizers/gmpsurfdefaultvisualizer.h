@@ -33,6 +33,12 @@
 
 #include "gmpsurfvisualizer.h"
 
+// gmlib
+#include <opengl/gmvertexbufferobject.h>
+#include <opengl/gmindexbufferobject.h>
+
+
+
 namespace GMlib {
 
   template <typename T>
@@ -50,7 +56,7 @@ namespace GMlib {
     void          select();
 
   protected:
-    GLVertexBufferObject      _vbo;
+    VertexBufferObject        _vbo;
     TriangleStripIBO          _ibo;
     GLuint                    _texture;
 

@@ -31,7 +31,7 @@
 #ifndef __GMFRUSTUM_H__
 #define __GMFRUSTUM_H__
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint.h>
 #include <core/types/gmmatrix.h>
 

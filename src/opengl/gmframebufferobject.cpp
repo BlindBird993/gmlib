@@ -22,41 +22,63 @@
 
 
 
-/*! \file gmtrianglefacetsdefaultvisualizer.h
- *
- *  Interface for the TriangleFacetsDefaultVisualizer class.
- */
-
-#ifndef __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-#define __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-
-
-#include "gmtrianglefacetsvisualizer.h"
-
-// gmlib
+#include "gmframebufferobject.h"
 
 
 namespace GMlib {
 
-  template <typename T>
-  class TriangleFacetsDefaultVisualizer : public TriangleFacetsVisualizer<T> {
-  public:
-    TriangleFacetsDefaultVisualizer();
-    ~TriangleFacetsDefaultVisualizer();
-    void          display();
-    std::string   getIdentity() const;
-    virtual void  replot();
-    void          select();
+  GLuintCMap FramebufferObject::_ids;
 
-  protected:
-    VertexBufferObject        _vbo;
-    TrianglesIBO              _ibo;
+  FramebufferObject::FramebufferObject() {
 
-  }; // END class TriangleFacetsDefaultVisualizer
+    _name = "";
+
+    _id = OGL::createFbo();
+    _valid = true;
+
+    _ids[_id] = 1;
+  }
+
+  FramebufferObject::FramebufferObject(const std::string name) {
+
+    _name = name;
+
+    _valid = OGL::createFbo( name );
+    _id = OGL::getFboId( name );
+
+    _ids[_id] = 1;
+  }
+
+  FramebufferObject::FramebufferObject(const FramebufferObject &copy) {
+
+    _name = copy._name;
+    _id = copy._id;
+
+    _ids[_id]++;
+  }
+
+  FramebufferObject::~FramebufferObject() {
+
+    _ids[_id]--;
+    if( _ids.count(_id) <= 0 )
+      OGL::deleteFbo( _id );
+  }
+
+  GLuint FramebufferObject::getId() const {
+
+    return _id;
+  }
+
+  std::string FramebufferObject::getName() const {
+
+    return _name;
+  }
+
+  bool FramebufferObject::isValid() const {
+
+    return _valid;
+  }
+
+
 
 } // END namespace GMlib
-
-// Include TriangleFacetsDefaultVisualizer class function implementations
-#include "gmtrianglefacetsdefaultvisualizer.c"
-
-#endif // __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__

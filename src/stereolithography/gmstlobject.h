@@ -31,16 +31,10 @@
 #define __gmSTLOBJECT_H__
 
 
-// gmlib::core
+// gmlib
 #include <core/containers/gmarraylx.h>
-
-// gmlib::scene
 #include <scene/gmdisplayobject.h>
-
-// gmlib::parametrics
 #include <parametrics/surfaces/gmpsphere.h>
-
-// gmlib::trianglesystem
 #include <trianglesystem/gmtrianglesystem.h>
 
 // stl

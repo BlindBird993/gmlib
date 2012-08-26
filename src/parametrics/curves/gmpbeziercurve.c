@@ -29,7 +29,7 @@
 
 #include "../evaluators/gmevaluatorstatic.h"
 
-// gmlib::scene
+// gmlib
 #include <scene/selector/gmselectorgridvisualizer.h>
 
 namespace GMlib {

@@ -21,42 +21,54 @@
 **********************************************************************************/
 
 
-
-/*! \file gmtrianglefacetsdefaultvisualizer.h
- *
- *  Interface for the TriangleFacetsDefaultVisualizer class.
- */
-
-#ifndef __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-#define __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
+#ifndef __gmFRAMEBUFFEROBJECT_H__
+#define __gmFRAMEBUFFEROBJECT_H__
 
 
-#include "gmtrianglefacetsvisualizer.h"
-
-// gmlib
+#include "gmopengl.h"
 
 
 namespace GMlib {
 
-  template <typename T>
-  class TriangleFacetsDefaultVisualizer : public TriangleFacetsVisualizer<T> {
+  class FramebufferObject {
   public:
-    TriangleFacetsDefaultVisualizer();
-    ~TriangleFacetsDefaultVisualizer();
-    void          display();
-    std::string   getIdentity() const;
-    virtual void  replot();
-    void          select();
+    explicit FramebufferObject();
+    explicit FramebufferObject( const std::string name );
+    FramebufferObject( const FramebufferObject& copy );
+    ~FramebufferObject();
+
+    void                    bind() const;
+    GLuint                  getId() const;
+    std::string             getName() const;
+    bool                    isValid() const;
+    void                    unbind() const;
 
   protected:
-    VertexBufferObject        _vbo;
-    TrianglesIBO              _ibo;
+    std::string             _name;
+    GLuint                  _id;
+    bool                    _valid;
 
-  }; // END class TriangleFacetsDefaultVisualizer
+  private:
+    static GLuintCMap       _ids;
+
+
+  }; // END class FramebufferObject
+
+
+  inline
+  void FramebufferObject::bind() const {
+
+    glBindFramebuffer( GL_FRAMEBUFFER, _id );
+  }
+
+  inline
+  void FramebufferObject::unbind() const {
+
+    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+  }
+
 
 } // END namespace GMlib
 
-// Include TriangleFacetsDefaultVisualizer class function implementations
-#include "gmtrianglefacetsdefaultvisualizer.c"
 
-#endif // __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
+#endif // __gmFRAMEBUFFEROBJECT_H__

@@ -34,7 +34,7 @@
 
 #include "gmopengl.h"
 
-// gmlib::core
+// gmlib
 #include <core/types/gmpoint.h>
 
 
