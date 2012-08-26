@@ -50,8 +50,6 @@ namespace GMlib {
     GLVertexBufferObject      _vbo;
     TrianglesIBO              _ibo;
 
-    unsigned int              _no_indices;
-
   }; // END class TriangleFacetsDefaultVisualizer
 
 } // END namespace GMlib

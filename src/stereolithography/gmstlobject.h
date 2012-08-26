@@ -34,8 +34,8 @@
 // gmlib::core
 #include <core/containers/gmarraylx.h>
 
-// gmlib::scenegraph
-#include <scenegraph/gmdisplayobject.h>
+// gmlib::scene
+#include <scene/gmdisplayobject.h>
 
 // gmlib::parametrics
 #include <parametrics/surfaces/gmpsphere.h>

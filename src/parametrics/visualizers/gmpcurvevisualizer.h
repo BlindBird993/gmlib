@@ -37,8 +37,8 @@
 #include <core/containers/gmdvector.h>
 #include <core/utils/gmcolor.h>
 
-// gmlib::scenegraph
-#include <scenegraph/visualizer/gmvisualizer.h>
+// gmlib::scene
+#include <scene/visualizer/gmvisualizer.h>
 
 
 namespace GMlib {

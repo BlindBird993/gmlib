@@ -36,9 +36,9 @@
 // gmlib::core
 #include <core/containers/gmarray.h>
 
-// gmlib::scenegraph
-#include <scenegraph/gmdisplayobject.h>
-#include <scenegraph/utils/gmmaterial.h>
+// gmlib::scene
+#include <scene/gmdisplayobject.h>
+#include <scene/utils/gmmaterial.h>
 
 // stl
 #include <string>

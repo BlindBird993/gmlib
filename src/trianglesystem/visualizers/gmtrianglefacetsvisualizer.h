@@ -32,8 +32,8 @@
 #define __gmTRIANGLEFACETSVISUALIZER_H__
 
 
-// gmlib::scenegraph
-#include <scenegraph/visualizer/gmvisualizer.h>
+// gmlib::scene
+#include <scene/visualizer/gmvisualizer.h>
 
 // gmlib::opengl
 #include <opengl/gmopengl.h>
@@ -54,10 +54,10 @@ namespace GMlib {
     void          set( SceneObject* obj );
 
 
-    static void   fillStandardVBO(  GLVertexBufferObject& vbo,
-                                    unsigned int& no_vertices,
-                                    const TriangleFacets<T>* tf );
-
+    static void   fillStandardVBO( GLVertexBufferObject& vbo,
+                                   const TriangleFacets<T>* tf );
+    static void   fillStandardIBO( TrianglesIBO& ibo,
+                                   const TriangleFacets<T>* tf );
 
   protected:
     TriangleFacets<T>      *_tf;

@@ -39,8 +39,8 @@
 // gmlib::opengl
 #include <opengl/gmopengl.h>
 
-// gmlib::scenegraph
-#include <scenegraph/visualizer/gmvisualizer.h>
+// gmlib::scene
+#include <scene/visualizer/gmvisualizer.h>
 
 
 namespace GMlib {

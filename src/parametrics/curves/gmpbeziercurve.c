@@ -29,8 +29,8 @@
 
 #include "../evaluators/gmevaluatorstatic.h"
 
-// gmlib::scenegraph
-#include <scenegraph/selector/gmselectorgridvisualizer.h>
+// gmlib::scene
+#include <scene/selector/gmselectorgridvisualizer.h>
 
 namespace GMlib {
 

@@ -30,11 +30,11 @@
 
 #include "../gmpsurf.h"
 
-// gmlib::scenegraph
-#include <scenegraph/gmscene.h>
-#include <scenegraph/camera/gmcamera.h>
-#include <scenegraph/light/gmlight.h>
-#include <scenegraph/utils/gmmaterial.h>
+// gmlib::scene
+#include <scene/gmscene.h>
+#include <scene/camera/gmcamera.h>
+#include <scene/light/gmlight.h>
+#include <scene/utils/gmmaterial.h>
 
 // gmlib::opengl
 #include <opengl/gmopengl.h>

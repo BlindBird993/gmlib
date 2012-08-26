@@ -35,12 +35,12 @@
 #include "gmview.h"
 #include "gmviewset.h"
 
-// gmlib::scenegraph
-#include <scenegraph/camera/gmcamera.h>
+// gmlib::scene
+#include <scene/camera/gmcamera.h>
 
-// gmlib::scenegraph - might be removed as light and is implemented with different mechanisms...
-#include <scenegraph/light/gmlight.h>
-#include <scenegraph/light/gmsun.h>
+// gmlib::scene - might be removed as light and is implemented with different mechanisms...
+#include <scene/light/gmlight.h>
+#include <scene/light/gmsun.h>
 
 // stl
 #include <iostream>

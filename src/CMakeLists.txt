@@ -32,20 +32,20 @@ addModule(Core)
 # Add OpenGL module
 addModule(OpenGL Core)
 
-# Add SceneGraph moudle
-addModule(Scenegraph Core OpenGL)
+# Add Scene module
+addModule(Scene Core OpenGL)
 
 # Add Parametrics module
-addModule(Parametrics Core OpenGL SceneGraph)
+addModule(Parametrics Core OpenGL Scene)
 
 # Add TringleSystem module
-addModule(TriangleSystem Core OpenGL SceneGraph)
+addModule(TriangleSystem Core OpenGL Scene)
 
 # Add STereoLithography module
-addModule(StereoLithography Core SceneGraph Parametrics TriangleSystem)
+addModule(StereoLithography Core SceneParametrics TriangleSystem)
 
 # Add Window module
-addModule(Window Core OpenGL SceneGraph)
+addModule(Window Core OpenGL Scene)
 
 # Add Script module
 addModule(Script Core)

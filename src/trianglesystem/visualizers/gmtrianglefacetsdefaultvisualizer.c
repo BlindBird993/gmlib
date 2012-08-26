@@ -35,7 +35,7 @@ namespace GMlib {
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() :
-    _vbo(), _ibo(), _no_indices(0) {}
+    _vbo(), _ibo() {}
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::~TriangleFacetsDefaultVisualizer() {}
@@ -84,49 +84,8 @@ namespace GMlib {
   inline
   void TriangleFacetsDefaultVisualizer<T>::replot() {
 
-    TriangleFacetsVisualizer<T>::fillStandardVBO( _vbo, _no_indices, this->_tf );
-//   _vbo.fill( this->_tf );
-   _ibo.fill( this->_tf );
-
-//    // Fill the VBO
-//    int no_vertices = this->_tf->getSize();
-//    GLVertex2D vertices[no_vertices];
-
-//    for( int i = 0; i < no_vertices; i++ ) {
-
-//      TSVertex<T> *v = this->_tf->getVertex(i);
-//      const Point<T,3> &pos = v->getPos();
-//      const Vector<T,3> &nor = v->getDir();
-
-//      vertices[i].x = pos(0);
-//      vertices[i].y = pos(1);
-//      vertices[i].z = pos(2);
-
-//      vertices[i].nx = nor(0);
-//      vertices[i].ny = nor(1);
-//      vertices[i].nz = nor(2);
-//    }
-
-//    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-//    glBufferData( GL_ARRAY_BUFFER, no_vertices * sizeof(GLVertex2D), vertices, GL_STATIC_DRAW );
-//    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-//    int no_indices = this->_tf->getNoTriangles() * 3;
-//    GLushort indices[no_indices];
-//    GLushort *iptr = indices;
-
-//    for( int i = 0; i < this->_tf->getNoTriangles(); i++ ) {
-
-//      Array< TSVertex<T>* > tri_verts = this->_tf->getTriangle(i)->getVertices();
-//      for( int j = 0; j < tri_verts.getSize(); j++ )
-//        for( int k = 0; k < this->_tf->getSize(); k++ )
-//          if( tri_verts[j] == this->_tf->getVertex(k) )
-//            *iptr++ = k;
-//    }
-
-//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-//    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
-//    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+    TriangleFacetsVisualizer<T>::fillStandardVBO( _vbo, this->_tf );
+    TriangleFacetsVisualizer<T>::fillStandardIBO( _ibo, this->_tf );
   }
 
   template <typename T>

@@ -33,9 +33,9 @@
 // gmlib::core
 #include <core/containers/gmdmatrix.h>
 
-// gmlib::scenegraph
-#include <scenegraph/selector/gmselector.h>
-#include <scenegraph/selector/gmselectorgrid.h>
+// gmlib::scene
+#include <scene/selector/gmselector.h>
+#include <scene/selector/gmselectorgrid.h>
 
 namespace GMlib {
 

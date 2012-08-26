@@ -46,8 +46,8 @@
 // gmlib::opengl
 #include <opengl/gmglprogram.h>
 
-// gmlib::scenegraph
-#include <scenegraph/gmdisplayobject.h>
+// gmlib::scene
+#include <scene/gmdisplayobject.h>
 
 
 namespace GMlib {

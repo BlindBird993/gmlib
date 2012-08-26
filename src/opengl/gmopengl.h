@@ -1049,10 +1049,10 @@ namespace GMlib {
     explicit TrianglesIBO( const std::string& name );
 
     virtual void      draw();
-    virtual void      fill(const TriangleFacets<float> *tf );
+
+    int       _no_indices;
 
   private:
-    int       _no_indices;
 
     void      init();
 

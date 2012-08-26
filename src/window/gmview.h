@@ -34,8 +34,8 @@
 // gmlib::core
 #include <core/types/gmpoint.h>
 
-// gmlib::scenegraph
-#include <scenegraph/camera/gmcamera.h>
+// gmlib::scene
+#include <scene/camera/gmcamera.h>
 
 
 namespace GMlib {

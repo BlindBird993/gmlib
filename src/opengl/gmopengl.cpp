@@ -32,9 +32,6 @@
 
 #include "gmglshadermanager.h"
 
-// gmlib::trianglesystem
-#include <trianglesystem/gmtrianglesystem.h>
-
 // stl
 #include <limits>
 #include <iostream>
@@ -1064,25 +1061,6 @@ namespace GMlib {
     bind();
     glDrawElements( GL_TRIANGLES, _no_indices, getType(), (const GLvoid*)0x0 );
     unbind();
-  }
-
-  void TrianglesIBO::fill(const TriangleFacets<float> *tf) {
-
-    _no_indices = tf->getNoTriangles() * 3;
-
-    GLuint indices[_no_indices];
-    GLuint *iptr = indices;
-
-    for( int i = 0; i < tf->getNoTriangles(); i++ ) {
-
-      Array< TSVertex<float>* > tri_verts = tf->getTriangle(i)->getVertices();
-      for( int j = 0; j < tri_verts.getSize(); j++ )
-        for( int k = 0; k < tf->getSize(); k++ )
-          if( tri_verts[j] == tf->getVertex(k) )
-            *iptr++ = k;
-    }
-
-    createBufferData( _no_indices, indices, GL_STATIC_DRAW );
   }
 
   void TrianglesIBO::init() {
