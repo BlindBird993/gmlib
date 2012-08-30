@@ -42,7 +42,7 @@ addModule(Parametrics Core OpenGL Scene)
 addModule(TriangleSystem Core OpenGL Scene)
 
 # Add STereoLithography module
-addModule(StereoLithography Core SceneParametrics TriangleSystem)
+addModule(StereoLithography Core Scene Parametrics TriangleSystem)
 
 # Add Window module
 addModule(Window Core OpenGL Scene)
