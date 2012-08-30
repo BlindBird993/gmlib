@@ -44,3 +44,6 @@ addSources(
   gmvertexbufferobject.cpp
 )
 
+moduleLinkLibrary( ${GLEW_LIBRARY} )
+moduleLinkLibrary( ${OPENGL_LIBRARIES} )
+
