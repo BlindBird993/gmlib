@@ -10,12 +10,16 @@
 IF (WIN32)
   FIND_PATH( GLEW_INCLUDE_PATH GL/glew.h
     $ENV{PROGRAMFILES}/GLEW/include
-    DOC "The directory where GL/glew.h resides")
+    DOC "The directory where GL/glew.h resides"
+    NO_DEFAULT_PATH
+    )
   FIND_LIBRARY( GLEW_LIBRARY
     NAMES glew GLEW glew32 glew32s
     PATHS
     $ENV{PROGRAMFILES}/GLEW/lib
-    DOC "The GLEW library")
+    DOC "The GLEW library"
+    NO_DEFAULT_PATH
+    )
 ELSE (WIN32)
   FIND_PATH( GLEW_INCLUDE_PATH GL/glew.h
     /usr/include
