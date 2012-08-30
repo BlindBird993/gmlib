@@ -108,10 +108,10 @@ namespace GMlib {
 
     // Fill IBO
     _no_indices = (c.getDim()-1) * 2;
-    GLushort indices[_no_indices];
+    DVector<GLushort> indices(_no_indices);
 
     // Define grid lines
-    GLushort *iptr = indices;
+    GLushort *iptr = indices.getPtr();
     for( int i = 0; i < c.getDim(); i++ ) {
 
       *iptr++ = i;
@@ -119,7 +119,7 @@ namespace GMlib {
     }
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, _no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, _no_indices * sizeof(GLushort), indices.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 
@@ -137,8 +137,8 @@ namespace GMlib {
 
     // Create the indice buffer
     _no_indices = (c.getDim1() * (c.getDim2()-1) + (c.getDim1()-1) * c.getDim2()) * 2;
-    GLushort indices[_no_indices];
-    GLushort *iptr = indices;
+    DVector<GLushort> indices(_no_indices);
+    GLushort *iptr = indices.getPtr();
 
     // "Lines" in i dir
     for( int i = 0; i < c.getDim1(); i++ ) {
@@ -159,7 +159,7 @@ namespace GMlib {
     }
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, _no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, _no_indices * sizeof(GLushort), indices.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 

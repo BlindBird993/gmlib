@@ -118,7 +118,7 @@ namespace GMlib {
 
     int no_indices = m*(m+2);
 
-    GLushort indices[no_indices];
+    DVector<GLushort> indices(no_indices);
     for( int i = 0; i < m; i++ ) {
 
       const int o1 = 0.5 *  i    * (i+1);
@@ -136,7 +136,7 @@ namespace GMlib {
     }
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 

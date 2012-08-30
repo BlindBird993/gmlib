@@ -30,6 +30,10 @@
 
 #include "gmglshadermanager.h"
 
+// gmlib
+#include <core/containers/gmdvector.h>
+
+
 // stl
 #include <iostream>
 
@@ -1021,10 +1025,10 @@ std::string GLShaderManager::getShaderSource(const std::string &name) {
 
   param++;
   int read;
-  char buff[param];
-  glGetShaderSource( _shaders[name].id, param, &read, buff );
+  DVector<char> buff(param);
+  glGetShaderSource( _shaders[name].id, param, &read, buff.getPtr() );
 
-  return std::string( buff );
+  return std::string( buff.getPtr() );
 }
 
 GLenum GLShaderManager::getShaderType(const std::string &name) {

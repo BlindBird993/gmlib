@@ -71,8 +71,8 @@ namespace GMlib {
 
     int no_indices = tf->getNoTriangles() * 3;
 
-    GLuint indices[no_indices];
-    GLuint *iptr = indices;
+    DVector<GLuint> indices(no_indices);
+    GLuint *iptr = indices.getPtr();
 
     for( int i = 0; i < tf->getNoTriangles(); i++ ) {
 
@@ -85,7 +85,7 @@ namespace GMlib {
 
     ibo._no_indices = no_indices;
     ibo.bind();
-    ibo.createBufferData( no_indices, indices, GL_STATIC_DRAW );
+    ibo.createBufferData( no_indices, indices.getPtr(), GL_STATIC_DRAW );
     ibo.unbind();
   }
 

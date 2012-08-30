@@ -136,7 +136,7 @@ namespace GMlib {
 
     int no_indices = _no_strips * _no_indices_per_strip;
 
-    GLuint indices[no_indices];
+    DVector<GLuint> indices(no_indices);
     for( int i = 0; i < m1-1; i++ ) {
 
       const int idx_i = i * m2 * 2;
@@ -149,7 +149,7 @@ namespace GMlib {
     }
 
     bind();
-    createBufferData( no_indices, indices, GL_STATIC_DRAW );
+    createBufferData( no_indices, indices.getPtr(), GL_STATIC_DRAW );
     unbind();
 
     // Strip size must be set after createBufferData( ... ) is called
