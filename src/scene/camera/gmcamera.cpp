@@ -714,13 +714,20 @@ namespace GMlib {
     std::cout << "Camera::select()" << std::endl;
     OGL::clearSelectBuffer();
     OGL::bindSelectBuffer();
+
+    GLboolean depth_test_state;
+    glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
+    glEnable( GL_DEPTH_TEST );
+
     glViewport(_x,_y,_w,_h);
-     std::cout << "  viewport(x,y,w,h): (" << _x << ", " << _y << ", " << _w << ", " << _h << ")" << std::endl;
 
     const GLProgram &select_prog = getSelectProgram();
     select_prog.bind();
     _scene->select(type_id, this);
     select_prog.unbind();
+
+    if( !depth_test_state )
+      glDisable( GL_DEPTH_TEST );
 
     OGL::releaseSelectBuffer();
   }
