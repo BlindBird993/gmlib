@@ -76,7 +76,7 @@ namespace GMlib {
   inline
   T* BufferObject::mapBuffer(GLenum access ) const {
 
-    (T*)glMapBuffer( _target, access );
+    return static_cast<T*>(glMapBuffer( _target, access ));
   }
 
   inline

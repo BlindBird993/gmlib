@@ -53,8 +53,8 @@ namespace GMlib {
 
     // Fill the vertice buffer
     const int no_dp = _c.getDim();
-    GLfloat dp[no_dp*3];
-    float *dptr = dp;
+    DVector<GLfloat> dp(no_dp*3);
+    float *dptr = dp.getPtr();
     for( int i = 0; i < no_dp; i++ ) {
 
       *dptr++ = (*_c[i])(0);
@@ -63,7 +63,7 @@ namespace GMlib {
     }
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
-    glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(GLfloat), dp, GL_STATIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(GLfloat), dp.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 

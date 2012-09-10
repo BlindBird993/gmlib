@@ -151,7 +151,8 @@ namespace GMlib {
   void ViewSet::prepareGraphics() {
 
     _no_borders = _borders.size();
-    GLBorder data[_no_borders];
+
+    DVector<GLBorder> data(_no_borders);
     for( int i = 0; i < _no_borders; ++i ) {
 
       const float w_fact = 1.0f/float(_vp_w);
@@ -172,7 +173,7 @@ namespace GMlib {
     }
 
     _vbo.bind();
-    _vbo.createBufferData(_no_borders * sizeof(GLBorder), data, GL_STATIC_DRAW);
+    _vbo.createBufferData(_no_borders * sizeof(GLBorder), data.getPtr(), GL_STATIC_DRAW);
     _vbo.unbind();
   }
 
