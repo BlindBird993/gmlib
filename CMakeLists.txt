@@ -34,6 +34,15 @@ option( GMLIB_STREAM "Enable output stream operators for core types." FALSE )
 option( GMLIB_NAMESPACE "Set to TRUE to enable the <GMlib> namespace." FALSE )
 option( GMLIB_MODULE_NAMESPACES "Set to TRUE to enable pr. module namespace." FALSE )
 
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+    "MinSizeRel" "RelWithDebInfo")
+endif()
+
 # Build shared libs instead of static libs
 option( GMLIB_SHARED_LIBS "Build shared libs instead of static libs." TRUE )
 if( GMLIB_SHARED_LIBS )
