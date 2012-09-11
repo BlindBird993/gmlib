@@ -47,8 +47,10 @@ endif()
 option( GMLIB_SHARED_LIBS "Build shared libs instead of static libs." TRUE )
 if( GMLIB_SHARED_LIBS )
   set( BUILD_SHARED_LIBS TRUE )
+  message( "GMlib: Building shared libs!" )
 else()
   set( BUILD_SHARED_LIBS FALSE )
+  message( "GMlib: Building static libs!" )
 endif()
 
 # Build documentation
