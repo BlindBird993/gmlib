@@ -222,6 +222,9 @@ namespace GMlib {
    */
   SceneObject*	Camera::findSelectObject(int x, int y, int type_id) {
 
+    // Cull the scene using the camera's frustum
+    _scene->culling( _frustum, _culling );
+
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     Color c;
     select(type_id);
