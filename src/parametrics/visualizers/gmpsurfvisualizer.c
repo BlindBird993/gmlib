@@ -144,7 +144,7 @@ namespace GMlib {
   void PSurfVisualizer<T>::fillTriangleStripIBO(GLuint ibo_id, int m1, int m2) {
 
     const int no_indices = (m1-1) * m2 * 2;
-    GLushort indices[no_indices];
+    DVector<GLushort> indices(no_indices);
     for( int i = 0; i < m1-1; i++ ) {
 
       const int idx_i = i * m2 * 2;
@@ -157,7 +157,7 @@ namespace GMlib {
     }
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices, GL_STATIC_DRAW );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 

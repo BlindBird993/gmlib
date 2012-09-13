@@ -275,15 +275,13 @@ namespace GMlib {
    *  Pending Documentation
    */
   template <typename T, int n>
-  void Selector<T,n>::localDisplay( Camera* cam ) {
+  void Selector<T,n>::localDisplay() {
 
     if( _enabled ) {
 
       glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
       _display.bind();
-
-      _display.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
 
       GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
 

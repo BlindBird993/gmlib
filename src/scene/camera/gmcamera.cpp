@@ -97,86 +97,6 @@ namespace GMlib {
   ) : DisplayObject(pos,dir,up),_scene(&_default_scene) {
 
     resetC(zoom);
-
-    glGenBuffers( 1, &_vbo_quad );
-    glGenBuffers( 1, &_vbo_quad_tex );
-
-    // Gen quad data (vertex)
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
-
-    DVector< Point<float,3> > data(4);
-//    data[0] = Point3D<float>( 0.25f, 0.25f, 0.0f );
-//    data[1] = Point3D<float>( 0.25f, 0.75f, 0.0f );
-//    data[2] = Point3D<float>( 0.75f, 0.75f, 0.0f );
-//    data[3] = Point3D<float>( 0.75f, 0.25f, 0.0f );
-    data[0] = Point3D<float>( 0.0f, 0.0f, 0.0f );
-    data[1] = Point3D<float>( 0.0f, 1.0f, 0.0f );
-    data[2] = Point3D<float>( 1.0f, 1.0f, 0.0f );
-    data[3] = Point3D<float>( 1.0f, 0.0f, 0.0f );
-
-    glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    // Gen quad data (tex)
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
-
-    DVector< Point<float,2> > data_tex(4);
-    data_tex[0] = Point2D<float>( 0.0f, 0.0f );
-    data_tex[1] = Point2D<float>( 0.0f, 1.0f );
-    data_tex[2] = Point2D<float>( 1.0f, 1.0f );
-    data_tex[3] = Point2D<float>( 1.0f, 0.0f );
-  //  data_tex[0] = Point2D<float>( 0.25f, 0.25f );
-  //  data_tex[1] = Point2D<float>( 0.25f, 0.75f );
-  //  data_tex[2] = Point2D<float>( 0.75f, 0.75f );
-  //  data_tex[3] = Point2D<float>( 0.75f, 0.25f );
-
-    glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-
-
-    glGenBuffers( 1, &_vbo_quad_debug );
-    glGenBuffers( 1, &_vbo_quad_tex_debug );
-
-    // Gen quad data (vertex)
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_debug );
-
-//    DVector< Point<float,3> > data(4);
-//    data[0] = Point3D<float>( 0.25f, 0.25f, 0.0f );
-//    data[1] = Point3D<float>( 0.25f, 0.75f, 0.0f );
-//    data[2] = Point3D<float>( 0.75f, 0.75f, 0.0f );
-//    data[3] = Point3D<float>( 0.75f, 0.25f, 0.0f );
-//    data[0] = Point3D<float>( 0.0f, 0.0f, 0.0f );
-//    data[1] = Point3D<float>( 0.0f, 1.0f, 0.0f );
-//    data[2] = Point3D<float>( 1.0f, 1.0f, 0.0f );
-//    data[3] = Point3D<float>( 1.0f, 0.0f, 0.0f );
-//    data[0] = Point3D<float>( 0.8f, 0.8f, -0.1f );
-//    data[1] = Point3D<float>( 0.8f, 1.0f, -0.1f );
-//    data[2] = Point3D<float>( 1.0f, 1.0f, -0.1f );
-//    data[3] = Point3D<float>( 1.0f, 0.8f, -0.1f );
-    data[0] = Point3D<float>( 0.0f, 0.0f, 0.0f );
-    data[1] = Point3D<float>( 0.0f, 2.0f, 0.0f );
-    data[2] = Point3D<float>( 2.0f, 2.0f, 0.0f );
-    data[3] = Point3D<float>( 2.0f, 0.0f, 0.0f );
-
-    glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    // Gen quad data (tex)
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex_debug );
-
-//    DVector< Point<float,2> > data_tex(4);
-//    data_tex[0] = Point2D<float>( 0.0f, 0.0f );
-//    data_tex[1] = Point2D<float>( 0.0f, 1.0f );
-//    data_tex[2] = Point2D<float>( 1.0f, 1.0f );
-//    data_tex[3] = Point2D<float>( 1.0f, 0.0f );
-    data_tex[0] = Point2D<float>( 0.25f, 0.25f );
-    data_tex[1] = Point2D<float>( 0.25f, 0.75f );
-    data_tex[2] = Point2D<float>( 0.75f, 0.75f );
-    data_tex[3] = Point2D<float>( 0.75f, 0.25f );
-
-    glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
 
@@ -185,14 +105,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  Camera::~Camera() {
-
-    glDeleteBuffers( 1, &_vbo_quad_tex );
-    glDeleteBuffers( 1, &_vbo_quad );
-
-    glDeleteBuffers( 1, &_vbo_quad_tex_debug );
-    glDeleteBuffers( 1, &_vbo_quad_debug );
-  }
+  Camera::~Camera() {}
 
 
   /*! double Camera::deltaTranslate(DisplayObject *)
@@ -338,18 +251,6 @@ namespace GMlib {
    */
   void Camera::go(bool stereo) {
 
-//    OGL::clearRenderBuffer();
-
-
-//    OGL::bindFbo( "render_fbo" );
-//    Color cc = Color(getName()*5000000);
-//    if( getName() == 5 )
-//      glClearColor( GMcolor::Blue );
-//    else
-//      glClearColor( GMcolor::Red );
-//    std::cout << "Name: " << getName() << std::endl;
-//    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-//    OGL::releaseFbo( "render_fbo" );
 
 
     _active = true;

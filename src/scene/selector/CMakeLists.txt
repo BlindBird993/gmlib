@@ -24,11 +24,9 @@
 addHeaders(
   gmSelector
   gmSelectorGrid
-  gmSelectorGridVisualizer
 )
 
 addTemplateSources(
   gmselector.c
   gmselectorgrid.c
-  gmselectorgridvisualizer.c
 )

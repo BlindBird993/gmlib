@@ -25,7 +25,7 @@
 /*! \file gmselectorgridvisualizer.c
  */
 
-#include "gmselector.h"
+#include "../selector/gmselector.h"
 
 namespace GMlib {
 

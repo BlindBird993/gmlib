@@ -27,8 +27,8 @@
  *  Interface for the EvaluatorStatic class.
  */
 
-#ifndef __gmEVALUATRORSTATIC_H__
-#define __gmEVALUATRORSTATIC_H__
+#ifndef __gmEVALUATORSTATIC_H__
+#define __gmEVALUATORSTATIC_H__
 
 
 // gmlib

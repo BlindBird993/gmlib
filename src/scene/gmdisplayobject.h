@@ -87,8 +87,8 @@ namespace GMlib {
     virtual Vector<float,3>	  getDir();
     Point<float,3>	          getLockPos();
     double				            getLockDist();
-    const HqMatrix<float,3>&  getMatrixScene() const;
-    const HqMatrix<float,3>&  getMatrixSceneInverse() const;
+    const HqMatrix<float,3>&  getMatrixToScene() const;
+    const HqMatrix<float,3>&  getMatrixToSceneInverse() const;
     virtual Point<float,3>	  getPos();
     virtual Vector<float,3>   getSide();
     virtual Vector<float,3>   getUp();
@@ -154,7 +154,7 @@ namespace GMlib {
     // *****************
     // Virtual functions
     // from SceneObject
-    void			                _prepareDisplay(const HqMatrix<float,3>& m);
+    void			                prepareDisplay(const HqMatrix<float,3>& m);
     void			                localSimulate(double dt);
 
 
@@ -293,13 +293,13 @@ namespace GMlib {
   }
 
   inline
-  const HqMatrix<float,3>& DisplayObject::getMatrixScene() const {
+  const HqMatrix<float,3>& DisplayObject::getMatrixToScene() const {
 
     return _matrix_scene;
   }
 
   inline
-  const HqMatrix<float,3>&  DisplayObject::getMatrixSceneInverse() const {
+  const HqMatrix<float,3>&  DisplayObject::getMatrixToSceneInverse() const {
 
     return _matrix_scene_inv;
   }
@@ -400,4 +400,4 @@ namespace GMlib {
 
 } // END namespace GMlib
 
-#endif // __gmDIDPLAYOBJECT_H__
+#endif // __gmDISPLAYOBJECT_H__

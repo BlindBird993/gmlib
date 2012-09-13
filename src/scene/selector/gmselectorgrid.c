@@ -146,14 +146,12 @@ namespace GMlib {
    *  add a new line
    */
   template <typename T, int n>
-  void SelectorGrid<T,n>::localDisplay( Camera* cam ) {
+  void SelectorGrid<T,n>::localDisplay() {
 
     if( !_selectors )
       return;
 
     _prog.bind();
-
-    _prog.setUniform( "u_mvpmat", this->getModelViewProjectionMatrix(cam), 1, true );
 
     _prog.setUniform( "u_color", GMcolor::Green );
     _prog.setUniform( "u_selected", false );
@@ -187,7 +185,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void SelectorGrid<T,n>::localSelect( Camera* cam, const Color& name ) {}
+  void SelectorGrid<T,n>::localSelect() {}
 
   template <typename T, int n>
   void SelectorGrid<T,n>::setSelectors( DMatrix< Vector<T,n> >& selectors ) {

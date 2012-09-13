@@ -159,7 +159,7 @@ namespace GMlib {
   }
 
 
-  /*! int SceneObject::_prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother=0)
+  /*! int SceneObject::prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother=0)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
@@ -201,7 +201,7 @@ namespace GMlib {
   }
 
 
-  /*! void SceneObject::_prepareDisplay( const HqMatrix<float,3>& mat )
+  /*! void SceneObject::prepareDisplay( const HqMatrix<float,3>& mat )
    *  \brief Pending Documentation
    *
    *  Made specially for DisplayObject's
@@ -317,7 +317,7 @@ namespace GMlib {
     static HqMatrix<float,3> mv_mat;
 
     // Translate to scene coordinates
-    mv_mat = cam->SceneObject::getMatrix() * cam->_matrix_scene;
+    mv_mat = cam->SceneObject::getMatrix() * cam->getMatrixToSceneInverse();
 
     // Apply local coordinate system
     if( _local_cs && local_cs )
@@ -404,7 +404,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localDisplay( Camera* cam ) {  }
+  void SceneObject::localDisplay() {  }
 
   /*! void localSelect()
    *  \brief Pending Documentation

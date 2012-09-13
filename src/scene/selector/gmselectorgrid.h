@@ -64,8 +64,8 @@ namespace GMlib {
     DMatrix< Vector<T,n> > *_selectors;
 
 
-    void localDisplay( Camera* cam );
-    void localSelect( Camera* cam, const Color& name );
+    void localDisplay();
+    void localSelect();
 
   private:
     void    _updateIBO();

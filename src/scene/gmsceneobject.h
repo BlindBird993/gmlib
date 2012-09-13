@@ -239,7 +239,7 @@ namespace GMlib{
     Visualizer                  *_std_rep_visu;
 
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
-    virtual void                localDisplay( Camera* cam );
+    virtual void                localDisplay();
     virtual void                localSelect();
     virtual void                localSimulate(double dt);
     void                        reset();
@@ -367,7 +367,7 @@ namespace GMlib{
           prog.unbind();
         }
 
-        localDisplay(cam);
+        localDisplay();
       }
     }
   }

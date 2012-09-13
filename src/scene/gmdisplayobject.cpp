@@ -482,13 +482,13 @@ namespace GMlib {
   }
 
 
-  /*! void DisplayObject::_prepareDisplay(const HqMatrix<float,3>& m)
+  /*! void DisplayObject::prepareDisplay(const HqMatrix<float,3>& m)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    *  Virtual SceneObject function
    */
-  void DisplayObject::_prepareDisplay( const HqMatrix<float,3>& mat ) {
+  void DisplayObject::prepareDisplay( const HqMatrix<float,3>& mat ) {
 
     /*! \todo fix the way the matrix is handled */
     _matrix_scene = mat;

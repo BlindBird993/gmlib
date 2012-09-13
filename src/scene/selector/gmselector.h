@@ -87,7 +87,7 @@ namespace GMlib{
 
     void                  allDisable();
     void                  allEnable();
-    void                  localDisplay( Camera* cam );
+    void                  localDisplay();
     void                  localSelect();
 
 

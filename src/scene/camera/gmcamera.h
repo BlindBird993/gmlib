@@ -171,7 +171,6 @@ namespace GMlib {
     static Scene                _default_scene;
     static unsigned int         _display_list;
 
-
     Scene*                      _scene;
     int                         _x,_y,_w,_h;					// Viewport position and size.
 
@@ -186,13 +185,6 @@ namespace GMlib {
     bool                        _culling;
     bool                        _blend_sort;
 
-
-    // Two pass
-    GLuint                      _vbo_quad;
-    GLuint                      _vbo_quad_tex;
-
-    GLuint                      _vbo_quad_debug;
-    GLuint                      _vbo_quad_tex_debug;
   }; // END class Camera
 
 
@@ -258,19 +250,17 @@ namespace GMlib {
   inline
   void Camera::display() {
 
-    std::cout << "Camera::display()" << std::endl;
     setPerspective();
     glViewport(_x,_y,_w,_h);
-    std::cout << "  viewport(x,y,w,h): (" << _x << ", " << _y << ", " << _w << ", " << _h << ")" << std::endl;
 
-      // Cull the scene using the camera's frustum
-      _scene->culling( _frustum, _culling );
+    // Cull the scene using the camera's frustum
+    _scene->culling( _frustum, _culling );
 
-      // Render scene
-      _scene->display( _blend_sort, this );
+    // Render scene
+    _scene->display( _blend_sort, this );
 
-      if(_coord_sys_visible)
-        drawActiveCam();
+    if(_coord_sys_visible)
+      drawActiveCam();
   }
 
 

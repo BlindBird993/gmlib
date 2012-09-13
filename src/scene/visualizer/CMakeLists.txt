@@ -22,9 +22,14 @@
 
 
 addHeaders(
+  gmSelectorGridVisualizer
   gmSurroundingSphereVisualizer
   gmVisualizer
   gmVisualizerStdRep
+)
+
+addTemplateSources(
+  gmselectorgridvisualizer.c
 )
 
 addSources(
