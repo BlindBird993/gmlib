@@ -32,11 +32,8 @@
 namespace GMlib {
 
 
-  Array<unsigned int>   Light::_free_light(100);
-  unsigned int          Light::_next_light = GL_LIGHT0;
-  float         Light::_min_light_contribution = 100;
-
-
+  unsigned int      Light::_next_light = 1;
+  float             Light::_min_light_contribution = 100;
 
   /*! Light::Light()
    * \brief Pending Documentation
@@ -45,14 +42,11 @@ namespace GMlib {
    */
   Light::Light() {
 
-    if(_free_light.getSize()>0)
-    {
-      _light_name = _free_light[_free_light.getSize()-1];
-      _free_light.removeBack();
-    }
-    else			_light_name	= _next_light++;
+    _light_name	= _next_light++;
     setColor();
     setCullable(false);
+    _culled = false;
+    _enabled = true;
   }
 
 
@@ -63,30 +57,24 @@ namespace GMlib {
    */
   Light::Light(const Color& amb , const Color& dif, const Color& spe) {
 
-    if(_free_light.getSize()>0)
-    {
-      _light_name = _free_light[_free_light.getSize()-1];
-      _free_light.removeBack();
-    }
-    else			_light_name	= _next_light++;
+    _light_name	= _next_light++;
     setColor(amb,dif,spe);
+    _culled = false;
+    _enabled = true;
   }
 
 
-  /*! Light::Light(const Light& orig)
+  /*! Light::Light(const Light& copy)
    * \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  Light::Light(const Light& orig) {
+  Light::Light(const Light& copy) {
 
-    if(_free_light.getSize()>0)
-    {
-      _light_name = _free_light[_free_light.getSize()-1];
-      _free_light.removeBack();
-    }
-    else			_light_name	= _next_light++;
-    setColor( orig._ambient, orig._diffuse, orig._specular);
+    _light_name	= _next_light++;
+    setColor( copy._ambient, copy._diffuse, copy._specular);
+    _culled = copy._culled;
+    _enabled = copy._enabled;
   }
 
 
@@ -95,10 +83,11 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  Light::~Light() {
+  Light::~Light() {}
 
-    _free_light += _light_name;
-    glDisable(_light_name);
+
+  void Light::setEnabled(bool state) {
+
+    _enabled = state;
   }
-
 }

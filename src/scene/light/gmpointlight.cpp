@@ -46,6 +46,7 @@ namespace GMlib {
   PointLight::PointLight() : Light(), DisplayObject(), _pos(0.0f), _light_sphere(Point3D<float>(0,0,0), FLT_MAX ) {
 
     _type_id  = GM_SO_TYPE_LIGHT;
+    setAttenuation( 0.8, 0.002, 0.0008 );
   }
 
 
@@ -58,6 +59,7 @@ namespace GMlib {
 
     translate(pos);
     _type_id  = GM_SO_TYPE_LIGHT;
+    setAttenuation( 0.8, 0.002, 0.0008 );
   }
 
 
@@ -75,6 +77,7 @@ namespace GMlib {
 
     translate(pos);
     _type_id  = GM_SO_TYPE_LIGHT;
+    setAttenuation( 0.9, 0.0002, 0.00008 );
   }
 
 
@@ -104,10 +107,10 @@ namespace GMlib {
    */
   void PointLight::culling( const Frustum& frustum ) {
 
-    if (!isCullable()) { Light::enable() ; return;}
+    if (!isCullable()) { Light::_culled = false; return;}
     int k = frustum.isInterfering(_light_sphere);
-    if (k < 0) Light::enable();
-    else Light::enable();
+    if (k < 0) Light::_culled = true;
+    else Light::_culled = false;
   }
 
 
@@ -118,11 +121,11 @@ namespace GMlib {
    */
   void PointLight::setAttenuation(float constant, float linear, float quadratic) {
 
-    calculateRadius( constant, linear, quadratic );
+    _attenuation[0] = constant;
+    _attenuation[1] = linear;
+    _attenuation[2] = quadratic;
 
-    glLight(GL_CONSTANT_ATTENUATION, constant);
-    glLight(GL_LINEAR_ATTENUATION, linear);
-    glLight(GL_QUADRATIC_ATTENUATION, quadratic);
+    calculateRadius( constant, linear, quadratic );
   }
 
 
@@ -144,9 +147,6 @@ namespace GMlib {
    */
   void PointLight::calculateRadius(float constant, float linear, float quadratic) {
 
-    _attenuation[0] = constant;
-    _attenuation[1] = linear;
-    _attenuation[1] = quadratic;
     double aa, solution;
     if ((linear == 0) && (quadratic == 0))
     {

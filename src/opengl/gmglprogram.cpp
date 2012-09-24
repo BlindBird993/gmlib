@@ -140,6 +140,11 @@ std::set<std::string> GLProgram::getShaders() const {
   return GLShaderManager::getProgramShaders( _name );
 }
 
+GLuint GLProgram::getUniformBlockIndex(const std::string &name) const {
+
+  return glGetUniformBlockIndex( _id, name.c_str() );
+}
+
 GLuint GLProgram::getUniformLocation(const std::string& name) const {
 
   return glGetUniformLocation( _id, name.c_str() );

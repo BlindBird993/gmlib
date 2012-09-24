@@ -41,6 +41,8 @@
 // gmlib::scene - might be removed as light and is implemented with different mechanisms...
 #include <scene/light/gmlight.h>
 #include <scene/light/gmsun.h>
+#include <scene/light/gmspotlight.h>
+#include <scene/light/gmpointlight.h>
 
 // stl
 #include <iostream>
@@ -146,6 +148,9 @@ namespace GMlib {
     GLuint          _vbo_quad;
     GLuint          _vbo_quad_tex;
 
+    void            updateLightUBO();
+
+
 
   }; // END class GMWindow
 
@@ -222,7 +227,8 @@ namespace GMlib {
   inline
   void GMWindow::insertSun() {
 
-    _sun = new Sun(); _sun->enable();
+    _sun = new Sun();
+    updateLightUBO();
   }
 
 
@@ -263,6 +269,8 @@ namespace GMlib {
 
       delete _sun;
       _sun = NULL;
+
+      updateLightUBO();
     }
   }
 
@@ -301,6 +309,7 @@ namespace GMlib {
   void GMWindow::swapBuffers() {}
 
 
+
   /*! void GMWindow::display(void)
    *	\brief	Pending Documentation
    *
@@ -330,7 +339,7 @@ namespace GMlib {
       OGL::clearRenderBuffer();
       OGL::bindRenderBuffer();
       _view_set_stack.back().drawCamera();
-      OGL::releaseRenderBuffer();
+      OGL::unbindRenderBuffer();
 //    }
 
     // Render render-buffer to standard OGL buffer

@@ -29,6 +29,7 @@ addHeaders(
   gmGLShaderManager
   gmIndexBufferObject
   gmOpenGL
+  gmUniformBufferObject
   gmVertexBufferObject
 )
 
@@ -41,6 +42,7 @@ addSources(
   gmglshadermanager.cpp
   gmindexbufferobject.cpp
   gmopengl.cpp
+  gmuniformbufferobject.cpp
   gmvertexbufferobject.cpp
 )
 

@@ -33,6 +33,7 @@
 #include "gmglshadermanager.h"
 
 // stl
+#include <cassert>
 #include <limits>
 #include <iostream>
 
@@ -61,6 +62,16 @@ namespace GMlib {
   int OGL::_render_fbo_w = 0;
 
   bool OGL::_render_exists = false;
+
+
+
+  // Light stuff
+  GLuint OGL::_light_ubo = 0;
+  GLVector<4,GLuint> OGL::_lights_header;
+  std::vector<GLLight> OGL::_lights;
+  OGL::LightIdMap OGL::_light_id_map;
+
+
 
   void OGL::_appendLog(const std::string &log) {
 
@@ -162,6 +173,7 @@ namespace GMlib {
 
   void OGL::cleanUp() {
 
+    deleteLightBuffer();
     deleteStandardRepBOs();
     deleteSelectBuffer();
     deleteRenderBuffer();
@@ -334,9 +346,10 @@ namespace GMlib {
     createRenderBuffer();
     createSelectBuffer();
     createStandardRepBOs();
+    createLightBuffer();
   }
 
-  bool OGL::releaseFbo(const std::string &name) {
+  bool OGL::unbindFbo(const std::string &name) {
 
     _clearLog();
 
@@ -351,11 +364,11 @@ namespace GMlib {
     return true;
   }
 
-  bool OGL::releaseBo(const std::string &name) {
+  bool OGL::unbindBo(const std::string &name) {
 
     _clearLog();
 
-    if( _nameEmpty( name, "FBO" ) )
+    if( _nameEmpty( name, "BO" ) )
       return false;
 
     if( !_boExists(name, true) )
@@ -370,7 +383,7 @@ namespace GMlib {
 
     _clearLog();
 
-    if( _nameEmpty( name, "FBO" ) )
+    if( _nameEmpty( name, "BO" ) )
       return false;
 
     if( !_boExists(name, true) )
@@ -428,7 +441,7 @@ namespace GMlib {
 
     bindFbo( "render_fbo" );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    releaseFbo( "render_fbo" );
+    unbindFbo( "render_fbo" );
 
     float cc[4];
     glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
@@ -437,7 +450,7 @@ namespace GMlib {
 
     bindFbo( "render_fbo_selected" );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    releaseFbo( "render_fbo_selected" );
+    unbindFbo( "render_fbo_selected" );
 
     ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
   }
@@ -469,8 +482,8 @@ namespace GMlib {
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     } glBindTexture( GL_TEXTURE_2D, 0x0 );
 
     // Create a render color RBO
@@ -479,8 +492,8 @@ namespace GMlib {
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     } glBindTexture( GL_TEXTURE_2D, 0x0 );
 
     // Create a render depth RBO
@@ -501,7 +514,7 @@ namespace GMlib {
       glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _render_rbo_selected, 0 );
       glBindTexture( GL_TEXTURE_2D, 0x0 );
 
-    } releaseFbo( "render_fbo" );
+    } unbindFbo( "render_fbo" );
 
     // Create a render FBO which only contains the selected texture as a rendering target
     // and one for the color.
@@ -513,7 +526,7 @@ namespace GMlib {
       glBindTexture( GL_TEXTURE_2D, _render_rbo_color );
       glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_color, 0 );
       glBindTexture( GL_TEXTURE_2D, 0x0 );
-    } releaseFbo( "render_fbo_color" );
+    } unbindFbo( "render_fbo_color" );
 
     createFbo( "render_fbo_selected" );
 
@@ -522,7 +535,7 @@ namespace GMlib {
       glBindTexture( GL_TEXTURE_2D, _render_rbo_selected );
       glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_selected, 0 );
       glBindTexture( GL_TEXTURE_2D, 0x0 );
-    } releaseFbo( "render_fbo_selected" );
+    } unbindFbo( "render_fbo_selected" );
 
 
 
@@ -622,15 +635,15 @@ namespace GMlib {
 
     OGL::bindBo( "std_rep_cube" );
     glBufferData( GL_ARRAY_BUFFER, 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
-    OGL::releaseBo( "std_rep_cube" );
+    OGL::unbindBo( "std_rep_cube" );
 
     OGL::bindBo( "std_rep_cube_indices" );
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
-    OGL::releaseBo( "std_rep_cube_indices" );
+    OGL::unbindBo( "std_rep_cube_indices" );
 
     OGL::bindBo( "std_rep_frame_indices" );
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
-    OGL::releaseBo( "std_rep_frame_indices" );
+    OGL::unbindBo( "std_rep_frame_indices" );
   }
 
   void OGL::deleteRenderBuffer() {
@@ -708,12 +721,12 @@ namespace GMlib {
     return _render_rbo_selected;
   }
 
-  void OGL::releaseRenderBuffer() {
+  void OGL::unbindRenderBuffer() {
 
     glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
   }
 
-  void OGL::releaseSelectBuffer() {
+  void OGL::unbindSelectBuffer() {
 
     glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
   }
@@ -748,6 +761,75 @@ namespace GMlib {
     glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
   }
 
+  void OGL::bindLightBuffer() {
+
+    bindBo( "light_ubo" );
+  }
+
+  void OGL::createLightBuffer() {
+
+    createBo( "light_ubo", GL_UNIFORM_BUFFER );
+  }
+
+  void OGL::deleteLightBuffer() {
+
+    deleteBo( "light_ubo" );
+  }
+
+  GLuint OGL::getLightBuffer() {
+
+    return getBoId( "light_ubo" );
+  }
+
+  void OGL::resetLightBuffer(const GLVector<4,GLuint>& header, const std::vector<unsigned int>& light_ids, const std::vector<GLLight>& lights) {
+
+    _lights_header = header;
+    _lights = lights;
+
+    // fill inn light id map
+    _light_id_map.clear();
+    std::vector<unsigned int>::const_iterator id_itr;
+    int light_id;
+    for( light_id = 0, id_itr = light_ids.begin(); id_itr != light_ids.end(); ++id_itr, ++light_id )
+      _light_id_map[*id_itr] = light_id;
+
+    bindLightBuffer();
+
+    // create/reset buffer size
+    glBufferData( GL_UNIFORM_BUFFER,
+                  sizeof(GLVector<4,GLuint>) + lights.size() * sizeof(GLLight),
+                  0x0, GL_DYNAMIC_DRAW );
+
+    // upload header ( "number of info" )
+    glBufferSubData(  GL_UNIFORM_BUFFER, 0, sizeof(GLVector<4,GLuint>), &header );
+
+    // upload light data
+    glBufferSubData(  GL_UNIFORM_BUFFER,
+                      sizeof(GLVector<4,GLuint>), sizeof(GLLight) * lights.size(), &lights[0] );
+
+    unbindLightBuffer();
+  }
+
+  void OGL::unbindLightBuffer() {
+
+    unbindBo( "light_ubo" );
+  }
+
+  void OGL::updateLight(unsigned int id, const GLLight& light) {
+
+    LightIdMap::iterator itr;
+    assert( (itr = _light_id_map.find(id) ) == _light_id_map.end() );
+
+    unsigned int buffer_offset = itr->second;
+
+    bindLightBuffer();
+
+    // update light data
+    glBufferSubData(  GL_UNIFORM_BUFFER,
+                      sizeof(GLVector<4>) + buffer_offset * sizeof(GLLight), sizeof(GLLight), &light );
+
+    unbindLightBuffer();
+  }
 
 
 } // END namespace GMlib

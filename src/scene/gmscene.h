@@ -124,7 +124,6 @@ namespace GMlib{
   private:
     friend class Camera;
 
-    void                  lighting();
     void                  display( bool blend_sorted, Camera* cam );
     void                  select( int type_id, Camera* cam );
     virtual void          culling( const Frustum& f, bool on = true );

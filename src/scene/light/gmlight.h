@@ -37,6 +37,8 @@
 // gmlib
 #include <core/utils/gmcolor.h>
 #include <opengl/gmopengl.h>
+#include <opengl/gmuniformbufferobject.h>
+
 
 namespace GMlib{
 
@@ -53,11 +55,10 @@ namespace GMlib{
     virtual ~Light();
 
     virtual void                  culling( const Frustum& );
-    void                          disable();
-    void                          enable();
+    bool                          isActive() const;
     bool                          isCullable();
-    bool                          isEnabled();
-    virtual void                  lighting();
+    bool                          isEnabled() const;
+    void                          setEnabled( bool state );
     void                          setColor(
                                     const Color& ambient = Color( 0.2f, 0.2f, 0.2f ),
                                     const Color& diffuse = Color( 1.0f, 1.0f, 1.0f ),
@@ -68,32 +69,26 @@ namespace GMlib{
     void                          setIntensity(double d,int i=0);
 
 
-    const Color&                  getAmbient();
-    const Color&                  getDiffuse();
+    Color                         getAmbient() const;
+    Color                         getDiffuse() const;
     unsigned int                  getLightName();
-    const Color&                  getSpecular();
+    Color                         getSpecular() const;
 
   protected:
-    void                          glLight( GLenum pn, const Color& co);
-    void                          glLight( GLenum pn, float f );
-    void                          glLight( GLenum pn, int f );
-    void                          glLightDir( const Vector<float,3>& dir );
-    void                          glLightPos( const Point<float,3>& pos );
-    void                          glLightSun( const Vector<float,3>& pos );
-
     static float                  _min_light_contribution; // 1/100
-
+    bool                          _culled;
 
   private:
     static unsigned int           _next_light;
-    static Array<unsigned int>    _free_light;
-    GLenum                        _light_name;
+    unsigned int                  _light_name;
 
     Color                         _ambient;
     Color                         _diffuse;
     Color                         _specular;
     bool                          _cullable;
 
+    Vector<double,3>              _intensity;
+    bool                          _enabled;
 
   };	// END class Light
 
@@ -114,30 +109,11 @@ namespace GMlib{
   inline
   void Light::culling( const Frustum& ) {}
 
-
-  /*! void Light::disable()
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
-  void Light::disable() {
+  bool Light::isActive() const {
 
-    glDisable(_light_name);
+    return _enabled && !_culled;
   }
-
-
-  /*! void Light::enable()
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Light::enable() {
-
-    glEnable(_light_name);
-  }
-
 
   /*! bool Light::isCullable()
    * \brief Pending Documentation
@@ -150,28 +126,11 @@ namespace GMlib{
     return _cullable;
   };
 
-
-  /*! bool Light::isEnabled()
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
-  bool Light::isEnabled() {
+  bool Light::isEnabled() const {
 
-    return glIsEnabled(_light_name) ? true : false;
+    return _enabled;
   }
-
-
-  /*! void Light::lighting()
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Light::lighting() {}
-
-
 
   /*! void Light::setColor( const Color& ambient, const Color& diffuse, const Color& specular )
    * \brief Pending Documentation
@@ -204,7 +163,6 @@ namespace GMlib{
     _cullable = cullable;
   };
 
-
   /*! void Light::setIntensity(double d,int i)
    * \brief Pending Documentation
    *
@@ -214,13 +172,12 @@ namespace GMlib{
   void Light::setIntensity(double d,int i) {
 
     if(i==0 || i == 1)
-      glLight(GL_AMBIENT,d*_ambient);
+      _intensity[0] = d;
     if(i==0 || i == 2)
-      glLight(GL_DIFFUSE,d*_diffuse);
+      _intensity[1] = d;
     if(i==0 || i == 3)
-      glLight(GL_SPECULAR,d*_specular);
+      _intensity[2] = d;
   }
-
 
   /*! const Color& Light::getAmbient()
    * \brief Pending Documentation
@@ -228,9 +185,9 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  const Color& Light::getAmbient() {
+  Color Light::getAmbient() const {
 
-    return _ambient;
+    return _ambient * _intensity(0);
   }
 
 
@@ -240,9 +197,9 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  const Color& Light::getDiffuse() {
+  Color Light::getDiffuse() const {
 
-    return _diffuse;
+    return  _diffuse * _intensity(1);
   }
 
 
@@ -264,82 +221,11 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  const Color& Light::getSpecular()	{
+  Color Light::getSpecular() const	{
 
-    return _specular;
+    return _specular * _intensity(2);
   }
 
-
-  /*! void Light::glLight( GLenum pn, const Color& co)
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Light::glLight( GLenum pn, const Color& co) {
-
-//    GMlib::glLight(_light_name, pn, co);
-  }
-
-
-  /*! void Light::glLight( GLenum pn, float f )
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Light::glLight( GLenum pn, float f ) {
-
-//    GMlib::glLight(_light_name, pn, f);
-  }
-
-
-  /*! void Light::glLight( GLenum pn, int f )
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Light::glLight( GLenum pn, int f ) {
-
-//    GMlib::glLight(_light_name, pn, f);
-  }
-
-
-  /*! void Light::glLightDir( const Vector<float,3>& dir )
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Light::glLightDir( const Vector<float,3>& dir ) {
-
-//    GMlib::glLightDir(_light_name, dir);
-  }
-
-
-  /*! void Light::glLightPos( const Point<float,3>& pos )
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Light::glLightPos( const Point<float,3>& pos ) {
-
-//    GMlib::glLightPos(_light_name, pos);
-  }
-
-
-  /*! void Light::glLightSun( const Vector<float,3>& pos )
-   * \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Light::glLightSun( const Vector<float,3>& pos ) {
-
-//    GMlib::glLightSun(_light_name, pos);
-  }
 
 }	// END namespace GMlib
 

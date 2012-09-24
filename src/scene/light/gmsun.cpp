@@ -56,6 +56,16 @@ namespace GMlib {
    */
   Sun::~Sun() {}
 
+  const Color& Sun::getGlobalAmbient() const {
+
+    return getAmbient();
+  }
+
+  const Vector<float,3> &Sun::getDir() const {
+
+    return _dir;
+  }
+
 
   /*! void Sun::setDayLight( const Color& amb )
    *	\brief Pending Documentation
@@ -64,8 +74,7 @@ namespace GMlib {
    */
   void Sun::setDayLight( const Color& amb ) {
 
-    _global_ambient = Color(amb);
-    _setDayLight(1);
+    Light::setColor( amb );
   }
 
 
@@ -81,24 +90,6 @@ namespace GMlib {
 //      glMultMatrix(_present);
 //      glLightSun(_dir);
 //    glPopMatrix();
-  }
-
-
-
-  /*! void Sun::setDayLight(double d)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void Sun::_setDayLight(double d) {
-
-    Color	a = d*_global_ambient;
-    float f[4];
-    f[0] = float(a.getRedC());
-    f[1] = float(a.getGreenC());
-    f[2] = float(a.getBlueC());
-    f[3] = float(a.getAlphaC());
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT,f);
   }
 
 }

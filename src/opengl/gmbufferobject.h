@@ -37,7 +37,7 @@ namespace GMlib {
     explicit BufferObject( const std::string name );
     explicit BufferObject( const std::string name, GLenum type );
     BufferObject( const BufferObject& copy );
-    ~BufferObject();
+    virtual ~BufferObject();
 
     void                    bind() const;
     void                    createBufferData( GLsizeiptr size, const GLvoid* data, GLenum usage );
@@ -52,6 +52,8 @@ namespace GMlib {
     void                    unbind() const;
     void                    unmapBuffer() const;
     void                    setTarget( GLenum target = GL_ARRAY_BUFFER );
+
+    BufferObject&           operator = ( const BufferObject& obj );
 
   protected:
     std::string             _name;
@@ -83,6 +85,16 @@ namespace GMlib {
   void BufferObject::unbind() const {
 
     glBindBuffer( _target, 0x0 );
+  }
+
+  inline
+  BufferObject& BufferObject::operator = ( const BufferObject& obj ) {
+
+    _name = obj._name;
+    _id = obj._id;
+    _target = obj._target;
+    _valid = obj._valid;
+    _ids[_id]++;
   }
 
 

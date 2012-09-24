@@ -144,7 +144,6 @@ namespace GMlib {
   void SpotLight::setCutOff( const Angle& cut_off ) {
 
     _cutoff = cut_off;
-    glLight( GL_SPOT_CUTOFF, _cutoff.getDeg() );
   }
 
 
@@ -156,7 +155,6 @@ namespace GMlib {
   void SpotLight::setExponent(double exp) {
 
     _exp = exp;
-    glLight( GL_SPOT_EXPONENT, (float)_exp );
   }
 
 }

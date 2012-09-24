@@ -53,6 +53,8 @@ namespace GMlib{
     Sun(const Vector<float,3>& dir = Vector3D<float>(1,1,1));
     virtual ~Sun();
 
+    const Color&            getGlobalAmbient() const;
+    const Vector<float,3>&  getDir() const;
     std::string             getIdentity() const;
     void                    scaleDayLight( double d );
     void                    setDayLight( const Color& amb = Color( 0.1f, 0.1f, 0.1f ) );
@@ -64,9 +66,6 @@ namespace GMlib{
 
   private:
     Vector<float,3>         _dir;
-                Color                   _global_ambient;
-
-    void                    _setDayLight(double d);
 
   }; // END class Sun
 
@@ -94,7 +93,7 @@ namespace GMlib{
   inline
   void Sun::scaleDayLight(double d) {
 
-    _setDayLight(d);
+    setIntensity( d, 1 );
   }
 
 

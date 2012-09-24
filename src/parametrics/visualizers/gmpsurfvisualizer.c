@@ -49,11 +49,54 @@ namespace GMlib {
   PSurfVisualizer<T>::PSurfVisualizer() {
 
     _surf = 0x0;
-    setRenderProgram( GLProgram("default") );
   }
 
   template <typename T>
   PSurfVisualizer<T>::~PSurfVisualizer() {}
+
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::fillMap(GLuint map, const DMatrix<DMatrix<Vector<T,3> > > &p, int d1, int d2) {
+
+    DVector< Vector<float,3> > tex_data(p.getDim1() * p.getDim2());
+    Vector<float,3> *ptr = tex_data.getPtr();
+    for( int j = 0; j < p.getDim2(); ++j ) {
+      for( int i = 0; i < p.getDim1(); ++i ) {
+
+        *ptr++ = p(i)(j)(d1)(d2);
+      }
+    }
+
+    glBindTexture( GL_TEXTURE_2D, map );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB16F, p.getDim2(), p.getDim1(), 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindTexture( GL_TEXTURE_2D, map );
+  }
+
+  template <typename T>
+  inline
+  void PSurfVisualizer<T>::fillNMap(GLuint nmap, const DMatrix<DMatrix<Vector<T,3> > >& p) {
+
+    DVector< Vector<float,3> > tex_data(p.getDim1() * p.getDim2());
+    Vector<float,3> *ptr = tex_data.getPtr();
+    for( int j = 0; j < p.getDim2(); ++j ) {
+      for( int i = 0; i < p.getDim1(); ++i ) {
+
+        *ptr++ = Vector3D<float>( p(i)(j)(1)(0) ) ^ p(i)(j)(0)(1);
+      }
+    }
+
+    glBindTexture( GL_TEXTURE_2D, nmap );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB16F, p.getDim2(), p.getDim1(), 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glBindTexture( GL_TEXTURE_2D, nmap );
+  }
 
   template <typename T>
   inline
@@ -82,9 +125,8 @@ namespace GMlib {
     no_vertices = p.getDim1() * p.getDim2();
 
     vbo.bind();
-    vbo.createBufferData( no_vertices * sizeof(GLVertexNormalTex2D), 0x0, GL_STATIC_DRAW );
-    GLVertexNormalTex2D *ptr = vbo.mapBuffer<GLVertexNormalTex2D>();
-//    GLVertexNormalTex2D *ptr = (GLVertexNormalTex2D*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    vbo.createBufferData( no_vertices * sizeof(GLVertexTex2D), 0x0, GL_STATIC_DRAW );
+    GLVertexTex2D *ptr = vbo.mapBuffer<GLVertexTex2D>();
     for( int i = 0; i < p.getDim1(); i++ ) {
       for( int j = 0; j < p.getDim2(); j++ ) {
 
@@ -92,12 +134,6 @@ namespace GMlib {
         ptr->x = p(i)(j)(0)(0)(0);
         ptr->y = p(i)(j)(0)(0)(1);
         ptr->z = p(i)(j)(0)(0)(2);
-
-        // normals
-        const Vector<float,3> n = Vector3D<float>( p(i)(j)(1)(0) )^p(i)(j)(0)(1);
-        ptr->nx = n(0);
-        ptr->ny = n(1);
-        ptr->nz = n(2);
 
         // tex coords
         ptr->s = i/float(p.getDim1()-1);
@@ -308,6 +344,8 @@ namespace GMlib {
 
     _surf = dynamic_cast<PSurf<T>*>( obj );
   }
+
+
 
 } // END namespace GMlib
 

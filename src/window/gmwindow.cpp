@@ -234,12 +234,13 @@ namespace GMlib {
   void GMWindow::insertLight(Light* light, bool insert_in_scene) {
 
     _lights += light;
-    light->enable();
 
     SceneObject* obj = dynamic_cast<SceneObject*>(light);
 
     if(insert_in_scene && obj)
       insert(obj);
+
+    updateLightUBO();
   }
 
 
@@ -301,7 +302,8 @@ namespace GMlib {
         remove(obj);
 
       _lights.removeIndex(i);
-      light->disable();
+
+      updateLightUBO();
 
       return true;
     }
@@ -335,6 +337,134 @@ namespace GMlib {
 
     _stereo = !_stereo;
     return _stereo;
+  }
+
+  void GMWindow::updateLightUBO() {
+
+    GLVector<4,GLuint> header;
+    std::vector<unsigned int> light_ids;
+    std::vector<GLLight> lights;
+
+    Array< SpotLight* > spot_lights;
+    Array< PointLight* > point_lights;
+    for( int i = 0; i < _lights.size(); ++i ) {
+
+
+      if( SpotLight* spot_light = dynamic_cast<SpotLight*>( _lights[i] ) ) {
+
+        spot_lights += spot_light;
+      }
+      else if( PointLight* point_light = dynamic_cast<PointLight*>( _lights[i] ) ) {
+
+        point_lights += point_light;
+      }
+    }
+
+    // Set header data
+    header.p[1] = _sun ? 1 : 0;
+    header.p[2] = point_lights.size();
+    header.p[3] = spot_lights.size();
+    header.p[0] = header.p[1] + header.p[2] + header.p[3];
+
+    if( header.p[0] <= 0 )
+      return;
+
+    // Add data to header array
+    if( _sun ) {
+
+      GLLight sun;
+
+      sun.amb.p[0] = _sun->getGlobalAmbient().getRedC();
+      sun.amb.p[1] = _sun->getGlobalAmbient().getGreenC();
+      sun.amb.p[2] = _sun->getGlobalAmbient().getBlueC();
+      sun.amb.p[3] = _sun->getGlobalAmbient().getAlphaC();
+
+      sun.dir.p[0] = _sun->getDir()(0);
+      sun.dir.p[1] = _sun->getDir()(1);
+      sun.dir.p[2] = _sun->getDir()(2);
+
+      lights.push_back(sun);
+      light_ids.push_back(_sun->getLightName());
+    }
+
+    for( int i = 0; i < point_lights.size(); ++i ) {
+
+      PointLight *light = point_lights[i];
+
+      GLLight pl;
+      pl.amb.p[0] = light->getAmbient().getRedC();
+      pl.amb.p[1] = light->getAmbient().getGreenC();
+      pl.amb.p[2] = light->getAmbient().getBlueC();
+      pl.amb.p[3] = light->getAmbient().getAlphaC();
+
+      pl.dif.p[0] = light->getDiffuse().getRedC();
+      pl.dif.p[1] = light->getDiffuse().getGreenC();
+      pl.dif.p[2] = light->getDiffuse().getBlueC();
+      pl.dif.p[3] = light->getDiffuse().getAlphaC();
+
+      pl.spc.p[0] = light->getSpecular().getRedC();
+      pl.spc.p[1] = light->getSpecular().getGreenC();
+      pl.spc.p[2] = light->getSpecular().getBlueC();
+      pl.spc.p[3] = light->getSpecular().getAlphaC();
+
+      pl.pos.p[0] = light->getPos()(0);
+      pl.pos.p[1] = light->getPos()(1);
+      pl.pos.p[2] = light->getPos()(2);
+      pl.pos.p[3] = 1.0f;
+
+      pl.att.p[0] = light->getAttenuation()(0);
+      pl.att.p[1] = light->getAttenuation()(1);
+      pl.att.p[2] = light->getAttenuation()(2);
+
+      lights.push_back(pl);
+      light_ids.push_back(light->getLightName());
+    }
+
+    for( int i = 0; i < spot_lights.size(); ++i ) {
+
+      SpotLight *light = spot_lights[i];
+
+      GLLight sl;
+      sl.amb.p[0] = light->getAmbient().getRedC();
+      sl.amb.p[1] = light->getAmbient().getGreenC();
+      sl.amb.p[2] = light->getAmbient().getBlueC();
+      sl.amb.p[3] = light->getAmbient().getAlphaC();
+
+      sl.dif.p[0] = light->getDiffuse().getRedC();
+      sl.dif.p[1] = light->getDiffuse().getGreenC();
+      sl.dif.p[2] = light->getDiffuse().getBlueC();
+      sl.dif.p[3] = light->getDiffuse().getAlphaC();
+
+      sl.spc.p[0] = light->getSpecular().getRedC();
+      sl.spc.p[1] = light->getSpecular().getGreenC();
+      sl.spc.p[2] = light->getSpecular().getBlueC();
+      sl.spc.p[3] = light->getSpecular().getAlphaC();
+
+      sl.pos.p[0] = light->getPos()(0);
+      sl.pos.p[1] = light->getPos()(1);
+      sl.pos.p[2] = light->getPos()(2);
+      sl.pos.p[3] = 1.0f;
+
+      sl.dir.p[0] = light->getDir()(0);
+      sl.dir.p[1] = light->getDir()(1);
+      sl.dir.p[2] = light->getDir()(2);
+
+      sl.spot_cut = light->getCutOff().getDeg();
+      sl.spot_exp = light->getExponent();
+
+      lights.push_back(sl);
+      light_ids.push_back(light->getLightName());
+    }
+
+    OGL::resetLightBuffer( header, light_ids, lights );
+
+    std::cout << "Updating light UBO!" << std::endl;
+    std::cout << "  - Sun(s):             " << header.p[1] << std::endl;
+    std::cout << "  - Point Light(s):     " << header.p[2] << std::endl;
+    std::cout << "  - Spot Light(s):      " << header.p[3] << std::endl;
+    std::cout << "  --------------------" << std::endl;
+    std::cout << "  - Total nr of Lights: "<< header.p[0] << std::endl;
+
   }
 
 

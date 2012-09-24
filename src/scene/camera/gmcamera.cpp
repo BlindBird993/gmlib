@@ -143,7 +143,7 @@ namespace GMlib {
     select(type_id);
     OGL::bindSelectBuffer();
     glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
-    OGL::releaseSelectBuffer();
+    OGL::unbindSelectBuffer();
     return find(c.get());
   }
 
@@ -171,7 +171,7 @@ namespace GMlib {
     DisplayObject::select(type_id, this );
     OGL::bindSelectBuffer();
     glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
-    OGL::releaseSelectBuffer();
+    OGL::unbindSelectBuffer();
 
     int ct=0;
     Color c;
@@ -633,7 +633,7 @@ namespace GMlib {
     if( !depth_test_state )
       glDisable( GL_DEPTH_TEST );
 
-    OGL::releaseSelectBuffer();
+    OGL::unbindSelectBuffer();
   }
 
 

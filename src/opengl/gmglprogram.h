@@ -63,6 +63,7 @@ namespace GMlib {
     std::string               getInfoLog() const;
     const std::string&        getName() const;
     std::set< std::string>    getShaders() const;
+    GLuint                    getUniformBlockIndex( const std::string& name ) const;
     GLuint                    getUniformLocation( const std::string& name ) const;
     bool                      link() const;
     bool                      removeShader( const std::string& name ) const;

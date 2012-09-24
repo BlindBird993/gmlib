@@ -37,7 +37,7 @@
 
 namespace GMlib {
 
-  Visualizer::Visualizer() : _render_prog("default") {
+  Visualizer::Visualizer() : _render_prog("phong") {
 
     _display_mode = DISPLAY_MODE_SHADED;
   }

@@ -83,6 +83,7 @@
 #include <GL/glew.h>
 
 // STL
+#include <vector>
 #include <map>
 #include <string>
 
@@ -118,6 +119,85 @@ namespace GMlib {
   // SwapBuffers
 
   void swapBuffers(void);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  struct GLViewVertex {
+    GLclampf x, y;
+  };
+
+  struct GLVertex {
+    GLfloat x, y, z;
+  };
+
+  struct GLNormal {
+    GLfloat nx, ny, nz;
+  };
+
+  struct GLTex1D {
+    GLfloat s;
+  };
+
+  struct GLTex2D : GLTex1D {
+    GLfloat t;
+  };
+
+  struct GLTex3D : GLTex2D {
+    GLfloat r;
+  };
+
+  struct GLVertexNormal : GLVertex, GLNormal {};
+  struct GLVertexNormalTex2D : GLVertex, GLNormal, GLTex2D {};
+  struct GLVertexTex1D : GLVertex, GLTex1D {};
+  struct GLVertexTex2D : GLVertex, GLTex2D {};
+
+  template <int n,typename T = GLfloat>
+  struct GLVector {
+    T p[n];
+  };
+
+  struct GLLight {
+    GLVector<4>   amb;
+    GLVector<4>   dif;
+    GLVector<4>   spc;
+
+    GLVector<4>   pos;
+    GLVector<3>   dir;
+    GLfloat       _padding01;
+
+    GLVector<3>   att;
+    GLfloat       _padding02;
+
+    GLint         spot_cut;
+    GLfloat       spot_exp;
+    GLfloat       _padding03[2];
+  };
+
+  struct GLMaterial {
+
+    GLVector<4>   amb;
+    GLVector<4>   dif;
+    GLVector<4>   spc;
+
+    GLfloat       shininess;
+    GLfloat       _padding[3];
+  };
+
+
+
+
 
 
 
@@ -166,7 +246,7 @@ namespace GMlib {
     static bool               deleteFbo( const std::string& name );
     static GLuint             getFboId( const std::string& name );
     static const FBOMap&      getFbos();
-    static bool               releaseFbo( const std::string& name );
+    static bool               unbindFbo( const std::string& name );
 
   private:
     static FBOMap             _fbos;
@@ -195,8 +275,8 @@ namespace GMlib {
     static GLuint           getBoId( const std::string& name );
     static GLenum           getBoTarget( const std::string& name );
     static const BOMap&     getBos();
-    static bool             releaseBo( const std::string& name );
     static bool             setBoTarget( const std::string& name, GLenum target = GL_ARRAY_BUFFER  );
+    static bool             unbindBo( const std::string& name );
 
   private:
     static std::map< std::string, OGL::BOInfo >    _bos;
@@ -227,8 +307,8 @@ namespace GMlib {
     static int          getRenderBufferWidth();
     static GLuint       getRenderColorBuffer();
     static GLuint       getRenderSelectedBuffer();
-    static void         releaseRenderBuffer();
     static void         setRenderBufferSize( int width, int height );
+    static void         unbindRenderBuffer();
 
   private:
     static GLuint       _render_rbo_color;
@@ -250,8 +330,8 @@ namespace GMlib {
     static GLuint       getSelectBuffer();
     static int          getSelectBufferHeight();
     static int          getSelectBufferWidth();
-    static void         releaseSelectBuffer();
     static void         setSelectBufferSize( int width, int height );
+    static void         unbindSelectBuffer();
 
   private:
     static GLuint       _select_fbo;
@@ -270,6 +350,49 @@ namespace GMlib {
     static void         createStandardRepBOs();
     static void         deleteStandardRepBOs();
 
+
+
+
+    // Lights
+  public:
+    static void         createLightBuffer();
+    static void         bindLightBuffer();
+    static void         deleteLightBuffer();
+    static GLuint       getLightBuffer();
+
+    /*! static void resetLightBuffer( const GLVector<4,GLuint>& header, const std::vector<unsigned int>& light_ids, const std::vector<GLLight>& lights );
+     *
+     *  Light types of "sun", "point" and "spot" is supported.
+     *  It is assumed that the lights is grouped and sorted in that order
+     *  and that the "number of info" is recorded in the header block:
+     *  <ul>
+     *    <li>Total number of lights.</li>
+     *    <li>Number of suns.</li>
+     *    <li>Number of point lights.</li>
+     *    <li>Number of spot lights.</li>
+     *  </ul>
+     */
+    static void         resetLightBuffer(
+      const GLVector<4,GLuint>& header,
+      const std::vector<unsigned int>& light_ids,
+      const std::vector<GLLight>& lights );
+
+    static void         unbindLightBuffer();
+
+    /*! static void updateLight( unsigned int id, const GLLight& light );
+     *
+     *  This function assumes that the light buffer is healthy
+     */
+    static void         updateLight( unsigned int id, const GLLight& light );
+
+  private:
+    typedef std::map<unsigned int, unsigned int> LightIdMap;
+
+    static GLuint                 _light_ubo;
+
+    static GLVector<4,GLuint>     _lights_header;  // no lights/suns/point_lights/spot_lights
+    static std::vector<GLLight>   _lights;
+    static LightIdMap             _light_id_map;
 
   }; // END class OpenGL
 
@@ -297,38 +420,6 @@ namespace GMlib {
 
 
 
-
-
-
-
-  struct GLViewVertex {
-    GLclampf x, y;
-  };
-
-  struct GLVertex {
-    GLfloat x, y, z;
-  };
-
-  struct GLNormal {
-    GLfloat nx, ny, nz;
-  };
-
-  struct GLTex1D {
-    GLfloat s;
-  };
-
-  struct GLTex2D : GLTex1D {
-    GLfloat t;
-  };
-
-  struct GLTex3D : GLTex2D {
-    GLfloat r;
-  };
-
-  struct GLVertexNormal : GLVertex, GLNormal {};
-  struct GLVertexNormalTex2D : GLVertex, GLNormal, GLTex2D {};
-  struct GLVertexTex1D : GLVertex, GLTex1D {};
-  struct GLVertexTex2D : GLVertex, GLTex2D {};
 
 
 

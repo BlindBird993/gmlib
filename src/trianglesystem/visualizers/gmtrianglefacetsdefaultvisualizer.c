@@ -51,16 +51,18 @@ namespace GMlib {
     prog.setUniform( "u_color", this->_obj->getColor() );
     prog.setUniform( "u_selected", this->_obj->isSelected() );
     prog.setUniform( "u_lighted", this->_obj->isLighted() );
-    prog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
-    prog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
-    prog.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
+
+    // Light data
+    GLuint light_u_block_idx =  prog.getUniformBlockIndex( "Lights" );
+    glBindBufferBase( GL_UNIFORM_BUFFER, 0, OGL::getLightBuffer() );
+    glUniformBlockBinding( prog.getId(), light_u_block_idx, 0 );
 
     // Get Material Data
     const Material &m = this->_obj->getMaterial();
-    prog.setUniform( "u_amb", m.getAmb() );
-    prog.setUniform( "u_dif", m.getDif() );
-    prog.setUniform( "u_spc", m.getSpc() );
-    prog.setUniform( "u_shin", m.getShininess() );
+    prog.setUniform( "u_mat_amb", m.getAmb() );
+    prog.setUniform( "u_mat_dif", m.getDif() );
+    prog.setUniform( "u_mat_spc", m.getSpc() );
+    prog.setUniform( "u_mat_shin", m.getShininess() );
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
     GLuint normal_loc = prog.getAttributeLocation( "in_normal" );

@@ -68,6 +68,12 @@ bool GLShaderManager::_initPrograms() {
   if( !linkProgram( "default" ) )
     return false;
 
+  createProgram( "phong" );
+  addShaderToProgram( "phong", "phong_vs" );
+  addShaderToProgram( "phong", "phong_fs" );
+  if( !linkProgram( "phong" ) )
+    return false;
+
   createProgram( "color" );
   addShaderToProgram( "color", "color_vs" );
   addShaderToProgram( "color", "color_fs" );
@@ -84,6 +90,12 @@ bool GLShaderManager::_initPrograms() {
   addShaderToProgram( "pcurve_contours", "pcurve_contours_vs" );
   addShaderToProgram( "pcurve_contours", "pcurve_contours_fs" );
   if( !linkProgram( "pcurve_contours" ) )
+    return false;
+
+  createProgram( "psurf_phong_nmap" );
+  addShaderToProgram( "psurf_phong_nmap", "psurf_phong_nmap_vs" );
+  addShaderToProgram( "psurf_phong_nmap", "psurf_phong_nmap_fs" );
+  if( !linkProgram( "psurf_phong_nmap" ) )
     return false;
 
   createProgram( "psurf_contours" );
@@ -108,6 +120,142 @@ bool GLShaderManager::_initPrograms() {
 }
 
 bool GLShaderManager::_initShaders() {
+
+
+  std::string header_150(
+
+    "#version 150 core\n"
+    "\n"
+    "layout(std140) uniform;\n"
+    "\n"
+  );
+
+  std::string struct_material(
+
+    "struct Material {\n"
+    "  vec4  ambient;\n"
+    "  vec4  diffuse;\n"
+    "  vec4  specular;\n"
+    "  float shininess;\n"
+    "};\n"
+    "\n"
+  );
+
+  std::string struct_light(
+
+    "struct Light {\n"
+    "\n"
+    "  vec4  ambient;\n"
+    "  vec4  diffuse;\n"
+    "  vec4  specular;\n"
+    "  \n"
+    "  vec4  position;\n"
+    "  vec3  direction;\n"
+    "\n"
+    "  vec3  att;\n"
+    "\n"
+    "  float spot_cut;\n"
+    "  float spot_exp;\n"
+    "};\n"
+    "\n"
+  );
+
+ std::string uniform_lights;
+ uniform_lights.append( struct_light );
+ uniform_lights.append(
+    "uniform Lights {\n"
+    "  uvec4 info;\n"
+    "  Light light[200];\n"
+    "} u_lights;\n"
+    "\n"
+  );
+
+  std::string func_sunlight(
+    "vec4\n"
+    "sunLight( Light light, Material mat, vec3 normal, vec3 cam_pos ) {\n"
+    "\n"
+    "  float sun_att, sun_fact;\n"
+    "  sun_fact = dot( normal, normalize( light.direction ).xyz );\n"
+    "  sun_fact = clamp( sun_fact, 0.0, 1.0 );\n"
+    "\n"
+    "  return light.ambient * sun_fact;\n"
+    "}\n"
+    "\n"
+  );
+
+  std::string func_pointlight(
+    "vec4\n"
+    "pointLight( Light light, Material mat, vec3 normal, vec3 cam_pos ) {\n"
+    "\n"
+    "  vec3  L = vec3(light.position) - cam_pos;\n"
+    "  float dL = length( L );\n"
+    "  L = normalize( L );\n"
+    "  vec3  E = normalize( -cam_pos );\n"
+    "  vec3  R = normalize( -reflect(L,normal) );\n"
+    "\n"
+    "  float attenuation =  1.0 / ( light.att[0] +\n"
+    "                               light.att[1] * dL +\n"
+    "                               light.att[2] * dL * dL );\n"
+    "  // calculate ambient term\n"
+    "  vec4 amb =  light.ambient * mat.ambient;\n"
+    "\n"
+    "  // calculate diffuse term\n"
+    "  vec4 diff = light.diffuse * mat.diffuse * max( dot(normal,L), 0.0);\n"
+    "  diff = clamp( diff, 0.0, 1.0 );\n"
+    "\n"
+    "  // calculate specular term\n"
+    "  vec4 spec = light.specular * mat.specular *\n"
+    "               pow( max( dot(R,E), 0.0), 0.3 * mat.shininess );\n"
+    "  spec = clamp( spec, 0.0, 1.0 );\n"
+    "\n"
+    "  // return color\n"
+    "  return (amb + diff + spec) * attenuation;\n"
+    "}\n"
+    "\n"
+  );
+
+  std::string func_spotlight(
+    "vec4\n"
+    "spotLight( Light light, Material mat, vec3 normal, vec3 cam_pos ) {\n"
+    "\n"
+    "  vec3  L = vec3(light.position) - cam_pos;\n"
+    "  float dL = length( L );\n"
+    "  L = normalize( L );\n"
+    "  vec3  E = normalize( -cam_pos );\n"
+    "  vec3  R = normalize( -reflect(L,normal) );\n"
+    "\n"
+    "  // Attenuation\n"
+    "  float attenuation =  1.0 / ( light.att[0] +\n"
+    "                               light.att[1] * dL +\n"
+    "                               light.att[2] * dL * dL );\n"
+    "\n"
+    "  // Spot attenuation\n"
+    "  float spot_att = dot(-L, normalize(light.direction));\n"
+    "  if( spot_att < light.spot_cut )\n"
+    "    spot_att = 0.0;\n"
+    "  else\n"
+    "    spot_att = pow( spot_att, light.spot_exp );\n"
+    "  attenuation *= spot_att;\n"
+    "\n"
+    "  // calculate ambient term\n"
+    "  vec4 amb =  light.ambient * mat.ambient;\n"
+    "\n"
+    "  // calculate diffuse term\n"
+    "  vec4 diff = light.diffuse * mat.diffuse * max( dot(normal,L), 0.0);\n"
+    "  diff = clamp( diff, 0.0, 1.0 );\n"
+    "\n"
+    "  // calculate specular term\n"
+    "  vec4 spec = light.specular * mat.specular *\n"
+    "               pow( max( dot(R,E), 0.0), 0.3 * mat.shininess );\n"
+    "  spec = clamp( spec, 0.0, 1.0 );\n"
+    "\n"
+    "  // return color\n"
+    "  return (amb + diff + spec) * attenuation;\n"
+    "}\n"
+    "\n"
+  );
+
+
 
   ///////////////////////////
   // Default rendering shader
@@ -241,6 +389,107 @@ bool GLShaderManager::_initShaders() {
   if( !compileShader( "default_fs" ) )
     return false;
 
+
+
+  ///////////////
+  // Phong shader
+  std::string phong_vs_str;
+  phong_vs_str.append( header_150 );
+  phong_vs_str.append(
+    "uniform mat4 u_mvmat, u_mvpmat;\n"
+    "\n"
+    "in vec4 in_vertex;\n"
+    "in vec4 in_normal;\n"
+    "in vec2 in_tex;\n"
+    "\n"
+    "out vec4 gl_Position;\n"
+    "\n"
+    "smooth out vec3 ex_pos;\n"
+    "smooth out vec3 ex_normal;\n"
+    "smooth out vec2 ex_tex;\n"
+    "\n"
+    "void main() {\n"
+    "\n"
+    "  // Transform the normal to view space\n"
+    "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
+    "  ex_normal = nmat * vec3(in_normal);\n"
+    "\n"
+    "  // Transform position into view space;\n"
+    "  vec4 v_pos = u_mvmat * in_vertex;\n"
+    "  ex_pos = v_pos.xyz * v_pos.w;\n"
+    "\n"
+    "  // Pass through the tex coord\n"
+    "  ex_tex = in_tex;\n"
+    "\n"
+    "  // Compute vertex position\n"
+    "  gl_Position = u_mvpmat * in_vertex;\n"
+    "}\n"
+  );
+
+  createShader( "phong_vs", GL_VERTEX_SHADER );
+  setShaderSource( "phong_vs", phong_vs_str );
+
+
+  std::string phong_fs_str;
+  phong_fs_str.append( header_150 );
+  phong_fs_str.append( struct_material );
+  phong_fs_str.append( uniform_lights );
+  phong_fs_str.append( func_sunlight );
+  phong_fs_str.append( func_pointlight );
+  phong_fs_str.append( func_spotlight );
+  phong_fs_str.append(
+    "uniform bool      u_selected;\n"
+    "uniform vec4      u_color;\n"
+    "uniform sampler2D u_nmap;\n"
+    "uniform mat4      u_mvmat;\n"
+    "\n"
+    "uniform vec4      u_mat_amb;\n"
+    "uniform vec4      u_mat_dif;\n"
+    "uniform vec4      u_mat_spc;\n"
+    "uniform float     u_mat_shi;\n"
+    "\n"
+    "smooth in vec3    ex_pos;\n"
+    "smooth in vec3    ex_normal;\n"
+    "smooth in vec2    ex_tex;\n"
+    "\n"
+    "out vec4 gl_FragData[2];\n"
+    "\n"
+    "void main() {\n"
+    "\n"
+    "  vec3 normal = normalize( ex_normal );\n"
+    "\n"
+    "  Material mat;\n"
+    "  mat.ambient   = u_mat_amb;\n"
+    "  mat.diffuse   = u_mat_dif;\n"
+    "  mat.specular  = u_mat_spc;\n"
+    "  mat.shininess = u_mat_shi;\n"
+    "\n"
+    "  vec4 light_color = vec4(0.0);\n"
+    "\n"
+    "  // Compute sun contribution\n"
+    "  for( uint i = uint(0); i < u_lights.info[1]; ++i )\n"
+    "    light_color += sunLight( u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  // Compute point light contribution\n"
+    "  for( uint i = u_lights.info[1]; i < u_lights.info[1] + u_lights.info[2]; ++i )\n"
+    "    light_color += pointLight( u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  // Compute spot light contribution\n"
+    "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
+    "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  gl_FragData[0] = light_color;\n"
+    "\n"
+    "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
+    "\n"
+    "  if( u_selected )\n"
+    "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
+    "  gl_FragData[1] = sel_color;\n"
+    "}\n"
+  );
+
+  createShader( "phong_fs", GL_FRAGMENT_SHADER );
+  setShaderSource( "phong_fs", phong_fs_str );
 
 
   //////////////////////
@@ -400,61 +649,208 @@ bool GLShaderManager::_initShaders() {
     return false;
 
 
+  /////////////////////////////
+  // PSurf phong shader: NMap
+
+  // Vertex shader
+  std::string psurf_phong_nmap_vs_str;
+  psurf_phong_nmap_vs_str.append( header_150 );
+  psurf_phong_nmap_vs_str.append(
+    "uniform mat4 u_mvmat, u_mvpmat;\n"
+    "\n"
+    "in vec4 in_vertex;\n"
+    "in vec2 in_tex;\n"
+    "\n"
+    "out vec4 gl_Position;\n"
+    "\n"
+    "smooth out vec3 ex_pos;\n"
+    "smooth out vec2 ex_tex;\n"
+    "\n"
+    "void main() {\n"
+    "\n"
+    "  vec4 v_pos = u_mvmat * in_vertex;\n"
+    "  ex_pos = v_pos.xyz * v_pos.w;\n"
+    "\n"
+    "  ex_tex = in_tex;\n"
+    "\n"
+    "  gl_Position = u_mvpmat * in_vertex;\n"
+    "}\n"
+  );
+
+  createShader( "psurf_phong_nmap_vs", GL_VERTEX_SHADER );
+  setShaderSource( "psurf_phong_nmap_vs", psurf_phong_nmap_vs_str );
+
+
+
+  // Fragment shader
+  std::string psurf_phong_nmap_fs_str;
+  psurf_phong_nmap_fs_str.append( header_150 );
+  psurf_phong_nmap_fs_str.append( struct_material );
+  psurf_phong_nmap_fs_str.append( uniform_lights );
+  psurf_phong_nmap_fs_str.append( func_sunlight );
+  psurf_phong_nmap_fs_str.append( func_pointlight );
+  psurf_phong_nmap_fs_str.append( func_spotlight );
+  psurf_phong_nmap_fs_str.append(
+    "uniform bool      u_selected;\n"
+    "uniform vec4      u_color;\n"
+    "uniform sampler2D u_nmap;\n"
+    "uniform mat4      u_mvmat;\n"
+    "\n"
+    "uniform vec4      u_mat_amb;\n"
+    "uniform vec4      u_mat_dif;\n"
+    "uniform vec4      u_mat_spc;\n"
+    "uniform float     u_mat_shi;\n"
+    "\n"
+    "smooth in vec3    ex_pos;\n"
+    "smooth in vec2    ex_tex;\n"
+    "\n"
+    "out vec4 gl_FragData[2];\n"
+    "\n"
+    "void main() {\n"
+    "\n"
+    "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
+    "  vec3 nmap_normal = texture( u_nmap, ex_tex.st).xyz;\n"
+    "  vec3 normal = normalize( nmat * nmap_normal );\n"
+    "\n"
+    "  Material mat;\n"
+    "  mat.ambient   = u_mat_amb;\n"
+    "  mat.diffuse   = u_mat_dif;\n"
+    "  mat.specular  = u_mat_spc;\n"
+    "  mat.shininess = u_mat_shi;\n"
+    "\n"
+    "  vec4 light_color = vec4(0.0);\n"
+    "\n"
+    "  // Compute sun contribution\n"
+    "  for( uint i = uint(0); i < u_lights.info[1]; ++i )\n"
+    "    light_color += sunLight( u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  // Compute point light contribution\n"
+    "  for( uint i = u_lights.info[1]; i < u_lights.info[1] + u_lights.info[2]; ++i )\n"
+    "    light_color += pointLight( u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  // Compute spot light contribution\n"
+    "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
+    "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  gl_FragData[0] = light_color;\n"
+    "\n"
+    "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
+    "\n"
+    "  if( u_selected )\n"
+    "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
+    "  gl_FragData[1] = sel_color;\n"
+    "}\n"
+  );
+
+  createShader( "psurf_phong_nmap_fs", GL_FRAGMENT_SHADER );
+  setShaderSource( "psurf_phong_nmap_fs", psurf_phong_nmap_fs_str );
+
+
+
+
 
   ////////////////////////
   // PSurf Contours Shader
 
   // Vertex shader
+  std::string psurf_contours_vs_str;
+  psurf_contours_vs_str.append( header_150 );
+  psurf_contours_vs_str.append(
+    "uniform mat4 u_mvmat, u_mvpmat;\n"
+    "\n"
+    "in vec4 in_vertex;\n"
+    "in vec2 in_tex;\n"
+    "\n"
+    "out vec4 gl_Position;\n"
+    "\n"
+    "smooth out vec3 ex_pos;\n"
+    "smooth out vec2 ex_tex;\n"
+    "\n"
+    "void main() {\n"
+    "\n"
+    "  vec4 v_pos = u_mvmat * in_vertex;\n"
+    "  ex_pos = v_pos.xyz * v_pos.w;\n"
+    "\n"
+    "  ex_tex = in_tex;\n"
+    "\n"
+    "  gl_Position = u_mvpmat * in_vertex;\n"
+    "}\n"
+  );
+
   createShader( "psurf_contours_vs", GL_VERTEX_SHADER );
-  setShaderSource(
-      "psurf_contours_vs",
+  setShaderSource( "psurf_contours_vs", psurf_contours_vs_str );
 
-      "#version 150 core\n"
-      "\n"
-      "uniform mat4 u_mvpmat;\n"
-      "\n"
-      "in vec4 in_vertex;\n"
-      "in vec4 in_color;\n"
-      "\n"
-      "out vec4 ex_color;\n"
-      "out vec4 gl_Position;\n"
-      "\n"
-      "void main() {\n"
-      "\n"
-      "  ex_color = in_color;\n"
-      "  gl_Position = u_mvpmat * in_vertex;\n"
-      "}\n"
-      );
 
-  if( !compileShader( "psurf_contours_vs" ) )
-    return false;
+
+
+
 
 
   // Fragment shader
+  std::string psurf_contours_fs_str;
+  psurf_contours_fs_str.append( header_150 );
+  psurf_contours_fs_str.append( struct_material );
+  psurf_contours_fs_str.append( uniform_lights );
+  psurf_contours_fs_str.append( func_sunlight );
+  psurf_contours_fs_str.append( func_pointlight );
+  psurf_contours_fs_str.append( func_spotlight );
+  psurf_contours_fs_str.append(
+    "uniform bool      u_selected;\n"
+    "uniform vec4      u_color;\n"
+    "uniform sampler2D u_nmap;\n"
+    "uniform sampler2D u_du_map;\n"
+    "uniform sampler2D u_dv_map;\n"
+    "uniform mat4      u_mvmat;\n"
+    "\n"
+    "uniform vec4      u_mat_amb;\n"
+    "uniform vec4      u_mat_dif;\n"
+    "uniform vec4      u_mat_spc;\n"
+    "uniform float     u_mat_shi;\n"
+    "\n"
+    "smooth in vec3    ex_pos;\n"
+    "smooth in vec2    ex_tex;\n"
+    "\n"
+    "out vec4 gl_FragData[2];\n"
+    "\n"
+    "void main() {\n"
+    "\n"
+    "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
+    "  vec3 nmap_normal = texture( u_nmap, ex_tex.st).xyz;\n"
+    "  vec3 normal = normalize( nmat * nmap_normal );\n"
+    "\n"
+    "  Material mat;\n"
+    "  mat.ambient   = u_mat_amb;\n"
+    "  mat.diffuse   = u_mat_dif;\n"
+    "  mat.specular  = u_mat_spc;\n"
+    "  mat.shininess = u_mat_shi;\n"
+    "\n"
+    "  vec4 light_color = vec4(0.0);\n"
+    "\n"
+    "  // Compute sun contribution\n"
+    "  for( uint i = uint(0); i < u_lights.info[1]; ++i )\n"
+    "    light_color += sunLight( u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  // Compute point light contribution\n"
+    "  for( uint i = u_lights.info[1]; i < u_lights.info[1] + u_lights.info[2]; ++i )\n"
+    "    light_color += pointLight( u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  // Compute spot light contribution\n"
+    "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
+    "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
+    "\n"
+    "  gl_FragData[0] = light_color;\n"
+    "\n"
+    "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
+    "\n"
+    "  if( u_selected )\n"
+    "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
+    "  gl_FragData[1] = sel_color;\n"
+    "}\n"
+  );
+
   createShader( "psurf_contours_fs", GL_FRAGMENT_SHADER );
-  setShaderSource(
-      "psurf_contours_fs",
+  setShaderSource( "psurf_contours_fs", psurf_contours_fs_str );
 
-      "#version 150 core\n"
-      "\n"
-      "uniform bool u_selected;\n"
-      "\n"
-      "in vec4 ex_color;\n"
-      "\n"
-      "out vec4 gl_FragData[2];\n"
-      "\n"
-      "void main() {\n"
-      "\n"
-      "  gl_FragData[0] = ex_color;\n"
-      "\n"
-      "  gl_FragData[1] = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-      "  if( u_selected )\n"
-      "    gl_FragData[1] = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
-      "}\n"
-      );
-
-  if( !compileShader( "psurf_contours_fs" ) )
-    return false;
 
 
 

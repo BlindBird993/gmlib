@@ -62,6 +62,7 @@ namespace GMlib{
 
     virtual void 			culling( const Frustum& frustum );
     std::string		    getIdentity() const;
+    const Point<float,3>&    getAttenuation() const;
     void 							setAttenuation(float constant, float linear, float quadratic);
     void 							setAttenuation(const float att[]);
 
@@ -69,8 +70,8 @@ namespace GMlib{
     void 							calculateRadius(float constant, float linear, float quadratic);
     void 							lighting();
 
-    Point3D<float>		_pos;
-    Point3D<float>		_attenuation;
+    Point<float,3>		_pos;
+    Point<float,3>		_attenuation;
 
 
   private:
@@ -98,6 +99,12 @@ namespace GMlib{
   std::string PointLight::getIdentity() const {
 
     return "Point Light";
+  }
+
+  inline
+  const Point<float,3> &PointLight::getAttenuation() const {
+
+    return _attenuation;
   }
 
 

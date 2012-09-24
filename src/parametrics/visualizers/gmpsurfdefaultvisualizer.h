@@ -58,7 +58,7 @@ namespace GMlib {
   protected:
     VertexBufferObject        _vbo;
     TriangleStripIBO          _ibo;
-    GLuint                    _texture;
+    GLuint                    _nmap;
 
     unsigned int              _no_vertices;
 

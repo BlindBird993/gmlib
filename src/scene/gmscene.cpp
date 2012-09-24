@@ -309,22 +309,6 @@ namespace GMlib {
     return _disp_objs.exist( obj );
   }
 
-
-
-
-
-  /*! void Scene::_lighting()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void Scene::lighting() {
-
-    for( int i=0; i < _lights.getSize(); i++ )
-      _lights[i]->lighting();
-  }
-
-
   /*! void Scene::_display()
    *  \brief Pending Documentation
    *
