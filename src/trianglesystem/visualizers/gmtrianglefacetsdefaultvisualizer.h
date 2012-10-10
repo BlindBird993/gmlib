@@ -34,6 +34,8 @@
 #include "gmtrianglefacetsvisualizer.h"
 
 // gmlib
+#include <opengl/gmvertexbufferobject.h>
+#include <opengl/gmindexbufferobject.h>
 
 
 namespace GMlib {

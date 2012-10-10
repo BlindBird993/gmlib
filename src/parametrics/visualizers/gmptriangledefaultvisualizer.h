@@ -34,6 +34,11 @@
 
 #include "gmptrianglevisualizer.h"
 
+// gmlib
+#include <opengl/gmvertexbufferobject.h>
+#include <opengl/gmindexbufferobject.h>
+
+
 namespace GMlib {
 
   template <typename T>
@@ -49,8 +54,8 @@ namespace GMlib {
     void            select();
 
   protected:
-    GLuint          _vbo;
-    GLuint          _ibo;
+    VertexBufferObject    _vbo;
+    IndexBufferObject     _ibo;
 
     int             _no_triangles;
 
