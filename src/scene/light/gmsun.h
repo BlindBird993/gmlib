@@ -53,7 +53,7 @@ namespace GMlib{
     Sun(const Vector<float,3>& dir = Vector3D<float>(1,1,1));
     virtual ~Sun();
 
-    const Color&            getGlobalAmbient() const;
+    Color                   getGlobalAmbient() const;
     const Vector<float,3>&  getDir() const;
     std::string             getIdentity() const;
     void                    scaleDayLight( double d );

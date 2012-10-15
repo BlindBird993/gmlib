@@ -56,7 +56,7 @@ namespace GMlib {
    */
   Sun::~Sun() {}
 
-  const Color& Sun::getGlobalAmbient() const {
+  Color Sun::getGlobalAmbient() const {
 
     return getAmbient();
   }
