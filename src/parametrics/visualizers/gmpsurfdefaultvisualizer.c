@@ -56,7 +56,7 @@ namespace GMlib {
   template <typename T>
   PSurfDefaultVisualizer<T>::~PSurfDefaultVisualizer() {
 
-    glDeleteBuffers( 1, &_nmap );
+    glDeleteTextures( 1, &_nmap );
   }
 
   template <typename T>

@@ -75,7 +75,7 @@ namespace GMlib {
     }; // Size 8 * sizeof( GLfloat )
 
     PSurfContoursVisualizer();
-    ~PSurfContoursVisualizer();
+    virtual ~PSurfContoursVisualizer();
 
     void                              display();
     const Array<Color>&               getColors() const;

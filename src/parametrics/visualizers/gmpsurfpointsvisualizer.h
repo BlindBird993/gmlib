@@ -47,7 +47,7 @@ namespace GMlib {
   class PSurfPointsVisualizer : public PSurfVisualizer<T> {
   public:
     PSurfPointsVisualizer();
-    ~PSurfPointsVisualizer();
+    virtual ~PSurfPointsVisualizer();
 
     void              display();
     const Color&      getColor() const;

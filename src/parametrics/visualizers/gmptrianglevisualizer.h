@@ -64,7 +64,7 @@ namespace GMlib {
   class PTriangleVisualizer : public Visualizer {
   public:
     PTriangleVisualizer();
-    ~PTriangleVisualizer();
+    virtual ~PTriangleVisualizer();
 
     std::string     getIdentity() const;
     virtual void    replot(

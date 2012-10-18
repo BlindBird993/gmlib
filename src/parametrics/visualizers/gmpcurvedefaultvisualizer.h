@@ -40,7 +40,7 @@ namespace GMlib {
   class PCurveDefaultVisualizer : public PCurveVisualizer<T> {
   public:
     PCurveDefaultVisualizer();
-    ~PCurveDefaultVisualizer();
+    virtual ~PCurveDefaultVisualizer();
 
     void          display();
     std::string   getIdentity() const;

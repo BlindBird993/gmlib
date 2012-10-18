@@ -49,7 +49,7 @@ namespace GMlib {
   class PCurveVisualizer : public Visualizer {
   public:
     PCurveVisualizer();
-    ~PCurveVisualizer();
+    virtual ~PCurveVisualizer();
 
     std::string   getIdentity() const;
     virtual void  replot(

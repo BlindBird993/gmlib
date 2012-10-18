@@ -54,7 +54,7 @@ namespace GMlib {
   class PCurveContoursVisualizer : public PCurveVisualizer<T> {
   public:
     PCurveContoursVisualizer();
-    ~PCurveContoursVisualizer();
+    virtual ~PCurveContoursVisualizer();
 
     void                              display();
     const Array<Color>&               getColors() const;

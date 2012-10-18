@@ -58,7 +58,7 @@ namespace GMlib {
   class PSurfDerivativesVisualizer : public PSurfVisualizer<T> {
   public:
     PSurfDerivativesVisualizer();
-    ~PSurfDerivativesVisualizer();
+    virtual ~PSurfDerivativesVisualizer();
 
     void            display();
     const Color&    getColor() const;

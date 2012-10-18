@@ -48,7 +48,7 @@ namespace GMlib {
   class PSurfVisualizer : public Visualizer {
   public:
     PSurfVisualizer();
-    ~PSurfVisualizer();
+    virtual ~PSurfVisualizer();
 
 
     std::string   getIdentity() const;

@@ -46,7 +46,7 @@ namespace GMlib {
   class PCurvePointsVisualizer : public PCurveVisualizer<T> {
   public:
     PCurvePointsVisualizer();
-    ~PCurvePointsVisualizer();
+    virtual ~PCurvePointsVisualizer();
 
     void              display();
     const Color&      getColor() const;

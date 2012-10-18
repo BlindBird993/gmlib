@@ -53,7 +53,7 @@ namespace GMlib {
   class PTriangleColorPointVisualizer : public PTriangleVisualizer<T> {
   public:
     PTriangleColorPointVisualizer();
-    ~PTriangleColorPointVisualizer();
+    virtual ~PTriangleColorPointVisualizer();
 
     void        display();
     GM_PTRIANGLE_COLORPOINTVISUALIZER_COLOR_MODE

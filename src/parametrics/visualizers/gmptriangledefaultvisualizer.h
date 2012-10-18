@@ -45,7 +45,7 @@ namespace GMlib {
   class PTriangleDefaultVisualizer : public PTriangleVisualizer<T> {
   public:
     PTriangleDefaultVisualizer();
-    ~PTriangleDefaultVisualizer();
+    virtual ~PTriangleDefaultVisualizer();
     void            display();
     std::string     getIdentity() const;
     virtual void    replot(

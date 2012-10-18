@@ -52,7 +52,7 @@ namespace GMlib {
   class PCurveDerivativesVisualizer : public PCurveVisualizer<T> {
   public:
     PCurveDerivativesVisualizer();
-    ~PCurveDerivativesVisualizer();
+    virtual ~PCurveDerivativesVisualizer();
 
     void            display();
     const Color&    getColor() const;

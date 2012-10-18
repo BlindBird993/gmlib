@@ -45,7 +45,7 @@ namespace GMlib {
   class PSurfDefaultVisualizer : public PSurfVisualizer<T> {
   public:
     PSurfDefaultVisualizer();
-    ~PSurfDefaultVisualizer();
+    virtual ~PSurfDefaultVisualizer();
     void          display();
     std::string   getIdentity() const;
     virtual void  replot(

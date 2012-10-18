@@ -52,7 +52,7 @@ namespace GMlib {
   class PSurfNormalsVisualizer : public PSurfVisualizer<T> {
   public:
     PSurfNormalsVisualizer();
-    ~PSurfNormalsVisualizer();
+    virtual ~PSurfNormalsVisualizer();
 
     void                              display();
     const Color&                      getColor() const;
