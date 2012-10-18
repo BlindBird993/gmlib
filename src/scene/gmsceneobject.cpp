@@ -602,9 +602,7 @@ namespace GMlib {
    */
   void SceneObject::simulate( double dt ) {
 
-    glPushMatrix();
     localSimulate(dt);
-    glPopMatrix();
 
     for(int i=0; i< _children.size(); i++)
       _children[i]->simulate(dt);
