@@ -32,6 +32,11 @@ namespace GMlib {
 
 
   template <typename T>
+  ERBSEvaluator<T> *ERBSEvaluator<T>::_s_instance = 0;
+
+
+
+  template <typename T>
   ERBSEvaluator<T>::ERBSEvaluator( int m, T alpha, T beta, T gamma, T lambda ) {
 
     _alpha = alpha;
@@ -101,6 +106,16 @@ namespace GMlib {
   T ERBSEvaluator<T>::getLambda() const {
 
     return _lambda;
+  }
+
+  template <typename T>
+  inline
+  ERBSEvaluator<T>* ERBSEvaluator<T>::getInstance() {
+
+    if( !_s_instance )
+      _s_instance = new ERBSEvaluator<T>();
+
+    return _s_instance;
   }
 
   template <typename T>

@@ -73,7 +73,7 @@ namespace GMlib {
     bool                                _closed_u;
     bool                                _closed_v;
 
-    ERBSEvaluator<T>                    *_evaluator;
+    ERBSEvaluator<long double>          *_evaluator;
 
     DMatrix< DVector<T> >               _Bu;
     DMatrix< DVector<T> >               _Bv;

@@ -892,7 +892,7 @@ namespace GMlib {
   inline
   void PERBSSurf<T>::init() {
 
-    _evaluator = new ERBSEvaluator<T>();
+    _evaluator = ERBSEvaluator<long double>::getInstance();
     _resamp_mode = GM_RESAMPLE_PREEVAL;
     _pre_eval = true;
   }

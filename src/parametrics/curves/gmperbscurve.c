@@ -482,7 +482,7 @@ namespace GMlib {
   template <typename T>
   void PERBSCurve<T>::init() {
 
-    _evaluator = new ERBSEvaluator<long double>();
+    _evaluator = ERBSEvaluator<long double>::getInstance();
     _resamp_mode = GM_RESAMPLE_PREEVAL;
     _pre_eval = true;
   }

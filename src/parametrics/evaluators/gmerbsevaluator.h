@@ -54,6 +54,8 @@ namespace GMlib {
     void          setLambda( T lambda );
     void          setParameters( T alpha = T(1), T beta = T(1), T gamma = T(1), T lambda = T(0.5) );
 
+    static ERBSEvaluator<T>*    getInstance();
+
   protected:
     T             _alpha;
     T             _beta;
@@ -62,6 +64,9 @@ namespace GMlib {
 
     T             getF2( T t );
     T             getPhi( T t );
+
+  private:
+    static ERBSEvaluator<T>    *_s_instance;
 
   }; // END class ERBSEvaluator
 
