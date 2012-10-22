@@ -410,9 +410,6 @@ namespace GMlib {
     for( int i = 0; i < _c.getDim1(); i++ )
       for( int j = 0; j < _c.getDim2(); j++ )
         SceneObject::remove( _c[i][j] );
-
-    if( _evaluator )
-      delete _evaluator;
   }
 
   template <typename T>

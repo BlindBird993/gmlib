@@ -224,11 +224,7 @@ namespace GMlib {
 
     for( int i = 0; i < _c.getDim(); i++ )
       SceneObject::remove( _c[i] );
-
-    if( _evaluator )
-      delete _evaluator;
   }
-
 
   template <typename T>
   inline

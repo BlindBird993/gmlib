@@ -34,7 +34,6 @@ namespace GMlib {
   PERBSTriangle<T>::PERBSTriangle( PBezierTriangle<T>* c0, PBezierTriangle<T>* c1, PBezierTriangle<T>* c2 ) {
 
     _basis = ERBSEvaluator<long double>::getInstance();
-    _basis->set( 0.0, 1.0 );
 
     _c.setDim( 3 );
     _c[0] = c0; insertPatch( c0 );
@@ -52,9 +51,6 @@ namespace GMlib {
 
     for( int i = 0; i < _c.getDim(); i++ )
       SceneObject::remove( _c[i] );
-
-    if( _basis )
-      delete _basis;
   }
 
   template <typename T>
@@ -133,6 +129,7 @@ namespace GMlib {
   void PERBSTriangle<T>::getB( DVector<T>& B, T t, int d ) {
 
     B.setDim(d+1);
+    _basis->set( 0.0, 1.0 );
     B[0] = 1 - _basis->operator()(t);  // (*_evaluator)(t)
     B[1] = - _basis->getDer1();
     B[2] = - _basis->getDer2();
