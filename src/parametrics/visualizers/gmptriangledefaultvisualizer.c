@@ -91,7 +91,7 @@ namespace GMlib {
   inline
   void PTriangleDefaultVisualizer<T>::replot( const DVector< DMatrix< Vector<T,3> > >& p, int m ) {
 
-    _no_triangles = PTriangleVisualizer<float>::getNoTriangles( m );
+    _no_triangles = PTriangleVisualizer<float>::getNoTriangles( m-1 );
 
     // Fill VBO
     PTriangleVisualizer<float>::fillStandardVBO( _vbo, p );
