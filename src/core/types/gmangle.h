@@ -125,6 +125,12 @@ namespace GMlib {
 #define M_PI_2            1.57079632679489661923
 #endif
 
+/*! \def  M_PI_3
+ *  Value of Pi / 3 : 1.0471975511965977461542
+ */
+#ifndef M_PI_3
+#define M_PI_3            1.0471975511965977461542
+#endif
 
 /*! \def  M_PI_4
  *  Value of Pi / 4 : 0.785398163397448309616
@@ -192,6 +198,7 @@ namespace GMlib {
 
 /*! \def  M_SQRT1_2
  *  Value of Squart(1/2) : 0.707106781186547524401
+ *  Remember that: Squart(1/2) = 1/Squart(2) = Squart(2)/2
  */
 #ifndef M_SQRT1_2
 #define M_SQRT1_2         0.707106781186547524401
