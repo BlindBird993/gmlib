@@ -356,7 +356,7 @@ namespace GMlib {
 
 
 
-  /*! void Matrix<T,n,m>::setCol(const Point<T,m>& c, int i)
+  /*! void Matrix<T,n,m>::setCol(const Point<T,n>& c, int i)
    *  \brief  setCol
    *
    *  Put vector c at column number i
@@ -364,13 +364,13 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  void Matrix<T,n,m>::setCol(const Point<T,m>& c, int i) {
+  void Matrix<T,n,m>::setCol(const Point<T,n>& c, int i) {
 
     cpy_c(c,i);
   }
 
 
-  /*! void Matrix<T,n,m>::setRow(const Point<T,n>& r, int j)
+  /*! void Matrix<T,n,m>::setRow(const Point<T,m>& r, int j)
    *  \brief  setRow
    *
    *  Put vector r at row number j
@@ -378,7 +378,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  void Matrix<T,n,m>::setRow(const Point<T,n>& r, int j) {
+  void Matrix<T,n,m>::setRow(const Point<T,m>& r, int j) {
 
     cpy_r(r,j);
   }

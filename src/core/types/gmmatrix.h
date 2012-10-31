@@ -61,8 +61,8 @@ namespace GMlib {
    *  \brief  The Static Matrix class
    *
    *  A template (n x m) matrix (n rows and m columns), the matrix is static i.e. the dimentions
-	 *  can not be change. The template type must be clean, i.e. is not allocating
-	 *  memory and without any virtual functions
+   *  can not be change. The template type must be clean, i.e. is not allocating
+   *  memory and without any virtual functions
    */
   template <typename T, int n, int m>
   class Matrix : public Vector<Vector<T,m>,n>  {
@@ -89,8 +89,8 @@ namespace GMlib {
     void	              initRow(int i, int j);
 
     void	              reset();
-    void	              setCol(const Point<T,m>& c, int i);
-    void	              setRow(const Point<T,n>& r, int j);
+    void	              setCol(const Point<T,n>& c, int i);
+    void	              setRow(const Point<T,m>& r, int j);
     Matrix<T,n,m>&	    setTranspose(const Vector<Vector<T,m>,n>& mat);
     void	              scale(const Point<T,n>& s);
     void                swap(int i,int j);
