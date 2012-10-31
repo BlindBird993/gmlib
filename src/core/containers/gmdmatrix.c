@@ -74,9 +74,11 @@ namespace GMlib {
   template<typename T>
   inline
   DMatrix<T>::DMatrix(int i, int j, const T p[]) {
-    _p = (i>4 ? new DVector<T>[i]:_init); _n=i;
+
+    _p = (i>4 ? new DVector<T>[i]:_init);
+    _n = i;
     for (int k=0; k<_n; k++) _p[k].setDim(j);
-    _cpy(_p);
+    _cpy(p);
   }
 
 
@@ -152,42 +154,40 @@ namespace GMlib {
   template <typename T>
   inline
   void  DMatrix<T>::increaseDim(int i, int j, T val, bool h_end, bool v_end) {
+
     if(i>0)
     {
-      int m = _n+i;
-      int k = (v_end ? _n:0);
-      int r = (v_end ? 0:i);
-
-      DVector<T>* tmp = new DVector<T>[m];
-      if(m>4) {
-
-        for(m=r; m<r+_n; m++) {
-
-          tmp[m] = _p[m-r];
-          tmp[m].increaseDim(j,val,h_end);
+      int k, m  = _n + i;
+      T* tmp = (m>4 ? new DVector<T>[m] : _init);
+      if(v_end)
+      {
+        if(m>4) for (k=0; k<_n; k++)
+        {
+          tmp[k] = _p[k];
+          tmp[k].increaseDim(j,val,h_end);
         }
-
-        if(_p != _init)
-          delete [] _p;
-
-        _p = tmp;
-
-      }
-      else if(!v_end) {
-
-        for(m=_n-1; m>=0; m--) {
-
-          _p[m+i] = _p[m];
-          tmp[m+i].increaseDim(j,val,h_end);
+        for (k=_n; k<m; k++)
+        {
+          tmp[k].setDim(j);
+          tmp[k].clear(val);
         }
       }
-
-      for(m=k; m<i+k; m++) {
-
-        _p[m].resetDim(j);
-        _p[m].clear(val);
+      else
+      {
+        for (k=m-1; k>=i; k--)
+        {
+          tmp[k] = _p[k-i];
+          tmp[k].increaseDim(j,val,h_end);
+        }
+        for (k=0; k<i; k++)
+        {
+          tmp[k].setDim(j);
+          tmp[k].clear(val);
+        }
       }
-      _n += i;
+      if(_p != _init) delete [] _p;
+      _p = tmp;
+      _n = m;
     }
   }
 
@@ -336,7 +336,7 @@ namespace GMlib {
     }
     for(; m<i; m++)
     {
-      tmp[m].resetDim(j);
+      tmp[m].setDim(j);
       tmp[m].clear();
     }
     if(_p != _init) delete [] _p;
