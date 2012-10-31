@@ -277,7 +277,7 @@ namespace GMlib {
 
     Point<T,n>      getNormalized();
     Vector<T,n>     getLinIndVec() const;
-    void            normalize();
+    Point<T,n>&     normalize();
     void            setLength( T length );
 
 

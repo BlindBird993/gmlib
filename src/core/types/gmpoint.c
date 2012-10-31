@@ -591,15 +591,16 @@ namespace GMlib {
     }
   }
 
-  /*! void Vector<T, n>::normalize()
+  /*! Point<T,n>& Vector<T, n>::normalize()
    *  \brief Normalize the vector
    *
    *  Normalize the vector
    */
   template <typename T, int n>
   inline
-  void Vector<T, n>::normalize() {
+  Point<T,n>& Vector<T, n>::normalize() {
     (*this)/=Point<T,n>::getLength();
+    return *this;
   }
 
   /*! void Vector<T, n>::setLength( T length )
