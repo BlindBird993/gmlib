@@ -44,8 +44,9 @@ namespace GMlib {
   template<typename T>
   inline
   DVector<T>::DVector(int i) {
+
     _p = (i>4 ? new T[i]:_init);
-    _n=i;
+    _n = i;
   }
 
 
@@ -57,10 +58,10 @@ namespace GMlib {
   template<typename T>
   inline
   DVector<T>::DVector(int i, T val) {
+
     _p = (i>4 ? new T[i]:_init);
-    _n=i;
-    for( int j = 0; j < _n; j++ )
-      _p[j] = val;
+    _n = i;
+    clear(val);
   }
 
 
@@ -73,8 +74,8 @@ namespace GMlib {
   inline
   DVector<T>::DVector(int i, const T p[]) {
     _p = (i>4 ? new T[i]:_init);
-    _n=i;
-    _cpy( _p );
+    _n = i;
+    _cpy( p );
   }
 
 
@@ -86,7 +87,7 @@ namespace GMlib {
   template<typename T>
   inline
   DVector<T>::DVector(const DVector<T>& v) {
-    _n=0; _p = _init;
+    _n = 0; _p = _init;
     _cpy(v);
   }
 
@@ -309,22 +310,24 @@ namespace GMlib {
   template <typename T>
   inline
   void  DVector<T>::increaseDim(int i, T val, bool at_end) {
+
     if(i>0)
     {
-      int j = _n + i;
-      int k = (at_end ? _n:0);
-      int r = (at_end ? 0:i);
-      if(j>4)
+      int k,j  = _n + i;
+      T* tmp = (j>4 ? new T[j] : _init);
+      if(at_end)
       {
-        T* tmp = new T[j];
-        for(j=r; j<r+_n; j++) tmp[j] = _p[j-r];
-        if(_p != _init) delete [] _p;
-        _p = tmp;
+        if(j>4) for (k=0; k<_n; k++)  tmp[k] = _p[k];
+        for( k=_n; k<j; k++ )         tmp[k] = val;
       }
-      else if(!at_end)
-        for(j=_n-1; j>=0; j--) _p[j+i] = _p[j];
-      for(j=k; j<i+k; j++) _p[j] = val;
-      _n += i;
+      else
+      {
+        for (k=j-1; k>=i; k--) tmp[k] = _p[k-i];
+        for (k=0; k<i; k++)    tmp[k] = val;
+      }
+      if(_p != _init) delete [] _p;
+      _p = tmp;
+      _n = j;
     }
   }
 
