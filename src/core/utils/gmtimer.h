@@ -45,9 +45,9 @@ namespace GMlib {
   public:
     GMTimer();
 
-    int     getMilli( bool set = false );
-    double  getSec( bool set = false );
-    void    update();
+    unsigned long   getMilli( bool set = false );
+    double          getSec( bool set = false );
+    void            update();
 
 
   private:

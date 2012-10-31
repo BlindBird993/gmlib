@@ -39,9 +39,9 @@ namespace GMlib {
 
 
   inline
-  int GMTimer::getMilli( bool set ) {
+  unsigned long int GMTimer::getMilli( bool set ) {
 
-    int   diff;
+    unsigned long int   diff;
     timeb newTime;
 
     ftime(&newTime);
