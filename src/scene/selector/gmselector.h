@@ -78,17 +78,17 @@ namespace GMlib{
     Color                 _default;
     Color                 _marked;
 
-    GLProgram             _display;
+//    GLProgram             _display;
 
     // Cube buffer objects
-    BufferObject          _bo_cube;
-    BufferObject          _bo_cube_indices;
-    BufferObject          _bo_cube_frame_indices;
+//    BufferObject          _bo_cube;
+//    BufferObject          _bo_cube_indices;
+//    BufferObject          _bo_cube_frame_indices;
 
     void                  allDisable();
     void                  allEnable();
-    void                  localDisplay();
-    void                  localSelect();
+//    void                  localDisplay();
+//    void                  localSelect();
 
 
   private:
