@@ -66,9 +66,6 @@ namespace GMlib {
     _parent = 0;
     _matrix.translate(trans_vector);
 
-
-
-
     Vector3D<float> ra = rot_axel;
     Vector3D<float> lu = ra.getLinIndVec();
     Vector<float,3> u = lu ^ ra;
@@ -80,6 +77,7 @@ namespace GMlib {
     _active	          = false;
     _local_cs         = true;
     _type_id          = GM_SO_TYPE_SCENEOBJECT;
+    _is_part          = false;
     _lighted          = true;
     _opaque           = true;
     _visible          = true;
@@ -113,6 +111,7 @@ namespace GMlib {
     _active	          = false;
     _local_cs         = copy._local_cs;
     _type_id          = copy._type_id;
+    _is_part          = false;
     _visible          = copy._visible;
     _selected         = copy._selected;
     _color            = copy._color;
@@ -545,6 +544,10 @@ namespace GMlib {
     _color = c;
   }
 
+  void SceneObject::setIsPart( bool is_part ) {
+
+    _is_part = is_part;
+  }
 
   void SceneObject::setLighted( bool lighted ) {
 

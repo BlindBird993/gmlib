@@ -82,7 +82,10 @@ namespace GMlib{
     GM_SO_TYPE_SURFACE_ERBS                   = 0x2003,
 
     // Volumes
-    GM_SO_TYPE_VOLUME                         = 0x3000
+    GM_SO_TYPE_VOLUME                         = 0x3000,
+
+    // Flows
+    GM_SO_TYPE_FLOW                           = 0x4000
   };
 
 
@@ -155,14 +158,15 @@ namespace GMlib{
     const HqMatrix<float,3>&    getModelViewMatrix( const Camera *cam, bool local_cs = true ) const;
     const HqMatrix<float,3>&    getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
     unsigned int                getName() const;
-    SceneObject*                getParent();
+    SceneObject*                getParent() const;
     const HqMatrix<float,3>&    getProjectionMatrix( const Camera* cam ) const;
-    Scene*                      getScene();
+    Scene*                      getScene() const;
     const GLProgram&            getSelectProgram() const;
-    bool                        getSelected();
+    bool                        getSelected() const;
     Sphere<float,3>             getSurroundingSphere() const;
     Sphere<float,3>             getSurroundingSphereClean() const;
-    int                         getTypeId();
+    int                         getTypeId() const;
+    virtual unsigned int        getVirtualName() const;
     Array<Visualizer*>&         getVisualizers();
     const Array<Visualizer*>&   getVisualizers() const;
     void                        insert(SceneObject* obj);
@@ -170,6 +174,7 @@ namespace GMlib{
     bool                        isCollapsed() const;
     bool                        isLighted() const;
     bool                        isOpaque() const;
+    bool                        isPart() const;
     bool                        isSelected() const;
     virtual bool                isVisible() const;
     void                        remove(SceneObject* obj);
@@ -182,12 +187,13 @@ namespace GMlib{
     virtual void                selectEvent(int selector_id);
     virtual void                setCollapsed(bool c);
     void                        setColor( const Color& c );
+    void                        setIsPart( bool part );
     void                        setLighted( bool lighted );
-    void                        setMaterial(const Material& m);
+    virtual void                setMaterial(const Material& m);
     void                        setMatrix( const HqMatrix<float,3>& mat );
     void                        setOpaque( bool o );
     void                        setParent(SceneObject* obj);
-    void                        setSelected(bool s);
+    virtual void                setSelected(bool s);
     void                        setSelectProgram( const GLProgram& prog );
     virtual void                setVisible( bool v, int prop = 0 );
     void                        setStandardRepVisualizer( Visualizer* visu = 0x0 );
@@ -201,6 +207,7 @@ namespace GMlib{
     friend class Scene;
     friend class Camera;
 
+    bool                        _is_part;  //! true if the object is seen as a part of a larger object
 
     int                         _type_id;
     Array<SceneObject*>	        _children;
@@ -384,7 +391,7 @@ namespace GMlib{
 
       const GLProgram &select_prog = getSelectProgram();
       select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
-      select_prog.setUniform( "u_color", Color(getName()) );
+      select_prog.setUniform( "u_color", Color(getVirtualName()) );
 
       if( _collapsed )
         _std_rep_visu->select();
@@ -519,13 +526,13 @@ namespace GMlib{
 
 
   inline
-  SceneObject* SceneObject::getParent() {
+  SceneObject* SceneObject::getParent() const {
 
     return _parent;
   }
 
   inline
-  Scene* SceneObject::getScene() {
+  Scene* SceneObject::getScene() const {
 
     return _scene;
   }
@@ -543,7 +550,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  bool SceneObject::getSelected() {
+  bool SceneObject::getSelected() const {
 
     return _selected;
   }
@@ -567,11 +574,17 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  int SceneObject::getTypeId() {
+  int SceneObject::getTypeId() const {
 
     return _type_id;
   }
 
+  inline
+  unsigned int SceneObject::getVirtualName() const {
+
+    if( _parent && _is_part ) return _parent->getVirtualName();
+    else                      return getName();
+  }
 
   /*! bool SceneObject::isCollapsed() const
    *  \brief Pending Documentation
