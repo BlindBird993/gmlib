@@ -47,7 +47,7 @@ namespace GMlib {
 
     int no_dp = p.getDim();
 
-    GLVertexNormal dp[no_dp];
+    DVector<GLVertexNormal> dp(no_dp);
     for( int i = 0; i < p.getDim(); i++ ) {
 
       const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
@@ -61,7 +61,7 @@ namespace GMlib {
     }
 
     vbo.bind();
-    vbo.createBufferData( no_dp * sizeof( GLVertexNormal ), dp, GL_STATIC_DRAW );
+    vbo.createBufferData( no_dp * sizeof( GLVertexNormal ), dp.getPtr(), GL_STATIC_DRAW );
     vbo.unbind();
   }
 
@@ -70,8 +70,8 @@ namespace GMlib {
 
     int no_indices = m*m*3;
 
-    GLuint indices[no_indices];
-    GLuint *iptr = indices;
+    DVector<GLuint> indices(no_indices);
+    GLuint *iptr = indices.getPtr();
     for( int i = 0; i < m; i++ ) {
 
       // Index row i and row i+1
@@ -96,7 +96,7 @@ namespace GMlib {
     }
 
     ibo.bind();
-    ibo.createBufferData( no_indices, indices, GL_STATIC_DRAW );
+    ibo.createBufferData( no_indices, indices.getPtr(), GL_STATIC_DRAW );
     ibo.unbind();
   }
 
