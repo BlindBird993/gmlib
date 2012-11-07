@@ -322,14 +322,14 @@ namespace GMlib {
 
     eval(u,v,d1,d2);
 
-    p[0][0] = this->_present * (Point<T,3>)_p[0][0];
+    p[0][0] = this->_present * static_cast< Point<T,3> >(_p[0][0]);
 
     for( int j = 1; j < p.getDim2(); j++ )
-      p[0][j] = this->_present * (Vector<T,3>)_p[0][j];
+      p[0][j] = this->_present * _p[0][j];
 
     for( int i = 1; i < p.getDim1(); i++ )
       for( int j = 0; j < p.getDim2(); j++ )
-        p[i][j] = this->_present * (Vector<T,3>)_p[i][j];
+        p[i][j] = this->_present * _p[i][j];
 
     return p;
   }
@@ -352,14 +352,14 @@ namespace GMlib {
 
     eval(u,v,d1,d2);
 
-    p[0][0] = this->_matrix * (Point<T,3>)_p[0][0];
+    p[0][0] = this->_matrix * static_cast< Point<T,3> >(_p[0][0]);
 
     for( int j = 1; j < p.getDim2(); j++ )
-      p[0][j] = this->_matrix * (Vector<T,3>)_p[0][j];
+      p[0][j] = this->_matrix * _p[0][j];
 
     for( int i = 1; i < p.getDim1(); i++ )
       for( int j = 0; j < p.getDim2(); j++ )
-        p[i][j] = this->_matrix * (Vector<T,3>)_p[i][j];
+        p[i][j] = this->_matrix * _p[i][j];
 
     return p;
   }

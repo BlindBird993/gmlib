@@ -167,10 +167,10 @@ namespace GMlib {
     p.setDim(d+1);
     _eval(t,d);
 
-    p[0] = this->_present*((Point<T,3>)_p[0]);
+    p[0] = this->_present* static_cast< Point<T,3> >(_p[0]);
 
     for( int i = 1; i <= d; i++ )
-      p[i] = this->_present * (Vector<T,3>)_p[i];
+      p[i] = this->_present * _p[i];
 
     return p;
   }
@@ -183,10 +183,10 @@ namespace GMlib {
     p.setDim(d+1);
     _eval(t,d);
 
-    p[0] = this->_matrix*((Point<T,3>)_p[0]);
+    p[0] = this->_matrix * static_cast< Point<T,3> >(_p[0]);
 
     for( int i = 1; i <= d; i++ )
-      p[i] = this->_matrix * (Vector<T,3>)_p[i];
+      p[i] = this->_matrix * _p[i];
 
     return p;
   }
