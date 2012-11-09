@@ -66,7 +66,7 @@ namespace GMlib {
   protected:
     bool                            _closed;
 
-    ERBSEvaluator<long double>      *_evaluator;
+    BasisEvaluator<long double>     *_evaluator;
 
     DVector< DVector<T> >           _B;
     DVector< int >                  _tk;

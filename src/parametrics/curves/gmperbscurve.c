@@ -486,12 +486,17 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::insertPatch( PCurve<T>* patch ) {
+  void PERBSCurve<T>::insertPatch( PCurve<T>* local ) {
 
-    patch->replot( 10 );
-    patch->setVisible( false );
-    patch->setCollapsed( true );
-    this->insert( patch );
+    local->replot( 20 );
+
+    static Color cl= GMcolor::Blue;
+    local->setColor( cl );
+    cl = cl.getInterpolatedHSV( 0.2, GMcolor::Yellow );
+
+    local->setVisible( false );
+    local->setCollapsed( true );
+    this->insert( local );
   }
 
 
