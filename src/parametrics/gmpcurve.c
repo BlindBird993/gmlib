@@ -253,6 +253,14 @@ namespace GMlib {
 
   template <typename T>
   inline
+  Vector<T,3> PCurve<T>::getDer3( T t ) {
+
+    _eval(t,3);
+    return _p[3];
+  }
+
+  template <typename T>
+  inline
   std::string PCurve<T>::getIdentity() const {
 
     return "PCurve";
@@ -356,16 +364,12 @@ namespace GMlib {
 
 
     // Correct sample domain
-    if( m < 2 )
-      m = _no_sam;
-    else
-      _no_sam = m;
+    if( m < 2 )       m = _no_sam;
+    else        _no_sam = m;
 
     // Correct derivatives
-    if( d < 1 )
-      d = _no_der;
-    else
-      _no_der = d;
+    if( d < 1 )       d = _no_der;
+    else        _no_der = d;
 
 
     // pre-sampel / pre evaluate data for a given parametric curve, if wanted/needed
