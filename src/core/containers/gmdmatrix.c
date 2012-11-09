@@ -337,7 +337,7 @@ namespace GMlib {
     for(; m<i; m++)
     {
       tmp[m].setDim(j);
-      tmp[m].clear();
+      tmp[m].clear(T());
     }
     if(_p != _init) delete [] _p;
     _n = i;

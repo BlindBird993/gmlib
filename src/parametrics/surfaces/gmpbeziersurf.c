@@ -43,8 +43,6 @@ namespace GMlib {
   inline
   PBezierSurf<T>::PBezierSurf( const DMatrix< Vector<T, 3> >& cp ) {
 
-    this->_type_id = GM_SO_TYPE_SURFACE_BEZIER;
-
     init();
 
     // Set Control Points
@@ -56,19 +54,17 @@ namespace GMlib {
   inline
   PBezierSurf<T>::PBezierSurf( const DMatrix< Vector<T, 3> >& c, T s_u, T u, T e_u, T s_v, T v, T e_v  ) {
 
-    this->_type_id = GM_SO_TYPE_SURFACE_BEZIER;
-
     init();
 
     // Generate the control points
-    DMatrix<T> bhpu, bhpv;
-    EvaluatorStatic<T>::evaluateBhp( bhpu, c.getDim1()-1, ( u - s_u ) / ( e_u - s_u ), T(1)/(e_u-s_u) );
-    EvaluatorStatic<T>::evaluateBhp( bhpv, c.getDim2()-1, ( v - s_v ) / ( e_v - s_v ), T(1)/(e_v-s_v) );
-    bhpu.invert();
-    bhpv.invert();
-    bhpv.transpose();
+    DMatrix<T> bu, bv;
+    EvaluatorStatic<T>::evaluateBhp( bu, c.getDim1()-1, ( u - s_u ) / ( e_u - s_u ), T(1)/(e_u-s_u) );
+    EvaluatorStatic<T>::evaluateBhp( bv, c.getDim2()-1, ( v - s_v ) / ( e_v - s_v ), T(1)/(e_v-s_v) );
+    bu.invert();
+    bv.invert();
+    bv.transpose();
 
-    _c = bhpu * (c^bhpv);
+    _c = bu * (c^bv);
 
 
     for( int i = 0; i < c.getDim1(); i++ )
@@ -81,7 +77,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBezierSurf<T>::PBezierSurf( const PBezierSurf<T>& dpbs ) : PSurf<T>( dpbs ) {
+  PBezierSurf<T>::PBezierSurf( const PBezierSurf<T>& copy ) : PSurf<T>( copy ) {
 
     init();
   }
@@ -111,7 +107,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierSurf<T>::eval( T u, T v, int /*d1*/, int /*d2*/, bool /*lu*/, bool /*lv*/ ) {
+  void PBezierSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
 //    // Send the control to the pre-eval evaluator
 //    if( _resamp_mode == GM_RESAMPLE_PREEVAL ) {
@@ -127,17 +123,18 @@ namespace GMlib {
     DMatrix< T > bu, bv;
     EvaluatorStatic<T>::evaluateBhp( bu, this->getDegreeU(), u, _su );
     EvaluatorStatic<T>::evaluateBhp( bv, this->getDegreeV(), v, _sv );
-//    bv.transpose();
 
-    for( int i = 0; i < bu.getDim1(); i++ )
-      for( int j = 0; j < bv.getDim2(); j++ )
-        this->_p[i][j] = bu[i] * ( _c^bv[j] );
+    bv.transpose();
+    this->_p = bu * (_c^bv);
+
+    // Add "0" derivatives if d1/d2 is bigger
+    this->_p.resetDim(d1+1,d2+1);
   }
 
 
   template <typename T>
   inline
-  void PBezierSurf<T>::evalPre( T u, T v, int /*d1*/, int /*d2*/, bool /*lu*/, bool /*lv*/ ) {
+  void PBezierSurf<T>::evalPre( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     // Find the u/v index for the preevaluated data.
     int iu, iv;
@@ -151,9 +148,11 @@ namespace GMlib {
     DMatrix<T> bu = _u[iu][iv];
     DMatrix<T> bv = _v[iu][iv];
 
-    for( int i = 0; i < bu.getDim1(); i++ )
-      for( int j = 0; j < bu.getDim2(); j++ )
-        this->_p[i][j] = bu[i] * ( _c^bv[j] );
+    bv.transpose();
+    this->_p = bu * (_c^bv);
+
+    // Add "0" derivatives if d1/d2 is bigger
+    this->_p.resetDim(d1+1,d2+1);
   }
 
 
@@ -262,6 +261,8 @@ namespace GMlib {
   template <typename T>
   inline
   void PBezierSurf<T>::init() {
+
+    this->_type_id = GM_SO_TYPE_SURFACE_BEZIER;
 
     _selectors = false;
     _c_moved = false;
