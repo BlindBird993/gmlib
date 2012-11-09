@@ -39,8 +39,6 @@ namespace GMlib {
   inline
   PBezierCurve<T>::PBezierCurve( const DVector< Vector<T, 3> >& c ) {
 
-    this->_type_id = GM_SO_TYPE_CURVE_BEZIER;
-
     init();
 
     // Set Control Points
@@ -52,7 +50,6 @@ namespace GMlib {
   inline
   PBezierCurve<T>::PBezierCurve( const DVector< Vector<T, 3> >& c, T s, T t, T e ) {
 
-    this->_type_id = GM_SO_TYPE_CURVE_BEZIER;
 
     init();
 
@@ -60,7 +57,6 @@ namespace GMlib {
     DMatrix<T> bhp;
     EvaluatorStatic<T>::evaluateBhp( bhp, c.getDim()-1, (t-s)/(e-s), T(1)/(e-s) );
     bhp.invert();
-    _c.setDim( c.getDim() );
     _c = bhp * c;
 
     for( int i = 0; i < c.getDim(); i++ )
@@ -208,6 +204,8 @@ namespace GMlib {
 
   template <typename T>
   void PBezierCurve<T>::init() {
+
+    this->_type_id = GM_SO_TYPE_CURVE_BEZIER;
 
     _selectors = false;
     _c_moved = false;

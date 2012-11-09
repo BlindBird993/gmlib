@@ -34,6 +34,7 @@ namespace GMlib {
   inline
   Parametrics<T,n>::Parametrics() {
 
+    _dm = GM_DERIVATION_EXPLICIT;
     _initSoType();
   }
 

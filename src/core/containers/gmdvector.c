@@ -107,7 +107,6 @@ namespace GMlib {
   /*! void  DVector<T>::_cpy(const DVector<T>& v)
    *  \brief Pending Documentation
    *
-   *  Pending Documentation
    */
   template <typename T>
   inline
