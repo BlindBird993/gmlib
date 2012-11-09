@@ -40,7 +40,8 @@ namespace GMlib {
   template <typename T>
   class EvaluatorStatic {
   public:
-    static void evaluateBhp( DMatrix<T>& mat, int degree, T t, T scale );
+    static void evaluateBhp( DMatrix<T>& mat, int degree, T t, T scale = 1 );
+    static void evaluateHp( DMatrix<T>& mat, int d, T t);
   };
 }
 

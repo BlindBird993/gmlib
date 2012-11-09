@@ -59,7 +59,7 @@ namespace GMlib {
 
     // Compute all the deriatives :P
     mat[d][0] = -scale;
-    mat[d][1] = scale; 
+    mat[d][1] = scale;
 
     for( int k = 2; k <= d; k++ ) {
 
@@ -73,4 +73,41 @@ namespace GMlib {
       }
     }
   }
-}
+
+  template <typename T>
+  void EvaluatorStatic<T>::evaluateHp( DMatrix<T>& mat, int d, T t) {
+
+    mat.setDim( d+1, 4 );
+
+    T t2 = t*t;
+    T t3 = t*t2;
+
+    // Compute the four Hermite polynomials (f_1, f_2, f'_1, f'_2)
+    mat[0][1] = 3*t2 - 2*t3;
+    mat[0][0] = 1 - mat[0][1];
+    mat[0][2] = t - 2*t2 + t3;
+    mat[0][3] = t3 - t2;
+    if(d>0)   // First derivatives
+    {
+      mat[1][1] = 6*(t - t2);
+      mat[1][0] = - mat[1][1];
+      mat[1][2] = 1 - 4*t + 3*t2;
+      mat[1][3] = 3*t2 - 2*t;
+      if(d>1)  // Second derivatives
+      {
+        mat[2][1] = 6 - 12*t;
+        mat[2][0] = - mat[2][1];
+        mat[2][2] = - 4 + 6*t;
+        mat[2][3] = 6*t - 2;
+        if(d>2)  // Third derivatives
+        {
+          mat[3][1] = -12;
+          mat[3][0] = 12;
+          mat[3][2] = 6;
+          mat[3][3] = 6;
+        }
+      }
+    }
+  }
+
+} // END namespace GMlib
