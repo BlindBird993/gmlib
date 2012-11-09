@@ -51,7 +51,8 @@ namespace GMlib {
     GM_POINT = 0,
     GM_CURVE = 1,
     GM_SURFACE = 2,
-    GM_FLOW = 3
+    GM_VOLUME = 3,
+    GM_FLOW = 4
   };
 
   enum GM_RESAMPLE_MODE {
@@ -82,6 +83,9 @@ namespace GMlib {
 
   protected:
     GM_DERIVATION_METHOD                  _dm;
+
+    SqMatrix<T,n>                         _A;   //! Scale, skew and rotate
+    Vector<T,n>                           _b;   //! Translate
 
   private:
     void                                  _initSoType();

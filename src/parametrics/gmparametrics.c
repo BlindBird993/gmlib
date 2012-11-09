@@ -62,8 +62,11 @@ namespace GMlib {
       case GM_SURFACE:
         _type_id = GM_SO_TYPE_SURFACE;
         break;
-      case GM_FLOW:
+      case GM_VOLUME:
         _type_id = GM_SO_TYPE_VOLUME;
+        break;
+      case GM_FLOW:
+        _type_id = GM_SO_TYPE_FLOW;
         break;
     }
   }
