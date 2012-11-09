@@ -39,11 +39,7 @@ namespace GMlib {
   template <typename T>
   ERBSEvaluator<T>::ERBSEvaluator( int m, T alpha, T beta, T gamma, T lambda ) {
 
-    _alpha = alpha;
-    _beta = beta;
-    _gamma = gamma;
-    _lambda = lambda;
-//    setParameters( alpha, beta, gamma, lambda );
+    setParameters( alpha, beta, gamma, lambda );
 
     this->init( m );
     this->set( 0, 1 );
