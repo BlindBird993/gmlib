@@ -88,6 +88,7 @@ namespace GMlib {
     T                             getParStartV();
     T                             getParEndU();
     T                             getParEndV();
+    Vector<T,3>&                  getPosition( T u, T v );
     int                           getSamPU( int i = 0 ) const;
     int                           getSamPV( int i = 0 ) const;
     int                           getSamplesU() const;
@@ -96,6 +97,7 @@ namespace GMlib {
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
     virtual bool                  isClosestPoint( const Point<T,3>& q, T& u, T& v );
+    bool                          isClosestPoint( const Point<T,3>& q, Point<T,2>& uv );
     virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
     void                          removeVisualizer( Visualizer *visualizer );
     virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0 );
@@ -113,7 +115,7 @@ namespace GMlib {
     virtual Parametrics<T,2>*     split( T t, int uv );
     void                          toggleDefaultVisualizer();
 
-    Point<T,3>&                   operator () ( T u, T v );
+    const Point<T,3>&             operator () ( T u, T v );
 
   protected:
     Array< PSurfVisualizer<T>* >  _psurf_visualizers;
