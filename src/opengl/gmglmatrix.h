@@ -37,6 +37,8 @@
 // gmlib
 #include <core/types/gmpoint.h>
 
+// stl
+#include <cmath>
 
 namespace GMlib {
 
@@ -800,7 +802,7 @@ namespace GMlib {
   inline
   void GLMatrix::_makeOrtho(const UnitVector<float,3>& d, Vector3D<float>& x, Vector3D<float>& y, Vector3D<float>& z) {
 
-    double d0=std::fabs(d(0)),d1=std::fabs(d(1)),d2=std::fabs(d(2));
+    double d0=std::abs(d(0)), d1=std::abs(d(1)),d2=std::abs(d(2));
     if (d0 > d1)
     {
       if(d2 > d1)		// d(1) er minst

@@ -31,7 +31,8 @@
 // gmlib
 #include "visualizers/gmpcurvedefaultvisualizer.h"
 
-
+// stl
+#include <cmath>
 
 namespace GMlib {
 
@@ -92,11 +93,10 @@ namespace GMlib {
   inline
   void	PCurve<T>::_eval( T t, int d ) {
 
-    if( !(d <=_d &&  t ==_t) ) {
+    if( d <= _d && t == _t ) return;
 
-      _t = t; _d = d;
-      eval( shift(t), d );
-    }
+    _t = t; _d = d;
+    eval( shift(t), d );
   }
 
 
@@ -140,6 +140,34 @@ namespace GMlib {
         p[p.getDim()-1][u] *= one_over_du;
       }
     }
+  }
+
+  template <typename T>
+  inline
+  T PCurve<T>::_integral(T a, T b, double eps) {
+
+    T t = b - a;
+    T sum = (getSpeed(a)+getSpeed(b))/2;
+
+    T mat[16][16];
+    mat[0][0] = sum * t;
+
+    T s;
+    int i,j,k;
+    for( i = 1; i < 16; i++ ) {
+      s = T(0);
+      k = 1 << i;
+      t /= 2.0;
+      for( j = 1; j < k; j += 2 )
+        s += getSpeed(a + t*j);
+      mat[0][i] = t * (sum += s);
+      for (j=1; j<=i; j++) {
+        b = 1 << (j << 1);
+        mat[j][i-j] = (b*mat[j-1][i-j+1] - mat[j-1][i-j])/(b-1.0);
+      }
+      if(std::abs(mat[i][0] - mat[i-1][0]) < eps) return mat[i][0];
+    }
+    return mat[15][0];
   }
 
   template <typename T>
@@ -197,17 +225,12 @@ namespace GMlib {
   T PCurve<T>::getCurvature( T t ) {
 
     _eval( t, 2 );
-    Vector<T,3> d1 = _p[1];
+    Vector3D<T> d1 = _p[1];
     T a1= d1.getLength();
 
-    if( a1 < T(1.0e-5) )
-      return T(0);
+    if( a1 < T(1.0e-5) ) return T(0);
 
-    d1 /= a1;
-
-    Vector<T,3> d2 = ( _p[2] - ( d1 * _p[2] ) * d1 ) / ( a1 * a1 );
-
-    return d2.getLength();
+    return (d1^_p[2]).getLength() / pow(a1,3);
   }
 
 
@@ -237,7 +260,7 @@ namespace GMlib {
   inline
   Vector<T,3> PCurve<T>::getDer1( T t ) {
 
-    eval( t, 1 );
+    _eval( t, 1 );
     return _p[1];
   }
 
@@ -570,7 +593,8 @@ namespace GMlib {
   inline
   T PCurve<T>::shift( T t ) {
 
-    return _tr + _sc * ( t - getStartP() );
+    return t;
+//    return _tr + _sc * ( t - getStartP() );
   }
 
   template <typename T>

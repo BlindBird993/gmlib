@@ -655,7 +655,7 @@ namespace GMlib {
   inline
   bool Angle::operator == ( const Angle &a ) const {
 
-    return std::fabs(_angle - a._angle) < ANGLE_TOLERANCE;
+    return std::abs(_angle - a._angle) < ANGLE_TOLERANCE;
   }
 
 
