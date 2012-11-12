@@ -42,50 +42,63 @@ namespace GMlib {
   template <typename T>
   class PERBSCurve : public PCurve<T> {
   public:
+
+    enum CURVE_TYPE {
+      SUB_CURVE   = 0,
+      ARC_CURVE   = 1,
+      BEZIERCURVE = 2
+    };
+
     PERBSCurve(); // Dummy
-    PERBSCurve( const DVector< DVector< Vector<T,3> > >& c, const DVector<T>& t, bool closed = false );
-    PERBSCurve( const DVector< DVector< Vector<T,3> > >& c, T s = T(0), T e = T(1), bool closed = false );
-    PERBSCurve( PCurve<T>* g, int no_locals );
-    PERBSCurve( PCurve<T>* g, int no_locals, int d );
+    PERBSCurve( CURVE_TYPE type, PCurve<T>* g, int n, int d = 2 );
     PERBSCurve( const PERBSCurve<T>& copy );
     virtual ~PERBSCurve();
 
     void                            edit( SceneObject *obj );
-    void                            generateKnotVector( PCurve<T>* g );
-    void                            generateKnotVector( T start, T end );
-    std::string                     getIdentity() const;
     DVector< PCurve<T>* >&          getLocalPatches();
     int                             getNoLocalPatches() const;
     virtual void                    hideLocalPatches();
-    bool                            isClosed() const;
     bool                            isLocalPatchesVisible() const;
-    void                            preSample( int m, int d, T start, T end );
     virtual void                    showLocalPatches();
     void                            setResampleMode( GM_RESAMPLE_MODE mode );
+    virtual void                    toggleLocalCurvesVisible();
+
+    // virtual functions from SceneObject
+    std::string                     getIdentity() const;
+
+    // virual functions from PSurf
+    bool                            isClosed() const;
+    void                            preSample( int m, int d, T start, T end );
 
   protected:
     bool                            _closed;
-
-    BasisEvaluator<long double>     *_evaluator;
-
-    DVector< DVector<T> >           _B;
-    DVector< int >                  _tk;
     DVector<T>                      _t;
-//
+    DVector<PCurve<T>*>             _c;
+
+    BasisEvaluator<long double>*    _evaluator;
+
+    // Using pre evaulating of GERBS-basis functions
     GM_RESAMPLE_MODE                _resamp_mode;
-    bool                            _pre_eval;
+    bool                            _pre_eval; // To mark that pre eval is done
+    DVector< int >                  _tk;       // pre evaluation vector
+    DVector< DVector<T> >           _B;        // Storing sample values - GERBS
 
-    DVector< PCurve<T>* >           _c;
-
+    // virual functions from PSurf
     void                            eval( T t, int d = 0, bool l = false );
-    void                            evalPre( T t, int d = 0, bool l = false );
-    void                            findIndex( T t, int& it );
-    void                            getB( DVector<T>& B, int tk, T t, int d );
     T                               getEndP();
     T                               getStartP();
+
+    // Local help functions
+    int                             findIndex( T t);// const;
+    void                            getB( DVector<T>& B, int tk, T t, int d );
+
+  private:
+    // Local help functions
+    void                            compEval( T t, int d, int k, const DVector<T>& B );
+    void                            generateKnotVector( PCurve<T>* g, int n );
     virtual void                    init();
-    void                            insertPatch( PCurve<T> *patch );
-    void                            padKnotVector();
+    void                            insertLocal( PCurve<T> *patch );
+    PCurve<T>*                      makeLocal( CURVE_TYPE type, PCurve<T>* g, T s, T t, T e, int d=2);
 
   }; // END class PERBSCurve
 

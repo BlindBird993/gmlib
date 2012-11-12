@@ -54,18 +54,23 @@ namespace GMlib {
     void                            edit( int selector );
     DVector< Vector<T,3> >&         getControlPoints();
     int                             getDegree() const;
-    std::string                     getIdentity() const;
     T                               getLocalMapping( T t, T ts, T ti, T te );
     virtual void                    hideSelectors();
-    bool                            isClosed() const;
     bool                            isSelectorsVisible() const;
-    void                            preSample( int m, int d, T start, T end );
     void                            setClosed( bool state );
     void                            setControlPoints( const DVector< Vector<T,3> >& cv );
     void                            setResampleMode( GM_RESAMPLE_MODE mode );
     void                            setScale( T d );
     virtual void                    showSelectors( bool grid = false, const Color& _selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
     void                            updateCoeffs( const Vector<T,3>& d );
+
+    // virtual from SceneObject
+    std::string                     getIdentity() const;
+
+    // virtual from PCurve
+    bool                            isClosed() const;
+    void                            preSample( int m, int d, T start, T end );
+
 
 
   protected:
