@@ -39,3 +39,5 @@ addSubDirectory(evaluators)
 addSubDirectory(surfaces)
 addSubDirectory(triangles)
 addSubDirectory(visualizers)
+
+addTestDir(test)

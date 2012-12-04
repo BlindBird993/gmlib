@@ -42,3 +42,5 @@ addSources(
   gmcolor.cpp
   gmstream.cpp
 )
+
+addTestDir(test)

@@ -108,11 +108,11 @@ namespace GMlib {
    */
   void Material::glUnSet() const {
 
-    if( _texture.isValid() )
-    {
-      glDisable( _texture.getDimension() );
-      glBindTexture( _texture.getDimension(), 0 );
-    }
+//    if( _texture.isValid() )
+//    {
+//      glDisable( _texture.getDimension() );
+//      glBindTexture( _texture.getDimension(), 0 );
+//    }
   }
 
 

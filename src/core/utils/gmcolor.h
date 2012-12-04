@@ -157,9 +157,22 @@ namespace GMlib {
 
 
   private:
+    std::istream& _printIn( std::istream& in ) {
 
-    std::istream& _printIn( std::istream& in );
-    std::ostream& _printOut( std::ostream& out ) const;
+      double r,g,b,a;
+      in >> r >> g >> b >> a;
+      set(r,g,b,a);
+      return in;
+    }
+
+    std::ostream& _printOut( std::ostream& out ) const {
+
+      out << getRedC() << "  "
+          << getGreenC() << "  "
+          <<  getBlueC() << "  "
+          << getAlphaC();
+      return out;
+    }
 
     friend
     std::ostream& operator << ( std::ostream& out, const Color& v ) {

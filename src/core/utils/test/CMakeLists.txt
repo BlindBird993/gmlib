@@ -20,33 +20,6 @@
 # #
 # ###############################################################################
 
-addHeaders(
-  gmBufferObject
-  gmFramebufferObject
-  gmGLMatrix
-  gmGLProgram
-  gmGLShader
-  gmGLShaderManager
-  gmIndexBufferObject
-  gmOpenGL
-  gmUniformBufferObject
-  gmVertexBufferObject
-)
 
-addSources(
-  gmbufferobject.cpp
-  gmframebufferobject.cpp
-  gmglmatrix.cpp
-  gmglprogram.cpp
-  gmglshader.cpp
-  gmglshadermanager.cpp
-  gmindexbufferobject.cpp
-  gmopengl.cpp
-  gmuniformbufferobject.cpp
-  gmvertexbufferobject.cpp
-)
 
-moduleLinkLibrary( ${GLEW_LIBRARY} )
-moduleLinkLibrary( ${OPENGL_LIBRARIES} )
-
-addTestDir(test)
+addTest(gmcolor_tests)
