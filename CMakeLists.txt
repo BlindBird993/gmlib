@@ -28,11 +28,7 @@ cmake_minimum_required(VERSION 2.8)
 # Build options
 
 # Core types stream operators
-option( GMLIB_STREAM "Enable output stream operators for core types." FALSE )
-
-# Namespace options
-option( GMLIB_NAMESPACE "Set to TRUE to enable the <GMlib> namespace." FALSE )
-option( GMLIB_MODULE_NAMESPACES "Set to TRUE to enable pr. module namespace." FALSE )
+option( GMLIB_STREAM "Enable output stream operators for core types." TRUE )
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE)
