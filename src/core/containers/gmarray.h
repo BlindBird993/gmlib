@@ -72,12 +72,13 @@ namespace GMlib {
     int             getMaxSize() const;           // Alias: max_size()
     T*              getPtr();                     // Alias: ptr()
     int             getSize() const;              // Alias: size()
+    Array<int>      getSortedIndex() const;
     bool            getStreamMode() const;
     int             index( const T& t ) const;
     void            initialize( const T& t );
     bool            insert( const T& t, bool first = false );
     bool            insert( const Array<T>& ar, bool first = false );
-    virtual void    insertAlways( const T& t, bool first = false );
+    void            insertAlways( const T& t, bool first = false );
     void            insertAlways( const Array<T>& ar, bool first = false );
     void            insertBack( const T& t );
     void            insertBack( const Array<T>& ar );
@@ -100,7 +101,7 @@ namespace GMlib {
     bool            remove( const T& t );
     bool            removeBack();
     bool            removeFront();
-    virtual bool    removeIndex( int index );
+    bool            removeIndex( int index );
     void            resetSize();
     void            resize( int size );
     void            reverse();
@@ -108,7 +109,9 @@ namespace GMlib {
     void            setMaxSize( int size );
     void            setSize( int size );
     void            setSize( int size, T t );
+    void            setSorted( bool sorted = true );
     void            setStreamMode( bool mode = false );
+    virtual void    sort();
     void            strip();
     void            swap( int i, int j );
 
@@ -133,6 +136,8 @@ namespace GMlib {
     T               *_data_ptr;
     int             _no_elements;
     int             _max_elements;
+
+    bool            _sorted;
 
     // True:  iostream writing and reading the number (default)
     // False: iostream writing and reading only array,

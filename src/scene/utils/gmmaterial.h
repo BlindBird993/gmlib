@@ -94,6 +94,7 @@ namespace GMlib {
 
     Material&       operator =  ( const Material& m );
     bool            operator == ( const Material& m ) const;
+    bool            operator <  ( const Material& m ) const;
 
 
   protected:

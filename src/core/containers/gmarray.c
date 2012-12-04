@@ -41,6 +41,7 @@ namespace GMlib {
   inline
   Array<T>::Array( int size ) {
 
+    _sorted       = false;
     _numb         = false;
     _no_elements  = 0;
     _max_elements = (size < 6 ? 6 : size );
@@ -54,6 +55,7 @@ namespace GMlib {
   inline
   Array<T>::Array( int size, T t ) {
 
+    _sorted       = false;
     _no_elements  = size;
     _max_elements = (size < 6 ? 6 : size);
 
@@ -68,6 +70,7 @@ namespace GMlib {
   inline
   Array<T>::Array( int size, const T* t ) {
 
+    _sorted       = false;
     _numb         = true;
     _no_elements  = size;
     _max_elements  = (size < 6 ? 6 : size);
@@ -84,6 +87,7 @@ namespace GMlib {
   inline
   Array<T>::Array( const Array<T>& ar ) {
 
+    _sorted       = false;
     _no_elements  = 0;
     _max_elements = 6;
     _data_ptr     = _data;
@@ -94,6 +98,7 @@ namespace GMlib {
   template <typename T>
   Array<T>::Array( const ArrayT<T>& ar ) {
 
+    _sorted       = false;
     _no_elements  = 0;
     _max_elements = 6;
     _data_ptr     = _data;
@@ -125,6 +130,7 @@ namespace GMlib {
     _max_elements = 6;
     _data_ptr     = _data;
     _numb         = true;
+    _sorted       = false;
   }
 
 
@@ -199,6 +205,28 @@ namespace GMlib {
     return size();
   }
 
+  template <typename T>
+  Array<int> Array<T>::getSortedIndex() const {
+
+    if( this->_no_elements == 0) { return Array<int>(0); }
+
+    int i, j, k;
+    Array<int> ar;
+
+    ar.setSize( this->_no_elements );
+
+    for(i = 0; i < this->_no_elements; i++) {
+      ar[i] = i;
+    }
+
+    for(i = 0; i < this->_no_elements - 1; i++) {
+      for(k = i, j = i+1; j < this->_no_elements; j++) {
+        if( this->_data_ptr[ar[j]] < this->_data_ptr[ar[k]] ) { k = j; }
+      }
+      ar.swap(i, k);
+    }
+    return ar;
+  }
 
   template <typename T>
   inline
@@ -270,22 +298,35 @@ namespace GMlib {
   template <typename T>
   void Array<T>::insertAlways( const T& t, bool first ) {
 
+    int i;
+
     // Expand the array if nessesary
-    expand();
+    this->expand();
 
 
-    if(first) {
-      for(int i = _no_elements; i > 0; i--) {
-        _data_ptr[i] = _data_ptr[i-1];
+    if( _sorted ) {
+      for (i = this->_no_elements; i > 0 && t < this->_data_ptr[i-1]; --i) {
+
+        this->_data_ptr[i] = this->_data_ptr[i-1];
       }
 
-      _data_ptr[0] = t;
+      this->_data_ptr[i] = t;
 
-    } else {
-      _data_ptr[_no_elements] = t;
+    } else if(first) {
+      for(i = this->_no_elements; i > 0; i--) {
+
+        this->_data_ptr[i] = this->_data_ptr[i-1];
+      }
+
+      this->_data_ptr[0] = t;
+
+    }
+    else {
+
+      this->_data_ptr[this->_no_elements] = t;
     }
 
-    _no_elements++;
+    this->_no_elements++;
   }
 
 
@@ -483,9 +524,15 @@ namespace GMlib {
     }
 
     // Move array forward
-    _no_elements--;
-    if(index != _no_elements) {
-      _data_ptr[index] = _data_ptr[_no_elements];
+    this->_no_elements--;
+    if(_sorted) {
+      for(int j = index; j < this->_no_elements; j++) {
+
+        this->_data_ptr[j] = this->_data_ptr[j+1];
+      }
+
+    } else if(index != this->_no_elements) {
+      this->_data_ptr[index] = this->_data_ptr[this->_no_elements];
     }
     return true;
   }
@@ -594,6 +641,12 @@ namespace GMlib {
     }
   }
 
+  template <typename T>
+  inline
+  void Array<T>::setSorted( bool sorted ) {
+
+    _sorted = sorted;
+  }
 
   template <typename T>
   inline
@@ -602,6 +655,21 @@ namespace GMlib {
     _numb = mode;
   }
 
+  template <typename T>
+  void Array<T>::sort() {
+
+    int	i,j,k;
+
+    _sorted = true;
+
+    for(i = 0; i < this->_no_elements - 1; i++) {
+      for(k = i, j = i+1; j < this->_no_elements; j++) {
+        if(this->_data_ptr[j] < this->_data_ptr[k]) { k = j; }
+      }
+
+      if(i != k) { this->swap(i, k); }
+    }
+  }
 
   template <typename T>
   void Array<T>::strip() {
@@ -718,6 +786,7 @@ namespace GMlib {
       }
 
     _numb	= ar._numb;
+    _sorted = ar._sorted;
 
     //memcpy(_data_ptr, ar._data_ptr, _no_elements * sizeof(T));
     for(int i = 0; i < _no_elements; i++) {

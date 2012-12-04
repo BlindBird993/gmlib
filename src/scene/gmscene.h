@@ -42,7 +42,7 @@
 // gmlib
 #include <core/types/gmpoint.h>
 #include <core/utils/gmtimer.h>
-#include <core/containers/gmsarray.h>
+#include <core/containers/gmarray.h>
 #include <core/utils/gmsortobject.h>
 
 
@@ -131,8 +131,8 @@ namespace GMlib{
 
     Array<SceneObject*>   _scene;
     Array<SceneObject*>	  _disp_objs;
-    SArray< SortObject<SceneObject*, float> >   _disp_opaque;
-    SArray< SortObject<SceneObject*, float> >   _disp_translucent;
+    Array< SortObject<SceneObject*, float> >   _disp_opaque;
+    Array< SortObject<SceneObject*, float> >   _disp_translucent;
 
     Array<Light*>         _lights;
     Array<HqMatrix<float,3> >                   _matrix_stack;

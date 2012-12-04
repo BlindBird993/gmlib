@@ -149,7 +149,14 @@ namespace GMlib {
     _texture = texture;
   }
 
+  /*! bool Material::operator < ( const Material& m ) const
+   *
+   *  Dummy operator for Array
+   */
+  bool Material::operator < ( const Material& /*m*/ ) const {
 
+    return true;
+  }
 
   /*! void	MaterialObjectList::initPreDef()
    *	\brief Pending Documentation

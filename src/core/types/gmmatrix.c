@@ -626,6 +626,17 @@ namespace GMlib {
   }
 
 
+  /*! bool Matrix<T,n,m>::operator < ( const Matrix<T,n,m>& )
+   *
+   *  Dummy comparison operator for Array
+   */
+  template <typename T, int n, int m>
+  inline
+  bool Matrix<T,n,m>::operator < ( const Matrix<T,n,m>& /*m*/ ) const {
+
+    return true;
+  }
+
 
   /*! void Matrix<T,n,m>::swap(int i,int j)
    *  \brief  swap

@@ -118,6 +118,8 @@ namespace GMlib {
     Matrix<T,n,m>&	    operator/(double d) const;
 
 
+    // Dummy for Array - should maby use determinant
+    bool                operator < ( const Matrix<T,n,m>& ) const;
 
   protected:
 
@@ -139,7 +141,6 @@ namespace GMlib {
     void                  setOrtho( const Vector<T,m>& u, const Vector<T,m>& v );
 
   }; // END class Matrix
-
 
 
 

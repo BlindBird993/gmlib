@@ -28,7 +28,6 @@ addHeaders(
   gmDMatrix
   gmDVector
   gmDVectorn
-  gmSArray
 )
 
 addTemplateSources(
@@ -38,7 +37,6 @@ addTemplateSources(
   gmdmatrix.c
   gmdvector.c
   gmdvectorn.c
-  gmsarray.c
 )
 
 addTestDir(test)

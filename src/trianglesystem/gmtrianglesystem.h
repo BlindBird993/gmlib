@@ -40,7 +40,6 @@
 #include <core/containers/gmarray.h>
 #include <core/containers/gmarrayt.h>
 #include <core/containers/gmarraylx.h>
-#include <core/containers/gmsarray.h>
 #include <core/containers/gmdmatrix.h>
 #include <opengl/gmglprogram.h>
 #include <scene/gmdisplayobject.h>

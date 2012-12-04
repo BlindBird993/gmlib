@@ -193,7 +193,7 @@ namespace GMlib {
     while(e.getSize() > 3)
     {
       // Angle ang;
-      SArray<Angle> ang;
+      Array<Angle> ang;
       Array<int> index;
 
       for(i=0 ;i<e.getSize(); i++)
@@ -2378,7 +2378,7 @@ namespace GMlib {
   inline
   T TSTriangle<T>::getAngleLargest() {
 
-    SArray<Angle> a;
+    Array<Angle> a;
     a += this->_edges[0]->getVector().getAngle( this->_edges[1]->getVector() );
     a += this->_edges[1]->getVector().getAngle( this->_edges[2]->getVector() );
     a += this->_edges[2]->getVector().getAngle( this->_edges[0]->getVector() );
@@ -2391,7 +2391,7 @@ namespace GMlib {
   inline
   T TSTriangle<T>::getAngleSmallest() {
 
-    SArray<Angle> a;
+    Array<Angle> a;
     a += this->_edges[0]->getVector().getAngle( this->_edges[1]->getVector() );
     a += this->_edges[1]->getVector().getAngle( this->_edges[2]->getVector() );
     a += this->_edges[2]->getVector().getAngle( this->_edges[0]->getVector() );
