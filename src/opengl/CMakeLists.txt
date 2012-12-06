@@ -23,7 +23,6 @@
 addHeaders(
   gmBufferObject
   gmFramebufferObject
-  gmGLMatrix
   gmGLProgram
   gmGLShader
   gmGLShaderManager
@@ -36,7 +35,6 @@ addHeaders(
 addSources(
   gmbufferobject.cpp
   gmframebufferobject.cpp
-  gmglmatrix.cpp
   gmglprogram.cpp
   gmglshader.cpp
   gmglshadermanager.cpp
