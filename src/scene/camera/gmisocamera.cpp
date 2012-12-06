@@ -184,11 +184,41 @@ namespace GMlib {
     float	hh = _horisontal;
     float	rr = _ratio*_horisontal;
     _frustum = Frustum(_matrix_scene,_pos,_horisontal,_ratio,_dir,_up,_side,_near_plane,_far_plane);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-rr, rr, -hh, hh, _near_plane, _far_plane);
-    glMatrixMode(GL_MODELVIEW);
+
+    float l, r, b, t, n, f;
+    l = -rr;
+    r = rr;
+    b = -hh;
+    t = hh;
+    n = _near_plane;
+    f = _far_plane;
+
+    float tx, ty, tz;
+    tx = -(r+l)/(r-l);
+    ty = -(t+b)/(t-b);
+    tz = -(f+n)/(f-n);
+
+    _frustum_matrix[0][0] = 2.0f / (r - l);
+    _frustum_matrix[0][1] = 0.0f;
+    _frustum_matrix[0][2] = 0.0f;
+    _frustum_matrix[0][3] = tx;
+
+    _frustum_matrix[1][0] = 0.0f;
+    _frustum_matrix[1][1] = 2.0f / ( t - b );
+    _frustum_matrix[1][2] = 0.0f;
+    _frustum_matrix[1][3] = ty;
+
+    _frustum_matrix[2][0] = 0.0f;
+    _frustum_matrix[2][1] = 0.0f;
+    _frustum_matrix[2][2] = (-2.0f)/(f-n);
+    _frustum_matrix[2][3] = tz;
+
+    _frustum_matrix[3][0] = 0.0f;
+    _frustum_matrix[3][1] = 0.0f;
+    _frustum_matrix[3][2] = 0.0f;
+    _frustum_matrix[3][3] = 1.0f;
   }
+
 
 
   /*! void IsoCamera::zoom(float z)

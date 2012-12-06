@@ -649,9 +649,6 @@ namespace GMlib {
     float	rr = _ratio*hh;
     _frustum = Frustum(_matrix_scene,_pos,_dir,_up,_side,_angle_tan,_ratio,_near_plane,_far_plane);
 
-    float width = 1.0 / _angle_tan;
-    float height = _ratio / _angle_tan;
-
     float l, r, b, t, n, f;
     l = -rr;
     r = rr;
@@ -685,43 +682,6 @@ namespace GMlib {
     _frustum_matrix[3][1] = 0.0f;
     _frustum_matrix[3][2] = -1.0f;
     _frustum_matrix[3][3] = 0.0f;
-
-
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    glFrustum(-rr, rr, -hh, hh, _near_plane, _far_plane);
-//    glMatrixMode(GL_MODELVIEW);
-
-
-
-
-//    float glpmat[16];
-//    float glmvmat[16];
-
-//    glGetFloatv( GL_PROJECTION_MATRIX, glpmat );
-//    glGetFloatv( GL_MODELVIEW_MATRIX, glmvmat );
-
-//    std::cout << "Camera::_setPerspective() END" << std::endl;
-//    std::cout << "GL_PROJECTION_MATRIX" << std::endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      for( int j = 0; j < 4; j++ ) {
-
-//        std::cout << glpmat[j*4+i] << " ";
-//      }
-//      std::cout << std::endl;
-//    }
-//    std::cout << std::endl;
-
-
-//    std::cout << "GL_MODELVIEW_MATRIX" << std::endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      for( int j = 0; j < 4; j++ ) {
-
-//        std::cout << glmvmat[j*4+i] << " ";
-//      }
-//      std::cout << std::endl;
-//    }
-//    std::cout << std::endl;
   }
 
 } // END namespace GMlib
