@@ -208,12 +208,19 @@ namespace GMlib {
     const Vector<float,3>& p
   ) {
 
-    static GLMatrix glmat;
-    glmat = _matrix.getTransposed().getPtr();
-    glmat.basisChangeCam( x,y,z,p );
-    for( int i = 0; i < 4; i++ )
-      for( int j = 0; j < 4; j++ )
-        _matrix[i][j] = glmat.get(j,i);
+    static Vector<float,4> nx, ny, nz, nw(0.0f);
+    memcpy( nx.getPtr(), (-x).getPtr(), 12 );
+    memcpy( ny.getPtr(), y.getPtr(), 12 );
+    memcpy( nz.getPtr(), (-z).getPtr(), 12 );
+    nx[3] = x*p;
+    ny[3] = -(y*p);
+    nz[3] = z*p;
+    nw[3] = 1.0f;
+
+    _matrix.setRow( nx, 0 );
+    _matrix.setRow( ny, 1 );
+    _matrix.setRow( nz, 2 );
+    _matrix.setRow( nw, 3 );
   }
 
 

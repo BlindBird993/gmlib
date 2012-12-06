@@ -40,9 +40,6 @@
 
 #include "gmsceneobject.h"
 
-// gmlib
-#include <opengl/gmglmatrix.h>
-
 // stl
 #include <string>
 
@@ -240,12 +237,18 @@ namespace GMlib {
   inline
   void DisplayObject::basisChange( const Vector<float,3>& x, const Vector<float,3>& y, const Vector<float,3>& z, const Vector<float,3>& p ) {
 
-    static GLMatrix glmat;
-    glmat = _matrix.getTransposed().getPtr();
-    glmat.basisChange( z,x,y,p );
-    for( int i = 0; i < 4; i++ )
-      for( int j = 0; j < 4; j++ )
-        _matrix[i][j] = glmat.get(j,i);
+    static Vector<float,4> nx, ny, nz, np;
+    memcpy( nx.getPtr(), z.getPtr(), 12 );
+    memcpy( ny.getPtr(), x.getPtr(), 12 );
+    memcpy( nz.getPtr(), y.getPtr(), 12 );
+    memcpy( np.getPtr(), p.getPtr(), 12 );
+    nx[3] = ny[3] = nz[3] = 0.0f;
+    np[3] = 1.0f;
+
+    _matrix.setCol( nx, 0 );
+    _matrix.setCol( ny, 1 );
+    _matrix.setCol( nz, 2 );
+    _matrix.setCol( np, 3 );
   }
 
 
