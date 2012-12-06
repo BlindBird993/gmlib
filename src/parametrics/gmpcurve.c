@@ -408,7 +408,7 @@ namespace GMlib {
 
     // Replot Visaulizers
     for( int i = 0; i < this->_pcurve_visualizers.getSize(); i++ )
-      this->_pcurve_visualizers[i]->replot( p, m, d );
+      this->_pcurve_visualizers[i]->replot( p, m, d, isClosed() );
   }
 
   template <typename T>

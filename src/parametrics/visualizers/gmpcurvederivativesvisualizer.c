@@ -104,7 +104,7 @@ namespace GMlib {
   inline
   void PCurveDerivativesVisualizer<T>::replot(
     DVector< DVector< Vector<T, 3> > >& p,
-    int /*m*/, int /*d*/
+    int /*m*/, int /*d*/, bool /*closed*/
   ) {
 
     int der = 0;

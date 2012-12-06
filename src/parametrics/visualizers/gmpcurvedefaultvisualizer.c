@@ -70,7 +70,7 @@ namespace GMlib {
   inline
   void PCurveDefaultVisualizer<T>::replot(
     DVector< DVector< Vector<T, 3> > >& p,
-    int /*m*/, int /*d*/
+    int /*m*/, int /*d*/, bool /*closed*/
   ) {
 
     PCurveVisualizer<T>::fillStandardVBO( _vbo, _no_vertices, p );

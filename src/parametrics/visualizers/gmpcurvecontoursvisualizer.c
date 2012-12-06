@@ -175,7 +175,7 @@ namespace GMlib {
   inline
   void PCurveContoursVisualizer<T>::replot(
     DVector< DVector< Vector<T, 3> > >& p,
-    int m, int d
+    int /*m*/, int /*d*/, bool /*closed*/
   ) {
 
     PCurveVisualizer<T>::populateLineStripVBO( _vbo_v, _no_vertices, p );

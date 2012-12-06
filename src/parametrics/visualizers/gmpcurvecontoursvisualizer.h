@@ -62,7 +62,7 @@ namespace GMlib {
     GM_PCURVE_CONTOURSVISUALIZER_MAP  getMapping() const;
     void                              replot(
       DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d
+      int m, int d, bool closed
     );
     void                              setColors( const Array<Color>& c );
     void                              setMapping( GM_PCURVE_CONTOURSVISUALIZER_MAP mapping );

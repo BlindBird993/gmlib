@@ -744,7 +744,7 @@ namespace GMlib {
 
     // Replot Visaulizers
     for( int i = 0; i < this->_psurf_visualizers.getSize(); i++ )
-      this->_psurf_visualizers[i]->replot( p, normals, m1, m2, d1, d2 );
+      this->_psurf_visualizers[i]->replot( p, normals, m1, m2, d1, d2, isClosedU(), isClosedV() );
   }
 
   template <typename T>

@@ -100,7 +100,7 @@ namespace GMlib {
   inline
   void PCurveVisualizer<T>::replot(
     DVector< DVector< Vector<T, 3> > >& /*p*/,
-    int /*m*/, int /*d*/
+    int /*m*/, int /*d*/, bool /*closed*/
   ) {}
 
   template <typename T>

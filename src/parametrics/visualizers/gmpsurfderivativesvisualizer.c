@@ -115,7 +115,8 @@ namespace GMlib {
   void PSurfDerivativesVisualizer<T>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& p,
     DMatrix< Vector<T, 3> >& /*normals*/,
-    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
+    bool /*closed_u*/, bool /*closed_v*/
   ) {
 
     int der_u = 0;

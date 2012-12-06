@@ -95,7 +95,8 @@ namespace GMlib {
   void PSurfPointsVisualizer<T>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& p,
     DMatrix< Vector<T, 3> >& /*normals*/,
-    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
+    bool /*closed_u*/, bool /*closed_v*/
   ) {
 
     _no_points = p.getDim1() * p.getDim2();

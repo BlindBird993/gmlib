@@ -54,7 +54,7 @@ namespace GMlib {
     float             getSize() const;
     void              replot(
       DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d
+      int m, int d, bool closed
     );
     void              setColor( const Color& color );
     void              setSize( float size );

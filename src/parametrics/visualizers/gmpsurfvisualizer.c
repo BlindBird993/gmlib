@@ -78,23 +78,31 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfVisualizer<T>::fillNMap(GLuint nmap, const DMatrix<DMatrix<Vector<T,3> > >& p) {
+  void PSurfVisualizer<T>::fillNMap(GLuint nmap, const DMatrix<DMatrix<Vector<T,3> > >& p, bool closed_u, bool closed_v) {
 
-    DVector< Vector<float,3> > tex_data(p.getDim1() * p.getDim2());
+    int m1 = closed_u ? p.getDim1()-1 : p.getDim1();
+    int m2 = closed_v ? p.getDim2()-1 : p.getDim2();
+
+    // Fill data
+    DVector< Vector<float,3> > tex_data(m1 * m2);
     Vector<float,3> *ptr = tex_data.getPtr();
-    for( int j = 0; j < p.getDim2(); ++j ) {
-      for( int i = 0; i < p.getDim1(); ++i ) {
-
+    for( int j = 0; j < m1; ++j )
+      for( int i = 0; i < m2; ++i )
         *ptr++ = Vector3D<float>( p(i)(j)(1)(0) ) ^ p(i)(j)(0)(1);
-      }
-    }
 
+
+    // Create Normal map texture and set texture parameters
     glBindTexture( GL_TEXTURE_2D, nmap );
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB16F, p.getDim2(), p.getDim1(), 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    if( closed_u )  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    else            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+
+    if( closed_v )  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    else            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+
     glBindTexture( GL_TEXTURE_2D, nmap );
   }
 
@@ -334,7 +342,8 @@ namespace GMlib {
   void PSurfVisualizer<T>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& /*p*/,
     DMatrix< Vector<T, 3> >& /*normals*/,
-    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
+    bool /*closed_u*/, bool /*closed_v*/
   ) {}
 
   template <typename T>

@@ -114,11 +114,12 @@ namespace GMlib {
   void PSurfDefaultVisualizer<T>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& p,
     DMatrix< Vector<T, 3> >& normals,
-    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/
+    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
+    bool closed_u, bool closed_v
   ) {
 
     PSurfVisualizer<T>::fillStandardVBO( _vbo, _no_vertices, p );
-    PSurfVisualizer<T>::fillNMap( _nmap, p );
+    PSurfVisualizer<T>::fillNMap( _nmap, p, closed_u, closed_v );
     _ibo.fill( p.getDim1(), p.getDim2() );
   }
 

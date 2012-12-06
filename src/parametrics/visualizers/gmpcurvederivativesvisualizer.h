@@ -65,7 +65,7 @@ namespace GMlib {
 
     void            replot(
       DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d
+      int m, int d, bool closed
     );
     void            setColor( const Color& color );
     void            setDerivative( int t = 1 );
