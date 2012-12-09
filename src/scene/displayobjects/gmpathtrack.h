@@ -44,6 +44,7 @@ namespace GMlib {
    * points one can control the behaviour of the PathTrack object.
    */
   class PathTrack : public DisplayObject {
+    GM_SCENEOBJECT(PathTrack)
   public:
     PathTrack( int max_elements = 50, int elementstride = 1, const Color& c = Color( 155, 100, 0 ) );
 

@@ -92,7 +92,8 @@ namespace GMlib {
    */
   template <typename T>
   class  TriangleFacets : public ArrayLX< TSVertex<T> >, public DisplayObject {
-   public:
+    GM_SCENEOBJECT(TriangleFacets)
+  public:
 
     TriangleFacets( int d = 0 );
     TriangleFacets( const ArrayLX<TSVertex<T> >& v);
@@ -512,6 +513,7 @@ namespace GMlib {
    */
   template <typename T>
   class TSTile : public DisplayObject {
+    GM_SCENEOBJECT(TSTile)
   public:
     TSTile();
     TSTile( TSVertex<T>* v, Box<T,3> domain );

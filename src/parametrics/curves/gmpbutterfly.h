@@ -39,6 +39,7 @@ namespace GMlib {
 
   template <typename T>
   class PButterfly : public PCurve<T> {
+    GM_SCENEOBJECT(PButterfly)
   public:
     PButterfly( T size = T(5) );
     PButterfly( const PButterfly<T>& copy );

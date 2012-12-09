@@ -48,7 +48,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   class SelectorGrid : public Selector<T,n> {
-    GM_SCENEOBJECT_NULL(SelectorGrid,"SelectorGrid")
+    GM_SCENEOBJECT_NULL(SelectorGrid)
 
   public:
     SelectorGrid( Point<T,n>& mp, SceneObject* parent, const Color& c = Color(0.5,0.5,0.9));

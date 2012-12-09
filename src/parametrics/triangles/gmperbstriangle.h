@@ -43,6 +43,7 @@ namespace GMlib {
 
   template <typename T>
   class PERBSTriangle : public PTriangle<T> {
+    GM_SCENEOBJECT(PERBSTriangle)
   public:
     PERBSTriangle( PBezierTriangle<T>* c0, PBezierTriangle<T>* c1, PBezierTriangle<T>* c2 );
     virtual ~PERBSTriangle();

@@ -80,7 +80,8 @@ namespace GMlib {
 	 *					trenger tilgang til et objekt for bevegelsessimulering
 	 *					bør den lage en egen peker for det.
 	 */
-	class Camera : public DisplayObject {
+  class Camera : public DisplayObject {
+    GM_SCENEOBJECT(Camera)
 	public:
 		Camera( Scene& s = _default_scene );
 		Camera( Scene* s );

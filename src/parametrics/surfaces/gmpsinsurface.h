@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PSinSurface : public PSurf<T> {
+    GM_SCENEOBJECT(PSinSurface)
   public:
     PSinSurface( T radius = T(1) );
     PSinSurface( const PSinSurface<T>& copy );

@@ -39,6 +39,7 @@ namespace GMlib {
 
   template <typename T>
   class PBoysSurface : public PSurf<T> {
+    GM_SCENEOBJECT(PBoysSurface)
   public:
     PBoysSurface();
     PBoysSurface( const PBoysSurface<T>& copy );

@@ -55,6 +55,7 @@ namespace GMlib {
 
 
   class StlObject : public DisplayObject {
+    GM_SCENEOBJECT(StlObject)
   public:
     StlObject( const std::string& filename, const Color& color = 5, int flip = 1 ); // From file, in given color
     StlObject( std::ifstream& stream, bool binary = true, const Color& color = GMcolor::Aqua );
@@ -94,7 +95,7 @@ namespace GMlib {
     unsigned int                      _dlist;
     PSphere<float>                    *_sphere;         // Debug
 
-    std::string                       _identity;				// I put the filename in here,
+    std::string                       _header;				// I put the filename in here,
     FILE*                             _stl_file;
 
     Array<Point<float,3> >            _vertices;        // storage, each three makes a triangle

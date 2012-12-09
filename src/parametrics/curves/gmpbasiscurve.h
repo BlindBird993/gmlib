@@ -50,6 +50,7 @@ namespace GMlib {
 
   template <typename T, typename G = long double>
   class PBasisCurve : public PCurve<T> {
+    GM_SCENEOBJECT(PBasisCurve)
   public:
     PBasisCurve();
     ~PBasisCurve();

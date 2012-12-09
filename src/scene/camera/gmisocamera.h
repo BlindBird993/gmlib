@@ -47,7 +47,8 @@ namespace GMlib {
 	 *	Pending Documentation
 	 */
   class IsoCamera : public Camera {
-	public:
+    GM_SCENEOBJECT(IsoCamera)
+  public:
     IsoCamera(Scene* s);
     IsoCamera(
 			const Point<float,3>&  pos,

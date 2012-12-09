@@ -39,6 +39,7 @@ namespace GMlib {
 
   template <typename T>
   class PSubCurve : public PCurve<T> {
+    GM_SCENEOBJECT(PSubCurve)
   public:
     PSubCurve( PCurve<T>* c, T s, T e);
     PSubCurve( PCurve<T>* c, T s, T e, T t);

@@ -45,6 +45,7 @@ namespace GMlib{
    *	Pending Documentatioo
    */
   class SpotLight : public PointLight {
+    GM_SCENEOBJECT(SpotLight)
   public:
     SpotLight();
     SpotLight(

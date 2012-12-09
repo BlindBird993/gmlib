@@ -39,6 +39,7 @@ namespace GMlib {
 
   template <typename T>
   class PBSplineCurve : public PCurve<T> {
+    GM_SCENEOBJECT(PBSplineCurve)
   public:
     PBSplineCurve( const DVector< Vector<T, 3> >& cv, int d  );
     PBSplineCurve( const PBSplineCurve<T>& dpbsc );

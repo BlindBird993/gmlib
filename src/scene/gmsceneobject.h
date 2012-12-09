@@ -39,9 +39,9 @@
 /////////////////////
 
 // getIdentity
-#define GM_DECLARE_SO_IDENTITY( CNAME_STR ) \
+#define GM_DECLARE_SO_IDENTITY( CNAME ) \
   std::string getIdentity() const { \
-    return CNAME_STR; \
+    return #CNAME; \
   }
 
 // makeCopy
@@ -50,22 +50,22 @@
     return new CNAME(*this); \
   }
 
-#define GM_DECLARE_SO_MAKECOPY_NULL( CNAME ) \
+#define GM_DECLARE_SO_MAKECOPY_NULL() \
   SceneObject* makeCopy() { \
     return 0x0; \
   }
 
 
 // SceneObject macros
-#define GM_SCENEOBJECT( CNAME, CNAME_STR ) \
+#define GM_SCENEOBJECT( CNAME ) \
   public: \
-    GM_DECLARE_SO_IDENTITY( CNAME_STR ) \
+    GM_DECLARE_SO_IDENTITY( CNAME ) \
     GM_DECLARE_SO_MAKECOPY( CNAME )
 
-#define GM_SCENEOBJECT_NULL( CNAME, CNAME_STR ) \
+#define GM_SCENEOBJECT_NULL( CNAME ) \
   public: \
-    GM_DECLARE_SO_IDENTITY( CNAME_STR ) \
-    GM_DECLARE_SO_MAKECOPY_NULL( CNAME )
+    GM_DECLARE_SO_IDENTITY( CNAME ) \
+    GM_DECLARE_SO_MAKECOPY_NULL()
 
 //////////////////
 
@@ -175,6 +175,7 @@ namespace GMlib{
     virtual ~SceneObject();
 
     virtual SceneObject*        makeCopy() = 0;
+    virtual std::string         getIdentity() const = 0;
 
     virtual void                edit(int selector_id);
     virtual void                edit(SceneObject* lp);
@@ -187,7 +188,6 @@ namespace GMlib{
     Array<SceneObject*>&        getChildren();
     const Color&                getColor() const;
     Color&                      getColor();
-    virtual std::string         getIdentity() const;
     const Material&             getMaterial() const;
     Material&                   getMaterial();
     virtual const HqMatrix<float,3>&  getMatrix() const;

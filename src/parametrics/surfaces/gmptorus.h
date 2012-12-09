@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PTorus : public PSurf<T> {
+    GM_SCENEOBJECT(PTorus)
   public:
     PTorus( T wheelrad=T(3), T tuberad1=T(1), T tuberad2=T(1) );
     PTorus( const PTorus<T>& pshere );

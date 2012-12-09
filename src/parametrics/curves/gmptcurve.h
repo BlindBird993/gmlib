@@ -41,6 +41,7 @@ namespace GMlib {
 
   template <typename T>
   class PTCurve : public PCurve<T> {
+    GM_SCENEOBJECT(PTCurve)
   public:
     PTCurve( PCurve<T>* pcA, PCurve<T>* pcB );
     PTCurve( const PTCurve<T>& ptc );

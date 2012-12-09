@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PEightSurface : public PSurf<T> {
+    GM_SCENEOBJECT(PEightSurface)
   public:
     PEightSurface();
     PEightSurface( const PEightSurface<T>& copy );

@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PEnnepersSurface : public PSurf<T> {
+    GM_SCENEOBJECT(PEnnepersSurface)
   public:
     PEnnepersSurface();
     PEnnepersSurface( const PEnnepersSurface<T>& copy );

@@ -49,7 +49,7 @@ namespace GMlib{
    *	Pending Documentation
    */
   class Sun : public Light, public SceneObject {
-    GM_SCENEOBJECT(Sun, "Sun")
+    GM_SCENEOBJECT(Sun)
 
   public:
     Sun(const Vector<float,3>& dir = Vector3D<float>(1,1,1));

@@ -42,6 +42,7 @@
 namespace GMlib {
 
   class SpotLightG : public SpotLight {
+    GM_SCENEOBJECT(SpotLightG)
   public:
     SpotLightG();
     SpotLightG(

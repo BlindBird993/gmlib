@@ -38,6 +38,7 @@ namespace GMlib {
 
   template <typename T>
   class PChrysanthemumCurve : public PCurve<T> {
+    GM_SCENEOBJECT(PChrysanthemumCurve)
   public:
     PChrysanthemumCurve( T radius = T(1) );
     PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy );

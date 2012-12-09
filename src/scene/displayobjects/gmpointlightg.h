@@ -43,6 +43,7 @@ namespace GMlib{
 
 
   class PointLightG : public PointLight {
+    GM_SCENEOBJECT(PointLightG)
   public:
     PointLightG();
 		PointLightG(	const Point<float,3>& pos);

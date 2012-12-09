@@ -39,6 +39,7 @@ namespace GMlib {
 
   template <typename T>
   class PBentHorns : public PSurf<T> {
+    GM_SCENEOBJECT(PBentHorns)
   public:
     PBentHorns();
     PBentHorns( const PBentHorns<T>& copy );

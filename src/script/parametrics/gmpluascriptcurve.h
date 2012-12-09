@@ -46,6 +46,7 @@ namespace GMlib {
 
       template <typename T>
       class PLuaScriptCurve : public PCurve<T>, public LuaScript {
+        GM_SCENEOBJECT(PLuaScriptCurve)
       public:
         PLuaScriptCurve();
         PLuaScriptCurve( const PLuaScriptCurve<T>& copy );

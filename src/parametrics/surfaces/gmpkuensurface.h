@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PKuenSurface : public PSurf<T> {
+    GM_SCENEOBJECT(PKuenSurface)
   public:
     PKuenSurface( T radius = T(1) );
     PKuenSurface( const PKuenSurface<T>& copy );

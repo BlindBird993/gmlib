@@ -36,6 +36,7 @@ namespace GMlib {
 
   template <typename T>
   class PTrianguloidTrefoil : public PSurf<T> {
+    GM_SCENEOBJECT(PTrianguloidTrefoil)
   public:
     PTrianguloidTrefoil();
     PTrianguloidTrefoil( const PTrianguloidTrefoil<T>& copy );

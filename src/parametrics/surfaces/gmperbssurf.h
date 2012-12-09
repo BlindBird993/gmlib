@@ -41,8 +41,7 @@ namespace GMlib {
 
   template <typename T>
   class PERBSSurf : public PSurf<T> {
-
-    GM_SCENEOBJECT(PERBSSurf, "PERBSSurf")
+    GM_SCENEOBJECT(PERBSSurf)
 
   public:
     PERBSSurf(); // Dummy

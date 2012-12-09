@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PSeashell : public PSurf<T> {
+    GM_SCENEOBJECT(PSeashell)
   public:
     PSeashell();
     PSeashell( const PSeashell<T>& copy );

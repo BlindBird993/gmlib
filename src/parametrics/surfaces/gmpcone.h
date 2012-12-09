@@ -38,6 +38,7 @@ namespace GMlib {
 
   template <typename T>
   class PCone : public PSurf<T> {
+    GM_SCENEOBJECT(PCone)
   public:
     PCone( T radius = T(3), T height = T(5) );
     PCone( const PCone<T>& copy );

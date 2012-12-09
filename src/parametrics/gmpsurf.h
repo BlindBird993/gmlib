@@ -52,8 +52,6 @@ namespace GMlib {
 
   template <typename T>
   class PSurf : public Parametrics<T,2> {
-    GM_SCENEOBJECT(PSurf,"PSurf")
-
   public:
 
     PSurf( int s1 = 20, int s2 = 20 );

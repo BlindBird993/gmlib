@@ -48,7 +48,7 @@ namespace GMlib{
    */
   template <typename T, int n>
   class Selector: public DisplayObject {
-    GM_SCENEOBJECT_NULL(Selector,"Selector")
+    GM_SCENEOBJECT_NULL(Selector)
 
   public:
     Selector(const Selector<T,n>& s);

@@ -35,7 +35,7 @@ namespace GMlib {
 
 
   StlObject::StlObject(float r) {
-    _identity = std::string( "STL place holder" );
+    _header = std::string( "STL place holder" );
     _sphere = new PSphere<float>( r );
     _sphere->replot();
     insert( _sphere );
@@ -101,7 +101,7 @@ namespace GMlib {
     _dlist = 0;
 
     _color = color;
-    _identity = filename;
+    _header = filename;
 
     _readStlBinary( filename );
 
@@ -309,7 +309,7 @@ namespace GMlib {
       char hbuff[80];
       stream.read( hbuff, 80 );
 
-      _identity = hbuff;
+      _header = hbuff;
 
       unsigned int facets;
       stream.read( (char*)&facets, sizeof( unsigned int ) );

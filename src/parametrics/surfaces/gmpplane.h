@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PPlane : public PSurf<T> {
+    GM_SCENEOBJECT(PPlane)
   public:
     PPlane( const Point<T,3>& p, const Vector<T,3>& u, const Vector<T,3>& v );
     PPlane( const PPlane<T>& copy );

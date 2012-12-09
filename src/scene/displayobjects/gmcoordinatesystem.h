@@ -48,6 +48,7 @@ namespace GMlib {
   };
 
   class CoordinateSystem : public DisplayObject {
+    GM_SCENEOBJECT(CoordinateSystem)
   public:
     CoordinateSystem();
     CoordinateSystem( const CoordinateSystem& copy );

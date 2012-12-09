@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PWhitneyUmbrella : public PSurf<T> {
+    GM_SCENEOBJECT(PWhitneyUmbrella)
   public:
     PWhitneyUmbrella();
     PWhitneyUmbrella( const PWhitneyUmbrella<T>& copy );

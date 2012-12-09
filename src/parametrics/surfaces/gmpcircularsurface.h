@@ -40,6 +40,7 @@ namespace GMlib {
 
   template <typename T>
   class PCircularSurface : public PSurf<T> {
+    GM_SCENEOBJECT(PCircularSurface)
   public:
     PCircularSurface( T radius = T(1) );
     PCircularSurface( T radius, int s1, int s2 );

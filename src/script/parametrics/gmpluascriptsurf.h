@@ -47,6 +47,7 @@ namespace GMlib {
 
       template <typename T>
       class PLuaScriptSurf : public PSurf<T>, public LuaScript {
+        GM_SCENEOBJECT(PLuaScriptSurf)
       public:
         PLuaScriptSurf();
         PLuaScriptSurf( const PLuaScriptSurf<T>& copy );

@@ -39,6 +39,7 @@ namespace GMlib {
 
   template <typename T>
   class PCylinder : public PSurf<T> {
+    GM_SCENEOBJECT(PCylinder)
   public:
     PCylinder( T rx = 4, T ry = 4, T h = 2 );
     PCylinder( const PCylinder<T>& copy );

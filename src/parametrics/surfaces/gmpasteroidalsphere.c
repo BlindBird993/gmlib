@@ -41,7 +41,9 @@ namespace GMlib {
   template <typename T>
   PAsteroidalSphere<T>::PAsteroidalSphere( const PAsteroidalSphere<T>& copy ) : PSurf<T>( copy ) {
 
-    setConstants( copy.sx, copy.sy, copy.sz );
+    _a = copy._a;
+    _b = copy._b;
+    _c = copy._c;
   }
 
 

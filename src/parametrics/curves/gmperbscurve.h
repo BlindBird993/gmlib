@@ -41,6 +41,7 @@ namespace GMlib {
 
   template <typename T>
   class PERBSCurve : public PCurve<T> {
+    GM_SCENEOBJECT(PERBSCurve)
   public:
 
     enum CURVE_TYPE {

@@ -45,6 +45,7 @@ namespace GMlib {
 
   template <typename T>
   class PBezierCurve : public PCurve<T> {
+    GM_SCENEOBJECT(PBezierCurve)
   public:
     PBezierCurve( const DVector< Vector<T,3> >& c );
     PBezierCurve( const DVector< Vector<T,3> >& c, T s, T t, T e );

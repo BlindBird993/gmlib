@@ -48,6 +48,7 @@ namespace GMlib {
    */
   template <typename T>
   class PHermiteSurface : public PSurf<T> {
+    GM_SCENEOBJECT(PHermiteSurface)
   public:
     PHermiteSurface( const Array< PCurve<T>* >& c1, const Array<PCurve<T>* >& c2 );
     ~PHermiteSurface();

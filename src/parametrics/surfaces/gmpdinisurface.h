@@ -37,6 +37,7 @@ namespace GMlib {
 
   template <typename T>
   class PDiniSurface : public PSurf<T> {
+    GM_SCENEOBJECT(PDiniSurface)
   public:
     PDiniSurface( T radius = T(1), T dist_turns = T(0.1) );
     PDiniSurface( const PDiniSurface<T>& copy );
