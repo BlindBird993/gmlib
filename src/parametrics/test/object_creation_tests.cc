@@ -6,9 +6,30 @@
 using namespace GMlib;
 
 
+
+//#define PSURF_OBJECT_CREATE_TEST( CNAME, T ) \
+//  TEST( ObjectCreation, CNAME ) { \
+//    GMtest::createDestroyObject< CNAME<T> >(); \
+//  }
+
+
+
 namespace {
 
+//  PSURF_OBJECT_CREATE_TEST(PApple,float)
 
+
+  template <typename T>
+  void createAndDestroyBasicCurves() {
+
+//    GMtest::createDestroyObject< PArc<T> >();
+    GMtest::createDestroyObject< PBasisCurve<T> >();
+    GMtest::createDestroyObject< PButterfly<T> >();
+    GMtest::createDestroyObject< PChrysanthemumCurve<T> >();
+    GMtest::createDestroyObject< PCircle<T> >();
+    GMtest::createDestroyObject< PHelicoid<T> >();
+    GMtest::createDestroyObject< PRoseCurve<T> >();
+  }
 
 
   template <typename T>
@@ -28,7 +49,6 @@ namespace {
     GMtest::createDestroyObject< PEightSurface<T> >();
     GMtest::createDestroyObject< PEnnepersSurface<T> >();
     GMtest::createDestroyObject< PHeart<T> >();
-//    GMtest::createDestroyObject< PHermiteSurface<T> >();
     GMtest::createDestroyObject< PInsideOutTorus<T> >();
     GMtest::createDestroyObject< PKleinsBottle<T> >();
     GMtest::createDestroyObject< PMoebiusStrip<T> >();
@@ -43,11 +63,19 @@ namespace {
   }
 
 
-  TEST(PSurf, ObjectCreation) {
+  TEST(ObjectCreation, PCurves) {
+
+    createAndDestroyBasicCurves<float>();
+    createAndDestroyBasicCurves<double>();
+    createAndDestroyBasicCurves<int>();
+  }
+
+  TEST(ObjectCreation, PSurfs) {
 
     createAndDestroyBasicSurfaces<float>();
     createAndDestroyBasicSurfaces<double>();
     createAndDestroyBasicSurfaces<int>();
   }
+
 
 }

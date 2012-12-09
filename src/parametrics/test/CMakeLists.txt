@@ -23,4 +23,4 @@
 
 
 addTest(dummy_test)
-addTest(psurf_objects_test)
+addTest(object_creation_tests)
