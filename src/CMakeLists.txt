@@ -25,28 +25,64 @@
 # Process each individual module
 # addModule( ModuleName [DependModuleName 1] [DependModuleName 2] ... )
 
+if( GMLIB_TEST )
 
-# Add core module
-addModule(Core)
+  ######################
+  # Add TestUtils module
+  addModule( TestUtils )
 
-# Add OpenGL module
-addModule(OpenGL Core)
+  # Add core module
+  addModule(Core TestUtils)
 
-# Add Scene module
-addModule(Scene Core OpenGL)
+  # Add OpenGL module
+  addModule(OpenGL TestUtils Core)
 
-# Add Parametrics module
-addModule(Parametrics Core OpenGL Scene)
+  # Add Scene module
+  addModule(Scene TestUtils Core OpenGL)
 
-# Add TringleSystem module
-addModule(TriangleSystem Core OpenGL Scene)
+  # Add Parametrics module
+  addModule(Parametrics TestUtils Core OpenGL Scene)
 
-# Add STereoLithography module
-addModule(StereoLithography Core OpenGL Scene Parametrics TriangleSystem)
+  # Add TringleSystem module
+  addModule(TriangleSystem TestUtils Core OpenGL Scene)
 
-# Add Window module
-addModule(Window Core OpenGL Scene)
+  # Add STereoLithography module
+  addModule(StereoLithography TestUtils Core OpenGL Scene Parametrics TriangleSystem)
 
-# Add Script module
-addModule(Script Core)
+  # Add Window module
+  addModule(Window TestUtils Core OpenGL Scene)
+
+  # Add Script module
+  addModule(Script TestUtils Core)
+
+else( GMLIB_TEST )
+
+  # Add core module
+  addModule(Core)
+
+  # Add OpenGL module
+  addModule(OpenGL Core)
+
+  # Add Scene module
+  addModule(Scene Core OpenGL)
+
+  # Add Parametrics module
+  addModule(Parametrics Core OpenGL Scene)
+
+  # Add TringleSystem module
+  addModule(TriangleSystem Core OpenGL Scene)
+
+  # Add STereoLithography module
+  addModule(StereoLithography Core OpenGL Scene Parametrics TriangleSystem)
+
+  # Add Window module
+  addModule(Window Core OpenGL Scene)
+
+  # Add Script module
+  addModule(Script Core)
+
+endif( GMLIB_TEST )
+
+
+
 

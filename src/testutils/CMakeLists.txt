@@ -21,6 +21,5 @@
 # ###############################################################################
 
 
+addHeaders( gmTestUtils )
 
-addTest(dummy_test)
-addTest(psurf_objects_test)
