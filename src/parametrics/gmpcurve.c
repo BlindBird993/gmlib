@@ -282,12 +282,6 @@ namespace GMlib {
     return _p[3];
   }
 
-  template <typename T>
-  inline
-  std::string PCurve<T>::getIdentity() const {
-
-    return "PCurve";
-  }
 
   template <typename T>
   inline

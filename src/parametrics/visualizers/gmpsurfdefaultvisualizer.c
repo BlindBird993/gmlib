@@ -104,12 +104,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PSurfDefaultVisualizer<T>::getIdentity() const {
-
-    return "PSurf Default Visualizer";
-  }
-
-  template <typename T>
   inline
   void PSurfDefaultVisualizer<T>::replot(
     DMatrix< DMatrix< Vector<T, 3> > >& p,

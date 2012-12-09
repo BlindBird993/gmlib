@@ -51,7 +51,6 @@ namespace GMlib {
     virtual ~PSurfVisualizer();
 
 
-    std::string   getIdentity() const;
     virtual void  replot(
       DMatrix< DMatrix< Vector<T, 3> > >& p,
       DMatrix< Vector<T, 3> >& normals,

@@ -45,7 +45,6 @@ namespace GMlib {
     PTCurve( PCurve<T>* pcA, PCurve<T>* pcB );
     PTCurve( const PTCurve<T>& ptc );
 
-    std::string                         getIdentity() const;
     bool                                isClosed() const;
     void                                setAngle( T a );
     void                                setPA( PCurve<T>* pcA );

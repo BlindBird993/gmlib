@@ -42,7 +42,6 @@ namespace GMlib {
     TriangleFacetsVoronoiVisualizer();
     ~TriangleFacetsVoronoiVisualizer();
     void          display();
-    std::string   getIdentity() const;
     virtual void  replot();
 
   protected:

@@ -110,13 +110,6 @@ namespace GMlib {
 
 
       template <typename T>
-      std::string PLuaScriptCurve<T>::getIdentity() const {
-
-        return "PLuaScriptCurve";
-      }
-
-
-      template <typename T>
       inline
       T PLuaScriptCurve<T>::getStartP() {
 

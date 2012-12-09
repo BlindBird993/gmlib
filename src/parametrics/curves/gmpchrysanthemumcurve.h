@@ -42,8 +42,6 @@ namespace GMlib {
     PChrysanthemumCurve( T radius = T(1) );
     PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy );
 
-    std::string   getIdentity() const;
-
   protected:
     T             _r;
 

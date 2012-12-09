@@ -63,7 +63,6 @@ namespace GMlib {
         void            constructResult();
         void            eval(T t, int d, bool l = true );
         T               getEndP();
-        std::string     getIdentity() const;
         T               getStartP();
         void            init();
         bool            isClosed() const;

@@ -155,14 +155,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PCrossCap<T>::getIdentity() const {
-
-    return "PCrossCap";
-  }
-
-
-  template <typename T>
   void PCrossCap<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

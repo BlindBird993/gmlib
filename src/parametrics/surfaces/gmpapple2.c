@@ -154,14 +154,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PApple2<T>::getIdentity() const {
-
-    return "PApple2";
-  }
-
-
-  template <typename T>
   void PApple2<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

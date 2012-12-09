@@ -63,9 +63,6 @@ namespace GMlib {
     void                            setResampleMode( GM_RESAMPLE_MODE mode );
     virtual void                    toggleLocalCurvesVisible();
 
-    // virtual functions from SceneObject
-    std::string                     getIdentity() const;
-
     // virual functions from PSurf
     bool                            isClosed() const;
     void                            preSample( int m, int d, T start, T end );

@@ -126,14 +126,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PCircle<T>::getIdentity() const {
-
-    return "PCircle";
-  }
-
-
-  template <typename T>
-  inline
   T PCircle<T>::getStartP() {
 
     return T(0);

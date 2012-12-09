@@ -496,14 +496,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PSurf<T>::getIdentity() const {
-
-    return "PSurf";
-  }
-
-
-  template <typename T>
-  inline
   T PSurf<T>::getLocalMapping( T t, T /*ts*/, T /*tt*/, T /*te*/ ) {
 
     return t;

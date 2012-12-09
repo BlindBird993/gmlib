@@ -363,14 +363,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PKuenSurface<T>::getIdentity() const {
-
-    return "PKuenSurface";
-  }
-
-
-  template <typename T>
   void PKuenSurface<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

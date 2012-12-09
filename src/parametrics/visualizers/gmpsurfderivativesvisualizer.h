@@ -64,7 +64,6 @@ namespace GMlib {
     const Color&    getColor() const;
     int             getDerivativeU() const;
     int             getDerivativeV() const;
-    std::string     getIdentity() const;
     GM_SURF_DERIVATIVESVISUALIZER_SIZE
                     getMode() const;
     double          getSize() const;

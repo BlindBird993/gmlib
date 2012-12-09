@@ -109,7 +109,6 @@ namespace GMlib {
     float                       getFarPlane() const;
     float                       getFocalLength() const;
     const HqMatrix<float,3>&    getFrustumMatrix() const;
-    std::string                 getIdentity() const;
     HqMatrix<float,3>&          getMatrix();
     const HqMatrix<float,3>&    getMatrix() const;
     float                       getNearPlane() const;
@@ -471,18 +470,6 @@ namespace GMlib {
   const HqMatrix<float,3>& Camera::getFrustumMatrix() const {
 
     return _frustum_matrix;
-  }
-
-
-  /*! std::string Camera::getIdentity() const
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  std::string Camera::getIdentity() const {
-
-    return "Camera";
   }
 
 

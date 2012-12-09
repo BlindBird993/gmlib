@@ -160,14 +160,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PBezierCurve<T>::getIdentity() const {
-
-    return "PBezierCurve";
-  }
-
-
-  template <typename T>
-  inline
   T PBezierCurve<T>::getLocalMapping( T t, T ts, T /*ti*/, T te ) {
 
     return (t - ts) / (te-ts);

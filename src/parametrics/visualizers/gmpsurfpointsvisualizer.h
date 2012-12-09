@@ -51,7 +51,6 @@ namespace GMlib {
 
     void              display();
     const Color&      getColor() const;
-    std::string       getIdentity() const;
     float             getSize() const;
     void              replot(
       DMatrix< DMatrix< Vector<T, 3> > >& p,

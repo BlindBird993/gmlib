@@ -46,8 +46,6 @@ namespace GMlib {
 
     virtual ~PSubCurve();
 
-    // virtual functions from SceneObject
-    virtual std::string     getIdentity() const;
     // virtual functions from PSurf
     virtual bool            isClosed() const;
     // Local functions

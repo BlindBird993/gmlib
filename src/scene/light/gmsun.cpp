@@ -33,9 +33,6 @@
 
 namespace GMlib {
 
-
-
-
   /*! Sun::Sun( const Vector<float,3>& dir )
    *	\brief Pending Documentation
    *

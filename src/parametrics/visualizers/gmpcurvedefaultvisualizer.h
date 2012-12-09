@@ -43,7 +43,6 @@ namespace GMlib {
     virtual ~PCurveDefaultVisualizer();
 
     void          display();
-    std::string   getIdentity() const;
     virtual void  replot(
       DVector< DVector< Vector<T, 3> > >& p,
       int m, int d, bool closed

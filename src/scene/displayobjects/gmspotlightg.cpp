@@ -149,13 +149,6 @@ namespace GMlib {
   }
 
 
-  std::string SpotLightG::getIdentity() const {
-
-    return "SpotLightG";
-  }
-
-
-
   void SpotLightG::setCutOff(const Angle& cut_off) {
 
     SpotLight::setCutOff( cut_off );

@@ -55,8 +55,6 @@ namespace GMlib{
 		PointLightG( const PointLight& copy );
 		PointLightG( const PointLightG& copy );
 
-		std::string     getIdentity() const;
-
   protected:
     void            localDisplay();
     void            localSelect();

@@ -69,11 +69,6 @@ namespace GMlib {
     vbo.unmapBuffer();
     vbo.unbind();
   }
-  template <typename T>
-  std::string PCurveVisualizer<T>::getIdentity() const {
-
-    return "PCurve Visualizer";
-  }
 
 //  template <typename T>
 //  inline

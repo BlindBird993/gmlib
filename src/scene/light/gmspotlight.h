@@ -63,7 +63,6 @@ namespace GMlib{
 
     const Angle&            getCutOff() const;
     double                  getExponent() const;
-    std::string             getIdentity() const;
 
     virtual void            setCutOff( const Angle& cut_off);
     void                    setExponent(double exp);
@@ -79,19 +78,6 @@ namespace GMlib{
   };	// END class SpotLight
 
 
-
-
-
-  /*! const std::string SpotLight::getIdentity() const
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  std::string SpotLight::getIdentity() const {
-
-    return "Spot Light";
-  }
 
 
 }	// END namespace GMlib

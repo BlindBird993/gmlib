@@ -32,7 +32,6 @@
 
 namespace GMlib {
 
-
   /*! DisplayObject::DisplayObject( const Point<float,3>&  pos, const Vector<float,3>& dir, const Vector<float,3>& up )
    *  \brief Pending Documentation
    *

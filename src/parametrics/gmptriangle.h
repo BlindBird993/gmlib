@@ -66,7 +66,6 @@ namespace GMlib {
     const Vector<T,3>&                getDerUU( T u, T v );
     const Vector<T,3>&                getDerVV( T u, T v );
     const Vector<T,3>&                getDerUV( T u, T v );
-    std::string                       getIdentity() const;
     const Vector<T,3>&                getNormal( T u, T v );
     T                                 getParDeltaU();
     T                                 getParDeltaV();

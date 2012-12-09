@@ -176,14 +176,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PBSplineCurve<T>::getIdentity() const {
-
-    return "PBSplineCurve";
-  }
-
-
-  template <typename T>
-  inline
   int PBSplineCurve<T>::getIndex( T t, int m ) const {
 
     return ( t * T(getDegree()) ) / T(m);

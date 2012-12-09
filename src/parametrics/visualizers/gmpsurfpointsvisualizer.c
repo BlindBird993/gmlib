@@ -79,12 +79,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PSurfPointsVisualizer<T>::getIdentity() const {
-
-    return "PSurf Point Visualizer";
-  }
-
-  template <typename T>
   float PSurfPointsVisualizer<T>::getSize() const {
 
     return _size;

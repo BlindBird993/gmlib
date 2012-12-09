@@ -44,7 +44,6 @@ namespace GMlib {
     PRoseCurve( const PRoseCurve<T>& copy );
     virtual ~PRoseCurve();
 
-    std::string   getIdentity() const;
     bool          isClosed() const;
 
 

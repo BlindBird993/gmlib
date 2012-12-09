@@ -159,14 +159,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PBohemianDome<T>::getIdentity() const {
-
-    return "PBohemianDome";
-  }
-
-
-  template <typename T>
   void PBohemianDome<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

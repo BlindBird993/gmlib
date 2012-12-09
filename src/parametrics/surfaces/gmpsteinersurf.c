@@ -134,14 +134,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PSteinerSurf<T>::getIdentity() const {
-
-    return "PSteinerSurf";
-  }
-
-
-  template <typename T>
-  inline
   T PSteinerSurf<T>::getStartPU() {
 
     return T(0);

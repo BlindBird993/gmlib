@@ -118,12 +118,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PCurveContoursVisualizer<T>::getIdentity() const {
-
-    return "PCurve Contours Visualizer";
-  }
-
-  template <typename T>
   GM_PCURVE_CONTOURSVISUALIZER_MAP PCurveContoursVisualizer<T>::getMapping() const {
 
     return _mapping;

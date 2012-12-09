@@ -100,9 +100,10 @@ namespace GMlib {
   SceneObject::SceneObject( const SceneObject& copy ) :
     _select_prog( copy._select_prog ) {
 
+    _copy_of          = &copy;
+
     _parent           = 0;
     _matrix	          = copy._matrix;
-    _children	        = copy._children;
     _lighted          = copy._lighted;
     _opaque           = copy._opaque;
     _sphere	          = copy._sphere;
@@ -118,6 +119,19 @@ namespace GMlib {
     _material         = copy._material;
 
     _collapsed        = copy._collapsed;
+
+
+    // update children
+    std::cout << "Coping " << copy._children.getSize() << " children of:" << copy.getName() << std::endl;
+//    _children.setSize( copy._children.getSize() );
+    for( int i = 0; i < copy._children.getSize(); ++i ) {
+
+      SceneObject *child_copy = copy._children(i)->makeCopy();
+//      _children[i] = copy._children(i)->makeCopy();
+      if( child_copy )
+        _children += child_copy;
+//      std::cout << "  - child: " << copy._children(i)->getName() << " -> " << _children[i]->getName() << std::endl;
+    }
 
     setStandardRepVisualizer();
   }

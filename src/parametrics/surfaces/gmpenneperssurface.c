@@ -152,14 +152,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PEnnepersSurface<T>::getIdentity() const {
-
-    return "PEnnepersSurface";
-  }
-
-
-  template <typename T>
   void PEnnepersSurface<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

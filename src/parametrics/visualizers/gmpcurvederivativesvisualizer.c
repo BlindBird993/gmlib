@@ -83,12 +83,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PCurveDerivativesVisualizer<T>::getIdentity() const {
-
-    return "PCurve Derivatives Visualizer";
-  }
-
-  template <typename T>
   GM_PCURVE_DERIVATIVESVISUALIZER_SIZE PCurveDerivativesVisualizer<T>::getMode() const {
 
     return _mode;

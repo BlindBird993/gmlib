@@ -190,14 +190,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PKleinsBottle<T>::getIdentity() const {
-
-    return "PKleinsBottle";
-  }
-
-
-  template <typename T>
   void PKleinsBottle<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

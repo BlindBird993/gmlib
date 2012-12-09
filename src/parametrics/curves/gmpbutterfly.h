@@ -44,7 +44,6 @@ namespace GMlib {
     PButterfly( const PButterfly<T>& copy );
     virtual ~PButterfly();
 
-    std::string   getIdentity() const;
     bool          isClosed() const;
 
 

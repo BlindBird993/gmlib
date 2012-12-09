@@ -48,6 +48,8 @@ namespace GMlib{
    */
   template <typename T, int n>
   class Selector: public DisplayObject {
+    GM_SCENEOBJECT_NULL(Selector,"Selector")
+
   public:
     Selector(const Selector<T,n>& s);
     Selector(Point<T,n>& mp, int id, SceneObject* parent, T r=1, const Color& c = Color(0.0,0.0,0.7), Selector<T,n>* root=NULL );
@@ -69,7 +71,6 @@ namespace GMlib{
     // Derived functions
     // from SceneObject
     virtual void	        edit();
-    std::string	          getIdentity() const;
 
 
   protected:

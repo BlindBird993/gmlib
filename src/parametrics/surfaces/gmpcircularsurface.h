@@ -47,7 +47,6 @@ namespace GMlib {
     virtual ~PCircularSurface();
 
   public:
-    std::string   getIdentity() const;
     T             getRadius() const;
     void          setRadius( T radius );
 

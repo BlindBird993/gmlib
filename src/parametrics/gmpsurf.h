@@ -52,6 +52,8 @@ namespace GMlib {
 
   template <typename T>
   class PSurf : public Parametrics<T,2> {
+    GM_SCENEOBJECT(PSurf,"PSurf")
+
   public:
 
     PSurf( int s1 = 20, int s2 = 20 );
@@ -79,7 +81,6 @@ namespace GMlib {
     Vector<T,3>&                  getDerUU( T u, T v );
     Vector<T,3>&                  getDerVV( T u, T v );
     Vector<T,3>&                  getDerUV( T u, T v );
-    std::string                   getIdentity() const;
     virtual T                     getLocalMapping( T t, T ts, T tt, T te );
     Vector<T,3>&                  getNormal();
     T                             getParDeltaU();

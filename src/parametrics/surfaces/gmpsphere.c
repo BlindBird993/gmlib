@@ -198,14 +198,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PSphere<T>::getIdentity() const {
-
-    return "PSphere";
-  }
-
-
-  template <typename T>
-  inline
   T PSphere<T>::getRadius() const {
 
     return _radius;

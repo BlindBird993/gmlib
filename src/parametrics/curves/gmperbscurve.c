@@ -202,14 +202,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PERBSCurve<T>::getIdentity() const {
-
-    return "PERBSCurve";
-  }
-
-
-  template <typename T>
-  inline
   DVector< PCurve<T>* >& PERBSCurve<T>::getLocalPatches() {
 
     return _c;

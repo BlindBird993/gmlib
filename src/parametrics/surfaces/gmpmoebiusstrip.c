@@ -159,14 +159,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PMoebiusStrip<T>::getIdentity() const {
-
-    return "PMoebiusStrip";
-  }
-
-
-  template <typename T>
   void PMoebiusStrip<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

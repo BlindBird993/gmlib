@@ -47,7 +47,6 @@ namespace GMlib {
     void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
     T                 getEndPU();
     T                 getEndPV();
-    std::string       getIdentity() const;
     T                 getStartPU();
     T                 getStartPV();
     virtual void      init();

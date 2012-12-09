@@ -135,14 +135,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PTCurve<T>::getIdentity() const {
-
-    return "PTCurve";
-  }
-
-
-  template <typename T>
-  inline
   bool PTCurve<T>::isClosed() const {
 
     return false;

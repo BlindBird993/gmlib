@@ -170,14 +170,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PSlippersSurface<T>::getIdentity() const {
-
-    return "PSlippersSurface";
-  }
-
-
-  template <typename T>
   void PSlippersSurface<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

@@ -70,13 +70,6 @@ namespace GMlib {
 
 
   template <typename T>
-  std::string PChrysanthemumCurve<T>::getIdentity() const {
-
-    return "PChrysanthemumCurve";
-  }
-
-
-  template <typename T>
   inline
   T PChrysanthemumCurve<T>::getStartP() {
 

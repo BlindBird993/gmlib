@@ -132,13 +132,6 @@ namespace GMlib {
 
 
       template <typename T>
-      std::string PLuaScriptSurf<T>::getIdentity() const {
-
-        return "PLuaScriptSurf";
-      }
-
-
-      template <typename T>
       inline
       T PLuaScriptSurf<T>::getStartPU() {
 

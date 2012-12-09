@@ -42,7 +42,6 @@ namespace GMlib {
     PPlane( const PPlane<T>& copy );
     virtual ~PPlane();
 
-    std::string               getIdentity() const;
     const UnitVector<T,3>&    getNormal() const;
     const Vector<T,3>&        getU() const;
     const Vector<T,3>&        getV() const;

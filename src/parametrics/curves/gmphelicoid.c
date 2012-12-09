@@ -159,14 +159,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PHelicoid<T>::getIdentity() const {
-
-    return "PHelicoid";
-  }
-
-
-  template <typename T>
   void PHelicoid<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

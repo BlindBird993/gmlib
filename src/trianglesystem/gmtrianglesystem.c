@@ -2655,15 +2655,6 @@ namespace GMlib {
     return _circumscribed;
   }
 
-
-  template <typename T>
-  inline
-  std::string TSTile<T>::getIdentity() const {
-
-    return "TSTile";
-  }
-
-
   template <typename T>
   inline
   T TSTile<T>::getSmallR() {

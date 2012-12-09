@@ -260,13 +260,6 @@ namespace GMlib {
 
 
   template <typename T>
-  std::string PTriangle<T>::getIdentity() const {
-
-    return "PTriangle";
-  }
-
-
-  template <typename T>
   const Vector<T,3>& PTriangle<T>::getNormal( T u, T v ) {
 
     _eval( u, v );

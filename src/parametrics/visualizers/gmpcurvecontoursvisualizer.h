@@ -58,7 +58,6 @@ namespace GMlib {
 
     void                              display();
     const Array<Color>&               getColors() const;
-    std::string                       getIdentity() const;
     GM_PCURVE_CONTOURSVISUALIZER_MAP  getMapping() const;
     void                              replot(
       DVector< DVector< Vector<T, 3> > >& p,

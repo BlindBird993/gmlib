@@ -61,12 +61,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PCurveDefaultVisualizer<T>::getIdentity() const {
-
-    return "PCurve Default Visualizer";
-  }
-
-  template <typename T>
   inline
   void PCurveDefaultVisualizer<T>::replot(
     DVector< DVector< Vector<T, 3> > >& p,

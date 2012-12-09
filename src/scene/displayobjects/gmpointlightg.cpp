@@ -91,11 +91,6 @@ namespace GMlib {
   }
 
 
-  std::string PointLightG::getIdentity() const {
-
-    return "PointLightG";
-  }
-
   void PointLightG::localDisplay() {
 
 //    glPushAttrib( GL_LIGHTING_BIT ); {

@@ -79,7 +79,6 @@ namespace GMlib {
 
     void                              display();
     const Array<Color>&               getColors() const;
-    std::string                       getIdentity() const;
     GM_PSURF_CONTOURSVISUALIZER_INTERPOLATION_METHOD   getInterpolationMethod() const;
     GM_PSURF_CONTOURSVISUALIZER_MAP   getMapping() const;
     void                              replot(

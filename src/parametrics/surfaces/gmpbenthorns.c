@@ -205,14 +205,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PBentHorns<T>::getIdentity() const {
-
-    return "PBentHorns";
-  }
-
-
-  template <typename T>
   void PBentHorns<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

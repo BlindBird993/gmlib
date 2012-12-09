@@ -94,6 +94,7 @@ namespace GMlib {
   inline
   Selector<T,n>::~Selector() {}
 
+
   /*! void Selector<T,n>::allEnable()
    *  \brief Pending Documentation
    *
@@ -229,18 +230,6 @@ namespace GMlib {
   int Selector<T,n>::getId() const {
 
     return _id;
-  }
-
-  /*! std::string	Selector<T,n>::getIdentity() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  template <typename T, int n>
-  inline
-  std::string	Selector<T,n>::getIdentity() const {
-
-    return "Selector";
   }
 
   template <typename T, int n>

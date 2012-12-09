@@ -48,7 +48,6 @@ namespace GMlib {
     ~VisualizerStdRep();
 
     void              display();
-    std::string       getIdentity() const;
     void              select();
 
   protected:

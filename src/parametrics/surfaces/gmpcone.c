@@ -157,14 +157,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PCone<T>::getIdentity() const {
-
-    return "PCone";
-  }
-
-
-  template <typename T>
   void PCone<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

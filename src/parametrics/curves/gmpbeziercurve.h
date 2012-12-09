@@ -64,9 +64,6 @@ namespace GMlib {
     virtual void                    showSelectors( bool grid = false, const Color& _selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
     void                            updateCoeffs( const Vector<T,3>& d );
 
-    // virtual from SceneObject
-    std::string                     getIdentity() const;
-
     // virtual from PCurve
     bool                            isClosed() const;
     void                            preSample( int m, int d, T start, T end );

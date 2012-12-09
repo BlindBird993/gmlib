@@ -130,12 +130,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PTriangleVisualizer<T>::getIdentity() const {
-
-    return "PTriangle Visualizer";
-  }
-
-  template <typename T>
   inline
   int PTriangleVisualizer<T>::getNoTriangleStrips( int m ) {
 

@@ -147,14 +147,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PSwallowTail<T>::getIdentity() const {
-
-    return "PSwallowTail";
-  }
-
-
-  template <typename T>
   void PSwallowTail<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

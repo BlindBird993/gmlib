@@ -141,13 +141,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  inline
-  std::string PWhitneyUmbrella<T>::getIdentity() const {
-
-    return "PWhitneyUmbrella";
-  }
-
-  template <typename T>
   void PWhitneyUmbrella<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

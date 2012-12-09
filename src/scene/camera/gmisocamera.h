@@ -62,7 +62,6 @@ namespace GMlib {
     ~IsoCamera();
 
 		double					deltaTranslate(DisplayObject *);
-		std::string 		getIdentity() const;
 
 		void 						go(bool stereo=false);
 		void						lockTarget(SceneObject* obj);
@@ -145,18 +144,6 @@ namespace GMlib {
 //      }
 //    glEnd();
 //    if (lg) glEnable(GL_LIGHTING);
-  }
-
-
-  /*! std::string IsoCamera::getIdentity() const
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  std::string IsoCamera::getIdentity() const {
-
-    return "IsoCamera";
   }
 
 

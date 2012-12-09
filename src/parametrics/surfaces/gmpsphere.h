@@ -44,7 +44,6 @@ namespace GMlib {
     virtual ~PSphere();
 
   public:
-    std::string   getIdentity() const;
     T             getRadius() const;
     void          setRadius( T radius );
 

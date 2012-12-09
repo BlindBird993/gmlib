@@ -45,6 +45,9 @@ namespace GMlib {
 
   template <typename T>
   class PBezierSurf : public PSurf<T> {
+
+    GM_SCENEOBJECT(PBezierSurf,"PBezierSurf")
+
   public:
     PBezierSurf( const DMatrix< Vector<T,3> >& cp );
     PBezierSurf( const DMatrix< Vector<T,3> >& cp, T u_s, T u, T u_e, T v_s, T v, T v_e  );
@@ -55,7 +58,6 @@ namespace GMlib {
     DMatrix< Vector<T,3> >&       getControlPoints();
     int                           getDegreeU() const;
     int                           getDegreeV() const;
-    std::string                   getIdentity() const;
     T                             getLocalMapping( T t, T ts, T tt, T te );
     virtual void                  hideSelectors();
     bool                          isClosedU() const;

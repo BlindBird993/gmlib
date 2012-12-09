@@ -93,12 +93,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string TriangleFacetsVoronoiVisualizer<T>::getIdentity() const {
-
-    return "TriangleFacets Default Visualizer";
-  }
-
-  template <typename T>
   inline
   void TriangleFacetsVoronoiVisualizer<T>::replot() {
 

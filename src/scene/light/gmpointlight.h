@@ -61,7 +61,6 @@ namespace GMlib{
     virtual ~PointLight();
 
     virtual void 			culling( const Frustum& frustum );
-    std::string		    getIdentity() const;
     const Point<float,3>&    getAttenuation() const;
     void 							setAttenuation(float constant, float linear, float quadratic);
     void 							setAttenuation(const float att[]);
@@ -89,17 +88,6 @@ namespace GMlib{
 
 
 
-
-  /*! const std::string PointLight::getIdentity() const
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  std::string PointLight::getIdentity() const {
-
-    return "Point Light";
-  }
 
   inline
   const Point<float,3> &PointLight::getAttenuation() const {

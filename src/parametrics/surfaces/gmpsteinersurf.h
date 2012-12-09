@@ -41,7 +41,6 @@ namespace GMlib {
     PSteinerSurf( const PSteinerSurf<T>& dpss );
     virtual ~PSteinerSurf();
 
-    std::string       getIdentity() const;
     bool              isClosedU() const;
     bool              isClosedV() const;
 

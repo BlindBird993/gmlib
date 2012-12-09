@@ -146,14 +146,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PTrianguloidTrefoil<T>::getIdentity() const {
-
-    return "PTrianguloidTrefoil";
-  }
-
-
-  template <typename T>
   void PTrianguloidTrefoil<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

@@ -46,7 +46,6 @@ namespace GMlib {
     TriangleFacetsDefaultVisualizer();
     ~TriangleFacetsDefaultVisualizer();
     void          display();
-    std::string   getIdentity() const;
     virtual void  replot();
     void          select();
 

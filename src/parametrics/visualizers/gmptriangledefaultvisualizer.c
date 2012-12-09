@@ -82,12 +82,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PTriangleDefaultVisualizer<T>::getIdentity() const {
-
-    return "PTriangle Default Visualizer";
-  }
-
-  template <typename T>
   inline
   void PTriangleDefaultVisualizer<T>::replot( const DVector< DMatrix< Vector<T,3> > >& p, int m ) {
 

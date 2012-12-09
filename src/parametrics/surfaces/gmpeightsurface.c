@@ -151,14 +151,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PEightSurface<T>::getIdentity() const {
-
-    return "PEightSurface";
-  }
-
-
-  template <typename T>
   void PEightSurface<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

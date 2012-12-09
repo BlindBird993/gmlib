@@ -158,14 +158,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PDiniSurface<T>::getIdentity() const {
-
-    return "PDiniSurface";
-  }
-
-
-  template <typename T>
   void PDiniSurface<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

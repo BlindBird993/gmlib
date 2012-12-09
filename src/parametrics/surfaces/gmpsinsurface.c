@@ -156,14 +156,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PSinSurface<T>::getIdentity() const {
-
-    return "PSinSurface";
-  }
-
-
-  template <typename T>
   void PSinSurface<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

@@ -42,7 +42,6 @@ namespace GMlib {
     PTorus( const PTorus<T>& pshere );
     virtual ~PTorus();
 
-    std::string   getIdentity() const;
     const T&      getTubeRadius1() const;
     const T&      getTubeRadius2() const;
     const T&      getWheelRadius() const;

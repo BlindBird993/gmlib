@@ -41,6 +41,9 @@ namespace GMlib {
 
   template <typename T>
   class PERBSSurf : public PSurf<T> {
+
+    GM_SCENEOBJECT(PERBSSurf, "PERBSSurf")
+
   public:
     PERBSSurf(); // Dummy
     PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, const DVector<T>& u, const DVector<T>& v, bool closed_u = false, bool closed_v = false );
@@ -54,7 +57,6 @@ namespace GMlib {
     void                                edit( SceneObject *obj );
     void                                generateKnotVector( PSurf<T>* g );
     void                                generateKnotVector( PSurf<T>* g, T u_s, T u_e, T v_s, T v_e );
-    std::string                         getIdentity() const;
     DVector<T>&                         getKnotsU();
     DVector<T>&                         getKnotsV();
     DMatrix<PSurf<T>* >&                getLocalPatches();

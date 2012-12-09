@@ -56,6 +56,9 @@ namespace GMlib {
    *  Pending Documentation
    */
   class DisplayObject : public SceneObject {
+
+//    GM_SCENEOBJECT(DisplayObject, "DisplayObject")
+
   public:
     DisplayObject(
       const Point<float,3>&  pos = Point3D<float>(0,0,0),
@@ -112,7 +115,6 @@ namespace GMlib {
     // *****************
     // Virtual functions
     // from SceneObject
-    virtual std::string       getIdentity() const;
     virtual void              rotate(Angle a, const Vector<float,3>& rot_axel);
     virtual void              rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     virtual void              rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
@@ -215,7 +217,6 @@ namespace GMlib {
     #endif
 
   }; // END DisplayObject class
-
 
 
 
@@ -356,19 +357,6 @@ namespace GMlib {
   bool DisplayObject::isLocked() {
 
     return _locked;
-  }
-
-
-  /*! const std::string DisplayObject::getIdentity() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  Virtual SceneObject function
-   */
-  inline
-  std::string DisplayObject::getIdentity() const {
-
-    return "DisplayObject";
   }
 
 

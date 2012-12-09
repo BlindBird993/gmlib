@@ -47,7 +47,6 @@ namespace GMlib {
     PSurfDefaultVisualizer();
     virtual ~PSurfDefaultVisualizer();
     void          display();
-    std::string   getIdentity() const;
     virtual void  replot(
       DMatrix< DMatrix< Vector<T, 3> > >& p,
       DMatrix< Vector<T, 3> >& normals,

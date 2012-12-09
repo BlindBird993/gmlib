@@ -48,7 +48,6 @@ namespace GMlib {
   public:
     TriangleFacetsVisualizer();
     ~TriangleFacetsVisualizer();
-    std::string   getIdentity() const;
     virtual void  replot();
     void          set( SceneObject* obj );
 

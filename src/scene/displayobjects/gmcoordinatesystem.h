@@ -54,7 +54,6 @@ namespace GMlib {
     ~CoordinateSystem();
 
     GM_COORDSYS        getCoordinateSystem() const;
-    std::string        getIdentity() const;
     void               setCoordinateSystem( GM_COORDSYS coordsys );
 
   protected:

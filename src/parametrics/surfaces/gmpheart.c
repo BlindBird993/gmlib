@@ -153,14 +153,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PHeart<T>::getIdentity() const {
-
-    return "PHeart";
-  }
-
-
-  template <typename T>
   void PHeart<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

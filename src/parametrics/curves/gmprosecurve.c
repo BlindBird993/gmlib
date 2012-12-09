@@ -88,14 +88,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PRoseCurve<T>::getIdentity() const {
-
-    return "PRoseCurve";
-  }
-
-
-  template <typename T>
-  inline
   T PRoseCurve<T>::getStartP() {
 
     return T(0);

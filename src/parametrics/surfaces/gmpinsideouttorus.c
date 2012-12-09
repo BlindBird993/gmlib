@@ -159,14 +159,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PInsideOutTorus<T>::getIdentity() const {
-
-    return "PInsideOutTorus";
-  }
-
-
-  template <typename T>
   void PInsideOutTorus<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

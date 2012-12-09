@@ -62,11 +62,6 @@ namespace GMlib {
     return _display_mode;
   }
 
-  std::string Visualizer::getIdentity() const {
-
-    return "Visualizer Base";
-  }
-
   const GLProgram &Visualizer::getRenderProgram() const {
 
     return _render_prog;

@@ -36,6 +36,41 @@
 #define __gmSCENEOBJECT_H__
 
 
+/////////////////////
+
+// getIdentity
+#define GM_DECLARE_SO_IDENTITY( CNAME_STR ) \
+  std::string getIdentity() const { \
+    return CNAME_STR; \
+  }
+
+// makeCopy
+#define GM_DECLARE_SO_MAKECOPY( CNAME ) \
+  SceneObject* makeCopy() { \
+    return new CNAME(*this); \
+  }
+
+#define GM_DECLARE_SO_MAKECOPY_NULL( CNAME ) \
+  SceneObject* makeCopy() { \
+    return 0x0; \
+  }
+
+
+// SceneObject macros
+#define GM_SCENEOBJECT( CNAME, CNAME_STR ) \
+  public: \
+    GM_DECLARE_SO_IDENTITY( CNAME_STR ) \
+    GM_DECLARE_SO_MAKECOPY( CNAME )
+
+#define GM_SCENEOBJECT_NULL( CNAME, CNAME_STR ) \
+  public: \
+    GM_DECLARE_SO_IDENTITY( CNAME_STR ) \
+    GM_DECLARE_SO_MAKECOPY_NULL( CNAME )
+
+//////////////////
+
+
+
 #include "gmfrustum.h"
 #include "gmscaleobject.h"
 #include "utils/gmmaterial.h"
@@ -128,6 +163,8 @@ namespace GMlib{
   class SceneObject {
   public:
 
+    mutable const SceneObject                 *_copy_of;    //! Internal variable for use when coping the object.
+
     SceneObject(
       const Vector<float,3>& trans  = Vector3D<float>(0,0,0),
       const Point<float,3>&  scale  = Point3D<float>(1,1,1),
@@ -136,6 +173,8 @@ namespace GMlib{
 
     SceneObject( const SceneObject& d );
     virtual ~SceneObject();
+
+    virtual SceneObject*        makeCopy() = 0;
 
     virtual void                edit(int selector_id);
     virtual void                edit(SceneObject* lp);
@@ -263,6 +302,7 @@ namespace GMlib{
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
     GLProgram                   _select_prog;
+
 
     void                        display( Camera* cam );
     void                        fillObj( Array<SceneObject*>& );
@@ -486,18 +526,6 @@ namespace GMlib{
   Array<SceneObject*>& SceneObject::getChildren(){
 
     return _children;
-  }
-
-
-  /*! const char* SceneObject::getIdentity() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  std::string SceneObject::getIdentity() const {
-
-    return "Scene Object";
   }
 
 

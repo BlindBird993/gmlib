@@ -61,8 +61,6 @@ namespace GMlib {
     SpotLightG( const SpotLight& copy );
     SpotLightG( const SpotLightG& copy );
 
-    std::string     getIdentity() const;
-
     void            setCutOff(const Angle& cut_off);
 
   protected:

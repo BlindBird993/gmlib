@@ -693,14 +693,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PBoysSurface<T>::getIdentity() const {
-
-    return "PBoysSurface";
-  }
-
-
-  template <typename T>
   void PBoysSurface<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

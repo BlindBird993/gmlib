@@ -48,7 +48,6 @@ namespace GMlib {
     virtual ~PERBSTriangle();
 
     void                            edit( SceneObject *obj );
-    std::string                     getIdentity() const;
     DVector< PTriangle<T>* >&       getLocalPatches();
     virtual void                    hideLocalPatches();
     bool                            isLocalPatchesVisible() const;

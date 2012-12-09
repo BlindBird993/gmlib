@@ -93,12 +93,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PSurfDerivativesVisualizer<T>::getIdentity() const {
-
-    return "PSurf Derivatives Visualizer";
-  }
-
-  template <typename T>
   GM_SURF_DERIVATIVESVISUALIZER_SIZE PSurfDerivativesVisualizer<T>::getMode() const {
 
     return _mode;

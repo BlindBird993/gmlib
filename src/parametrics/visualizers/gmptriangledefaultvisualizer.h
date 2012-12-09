@@ -47,7 +47,6 @@ namespace GMlib {
     PTriangleDefaultVisualizer();
     virtual ~PTriangleDefaultVisualizer();
     void            display();
-    std::string     getIdentity() const;
     virtual void    replot(
       const DVector< DMatrix< Vector<T,3> > >& p,int m
     );

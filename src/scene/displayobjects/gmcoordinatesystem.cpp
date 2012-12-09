@@ -149,13 +149,6 @@ namespace GMlib {
     return _cs;
   }
 
-
-  std::string CoordinateSystem::getIdentity() const {
-
-    return "CoordinateSystem";
-  }
-
-
   void CoordinateSystem::setCoordinateSystem( GM_COORDSYS coordsys ) {
 
     _cs = coordsys;

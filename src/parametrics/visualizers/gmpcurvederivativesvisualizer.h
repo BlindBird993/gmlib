@@ -57,7 +57,6 @@ namespace GMlib {
     void            display();
     const Color&    getColor() const;
     int             getDerivative() const;
-    std::string     getIdentity() const;
     double          getSize() const;
 
     GM_PCURVE_DERIVATIVESVISUALIZER_SIZE

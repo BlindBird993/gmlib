@@ -173,14 +173,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PBottle8<T>::getIdentity() const {
-
-    return "PBottle8";
-  }
-
-
-  template <typename T>
   void PBottle8<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

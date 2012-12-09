@@ -124,13 +124,6 @@ namespace GMlib {
 
 
   template <typename T>
-  std::string PAsteroidalSphere<T>::getIdentity() const {
-
-    return "PAsteroidalSphere";
-  }
-
-
-  template <typename T>
   T PAsteroidalSphere<T>::getStartPU() {
 
     return T(0);

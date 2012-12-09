@@ -517,7 +517,6 @@ namespace GMlib {
     TSTile( TSVertex<T>* v, Box<T,3> domain );
 
     T                     getBigR();
-    std::string           getIdentity() const;
     T                     getSmallR();
     void                  render();
 

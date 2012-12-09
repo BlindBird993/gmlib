@@ -107,15 +107,6 @@ namespace GMlib {
     return false;
   }
 
-  // Virtual functions from SceneObject
-  //************************************
-
-  template <typename T>
-  std::string PSubCurve<T>::getIdentity() const
-  {
-    return "PSubCurve";
-  }
-
 
   // Private help functions
   //*************************

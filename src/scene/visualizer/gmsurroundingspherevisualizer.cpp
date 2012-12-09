@@ -108,11 +108,6 @@ namespace GMlib {
     return _cs_color;
   }
 
-  std::string SurroundingSphereVisualizer::getIdentity() const {
-
-    return "Surrounding Sphere Visualizer";
-  }
-
   const Color& SurroundingSphereVisualizer::getTotalSphereColor() const {
 
     return _ts_color;

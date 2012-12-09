@@ -146,14 +146,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PCylinder<T>::getIdentity() const {
-
-    return "PCylinder";
-  }
-
-
-  template <typename T>
-  inline
   T PCylinder<T>::getRadiusX() const {
 
     return _rx;

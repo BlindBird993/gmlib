@@ -45,7 +45,6 @@ namespace GMlib {
     virtual ~PBSplineCurve();
 
     int                       getDegree() const;
-    std::string               getIdentity() const;
     void                      generateKnotVector();
     bool                      isClosed() const;
     void                      resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );

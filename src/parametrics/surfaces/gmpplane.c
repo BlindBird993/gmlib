@@ -62,14 +62,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  std::string PPlane<T>::getIdentity() const {
-
-    return "PPlane";
-  }
-
-
-  template <typename T>
-  inline
   const UnitVector<T,3>& PPlane<T>::getNormal() const {
 
     return _n;

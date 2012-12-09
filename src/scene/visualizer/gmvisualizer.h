@@ -59,7 +59,6 @@ namespace GMlib {
 
     virtual void          display();
     DISPLAY_MODE          getDisplayMode() const;
-    virtual std::string   getIdentity() const;
     const GLProgram&      getRenderProgram() const;
     const GLProgram&      getSelectProgram() const;
     void                  glSetDisplayMode() const;

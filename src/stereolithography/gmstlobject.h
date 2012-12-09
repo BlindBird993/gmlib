@@ -62,7 +62,7 @@ namespace GMlib {
     StlObject( float r = 10 );				 // Makes a Sphere, just for debugging
     ~StlObject();
 
-    std::string                       getIdentity() const;
+//    std::string                       getIdentity() const;
     unsigned int                      getNoNormals() const;
     unsigned int                      getNoPoints() const;
     Array< Vector<float,3> >          getNormals();
@@ -114,11 +114,11 @@ namespace GMlib {
 
 
 
-  inline
-  std::string StlObject::getIdentity() const {
+//  inline
+//  std::string StlObject::getIdentity() const {
 
-    return _identity;
-  }
+//    return _identity;
+//  }
 
 
   inline

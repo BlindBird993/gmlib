@@ -37,8 +37,6 @@
 
 namespace GMlib {
 
-
-
   template <typename T>
   inline
   PBezierSurf<T>::PBezierSurf( const DMatrix< Vector<T, 3> >& cp ) {
@@ -80,6 +78,8 @@ namespace GMlib {
   PBezierSurf<T>::PBezierSurf( const PBezierSurf<T>& copy ) : PSurf<T>( copy ) {
 
     init();
+
+    _c = copy._c;
   }
 
 
@@ -201,14 +201,6 @@ namespace GMlib {
   T PBezierSurf<T>::getEndPV() {
 
     return T(1);
-  }
-
-
-  template <typename T>
-  inline
-  std::string PBezierSurf<T>::getIdentity() const {
-
-    return "PBezierSurf";
   }
 
 

@@ -78,12 +78,6 @@ namespace GMlib {
     return _color;
   }
 
-  template <typename T>
-  std::string PSurfNormalsVisualizer<T>::getIdentity() const {
-
-    return "PSurf Normals Visualizer";
-  }
-
   /*! GM_SURF_NORMALSVISUALIZER_MODE PSurfNormalsVisualizer<T>::getMode() const
    *
    *  Returns the displaymode of the visualizer.

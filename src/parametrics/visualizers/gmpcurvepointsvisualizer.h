@@ -50,7 +50,6 @@ namespace GMlib {
 
     void              display();
     const Color&      getColor() const;
-    std::string       getIdentity() const;
     float             getSize() const;
     void              replot(
       DVector< DVector< Vector<T, 3> > >& p,

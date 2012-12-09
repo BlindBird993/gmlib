@@ -96,11 +96,6 @@ namespace GMlib {
     _bo_cube.unbind();
   }
 
-  std::string VisualizerStdRep::getIdentity() const {
-
-    return "SceneObject Standard Representation Visualizer";
-  }
-
   void VisualizerStdRep::select() {
 
     GLuint vert_loc = getSelectProgram().getAttributeLocation( "in_vertex" );

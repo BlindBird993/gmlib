@@ -52,7 +52,6 @@ namespace GMlib {
       void              enableCleanSphere( bool enable );
       void              enableTotalSphere( bool enable );
       const Color&      getCleanSphereColor() const;
-      std::string       getIdentity() const;
       const Color&      getTotalSphereColor() const;
       bool              isCleanSphereEnabled() const;
       bool              isTotalSphereEnabled() const;

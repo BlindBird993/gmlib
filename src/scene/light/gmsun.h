@@ -49,13 +49,14 @@ namespace GMlib{
    *	Pending Documentation
    */
   class Sun : public Light, public SceneObject {
+    GM_SCENEOBJECT(Sun, "Sun")
+
   public:
     Sun(const Vector<float,3>& dir = Vector3D<float>(1,1,1));
     virtual ~Sun();
 
     Color                   getGlobalAmbient() const;
     const Vector<float,3>&  getDir() const;
-    std::string             getIdentity() const;
     void                    scaleDayLight( double d );
     void                    setDayLight( const Color& amb = Color( 0.1f, 0.1f, 0.1f ) );
 
@@ -72,17 +73,6 @@ namespace GMlib{
 
 
 
-
-  /*! const std::string Sun::getIdentity()
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  std::string Sun::getIdentity() const {
-
-    return "Sun";
-  }
 
 
   /*! void Sun::scaleDayLight(double d)

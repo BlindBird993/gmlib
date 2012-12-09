@@ -90,12 +90,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string TriangleFacetsVisualizer<T>::getIdentity() const {
-
-    return "TriangleFacets Visualizer";
-  }
-
-  template <typename T>
   inline
   void TriangleFacetsVisualizer<T>::replot() {}
 

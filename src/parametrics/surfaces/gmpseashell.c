@@ -202,14 +202,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  std::string PSeashell<T>::getIdentity() const {
-
-    return "PSeashell";
-  }
-
-
-  template <typename T>
   void PSeashell<T>::init() {
 
     this->_dm = GM_DERIVATION_EXPLICIT;

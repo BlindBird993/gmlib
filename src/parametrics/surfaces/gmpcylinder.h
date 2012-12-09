@@ -45,7 +45,6 @@ namespace GMlib {
     virtual ~PCylinder();
 
     T             getHeight() const;
-    std::string   getIdentity() const;
     T             getRadiusX() const;
     T             getRadiusY() const;
     bool          isClosedU() const;

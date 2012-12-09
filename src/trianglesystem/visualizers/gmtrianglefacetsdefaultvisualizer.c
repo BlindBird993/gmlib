@@ -77,12 +77,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string TriangleFacetsDefaultVisualizer<T>::getIdentity() const {
-
-    return "TriangleFacets Default Visualizer";
-  }
-
-  template <typename T>
   inline
   void TriangleFacetsDefaultVisualizer<T>::replot() {
 

@@ -150,12 +150,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PERBSTriangle<T>::getIdentity() const {
-
-    return "PERBSTriangle";
-  }
-
-  template <typename T>
   inline
   DVector< PTriangle<T>* >& PERBSTriangle<T>::getLocalPatches() {
 

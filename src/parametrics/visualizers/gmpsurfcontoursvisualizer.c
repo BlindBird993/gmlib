@@ -186,12 +186,6 @@ namespace GMlib {
   }
 
   template <typename T>
-  std::string PSurfContoursVisualizer<T>::getIdentity() const {
-
-    return "PSurf Contours Visualizer";
-  }
-
-  template <typename T>
   GM_PSURF_CONTOURSVISUALIZER_INTERPOLATION_METHOD PSurfContoursVisualizer<T>::getInterpolationMethod() const {
 
     return _method;

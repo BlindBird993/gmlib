@@ -42,7 +42,6 @@ namespace GMlib {
     PAsteroidalSphere( T sx = T(1), T sy = T(1), T sz = T(1) );
     PAsteroidalSphere( const PAsteroidalSphere<T>& copy );
 
-    std::string   getIdentity() const;
     void          setConstants( T sx, T sy, T sz );
 
   protected:

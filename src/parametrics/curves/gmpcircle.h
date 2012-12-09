@@ -44,7 +44,6 @@ namespace GMlib {
     PCircle( const PCircle<T>& copy );
     virtual ~PCircle();
 
-    std::string     getIdentity() const;
     T               getRadius();
     bool            isClosed() const;
     void            setRadius( T radius = T(20) );

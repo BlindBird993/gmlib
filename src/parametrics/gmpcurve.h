@@ -66,7 +66,6 @@ namespace GMlib {
     Vector<T,3>               getDer1( T t );
     Vector<T,3>               getDer2( T t );
     Vector<T,3>               getDer3( T t );
-    std::string               getIdentity() const;
     float                     getLineWidth() const;
     virtual T                 getLocalMapping( T t, T ts, T ti, T te );
     T                         getParDelta();
