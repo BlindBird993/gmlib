@@ -60,12 +60,14 @@
 #define GM_SCENEOBJECT( CNAME ) \
   public: \
     GM_DECLARE_SO_IDENTITY( CNAME ) \
-    GM_DECLARE_SO_MAKECOPY( CNAME )
+    GM_DECLARE_SO_MAKECOPY( CNAME ) \
+  private:
 
 #define GM_SCENEOBJECT_NULL( CNAME ) \
   public: \
     GM_DECLARE_SO_IDENTITY( CNAME ) \
-    GM_DECLARE_SO_MAKECOPY_NULL()
+    GM_DECLARE_SO_MAKECOPY_NULL() \
+  private:
 
 //////////////////
 
