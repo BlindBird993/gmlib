@@ -66,9 +66,9 @@ namespace GMlib {
   inline
   PSubCurve<T>::PSubCurve( const PSubCurve<T>& copy ) : PCurve<T>( copy )
   {
-    set(copy->_c, copy->_s, copy->_e, copy->_t);
+    set(copy._c, copy._s, copy._e, copy._t);
 
-    _trans = copy->_trans;
+    _trans = copy._trans;
   }
 
 

@@ -70,6 +70,7 @@ namespace GMlib {
   PBezierCurve<T>::PBezierCurve( const PBezierCurve<T>& copy ) : PCurve<T>( copy ) {
 
     init();
+    _c = copy._c;
   }
 
 

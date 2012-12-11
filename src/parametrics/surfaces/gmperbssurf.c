@@ -418,65 +418,32 @@ namespace GMlib {
     Array< unsigned int > cl;
     Array< std::pair<int,int> > cli;
 
-
-
-//    std::map< unsigned int, std::pair<int,int> > cl;
     for( int i = 0; i < c.getDim1(); ++i ) {
       for( int j = 0; j < c.getDim2(); ++j ) {
         std::pair<int,int> idx(i,j);
         cli += idx;
         cl += c(i)(j)->getName();
-//        std::cout << c(i)(j)->getName() << " <=> (" << i << ", " << j << ") [" << idx.first << ", " << idx.second << "]" << std::endl;
-//        cl[c(i)(j)->getName()] = std::pair<int,int>(i,j);
       }
     }
 
-
-    cli.reverse();
-    cl.reverse();
-
+    // find and save the reference to the local patch
     for( int i = 0; i < this->getChildren().getSize(); ++i ) {
 
       SceneObject *child = this->getChildren()[i];
-//      std::cout << "SO " << child->getName() << "(" << cl.count(child->_copy_of->getName()) << ") is"
-//                << ( cl.count(child->_copy_of->getName()) > 0 ? "" : " NOT" ) << " a local patch in " << copy.getName()
-//                << std::endl;
+      for( int j = cl.getSize()-1; j >= 0; --j ) {
 
-        for( int j = cl.getSize()-1; j >= 0; --j ) {
+        if( cl[j] == child->_copy_of->getName() ) {
 
-          if( cl[j] == child->_copy_of->getName() ) {
-            std::cout << "(" << j << ")" << cl[j] << " == " << child->getName() << std::endl;
+          std::pair<int,int> idx = cli[j];
 
-            std::pair<int,int> idx = cli[j];
-            _c[idx.first][idx.second] = static_cast<PSurf<T>*>(child);
+          // Static cast to PSurf<T>* as the local patch has to be of this type.
+          _c[idx.first][idx.second] = static_cast<PSurf<T>*>(child);
 
-            cl.removeIndex(j);
-            cli.removeIndex(j);
-//            break;
-
-
-          }
-//          else
-//            std::cout << "NOT" << std::endl;
+          cl.removeIndex(j);
+          cli.removeIndex(j);
         }
-
-//      if( cl.count(child->_copy_of->getName()) > 0 ) {
-
-//        std::pair<int,int> idx = cl[child->_copy_of->getName()];
-//        std::cout << "  -- idx: " <<  idx.first << ", " << idx.second << std::endl;
-
-//        _c[idx.first][idx.second] = static_cast<PSurf<T>*>(child);
-//      }
-      std::cout << "--" << std::endl;
+      }
     }
-
-//    std::cout << "ERBS CC - Number of children: " << this->getChildren().getSize() << std::endl;
-
-    std::cout << "----- Local patches of " << this->getName() << std::endl;
-    for( int i = 0; i < _c.getDim1(); ++i )
-      for( int j = 0; j < _c.getDim2(); ++j )
-        std::cout << i << ", " << j << ": " << _c[i][j]->getName() << " of type " << _c[i][j]->getIdentity() << std::endl;
-
   }
 
   /*! PERBSSurf<T>::~PERBSSurf()

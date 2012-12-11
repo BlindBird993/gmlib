@@ -82,6 +82,40 @@ namespace GMlib {
   PERBSCurve<T>::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T>( copy )
   {
     init();
+
+    _closed = copy._closed;
+    _t = copy._t;
+
+    // sync local patches
+    const DVector< PCurve<T>* > &c = copy._c;
+    _c.setDim( c.getDim() );
+    Array< unsigned int > cl;
+    Array< int > cli;
+
+    for( int i = 0; i < c.getDim(); ++i ) {
+
+      cli += i;
+      cl  += c(i)->getName();
+    }
+
+
+    // Find and save the reference to the local patches
+    for( int i = 0; i < this->getChildren().getSize(); ++i ) {
+
+      SceneObject *child = this->getChildren()[i];
+      for( int j = cl.getSize() - 1; j >= 0; --j ) {
+
+        if( cl[j] == child->_copy_of->getName() ) {
+
+          int idx = cli[j];
+
+          _c[idx] = static_cast<PCurve<T>*>(child);
+
+          cl.removeIndex(j);
+          cli.removeIndex(j);
+        }
+      }
+    }
   }
 
 
@@ -263,9 +297,9 @@ namespace GMlib {
     static Color cl= GMcolor::Blue;
     local->setColor( cl );
     cl = cl.getInterpolatedHSV( 0.2, GMcolor::Yellow );
-//    local->setVisible( false );
-//    local->setCollapsed( true );
-    insert( local );
+    local->setVisible( false );
+    local->setCollapsed( true );
+    this->insert( local );
   }
 
 
