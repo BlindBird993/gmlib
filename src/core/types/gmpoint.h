@@ -304,8 +304,8 @@ namespace GMlib {
    *  \return The casted vector
    */
   template <typename T, int n>
-  Vector<T, n>&   toVector( Point<T,n> &p ) {
-    return *((Vector<T,n>*)(&p));
+  inline Vector<T, n>&   toVector( Point<T,n> &p ) {
+    return static_cast<Vector<T,n>& >(p);
   }
 
 
