@@ -940,10 +940,12 @@ namespace GMlib {
       {
         n_bound++;
         TSTriangle<T>* t = _edges[i]->_getOther(NULL);
-        t->_reverse(_edges[i]);
-        Array<TSEdge<T>*> edges = t->getEdges();
-        if( _edges[i]->_isFirst( _edges[i]->getCommonVertex(*edges[1]) ) )
-          _edges[i]->_reverse();
+        if (t) {
+          t->_reverse(_edges[i]);
+          Array<TSEdge<T>*> edges = t->getEdges();
+          if( _edges[i]->_isFirst( _edges[i]->getCommonVertex(*edges[1]) ) )
+            _edges[i]->_reverse();
+        }
       }
 
     for(i=0; i< _edges.getSize(); i++)
