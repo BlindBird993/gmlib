@@ -103,7 +103,7 @@ namespace GMlib {
     if( closed_v )  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     else            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
-    glBindTexture( GL_TEXTURE_2D, nmap );
+    glBindTexture( GL_TEXTURE_2D, 0 );
   }
 
   template <typename T>
