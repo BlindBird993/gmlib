@@ -43,18 +43,26 @@ namespace GMlib {
   PTriangleVisualizer<T>::~PTriangleVisualizer() {}
 
   template <typename T>
-  void  PTriangleVisualizer<T>::fillStandardVBO(VertexBufferObject vbo, const DVector<DMatrix<Vector<T,3> > > &p) {
+  void  PTriangleVisualizer<T>::fillStandardVBO(VertexBufferObject vbo, const DVector<DVector<Vector<T,3> > > &p) {
 
     int no_dp = p.getDim();
+
+
+    Vector3D<T> a, b;
+    UnitVector<T,3> n;
 
     DVector<GLVertexNormal> dp(no_dp);
     for( int i = 0; i < p.getDim(); i++ ) {
 
-      const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
+//      const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
 
-      dp[i].x   = p(i)(0)(0)(0);
-      dp[i].y   = p(i)(0)(0)(1);
-      dp[i].z   = p(i)(0)(0)(2);
+      a = p[i][3]-p[i][1];
+      b = p[i][2]-p[i][1];
+      n = a^b;
+
+      dp[i].x   = p(i)(0)(0);
+      dp[i].y   = p(i)(0)(1);
+      dp[i].z   = p(i)(0)(2);
       dp[i].nx  = n(0);
       dp[i].ny  = n(1);
       dp[i].nz  = n(2);
@@ -167,7 +175,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PTriangleVisualizer<T>::replot( const DVector< DMatrix< Vector<T,3> > >& /*p*/, int /*m*/ ) {}
+  void PTriangleVisualizer<T>::replot( const DVector< DVector< Vector<T,3> > >& /*p*/, int /*m*/ ) {}
 
   template <typename T>
   void PTriangleVisualizer<T>::set( SceneObject* obj ) {

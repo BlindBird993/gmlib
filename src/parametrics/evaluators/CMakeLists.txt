@@ -22,6 +22,7 @@
 
 addHeaders(
   gmBasisEvaluator
+  gmBasisTriangleERBS
   gmBFBSEvaluator
   gmERBSEvaluator
   gmEvaluatorStatic
@@ -29,6 +30,7 @@ addHeaders(
 
 addTemplateSources(
   gmbasisevaluator.c
+  gmbasistriangleerbs.c
   gmbfbsevaluator.c
   gmerbsevaluator.c
   gmevaluatorstatic.c

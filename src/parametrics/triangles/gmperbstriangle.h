@@ -30,13 +30,9 @@
 #ifndef __gmPERBSTRIANGLE_H__
 #define __gmPERBSTRIANGLE_H__
 
+
 #include "../gmptriangle.h"
-
-#include "gmpbeziertriangle.h"
-#include "../evaluators/gmerbsevaluator.h"
-
-// gmlib
-#include <core/containers/gmarray.h>
+#include "../evaluators/gmbasistriangleerbs.h"
 
 
 namespace GMlib {
@@ -45,7 +41,8 @@ namespace GMlib {
   class PERBSTriangle : public PTriangle<T> {
     GM_SCENEOBJECT(PERBSTriangle)
   public:
-    PERBSTriangle( PBezierTriangle<T>* c0, PBezierTriangle<T>* c1, PBezierTriangle<T>* c2 );
+    PERBSTriangle( PTriangle<T>* c0, PTriangle<T>* c1, PTriangle<T>* c2,
+                   BasisTriangleType t = BFBS_2 );
     virtual ~PERBSTriangle();
 
     void                            edit( SceneObject *obj );
@@ -54,17 +51,18 @@ namespace GMlib {
     bool                            isLocalPatchesVisible() const;
     virtual void                    showLocalPatches();
 
+    void                            resetBasis( BasisTriangleType type );
+
+    /* virtual from PTriangle */
+    Vector<Point<T,3>,3>            getPoints();
+
 
   protected:
-    ERBSEvaluator<long double>      *_basis;
+    BasisTriangleERBS<T>            *_B;
     DVector< PTriangle<T>* >        _c;
 
-    void                            eval( T u, T v, T w );
-    void                            getB( DVector<T>& B, T t, int d );
-    T                               getEndPU();
-    T                               getEndPV();
-    T                               getStartPU();
-    T                               getStartPV();
+    void                            eval( T u, T v, T w, int d );
+
     void                            insertPatch( PTriangle<T> *patch );
 
   }; // END class PERBSTriangle

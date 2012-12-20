@@ -83,7 +83,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PTriangleDefaultVisualizer<T>::replot( const DVector< DMatrix< Vector<T,3> > >& p, int m ) {
+  void PTriangleDefaultVisualizer<T>::replot( const DVector< DVector< Vector<T,3> > >& p, int m ) {
 
     _no_triangles = PTriangleVisualizer<float>::getNoTriangles( m-1 );
 

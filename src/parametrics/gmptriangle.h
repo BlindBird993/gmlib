@@ -35,7 +35,7 @@
 
 // gmlib
 #include <core/types/gmpoint.h>
-#include <core/containers/gmdmatrix.h>
+#include <core/containers/gmdvector.h>
 
 
 namespace GMlib {
@@ -44,102 +44,113 @@ namespace GMlib {
   class PTriangleVisualizer;
 
   template <typename T>
-  class PTriangleDefaultVisualizer;
-
-  template <typename T>
   class PTriangle : public Parametrics<T,2> {
+
   public:
     PTriangle( int samples = 20 );
     PTriangle( const PTriangle<T>& copy );
+
     ~PTriangle();
 
-    void                              enableDefaultVisualizer( bool enable = true );
-    const DMatrix<Vector<T,3> >&      evaluateGlobal( T u, T v, int d1, int d2 );
-    const DMatrix<Vector<T,3> >&      evaluateLocal( T u, T v, int d1, int d2 );
-    const DMatrix<Vector<T,3> >&      evaluateParent( T u, T v, int d1, int d2 );
+
+    const DVector<Vector<T,3> >&      evaluateGlobal( T u, T v, int d);
+    const DVector<Vector<T,3> >&      evaluateLocal( T u, T v, int d);
+    const DVector<Vector<T,3> >&      evaluateParent( T u, T v, int d);
+
+    const Point<T,3>&                 operator()( T u, T v ); // w = 1-u-v
+    const Vector<T,3>&                getDerU( T u, T v );
+    const Vector<T,3>&                getDerV( T u, T v );
+    const Vector<T,3>&                getDerW( T u, T v );
+    const Vector<T,3>&                getDerUU( T u, T v );
+    const Vector<T,3>&                getDerUV( T u, T v );
+    const Vector<T,3>&                getDerUW( T u, T v );
+    const Vector<T,3>&                getDerVV( T u, T v );
+    const Vector<T,3>&                getDerVW( T u, T v );
+    const Vector<T,3>&                getDerWW( T u, T v );
+    const Vector<T,3>&                getNormal( T u, T v );
+    UnitVector<T,3>                   getUnitNormal( T u, T v );
 
     virtual T                         getCurvatureGauss( T u, T v );
     virtual T                         getCurvatureMean( T u, T v );
 
-    const Vector<T,3>&                getDerU( T u, T v );
-    const Vector<T,3>&                getDerV( T u, T v );
-    const Vector<T,3>&                getDerUU( T u, T v );
-    const Vector<T,3>&                getDerVV( T u, T v );
-    const Vector<T,3>&                getDerUV( T u, T v );
-    const Vector<T,3>&                getNormal( T u, T v );
-    T                                 getParDeltaU();
-    T                                 getParDeltaV();
-    T                                 getParEndU();
-    T                                 getParEndV();
-    T                                 getParStartU();
-    T                                 getParStartV();
-    UnitVector<T,3>                   getUnitNormal( T u, T v );
+
+    const DVector<Vector<T,3> >&      evaluateGlobal(const Point<T,3> & p, int d);
+    const DVector<Vector<T,3> >&      evaluateLocal(const Point<T,3> & p, int d);
+    const DVector<Vector<T,3> >&      evaluateParent(const Point<T,3> & p, int d);
+
+    const Point<T,3>&                 operator()(const Point<T,3> & p);
+    const Vector<T,3>&                getDerU(const Point<T,3> & p);
+    const Vector<T,3>&                getDerV(const Point<T,3> & p);
+    const Vector<T,3>&                getDerW(const Point<T,3> & p);
+    const Vector<T,3>&                getDerUU(const Point<T,3> & p);
+    const Vector<T,3>&                getDerUV(const Point<T,3> & p);
+    const Vector<T,3>&                getDerUW(const Point<T,3> & p);
+    const Vector<T,3>&                getDerVV(const Point<T,3> & p);
+    const Vector<T,3>&                getDerVW(const Point<T,3> & p);
+    const Vector<T,3>&                getDerWW(const Point<T,3> & p);
+    const Vector<T,3>&                getNormal(const Point<T,3> & p);
+    UnitVector<T,3>                   getUnitNormal(const Point<T,3> & p);
+
+    T                                 getCurvatureGauss(const Point<T,3> & p);
+    T                                 getCurvatureMean(const Point<T,3> & p);
+
+    const Vector<T,3>&                getDer_d(const Point<T,3> & p, const Vector<T,3> & d);
+
+
+    void                              enableDefaultVisualizer( bool enable = true );
+    void                              toggleDefaultVisualizer();
     void                              insertVisualizer( Visualizer *visualizer );
-    virtual bool                      getClosestPoint( const Point<T,3>& p, T& u, T& v );
-    bool                              getClosestPoint( const Point<T,3>& p, Point<T,2>& uv );
     void                              removeVisualizer( Visualizer *visualizer );
+
     virtual void                      replot( int m = 0 );
-//    virtual void                      resample(DVector<DMatrix<Vector<T,3> > >& p, int m, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
-    virtual void                      resample( DVector<DMatrix<Vector<T, 3> > > &p, int m );
-    void                              setDomainU( T start, T end );
-    void                              setDomainUScale( T sc );
-    void                              setDomainUTrans( T tr );
-    void                              setDomainV( T start, T end );
-    void                              setDomainVScale( T sc );
-    void                              setDomainVTrans( T tr );
+    virtual void                      resample( DVector<DVector<Vector<T, 3> > > &p, int m );
+
+
+    std::string                       getIdentity() const;
+
     void                              setEval(int d);
     Parametrics<T,2>*                 split( T t, int uv );
+
     virtual void                      updateCoeffs( const Vector<T,3>& d );
+    virtual bool                      isClosestPoint( const Point<T,3>& p, T& u, T& v );
 //    virtual void                      estimateClpPar(const Point<T,n>& p, T& u, T& v) {}
 //    virtual void                      setBp( Array<Point<T,n> >bp ) {}
-    void                              toggleDefaultVisualizer();
 
-    const Point<T,3>&                 operator()( T u, T v );
+    void                              setTriangNr(bool all = true, int nr = 0);
 
-
-
-
-
+    virtual Vector<Point<T,3>,3>      getPoints();
 
   protected:
     Array< PTriangleVisualizer<T>* >  _ptriangle_visualizers;
-    PTriangleDefaultVisualizer<T>     *_default_visualizer;
+    PTriangleVisualizer<T>            *_default_visualizer;
 
-    int                               _no_sam;      //  int				__sam;
-    DMatrix< Vector<T,3> >            _p;           //  DMatrix<Vector<T,n> >	__p;
+    int                               _no_sam;      //  int		__sam;
+    DVector< Vector<T,3> >            _p;           //  DMatrix<Vector<T,n> >	__p;
     Vector<T,3>                       _n;           //  Vector<T,3>		__n; // For display in 3D
     T                                 _u;           //  T	__u;
     T                                 _v;           //  T	__v;
-    int                               _d1;          //  int	__d1;
-    int                               _d2;          //  int	__d2;
+    int                               _d;           //  int	__d;
     bool                              _diagonal;    //  bool	__diagonal; // True if only upper left half is evaluated.
     int                               _default_d;   //  int	__defalt_d; // used by operator() for number of derivative to evaluate.
 
-    T                                 _tr_u;        //  T	__tr_u;	// translate u-parametre
-    T                                 _sc_u;        //  T	__sk_u;	// skale
-    T                                 _tr_v;        //  T	__tr_v;	// translate v-parametre
-    T                                 _sc_v;        //  T	__sk_v;	// skale
+    bool                              _all;
+    int                               _t_nr;
+    Point<T,3>                        _pt[4];
 
+    virtual void                      eval( T u, T v, T w, int d ) = 0;
+    void                              eval( const Point<T,3>& p, int d ) { eval(p(0),p(1),p(2),d); }
 
-    virtual void                      eval( T u, T v, T w ) = 0;
-    virtual T                         getEndPU() = 0;
-    virtual T                         getEndPV() = 0;
-    virtual T                         getStartPU() = 0;
-    virtual T                         getStartPV() = 0;
-
-
-    virtual void                      setSurroundingSphere( const DVector<DMatrix<Vector<T, 3> > > &p );
-
-
-    T                                 shiftU( T u );
-    T                                 shiftV( T u );
-
+    virtual void                      setSurroundingSphere( const DVector<DVector<Vector<T, 3> > > &p );
 
   private:
-    void                              _eval( T u, T v );
+    void                              _eval( T u, T v, int d );
     int                               _sum(int i);
+    void                              _init();
 
+    void _fuForm( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g);
 
+    void                              resample1( DVector<DVector<Vector<T, 3> > > &p, int m );
+    void                              resample2( DVector<DVector<Vector<T, 3> > > &p, int m, int a, int b );
   }; // END class PTriangle
 
 
@@ -151,8 +162,6 @@ namespace GMlib {
 
 
 // Include PTriangle class function implementations
-#include "gmptriangle.c"
-
-
+#include "gmPTriangle.c"
 
 #endif // __gmPTRIANGLE_H__

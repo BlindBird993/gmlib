@@ -65,12 +65,8 @@ namespace GMlib {
     DVector< Selector<T,3>* >   _s;
     bool                        _c_moved;
 
-    void                        eval( T u, T v, T w );
-
-    T                           getEndPU();
-    T                           getEndPV();
-    T                           getStartPU();
-    T                           getStartPV();
+    /* implemented from PTriangle */
+    void                        eval( T u, T v, T w, int d );
 
   }; // END class PBezierTriangle
 

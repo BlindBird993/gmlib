@@ -67,12 +67,12 @@ namespace GMlib {
     virtual ~PTriangleVisualizer();
 
     virtual void    replot(
-      const DVector< DMatrix< Vector<T,3> > >& p,int m
+      const DVector< DVector< Vector<T,3> > >& p,int m
     );
     void            set( SceneObject* obj );
 
 
-    static void     fillStandardVBO( VertexBufferObject vbo, const DVector< DMatrix< Vector<T,3> > >& p );
+    static void     fillStandardVBO( VertexBufferObject vbo, const DVector< DVector< Vector<T,3> > >& p );
     static void     fillTriangleIBO( IndexBufferObject ibo, int m );
     static void     fillTriangleStripIBO( GLuint ibo_id, int m );
     static int      getNoIndicesInTriangleStrip( int strip_idx );
