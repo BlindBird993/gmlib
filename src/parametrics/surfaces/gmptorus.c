@@ -67,7 +67,7 @@ namespace GMlib {
     T sv = sin(v);
     T cu = cos(u);
     T cv = cos(v);
-    T bcva = _b*cos(v)+_a;
+    T bcva = _b*cv+_a;
     T cucv = _b*cu*cv;
     T cusv = _b*cu*sv;
     T sucv = _b*su*cv;

@@ -124,7 +124,7 @@ namespace GMlib {
   inline
   T PCylinder<T>::getEndPU() {
 
-    return T( -0.5 );
+    return T( 0.5 );
   }
 
 
@@ -132,7 +132,7 @@ namespace GMlib {
   inline
   T PCylinder<T>::getEndPV() {
 
-    return T( -0.5 * M_PI );
+    return T( 0.5 * M_PI );
   }
 
 
@@ -164,7 +164,7 @@ namespace GMlib {
   inline
   T PCylinder<T>::getStartPU() {
 
-    return T( 0.5 );
+    return T( -0.5 );
   }
 
 
@@ -172,7 +172,7 @@ namespace GMlib {
   inline
   T PCylinder<T>::getStartPV() {
 
-    return T( 1.5 * M_PI );
+    return T( -1.5 * M_PI );
   }
 
 
