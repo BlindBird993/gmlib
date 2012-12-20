@@ -554,7 +554,6 @@ namespace GMlib{
     return _name;
   }
 
-
   inline
   SceneObject* SceneObject::getParent() const {
 

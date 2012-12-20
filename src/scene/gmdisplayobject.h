@@ -56,9 +56,6 @@ namespace GMlib {
    *  Pending Documentation
    */
   class DisplayObject : public SceneObject {
-
-//    GM_SCENEOBJECT(DisplayObject, "DisplayObject")
-
   public:
     DisplayObject(
       const Point<float,3>&  pos = Point3D<float>(0,0,0),
