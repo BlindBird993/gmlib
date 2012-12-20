@@ -95,8 +95,8 @@ namespace GMlib {
     void                          insertVisualizer( Visualizer *visualizer );
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
-    virtual bool                  isClosestPoint( const Point<T,3>& q, T& u, T& v );
-    bool                          isClosestPoint( const Point<T,3>& q, Point<T,2>& uv );
+    virtual bool                  getClosestPoint( const Point<T,3>& q, T& u, T& v );
+    bool                          getClosestPoint( const Point<T,3>& q, Point<T,2>& uv );
     virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
     void                          removeVisualizer( Visualizer *visualizer );
     virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0 );

@@ -628,7 +628,7 @@ namespace GMlib {
 
 
   template <typename T>
-  bool PSurf<T>::isClosestPoint( const Point<T,3>& q, T& u, T& v ) {
+  bool PSurf<T>::getClosestPoint( const Point<T,3>& q, T& u, T& v ) {
 
     T a11, a12, a21, a22, b1, b2;
     T du, dv, det;
@@ -667,9 +667,9 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool PSurf<T>::isClosestPoint( const Point<T,3>& q, Point<T,2>& uv ) {
+  bool PSurf<T>::getClosestPoint( const Point<T,3>& q, Point<T,2>& uv ) {
 
-    return isClosestPoint(q, uv[0], uv[1]);
+    return getClosestPoint(q, uv[0], uv[1]);
   }
 
   template <typename T>

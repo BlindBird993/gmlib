@@ -75,7 +75,8 @@ namespace GMlib {
     T                                 getParStartV();
     UnitVector<T,3>                   getUnitNormal( T u, T v );
     void                              insertVisualizer( Visualizer *visualizer );
-    virtual bool                      isClosestPoint( const Point<T,3>& p, T& u, T& v );
+    virtual bool                      getClosestPoint( const Point<T,3>& p, T& u, T& v );
+    bool                              getClosestPoint( const Point<T,3>& p, Point<T,2>& uv );
     void                              removeVisualizer( Visualizer *visualizer );
     virtual void                      replot( int m = 0 );
 //    virtual void                      resample(DVector<DMatrix<Vector<T,3> > >& p, int m, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
