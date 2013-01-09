@@ -69,6 +69,7 @@ namespace GMlib {
     Camera*                 findCamera( int x, int y );
     Camera*                 findCamera( const Vector<int,2>& pos );
     int                     getCameraIndex( Camera* cam ) const;
+    const Color&            getClearColor() const;
     const Color&            getSelectColor() const;
     int                     getViewportHeight() const;
     int                     getViewportWidth() const;
@@ -90,6 +91,7 @@ namespace GMlib {
     void                    reset();
 
     void                    scaleDayLight(double d);
+    void                    setClearColor( const Color& color );
     void                    setSelectColor( const Color& color );
     void                    setSunDirection(Angle d);
 
@@ -143,6 +145,7 @@ namespace GMlib {
     bool			              _running;		/// Used to stor the state of simulation while mouse/keboard temporary turn off simulation
     bool			              _isbig;			/// State of one window functionality have been used (see _mouseDoubleClick on right knob)
 
+    Color                   _clear_color;
     Color                   _select_color;
 
     GLuint          _vbo_quad;
@@ -189,6 +192,12 @@ namespace GMlib {
   Camera* GMWindow::findCamera( const Vector<int,2>& pos ) {
 
     return findCamera( pos(0), pos(1) );
+  }
+
+  inline
+  const Color& GMWindow::getClearColor() const {
+
+    return _clear_color;
   }
 
   inline

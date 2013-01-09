@@ -259,7 +259,7 @@ namespace GMlib {
    *  containing:
    *    List of materialObjects
    */
-  class MaterialObjectList : Array<MaterialObject> {
+  class MaterialObjectList : public Array<MaterialObject> {
   public:
     MaterialObjectList(bool init=true);
     MaterialObjectList(char* file_name);

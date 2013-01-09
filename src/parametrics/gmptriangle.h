@@ -162,6 +162,6 @@ namespace GMlib {
 
 
 // Include PTriangle class function implementations
-#include "gmPTriangle.c"
+#include "gmptriangle.c"
 
 #endif // __gmPTRIANGLE_H__

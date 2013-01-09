@@ -56,6 +56,7 @@ namespace GMlib {
     _sun	 = NULL;
     _move	 = 0.0;
     _active_cam = 0;
+    _clear_color = Color( 0.5f, 0.5f, 0.5f, 1.0f );
     _select_color = GMcolor::Pink;
     stop();
 
@@ -321,6 +322,10 @@ namespace GMlib {
     _sun->scaleDayLight(d);
   }
 
+  void GMWindow::setClearColor(const Color &color) {
+
+    _clear_color = color;
+  }
 
   void GMWindow::setSelectColor( const Color& color ) {
 
