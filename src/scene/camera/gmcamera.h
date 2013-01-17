@@ -100,7 +100,6 @@ namespace GMlib {
     void										    decreaseFocalDist(double delta=1);
     virtual double              deltaTranslate(DisplayObject * obj);
     void                        enableCulling( bool enable = true );
-    void                        enableBlendSort( bool enable = true );
     SceneObject*                findSelectObject(int, int, int type_id=0);
     SceneObject*                findSelectObject( const Vector<int,2>& pos, int type_id=0);
     Array<SceneObject* >        findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
@@ -109,6 +108,7 @@ namespace GMlib {
     double                      getDistanceToObject(SceneObject* obj);
     float                       getFarPlane() const;
     float                       getFocalLength() const;
+    const Frustum&              getFrustum() const;
     const HqMatrix<float,3>&    getFrustumMatrix() const;
     HqMatrix<float,3>&          getMatrix();
     const HqMatrix<float,3>&    getMatrix() const;
@@ -123,7 +123,6 @@ namespace GMlib {
     void                        increaseFocalDist(double delta=1);
     bool                        isCoordSysVisible() const;
     bool                        isCulling() const;
-    bool                        isBlendSortEnabled() const;
     bool                        isFrustumVisible() const;
     virtual SceneObject*        lockTargetAtPixel(int,int);
     void                        reset();						// To be used when changing Camera.
@@ -183,7 +182,25 @@ namespace GMlib {
     float                       _angle_tan;
 
     bool                        _culling;
-    bool                        _blend_sort;
+
+  public:
+    void    markAsActive() { _active = true; }
+    void    markAsInActive() { _active = false; }
+
+    void    switchToLeftEye() {
+
+      basisChange( _side, _up, _dir, _pos );
+    }
+
+    void    switchToRightEye() {
+
+      Point3D<float>		tmp_pos  = _pos  - _eye_dist*_side;
+      UnitVector3D<float>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
+      UnitVector3D<float>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
+      basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
+    }
+
+    virtual void                setupDisplay();
 
   }; // END class Camera
 
@@ -257,17 +274,23 @@ namespace GMlib {
   inline
   void Camera::display() {
 
-    setPerspective();
-    glViewport(_x,_y,_w,_h);
+    setupDisplay();
 
     // Cull the scene using the camera's frustum
     _scene->culling( _frustum, _culling );
 
     // Render scene
-    _scene->display( _blend_sort, this );
+    _scene->display( this );
 
     if(_coord_sys_visible)
       drawActiveCam();
+  }
+
+  inline
+  void Camera::setupDisplay() {
+
+    setPerspective();
+    glViewport(_x,_y,_w,_h);
   }
 
 
@@ -465,6 +488,12 @@ namespace GMlib {
   float Camera::getFocalLength() const {
 
     return _focal_length;
+  }
+
+  inline
+  const Frustum &Camera::getFrustum() const {
+
+    return _frustum;
   }
 
   inline

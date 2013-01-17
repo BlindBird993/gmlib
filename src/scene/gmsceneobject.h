@@ -247,6 +247,7 @@ namespace GMlib{
 
     friend class Scene;
     friend class Camera;
+    friend class Renderer;
 
     bool                        _is_part;  //! true if the object is seen as a part of a larger object
 
@@ -297,8 +298,8 @@ namespace GMlib{
 
     virtual void                simulate( double dt );
 
-
-  private:
+  protected:
+//  private:
     static unsigned int         _free_name;	//! For automatisk name-generations.
     unsigned int                _name;		//! Unic name for this object, used for selecting
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
@@ -306,12 +307,14 @@ namespace GMlib{
     GLProgram                   _select_prog;
 
 
-    void                        display( Camera* cam );
+    void                        displaySelection( Camera* cam );
     void                        fillObj( Array<SceneObject*>& );
     int                         prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
     virtual void                prepareDisplay(const HqMatrix<float,3>& m);
     void                        select(int what = -1, Camera* cam = 0x0 );
 
+  public:
+    void                        display( Camera* cam );
 
 
 
@@ -418,6 +421,32 @@ namespace GMlib{
 
         localDisplay();
       }
+    }
+  }
+
+  /*! void SceneObject::displaySelection( Camera* cam )
+   *  \brief Pending
+   *
+   *  Pending
+   */
+  inline
+  void SceneObject::displaySelection( Camera* cam ) {
+
+    if(!_active && _selected ) {
+
+      const GLProgram render_select_prog("render_select");
+      render_select_prog.bind();
+      render_select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
+
+      if( _collapsed )
+        _std_rep_visu->select();
+      else {
+
+        for( int i = 0; i < _visualizers.getSize(); ++i )
+          _visualizers[i]->select();
+      }
+//        localSelect();
+      render_select_prog.unbind();
     }
   }
 

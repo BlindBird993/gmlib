@@ -49,6 +49,7 @@
 namespace GMlib{
 
   class SceneObject;
+  class RenderManager;
   class Camera;
   class Light;
   namespace GLSL {
@@ -123,16 +124,12 @@ namespace GMlib{
 
   private:
     friend class Camera;
-
-    void                  display( bool blend_sorted, Camera* cam );
+    void                  display( Camera* cam );
     void                  select( int type_id, Camera* cam );
     virtual void          culling( const Frustum& f, bool on = true );
-    void                  blending( Camera* cam );
 
     Array<SceneObject*>   _scene;
     Array<SceneObject*>	  _disp_objs;
-    Array< SortObject<SceneObject*, float> >   _disp_opaque;
-    Array< SortObject<SceneObject*, float> >   _disp_translucent;
 
     Array<Light*>         _lights;
     Array<HqMatrix<float,3> >                   _matrix_stack;
@@ -144,6 +141,7 @@ namespace GMlib{
 
 
   }; // END class Scene
+
 
 
 

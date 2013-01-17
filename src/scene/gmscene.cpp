@@ -298,7 +298,6 @@ namespace GMlib {
     }
   }
 
-
   /*! bool Scene::isVisible( SceneObject* obj )
    *  \brief Pending Documentation
    *
@@ -314,10 +313,13 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void Scene::display( bool blend_sorted, Camera* cam ) {
+  void Scene::display(Camera* cam ) {
 
     for( int i = 0; i < _disp_objs.getSize(); i++ )
       _disp_objs[i]->display( cam );
+
+//    for( int i = 0; i < _disp_objs.getSize(); i++ )
+//      _disp_objs[i]->displaySelection( cam );
 
 //    glDisable( GL_BLEND );
 
@@ -367,29 +369,6 @@ namespace GMlib {
     else
       for( i = 0; i < _scene.getSize(); i++ )
         _scene[i]->fillObj( _disp_objs );
-  }
-
-
-  void Scene::blending( Camera *cam ) {
-
-    _disp_opaque.resetSize();
-    _disp_translucent.resetSize();
-
-    for( int i = 0; i < _disp_objs.getSize(); i++ ) {
-
-      const double dto = cam->getDistanceToObject( _disp_objs[i]);
-      if( _disp_objs[i]->isOpaque() )
-        _disp_opaque += SortObject<SceneObject*,float>(_disp_objs[i], dto );
-      else
-        _disp_translucent += SortObject<SceneObject*,float>(_disp_objs[i], dto );
-    }
-
-    // Sort opaque objects front to back
-    _disp_opaque.sort();
-
-    // Sort translucent objects back to front
-    _disp_translucent.sort();
-    _disp_translucent.reverse();
   }
 
 

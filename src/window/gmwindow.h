@@ -32,8 +32,10 @@
 #define __gmWINDOW_H__
 
 
+// local
 #include "gmview.h"
 #include "gmviewset.h"
+#include "render/gmrendermanager.h"
 
 // gmlib
 #include <scene/camera/gmcamera.h>
@@ -147,6 +149,10 @@ namespace GMlib {
 
     Color                   _clear_color;
     Color                   _select_color;
+
+
+    RenderManager           *_rm;
+
 
     GLuint          _vbo_quad;
     GLuint          _vbo_quad_tex;
@@ -344,11 +350,14 @@ namespace GMlib {
 //    }
 //    else {
 
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      OGL::clearRenderBuffer();
-      OGL::bindRenderBuffer();
-      _view_set_stack.back().drawCamera();
-      OGL::unbindRenderBuffer();
+//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//      OGL::clearRenderBuffer();
+//      OGL::bindRenderBuffer();
+//      _view_set_stack.back().drawCamera();
+//      OGL::unbindRenderBuffer();
+
+    _rm->render( _view_set_stack.back() );
+
 //    }
 
     // Render render-buffer to standard OGL buffer
@@ -455,8 +464,10 @@ namespace GMlib {
 
     _w = w; _h = h;
     prepareViewSets();
-    OGL::setRenderBufferSize( _w, _h );
-    OGL::setSelectBufferSize( _w, _h );
+//    OGL::setRenderBufferSize( _w, _h );
+//    OGL::setSelectBufferSize( _w, _h );
+
+    _rm->resize( _w, _h );
   }
 
 

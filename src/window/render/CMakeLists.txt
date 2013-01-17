@@ -1,4 +1,4 @@
-# ###############################################################################
+###############################################################################
 # #
 # # Copyright (C) 1994 Narvik University College
 # # Contact: GMlib Online Portal at http://episteme.hin.no
@@ -22,15 +22,12 @@
 
 
 addHeaders(
-  gmView
-  gmViewSet
-  gmWindow
+  gmRenderer
+  gmRenderManager
 )
 
 addSources(
-  gmview.cpp
-  gmviewset.cpp
-  gmwindow.cpp
+  gmrenderer.cpp
+  gmrendermanager.cpp
 )
 
-addSubDirectory(render)           # <render> sub-module

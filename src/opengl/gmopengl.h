@@ -315,6 +315,9 @@ namespace GMlib {
     static GLuint       _render_rbo_selected;
     static GLuint       _render_rbo_depth;
 
+    static GLuint       _render__select_rbo_selected;
+    static GLuint       _render__select_rbo_depth;
+
     static int          _render_fbo_w;
     static int          _render_fbo_h;
 

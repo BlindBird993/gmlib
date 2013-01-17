@@ -71,6 +71,7 @@ namespace GMlib {
       addViewSet( getCameraIndex(cam) );
     }
 
+    _rm = new RenderManager( this );
 
     glGenBuffers( 1, &_vbo_quad );
     glGenBuffers( 1, &_vbo_quad_tex );

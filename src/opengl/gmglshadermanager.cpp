@@ -110,6 +110,12 @@ bool GLShaderManager::_initPrograms() {
   if( !linkProgram( "render" ) )
     return false;
 
+  createProgram( "render_select" );
+  addShaderToProgram( "render_select", "render_select_vs" );
+  addShaderToProgram( "render_select", "render_select_fs" );
+  if( !linkProgram( "render_select" ) )
+    return false;
+
 //    createProgram( "default_pass2" );
 //    addShaderToProgram( "default_pass2", "default_pass2_vs" );
 //    addShaderToProgram( "default_pass2", "default_pass2_fs" );
@@ -545,6 +551,52 @@ bool GLShaderManager::_initShaders() {
 
 
   ///////////////////////////
+  // Render select shader
+
+  // Vertex shader
+  createShader( "render_select_vs", GL_VERTEX_SHADER );
+  setShaderSource(
+      "render_select_vs",
+
+      "#version 150 compatibility \n"
+      "uniform mat4 u_mvpmat; \n"
+      "uniform vec4 u_color; \n"
+      "\n"
+      "in vec4 in_vertex; \n"
+      "\n"
+      "out vec4 gl_Position; \n"
+      "\n"
+      "void main() \n"
+      "{ \n"
+      "  gl_Position = u_mvpmat * in_vertex; \n"
+      "}\n"
+      );
+
+  if( !compileShader( "render_select_vs" ) )
+    return false;
+
+  // Fragment shader
+  createShader( "render_select_fs", GL_FRAGMENT_SHADER );
+  setShaderSource(
+      "render_select_fs",
+
+      "#version 150 compatibility \n"
+      "\n"
+      "out vec4 gl_FragData[2]; \n"
+      "\n"
+      "void main() \n"
+      "{ \n"
+      "  gl_FragData[1] = vec4( 1.0, 1.0, 1.0, 1.0 ); \n"
+      "} \n"
+      );
+
+  if( !compileShader( "render_select_fs" ) )
+    return false;
+
+
+
+
+  ///////////////////////////
   // Default select shader
 
   // Vertex shader
@@ -842,9 +894,9 @@ bool GLShaderManager::_initShaders() {
     "  gl_FragData[0] = light_color;\n"
     "\n"
     "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-    "\n"
-    "  if( u_selected )\n"
-    "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
+//    "\n"
+//    "  if( u_selected )\n"
+//    "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
     "  gl_FragData[1] = sel_color;\n"
     "}\n"
   );

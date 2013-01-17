@@ -41,6 +41,7 @@ namespace GMlib {
 
 
   class Camera;
+  class Renderer;
 
 
   /*! \class ViewSet gmwindow.h <gmWindow>
@@ -88,7 +89,8 @@ namespace GMlib {
     void 								drawBorder();
 
   public:
-    void 								drawCamera(bool stereo=false);
+    void 								drawCamera(Renderer *r = 0x0);
+    Camera* 						operator[](int i);
 
   private:
     bool 								find(int x, int y, Camera*& cam);
@@ -98,7 +100,6 @@ namespace GMlib {
     void 								reset();
     void 								setBorderColor(const Color& bc);
 
-    Camera* 						operator[](int i);
 
   }; // END class ViewSet
 

@@ -122,12 +122,6 @@ namespace GMlib {
   }
 
 
-  void Camera::enableBlendSort( bool enable ) {
-
-    _blend_sort = enable;
-  }
-
-
   /*! SceneObject*	Camera::findSelectObject(int, int, int type_id)
    *	\brief Pending Documentation
    *
@@ -274,12 +268,6 @@ namespace GMlib {
     }
 
     _active = false;
-  }
-
-
-  bool Camera::isBlendSortEnabled() const {
-
-    return _blend_sort;
   }
 
 
@@ -603,7 +591,6 @@ namespace GMlib {
     setFrustumVisible();
     _type_id  = GM_SO_TYPE_CAMERA;
     _culling = true;
-    _blend_sort = true;
   }
 
 
