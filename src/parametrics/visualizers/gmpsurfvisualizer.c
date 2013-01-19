@@ -36,8 +36,8 @@
 #include <scene/light/gmlight.h>
 #include <scene/utils/gmmaterial.h>
 #include <opengl/gmopengl.h>
-#include <opengl/gmglprogram.h>
-#include <opengl/gmglshadermanager.h>
+#include <opengl/glsl/gmglprogram.h>
+#include <opengl/glsl/gmglshadermanager.h>
 
 // stl
 #include <set>
@@ -185,10 +185,12 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfVisualizer<T>::fillTriangleStripIBO(GLuint ibo_id, int m1, int m2) {
+  void PSurfVisualizer<T>::fillTriangleStripIBO(IndexBufferObject& ibo, int m1, int m2) {
+
 
     const int no_indices = (m1-1) * m2 * 2;
-    DVector<GLushort> indices(no_indices);
+    DVector<GLuint> indices(no_indices);
+
     for( int i = 0; i < m1-1; i++ ) {
 
       const int idx_i = i * m2 * 2;
@@ -200,9 +202,9 @@ namespace GMlib {
       }
     }
 
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, ibo_id );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, no_indices * sizeof(GLushort), indices.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
+    ibo.bind();
+    ibo.createBufferData( no_indices * sizeof(GLuint), indices.getPtr(), GL_STATIC_DRAW );
+    ibo.unbind();
   }
 
   template <typename T>
@@ -310,16 +312,11 @@ namespace GMlib {
 
   template <typename T>
   inline
-  int PSurfVisualizer<T>::getNoIndicesPerTriangleStrip( int /*m1*/, int m2 ) {
+  void PSurfVisualizer<T>::compTriangleStripProperties(int m1, int m2, GLuint &no_strips, GLuint &no_strip_indices, GLsizei &strip_size) {
 
-    return m2*2;
-  }
-
-  template <typename T>
-  inline
-  int PSurfVisualizer<T>::getNoTriangleStrips( int m1, int /*m2*/ ) {
-
-    return m1-1;
+    no_strips = m1 - 1;
+    no_strip_indices = m2 * 2;
+    strip_size = no_strip_indices * sizeof(GLuint);
   }
 
   template <typename T>

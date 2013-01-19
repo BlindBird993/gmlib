@@ -21,43 +21,42 @@
 **********************************************************************************/
 
 
-
-/*! \file gmtrianglefacetsdefaultvisualizer.h
- *
- *  Interface for the TriangleFacetsDefaultVisualizer class.
- */
-
-#ifndef __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-#define __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
+#ifndef __gmVERTEXBUFFEROBJECT_H__
+#define __gmVERTEXBUFFEROBJECT_H__
 
 
-#include "gmtrianglefacetsvisualizer.h"
-
-// gmlib
-#include <opengl/bufferobjects/gmvertexbufferobject.h>
-#include <opengl/bufferobjects/gmindexbufferobject.h>
+#include "../gmbufferobject.h"
 
 
 namespace GMlib {
 
-  template <typename T>
-  class TriangleFacetsDefaultVisualizer : public TriangleFacetsVisualizer<T> {
+
+  class VertexBufferObject : public BufferObject {
   public:
-    TriangleFacetsDefaultVisualizer();
-    ~TriangleFacetsDefaultVisualizer();
-    void          display();
-    virtual void  replot();
-    void          select();
+    explicit VertexBufferObject();
+    explicit VertexBufferObject( const std::string& name );
 
-  protected:
-    VertexBufferObject        _vbo;
-    TrianglesIBO              _ibo;
+    void    enable(GLuint index, GLint size, GLenum type, bool normalize, GLsizei stride, const GLvoid* offset );
+    void    disable( GLuint index );
 
-  }; // END class TriangleFacetsDefaultVisualizer
+  }; // END class VertexBufferObject
+
+
+  inline
+  void VertexBufferObject::enable(GLuint index, GLint size, GLenum type,
+                                  bool normalize, GLsizei stride, const GLvoid *offset) {
+
+    this->enableVertexArrayPointer( index, size, type, normalize, stride, offset );
+  }
+
+  inline
+  void VertexBufferObject::disable(GLuint index) {
+
+    this->disableVertexArrayPointer( index );
+  }
+
 
 } // END namespace GMlib
 
-// Include TriangleFacetsDefaultVisualizer class function implementations
-#include "gmtrianglefacetsdefaultvisualizer.c"
 
-#endif // __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
+#endif // __gmVERTEXBUFFEROBJECT_H__

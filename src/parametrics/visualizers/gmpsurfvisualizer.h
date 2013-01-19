@@ -35,7 +35,8 @@
 // gmlib
 #include <core/types/gmpoint.h>
 #include <core/containers/gmdmatrix.h>
-#include <opengl/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmindexbufferobject.h>
 #include <scene/visualizer/gmvisualizer.h>
 
 
@@ -66,12 +67,11 @@ namespace GMlib {
     static void   fillStandardVBO(VertexBufferObject &vbo,
                                   unsigned int &no_vertices,
                                   const DMatrix< DMatrix< Vector<T, 3> > >& p );
-    static void   fillTriangleStripIBO( GLuint ibo_id, int m1, int m2 );
+    static void   fillTriangleStripIBO(IndexBufferObject& ibo, int m1, int m2 );
     static void   fillTriangleStripTexVBO( GLuint vbo_id, int m1, int m2 );
     static void   fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< Vector<T, 3> >& normals );
     static void   fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1 = 0, int d2 = 0 );
-    static int    getNoIndicesPerTriangleStrip( int m1, int m2 );
-    static int    getNoTriangleStrips( int m1, int m2 );
+    static void   compTriangleStripProperties( int m1, int m2, GLuint& no_strips, GLuint& no_strip_indices, GLsizei& strip_size );
     static void   getTriangleStripDataInfo( const DMatrix< DMatrix< Vector<T, 3> > >& p, int& no_dp, int& no_strips, int& no_verts_per_strips );
 
 

@@ -21,42 +21,18 @@
 **********************************************************************************/
 
 
-#ifndef __gmVERTEXBUFFEROBJECT_H__
-#define __gmVERTEXBUFFEROBJECT_H__
 
-
-#include "gmbufferobject.h"
+#include "gmtexturebufferobject.h"
 
 
 namespace GMlib {
 
+  TextureBufferObject::TextureBufferObject()
+    : BufferObject( GL_TEXTURE_BUFFER ) { }
 
-  class VertexBufferObject : public BufferObject {
-  public:
-    explicit VertexBufferObject();
-    explicit VertexBufferObject( const std::string& name );
+  TextureBufferObject::TextureBufferObject(const std::string &name)
+    : BufferObject( std::string("tbo_") + name, GL_TEXTURE_BUFFER ) {}
 
-    void    enable(GLuint index, GLint size, GLenum type, bool normalize, GLsizei stride, const GLvoid* offset );
-    void    disable( GLuint index );
-
-  }; // END class VertexBufferObject
-
-
-  inline
-  void VertexBufferObject::enable(GLuint index, GLint size, GLenum type,
-                                  bool normalize, GLsizei stride, const GLvoid *offset) {
-
-    this->enableVertexArrayPointer( index, size, type, normalize, stride, offset );
-  }
-
-  inline
-  void VertexBufferObject::disable(GLuint index) {
-
-    this->disableVertexArrayPointer( index );
-  }
 
 
 } // END namespace GMlib
-
-
-#endif // __gmVERTEXBUFFEROBJECT_H__

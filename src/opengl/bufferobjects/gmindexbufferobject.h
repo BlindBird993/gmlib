@@ -25,7 +25,7 @@
 #define __gmINDEXBUFFEROBJECT_H__
 
 
-#include "gmbufferobject.h"
+#include "../gmbufferobject.h"
 
 
 namespace GMlib {
@@ -42,19 +42,11 @@ namespace GMlib {
     explicit IndexBufferObject();
     explicit IndexBufferObject( const std::string& name );
 
-    void              createBufferData( unsigned int no_indices, const GLvoid* data, GLenum usage );
-
-    virtual void      draw();
-    const GLenum&     getMode() const;
-    const GLenum&     getType() const;
-    const GLsizei&    getTypeSize() const;
-
-  private:
-    GLenum      _mode;
-    GLenum      _type;
-    GLsizei     _type_size;
-
   }; // END class IndexBufferObject
+
+
+
+
 
 
   class TrianglesIBO : public IndexBufferObject {
@@ -71,24 +63,6 @@ namespace GMlib {
     void      init();
 
   }; // END class TrianglesIBO
-
-
-  class TriangleStripIBO : public IndexBufferObject {
-  public:
-    explicit TriangleStripIBO();
-    explicit TriangleStripIBO( const std::string& name );
-
-    virtual void      draw();
-    virtual void      fill(int m1, int m2);
-
-  private:
-    int       _no_strips;
-    int       _no_indices_per_strip;
-    GLsizei   _strip_size;
-
-    void      init();
-
-  }; // END class TriangleStripIBO
 
 
 } // END namespace GMlib

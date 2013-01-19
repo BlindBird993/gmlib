@@ -34,6 +34,7 @@
 
 // GMlib
 #include <opengl/gmopengl.h>
+#include <opengl/gmframebufferobject.h>
 
 
 namespace GMlib {
@@ -54,15 +55,7 @@ namespace GMlib {
 
 
 
-
-    /* Rendering control */
-    virtual void      beginRendering() = 0;
-    virtual void      endRendering() = 0;
-    virtual void      prepareRendering() = 0;
-
-
     /* Rendring stuff */
-
     int               getBufferWidth() const;
     int               getBufferHeight() const;
     bool              isInitialized() const;
@@ -87,17 +80,32 @@ namespace GMlib {
 
   }; // END class Renderer
 
+
+
   class SingleObjectRenderer : public Renderer {
   public:
     SingleObjectRenderer( Scene* scene );
-  };
+  }; // END class SingleObjectRenderer
 
   class MultiObjectRenderer : public Renderer {
   public:
     MultiObjectRenderer( Scene* scene );
 
     virtual void      prepare( Array<SceneObject*>& objs, Camera* cam ) = 0;
-  };
+  }; // END class MultiObjectRenderer
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   class DisplayRenderer : public MultiObjectRenderer {
   public:
@@ -107,16 +115,43 @@ namespace GMlib {
     void      renderSelect(Array<SceneObject*>& objs, const Array<Camera*>& cameras );
 
     /* virtual from Renderer */
-    void      prepareRendering();
-    void      beginRendering();
-    void      endRendering();
-
     void      resize(int w, int h);
 
     /* virtual from MultiObjectRenderer */
     void      prepare(Array<SceneObject*>& objs, Camera *cam);
 
+
+//  private:
+
+    FramebufferObject   _fbo;
+    FramebufferObject   _fbo_color;
+    FramebufferObject   _fbo_select;
+
+    /* Textures */
+    GLuint              _rbo_color;
+    GLuint              _rbo_select;
+
+    /* Render buffer objects */
+    GLuint              _rbo_depth;
+
+
+
+
   }; // END class DisplayRenderer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   class SelectRenderer : public MultiObjectRenderer {
   public:
@@ -129,9 +164,6 @@ namespace GMlib {
 
 
     /* virtual from Renderer */
-    void                        prepareRendering();
-    void                        beginRendering();
-    void                        endRendering();
     void                        resize(int w, int h);
 
     /* virtual from MultiObjectRenderer */

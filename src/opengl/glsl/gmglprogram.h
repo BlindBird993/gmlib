@@ -31,7 +31,7 @@
 #define __gmGLPROGRAM_H__
 
 
-#include "gmopengl.h"
+#include "../gmopengl.h"
 #include "gmglshader.h"
 
 // gmlib

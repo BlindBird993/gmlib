@@ -27,11 +27,11 @@
 
 namespace GMlib {
 
-  VertexBufferObject::VertexBufferObject() :
-    BufferObject( GL_ARRAY_BUFFER ) {}
+  VertexBufferObject::VertexBufferObject()
+    : BufferObject( GL_ARRAY_BUFFER ) {}
 
-  VertexBufferObject::VertexBufferObject( const std::string& name ) :
-    BufferObject( name, GL_ARRAY_BUFFER ) {}
+  VertexBufferObject::VertexBufferObject( const std::string& name )
+    : BufferObject( std::string("vbo_") + name, GL_ARRAY_BUFFER ) {}
 
 
 } // END namespace GMlib

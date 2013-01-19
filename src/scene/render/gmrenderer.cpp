@@ -30,8 +30,8 @@
 #include "gmrenderer.h"
 
 // local
-#include "scene/gmfrustum.h"
-#include "scene/camera/gmcamera.h"
+#include "../gmfrustum.h"
+#include "../camera/gmcamera.h"
 
 // stl
 #include <cassert>
@@ -86,28 +86,77 @@ namespace GMlib {
 
 
 
+  SingleObjectRenderer::SingleObjectRenderer(Scene *scene) : Renderer(scene) {
+
+  }
+
+  MultiObjectRenderer::MultiObjectRenderer(Scene *scene) : Renderer(scene) {
+  }
 
 
 
 
-  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene) {
+
+
+
+
+  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject") {
+
+    glGenTextures( 1, &_rbo_color );
+    glGenTextures( 1, &_rbo_select );
+    glGenRenderbuffers( 1, &_rbo_depth );
+
+
+    glBindTexture( GL_TEXTURE_2D, _rbo_color ); {
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    } glBindTexture( GL_TEXTURE_2D, 0x0 );
+
+    glBindTexture( GL_TEXTURE_2D, _rbo_select ); {
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    } glBindTexture( GL_TEXTURE_2D, 0x0 );
+
+    // Bind render buffers to frame buffer.
+    _fbo.bind(); {
+
+      glBindRenderbuffer( GL_RENDERBUFFER, _rbo_depth );
+      glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _rbo_depth );
+      glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
+
+      glBindTexture( GL_TEXTURE_2D, _rbo_color );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _rbo_color, 0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
+
+      glBindTexture( GL_TEXTURE_2D, _rbo_select );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _rbo_select, 0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
+
+    } _fbo.unbind();
+
+    _fbo_color.bind(); {
+
+      glBindTexture( GL_TEXTURE_2D, _rbo_color );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _rbo_color, 0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
+    } _fbo_color.unbind();
+
+
+    _fbo_select.bind(); {
+
+      glBindTexture( GL_TEXTURE_2D, _rbo_select );
+      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _rbo_select, 0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
+    } _fbo_select.unbind();
+
 
     OGL::createRenderBuffer();
-  }
-
-  void DisplayRenderer::beginRendering() {
-
-    OGL::bindRenderBuffer();
-  }
-
-  void DisplayRenderer::endRendering() {
-
-    OGL::unbindRenderBuffer();
-  }
-
-  void DisplayRenderer::prepareRendering() {
-
-    OGL::clearRenderBuffer();
   }
 
   void DisplayRenderer::prepare(Array<SceneObject*>& objs, Camera *cam) {
@@ -134,10 +183,35 @@ namespace GMlib {
   void DisplayRenderer::render(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
 
     // Prepare renderer for rendering
-    prepareRendering();
+    {
+
+      _fbo.bind();
+      glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+      _fbo.unbind();
+
+      float cc[4];
+      glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
+      Color c = GMcolor::Black;
+      glClearColor( c );
+
+      _fbo_select.bind();
+      glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+      _fbo_select.unbind();
+
+      ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
+
+    } //OGL::clearRenderBuffer();
+
 
     // Tell renderer that rendering is begining
-    beginRendering(); {
+    {
+      _fbo.bind();
+
+      GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+      glDrawBuffers( 2, buffers );
+
+    } //OGL::bindRenderBuffer();
+    {
 
       for( int i = 0; i < cameras.getSize(); ++i ) {
 
@@ -153,16 +227,21 @@ namespace GMlib {
         cam->markAsInactive();
       }
     // Tell renderer that rendering is ending
-    } endRendering();
+    }
+    {
+      _fbo.unbind();
+
+    } //OGL::unbindRenderBuffer();
   }
 
   void DisplayRenderer::renderSelect(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
 
     // Prepare renderer for rendering
-    prepareRendering();
+    OGL::clearRenderBuffer();
 
     // Tell renderer that rendering is begining
-    beginRendering(); {
+    OGL::bindRenderBuffer();
+    {
 
       for( int i = 0; i < cameras.getSize(); ++i ) {
 
@@ -176,14 +255,31 @@ namespace GMlib {
 
         cam->markAsInactive();
       }
+
     // Tell renderer that rendering is ending
-    } endRendering();
+    }
+    OGL::unbindRenderBuffer();
   }
 
   void DisplayRenderer::resize(int w, int h) {
 
     setBufferSize( w, h );
-    OGL::setRenderBufferSize(w,h);
+
+    {
+
+      glBindRenderbuffer( GL_RENDERBUFFER, _rbo_depth );
+      glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, w, h );
+      glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
+
+      glBindTexture( GL_TEXTURE_2D, _rbo_color );
+      glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
+
+      glBindTexture( GL_TEXTURE_2D, _rbo_select );
+      glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+      glBindTexture( GL_TEXTURE_2D, 0x0 );
+
+    } OGL::setRenderBufferSize(w,h);
   }
 
 
@@ -240,33 +336,6 @@ namespace GMlib {
     return sel;
   }
 
-
-
-  void SelectRenderer::prepareRendering() {
-
-    OGL::clearSelectBuffer();
-  }
-
-  void SelectRenderer::beginRendering() {
-
-    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-
-    OGL::bindSelectBuffer();
-
-//    GLboolean depth_test_state;
-//    glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
-    glEnable( GL_DEPTH_TEST );
-
-  }
-
-  void SelectRenderer::endRendering() {
-
-//    if( !depth_test_state )
-      glDisable( GL_DEPTH_TEST );
-
-    OGL::unbindSelectBuffer();
-  }
-
   void SelectRenderer::prepare(Array<SceneObject *> &objs, Camera *cam){
 
 
@@ -288,12 +357,25 @@ namespace GMlib {
 
   void SelectRenderer::select(Array<SceneObject*>& objs, Camera *cam, int type_id) {
 
-    // Prepare for select rendering
-    prepareRendering();
 
     prepare( objs, cam );
 
-    beginRendering(); {
+
+
+
+    OGL::clearSelectBuffer();
+
+
+
+
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+
+    OGL::bindSelectBuffer();
+
+//    GLboolean depth_test_state;
+//    glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
+    glEnable( GL_DEPTH_TEST );
+    {
 
       // Compute frustum/frustum-matrix, set glViewport
       cam->setupDisplay();
@@ -308,20 +390,17 @@ namespace GMlib {
       select_prog.unbind();
 
 
-    } endRendering();
+    }
+//    if( !depth_test_state )
+      glDisable( GL_DEPTH_TEST );
+
+    OGL::unbindSelectBuffer();
 
   }
 
   void SelectRenderer::resize(int w, int h) {
 
     OGL::setSelectBufferSize( w, h );
-  }
-
-  SingleObjectRenderer::SingleObjectRenderer(Scene *scene) : Renderer(scene) {
-
-  }
-
-  MultiObjectRenderer::MultiObjectRenderer(Scene *scene) : Renderer(scene) {
   }
 
 

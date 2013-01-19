@@ -30,7 +30,7 @@
 
 #include "gmopengl.h"
 
-#include "gmglshadermanager.h"
+#include "glsl/gmglshadermanager.h"
 
 // stl
 #include <cassert>

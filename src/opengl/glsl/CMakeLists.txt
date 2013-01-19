@@ -1,4 +1,4 @@
-# ###############################################################################
+###############################################################################
 # #
 # # Copyright (C) 1994 Narvik University College
 # # Contact: GMlib Online Portal at http://episteme.hin.no
@@ -20,22 +20,16 @@
 # #
 # ###############################################################################
 
+
 addHeaders(
-  gmBufferObject
-  gmFramebufferObject
-  gmOpenGL
+  gmGLProgram
+  gmGLShaderManager
+  gmGLShader
 )
 
 addSources(
-  gmbufferobject.cpp
-  gmframebufferobject.cpp
-  gmopengl.cpp
+  gmglprogram.cpp
+  gmglshader.cpp
+  gmglshadermanager.cpp
 )
 
-addSubDirectory(bufferobjects)           # <bufferobject> sub-module
-addSubDirectory(glsl)                   # <glsl> sub-module
-
-moduleLinkLibrary( ${GLEW_LIBRARY} )
-moduleLinkLibrary( ${OPENGL_LIBRARIES} )
-
-addTestDir(test)

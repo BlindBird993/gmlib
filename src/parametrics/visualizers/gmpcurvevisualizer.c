@@ -30,8 +30,8 @@
 
 // gmlib
 #include <opengl/gmopengl.h>
-#include <opengl/gmglprogram.h>
-#include <opengl/gmglshadermanager.h>
+#include <opengl/glsl/gmglprogram.h>
+#include <opengl/glsl/gmglshadermanager.h>
 
 namespace GMlib {
 

@@ -2,7 +2,7 @@
 #define GMUNIFORMBUFFEROBJECT_H
 
 
-#include "gmbufferobject.h"
+#include "../gmbufferobject.h"
 
 namespace GMlib {
 

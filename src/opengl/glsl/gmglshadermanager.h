@@ -33,7 +33,7 @@
 
 
 
-#include "gmopengl.h"
+#include "../gmopengl.h"
 
 // stl
 #include <string>

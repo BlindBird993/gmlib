@@ -37,7 +37,7 @@
 // gmlib
 #include <core/types/gmpoint3d.h>
 #include <core/containers/gmdvector.h>
-#include <opengl/gmglprogram.h>
+#include <opengl/glsl/gmglprogram.h>
 
 //stl
 #include <iostream>

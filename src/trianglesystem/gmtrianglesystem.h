@@ -41,7 +41,7 @@
 #include <core/containers/gmarrayt.h>
 #include <core/containers/gmarraylx.h>
 #include <core/containers/gmdmatrix.h>
-#include <opengl/gmglprogram.h>
+#include <opengl/glsl/gmglprogram.h>
 #include <scene/gmdisplayobject.h>
 
 

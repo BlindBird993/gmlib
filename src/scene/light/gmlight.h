@@ -37,7 +37,7 @@
 // gmlib
 #include <core/utils/gmcolor.h>
 #include <opengl/gmopengl.h>
-#include <opengl/gmuniformbufferobject.h>
+#include <opengl/bufferobjects/gmuniformbufferobject.h>
 
 
 namespace GMlib{

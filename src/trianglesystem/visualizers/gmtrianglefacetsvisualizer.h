@@ -34,8 +34,8 @@
 
 // gmlib
 #include <scene/visualizer/gmvisualizer.h>
-#include <opengl/gmvertexbufferobject.h>
-#include <opengl/gmindexbufferobject.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmindexbufferobject.h>
 
 
 namespace GMlib {

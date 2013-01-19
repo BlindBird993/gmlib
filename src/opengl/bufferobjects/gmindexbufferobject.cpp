@@ -22,42 +22,54 @@
 
 
 
-/*! \file gmtrianglefacetsdefaultvisualizer.h
- *
- *  Interface for the TriangleFacetsDefaultVisualizer class.
- */
-
-#ifndef __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-#define __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-
-
-#include "gmtrianglefacetsvisualizer.h"
-
-// gmlib
-#include <opengl/bufferobjects/gmvertexbufferobject.h>
-#include <opengl/bufferobjects/gmindexbufferobject.h>
+#include "gmindexbufferobject.h"
 
 
 namespace GMlib {
 
-  template <typename T>
-  class TriangleFacetsDefaultVisualizer : public TriangleFacetsVisualizer<T> {
-  public:
-    TriangleFacetsDefaultVisualizer();
-    ~TriangleFacetsDefaultVisualizer();
-    void          display();
-    virtual void  replot();
-    void          select();
 
-  protected:
-    VertexBufferObject        _vbo;
-    TrianglesIBO              _ibo;
 
-  }; // END class TriangleFacetsDefaultVisualizer
+  IndexBufferObject::IndexBufferObject() : BufferObject( GL_ELEMENT_ARRAY_BUFFER ) {}
+
+  IndexBufferObject::IndexBufferObject(const std::string &name) :
+    BufferObject( std::string("ibo_") + name, GL_ELEMENT_ARRAY_BUFFER ) {
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  TrianglesIBO::TrianglesIBO() : IndexBufferObject() {
+
+    init();
+  }
+
+  TrianglesIBO::TrianglesIBO(const std::string &name) :
+    IndexBufferObject( name ) {
+
+    init();
+  }
+
+  void TrianglesIBO::draw() {
+
+    bind();
+//    glDrawElements( GL_TRIANGLES, _no_indices, getType(), (const GLvoid*)0x0 );
+    unbind();
+  }
+
+  void TrianglesIBO::init() {
+
+    _no_indices = 0;
+  }
+
+
+
 
 } // END namespace GMlib
-
-// Include TriangleFacetsDefaultVisualizer class function implementations
-#include "gmtrianglefacetsdefaultvisualizer.c"
-
-#endif // __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__

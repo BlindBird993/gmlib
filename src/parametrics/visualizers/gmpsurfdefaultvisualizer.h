@@ -34,8 +34,8 @@
 #include "gmpsurfvisualizer.h"
 
 // gmlib
-#include <opengl/gmvertexbufferobject.h>
-#include <opengl/gmindexbufferobject.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmindexbufferobject.h>
 
 
 
@@ -57,8 +57,14 @@ namespace GMlib {
 
   protected:
     VertexBufferObject        _vbo;
-    TriangleStripIBO          _ibo;
+    IndexBufferObject         _ibo;
     GLuint                    _nmap;
+
+    GLuint                    _no_strips;
+    GLuint                    _no_strip_indices;
+    GLsizei                   _strip_size;
+
+    void                      draw();
 
     unsigned int              _no_vertices;
 

@@ -36,7 +36,7 @@
 #include <core/types/gmpoint.h>
 #include <core/containers/gmdvector.h>
 #include <core/utils/gmcolor.h>
-#include <opengl/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
 #include <scene/visualizer/gmvisualizer.h>
 
 

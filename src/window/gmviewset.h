@@ -35,7 +35,7 @@
 // gmlib
 #include <core/containers/gmarray.h>
 #include <core/types/gmpoint2d.h>
-#include <opengl/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
 
 namespace GMlib {
 

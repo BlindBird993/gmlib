@@ -33,8 +33,8 @@
 
 // gmlib
 #include <opengl/gmopengl.h>
-#include <opengl/gmglprogram.h>
-#include <opengl/gmglshadermanager.h>
+#include <opengl/glsl/gmglprogram.h>
+#include <opengl/glsl/gmglshadermanager.h>
 #include <scene/gmscene.h>
 #include <scene/camera/gmcamera.h>
 #include <scene/light/gmlight.h>
@@ -93,14 +93,24 @@ namespace GMlib {
 
 
     _vbo.bind();
-    _vbo.enable( vert_loc,    3, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), (const GLvoid*)0x0 );
-    _vbo.enable( tex_loc,     2, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), (const GLvoid*)(3*sizeof(GLfloat)) );
+    _vbo.enable( vert_loc,    3, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
+    _vbo.enable( tex_loc,     2, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), reinterpret_cast<const GLvoid *>(3*sizeof(GLfloat)) );
 
-    _ibo.draw();
+    draw();
 
     _vbo.disable( vert_loc );
     _vbo.disable( tex_loc );
     _vbo.unbind();
+  }
+
+  template <typename T>
+  inline
+  void PSurfDefaultVisualizer<T>::draw() {
+
+    _ibo.bind();
+    for( int i = 0; i < _no_strips; ++i )
+      glDrawElements( GL_TRIANGLE_STRIP, _no_strip_indices, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid *>(i * _strip_size) );
+    _ibo.unbind();
   }
 
   template <typename T>
@@ -112,9 +122,12 @@ namespace GMlib {
     bool closed_u, bool closed_v
   ) {
 
-    PSurfVisualizer<T>::fillStandardVBO( _vbo, _no_vertices, p );
     PSurfVisualizer<T>::fillNMap( _nmap, p, closed_u, closed_v );
-    _ibo.fill( p.getDim1(), p.getDim2() );
+
+    PSurfVisualizer<T>::fillStandardVBO( _vbo, _no_vertices, p );
+
+    PSurfVisualizer<T>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2() );
+    PSurfVisualizer<T>::compTriangleStripProperties( p.getDim1(), p.getDim2(), _no_strips, _no_strip_indices, _strip_size );
   }
 
   template <typename T>
@@ -124,9 +137,9 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), (const GLvoid*)0x0 );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
 
-    _ibo.draw();
+    draw();
 
     _vbo.disable( vert_loc );
     _vbo.unbind();

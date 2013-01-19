@@ -33,7 +33,7 @@
 
 
 // local
-#include "scene/gmfrustum.h"
+#include "../gmfrustum.h"
 
 //gmlib
 #include <core/containers/gmarray.h>

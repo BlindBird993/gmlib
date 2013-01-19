@@ -31,9 +31,9 @@
 
 // local
 #include "gmrenderer.h"
-#include "scene/camera/gmcamera.h"
-#include "scene/gmscene.h"
-#include "scene/gmsceneobject.h"
+#include "../camera/gmcamera.h"
+#include "../gmscene.h"
+#include "../gmsceneobject.h"
 
 //gmlib
 #include <opengl/gmopengl.h>
@@ -167,10 +167,14 @@ namespace GMlib {
     prog.bind();
 
     prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
-    prog.setUniform( "u_tex", OGL::getRenderColorBuffer(), (GLenum)GL_TEXTURE0, 0 );
-    prog.setUniform( "u_tex_selected", OGL::getRenderSelectedBuffer(), (GLenum)GL_TEXTURE1, 1 );
-    prog.setUniform( "u_buf_w", float(OGL::getRenderBufferWidth()) );
-    prog.setUniform( "u_buf_h", float(OGL::getRenderBufferHeight()) );
+//    prog.setUniform( "u_tex", OGL::getRenderColorBuffer(), (GLenum)GL_TEXTURE0, 0 );
+//    prog.setUniform( "u_tex_selected", OGL::getRenderSelectedBuffer(), (GLenum)GL_TEXTURE1, 1 );
+//    prog.setUniform( "u_buf_w", float(OGL::getRenderBufferWidth()) );
+//    prog.setUniform( "u_buf_h", float(OGL::getRenderBufferHeight()) );
+    prog.setUniform( "u_tex", _disp->_rbo_color, (GLenum)GL_TEXTURE0, 0 );
+    prog.setUniform( "u_tex_selected", _disp->_rbo_select, (GLenum)GL_TEXTURE1, 1 );
+    prog.setUniform( "u_buf_w", float(_w) );
+    prog.setUniform( "u_buf_h", float(_h) );
     prog.setUniform( "u_select_color", _select_color );
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );

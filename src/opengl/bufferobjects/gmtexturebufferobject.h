@@ -1,3 +1,4 @@
+
 /**********************************************************************************
 **
 ** Copyright (C) 1994 Narvik University College
@@ -21,50 +22,25 @@
 **********************************************************************************/
 
 
-
-/*! \file gmptriangledefaultvisualizer.h
- *
- *  Interface for the PTriangleDefaultVisualizer class.
- */
+#ifndef __gmTEXTUREBUFFEROBJECT_H__
+#define __gmTEXTUREBUFFEROBJECT_H__
 
 
-#ifndef __gmPTRIANGLEDEFAULTVISUALIZER_H__
-#define __gmPTRIANGLEDEFAULTVISUALIZER_H__
-
-
-#include "gmptrianglevisualizer.h"
-
-// gmlib
-#include <opengl/bufferobjects/gmvertexbufferobject.h>
-#include <opengl/bufferobjects/gmindexbufferobject.h>
+#include "../gmbufferobject.h"
 
 
 namespace GMlib {
 
-  template <typename T>
-  class PTriangleDefaultVisualizer : public PTriangleVisualizer<T> {
+
+  class TextureBufferObject : public BufferObject {
   public:
-    PTriangleDefaultVisualizer();
-    virtual ~PTriangleDefaultVisualizer();
-    void            display();
-    virtual void    replot(
-      const DVector< DVector< Vector<T,3> > >& p,int m
-    );
-    void            select();
+    TextureBufferObject();
+    TextureBufferObject( const std::string& name );
 
-  protected:
-    VertexBufferObject    _vbo;
-    IndexBufferObject     _ibo;
+  }; // END class VertexBufferObject
 
-    int             _no_triangles;
-
-  }; // END class PTriangleDefaultVisualizer
 
 } // END namespace GMlib
 
-// Include PTriangleDefaultVisualizer class function implementations
-#include "gmptriangledefaultvisualizer.c"
 
-
-
-#endif // __gmPTRIANGLEDEFAULTVISUALIZER_H__
+#endif // __gmTEXTUREBUFFEROBJECT_H__

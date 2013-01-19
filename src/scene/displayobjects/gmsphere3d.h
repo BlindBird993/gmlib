@@ -35,7 +35,7 @@
 #include <core/types/gmpoint.h>
 #include <core/containers/gmarray.h>
 #include <opengl/gmopengl.h>
-#include <opengl/gmglprogram.h>
+#include <opengl/glsl/gmglprogram.h>
 
 
 namespace GMlib {

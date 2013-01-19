@@ -33,7 +33,7 @@
 
 // gmlib
 #include <core/utils/gmcolor.h>
-#include <opengl/gmglprogram.h>
+#include <opengl/glsl/gmglprogram.h>
 
 // stl
 #include <string>

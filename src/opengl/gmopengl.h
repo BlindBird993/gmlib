@@ -90,10 +90,6 @@
 
 namespace GMlib {
 
-  template <typename T>
-  class TriangleFacets;
-
-
 
   /***********
    * Constants
@@ -279,9 +275,9 @@ namespace GMlib {
     static bool             unbindBo( const std::string& name );
 
   private:
-    static std::map< std::string, OGL::BOInfo >    _bos;
+    static BOMap            _bos;
 
-    static bool                 _boExists( const std::string& name, bool exist );
+    static bool             _boExists( const std::string& name, bool exist );
 
 
 
