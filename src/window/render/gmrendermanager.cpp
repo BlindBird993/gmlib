@@ -43,48 +43,72 @@
 
 namespace GMlib {
 
-RenderManager::RenderManager(Scene *scene) {
+  RenderManager::RenderManager(Scene *scene) {
 
-  _scene = scene;
-  _disp = new DisplayRenderer( scene );
+    _scene = scene;
+    _disp = new DisplayRenderer( scene );
+    _select = new SelectRenderer( scene );
 
-  init();
-}
-
-void RenderManager::init() {
-
-  _disp->init();
-}
-
-void RenderManager::render(ViewSet& view_set) {
-
-  // Prepare renderer for rendering
-  _disp->prepareRendering();
-
-  for( int i = 0; i < view_set.getSize(); ++i ) {
-
-    Camera *cam = view_set[i];
-    cam->markAsActive();
-
-    _disp->prepare( cam );
-
-    // Tell renderer that rendering is begining
-    _disp->beginRendering(); {
-
-      // Rendering
-      _disp->render( cam );
-
-    // Tell renderer that rendering is ending
-    } _disp->endRendering();
-
-    cam->markAsInActive();
+    init();
   }
-}
 
-void RenderManager::resize(int w, int h) {
+  void RenderManager::init() {
 
-  _disp->resize(w,h);
-}
+    _disp->init();
+    _select->init();
+  }
+
+  void RenderManager::render(ViewSet& view_set) {
+
+    // Prepare renderer for rendering
+    _disp->prepareRendering();
+
+    for( int i = 0; i < view_set.getSize(); ++i ) {
+
+      Camera *cam = view_set[i];
+      cam->markAsActive();
+
+      _disp->prepare( cam );
+
+      // Tell renderer that rendering is begining
+      _disp->beginRendering(); {
+
+        // Rendering
+        _disp->render( cam );
+  //      _disp->renderSelect( cam );
+
+      // Tell renderer that rendering is ending
+      } _disp->endRendering();
+
+      cam->markAsInactive();
+    }
+  }
+
+  void RenderManager::select(Camera *cam, int type_id) {
+
+    // Prepare for select rendering
+    _select->prepareRendering();
+
+    _select->prepare(cam);
+
+    _select->beginRendering(); {
+
+      _select->select( cam, type_id );
+
+    }_select->endRendering();
+  }
+
+  void RenderManager::resize(int w, int h) {
+
+    _disp->resize(w,h);
+    _select->resize(w,h);
+  }
+
+  SceneObject *RenderManager::findObject(int x, int y) {
+
+    _select->findObject( x, y );
+
+  }
 
 
 

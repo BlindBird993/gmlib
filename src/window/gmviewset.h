@@ -89,7 +89,7 @@ namespace GMlib {
     void 								drawBorder();
 
   public:
-    void 								drawCamera(Renderer *r = 0x0);
+    void 								drawCamera();
     Camera* 						operator[](int i);
 
   private:

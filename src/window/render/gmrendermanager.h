@@ -48,19 +48,25 @@ namespace GMlib {
 
   class Renderer;
   class DisplayRenderer;
+  class SelectRenderer;
 
 
   class RenderManager {
   public:
     RenderManager( Scene* scene );
 
-    void        init();
-    void        render( ViewSet& view_set );
-    void        resize( int w, int h );
+    void            init();
+    void            render( ViewSet& view_set );
+    void            select(Camera* cam, int type_id );
+    void            resize( int w, int h );
+
+    SceneObject*    findObject( int x, int y );
+
 
   private:
     Scene                     *_scene;
     DisplayRenderer           *_disp;
+    SelectRenderer            *_select;
 
 //    Renderer                *_object_renderer;
 //    Renderer                *_select_renderer;

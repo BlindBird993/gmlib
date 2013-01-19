@@ -344,7 +344,7 @@ namespace GMlib {
 
     GLShaderManager::init();
 //    createRenderBuffer();
-    createSelectBuffer();
+//    createSelectBuffer();
     createStandardRepBOs();
     createLightBuffer();
   }

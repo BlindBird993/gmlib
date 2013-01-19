@@ -68,21 +68,21 @@ namespace GMlib {
     bool              isInitialized() const;
 
     virtual void      init() = 0;
-    virtual void      render( Camera* cam ) = 0;
+    virtual void      prepare( Camera* cam ) = 0;
     virtual void      resize( int w, int h ) = 0;
-
-    void              prepare( Camera* cam );
 
   protected:
     void              markAsInitialized();
     void              setBufferSize( int w, int h );
 
     /* internal cache */
-    mutable Array<SceneObject*>     _objs;
+    Array<SceneObject*>     _objs;
+
+    //
+    Scene             *_scene;
 
   private:
     /* Scene and sceneobject */
-    Scene             *_scene;
     bool              _stereo;
 
     /* Buffer */
@@ -98,24 +98,38 @@ namespace GMlib {
   public:
     DisplayRenderer( Scene* scene );
 
+    void      renderSelect( Camera* cam );
+
     /* virtual from Renderer */
     void      prepareRendering();
     void      beginRendering();
     void      endRendering();
 
-    /* */
     void      init();
+    void      prepare(Camera *cam);
     void      render( Camera* cam );
     void      resize(int w, int h);
 
-    public:
-
-    GLuint       _render_rbo_color;
-    GLuint       _render_rbo_selected;
-    GLuint       _render_rbo_depth;
-
-
   }; // END class DisplayRenderer
+
+  class SelectRenderer : public Renderer {
+  public:
+    SelectRenderer( Scene* scene );
+
+    SceneObject*                findObject( int x, int y );
+    Array<SceneObject*>         findObjects(int xmin, int ymin, int xmax, int ymax );
+
+    /* virtual from Renderer */
+    void                        prepareRendering();
+    void                        beginRendering();
+    void                        endRendering();
+
+    void                        init();
+    void                        prepare(Camera *cam);
+    void                        select(Camera* cam, int type_id );
+    void                        resize(int w, int h);
+
+  };
 
 } // END namespace GMlib
 

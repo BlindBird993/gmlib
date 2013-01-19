@@ -894,9 +894,9 @@ bool GLShaderManager::_initShaders() {
     "  gl_FragData[0] = light_color;\n"
     "\n"
     "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-//    "\n"
-//    "  if( u_selected )\n"
-//    "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
+    "\n"
+    "  if( u_selected )\n"
+    "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
     "  gl_FragData[1] = sel_color;\n"
     "}\n"
   );

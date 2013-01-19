@@ -185,7 +185,7 @@ namespace GMlib {
 
   public:
     void    markAsActive() { _active = true; }
-    void    markAsInActive() { _active = false; }
+    void    markAsInactive() { _active = false; }
 
     void    switchToLeftEye() {
 

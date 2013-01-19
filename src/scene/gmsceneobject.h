@@ -247,7 +247,6 @@ namespace GMlib{
 
     friend class Scene;
     friend class Camera;
-    friend class Renderer;
 
     bool                        _is_part;  //! true if the object is seen as a part of a larger object
 
@@ -287,7 +286,6 @@ namespace GMlib{
     Array<Visualizer*>          _visualizers;
     Visualizer                  *_std_rep_visu;
 
-    virtual void                culling( Array<SceneObject*>&, const Frustum& );
     virtual void                localDisplay();
     virtual void                localSelect();
     virtual void                localSimulate(double dt);
@@ -307,14 +305,15 @@ namespace GMlib{
     GLProgram                   _select_prog;
 
 
-    void                        displaySelection( Camera* cam );
-    void                        fillObj( Array<SceneObject*>& );
     int                         prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
     virtual void                prepareDisplay(const HqMatrix<float,3>& m);
-    void                        select(int what = -1, Camera* cam = 0x0 );
 
   public:
+    virtual void                culling( Array<SceneObject*>&, const Frustum& );
+    void                        fillObj( Array<SceneObject*>& );
     void                        display( Camera* cam );
+    void                        displaySelection( Camera* cam );
+    void                        select(int what = -1, Camera* cam = 0x0 );
 
 
 
@@ -435,8 +434,8 @@ namespace GMlib{
     if(!_active && _selected ) {
 
       const GLProgram render_select_prog("render_select");
-      render_select_prog.bind();
       render_select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
+      render_select_prog.bind();
 
       if( _collapsed )
         _std_rep_visu->select();

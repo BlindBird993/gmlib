@@ -135,6 +135,7 @@ namespace GMlib {
 
   public:
     virtual void            init();
+
   protected:
     void                    reshape(int w, int h);
     virtual void            swapBuffers();
@@ -158,6 +159,20 @@ namespace GMlib {
     GLuint          _vbo_quad_tex;
 
     void            updateLightUBO();
+
+  public:
+
+    SceneObject*            findSelectObject( Camera* cam, const Vector<int,2>& pos, int type_id ) const {
+
+      std::cout << "finding object" << std::endl;
+      return findSelectObject( cam, pos(0), pos(1), type_id );
+    }
+
+    SceneObject*            findSelectObject( Camera* cam, int x, int y, int type_id ) const {
+
+      _rm->select( cam, type_id );
+      return _rm->findObject( x, y );
+    }
 
 
 

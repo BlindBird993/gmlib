@@ -108,49 +108,11 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  void ViewSet::drawCamera(Renderer *r) {
+  void ViewSet::drawCamera() {
 
-    if( !r ) {
-
-//      drawBorder();
-      for( int i = 0; i < _cameras.getSize(); i++ )
-        _cameras[i]->go( false );
-    }
-    else {
-
-      // 1  Clear render buffer
-      //    Bind render buffer
-      r->beginRendering();
-
-      for( int i = 0; i < _cameras.getSize(); ++i ) {
-
-        Camera *cam = _cameras[i];
-
-        cam->markAsActive();
-
-        // Stereo
-        if( r->isStereoEnabled() ) {
-
-          cam->switchToRightEye();
-        }
-
-
-        // Display function from camera
-        r->prepare( cam );
-        r->render( cam );
-
-
-        if( r->isStereoEnabled() ) {
-          cam->switchToLeftEye();
-        }
-
-        cam->markAsInActive();
-
-      }
-
-      // 1  Unbind render buffer
-      r->endRendering();
-    }
+//    drawBorder();
+    for( int i = 0; i < _cameras.getSize(); i++ )
+      _cameras[i]->go( false );
   }
 
 
