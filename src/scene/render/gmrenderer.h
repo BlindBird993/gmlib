@@ -123,9 +123,9 @@ namespace GMlib {
 
 //  private:
 
-    FramebufferObject   _fbo;
-    FramebufferObject   _fbo_color;
-    FramebufferObject   _fbo_select;
+    GL::FramebufferObject   _fbo;
+    GL::FramebufferObject   _fbo_color;
+    GL::FramebufferObject   _fbo_select;
 
     /* Textures */
     GLuint              _rbo_color;

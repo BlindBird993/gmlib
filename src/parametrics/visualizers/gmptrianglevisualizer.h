@@ -72,8 +72,8 @@ namespace GMlib {
     void            set( SceneObject* obj );
 
 
-    static void     fillStandardVBO( VertexBufferObject vbo, const DVector< DVector< Vector<T,3> > >& p );
-    static void     fillTriangleIBO( IndexBufferObject ibo, int m );
+    static void     fillStandardVBO( GL::VertexBufferObject vbo, const DVector< DVector< Vector<T,3> > >& p );
+    static void     fillTriangleIBO( GL::IndexBufferObject ibo, int m );
     static void     fillTriangleStripIBO( GLuint ibo_id, int m );
     static int      getNoIndicesInTriangleStrip( int strip_idx );
     static int      getNoTriangleStrips( int m );

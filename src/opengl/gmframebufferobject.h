@@ -30,6 +30,8 @@
 
 namespace GMlib {
 
+namespace GL {
+
   class FramebufferObject {
   public:
     explicit FramebufferObject();
@@ -67,6 +69,7 @@ namespace GMlib {
     glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
   }
 
+} // END namespace GL
 
 } // END namespace GMlib
 

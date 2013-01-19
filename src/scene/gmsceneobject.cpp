@@ -581,7 +581,7 @@ namespace GMlib {
     _matrix = mat;
   }
 
-  void SceneObject::setSelectProgram(const GLProgram &prog) {
+  void SceneObject::setSelectProgram(const GL::GLProgram &prog) {
 
     _select_prog = prog;
   }

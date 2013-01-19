@@ -43,7 +43,7 @@ namespace GMlib {
   PTriangleVisualizer<T>::~PTriangleVisualizer() {}
 
   template <typename T>
-  void  PTriangleVisualizer<T>::fillStandardVBO(VertexBufferObject vbo, const DVector<DVector<Vector<T,3> > > &p) {
+  void  PTriangleVisualizer<T>::fillStandardVBO(GL::VertexBufferObject vbo, const DVector<DVector<Vector<T,3> > > &p) {
 
     int no_dp = p.getDim();
 
@@ -51,7 +51,7 @@ namespace GMlib {
     Vector3D<T> a, b;
     UnitVector<T,3> n;
 
-    DVector<GLVertexNormal> dp(no_dp);
+    DVector<GL::GLVertexNormal> dp(no_dp);
     for( int i = 0; i < p.getDim(); i++ ) {
 
 //      const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
@@ -69,12 +69,12 @@ namespace GMlib {
     }
 
     vbo.bind();
-    vbo.createBufferData( no_dp * sizeof( GLVertexNormal ), dp.getPtr(), GL_STATIC_DRAW );
+    vbo.createBufferData( no_dp * sizeof( GL::GLVertexNormal ), dp.getPtr(), GL_STATIC_DRAW );
     vbo.unbind();
   }
 
   template <typename T>
-  void  PTriangleVisualizer<T>::fillTriangleIBO(IndexBufferObject ibo, int m ) {
+  void  PTriangleVisualizer<T>::fillTriangleIBO(GL::IndexBufferObject ibo, int m ) {
 
     int no_indices = m*m*3;
 

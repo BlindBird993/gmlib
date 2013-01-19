@@ -33,7 +33,7 @@ namespace GMlib {
   template <typename T>
   PCurveContoursVisualizer<T>::PCurveContoursVisualizer() {
 
-    this->setRenderProgram( GLProgram("pcurve_contours" ) );
+    this->setRenderProgram( GL::GLProgram("pcurve_contours" ) );
 
     // Set default mapping
     _mapping = GM_PCURVE_CONTOURSVISUALIZER_X;
@@ -55,7 +55,7 @@ namespace GMlib {
   inline
   void PCurveContoursVisualizer<T>::display() {
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
     prog.setUniform( "u_selected", this->_obj->isSelected() );
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );

@@ -46,14 +46,14 @@ namespace GMlib {
     // GL States
     glLineWidth( this->_curve->getLineWidth() );
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
     prog.setUniform( "u_color", this->_obj->getColor() );
     prog.setUniform( "u_selected", this->_obj->isSelected() );
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertex), (const GLvoid*)0x0 );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
     _vbo.disable( vert_loc );
@@ -77,7 +77,7 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertex), (const GLvoid*)0x0 );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
 
     _vbo.disable( vert_loc );

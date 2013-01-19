@@ -336,10 +336,10 @@ namespace GMlib {
 //    else {
 
 //      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//      OGL::clearRenderBuffer();
-//      OGL::bindRenderBuffer();
+//      GL::OGL::clearRenderBuffer();
+//      GL::OGL::bindRenderBuffer();
 //      _view_set_stack.back().drawCamera();
-//      OGL::unbindRenderBuffer();
+//      GL::OGL::unbindRenderBuffer();
 
     RenderManager *rm = getRenderManager();
     rm->render( _view_set_stack.back().getCameras() );

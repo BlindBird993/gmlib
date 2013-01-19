@@ -34,7 +34,7 @@ namespace GMlib {
   template <typename T>
   PSurfContoursVisualizer<T>::PSurfContoursVisualizer() {
 
-    this->setRenderProgram( GLProgram("psurf_contours") );
+    this->setRenderProgram( GL::GLProgram("psurf_contours") );
 
     _mapping = GM_PSURF_CONTOURSVISUALIZER_X;
 
@@ -60,7 +60,7 @@ namespace GMlib {
   inline
   void PSurfContoursVisualizer<T>::display() {
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
     prog.setUniform( "u_selected", false );
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );

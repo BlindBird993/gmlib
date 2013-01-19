@@ -401,7 +401,7 @@ namespace GMlib {
 
 
 
-//    GLProgram prog( "color" );
+//    GL::GLProgram prog( "color" );
 //    GLBufferObject bo_qs( "std_rep_qs" );
 //    GLBufferObject bo_q( "std_rep_q" );
 

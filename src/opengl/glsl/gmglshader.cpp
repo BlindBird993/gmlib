@@ -35,69 +35,72 @@
 
 namespace GMlib {
 
+namespace GL {
 
+  GLShader::GLShader( const std::string& name, const std::string& source, GLenum type) {
 
-GLShader::GLShader( const std::string& name, const std::string& source, GLenum type) {
+    if( !GLShaderManager::isInitialized() )
+      return;
 
-  if( !GLShaderManager::isInitialized() )
-    return;
+    _name = name;
 
-  _name = name;
+    GLShaderManager::createShader( name, type );
+    GLShaderManager::setShaderSource( name, source );
+  }
 
-  GLShaderManager::createShader( name, type );
-  GLShaderManager::setShaderSource( name, source );
-}
+  GLShader::GLShader( const std::string& name, GLenum type ) {
 
-GLShader::GLShader( const std::string& name, GLenum type ) {
+    _name = name;
 
-  _name = name;
+    GLShaderManager::createShader( name, type );
+  }
 
-  GLShaderManager::createShader( name, type );
-}
+  GLShader::GLShader(const GLShader &copy) {
 
-GLShader::GLShader(const GLShader &copy) {
+    if( !GLShaderManager::isInitialized() )
+      return;
 
-  if( !GLShaderManager::isInitialized() )
-    return;
+    _name = copy._name;
+  }
 
-  _name = copy._name;
-}
+  GLShader::~GLShader() {}
 
-GLShader::~GLShader() {}
+  bool GLShader::compile() const {
 
-bool GLShader::compile() const {
+    return GLShaderManager::compileShader( _name );
+  }
 
-  return GLShaderManager::compileShader( _name );
-}
+  std::string GLShader::getInfoLog() const {
 
-std::string GLShader::getInfoLog() const {
+    return std::string();
+  }
 
-  return std::string();
-}
+  GLuint GLShader::getId() const {
 
-GLuint GLShader::getId() const {
+    return GLShaderManager::getShaderID( _name );
+  }
 
-  return GLShaderManager::getShaderID( _name );
-}
+  const std::string& GLShader::getName() const {
 
-const std::string& GLShader::getName() const {
+    return _name;
+  }
 
-  return _name;
-}
+  GLenum GLShader::getType() const {
 
-GLenum GLShader::getType() const {
+    return GLShaderManager::getShaderType( _name );
+  }
 
-  return GLShaderManager::getShaderType( _name );
-}
+  bool GLShader::isCompiled() const {
 
-bool GLShader::isCompiled() const {
+    return true;
+  }
 
-  return true;
-}
+  void GLShader::set( const std::string& source ) const {
 
-void GLShader::set( const std::string& source ) const {
+    GLShaderManager::setShaderSource( _name, source );
+  }
 
-  GLShaderManager::setShaderSource( _name, source );
-}
+} // END namespace GL
 
-}
+} // END namespace GMlib
+

@@ -52,9 +52,9 @@ namespace GMlib {
     void          set( SceneObject* obj );
 
 
-    static void   fillStandardVBO( VertexBufferObject& vbo,
+    static void   fillStandardVBO( GL::VertexBufferObject& vbo,
                                    const TriangleFacets<T>* tf );
-    static void   fillStandardIBO( TrianglesIBO& ibo,
+    static void   fillStandardIBO( GL::TrianglesIBO& ibo,
                                    const TriangleFacets<T>* tf );
 
   protected:

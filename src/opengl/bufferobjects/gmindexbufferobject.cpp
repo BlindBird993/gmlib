@@ -27,6 +27,7 @@
 
 namespace GMlib {
 
+namespace GL {
 
 
   IndexBufferObject::IndexBufferObject() : BufferObject( GL_ELEMENT_ARRAY_BUFFER ) {}
@@ -71,5 +72,6 @@ namespace GMlib {
 
 
 
+} // END namespace GL
 
 } // END namespace GMlib

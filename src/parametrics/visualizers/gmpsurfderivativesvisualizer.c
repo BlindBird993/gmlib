@@ -33,7 +33,7 @@ namespace GMlib {
   template <typename T>
   PSurfDerivativesVisualizer<T>::PSurfDerivativesVisualizer() {
 
-    this->setRenderProgram( GLProgram( "color" ) );
+    this->setRenderProgram( GL::GLProgram( "color" ) );
 
     _color = GMcolor::Green;
     _u = 1;
@@ -56,7 +56,7 @@ namespace GMlib {
   inline
   void PSurfDerivativesVisualizer<T>::display() {
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
     prog.setUniform( "u_color", _color );
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );

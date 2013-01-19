@@ -53,8 +53,8 @@ namespace GMlib {
     Sphere3D( const Sphere3D& copy );
     ~Sphere3D();
 
-    void        displayColored(const GLProgram& color_prog, bool selected = false );
-    void        displayShaded(const GLProgram& shade_prog, bool selected = false );
+    void        displayColored(const GL::GLProgram& color_prog, bool selected = false );
+    void        displayShaded(const GL::GLProgram& shade_prog, bool selected = false );
     void        replot(int m1, int m2);
     void        select();
 
@@ -125,7 +125,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Sphere3D::displayColored(const GLProgram& prog, bool selected ) {
+  void Sphere3D::displayColored(const GL::GLProgram& prog, bool selected ) {
 
     prog.setUniform( "u_selected", selected );
     prog.setUniform( "u_color", GMlib::GMcolor::Blue );
@@ -153,7 +153,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Sphere3D::displayShaded(const GLProgram& prog, bool selected ) {
+  void Sphere3D::displayShaded(const GL::GLProgram& prog, bool selected ) {
 
     prog.setUniform( "u_selected", selected );
     prog.setUniform( "u_color", GMlib::GMcolor::Blue );
@@ -189,7 +189,7 @@ namespace GMlib {
   inline
   void Sphere3D::select() {
 
-    GLuint vert_loc = GLProgram( "select" ).getAttributeLocation( "in_vertex" );
+    GLuint vert_loc = GL::GLProgram( "select" ).getAttributeLocation( "in_vertex" );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
     glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );

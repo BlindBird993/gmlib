@@ -27,6 +27,8 @@
 
 namespace GMlib {
 
+namespace GL {
+
   GLuintCMap FramebufferObject::_ids;
 
   FramebufferObject::FramebufferObject() {
@@ -80,5 +82,6 @@ namespace GMlib {
   }
 
 
+} // END namespace GL
 
 } // END namespace GMlib

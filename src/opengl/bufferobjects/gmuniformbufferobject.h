@@ -6,11 +6,15 @@
 
 namespace GMlib {
 
+namespace GL {
+
   class UniformBufferObject : public BufferObject {
   public:
     explicit UniformBufferObject();
     explicit UniformBufferObject( const std::string& name );
   };
+
+} // END namespace GL
 
 } // END namespace GMlib
 

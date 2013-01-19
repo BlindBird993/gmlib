@@ -90,6 +90,7 @@
 
 namespace GMlib {
 
+namespace GL {
 
   /***********
    * Constants
@@ -427,7 +428,7 @@ namespace GMlib {
 
 
 
-
+} // END namespace GL
 
 } // END namespace GMlib
 

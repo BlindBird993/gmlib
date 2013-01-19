@@ -62,12 +62,12 @@ namespace GMlib {
     return _display_mode;
   }
 
-  const GLProgram &Visualizer::getRenderProgram() const {
+  const GL::GLProgram &Visualizer::getRenderProgram() const {
 
     return _render_prog;
   }
 
-  const GLProgram& Visualizer::getSelectProgram() const {
+  const GL::GLProgram& Visualizer::getSelectProgram() const {
 
     return _obj->getSelectProgram();
   }
@@ -92,12 +92,12 @@ namespace GMlib {
     _display_mode = display_mode;
   }
 
-  void Visualizer::setRenderProgram(const GLProgram &prog) {
+  void Visualizer::setRenderProgram(const GL::GLProgram &prog) {
 
     _render_prog = prog;
   }
 
-  void Visualizer::setSelectProgram(const GLProgram &prog)
+  void Visualizer::setSelectProgram(const GL::GLProgram &prog)
   {
     _obj->setSelectProgram( prog );
   }

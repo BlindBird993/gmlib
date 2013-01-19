@@ -156,7 +156,7 @@ namespace GMlib {
     } _fbo_select.unbind();
 
 
-    OGL::createRenderBuffer();
+    GL::OGL::createRenderBuffer();
   }
 
   void DisplayRenderer::prepare(Array<SceneObject*>& objs, Camera *cam) {
@@ -192,7 +192,7 @@ namespace GMlib {
       float cc[4];
       glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
       Color c = GMcolor::Black;
-      glClearColor( c );
+      GL::glClearColor( c );
 
       _fbo_select.bind();
       glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -200,7 +200,7 @@ namespace GMlib {
 
       ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
 
-    } //OGL::clearRenderBuffer();
+    } //GL::OGL::clearRenderBuffer();
 
 
     // Tell renderer that rendering is begining
@@ -210,7 +210,7 @@ namespace GMlib {
       GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
       glDrawBuffers( 2, buffers );
 
-    } //OGL::bindRenderBuffer();
+    } //GL::OGL::bindRenderBuffer();
     {
 
       for( int i = 0; i < cameras.getSize(); ++i ) {
@@ -231,16 +231,16 @@ namespace GMlib {
     {
       _fbo.unbind();
 
-    } //OGL::unbindRenderBuffer();
+    } //GL::OGL::unbindRenderBuffer();
   }
 
   void DisplayRenderer::renderSelect(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
 
     // Prepare renderer for rendering
-    OGL::clearRenderBuffer();
+    GL::OGL::clearRenderBuffer();
 
     // Tell renderer that rendering is begining
-    OGL::bindRenderBuffer();
+    GL::OGL::bindRenderBuffer();
     {
 
       for( int i = 0; i < cameras.getSize(); ++i ) {
@@ -258,7 +258,7 @@ namespace GMlib {
 
     // Tell renderer that rendering is ending
     }
-    OGL::unbindRenderBuffer();
+    GL::OGL::unbindRenderBuffer();
   }
 
   void DisplayRenderer::resize(int w, int h) {
@@ -279,7 +279,7 @@ namespace GMlib {
       glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
       glBindTexture( GL_TEXTURE_2D, 0x0 );
 
-    } OGL::setRenderBufferSize(w,h);
+    } GL::OGL::setRenderBufferSize(w,h);
   }
 
 
@@ -291,15 +291,15 @@ namespace GMlib {
 
   SelectRenderer::SelectRenderer(Scene *scene) : MultiObjectRenderer( scene ) {
 
-    OGL::createSelectBuffer();
+    GL::OGL::createSelectBuffer();
   }
 
   SceneObject *SelectRenderer::findObject(int x, int y) {
 
     Color c;
-    OGL::bindSelectBuffer();
+    GL::OGL::bindSelectBuffer();
     glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
-    OGL::unbindSelectBuffer();
+    GL::OGL::unbindSelectBuffer();
 
     SceneObject *obj = _scene->find(c.get());
     if( obj )
@@ -316,9 +316,9 @@ namespace GMlib {
 
 
     Color* pixels = new Color[dx*dy];
-    OGL::bindSelectBuffer();
+    GL::OGL::bindSelectBuffer();
     glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
-    OGL::unbindSelectBuffer();
+    GL::OGL::unbindSelectBuffer();
 
 
     int ct = 0;
@@ -363,14 +363,14 @@ namespace GMlib {
 
 
 
-    OGL::clearSelectBuffer();
+    GL::OGL::clearSelectBuffer();
 
 
 
 
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
-    OGL::bindSelectBuffer();
+    GL::OGL::bindSelectBuffer();
 
 //    GLboolean depth_test_state;
 //    glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
@@ -380,7 +380,7 @@ namespace GMlib {
       // Compute frustum/frustum-matrix, set glViewport
       cam->setupDisplay();
 
-      const GLProgram select_prog("select");
+      const GL::GLProgram select_prog("select");
 
       select_prog.bind();
 
@@ -394,13 +394,13 @@ namespace GMlib {
 //    if( !depth_test_state )
       glDisable( GL_DEPTH_TEST );
 
-    OGL::unbindSelectBuffer();
+    GL::OGL::unbindSelectBuffer();
 
   }
 
   void SelectRenderer::resize(int w, int h) {
 
-    OGL::setSelectBufferSize( w, h );
+    GL::OGL::setSelectBufferSize( w, h );
   }
 
 

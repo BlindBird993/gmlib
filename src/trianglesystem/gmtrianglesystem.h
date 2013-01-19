@@ -147,8 +147,8 @@ namespace GMlib {
     int	                              _dlist_name;
     GLuint                            _vbo;
     GLuint                            _ibo;
-    GLProgram                         _dprog;
-    GLProgram                         _sprog;
+    GL::GLProgram                         _dprog;
+    GL::GLProgram                         _sprog;
 
     Array< TriangleFacetsVisualizer<T>* >      _tf_visualizers;
     TriangleFacetsDefaultVisualizer<T>         *_default_visualizer;

@@ -79,7 +79,7 @@ namespace GMlib{
     Color                 _default;
     Color                 _marked;
 
-//    GLProgram             _display;
+//    GL::GLProgram             _display;
 
     // Cube buffer objects
 //    BufferObject          _bo_cube;

@@ -45,16 +45,16 @@ namespace GMlib {
 
     _data = NULL;
     _texture_id = 0;
-    _texture_dimension = GM_TEXTURE_2D;
-    _texture_gen_mode = GM_OBJECT_LINEAR;
+    _texture_dimension = GL::GM_TEXTURE_2D;
+    _texture_gen_mode = GL::GM_OBJECT_LINEAR;
   }
 
 
   Texture::Texture( unsigned char* data, unsigned int width, unsigned int height, Texture::DEPTH depth, bool gen_texture ) {
 
     _texture_id = 0;
-    _texture_dimension = GM_TEXTURE_2D;
-    _texture_gen_mode = GM_OBJECT_LINEAR;
+    _texture_dimension = GL::GM_TEXTURE_2D;
+    _texture_gen_mode = GL::GM_OBJECT_LINEAR;
     set( data, width, height, depth, gen_texture );
   }
 
@@ -106,30 +106,30 @@ namespace GMlib {
 
 
     // S/T/R Wrap Policy
-    if( _texture_dimension == GM_TEXTURE_1D || _texture_dimension == GM_TEXTURE_2D )
+    if( _texture_dimension == GL::GM_TEXTURE_1D || _texture_dimension == GL::GM_TEXTURE_2D )
       glTexParameteri( _texture_dimension, GL_TEXTURE_WRAP_S, GL_REPEAT );
 
-    if( _texture_dimension == GM_TEXTURE_2D)
+    if( _texture_dimension == GL::GM_TEXTURE_2D)
       glTexParameteri( _texture_dimension, GL_TEXTURE_WRAP_T, GL_REPEAT );
 
 
     // S/T/R Texture Gen Mode
-    if( _texture_dimension == GM_TEXTURE_1D || _texture_dimension == GM_TEXTURE_2D )
+    if( _texture_dimension == GL::GM_TEXTURE_1D || _texture_dimension == GL::GM_TEXTURE_2D )
       glTexGeni( GL_S, GL_TEXTURE_GEN_MODE, _texture_gen_mode );
 
-    if( _texture_dimension == GM_TEXTURE_2D )
+    if( _texture_dimension == GL::GM_TEXTURE_2D )
       glTexGeni( GL_T, GL_TEXTURE_GEN_MODE, _texture_gen_mode );
 
 
     // Texture Coordinate Generation
-    if( _texture_dimension == GM_TEXTURE_1D ) {
+    if( _texture_dimension == GL::GM_TEXTURE_1D ) {
 
       if ( _depth == GM_TEXTURE_DEPTH_24 )
         gluBuild1DMipmaps( _texture_dimension, 3, _width, GL_RGB, GL_UNSIGNED_BYTE, _data );
       else if( _depth == GM_TEXTURE_DEPTH_32 )
         gluBuild1DMipmaps( _texture_dimension, 3, _width, GL_RGBA, GL_UNSIGNED_BYTE, _data );
     }
-    else if ( _texture_dimension == GM_TEXTURE_2D ) {
+    else if ( _texture_dimension == GL::GM_TEXTURE_2D ) {
 
       if ( _depth == GM_TEXTURE_DEPTH_24 )
         gluBuild2DMipmaps( _texture_dimension, 3, _width, _height, GL_RGB, GL_UNSIGNED_BYTE, _data );

@@ -162,15 +162,15 @@ namespace GMlib {
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glDisable(GL_DEPTH_TEST);
 
-    GLProgram prog( "render" );
+    GL::GLProgram prog( "render" );
 
     prog.bind();
 
     prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
-//    prog.setUniform( "u_tex", OGL::getRenderColorBuffer(), (GLenum)GL_TEXTURE0, 0 );
-//    prog.setUniform( "u_tex_selected", OGL::getRenderSelectedBuffer(), (GLenum)GL_TEXTURE1, 1 );
-//    prog.setUniform( "u_buf_w", float(OGL::getRenderBufferWidth()) );
-//    prog.setUniform( "u_buf_h", float(OGL::getRenderBufferHeight()) );
+//    prog.setUniform( "u_tex", GL::OGL::getRenderColorBuffer(), (GLenum)GL_TEXTURE0, 0 );
+//    prog.setUniform( "u_tex_selected", GL::OGL::getRenderSelectedBuffer(), (GLenum)GL_TEXTURE1, 1 );
+//    prog.setUniform( "u_buf_w", float(GL::OGL::getRenderBufferWidth()) );
+//    prog.setUniform( "u_buf_h", float(GL::OGL::getRenderBufferHeight()) );
     prog.setUniform( "u_tex", _disp->_rbo_color, (GLenum)GL_TEXTURE0, 0 );
     prog.setUniform( "u_tex_selected", _disp->_rbo_select, (GLenum)GL_TEXTURE1, 1 );
     prog.setUniform( "u_buf_w", float(_w) );
@@ -198,7 +198,7 @@ namespace GMlib {
     prog.unbind();
 
 
-    GLProgram color_prog( "color" );
+    GL::GLProgram color_prog( "color" );
     color_prog.bind();
 
     color_prog.setUniform( "u_mvpmat", ortho_mat, 1, true );

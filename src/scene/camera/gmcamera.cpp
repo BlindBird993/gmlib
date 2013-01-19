@@ -137,9 +137,9 @@ namespace GMlib {
 //    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 //    Color c;
 //    select(type_id);
-//    OGL::bindSelectBuffer();
+//    GL::OGL::bindSelectBuffer();
 //    glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
-//    OGL::unbindSelectBuffer();
+//    GL::OGL::unbindSelectBuffer();
 //    return find(c.get());
 //  }
 
@@ -165,9 +165,9 @@ namespace GMlib {
 //    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 //    Color* pixels=new Color[dx*dy];
 //    DisplayObject::select(type_id, this );
-//    OGL::bindSelectBuffer();
+//    GL::OGL::bindSelectBuffer();
 //    glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
-//    OGL::unbindSelectBuffer();
+//    GL::OGL::unbindSelectBuffer();
 
 //    int ct=0;
 //    Color c;
@@ -605,8 +605,8 @@ namespace GMlib {
 
 
 //    std::cout << "Camera::select()" << std::endl;
-//    OGL::clearSelectBuffer();
-//    OGL::bindSelectBuffer();
+//    GL::OGL::clearSelectBuffer();
+//    GL::OGL::bindSelectBuffer();
 
 //    GLboolean depth_test_state;
 //    glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
@@ -614,7 +614,7 @@ namespace GMlib {
 
 //    glViewport(_x,_y,_w,_h);
 
-//    const GLProgram &select_prog = getSelectProgram();
+//    const GL::GLProgram &select_prog = getSelectProgram();
 //    select_prog.bind();
 //    _scene->select(type_id, this);
 //    select_prog.unbind();
@@ -622,7 +622,7 @@ namespace GMlib {
 //    if( !depth_test_state )
 //      glDisable( GL_DEPTH_TEST );
 
-//    OGL::unbindSelectBuffer();
+//    GL::OGL::unbindSelectBuffer();
 //  }
 
 

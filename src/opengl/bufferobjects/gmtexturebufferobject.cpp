@@ -27,6 +27,8 @@
 
 namespace GMlib {
 
+namespace GL {
+
   TextureBufferObject::TextureBufferObject()
     : BufferObject( GL_TEXTURE_BUFFER ) { }
 
@@ -34,5 +36,6 @@ namespace GMlib {
     : BufferObject( std::string("tbo_") + name, GL_TEXTURE_BUFFER ) {}
 
 
+} // END namespace GL
 
 } // END namespace GMlib

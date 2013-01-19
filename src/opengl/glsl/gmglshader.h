@@ -40,6 +40,8 @@
 
 namespace GMlib {
 
+namespace GL {
+
   class GLShader {
   public:
     GLShader( const std::string& name, GLenum type );
@@ -59,6 +61,8 @@ namespace GMlib {
     std::string           _name;
 
   }; // END class GLShader
+
+} // END namespace GL
 
 } // END namespace GMlib
 

@@ -40,10 +40,10 @@ namespace GMlib {
 
   template <typename T>
   void TriangleFacetsVisualizer<T>::fillStandardVBO(
-      VertexBufferObject &vbo, const TriangleFacets<T> *tf) {
+      GL::VertexBufferObject &vbo, const TriangleFacets<T> *tf) {
 
     int no_vertices = tf->getSize();
-    DVector<GLVertexNormal> vertices(no_vertices);
+    DVector<GL::GLVertexNormal> vertices(no_vertices);
 
     for( int i = 0; i < no_vertices; i++ ) {
 
@@ -61,13 +61,13 @@ namespace GMlib {
     }
 
     vbo.bind();
-    vbo.createBufferData( no_vertices * sizeof(GLVertexNormal), vertices.getPtr(), GL_STATIC_DRAW );
+    vbo.createBufferData( no_vertices * sizeof(GL::GLVertexNormal), vertices.getPtr(), GL_STATIC_DRAW );
     vbo.unbind();
   }
 
   template <typename T>
   void TriangleFacetsVisualizer<T>::fillStandardIBO(
-      TrianglesIBO& ibo, const TriangleFacets<T>* tf ) {
+      GL::TrianglesIBO& ibo, const TriangleFacets<T>* tf ) {
 
     int no_indices = tf->getNoTriangles() * 3;
 

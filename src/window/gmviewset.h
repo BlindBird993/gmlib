@@ -51,7 +51,7 @@ namespace GMlib {
    */
   class ViewSet {
     struct GLBorder {
-      GLViewVertex    v[4]; // corners
+      GL::GLViewVertex    v[4]; // corners
     }; // END struct GLBorder
 
   public:
@@ -71,7 +71,7 @@ namespace GMlib {
   protected:
     void                prepareGraphics();
 
-    VertexBufferObject        _vbo;
+    GL::VertexBufferObject        _vbo;
     int                       _no_borders;
 
   private:
@@ -168,7 +168,7 @@ namespace GMlib {
     if( _no_borders > 0 ) {
 
 
-      GLProgram prog( "color" );
+      GL::GLProgram prog( "color" );
 
       prog.setUniform( "u_color", _border_color );
 

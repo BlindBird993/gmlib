@@ -27,6 +27,8 @@
 
 namespace GMlib {
 
+namespace GL {
+
   GLuintCMap BufferObject::_ids;
 
   BufferObject::BufferObject( GLenum target ) {
@@ -129,5 +131,6 @@ namespace GMlib {
     glUnmapBuffer( _target );
   }
 
+} // END namesapce GL
 
 } // END namespace GMlib

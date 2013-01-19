@@ -47,7 +47,7 @@ namespace GMlib {
 
     this->glSetDisplayMode();
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
 
     prog.setUniform( "u_color", this->_obj->getColor() );
     prog.setUniform( "u_selected", this->_obj->isSelected() );
@@ -55,7 +55,7 @@ namespace GMlib {
 
     // Light data
     GLuint light_u_block_idx =  prog.getUniformBlockIndex( "Lights" );
-    glBindBufferBase( GL_UNIFORM_BUFFER, 0, OGL::getLightBuffer() );
+    glBindBufferBase( GL_UNIFORM_BUFFER, 0, GL::OGL::getLightBuffer() );
     glUniformBlockBinding( prog.getId(), light_u_block_idx, 0 );
 
     // Get Material Data
@@ -69,8 +69,8 @@ namespace GMlib {
     GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GLVertexNormal), (const GLvoid*)0x0 );
-    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GLVertexNormal), (const GLvoid*)sizeof(GLVertex) );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
+    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(sizeof(GL::GLVertex) ) );
 
     _ibo.bind();
     glDrawElements( GL_TRIANGLES, _no_triangles * 3, GL_UNSIGNED_INT, (GLvoid*)0x0 );
@@ -101,7 +101,7 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertexNormal), (const GLvoid*)0x0 );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
 
     _ibo.bind();
     glDrawElements( GL_TRIANGLES, _no_triangles * 3, GL_UNSIGNED_INT, (GLvoid*)0x0 );

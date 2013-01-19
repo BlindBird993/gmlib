@@ -31,6 +31,8 @@
 
 namespace GMlib {
 
+namespace GL {
+
 
   class TextureBufferObject : public BufferObject {
   public:
@@ -39,6 +41,7 @@ namespace GMlib {
 
   }; // END class VertexBufferObject
 
+} // END namespace GL
 
 } // END namespace GMlib
 

@@ -59,15 +59,15 @@ namespace GMlib {
 
     virtual void          display();
     DISPLAY_MODE          getDisplayMode() const;
-    const GLProgram&      getRenderProgram() const;
-    const GLProgram&      getSelectProgram() const;
+    const GL::GLProgram&      getRenderProgram() const;
+    const GL::GLProgram&      getSelectProgram() const;
     void                  glSetDisplayMode() const;
 
     virtual void          select();
     virtual void          set( SceneObject* obj );
     void                  setDisplayMode( DISPLAY_MODE display_mode );
-    void                  setRenderProgram( const GLProgram& prog );
-    void                  setSelectProgram( const GLProgram& prog );
+    void                  setRenderProgram( const GL::GLProgram& prog );
+    void                  setSelectProgram( const GL::GLProgram& prog );
 
     virtual void          simulate( double dt );
     void                  toggleDisplayMode();
@@ -80,7 +80,7 @@ namespace GMlib {
 
     DISPLAY_MODE          _display_mode;
 
-    GLProgram             _render_prog;
+    GL::GLProgram             _render_prog;
 
   private:
     void                  _init();

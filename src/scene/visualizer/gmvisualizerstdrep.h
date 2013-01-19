@@ -53,9 +53,9 @@ namespace GMlib {
   protected:
 
     // Cube buffer objects
-    BufferObject    _bo_cube;
-    BufferObject    _bo_cube_indices;
-    BufferObject    _bo_cube_frame_indices;
+    GL::BufferObject    _bo_cube;
+    GL::BufferObject    _bo_cube_indices;
+    GL::BufferObject    _bo_cube_frame_indices;
 
   }; // END class VisualizerStdRep
 

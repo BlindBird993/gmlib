@@ -45,6 +45,8 @@
 
 namespace GMlib {
 
+namespace GL {
+
   class GLProgram {
   public:
     GLProgram( const std::string& name );
@@ -84,6 +86,8 @@ namespace GMlib {
     GLuint                    _id;
 
   }; // END class GLProgram
+
+} // END namespace GL
 
 } // END namespace GMlib
 

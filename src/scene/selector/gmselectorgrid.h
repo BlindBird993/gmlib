@@ -58,7 +58,7 @@ namespace GMlib {
     void setSelectors( DMatrix< Vector<T,n> >& selectors );
 
   protected:
-    GLProgram   _prog;
+    GL::GLProgram   _prog;
     GLuint      _vbo;
     GLuint      _ibo;
 

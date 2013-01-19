@@ -50,8 +50,8 @@ namespace GMlib {
     void          select();
 
   protected:
-    VertexBufferObject        _vbo;
-    TrianglesIBO              _ibo;
+    GL::VertexBufferObject        _vbo;
+    GL::TrianglesIBO              _ibo;
 
   }; // END class TriangleFacetsDefaultVisualizer
 

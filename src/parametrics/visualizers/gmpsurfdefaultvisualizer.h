@@ -56,8 +56,8 @@ namespace GMlib {
     void          select();
 
   protected:
-    VertexBufferObject        _vbo;
-    IndexBufferObject         _ibo;
+    GL::VertexBufferObject        _vbo;
+    GL::IndexBufferObject         _ibo;
     GLuint                    _nmap;
 
     GLuint                    _no_strips;

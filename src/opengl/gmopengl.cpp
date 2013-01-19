@@ -40,6 +40,7 @@
 
 namespace GMlib {
 
+namespace GL {
 
   std::string OGL::_log;
   OGL::FBOMap   OGL::_fbos;
@@ -831,5 +832,6 @@ namespace GMlib {
     unbindLightBuffer();
   }
 
+} // END namespace GL
 
 } // END namespace GMlib

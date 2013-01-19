@@ -33,7 +33,7 @@ namespace GMlib {
   template <typename T>
   SelectorGridVisualizer<T>::SelectorGridVisualizer() {
 
-    setRenderProgram( GLProgram("color") );
+    setRenderProgram( GL::GLProgram("color") );
 
     _no_indices = 0;
 
@@ -71,7 +71,7 @@ namespace GMlib {
   inline
   void SelectorGridVisualizer<T>::display() {
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
     prog.setUniform( "u_color", GMcolor::LightGreen );
     prog.setUniform( "u_selected", false );
 

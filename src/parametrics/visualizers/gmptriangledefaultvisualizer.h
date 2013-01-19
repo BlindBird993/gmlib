@@ -53,8 +53,8 @@ namespace GMlib {
     void            select();
 
   protected:
-    VertexBufferObject    _vbo;
-    IndexBufferObject     _ibo;
+    GL::VertexBufferObject    _vbo;
+    GL::IndexBufferObject     _ibo;
 
     int             _no_triangles;
 

@@ -106,7 +106,7 @@ namespace GMlib {
       delete light;
     }
 
-    OGL::cleanUp();
+    GL::OGL::cleanUp();
   }
 
 
@@ -309,9 +309,9 @@ namespace GMlib {
 
   void GMWindow::updateLightUBO() {
 
-    GLVector<4,GLuint> header;
+    GL::GLVector<4,GLuint> header;
     std::vector<unsigned int> light_ids;
-    std::vector<GLLight> lights;
+    std::vector<GL::GLLight> lights;
 
     Array< SpotLight* > spot_lights;
     Array< PointLight* > point_lights;
@@ -340,7 +340,7 @@ namespace GMlib {
     // Add data to header array
     if( _sun ) {
 
-      GLLight sun;
+      GL::GLLight sun;
 
       sun.amb.p[0] = _sun->getGlobalAmbient().getRedC();
       sun.amb.p[1] = _sun->getGlobalAmbient().getGreenC();
@@ -359,7 +359,7 @@ namespace GMlib {
 
       PointLight *light = point_lights[i];
 
-      GLLight pl;
+      GL::GLLight pl;
       pl.amb.p[0] = light->getAmbient().getRedC();
       pl.amb.p[1] = light->getAmbient().getGreenC();
       pl.amb.p[2] = light->getAmbient().getBlueC();
@@ -392,7 +392,7 @@ namespace GMlib {
 
       SpotLight *light = spot_lights[i];
 
-      GLLight sl;
+      GL::GLLight sl;
       sl.amb.p[0] = light->getAmbient().getRedC();
       sl.amb.p[1] = light->getAmbient().getGreenC();
       sl.amb.p[2] = light->getAmbient().getBlueC();
@@ -424,7 +424,7 @@ namespace GMlib {
       light_ids.push_back(light->getLightName());
     }
 
-    OGL::resetLightBuffer( header, light_ids, lights );
+    GL::OGL::resetLightBuffer( header, light_ids, lights );
 
     std::cout << "Updating light UBO!" << std::endl;
     std::cout << "  - Sun(s):             " << header.p[1] << std::endl;

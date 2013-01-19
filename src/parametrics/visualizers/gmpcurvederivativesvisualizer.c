@@ -51,7 +51,7 @@ namespace GMlib {
   inline
   void PCurveDerivativesVisualizer<T>::display() {
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
     prog.setUniform( "u_color", _color );
     prog.setUniform( "u_selected", this->_obj->isSelected() );
 

@@ -202,7 +202,7 @@ namespace GMlib{
     SceneObject*                getParent() const;
     const HqMatrix<float,3>&    getProjectionMatrix( const Camera* cam ) const;
     Scene*                      getScene() const;
-    const GLProgram&            getSelectProgram() const;
+    const GL::GLProgram&            getSelectProgram() const;
     bool                        getSelected() const;
     Sphere<float,3>             getSurroundingSphere() const;
     Sphere<float,3>             getSurroundingSphereClean() const;
@@ -235,7 +235,7 @@ namespace GMlib{
     void                        setOpaque( bool o );
     void                        setParent(SceneObject* obj);
     virtual void                setSelected(bool s);
-    void                        setSelectProgram( const GLProgram& prog );
+    void                        setSelectProgram( const GL::GLProgram& prog );
     virtual void                setVisible( bool v, int prop = 0 );
     void                        setStandardRepVisualizer( Visualizer* visu = 0x0 );
     virtual bool                toggleCollapsed();
@@ -300,7 +300,7 @@ namespace GMlib{
     unsigned int                _name;		//! Unic name for this object, used for selecting
     Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
 
-    GLProgram                   _select_prog;
+    GL::GLProgram                   _select_prog;
 
 
     int                         prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
@@ -397,7 +397,7 @@ namespace GMlib{
 
       if(_collapsed) {
 
-        const GLProgram &prog = _std_rep_visu->getRenderProgram();
+        const GL::GLProgram &prog = _std_rep_visu->getRenderProgram();
         prog.bind();
         prog.setUniform( "u_mvmat", mvmat, 1, true );
         prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
@@ -408,7 +408,7 @@ namespace GMlib{
 
         for( int i = 0; i < _visualizers.getSize(); ++i ) {
 
-          const GLProgram &prog = _visualizers[i]->getRenderProgram();
+          const GL::GLProgram &prog = _visualizers[i]->getRenderProgram();
           prog.bind();
           prog.setUniform( "u_mvmat", mvmat, 1, true );
           prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
@@ -431,7 +431,7 @@ namespace GMlib{
 
     if(!_active && _selected ) {
 
-      const GLProgram render_select_prog("render_select");
+      const GL::GLProgram render_select_prog("render_select");
       render_select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
       render_select_prog.bind();
 
@@ -457,7 +457,7 @@ namespace GMlib{
 
     if( !_active && ( what == 0 || what == _type_id || ( what < 0 && what + _type_id != 0 ) ) ) {
 
-      const GLProgram &select_prog = getSelectProgram();
+      const GL::GLProgram &select_prog = getSelectProgram();
       select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
       select_prog.setUniform( "u_color", Color(getVirtualName()) );
 
@@ -593,7 +593,7 @@ namespace GMlib{
   }
 
   inline
-  const GLProgram &SceneObject::getSelectProgram() const {
+  const GL::GLProgram &SceneObject::getSelectProgram() const {
 
     return _select_prog;
   }

@@ -50,7 +50,7 @@ namespace GMlib {
   PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _vbo(), _ibo(), _no_vertices(0) {
 
     glGenTextures( 1, &_nmap );
-    this->setRenderProgram( GLProgram("psurf_phong_nmap") );
+    this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
   }
 
   template <typename T>
@@ -65,7 +65,7 @@ namespace GMlib {
 
     this->glSetDisplayMode();
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
 
     // States
     prog.setUniform( "u_selected", this->_obj->isSelected() );
@@ -76,7 +76,7 @@ namespace GMlib {
 
     // Light data
     GLuint light_u_block_idx =  prog.getUniformBlockIndex( "Lights" );
-    glBindBufferBase( GL_UNIFORM_BUFFER, 0, OGL::getLightBuffer() );
+    glBindBufferBase( GL_UNIFORM_BUFFER, 0, GL::OGL::getLightBuffer() );
     glUniformBlockBinding( prog.getId(), light_u_block_idx, 0 );
 
     // Material data
@@ -93,8 +93,8 @@ namespace GMlib {
 
 
     _vbo.bind();
-    _vbo.enable( vert_loc,    3, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
-    _vbo.enable( tex_loc,     2, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), reinterpret_cast<const GLvoid *>(3*sizeof(GLfloat)) );
+    _vbo.enable( vert_loc,    3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
+    _vbo.enable( tex_loc,     2, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(3*sizeof(GLfloat)) );
 
     draw();
 
@@ -137,7 +137,7 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
 
     draw();
 

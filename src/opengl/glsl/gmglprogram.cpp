@@ -35,193 +35,196 @@
 
 namespace GMlib {
 
+namespace GL {
 
 
-GLProgram::GLProgram( const std::string& name ) {
+  GLProgram::GLProgram( const std::string& name ) {
 
-  if( !GLShaderManager::isInitialized() )
-    return;
+    if( !GLShaderManager::isInitialized() )
+      return;
 
-  _name = name;
+    _name = name;
 
-  bool ok = GLShaderManager::createProgram( name );
+    bool ok = GLShaderManager::createProgram( name );
 
-  _id = GLShaderManager::getProgramID( _name );
+    _id = GLShaderManager::getProgramID( _name );
 
-//    std::cout << "  " << ( ok ? "Creating" : "Using" ) << " a GLProgram \"" << name << "\" with id: " << _id << std::endl;
-}
+  //    std::cout << "  " << ( ok ? "Creating" : "Using" ) << " a GLProgram \"" << name << "\" with id: " << _id << std::endl;
+  }
 
-GLProgram::GLProgram( const GLProgram &copy ) {
+  GLProgram::GLProgram( const GLProgram &copy ) {
 
-  if( !GLShaderManager::isInitialized() )
-    return;
+    if( !GLShaderManager::isInitialized() )
+      return;
 
-  _name = copy._name;
-  _id = copy._id;
-}
+    _name = copy._name;
+    _id = copy._id;
+  }
 
-GLProgram::~GLProgram() {}
+  GLProgram::~GLProgram() {}
 
-bool GLProgram::addShader( const std::string& name, const std::string& source, GLenum type, bool compile ) const {
+  bool GLProgram::addShader( const std::string& name, const std::string& source, GLenum type, bool compile ) const {
 
 
-  if( !GLShaderManager::createShader( name, type ) )
-    return false;
+    if( !GLShaderManager::createShader( name, type ) )
+      return false;
 
-  bool ret = true;
+    bool ret = true;
 
-  if( !GLShaderManager::setShaderSource( name, source) )
-    ret = false;
-
-  if( !GLShaderManager::addShaderToProgram( _name, name ) )
-    ret = false;
-
-  if( compile )
-    if( !GLShaderManager::compileShader( name ) )
+    if( !GLShaderManager::setShaderSource( name, source) )
       ret = false;
 
-  return ret;
-}
+    if( !GLShaderManager::addShaderToProgram( _name, name ) )
+      ret = false;
 
-bool GLProgram::addShader( const GLShader& shader ) const {
+    if( compile )
+      if( !GLShaderManager::compileShader( name ) )
+        ret = false;
 
-  return GLShaderManager::addShaderToProgram( _name, shader.getName() );
-}
+    return ret;
+  }
 
-void GLProgram::bind() const {
+  bool GLProgram::addShader( const GLShader& shader ) const {
 
-  glUseProgram( _id );
-}
+    return GLShaderManager::addShaderToProgram( _name, shader.getName() );
+  }
 
-void GLProgram::disableAttributeArray( const std::string& name ) const {
+  void GLProgram::bind() const {
 
-  disableAttributeArray( getAttributeLocation(name) );
-}
+    glUseProgram( _id );
+  }
 
-void GLProgram::disableAttributeArray( GLuint loc ) const {
+  void GLProgram::disableAttributeArray( const std::string& name ) const {
 
-  glDisableVertexAttribArray( loc );
-}
+    disableAttributeArray( getAttributeLocation(name) );
+  }
 
-void GLProgram::enableAttributeArray( const std::string& name ) const {
+  void GLProgram::disableAttributeArray( GLuint loc ) const {
 
-  enableAttributeArray( getAttributeLocation( name ) );
-}
+    glDisableVertexAttribArray( loc );
+  }
 
-void GLProgram::enableAttributeArray( GLuint loc ) const {
+  void GLProgram::enableAttributeArray( const std::string& name ) const {
 
-  glEnableVertexAttribArray( loc );
-}
+    enableAttributeArray( getAttributeLocation( name ) );
+  }
 
-GLuint GLProgram::getAttributeLocation(const std::string& name) const {
+  void GLProgram::enableAttributeArray( GLuint loc ) const {
 
-  return glGetAttribLocation( _id, name.c_str() );
-}
+    glEnableVertexAttribArray( loc );
+  }
 
-GLuint GLProgram::getId() const {
+  GLuint GLProgram::getAttributeLocation(const std::string& name) const {
 
-  return _id;
-}
+    return glGetAttribLocation( _id, name.c_str() );
+  }
 
-std::string GLProgram::getInfoLog() const {
+  GLuint GLProgram::getId() const {
 
-//      return _info_log;
-  return std::string();
-}
+    return _id;
+  }
 
-const std::string& GLProgram::getName() const {
+  std::string GLProgram::getInfoLog() const {
 
-  return _name;
-}
+  //      return _info_log;
+    return std::string();
+  }
 
-std::set<std::string> GLProgram::getShaders() const {
+  const std::string& GLProgram::getName() const {
+
+    return _name;
+  }
+
+  std::set<std::string> GLProgram::getShaders() const {
 
 
-  return GLShaderManager::getProgramShaders( _name );
-}
+    return GLShaderManager::getProgramShaders( _name );
+  }
 
-GLuint GLProgram::getUniformBlockIndex(const std::string &name) const {
+  GLuint GLProgram::getUniformBlockIndex(const std::string &name) const {
 
-  return glGetUniformBlockIndex( _id, name.c_str() );
-}
+    return glGetUniformBlockIndex( _id, name.c_str() );
+  }
 
-GLuint GLProgram::getUniformLocation(const std::string& name) const {
+  GLuint GLProgram::getUniformLocation(const std::string& name) const {
 
-  return glGetUniformLocation( _id, name.c_str() );
-}
+    return glGetUniformLocation( _id, name.c_str() );
+  }
 
-bool GLProgram::link() const {
+  bool GLProgram::link() const {
 
-  return GLShaderManager::linkProgram( _name );
-}
+    return GLShaderManager::linkProgram( _name );
+  }
 
-bool GLProgram::removeShader(const std::string &name) const {
+  bool GLProgram::removeShader(const std::string &name) const {
 
-  return GLShaderManager::removeShaderFromProgram( _name, name );
-}
+    return GLShaderManager::removeShaderFromProgram( _name, name );
+  }
 
-bool GLProgram::removeShader( GLShader* shader ) const {
+  bool GLProgram::removeShader( GLShader* shader ) const {
 
-  return GLShaderManager::removeShaderFromProgram( _name, shader->getName() );
-}
+    return GLShaderManager::removeShaderFromProgram( _name, shader->getName() );
+  }
 
-void GLProgram::setUniform(const std::string &name, bool b) const {
+  void GLProgram::setUniform(const std::string &name, bool b) const {
 
-  glUniform1i( getUniformLocation(name), b );
-}
+    glUniform1i( getUniformLocation(name), b );
+  }
 
-void GLProgram::setUniform(const std::string& name, const Color &c) const {
+  void GLProgram::setUniform(const std::string& name, const Color &c) const {
 
-  glUniform4f(
-      getUniformLocation( name ),
-      c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC()
-      );
-}
+    glUniform4f(
+        getUniformLocation( name ),
+        c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC()
+        );
+  }
 
-void GLProgram::setUniform(const std::string& name, const HqMatrix<float, 3> &matrix, int count, bool transpose) const {
+  void GLProgram::setUniform(const std::string& name, const HqMatrix<float, 3> &matrix, int count, bool transpose) const {
 
-  glUniformMatrix4fv(
-      getUniformLocation( name ),
-      count, transpose, matrix.getPtr()
-      );
-}
+    glUniformMatrix4fv(
+        getUniformLocation( name ),
+        count, transpose, matrix.getPtr()
+        );
+  }
 
-void GLProgram::setUniform(const std::string &name, const Point<float, 3> &p) const {
+  void GLProgram::setUniform(const std::string &name, const Point<float, 3> &p) const {
 
-  glUniform3fv(
-      getUniformLocation(name),
-      3 * sizeof(float), p.getPtr()
-      );
-}
+    glUniform3fv(
+        getUniformLocation(name),
+        3 * sizeof(float), p.getPtr()
+        );
+  }
 
-void GLProgram::setUniform(const std::string &name, GLuint tex_id, GLenum tex_unit, GLuint tex_nr ) const {
+  void GLProgram::setUniform(const std::string &name, GLuint tex_id, GLenum tex_unit, GLuint tex_nr ) const {
 
-  glActiveTexture( tex_unit );
-  glBindTexture( GL_TEXTURE_2D, tex_id );
-  glUniform1i( getUniformLocation( name ), tex_nr );
-}
+    glActiveTexture( tex_unit );
+    glBindTexture( GL_TEXTURE_2D, tex_id );
+    glUniform1i( getUniformLocation( name ), tex_nr );
+  }
 
-void GLProgram::setUniform(const std::string &name, float f) const {
+  void GLProgram::setUniform(const std::string &name, float f) const {
 
-  glUniform1f( getUniformLocation( name ), f );
-}
+    glUniform1f( getUniformLocation( name ), f );
+  }
 
-void GLProgram::setUniform( const std::string& name, int i ) const {
+  void GLProgram::setUniform( const std::string& name, int i ) const {
 
-  glUniform1i( getUniformLocation( name ), i );
-}
+    glUniform1i( getUniformLocation( name ), i );
+  }
 
-void GLProgram::unbind() const {
+  void GLProgram::unbind() const {
 
-  glUseProgram( 0 );
-}
+    glUseProgram( 0 );
+  }
 
-GLProgram& GLProgram::operator = ( const GLProgram& copy ) {
+  GLProgram& GLProgram::operator = ( const GLProgram& copy ) {
 
-  _name = copy._name;
-  _id = copy._id;
+    _name = copy._name;
+    _id = copy._id;
 
-  return *this;
-}
+    return *this;
+  }
 
-}
+} // END namespace GL
+
+} // END namespace GMlib

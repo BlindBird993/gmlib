@@ -30,6 +30,7 @@
 
 namespace GMlib {
 
+namespace GL {
 
   class BufferObject {
   public:
@@ -99,6 +100,7 @@ namespace GMlib {
   }
 
 
+} // END namespace GL
 
 } // END namespace GMlib
 

@@ -52,10 +52,11 @@ namespace GMlib{
   class RenderManager;
   class Camera;
   class Light;
-  namespace GLSL {
+
+  namespace GLSL { namespace GL {
 
     class GLProgram;
-  }
+  } }
 
 
 

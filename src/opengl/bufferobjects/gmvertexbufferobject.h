@@ -30,6 +30,7 @@
 
 namespace GMlib {
 
+namespace GL {
 
   class VertexBufferObject : public BufferObject {
   public:
@@ -55,6 +56,7 @@ namespace GMlib {
     this->disableVertexArrayPointer( index );
   }
 
+} // END namespace GL
 
 } // END namespace GMlib
 

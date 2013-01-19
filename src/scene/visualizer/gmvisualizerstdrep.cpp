@@ -38,7 +38,7 @@ namespace GMlib {
     _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
     _bo_cube_frame_indices( "std_rep_frame_indices" ) {
 
-    setRenderProgram( GLProgram( "color" ) );
+    setRenderProgram( GL::GLProgram( "color" ) );
   }
 
   VisualizerStdRep::~VisualizerStdRep() {}
@@ -48,7 +48,7 @@ namespace GMlib {
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
 //    prog.setUniform( "u_selected", this->_obj->isSelected() );
 
 

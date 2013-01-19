@@ -39,7 +39,7 @@ namespace GMlib {
       PCurveVisualizer<T>::PCurveVisualizer() {
 
     _curve = 0x0;
-    setRenderProgram( GLProgram("color") );
+    setRenderProgram( GL::GLProgram("color") );
   }
 
   template <typename T>
@@ -47,15 +47,15 @@ namespace GMlib {
 
   template <typename T>
   void PCurveVisualizer<T>::fillStandardVBO(
-      VertexBufferObject &vbo, unsigned int &no_vertices,
+      GL::VertexBufferObject &vbo, unsigned int &no_vertices,
       DVector< DVector< Vector<T, 3> > >& p, int d ) {
 
     no_vertices = p.getDim();
 
     vbo.bind();
-    vbo.createBufferData( no_vertices * sizeof(GLVertex), 0x0, GL_STATIC_DRAW );
+    vbo.createBufferData( no_vertices * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
-    GLVertex *ptr = vbo.mapBuffer<GLVertex>();
+    GL::GLVertex *ptr = vbo.mapBuffer<GL::GLVertex>();
     if( ptr ) {
       for( int i = 0; i < p.getDim(); i++ ) {
 

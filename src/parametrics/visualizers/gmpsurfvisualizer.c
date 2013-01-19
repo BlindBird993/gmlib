@@ -126,15 +126,15 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfVisualizer<T>::fillStandardVBO(VertexBufferObject &vbo,
+  void PSurfVisualizer<T>::fillStandardVBO(GL::VertexBufferObject &vbo,
                                          unsigned int &no_vertices,
                                          const DMatrix<DMatrix<Vector<T,3> > > &p) {
 
     no_vertices = p.getDim1() * p.getDim2();
 
     vbo.bind();
-    vbo.createBufferData( no_vertices * sizeof(GLVertexTex2D), 0x0, GL_STATIC_DRAW );
-    GLVertexTex2D *ptr = vbo.mapBuffer<GLVertexTex2D>();
+    vbo.createBufferData( no_vertices * sizeof(GL::GLVertexTex2D), 0x0, GL_STATIC_DRAW );
+    GL::GLVertexTex2D *ptr = vbo.mapBuffer<GL::GLVertexTex2D>();
     for( int i = 0; i < p.getDim1(); i++ ) {
       for( int j = 0; j < p.getDim2(); j++ ) {
 
@@ -185,7 +185,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfVisualizer<T>::fillTriangleStripIBO(IndexBufferObject& ibo, int m1, int m2) {
+  void PSurfVisualizer<T>::fillTriangleStripIBO(GL::IndexBufferObject& ibo, int m1, int m2) {
 
 
     const int no_indices = (m1-1) * m2 * 2;

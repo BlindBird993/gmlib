@@ -30,6 +30,8 @@
 
 namespace GMlib {
 
+namespace GL {
+
   /*! class IndexBufferObject : public GLBufferObject
    *
    *
@@ -64,6 +66,7 @@ namespace GMlib {
 
   }; // END class TrianglesIBO
 
+} // END namespace GL
 
 } // END namespace GMlib
 

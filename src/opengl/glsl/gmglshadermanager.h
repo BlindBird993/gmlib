@@ -44,6 +44,7 @@
 
 namespace GMlib {
 
+namespace GL {
 
   class GLShaderManager {
   public:
@@ -104,6 +105,8 @@ namespace GMlib {
     static void                                   _updateInfoLog( bool program, GLuint id );
 
   }; // END class GLShaderManager
+
+} // END namespace GL
 
 } // END namespace GMlib
 

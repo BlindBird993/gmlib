@@ -33,7 +33,7 @@ namespace GMlib {
   template <typename T>
   PSurfPointsVisualizer<T>::PSurfPointsVisualizer() {
 
-    this->setRenderProgram( GLProgram("color") );
+    this->setRenderProgram( GL::GLProgram("color") );
 
     _size = 1.0;
     _color = GMcolor::BlueViolet;
@@ -53,7 +53,7 @@ namespace GMlib {
   void PSurfPointsVisualizer<T>::display() {
 
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
     prog.setUniform( "u_color", _color );
 
 

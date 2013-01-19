@@ -59,7 +59,7 @@ namespace GMlib {
     void              setSize( float size );
 
   protected:
-    GLProgram         _display;
+    GL::GLProgram         _display;
 
     GLuint            _vbo_v;
     int               _no_elements;
