@@ -103,6 +103,7 @@ namespace GMlib {
   public:
     DisplayRenderer( Scene* scene );
 
+    void      render(Array<SceneObject*>& objs, Camera* cam );
     void      renderSelect(Array<SceneObject*>& objs, Camera* cam );
 
     /* virtual from Renderer */
@@ -110,7 +111,6 @@ namespace GMlib {
     void      beginRendering();
     void      endRendering();
 
-    void      render(Array<SceneObject*>& objs, Camera* cam );
     void      resize(int w, int h);
 
     /* virtual from MultiObjectRenderer */
@@ -125,17 +125,17 @@ namespace GMlib {
     SceneObject*                findObject( int x, int y );
     Array<SceneObject*>         findObjects(int xmin, int ymin, int xmax, int ymax );
 
+    void                        select(Array<SceneObject*>& objs, Camera* cam, int type_id );
+
 
     /* virtual from Renderer */
     void                        prepareRendering();
     void                        beginRendering();
     void                        endRendering();
-
     void                        resize(int w, int h);
 
     /* virtual from MultiObjectRenderer */
     void                        prepare(Array<SceneObject*>& objs, Camera *cam);
-    void                        select(Array<SceneObject*>& objs, Camera* cam, int type_id );
 
   };
 

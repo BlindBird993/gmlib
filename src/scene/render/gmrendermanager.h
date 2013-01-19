@@ -37,6 +37,7 @@
 
 //gmlib
 #include <core/containers/gmarray.h>
+#include <opengl/gmopengl.h>
 
 
 namespace GMlib {
@@ -66,12 +67,28 @@ namespace GMlib {
     SceneObject*    findObject( int x, int y );
     void            select(Camera* cam, int type_id );
 
+    /* Rendering properties */
+    const Color&    getClearColor() const;
+    void            setClearColor( const Color& c );
+
+    const Color&    getSelectColor() const;
+    void            setSelectColor( const Color& c );
+
+
   private:
     Scene                     *_scene;
-    Array<SceneObject*>       _objs;
+    Array<SceneObject*>       _objs;      //! Render objects "cache" array
 
     DisplayRenderer           *_disp;
     SelectRenderer            *_select;
+
+
+    int                       _w, _h;
+    Color                     _clear_color;
+    Color                     _select_color;
+
+    GLuint          _vbo_quad;
+    GLuint          _vbo_quad_tex;
 
   }; // END class RenderManager
 

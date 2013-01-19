@@ -56,8 +56,6 @@ namespace GMlib {
     _sun	 = NULL;
     _move	 = 0.0;
     _active_cam = 0;
-    _clear_color = Color( 0.5f, 0.5f, 0.5f, 1.0f );
-    _select_color = GMcolor::Pink;
     stop();
 
     if( init_default_cam ) {
@@ -72,42 +70,6 @@ namespace GMlib {
     }
 
     initRenderManager();
-
-    glGenBuffers( 1, &_vbo_quad );
-    glGenBuffers( 1, &_vbo_quad_tex );
-
-    // Gen quad data (vertex)
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
-
-    DVector< Point<float,3> > data(4);
-//    data[0] = Point3D<float>( 0.25f, 0.25f, 0.0f );
-//    data[1] = Point3D<float>( 0.25f, 0.75f, 0.0f );
-//    data[2] = Point3D<float>( 0.75f, 0.75f, 0.0f );
-//    data[3] = Point3D<float>( 0.75f, 0.25f, 0.0f );
-    data[0] = Point3D<float>( 0.0f, 0.0f, 0.0f );
-    data[1] = Point3D<float>( 0.0f, 1.0f, 0.0f );
-    data[2] = Point3D<float>( 1.0f, 1.0f, 0.0f );
-    data[3] = Point3D<float>( 1.0f, 0.0f, 0.0f );
-
-    glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    // Gen quad data (tex)
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
-
-    DVector< Point<float,2> > data_tex(4);
-    data_tex[0] = Point2D<float>( 0.0f, 0.0f );
-    data_tex[1] = Point2D<float>( 0.0f, 1.0f );
-    data_tex[2] = Point2D<float>( 1.0f, 1.0f );
-    data_tex[3] = Point2D<float>( 1.0f, 0.0f );
-  //  data_tex[0] = Point2D<float>( 0.25f, 0.25f );
-  //  data_tex[1] = Point2D<float>( 0.25f, 0.75f );
-  //  data_tex[2] = Point2D<float>( 0.75f, 0.75f );
-  //  data_tex[3] = Point2D<float>( 0.75f, 0.25f );
-
-    glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
   }
 
 
@@ -212,7 +174,7 @@ namespace GMlib {
 
   const Color& GMWindow::getSelectColor() const {
 
-    return _select_color;
+    return getRenderManager()->getSelectColor();
   }
 
   /*! void GMWindow::insertCamera(Camera* cam, bool insert_in_scene)
@@ -325,12 +287,12 @@ namespace GMlib {
 
   void GMWindow::setClearColor(const Color &color) {
 
-    _clear_color = color;
+    getRenderManager()->setClearColor(color);
   }
 
   void GMWindow::setSelectColor( const Color& color ) {
 
-    _select_color = color;
+    getRenderManager()->setSelectColor(color);
   }
 
 
