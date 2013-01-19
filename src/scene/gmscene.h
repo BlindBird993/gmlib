@@ -124,8 +124,6 @@ namespace GMlib{
     void                  initRenderManager();
 
   private:
-    friend class Camera;
-
     RenderManager         *_rm;
     Array<SceneObject*>   _scene;
 

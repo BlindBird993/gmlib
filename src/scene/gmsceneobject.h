@@ -244,9 +244,7 @@ namespace GMlib{
     virtual void                translateGlobal(const Vector<float,3>& trans_vector);
 
   protected:
-
     friend class Scene;
-    friend class Camera;
 
     bool                        _is_part;  //! true if the object is seen as a part of a larger object
 
