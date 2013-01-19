@@ -35,10 +35,10 @@
 // local
 #include "gmview.h"
 #include "gmviewset.h"
-#include "render/gmrendermanager.h"
 
 // gmlib
 #include <scene/camera/gmcamera.h>
+#include <scene/render/gmrendermanager.h>
 
 // gmlib::scene - might be removed as light and is implemented with different mechanisms...
 #include <scene/light/gmlight.h>
@@ -152,9 +152,6 @@ namespace GMlib {
     Color                   _select_color;
 
 
-    RenderManager           *_rm;
-
-
     GLuint          _vbo_quad;
     GLuint          _vbo_quad_tex;
 
@@ -162,17 +159,9 @@ namespace GMlib {
 
   public:
 
-    SceneObject*            findSelectObject( Camera* cam, const Vector<int,2>& pos, int type_id ) const {
+    SceneObject*            findSelectObject( Camera* cam, const Vector<int,2>& pos, int type_id ) const;
 
-      std::cout << "finding object" << std::endl;
-      return findSelectObject( cam, pos(0), pos(1), type_id );
-    }
-
-    SceneObject*            findSelectObject( Camera* cam, int x, int y, int type_id ) const {
-
-      _rm->select( cam, type_id );
-      return _rm->findObject( x, y );
-    }
+    SceneObject*            findSelectObject( Camera* cam, int x, int y, int type_id ) const;
 
 
 
@@ -371,7 +360,8 @@ namespace GMlib {
 //      _view_set_stack.back().drawCamera();
 //      OGL::unbindRenderBuffer();
 
-    _rm->render( _view_set_stack.back() );
+    RenderManager *rm = getRenderManager();
+    rm->render( _view_set_stack.back().getCameras() );
 
 //    }
 
@@ -479,10 +469,8 @@ namespace GMlib {
 
     _w = w; _h = h;
     prepareViewSets();
-//    OGL::setRenderBufferSize( _w, _h );
-//    OGL::setSelectBufferSize( _w, _h );
 
-    _rm->resize( _w, _h );
+    getRenderManager()->resize( _w, _h );
   }
 
 

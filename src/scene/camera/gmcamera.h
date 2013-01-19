@@ -100,9 +100,9 @@ namespace GMlib {
     void										    decreaseFocalDist(double delta=1);
     virtual double              deltaTranslate(DisplayObject * obj);
     void                        enableCulling( bool enable = true );
-    SceneObject*                findSelectObject(int, int, int type_id=0);
-    SceneObject*                findSelectObject( const Vector<int,2>& pos, int type_id=0);
-    Array<SceneObject* >        findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
+//    SceneObject*                findSelectObject(int, int, int type_id=0);
+//    SceneObject*                findSelectObject( const Vector<int,2>& pos, int type_id=0);
+//    Array<SceneObject* >        findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
     float                       getAngleTan() const;
     double                      getDistanceToObject(int, int);
     double                      getDistanceToObject(SceneObject* obj);
@@ -118,7 +118,7 @@ namespace GMlib {
     void                        getViewport(int& w1, int& w2, int& h1, int& h2) const;
     int                         getViewportW() const;
     int                         getViewportH() const;
-    virtual void                go(bool stereo=false);	// Running the Camera.
+//    virtual void                go(bool stereo=false);	// Running the Camera.
     void                        increaseEyeDist(double delta=0.01);
     void                        increaseFocalDist(double delta=1);
     bool                        isCoordSysVisible() const;
@@ -151,12 +151,12 @@ namespace GMlib {
                                   const Vector<float,3>& z,
                                   const Vector<float,3>& p);
 
-    virtual void                display();
+//    virtual void                display();
     virtual	void                drawActiveCam();
     SceneObject*                find(unsigned int name);
     virtual void                makeGraphics();
     void                        resetC(float z = 1);
-    void                        select(int type_id);
+//    void                        select(int type_id);
     virtual void                setPerspective();
 
 		// *****************
@@ -266,25 +266,25 @@ namespace GMlib {
   }
 
 
-  /*! void Camera::display()
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  void Camera::display() {
+//  /*! void Camera::display()
+//   *	\brief Pending Documentation
+//   *
+//   *	Pending Documentation
+//   */
+//  inline
+//  void Camera::display() {
 
-    setupDisplay();
+//    setupDisplay();
 
-    // Cull the scene using the camera's frustum
-    _scene->culling( _frustum, _culling );
+//    // Cull the scene using the camera's frustum
+//    _scene->culling( _frustum, _culling );
 
-    // Render scene
-    _scene->display( this );
+//    // Render scene
+//    _scene->display( this );
 
-    if(_coord_sys_visible)
-      drawActiveCam();
-  }
+//    if(_coord_sys_visible)
+//      drawActiveCam();
+//  }
 
   inline
   void Camera::setupDisplay() {

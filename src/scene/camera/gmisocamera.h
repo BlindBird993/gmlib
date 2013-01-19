@@ -64,7 +64,7 @@ namespace GMlib {
 
 		double					deltaTranslate(DisplayObject *);
 
-		void 						go(bool stereo=false);
+//		void 						go(bool stereo=false);
 		void						lockTarget(SceneObject* obj);
 		void						lockTarget(const Point<float,3>& p);
 		void						lockTarget(double d);

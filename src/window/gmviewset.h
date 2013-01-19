@@ -59,8 +59,9 @@ namespace GMlib {
     ViewSet(const ViewSet& viewset);
     ~ViewSet();
 
-    int  								getSize();
-    Point2D<int> 				getViewPortSize();
+    const Array<Camera*>&   getCameras() const;
+    int                     getSize();
+    Point2D<int>            getViewPortSize();
     void 								prepare(int w, int h);
     void 								removeCamera(Camera*);
 
@@ -89,7 +90,7 @@ namespace GMlib {
     void 								drawBorder();
 
   public:
-    void 								drawCamera();
+//    void 								drawCamera();
     Camera* 						operator[](int i);
 
   private:
@@ -122,6 +123,12 @@ namespace GMlib {
 
 
 
+
+  inline
+  const Array<Camera*>& ViewSet::getCameras() const {
+
+    return _cameras;
+  }
 
 
   /*! Point2D<int> ViewSet::getViewPortSize()

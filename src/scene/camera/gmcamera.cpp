@@ -30,7 +30,9 @@
 
 #include "gmcamera.h"
 
+// local
 #include "../utils/gmmaterial.h"
+#include "../render/gmrendermanager.h"
 
 // gmlib
 #include <core/types/gmpoint3d.h>
@@ -122,64 +124,64 @@ namespace GMlib {
   }
 
 
-  /*! SceneObject*	Camera::findSelectObject(int, int, int type_id)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  SceneObject*	Camera::findSelectObject(int x, int y, int type_id) {
+//  /*! SceneObject*	Camera::findSelectObject(int, int, int type_id)
+//   *	\brief Pending Documentation
+//   *
+//   *	Pending Documentation
+//   */
+//  SceneObject*	Camera::findSelectObject(int x, int y, int type_id) {
 
-    // Cull the scene using the camera's frustum
-    _scene->culling( _frustum, _culling );
+//    // Cull the scene using the camera's frustum
+//    _scene->culling( _frustum, _culling );
 
-    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-    Color c;
-    select(type_id);
-    OGL::bindSelectBuffer();
-    glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
-    OGL::unbindSelectBuffer();
-    return find(c.get());
-  }
+//    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+//    Color c;
+//    select(type_id);
+//    OGL::bindSelectBuffer();
+//    glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
+//    OGL::unbindSelectBuffer();
+//    return find(c.get());
+//  }
 
-  SceneObject* Camera::findSelectObject(const Vector<int,2>& pos, int type_id) {
+//  SceneObject* Camera::findSelectObject(const Vector<int,2>& pos, int type_id) {
 
-    return findSelectObject( pos(0), pos(1), type_id );
-  }
-
-
-  /*! Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id) {
-
-    Array<SceneObject* > sel;
-    int dx=(xmax-xmin)+1;
-    int dy=(ymax-ymin)+1;
-    if (dx<2 || dy <2) return sel;     // for debugging, shouldn't really be here?
+//    return findSelectObject( pos(0), pos(1), type_id );
+//  }
 
 
-    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-    Color* pixels=new Color[dx*dy];
-    DisplayObject::select(type_id, this );
-    OGL::bindSelectBuffer();
-    glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
-    OGL::unbindSelectBuffer();
+//  /*! Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id)
+//   *	\brief Pending Documentation
+//   *
+//   *	Pending Documentation
+//   */
+//  Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id) {
 
-    int ct=0;
-    Color c;
-    for(int i=ymin; i<ymax; i++)
-      for(int j=xmin;j<xmax; j++)
-      {
-        c=pixels[ct++];
-        SceneObject* tmp=find(c.get());
-        if(tmp)
-          if(!tmp->getSelected()) { sel.insertAlways(tmp); tmp->setSelected(true); }
-      }
-    delete [] pixels;
-    return sel;
-  }
+//    Array<SceneObject* > sel;
+//    int dx=(xmax-xmin)+1;
+//    int dy=(ymax-ymin)+1;
+//    if (dx<2 || dy <2) return sel;     // for debugging, shouldn't really be here?
+
+
+//    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+//    Color* pixels=new Color[dx*dy];
+//    DisplayObject::select(type_id, this );
+//    OGL::bindSelectBuffer();
+//    glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
+//    OGL::unbindSelectBuffer();
+
+//    int ct=0;
+//    Color c;
+//    for(int i=ymin; i<ymax; i++)
+//      for(int j=xmin;j<xmax; j++)
+//      {
+//        c=pixels[ct++];
+//        SceneObject* tmp=find(c.get());
+//        if(tmp)
+//          if(!tmp->getSelected()) { sel.insertAlways(tmp); tmp->setSelected(true); }
+//      }
+//    delete [] pixels;
+//    return sel;
+//  }
 
 
   /*! double Camera::getDistanceToObject(int x, int y)
@@ -189,7 +191,7 @@ namespace GMlib {
    */
   double Camera::getDistanceToObject(int x, int y) {
 
-    SceneObject* 	obj = findSelectObject(x, y);
+    SceneObject* 	obj = getScene()->getRenderManager()->findObject(x,y);
     return getDistanceToObject(obj);
   }
 
@@ -237,38 +239,38 @@ namespace GMlib {
   }
 
 
-  /*! void Camera::go(bool stereo)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   *	Running the Camera.
-   */
-  void Camera::go(bool stereo) {
+//  /*! void Camera::go(bool stereo)
+//   *	\brief Pending Documentation
+//   *
+//   *	Pending Documentation
+//   *	Running the Camera.
+//   */
+//  void Camera::go(bool stereo) {
 
 
 
-    _active = true;
-//    if (stereo)
+//    _active = true;
+////    if (stereo)
+////    {
+////      Point3D<float>		tmp_pos  = _pos  - _eye_dist*_side;
+////      UnitVector3D<float>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
+////      UnitVector3D<float>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
+////      basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
+////      display();
+////      basisChange(_side, _up, _dir, _pos);						// Back to left eye
+////    }
+////    else
 //    {
-//      Point3D<float>		tmp_pos  = _pos  - _eye_dist*_side;
-//      UnitVector3D<float>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
-//      UnitVector3D<float>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
-//      basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
+//      if(_locked)
+//      {
+//        updateOrientation(getSceneLockPos());
+//        basisChange(_side, _up, _dir, _pos);
+//      }
 //      display();
-//      basisChange(_side, _up, _dir, _pos);						// Back to left eye
 //    }
-//    else
-    {
-      if(_locked)
-      {
-        updateOrientation(getSceneLockPos());
-        basisChange(_side, _up, _dir, _pos);
-      }
-      display();
-    }
 
-    _active = false;
-  }
+//    _active = false;
+//  }
 
 
   /*! void Camera::localDisplay()
@@ -367,7 +369,7 @@ namespace GMlib {
    */
   SceneObject* Camera::lockTargetAtPixel(int x, int y) {
 
-    SceneObject* 	obj = findSelectObject(x, y);
+    SceneObject* 	obj = getScene()->getRenderManager()->findObject(x,y);
     if(obj)
     {
       lock(obj);
@@ -594,34 +596,34 @@ namespace GMlib {
   }
 
 
-  /*! void Camera::select(int type_id)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void Camera::select(int type_id) {
+//  /*! void Camera::select(int type_id)
+//   *	\brief Pending Documentation
+//   *
+//   *	Pending Documentation
+//   */
+//  void Camera::select(int type_id) {
 
 
-    std::cout << "Camera::select()" << std::endl;
-    OGL::clearSelectBuffer();
-    OGL::bindSelectBuffer();
+//    std::cout << "Camera::select()" << std::endl;
+//    OGL::clearSelectBuffer();
+//    OGL::bindSelectBuffer();
 
-    GLboolean depth_test_state;
-    glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
-    glEnable( GL_DEPTH_TEST );
+//    GLboolean depth_test_state;
+//    glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
+//    glEnable( GL_DEPTH_TEST );
 
-    glViewport(_x,_y,_w,_h);
+//    glViewport(_x,_y,_w,_h);
 
-    const GLProgram &select_prog = getSelectProgram();
-    select_prog.bind();
-    _scene->select(type_id, this);
-    select_prog.unbind();
+//    const GLProgram &select_prog = getSelectProgram();
+//    select_prog.bind();
+//    _scene->select(type_id, this);
+//    select_prog.unbind();
 
-    if( !depth_test_state )
-      glDisable( GL_DEPTH_TEST );
+//    if( !depth_test_state )
+//      glDisable( GL_DEPTH_TEST );
 
-    OGL::unbindSelectBuffer();
-  }
+//    OGL::unbindSelectBuffer();
+//  }
 
 
 

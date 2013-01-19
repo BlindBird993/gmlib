@@ -31,50 +31,53 @@
 
 // local
 #include "gmrenderer.h"
-#include "../gmviewset.h"
+#include "scene/camera/gmcamera.h"
+#include "scene/gmscene.h"
+#include "scene/gmsceneobject.h"
 
 //gmlib
 #include <opengl/gmopengl.h>
-#include <scene/camera/gmcamera.h>
-#include <scene/gmscene.h>
-#include <scene/gmsceneobject.h>
 
 
 
 namespace GMlib {
 
-  RenderManager::RenderManager(Scene *scene) {
+  RenderManager::RenderManager(Scene *scene) : _objs(128) {
 
     _scene = scene;
     _disp = new DisplayRenderer( scene );
     _select = new SelectRenderer( scene );
-
-    init();
   }
 
-  void RenderManager::init() {
 
-    _disp->init();
-    _select->init();
+  SceneObject *RenderManager::findObject(int x, int y) {
+
+    _select->findObject( x, y );
   }
 
-  void RenderManager::render(ViewSet& view_set) {
+  void RenderManager::resize(int w, int h) {
+
+    _disp->resize(w,h);
+    _select->resize(w,h);
+  }
+
+  void RenderManager::render(const Array<Camera*>& cameras ) {
 
     // Prepare renderer for rendering
     _disp->prepareRendering();
 
-    for( int i = 0; i < view_set.getSize(); ++i ) {
+    for( int i = 0; i < cameras.getSize(); ++i ) {
 
-      Camera *cam = view_set[i];
+      Camera *cam = cameras(i);
       cam->markAsActive();
 
-      _disp->prepare( cam );
+      _disp->prepare( _objs, cam );
 
       // Tell renderer that rendering is begining
       _disp->beginRendering(); {
 
         // Rendering
-        _disp->render( cam );
+        _disp->render( _objs, cam );
   //      _disp->renderSelect( cam );
 
       // Tell renderer that rendering is ending
@@ -89,25 +92,19 @@ namespace GMlib {
     // Prepare for select rendering
     _select->prepareRendering();
 
-    _select->prepare(cam);
+    _select->prepare( _objs, cam );
 
     _select->beginRendering(); {
 
-      _select->select( cam, type_id );
+      _select->select( _objs, cam, type_id );
 
     }_select->endRendering();
   }
 
-  void RenderManager::resize(int w, int h) {
+  void RenderManager::updateMaxObjects(int no_objs) {
 
-    _disp->resize(w,h);
-    _select->resize(w,h);
-  }
-
-  SceneObject *RenderManager::findObject(int x, int y) {
-
-    _select->findObject( x, y );
-
+    if( _objs.getMaxSize() < no_objs )
+      _objs.setMaxSize(no_objs);
   }
 
 

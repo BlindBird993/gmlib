@@ -90,9 +90,9 @@ namespace GMlib{
     SceneObject*          getActiveObject();
     double                getElapsedTime();
     Array<Light*>&        getLights();
+    RenderManager*        getRenderManager() const;
     Array<SceneObject*>&  getSelectedObjects();
     int                   getSize();
-    int                   getSizeTotal();
     Sphere<float,3>       getSphere();
     Sphere<float,3>       getSphereClean() const;
     double                getTimeScale();
@@ -119,17 +119,15 @@ namespace GMlib{
   protected:
     Array<SceneObject*>   _sel_objs;
 
-    bool                  isVisible( SceneObject* obj );
     void                  simulate();
+
+    void                  initRenderManager();
 
   private:
     friend class Camera;
-    void                  display( Camera* cam );
-    void                  select( int type_id, Camera* cam );
-    virtual void          culling( const Frustum& f, bool on = true );
 
+    RenderManager         *_rm;
     Array<SceneObject*>   _scene;
-    Array<SceneObject*>	  _disp_objs;
 
     Array<Light*>         _lights;
     Array<HqMatrix<float,3> >                   _matrix_stack;
@@ -138,6 +136,7 @@ namespace GMlib{
     bool                  _timer_active;
     double                _timer_time_elapsed;
     double                _timer_time_scale;
+
 
 
   }; // END class Scene

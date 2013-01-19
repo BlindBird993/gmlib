@@ -32,5 +32,3 @@ addSources(
   gmviewset.cpp
   gmwindow.cpp
 )
-
-addSubDirectory(render)           # <render> sub-module

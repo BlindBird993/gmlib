@@ -32,6 +32,7 @@
 #include "gmsceneobject.h"
 #include "light/gmlight.h"
 #include "camera/gmcamera.h"
+#include "render/gmrendermanager.h"
 
 
 namespace GMlib {
@@ -43,7 +44,7 @@ namespace GMlib {
    *
    *  Default constructor
    */
-  Scene::Scene() : _scene(), _disp_objs(128), _matrix_stack(32) {
+  Scene::Scene() : _scene(), _matrix_stack(32) {
 
     _timer_active   = true;
     _timer_time_scale    = 1;
@@ -57,7 +58,7 @@ namespace GMlib {
    *
    *  Standar constructor
    */
-  Scene::Scene( SceneObject* obj ) : _scene(), _disp_objs(128), _matrix_stack(32) {
+  Scene::Scene( SceneObject* obj ) : _scene(), _matrix_stack(32) {
     _scene += obj;
     _timer_active = true;
     _timer_time_scale = 1;
@@ -71,7 +72,7 @@ namespace GMlib {
    *
    *  Copy constructor
    */
-  Scene::Scene( const Scene&  s ) : _scene(s._scene),_disp_objs(s._disp_objs),_matrix_stack(s._matrix_stack) {
+  Scene::Scene( const Scene&  s ) : _scene(s._scene),_matrix_stack(s._matrix_stack) {
 
     _timer_active   = true;
     _timer_time_scale    = 1;
@@ -105,6 +106,11 @@ namespace GMlib {
     return 0;
   }
 
+  RenderManager *Scene::getRenderManager() const {
+
+    return _rm;
+  }
+
 
   /*! int Scene::getSize()
    *  \brief Pending Documentation
@@ -114,17 +120,6 @@ namespace GMlib {
   int Scene::getSize() {
 
     return _scene.getSize();
-  }
-
-
-  /*! int Scene::getSizeTotal()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  int Scene::getSizeTotal() {
-
-    return _disp_objs.getSize();
   }
 
 
@@ -184,8 +179,7 @@ namespace GMlib {
     for(int i=0; i < _scene.getSize(); i++)
       no_disp_obj += _scene[i]->prepare( _lights, _matrix_stack, this );
 
-    if( _disp_objs.getMaxSize() < no_disp_obj )
-      _disp_objs.setMaxSize( no_disp_obj );
+    _rm->updateMaxObjects(no_disp_obj);
   }
 
 
@@ -207,17 +201,6 @@ namespace GMlib {
   SceneObject* Scene::operator[]( int i ) {
 
     return _scene[i];
-  }
-
-
-  /*! SceneObject* Scene::operator()(int i)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  SceneObject* Scene::operator()(int i) {
-
-    return _disp_objs[i];
   }
 
 
@@ -298,77 +281,9 @@ namespace GMlib {
     }
   }
 
-  /*! bool Scene::isVisible( SceneObject* obj )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  bool Scene::isVisible( SceneObject* obj ) {
+  void Scene::initRenderManager() {
 
-    return _disp_objs.exist( obj );
-  }
-
-  /*! void Scene::_display()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void Scene::display(Camera* cam ) {
-
-    for( int i = 0; i < _disp_objs.getSize(); i++ )
-      _disp_objs[i]->display( cam );
-
-//    for( int i = 0; i < _disp_objs.getSize(); i++ )
-//      _disp_objs[i]->displaySelection( cam );
-
-//    glDisable( GL_BLEND );
-
-//    if( !blend_sorted ) {
-
-//      for( int i = 0; i < _disp_objs.getSize(); i++ )
-//        _disp_objs[i]->_display( cam );
-//    }
-//    else {
-
-//      for( int i = 0; i < _disp_opaque.getSize(); i++ )
-//        _disp_opaque[i].getObject()->_display( cam );
-
-//      glEnable( GL_BLEND );
-//      for( int i = 0; i < _disp_translucent.getSize(); i++ ) {
-//        _disp_translucent[i].getObject()->_display( cam );
-//      }
-//    }
-  }
-
-  /*! void Scene::select( int type_id, Camera* cam )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void Scene::select( int type_id, Camera* cam ) {
-
-    for( int i=0; i < _disp_objs.getSize(); i++ )
-      _disp_objs[i]->select( type_id, cam );
-  }
-
-
-  /*! void Scene::_culling( const Frustum& f )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  Culling of light is now possible
-   */
-  void Scene::culling( const Frustum& f, bool on ) {
-
-    int i;
-    _disp_objs.resetSize();
-
-    if( on )
-      for( i = 0; i < _scene.getSize(); i++ )
-        _scene[i]->culling( _disp_objs, f );
-    else
-      for( i = 0; i < _scene.getSize(); i++ )
-        _scene[i]->fillObj( _disp_objs );
+    _rm = new RenderManager(this);
   }
 
 

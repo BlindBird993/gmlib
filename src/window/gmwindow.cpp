@@ -71,7 +71,7 @@ namespace GMlib {
       addViewSet( getCameraIndex(cam) );
     }
 
-    _rm = new RenderManager( this );
+    initRenderManager();
 
     glGenBuffers( 1, &_vbo_quad );
     glGenBuffers( 1, &_vbo_quad_tex );
@@ -471,6 +471,18 @@ namespace GMlib {
     std::cout << "  --------------------" << std::endl;
     std::cout << "  - Total nr of Lights: "<< header.p[0] << std::endl;
 
+  }
+
+  SceneObject *GMWindow::findSelectObject(Camera *cam, const Vector<int,2> &pos, int type_id) const {
+
+    return findSelectObject( cam, pos(0), pos(1), type_id );
+  }
+
+  SceneObject *GMWindow::findSelectObject(Camera *cam, int x, int y, int type_id) const {
+
+    RenderManager *rm = getRenderManager();
+    rm->select( cam, type_id );
+    return rm->findObject( x, y );
   }
 
 

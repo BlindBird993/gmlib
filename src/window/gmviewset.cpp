@@ -29,8 +29,6 @@
 
 #include "gmviewset.h"
 
-#include "render/gmrenderer.h"
-
 namespace GMlib {
 
   /*! ViewSet::ViewSet(Camera* cam)
@@ -77,7 +75,6 @@ namespace GMlib {
     for(int i=0; i<_borders.getSize(); i++)	delete _borders[i];
   }
 
-
   /*! ViewSet& ViewSet::operator=(const ViewSet& viewset)
    *	\brief Pending Documentation
    *
@@ -103,17 +100,17 @@ namespace GMlib {
   }
 
 
-  /*! void ViewSet::_drawCamera(bool stereo)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void ViewSet::drawCamera() {
+//  /*! void ViewSet::_drawCamera(bool stereo)
+//   *	\brief Pending Documentation
+//   *
+//   *	Pending Documentation
+//   */
+//  void ViewSet::drawCamera() {
 
-//    drawBorder();
-    for( int i = 0; i < _cameras.getSize(); i++ )
-      _cameras[i]->go( false );
-  }
+////    drawBorder();
+//    for( int i = 0; i < _cameras.getSize(); i++ )
+//      _cameras[i]->go( false );
+//  }
 
 
   /*! bool ViewSet::_find(int x, int y, Camera*& cam)

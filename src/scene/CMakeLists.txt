@@ -38,6 +38,7 @@ addSources(
 addSubDirectory(camera)           # <camera> sub-module
 addSubDirectory(displayobjects)   # <displayobject> sub-module
 addSubDirectory(light)            # <light> sub-module
+addSubDirectory(render)           # <render> sub-module
 addSubDirectory(selector)         # <selector> sub-module
 addSubDirectory(utils)            # <utils> sub-module
 addSubDirectory(visualizer)       # <visualizer> sub-module

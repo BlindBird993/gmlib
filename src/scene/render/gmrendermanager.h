@@ -33,10 +33,10 @@
 
 
 // local
+#include "scene/gmfrustum.h"
 
 //gmlib
 #include <core/containers/gmarray.h>
-#include <scene/gmfrustum.h>
 
 
 namespace GMlib {
@@ -55,23 +55,23 @@ namespace GMlib {
   public:
     RenderManager( Scene* scene );
 
-    void            init();
-    void            render( ViewSet& view_set );
-    void            select(Camera* cam, int type_id );
+    /* Buffers and internal workings */
+    void            updateMaxObjects( int no_objs );
     void            resize( int w, int h );
 
-    SceneObject*    findObject( int x, int y );
+    /* Rendering */
+    void            render(const Array<Camera *> &cameras );
 
+    /* Selecting */
+    SceneObject*    findObject( int x, int y );
+    void            select(Camera* cam, int type_id );
 
   private:
     Scene                     *_scene;
+    Array<SceneObject*>       _objs;
+
     DisplayRenderer           *_disp;
     SelectRenderer            *_select;
-
-//    Renderer                *_object_renderer;
-//    Renderer                *_select_renderer;
-
-
 
   }; // END class RenderManager
 

@@ -29,9 +29,9 @@
 
 #include "gmrenderer.h"
 
-// gmlib
-#include <scene/gmfrustum.h>
-#include <scene/camera/gmcamera.h>
+// local
+#include "scene/gmfrustum.h"
+#include "scene/camera/gmcamera.h"
 
 // stl
 #include <cassert>
@@ -90,9 +90,9 @@ namespace GMlib {
 
 
 
-  DisplayRenderer::DisplayRenderer(Scene *scene) : Renderer(scene) {
+  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene) {
 
-    init();
+    OGL::createRenderBuffer();
   }
 
   void DisplayRenderer::beginRendering() {
@@ -110,12 +110,7 @@ namespace GMlib {
     OGL::clearRenderBuffer();
   }
 
-  void DisplayRenderer::init() {
-
-    OGL::createRenderBuffer();
-  }
-
-  void DisplayRenderer::prepare(Camera *cam) {
+  void DisplayRenderer::prepare(Array<SceneObject*>& objs, Camera *cam) {
 
     // Compute frustum/frustum-matrix, set glViewport
     cam->setupDisplay();
@@ -124,28 +119,28 @@ namespace GMlib {
     const Frustum &frustum = cam->getFrustum();
     const bool is_culling = cam->isCulling();
 
-    _objs.resetSize();
+    objs.resetSize();
 
     assert( _scene );
 
     if(is_culling)
       for( int i = 0; i < _scene->getSize(); ++i )
-        (*_scene)[i]->culling( _objs, frustum );
+        (*_scene)[i]->culling( objs, frustum );
     else
       for( int i = 0; i < _scene->getSize(); ++i )
-        (*_scene)[i]->fillObj( _objs );
+        (*_scene)[i]->fillObj( objs );
   }
 
-  void DisplayRenderer::render( Camera* cam) {
+  void DisplayRenderer::render(Array<SceneObject*>& objs, Camera* cam) {
 
-    for( int i = 0; i < _objs.getSize(); i++ )
-      _objs[i]->display( cam );
+    for( int i = 0; i < objs.getSize(); i++ )
+      objs[i]->display( cam );
   }
 
-  void DisplayRenderer::renderSelect(Camera *cam) {
+  void DisplayRenderer::renderSelect(Array<SceneObject*>& objs, Camera *cam) {
 
-    for( int i = 0; i < _objs.getSize(); ++i )
-      _objs[i]->displaySelection( cam );
+    for( int i = 0; i < objs.getSize(); ++i )
+      objs[i]->displaySelection( cam );
   }
 
   void DisplayRenderer::resize(int w, int h) {
@@ -161,9 +156,9 @@ namespace GMlib {
 
 
 
-  SelectRenderer::SelectRenderer(Scene *scene) : Renderer( scene ) {
+  SelectRenderer::SelectRenderer(Scene *scene) : MultiObjectRenderer( scene ) {
 
-    init();
+    OGL::createSelectBuffer();
   }
 
   SceneObject *SelectRenderer::findObject(int x, int y) {
@@ -235,33 +230,26 @@ namespace GMlib {
     OGL::unbindSelectBuffer();
   }
 
-  void SelectRenderer::init() {
-
-    OGL::createSelectBuffer();
-  }
-
-  void SelectRenderer::prepare(Camera *cam) {
+  void SelectRenderer::prepare(Array<SceneObject *> &objs, Camera *cam){
 
 
     const Frustum &frustum = cam->getFrustum();
     const bool is_culling = cam->isCulling();
 
-    _objs.resetSize();
+    objs.resetSize();
 
     assert( _scene );
 
     if(is_culling)
       for( int i = 0; i < _scene->getSize(); ++i )
-        (*_scene)[i]->culling( _objs, frustum );
+        (*_scene)[i]->culling( objs, frustum );
     else
       for( int i = 0; i < _scene->getSize(); ++i )
-        (*_scene)[i]->fillObj( _objs );
-
-    std::cout << "SelectRender::prepare: no objs: " << _objs.getSize() << std::endl;
+        (*_scene)[i]->fillObj( objs );
 
   }
 
-  void SelectRenderer::select(Camera *cam, int type_id) {
+  void SelectRenderer::select(Array<SceneObject*>& objs, Camera *cam, int type_id) {
 
 
     // Compute frustum/frustum-matrix, set glViewport
@@ -271,8 +259,8 @@ namespace GMlib {
 
     select_prog.bind();
 
-    for( int i=0; i < _objs.getSize(); i++ )
-      _objs[i]->select( type_id, cam );
+    for( int i=0; i < objs.getSize(); i++ )
+      objs[i]->select( type_id, cam );
 
     select_prog.unbind();
 
@@ -281,6 +269,13 @@ namespace GMlib {
   void SelectRenderer::resize(int w, int h) {
 
     OGL::setSelectBufferSize( w, h );
+  }
+
+  SingleObjectRenderer::SingleObjectRenderer(Scene *scene) : Renderer(scene) {
+
+  }
+
+  MultiObjectRenderer::MultiObjectRenderer(Scene *scene) : Renderer(scene) {
   }
 
 

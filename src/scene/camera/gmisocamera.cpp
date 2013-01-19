@@ -96,18 +96,18 @@ namespace GMlib {
   }
 
 
-  /*! void IsoCamera::go(bool stereo)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   *	Running the IsoCamera.
-   */
-  void IsoCamera::go(bool /*stereo*/) {
+//  /*! void IsoCamera::go(bool stereo)
+//   *	\brief Pending Documentation
+//   *
+//   *	Pending Documentation
+//   *	Running the IsoCamera.
+//   */
+//  void IsoCamera::go(bool /*stereo*/) {
 
-    _active = true;
-    display();
-    _active = false;
-  }
+//    _active = true;
+//    display();
+//    _active = false;
+//  }
 
 
   /*! void IsoCamera::localDisplay()

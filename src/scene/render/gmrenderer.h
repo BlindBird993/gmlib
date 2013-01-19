@@ -67,18 +67,12 @@ namespace GMlib {
     int               getBufferHeight() const;
     bool              isInitialized() const;
 
-    virtual void      init() = 0;
-    virtual void      prepare( Camera* cam ) = 0;
     virtual void      resize( int w, int h ) = 0;
 
   protected:
     void              markAsInitialized();
     void              setBufferSize( int w, int h );
 
-    /* internal cache */
-    Array<SceneObject*>     _objs;
-
-    //
     Scene             *_scene;
 
   private:
@@ -93,41 +87,55 @@ namespace GMlib {
 
   }; // END class Renderer
 
+  class SingleObjectRenderer : public Renderer {
+  public:
+    SingleObjectRenderer( Scene* scene );
+  };
 
-  class DisplayRenderer : public Renderer {
+  class MultiObjectRenderer : public Renderer {
+  public:
+    MultiObjectRenderer( Scene* scene );
+
+    virtual void      prepare( Array<SceneObject*>& objs, Camera* cam ) = 0;
+  };
+
+  class DisplayRenderer : public MultiObjectRenderer {
   public:
     DisplayRenderer( Scene* scene );
 
-    void      renderSelect( Camera* cam );
+    void      renderSelect(Array<SceneObject*>& objs, Camera* cam );
 
     /* virtual from Renderer */
     void      prepareRendering();
     void      beginRendering();
     void      endRendering();
 
-    void      init();
-    void      prepare(Camera *cam);
-    void      render( Camera* cam );
+    void      render(Array<SceneObject*>& objs, Camera* cam );
     void      resize(int w, int h);
+
+    /* virtual from MultiObjectRenderer */
+    void      prepare(Array<SceneObject*>& objs, Camera *cam);
 
   }; // END class DisplayRenderer
 
-  class SelectRenderer : public Renderer {
+  class SelectRenderer : public MultiObjectRenderer {
   public:
     SelectRenderer( Scene* scene );
 
     SceneObject*                findObject( int x, int y );
     Array<SceneObject*>         findObjects(int xmin, int ymin, int xmax, int ymax );
 
+
     /* virtual from Renderer */
     void                        prepareRendering();
     void                        beginRendering();
     void                        endRendering();
 
-    void                        init();
-    void                        prepare(Camera *cam);
-    void                        select(Camera* cam, int type_id );
     void                        resize(int w, int h);
+
+    /* virtual from MultiObjectRenderer */
+    void                        prepare(Array<SceneObject*>& objs, Camera *cam);
+    void                        select(Array<SceneObject*>& objs, Camera* cam, int type_id );
 
   };
 
