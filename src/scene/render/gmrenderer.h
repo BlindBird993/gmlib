@@ -103,8 +103,8 @@ namespace GMlib {
   public:
     DisplayRenderer( Scene* scene );
 
-    void      render(Array<SceneObject*>& objs, Camera* cam );
-    void      renderSelect(Array<SceneObject*>& objs, Camera* cam );
+    void      render(Array<SceneObject*>& objs, const Array<Camera*>& cameras );
+    void      renderSelect(Array<SceneObject*>& objs, const Array<Camera*>& cameras );
 
     /* virtual from Renderer */
     void      prepareRendering();

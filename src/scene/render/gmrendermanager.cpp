@@ -111,28 +111,8 @@ namespace GMlib {
 
   void RenderManager::render(const Array<Camera*>& cameras ) {
 
-    // Prepare renderer for rendering
-    _disp->prepareRendering();
 
-    // Tell renderer that rendering is begining
-    _disp->beginRendering(); {
-
-      for( int i = 0; i < cameras.getSize(); ++i ) {
-
-        Camera *cam = cameras(i);
-        cam->markAsActive();
-
-        _disp->prepare( _objs, cam );
-
-          // Rendering
-          _disp->render( _objs, cam );
-    //      _disp->renderSelect( cam );
-
-
-        cam->markAsInactive();
-      }
-    // Tell renderer that rendering is ending
-    } _disp->endRendering();
+    _disp->render( _objs, cameras );
 
 
 
@@ -230,16 +210,7 @@ namespace GMlib {
 
   void RenderManager::select(Camera *cam, int type_id) {
 
-    // Prepare for select rendering
-    _select->prepareRendering();
-
-    _select->prepare( _objs, cam );
-
-    _select->beginRendering(); {
-
       _select->select( _objs, cam, type_id );
-
-    }_select->endRendering();
   }
 
   void RenderManager::setClearColor(const Color &c) {

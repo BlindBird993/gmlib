@@ -131,16 +131,53 @@ namespace GMlib {
         (*_scene)[i]->fillObj( objs );
   }
 
-  void DisplayRenderer::render(Array<SceneObject*>& objs, Camera* cam) {
+  void DisplayRenderer::render(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
 
-    for( int i = 0; i < objs.getSize(); i++ )
-      objs[i]->display( cam );
+    // Prepare renderer for rendering
+    prepareRendering();
+
+    // Tell renderer that rendering is begining
+    beginRendering(); {
+
+      for( int i = 0; i < cameras.getSize(); ++i ) {
+
+
+        Camera *cam = cameras(i);
+        cam->markAsActive();
+
+        prepare( objs, cam );
+
+        for( int i = 0; i < objs.getSize(); i++ )
+          objs[i]->display( cam );
+
+        cam->markAsInactive();
+      }
+    // Tell renderer that rendering is ending
+    } endRendering();
   }
 
-  void DisplayRenderer::renderSelect(Array<SceneObject*>& objs, Camera *cam) {
+  void DisplayRenderer::renderSelect(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
 
-    for( int i = 0; i < objs.getSize(); ++i )
-      objs[i]->displaySelection( cam );
+    // Prepare renderer for rendering
+    prepareRendering();
+
+    // Tell renderer that rendering is begining
+    beginRendering(); {
+
+      for( int i = 0; i < cameras.getSize(); ++i ) {
+
+        Camera *cam = cameras(i);
+        cam->markAsActive();
+
+        prepare( objs, cam);
+
+        for( int i = 0; i < objs.getSize(); ++i )
+          objs[i]->displaySelection( cam );
+
+        cam->markAsInactive();
+      }
+    // Tell renderer that rendering is ending
+    } endRendering();
   }
 
   void DisplayRenderer::resize(int w, int h) {
@@ -251,18 +288,27 @@ namespace GMlib {
 
   void SelectRenderer::select(Array<SceneObject*>& objs, Camera *cam, int type_id) {
 
+    // Prepare for select rendering
+    prepareRendering();
 
-    // Compute frustum/frustum-matrix, set glViewport
-    cam->setupDisplay();
+    prepare( objs, cam );
 
-    const GLProgram select_prog("select");
+    beginRendering(); {
 
-    select_prog.bind();
+      // Compute frustum/frustum-matrix, set glViewport
+      cam->setupDisplay();
 
-    for( int i=0; i < objs.getSize(); i++ )
-      objs[i]->select( type_id, cam );
+      const GLProgram select_prog("select");
 
-    select_prog.unbind();
+      select_prog.bind();
+
+      for( int i=0; i < objs.getSize(); i++ )
+        objs[i]->select( type_id, cam );
+
+      select_prog.unbind();
+
+
+    } endRendering();
 
   }
 
