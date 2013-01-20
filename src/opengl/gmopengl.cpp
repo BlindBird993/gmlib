@@ -48,25 +48,6 @@ namespace GL {
   OGL::BOMap    OGL::_bos;
   OGL::TexMap   OGL::_texs;
 
-  GLuint OGL::_select_fbo = 0;
-  GLuint OGL::_select_rbo_color = 0;
-  GLuint OGL::_select_rbo_depth = 0;
-  int OGL::_select_fbo_h = 0;
-  int OGL::_select_fbo_w = 0;
-
-  bool OGL::_select_exists = false;
-
-
-  //  GLuint OGL::_render_fbo = 0;
-  GLuint OGL::_render_rbo_color = 0;
-  GLuint OGL::_render_rbo_selected = 0;
-  GLuint OGL::_render_rbo_depth = 0;
-  int OGL::_render_fbo_h = 0;
-  int OGL::_render_fbo_w = 0;
-
-  bool OGL::_render_exists = false;
-
-
 
   // Light stuff
   GLuint OGL::_light_ubo = 0;
@@ -418,8 +399,6 @@ namespace GL {
 
     deleteLightBuffer();
     deleteStandardRepBOs();
-    deleteSelectBuffer();
-    deleteRenderBuffer();
     GLShaderManager::cleanUp();
   }
 
@@ -586,8 +565,6 @@ namespace GL {
 
 
     GLShaderManager::init();
-//    createRenderBuffer();
-//    createSelectBuffer();
     createStandardRepBOs();
     createLightBuffer();
   }
@@ -664,157 +641,6 @@ namespace GL {
 
 
 
-  void OGL::bindRenderBuffer() {
-
-    bindFbo( "render_fbo" );
-
-    GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-    glDrawBuffers( 2, buffers );
-  }
-
-  void OGL::bindSelectBuffer() {
-
-    glBindFramebuffer( GL_FRAMEBUFFER, OGL::_select_fbo );
-  }
-
-  void OGL::clearRenderBuffer() {
-
-    if( !_render_exists )
-      return;
-
-    bindFbo( "render_fbo" );
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    unbindFbo( "render_fbo" );
-
-    float cc[4];
-    glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
-    Color c = GMcolor::Black;
-    glClearColor( c );
-
-    bindFbo( "render_fbo_selected" );
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    unbindFbo( "render_fbo_selected" );
-
-    ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
-  }
-
-  void OGL::clearSelectBuffer() {
-
-    if( !_select_exists )
-      return;
-
-    const Color &c = GMcolor::Black;
-
-    glBindFramebuffer( GL_FRAMEBUFFER, OGL::_select_fbo );
-    glClearColor( c );
-    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
-  }
-
-  void OGL::createRenderBuffer() {
-
-    if( _render_exists )
-      return;
-
-    // Create a render FBO
-    createFbo( "render_fbo" );
-
-    // Create a render color RBO
-    glGenTextures( 1, &_render_rbo_color );
-    glBindTexture( GL_TEXTURE_2D, _render_rbo_color ); {
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    } glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-    // Create a render color RBO
-    glGenTextures( 1, &_render_rbo_selected );
-    glBindTexture( GL_TEXTURE_2D, _render_rbo_selected ); {
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    } glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-    // Create a render depth RBO
-    glGenRenderbuffers( 1, &_render_rbo_depth );
-
-    // Bind render buffers to frame buffer.
-    bindFbo( "render_fbo" ); {
-
-      glBindRenderbuffer( GL_RENDERBUFFER, _render_rbo_depth );
-      glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _render_rbo_depth );
-      glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
-
-      glBindTexture( GL_TEXTURE_2D, _render_rbo_color );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_color, 0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-      glBindTexture( GL_TEXTURE_2D, _render_rbo_selected );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _render_rbo_selected, 0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-    } unbindFbo( "render_fbo" );
-
-    // Create a render FBO which only contains the selected texture as a rendering target
-    // and one for the color.
-    // This is mainly for individual clearing of the buffers.
-    createFbo( "render_fbo_color" );
-
-    bindFbo( "render_fbo_color" ); {
-
-      glBindTexture( GL_TEXTURE_2D, _render_rbo_color );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_color, 0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-    } unbindFbo( "render_fbo_color" );
-
-    createFbo( "render_fbo_selected" );
-
-    bindFbo( "render_fbo_selected" ); {
-
-      glBindTexture( GL_TEXTURE_2D, _render_rbo_selected );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _render_rbo_selected, 0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-    } unbindFbo( "render_fbo_selected" );
-
-
-
-    _render_exists = true;
-  }
-
-  void OGL::createSelectBuffer() {
-
-    if( _select_exists )
-      return;
-
-    // Create a selection FBO
-    glGenFramebuffers( 1, &_select_fbo );
-
-    // Create a selection color RBO
-    glGenRenderbuffers( 1, &_select_rbo_color );
-
-    // Create a selection depth RBO
-    glGenRenderbuffers( 1, &_select_rbo_depth );
-
-    // Bind render buffers to frame buffer.
-    glBindFramebuffer( GL_FRAMEBUFFER, _select_fbo ); {
-
-      glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_depth );
-      glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _select_rbo_depth );
-
-      glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_color );
-      glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _select_rbo_color );
-
-      glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
-
-    } glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
-
-    _select_exists = true;
-  }
-
   void OGL::createSelectorRepBOs() {
 
   //    float ir = 0.07;
@@ -889,119 +715,11 @@ namespace GL {
     OGL::unbindBo( "std_rep_frame_indices" );
   }
 
-  void OGL::deleteRenderBuffer() {
-
-    if( !_render_exists )
-      return;
-
-    // Delete the buffers used for the render buffer
-    deleteFbo( "render_fbo" );
-    glDeleteTextures( 1, &_render_rbo_color );
-    glDeleteTextures( 1, &_render_rbo_selected );
-    glDeleteRenderbuffers( 1, &_render_rbo_depth );
-
-    _render_exists = false;
-  }
-
-  void OGL::deleteSelectBuffer() {
-
-    if( !_select_exists )
-      return;
-
-    // Delete the buffers used for the selection buffer
-    glDeleteFramebuffers( 1, &_select_fbo );
-    glDeleteRenderbuffers( 1, &_select_rbo_color );
-    glDeleteRenderbuffers( 1, &_select_rbo_depth );
-
-    _select_exists = false;
-  }
-
   void OGL::deleteStandardRepBOs() {
 
     deleteBo( "std_rep_cube");
     deleteBo( "std_rep_cube_indices");
     deleteBo( "std_rep_frame_indices" );
-  }
-
-  GLuint OGL::getRenderBuffer() {
-
-
-    return getFboId( "render_fbo" );
-  }
-
-  GLuint OGL::getSelectBuffer() {
-
-    return _select_fbo;
-  }
-
-  int OGL::getRenderBufferHeight() {
-
-    return _render_fbo_h;
-  }
-
-  int OGL::getSelectBufferHeight() {
-
-    return _select_fbo_h;
-  }
-
-  int OGL::getRenderBufferWidth() {
-
-    return _render_fbo_w;
-  }
-
-  int OGL::getSelectBufferWidth() {
-
-    return _select_fbo_w;
-  }
-
-  GLuint OGL::getRenderColorBuffer() {
-
-    return _render_rbo_color;
-  }
-
-  GLuint OGL::getRenderSelectedBuffer() {
-
-    return _render_rbo_selected;
-  }
-
-  void OGL::unbindRenderBuffer() {
-
-    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
-  }
-
-  void OGL::unbindSelectBuffer() {
-
-    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
-  }
-
-  void OGL::setRenderBufferSize(int width, int height) {
-
-    _render_fbo_w = width;
-    _render_fbo_h = height;
-
-    glBindRenderbuffer( GL_RENDERBUFFER, _render_rbo_depth );
-    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _render_fbo_w, _render_fbo_h );
-    glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
-
-    glBindTexture( GL_TEXTURE_2D, _render_rbo_color);
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, _render_fbo_w, _render_fbo_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-    glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-    glBindTexture( GL_TEXTURE_2D, _render_rbo_selected);
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, _render_fbo_w, _render_fbo_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-    glBindTexture( GL_TEXTURE_2D, 0x0 );
-  }
-
-  void OGL::setSelectBufferSize(int width, int height) {
-
-    _select_fbo_w = width;
-    _select_fbo_h = height;
-
-    glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_depth );
-    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _select_fbo_w, _select_fbo_h );
-    glBindRenderbuffer( GL_RENDERBUFFER, _select_rbo_color );
-    glRenderbufferStorage( GL_RENDERBUFFER, GL_RGB, _select_fbo_w, _select_fbo_h );
-    glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
   }
 
   void OGL::bindLightBuffer() {

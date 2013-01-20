@@ -356,55 +356,6 @@ namespace GL {
 
 
 
-    // Default render buffer
-  public:
-    static void         bindRenderBuffer();
-    static void         clearRenderBuffer();
-    static void         createRenderBuffer();
-    static void         deleteRenderBuffer();
-    static GLuint       getRenderBuffer();
-    static int          getRenderBufferHeight();
-    static int          getRenderBufferWidth();
-    static GLuint       getRenderColorBuffer();
-    static GLuint       getRenderSelectedBuffer();
-    static void         setRenderBufferSize( int width, int height );
-    static void         unbindRenderBuffer();
-
-  private:
-    static GLuint       _render_rbo_color;
-    static GLuint       _render_rbo_selected;
-    static GLuint       _render_rbo_depth;
-
-    static GLuint       _render__select_rbo_selected;
-    static GLuint       _render__select_rbo_depth;
-
-    static int          _render_fbo_w;
-    static int          _render_fbo_h;
-
-    static bool         _render_exists;
-
-
-    // Selection Buffer
-  public:
-    static void         bindSelectBuffer();
-    static void         clearSelectBuffer();
-    static void         createSelectBuffer();
-    static void         deleteSelectBuffer();
-    static GLuint       getSelectBuffer();
-    static int          getSelectBufferHeight();
-    static int          getSelectBufferWidth();
-    static void         setSelectBufferSize( int width, int height );
-    static void         unbindSelectBuffer();
-
-  private:
-    static GLuint       _select_fbo;
-    static GLuint       _select_rbo_color;
-    static GLuint       _select_rbo_depth;
-
-    static int          _select_fbo_w;
-    static int          _select_fbo_h;
-
-    static bool         _select_exists;
 
     // Buffer Objects
   public:
