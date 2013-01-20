@@ -30,10 +30,11 @@
 
 
 
+// local
+#include "../camera/gmcamera.h"
 
 // gmlib
 #include <core/types/gmpoint.h>
-#include <scene/camera/gmcamera.h>
 
 
 namespace GMlib {

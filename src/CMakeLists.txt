@@ -49,9 +49,6 @@ if( GMLIB_TEST )
   # Add STereoLithography module
   addModule(StereoLithography TestUtils Core OpenGL Scene Parametrics TriangleSystem)
 
-  # Add Window module
-  addModule(Window TestUtils Core OpenGL Scene)
-
   # Add Script module
   addModule(Script TestUtils Core)
 
@@ -74,9 +71,6 @@ else( GMLIB_TEST )
 
   # Add STereoLithography module
   addModule(StereoLithography Core OpenGL Scene Parametrics TriangleSystem)
-
-  # Add Window module
-  addModule(Window Core OpenGL Scene)
 
   # Add Script module
   addModule(Script Core)

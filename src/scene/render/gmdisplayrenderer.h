@@ -34,11 +34,13 @@
 
 #include "gmrenderer.h"
 
+// local
+#include "../camera/gmcamera.h"
+
 // gmlib
 #include <opengl/gmframebufferobject.h>
 #include <opengl/gmrenderbufferobject.h>
 #include <opengl/gmtexture.h>
-#include <scene/camera/gmcamera.h>
 
 
 namespace GMlib {

@@ -38,6 +38,7 @@
 //gmlib
 #include <core/containers/gmarray.h>
 #include <opengl/gmopengl.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
 
 
 namespace GMlib {
@@ -89,6 +90,8 @@ namespace GMlib {
 
     GLuint          _vbo_quad;
     GLuint          _vbo_quad_tex;
+
+    GL::VertexBufferObject    _vbo_borders;
 
   }; // END class RenderManager
 

@@ -29,9 +29,9 @@
 
 #include "gmselectrenderer.h"
 
-// gmlib
-#include <scene/gmscene.h>
-#include <scene/camera/gmcamera.h>
+// local
+#include "../gmscene.h"
+#include "../camera/gmcamera.h"
 
 // stl
 #include <cassert>

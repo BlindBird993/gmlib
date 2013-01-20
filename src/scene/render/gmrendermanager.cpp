@@ -43,7 +43,10 @@
 
 namespace GMlib {
 
-  RenderManager::RenderManager(Scene *scene) : _objs(128), _clear_color( 0.5f, 0.5f, 0.5f, 1.0f ), _select_color( GMcolor::Pink ) {
+  RenderManager::RenderManager(Scene *scene) : _objs(128), _clear_color( 0.5f, 0.5f, 0.5f, 1.0f ), _select_color( GMcolor::Pink ), _vbo_borders("ViewSetBorderVBO") {
+
+
+
 
     _scene = scene;
     _disp = new DisplayRenderer( scene );
@@ -112,12 +115,14 @@ namespace GMlib {
 
   void RenderManager::render(const Array<Camera*>& cameras ) {
 
+    GL::glClearColor( getClearColor() );
+    ::glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
+    ::glShadeModel(GL_SMOOTH);
+    ::glEnable(GL_DEPTH_TEST);
+    ::glEnable(GL_LIGHTING);
+
 
     _disp->render( _objs, cameras );
-
-//    _disp->renderSelect( _objs, cameras );
-
-
 
 
 
@@ -202,6 +207,23 @@ namespace GMlib {
     color_prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
     color_prog.setUniform( "u_selected", false );
 
+
+    {
+
+      color_prog.setUniform( "u_color", GMcolor::Blue );
+
+      GLuint vert_loc = color_prog.getAttributeLocation( "in_vertex" );
+      _vbo_borders.bind();
+//      _vbo.enable( vert_loc, 2, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
+      glVertexAttribPointer( vert_loc, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+      glEnableVertexAttribArray( vert_loc );
+      glPointSize( 10.0f );
+      glDrawArrays( GL_QUADS, 0,  4 );
+
+      glDisableVertexAttribArray( vert_loc );
+
+      _vbo_borders.unbind();
+    }
 //    _view_set_stack.back().drawBorder();
 
     color_prog.unbind();

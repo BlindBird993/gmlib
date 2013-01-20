@@ -29,8 +29,8 @@
 
 #include "gmdisplayrenderer.h"
 
-// gmlib
-#include <scene/camera/gmcamera.h>
+// local
+#include "../camera/gmcamera.h"
 
 //stl
 #include <cassert>

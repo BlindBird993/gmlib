@@ -42,4 +42,5 @@ addSubDirectory(render)           # <render> sub-module
 addSubDirectory(selector)         # <selector> sub-module
 addSubDirectory(utils)            # <utils> sub-module
 addSubDirectory(visualizer)       # <visualizer> sub-module
+addSubDirectory(window)           # <window> sub-module
 

@@ -36,15 +36,15 @@
 #include "gmview.h"
 #include "gmviewset.h"
 
-// gmlib
-#include <scene/camera/gmcamera.h>
-#include <scene/render/gmrendermanager.h>
+// local
+#include "..//camera/gmcamera.h"
+#include "..//render/gmrendermanager.h"
 
-// gmlib::scene - might be removed as light and is implemented with different mechanisms...
-#include <scene/light/gmlight.h>
-#include <scene/light/gmsun.h>
-#include <scene/light/gmspotlight.h>
-#include <scene/light/gmpointlight.h>
+// !! might be removed as light and is implemented with different mechanisms... !!
+#include "..//light/gmlight.h"
+#include "..//light/gmsun.h"
+#include "..//light/gmspotlight.h"
+#include "..//light/gmpointlight.h"
 
 // stl
 #include <iostream>

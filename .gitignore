@@ -3,6 +3,7 @@
 *~
 *.save
 *.bak
+*.back
 *.backup
 *.o
 *.lib
