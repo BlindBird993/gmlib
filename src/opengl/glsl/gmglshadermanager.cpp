@@ -583,11 +583,11 @@ namespace GL {
 
         "#version 150 compatibility \n"
         "\n"
-        "out vec4 gl_FragData[2]; \n"
+        "out vec4 gl_FragColor; \n"
         "\n"
         "void main() \n"
         "{ \n"
-        "  gl_FragData[1] = vec4( 1.0, 1.0, 1.0, 1.0 ); \n"
+        "  gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ); \n"
         "} \n"
         );
 
@@ -757,7 +757,7 @@ namespace GL {
       "smooth in vec3    ex_pos;\n"
       "smooth in vec2    ex_tex;\n"
       "\n"
-      "out vec4 gl_FragData[2];\n"
+      "out vec4 gl_FragColor;\n"
       "\n"
       "void main() {\n"
       "\n"
@@ -785,13 +785,8 @@ namespace GL {
       "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
       "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
       "\n"
-      "  gl_FragData[0] = light_color;\n"
+      "  gl_FragColor = light_color;\n"
       "\n"
-      "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-      "\n"
-      "  if( u_selected )\n"
-      "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
-      "  gl_FragData[1] = sel_color;\n"
       "}\n"
     );
 
@@ -1014,114 +1009,6 @@ namespace GL {
 
     if( !compileShader( "render_fs" ) )
       return false;
-
-
-
-  //    ///////////////////////
-  //    // *pass shader: pass 2
-
-  //    // Vertex shader
-  //    createShader( "default_pass2_vs", GL_VERTEX_SHADER );
-  //    setShaderSource(
-  //        "default_pass2_vs",
-
-  //        "#version 150 core\n"
-  //        "\n"
-  //        "uniform mat4 u_mvpmat;\n"
-  //        "\n"
-  //        "in vec4 in_vertex;\n"
-  //        "in vec2 in_tex_coord;\n"
-  //        "\n"
-  //        "out vec2 ex_tex_coord;\n"
-  //        "out vec4 gl_Position;\n"
-  //        "\n"
-  //        "void main() {\n"
-  //        "\n"
-  //        "  ex_tex_coord = in_tex_coord;\n"
-  //        "  gl_Position = u_mvpmat * in_vertex;\n"
-  //        "}\n"
-  //        );
-
-  //    if( !compileShader( "default_pass2_vs" ) )
-  //      return false;
-
-
-  //    // Fragment shader
-  //    createShader( "default_pass2_fs", GL_FRAGMENT_SHADER );
-  //    setShaderSource(
-  //        "default_pass2_fs",
-
-  //        "#version 150 core\n"
-  //        "\n"
-  //        "uniform sampler2D u_tex;\n"
-  //        "uniform sampler2D u_tex_selected;\n"
-  //        "uniform float u_buf_w;\n"
-  //        "uniform float u_buf_h;\n"
-  //        "uniform vec4 u_select_color;\n"
-  //        "\n"
-  //        "in vec2 ex_tex_coord;\n"
-  //        "\n"
-  //        "float avg( vec4 v ) {\n"
-  //        "\n"
-  //        "  return ( v.r + v.g + v. b ) / 4.0;\n"
-  //        "}\n"
-  //        "\n"
-  //        "\n"
-  //        "float runFilter( mat3 mask, float w, float h ) {\n"
-  //        "\n"
-  //        "  float result = 0; //vec4( 0.0, 0.0, 0.0, 0.0 );\n"
-  //        "\n"
-  //        "  for( float i = -1.0; i <= 1.0; i = i + 1.0 ) {\n"
-  //        "    for( float j = -1.0; j <= 1.0; j = j + 1.0 ) {\n"
-  //        "\n"
-  //        "      float x = ex_tex_coord.x + ( (i + 0.5) / w );\n"
-  //        "      float y = ex_tex_coord.y + ( (j + 0.5) / h );\n"
-  //        "\n"
-  //        "      float sub_res = avg( texture2D( u_tex_selected, vec2( x, y ) ) );\n"
-  //        "\n"
-  //        "      result += sub_res * avg(\n"
-  //        "        vec4(\n"
-  //        "          mask[int(i+1.0)][int(j+1.0)],\n"
-  //        "          mask[int(i+1.0)][int(j+1.0)],\n"
-  //        "          mask[int(i+1.0)][int(j+1.0)],\n"
-  //        "          mask[int(i+1.0)][int(j+1.0)]\n"
-  //        "        )\n"
-  //        "        );\n"
-  //        "    }\n"
-  //        "  }\n"
-  //        "\n"
-  //        "  return result;\n"
-  //        "}\n"
-  //        "\n"
-  //        "void main() {\n"
-  //        "\n"
-  //        "  // x and y sobel filters\n"
-  //        "  mat3 mask_x = mat3(\n"
-  //        "    -1.0, 0.0, 1.0,\n"
-  //        "    -2.0, 0.0, 2.0,\n"
-  //        "    -1.0, 0.0, 1.0\n"
-  //        "    );\n"
-  //        "\n"
-  //        "  mat3 mask_y =  mat3(\n"
-  //        "     1.0,  2.0,  1.0,\n"
-  //        "     0.0,  0.0,  0.0,\n"
-  //        "    -1.0, -2.0, -1.0\n"
-  //        "    );\n"
-  //        "\n"
-  //        "  // summation vars.\n"
-  //        "  float res_x = runFilter( mask_x, u_buf_w, u_buf_h );\n"
-  //        "  float res_y = runFilter( mask_y, u_buf_w, u_buf_h );\n"
-  //        "  float res = sqrt( res_x * res_x + res_y * res_y );\n"
-  //        "\n"
-  //        "  gl_FragColor = texture( u_tex, ex_tex_coord );\n"
-  //        "\n"
-  //        "  if( res > 0.0 )\n"
-  //        "   gl_FragColor = u_select_color;\n"
-  //        "}\n"
-  //        );
-
-  //    if( !compileShader( "default_pass2_fs" ) )
-  //      return false;
 
 
     return true;

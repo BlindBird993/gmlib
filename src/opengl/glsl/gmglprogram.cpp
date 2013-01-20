@@ -49,7 +49,7 @@ namespace GL {
 
     _id = GLShaderManager::getProgramID( _name );
 
-  //    std::cout << "  " << ( ok ? "Creating" : "Using" ) << " a GLProgram \"" << name << "\" with id: " << _id << std::endl;
+      std::cout << "  " << ( ok ? "Creating" : "Using" ) << " a GLProgram \"" << name << "\" with id: " << _id << std::endl;
   }
 
   GLProgram::GLProgram( const GLProgram &copy ) {

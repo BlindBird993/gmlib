@@ -114,7 +114,6 @@ namespace GMlib {
     DisplayRenderer( Scene* scene );
 
     void      render(Array<SceneObject*>& objs, const Array<Camera*>& cameras );
-    void      renderSelect(Array<SceneObject*>& objs, const Array<Camera*>& cameras );
 
     /* virtual from Renderer */
     void      resize(int w, int h);
@@ -125,18 +124,19 @@ namespace GMlib {
 
 //  private:
 
+    /* Depth buffer */
+
+    /* Rendering */
     GL::FramebufferObject   _fbo;
-    GL::FramebufferObject   _fbo_color;
-    GL::FramebufferObject   _fbo_select;
-
-    /* Textures */
     GL::Texture             _rbo_color;
-    GL::Texture             _rbo_select;
-
-    /* Render buffer objects */
     GL::RenderbufferObject  _rbo_depth;
 
+    /* Selection rendering */
+    GL::FramebufferObject   _fbo_select;
+    GL::Texture             _rbo_select;
 
+    GL::FramebufferObject   _fbo_select_depth;
+    GL::RenderbufferObject  _rbo_select_depth;
 
 
   }; // END class DisplayRenderer

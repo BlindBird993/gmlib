@@ -50,7 +50,7 @@ namespace GL {
     void                    unbind() const;
 
     void                    clear(GLbitfield mask) const;
-    void                    clear(const Color& c , GLbitfield mask) const;
+    void                    clearColorBuffer(const Color& c) const;
 
     void                    attachRenderbuffer( const RenderbufferObject& rbo,  GLenum attachment );
 
@@ -98,14 +98,14 @@ namespace GL {
   }
 
   inline
-  void FramebufferObject::clear(const Color &c, GLbitfield mask ) const {
+  void FramebufferObject::clearColorBuffer(const Color &c ) const {
 
     static float cc[4];
     ::glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
     glClearColor( c );
 
     GLint id = safeBind();
-    ::glClear( mask );
+    ::glClear( GL_COLOR_BUFFER_BIT );
     safeUnbind(id);
 
     ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );

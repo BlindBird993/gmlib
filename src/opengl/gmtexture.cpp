@@ -94,21 +94,21 @@ namespace GL {
     return _valid;
   }
 
-  void Texture::texImate1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data) {
+  void Texture::texImage1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data) {
 
     GLint id = safeBind();
     glTexImage1D( _target, level, internal_format, width, border, format, type, data );
     safeUnbind(id);
   }
 
-  void Texture::texImate2D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data) {
+  void Texture::texImage2D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data) {
 
     GLint id = safeBind();
     glTexImage2D( _target, level, internal_format, width, height, border, format, type, data );
     safeUnbind(id);
   }
 
-  void Texture::texImate3D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data) {
+  void Texture::texImage3D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data) {
 
     GLint id = safeBind();
     glTexImage3D( _target, level, internal_format, width, height, depth, border, format, type, data );

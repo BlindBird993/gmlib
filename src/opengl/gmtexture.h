@@ -50,9 +50,9 @@ namespace GL {
 
     bool                    isValid() const;
 
-    void                    texImate1D( GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data );
-    void                    texImate2D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data );
-    void                    texImate3D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data );
+    void                    texImage1D( GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data );
+    void                    texImage2D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data );
+    void                    texImage3D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data );
 
 
     void                    setParameterf(GLenum pname, GLfloat param );

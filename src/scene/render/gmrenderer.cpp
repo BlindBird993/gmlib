@@ -100,7 +100,7 @@ namespace GMlib {
 
 
 
-  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_select(GL_TEXTURE_2D), _rbo_depth() {
+  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _fbo_select("DefaultRenderSelectBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_select(GL_TEXTURE_2D), _rbo_depth() {
 
 
     // Color rbo texture parameters
@@ -115,16 +115,17 @@ namespace GMlib {
     _rbo_select.setParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     _rbo_select.setParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+
     // Bind renderbuffers to framebuffer.
     _fbo.attachRenderbuffer( _rbo_depth, GL_DEPTH_ATTACHMENT );
     _fbo.attachTexture2D( _rbo_color,  GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
-    _fbo.attachTexture2D( _rbo_select, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1 );
-
-    // Bind color renderbuffer to color framebuffer
-    _fbo_color.attachTexture2D( _rbo_color, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
 
     // Bind select renderbuffer to select framebuffer
+    _fbo_select.attachRenderbuffer( _rbo_select_depth, GL_DEPTH_ATTACHMENT );
     _fbo_select.attachTexture2D( _rbo_select, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
+
+    // Bind depth buffer ot depthbuffer framebuffer
+    _fbo_select_depth.attachRenderbuffer( _rbo_select_depth, GL_DEPTH_ATTACHMENT );
 
   }
 
@@ -153,76 +154,102 @@ namespace GMlib {
 
     // Clear render buffers
     _fbo.clear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    _fbo_select.clear( GMcolor::Black, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+    _fbo_select.clearColorBuffer( GMcolor::Black );
+    _fbo_select_depth.clear( GL_DEPTH_BUFFER_BIT );
 
 
-    // Tell renderer that rendering is begining
-    {
-      _fbo.bind();
 
-      GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-      glDrawBuffers( 2, buffers );
 
+
+    // Object rendering
+
+    _fbo.bind();
+
+    for( int i = 0; i < cameras.getSize(); ++i ) {
+
+
+      Camera *cam = cameras(i);
+      cam->markAsActive();
+
+      prepare( objs, cam );
+
+      for( int i = 0; i < objs.getSize(); i++ )
+        objs[i]->display( cam );
+
+      cam->markAsInactive();
     }
-
-    // Rendering
-    {
-
-      for( int i = 0; i < cameras.getSize(); ++i ) {
+    _fbo.unbind();
 
 
-        Camera *cam = cameras(i);
-        cam->markAsActive();
 
-        prepare( objs, cam );
 
-        for( int i = 0; i < objs.getSize(); i++ )
-          objs[i]->display( cam );
+    // Selection rendering - render to depth buffer
 
-        cam->markAsInactive();
-      }
+
+    _fbo_select_depth.bind();
+
+
+    for( int i = 0; i < cameras.getSize(); ++i ) {
+
+
+      Camera *cam = cameras(i);
+      cam->markAsActive();
+
+      prepare( objs, cam );
+
+
+      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+      for( int i = 0; i < objs.getSize(); ++i )
+        objs[i]->displayDepth( cam );
+
+      cam->markAsInactive();
     }
+    _fbo_select_depth.unbind();
 
-    // Tell renderer that rendering is ending
-    {
-      _fbo.unbind();
+
+    // Selection rendering - render
+
+    GLint depth_mask, depth_func;
+
+    ::glGetIntegerv( GL_DEPTH_WRITEMASK, &depth_mask );
+    ::glGetIntegerv( GL_DEPTH_FUNC, &depth_func);
+
+    ::glDepthFunc( GL_LEQUAL );
+    ::glDepthMask( GL_FALSE );
+
+    _fbo_select.bind();
+
+    for( int i = 0; i < cameras.getSize(); ++i ) {
+
+
+      Camera *cam = cameras(i);
+      cam->markAsActive();
+
+      prepare( objs, cam );
+
+
+      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+      for( int i = 0; i < objs.getSize(); ++i )
+        objs[i]->displaySelection( cam );
+
+      cam->markAsInactive();
     }
-  }
+      _fbo_select.unbind();
 
-  void DisplayRenderer::renderSelect(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
-
-    // Prepare renderer for rendering
-    GL::OGL::clearRenderBuffer();
-
-    // Tell renderer that rendering is begining
-    GL::OGL::bindRenderBuffer();
-    {
-
-      for( int i = 0; i < cameras.getSize(); ++i ) {
-
-        Camera *cam = cameras(i);
-        cam->markAsActive();
-
-        prepare( objs, cam);
-
-        for( int i = 0; i < objs.getSize(); ++i )
-          objs[i]->displaySelection( cam );
-
-        cam->markAsInactive();
-      }
-
-    // Tell renderer that rendering is ending
-    }
-    GL::OGL::unbindRenderBuffer();
+    ::glDepthFunc( depth_func );
+    ::glDepthMask( depth_mask );
   }
 
   void DisplayRenderer::resize(int w, int h) {
 
     setBufferSize( w, h );
 
-    _rbo_depth.createStorage( GL_DEPTH_COMPONENT, w, h );
-    _rbo_color.texImate2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-    _rbo_select.texImate2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_depth.createStorage( GL_DEPTH_COMPONENT32, w, h );
+    _rbo_color.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+
+    _rbo_select_depth.createStorage( GL_DEPTH_COMPONENT32, w, h );
+    _rbo_select.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
   }
 
 

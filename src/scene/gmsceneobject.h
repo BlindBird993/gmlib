@@ -310,6 +310,7 @@ namespace GMlib{
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     void                        fillObj( Array<SceneObject*>& );
     void                        display( Camera* cam );
+    void                        displayDepth( Camera* cam );
     void                        displaySelection( Camera* cam );
     void                        select(int what = -1, Camera* cam = 0x0 );
 
@@ -421,19 +422,35 @@ namespace GMlib{
     }
   }
 
-  /*! void SceneObject::displaySelection( Camera* cam )
-   *  \brief Pending
-   *
-   *  Pending
-   */
+  inline
+  void SceneObject::displayDepth( Camera* cam ) {
+
+    if(!_active ) {
+
+      const GL::GLProgram render_select_prog("render_select");
+      render_select_prog.bind();
+      render_select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
+
+      if( _collapsed )
+        _std_rep_visu->select();
+      else {
+
+        for( int i = 0; i < _visualizers.getSize(); ++i )
+          _visualizers[i]->select();
+      }
+//        localSelect();
+      render_select_prog.unbind();
+    }
+  }
+
   inline
   void SceneObject::displaySelection( Camera* cam ) {
 
     if(!_active && _selected ) {
 
       const GL::GLProgram render_select_prog("render_select");
-      render_select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
       render_select_prog.bind();
+      render_select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
 
       if( _collapsed )
         _std_rep_visu->select();
