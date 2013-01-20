@@ -22,12 +22,16 @@
 
 
 addHeaders(
+  gmDisplayRenderer
   gmRenderer
   gmRenderManager
+  gmSelectRenderer
 )
 
 addSources(
+  gmdisplayrenderer.cpp
   gmrenderer.cpp
   gmrendermanager.cpp
+  gmselectrenderer.cpp
 )
 

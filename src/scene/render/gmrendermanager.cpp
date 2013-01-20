@@ -30,10 +30,11 @@
 #include "gmrendermanager.h"
 
 // local
-#include "gmrenderer.h"
 #include "../camera/gmcamera.h"
 #include "../gmscene.h"
 #include "../gmsceneobject.h"
+#include "gmdisplayrenderer.h"
+#include "gmselectrenderer.h"
 
 //gmlib
 #include <opengl/gmopengl.h>

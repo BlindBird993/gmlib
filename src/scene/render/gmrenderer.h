@@ -22,7 +22,7 @@
 
 
 
-/*! \file gmrendermanager.h
+/*! \file gmrender.h
  *  \brief Pending Documentation
  *
  *  Pending Documentation
@@ -33,10 +33,7 @@
 
 
 // GMlib
-#include <opengl/gmopengl.h>
-#include <opengl/gmframebufferobject.h>
-#include <opengl/gmrenderbufferobject.h>
-#include <opengl/gmtexture.h>
+#include <core/containers/gmarray.h>
 
 
 namespace GMlib {
@@ -62,11 +59,10 @@ namespace GMlib {
     int               getBufferHeight() const;
     bool              isInitialized() const;
 
-    virtual void      resize( int w, int h ) = 0;
+    virtual void      resize( int w, int h );
 
   protected:
     void              markAsInitialized();
-    void              setBufferSize( int w, int h );
 
     Scene             *_scene;
 
@@ -93,85 +89,9 @@ namespace GMlib {
   public:
     MultiObjectRenderer( Scene* scene );
 
-    virtual void      prepare( Array<SceneObject*>& objs, Camera* cam ) = 0;
+    virtual void      prepare( Array<SceneObject*>& objs, Camera* cam );
   }; // END class MultiObjectRenderer
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  class DisplayRenderer : public MultiObjectRenderer {
-  public:
-    DisplayRenderer( Scene* scene );
-
-    void      render(Array<SceneObject*>& objs, const Array<Camera*>& cameras );
-
-    /* virtual from Renderer */
-    void      resize(int w, int h);
-
-    /* virtual from MultiObjectRenderer */
-    void      prepare(Array<SceneObject*>& objs, Camera *cam);
-
-
-//  private:
-
-    /* Depth buffer */
-
-    /* Rendering */
-    GL::FramebufferObject   _fbo;
-    GL::Texture             _rbo_color;
-    GL::RenderbufferObject  _rbo_depth;
-
-    /* Selection rendering */
-    GL::FramebufferObject   _fbo_select;
-    GL::Texture             _rbo_select;
-
-    GL::FramebufferObject   _fbo_select_depth;
-    GL::RenderbufferObject  _rbo_select_depth;
-
-
-  }; // END class DisplayRenderer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  class SelectRenderer : public MultiObjectRenderer {
-  public:
-    SelectRenderer( Scene* scene );
-
-    SceneObject*                findObject( int x, int y );
-    Array<SceneObject*>         findObjects(int xmin, int ymin, int xmax, int ymax );
-
-    void                        select(Array<SceneObject*>& objs, Camera* cam, int type_id );
-
-
-    /* virtual from Renderer */
-    void                        resize(int w, int h);
-
-    /* virtual from MultiObjectRenderer */
-    void                        prepare(Array<SceneObject*>& objs, Camera *cam);
-
-  };
 
 } // END namespace GMlib
 

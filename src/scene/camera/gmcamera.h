@@ -201,6 +201,7 @@ namespace GMlib {
     }
 
     virtual void                setupDisplay();
+    void                        applyViewport();
 
   }; // END class Camera
 
@@ -290,7 +291,13 @@ namespace GMlib {
   void Camera::setupDisplay() {
 
     setPerspective();
-    glViewport(_x,_y,_w,_h);
+    applyViewport();
+  }
+
+  inline
+  void Camera::applyViewport() {
+
+    ::glViewport(_x,_y,_w,_h);
   }
 
 
