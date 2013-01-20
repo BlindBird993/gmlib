@@ -100,9 +100,8 @@ namespace GMlib {
 
 
 
-  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_select(GL_TEXTURE_2D) {
+  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_select(GL_TEXTURE_2D), _rbo_depth() {
 
-    glGenRenderbuffers( 1, &_rbo_depth );
 
     // Color rbo texture parameters
     _rbo_color.setParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -116,19 +115,15 @@ namespace GMlib {
     _rbo_select.setParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     _rbo_select.setParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-
-    // Bind render buffers to frame buffer.
-    _fbo.bind(); {
-
-      glBindRenderbuffer( GL_RENDERBUFFER, _rbo_depth );
-      glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _rbo_depth );
-      glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
-    } _fbo.unbind();
-
+    // Bind renderbuffers to framebuffer.
+    _fbo.attachRenderbuffer( _rbo_depth, GL_DEPTH_ATTACHMENT );
     _fbo.attachTexture2D( _rbo_color,  GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
     _fbo.attachTexture2D( _rbo_select, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1 );
 
+    // Bind color renderbuffer to color framebuffer
     _fbo_color.attachTexture2D( _rbo_color, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
+
+    // Bind select renderbuffer to select framebuffer
     _fbo_select.attachTexture2D( _rbo_select, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
 
   }
@@ -156,25 +151,9 @@ namespace GMlib {
 
   void DisplayRenderer::render(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
 
-    // Prepare renderer for rendering
-    {
-
-      _fbo.bind();
-      glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-      _fbo.unbind();
-
-      float cc[4];
-      glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
-      Color c = GMcolor::Black;
-      GL::glClearColor( c );
-
-      _fbo_select.bind();
-      glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-      _fbo_select.unbind();
-
-      ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
-
-    } //GL::OGL::clearRenderBuffer();
+    // Clear render buffers
+    _fbo.clear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    _fbo_select.clear( GMcolor::Black, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 
     // Tell renderer that rendering is begining
@@ -184,7 +163,9 @@ namespace GMlib {
       GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
       glDrawBuffers( 2, buffers );
 
-    } //GL::OGL::bindRenderBuffer();
+    }
+
+    // Rendering
     {
 
       for( int i = 0; i < cameras.getSize(); ++i ) {
@@ -200,12 +181,12 @@ namespace GMlib {
 
         cam->markAsInactive();
       }
-    // Tell renderer that rendering is ending
     }
+
+    // Tell renderer that rendering is ending
     {
       _fbo.unbind();
-
-    } //GL::OGL::unbindRenderBuffer();
+    }
   }
 
   void DisplayRenderer::renderSelect(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
@@ -239,17 +220,9 @@ namespace GMlib {
 
     setBufferSize( w, h );
 
-    glBindRenderbuffer( GL_RENDERBUFFER, _rbo_depth );
-    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, w, h );
-    glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
-
-    _rbo_color.bind();
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-    _rbo_color.unbind();
-
-    _rbo_select.bind();
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-    _rbo_select.unbind();
+    _rbo_depth.createStorage( GL_DEPTH_COMPONENT, w, h );
+    _rbo_color.texImate2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_select.texImate2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
   }
 
 

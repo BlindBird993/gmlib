@@ -44,6 +44,7 @@ namespace GL {
 
   std::string OGL::_log;
   OGL::FBOMap   OGL::_fbos;
+  OGL::RBOMap   OGL::_rbos;
   OGL::BOMap    OGL::_bos;
   OGL::TexMap   OGL::_texs;
 
@@ -99,6 +100,113 @@ namespace GL {
     }
 
     return false;
+  }
+
+  bool OGL::bindRbo(const std::string &name) {
+
+
+    _clearLog();
+
+    if( _nameEmpty( name, "RBO" ) )
+      return false;
+
+    if( !_rboExists(name, true) )
+      return false;
+
+    glBindRenderbuffer( GL_RENDERBUFFER, _rbos[name].id );
+
+    return true;
+  }
+
+  GLuint OGL::createRbo() {
+
+    GLuint id;
+    glGenRenderbuffers( 1, &id );
+    return id;
+  }
+
+  bool OGL::createRbo(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "RBO" ) )
+      return false;
+
+    if( _rboExists(name, false) )
+      return false;
+
+    RBOInfo rbo;
+    glGenRenderbuffers( 1, &rbo.id );
+
+    _rbos[name] = rbo;
+
+    return true;
+  }
+
+  void OGL::deleteRbo(GLuint id) {
+
+    glDeleteRenderbuffers( 1, &id );
+  }
+
+  bool OGL::deleteRbo(const std::string &name) {
+  }
+
+  GLuint OGL::getRboId(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "RBO" ) )
+      return false;
+
+    if( !_rboExists(name, true) )
+      return false;
+
+    glDeleteRenderbuffers( 1, &(_rbos[name].id) );
+
+    _rbos.erase( name );
+
+    return true;
+  }
+
+  const OGL::RBOMap &OGL::getRbos() {
+
+    return _rbos;
+  }
+
+  bool OGL::unbindRbo(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "RBO" ) )
+      return false;
+
+    if( !_rboExists(name, true) )
+      return false;
+
+    glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
+
+    return true;
+  }
+
+  bool OGL::_rboExists(const std::string &name, bool exist) {
+
+    bool rbo_ex = _rbos.find(name) != _rbos.end();
+
+    if( rbo_ex != exist ) {
+
+      std::string log;
+      log.append( "RBO " );
+      log.append( name );
+
+      if( exist == false )
+        log.append( " exists." );
+      else if( exist == true )
+        log.append( " does not exist." );
+
+      _appendLog( log );
+    }
+
+    return rbo_ex;
   }
 
   bool OGL::_boExists(const std::string &name, bool exist) {

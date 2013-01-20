@@ -50,6 +50,11 @@ namespace GL {
 
     bool                    isValid() const;
 
+    void                    texImate1D( GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data );
+    void                    texImate2D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data );
+    void                    texImate3D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data );
+
+
     void                    setParameterf(GLenum pname, GLfloat param );
     void                    setParameteri(GLenum pname, GLint param );
 
@@ -68,10 +73,8 @@ namespace GL {
     static GLuintCMap       _ids;
 
     /* safe-bind */
-    mutable GLint           _safe_id;
-
-    void                    safeBind() const;
-    void                    safeUnbind() const;
+    GLint                   safeBind() const;
+    void                    safeUnbind( GLint id ) const;
 
   }; // END class Texture
 

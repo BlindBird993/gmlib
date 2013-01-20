@@ -26,6 +26,7 @@
 
 
 #include "gmopengl.h"
+#include "gmrenderbufferobject.h"
 #include "gmtexture.h"
 
 
@@ -48,6 +49,11 @@ namespace GL {
     void                    bind() const;
     void                    unbind() const;
 
+    void                    clear(GLbitfield mask) const;
+    void                    clear(const Color& c , GLbitfield mask) const;
+
+    void                    attachRenderbuffer( const RenderbufferObject& rbo,  GLenum attachment );
+
     void                    attachTexture1D(const Texture& tex, GLenum target, GLenum attachment, GLenum textarget = GL_TEXTURE_1D, GLint level = 0);
     void                    attachTexture2D(const Texture& tex, GLenum target, GLenum attachment, GLenum textarget = GL_TEXTURE_2D, GLint level = 0);
     void                    attachTexture3D(const Texture& tex, GLenum target, GLenum attachment, GLenum textarget = GL_TEXTURE_3D, GLint level = 0, GLint layer = 0 );
@@ -64,11 +70,8 @@ namespace GL {
   private:
     static GLuintCMap       _ids;
 
-    /* safe-bind */
-    mutable GLint           _safe_id;
-
-    void                    safeBind() const;
-    void                    safeUnbind() const;
+    GLint                   safeBind() const;
+    void                    safeUnbind(GLint id) const;
 
 
   }; // END class FramebufferObject
@@ -84,6 +87,28 @@ namespace GL {
   void FramebufferObject::unbind() const {
 
     glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+  }
+
+  inline
+  void FramebufferObject::clear(GLbitfield mask) const {
+
+    GLint id = safeBind();
+    ::glClear( mask );
+    safeUnbind(id);
+  }
+
+  inline
+  void FramebufferObject::clear(const Color &c, GLbitfield mask ) const {
+
+    static float cc[4];
+    ::glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
+    glClearColor( c );
+
+    GLint id = safeBind();
+    ::glClear( mask );
+    safeUnbind(id);
+
+    ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
   }
 
 

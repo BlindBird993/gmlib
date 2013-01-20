@@ -89,12 +89,10 @@ namespace GL {
   void BufferObject::disableVertexArrayPointer( GLuint vert_loc ) const {
 
     glDisableVertexAttribArray( vert_loc );
-  //  release();
   }
 
   void BufferObject::enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) {
 
-  //  bind();
     glVertexAttribPointer( vert_loc, size, type, normalized, stride, offset );
     glEnableVertexAttribArray( vert_loc );
 

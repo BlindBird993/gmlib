@@ -66,25 +66,34 @@ namespace GL {
       OGL::deleteFbo( _id );
   }
 
+  void FramebufferObject::attachRenderbuffer(const RenderbufferObject &rbo, GLenum attachment) {
+
+    GLint id = safeBind();
+    rbo.bind();
+    glFramebufferRenderbuffer( GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, rbo.getId() );
+    rbo.unbind();
+    safeUnbind(id);
+  }
+
   void FramebufferObject::attachTexture1D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
 
-    safeBind();
+    GLint id = safeBind();
     glFramebufferTexture1D( target, attachment, textarget, tex.getId(), level );
-    safeUnbind();
+    safeUnbind(id);
   }
 
   void FramebufferObject::attachTexture2D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
 
-    safeBind();
+    GLint id = safeBind();
     glFramebufferTexture2D( target, attachment, textarget, tex.getId(), level );
-    safeUnbind();
+    safeUnbind(id);
   }
 
   void FramebufferObject::attachTexture3D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level, GLint layer ) {
 
-    safeBind();
+    GLint id = safeBind();
     glFramebufferTexture3D( target, attachment, textarget, tex.getId(), level, layer );
-    safeUnbind();
+    safeUnbind(id);
   }
 
   GLuint FramebufferObject::getId() const {
@@ -102,15 +111,18 @@ namespace GL {
     return _valid;
   }
 
-  void FramebufferObject::safeBind() const {
+  GLint FramebufferObject::safeBind() const {
 
-    glGetIntegerv( GL_FRAMEBUFFER_BINDING, &_safe_id );
+    GLint id;
+    glGetIntegerv( GL_FRAMEBUFFER_BINDING, &id );
     bind();
+
+    return id;
   }
 
-  void FramebufferObject::safeUnbind() const {
+  void FramebufferObject::safeUnbind( GLint id ) const {
 
-    glBindFramebuffer( GL_FRAMEBUFFER, _safe_id );
+    glBindFramebuffer( GL_FRAMEBUFFER, id );
   }
 
 

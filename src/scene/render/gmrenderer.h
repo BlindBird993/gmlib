@@ -35,6 +35,7 @@
 // GMlib
 #include <opengl/gmopengl.h>
 #include <opengl/gmframebufferobject.h>
+#include <opengl/gmrenderbufferobject.h>
 #include <opengl/gmtexture.h>
 
 
@@ -129,14 +130,11 @@ namespace GMlib {
     GL::FramebufferObject   _fbo_select;
 
     /* Textures */
-    GL::Texture         _rbo_color;
-    GL::Texture         _rbo_select;
-
-//    GLuint              _rbo_color;
-//    GLuint              _rbo_select;
+    GL::Texture             _rbo_color;
+    GL::Texture             _rbo_select;
 
     /* Render buffer objects */
-    GLuint              _rbo_depth;
+    GL::RenderbufferObject  _rbo_depth;
 
 
 

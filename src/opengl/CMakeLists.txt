@@ -24,6 +24,7 @@ addHeaders(
   gmBufferObject
   gmFramebufferObject
   gmOpenGL
+  gmRenderbufferObject
   gmTexture
 )
 
@@ -31,10 +32,11 @@ addSources(
   gmbufferobject.cpp
   gmframebufferobject.cpp
   gmopengl.cpp
+  gmrenderbufferobject.cpp
   gmtexture.cpp
 )
 
-addSubDirectory(bufferobjects)           # <bufferobject> sub-module
+addSubDirectory(bufferobjects)          # <bufferobject> sub-module
 addSubDirectory(glsl)                   # <glsl> sub-module
 
 moduleLinkLibrary( ${GLEW_LIBRARY} )

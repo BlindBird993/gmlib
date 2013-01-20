@@ -94,29 +94,53 @@ namespace GL {
     return _valid;
   }
 
-  void Texture::safeBind() const {
+  void Texture::texImate1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data) {
 
-    glGetIntegerv( _target, &_safe_id );
-    bind();
+    GLint id = safeBind();
+    glTexImage1D( _target, level, internal_format, width, border, format, type, data );
+    safeUnbind(id);
   }
 
-  void Texture::safeUnbind() const {
+  void Texture::texImate2D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data) {
 
-    glBindFramebuffer( _target, _safe_id );
+    GLint id = safeBind();
+    glTexImage2D( _target, level, internal_format, width, height, border, format, type, data );
+    safeUnbind(id);
+  }
+
+  void Texture::texImate3D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data) {
+
+    GLint id = safeBind();
+    glTexImage3D( _target, level, internal_format, width, height, depth, border, format, type, data );
+    safeUnbind(id);
+  }
+
+  GLint Texture::safeBind() const {
+
+    GLint id;
+    glGetIntegerv( _target, &id );
+    bind();
+
+    return id;
+  }
+
+  void Texture::safeUnbind( GLint id ) const {
+
+    glBindFramebuffer( _target, id );
   }
 
   void Texture::setParameterf(GLenum pname, GLfloat param) {
 
-    safeBind();
+    GLint id = safeBind();
     glTexParameterf( _target, pname, param );
-    safeUnbind();
+    safeUnbind(id);
   }
 
   void Texture::setParameteri( GLenum pname, GLint param) {
 
-    safeBind();
+    GLint id = safeBind();
     glTexParameteri( _target, pname, param );
-    safeUnbind();
+    safeUnbind(id);
   }
 
   void Texture::setTarget(GLenum target) const {

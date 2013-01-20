@@ -227,6 +227,36 @@ namespace GL {
 
 
 
+
+
+    // RenderbufferObject
+  public:
+
+    struct RBOInfo {
+      GLuint    id;
+    };
+
+    typedef std::map< std::string, OGL::RBOInfo >   RBOMap;
+
+    static bool               bindRbo( const std::string& name );
+    static GLuint             createRbo();
+    static bool               createRbo( const std::string& name );
+    static void               deleteRbo( GLuint id );
+    static bool               deleteRbo( const std::string& name );
+    static GLuint             getRboId( const std::string& name );
+    static const RBOMap&      getRbos();
+    static bool               unbindRbo( const std::string& name );
+
+  private:
+    static RBOMap             _rbos;
+
+    static bool               _rboExists( const std::string& name, bool exist );
+
+
+
+
+
+
     // FramebufferObject
   public:
 
