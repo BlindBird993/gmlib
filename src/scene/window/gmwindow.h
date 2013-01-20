@@ -101,12 +101,15 @@ namespace GMlib {
     virtual bool            toggleRun();
     bool                    toggleStereo();
 
+    RenderManager*           getRenderManager() const;
+
 
     GMWindow&               operator=(const GMWindow& gw);
 
 
 
   protected:
+    RenderManager         *_rm;
 
     // Cameras light and sun
     Array<Camera*>	        _cameras;
@@ -139,6 +142,8 @@ namespace GMlib {
   protected:
     void                    reshape(int w, int h);
 
+    void                    updateMaxObjects(int no_objects);
+
   private:
     bool			              _stereo;
 
@@ -154,6 +159,9 @@ namespace GMlib {
 
     SceneObject*            findSelectObject( Camera* cam, const Vector<int,2>& pos, int type_id ) const;
     SceneObject*            findSelectObject( Camera* cam, int x, int y, int type_id ) const;
+
+
+    const ViewSet&          getTopViewSet() const;
 
 
 
@@ -175,6 +183,11 @@ namespace GMlib {
 
 
 
+  inline
+  const ViewSet& GMWindow::getTopViewSet() const {
+
+    return _view_set_stack.back();
+  }
 
 
 
@@ -358,6 +371,12 @@ namespace GMlib {
     prepareViewSets();
 
     getRenderManager()->resize( _w, _h );
+  }
+
+  inline
+  void GMWindow::updateMaxObjects(int no_objects) {
+
+    _rm->updateMaxObjects(no_objects);
   }
 
 

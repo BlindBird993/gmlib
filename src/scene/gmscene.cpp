@@ -106,10 +106,7 @@ namespace GMlib {
     return 0;
   }
 
-  RenderManager *Scene::getRenderManager() const {
-
-    return _rm;
-  }
+  RenderManager *Scene::getRenderManager() const {  return 0x0; }
 
 
   /*! int Scene::getSize()
@@ -179,7 +176,7 @@ namespace GMlib {
     for(int i=0; i < _scene.getSize(); i++)
       no_disp_obj += _scene[i]->prepare( _lights, _matrix_stack, this );
 
-    _rm->updateMaxObjects(no_disp_obj);
+    updateMaxObjects(no_disp_obj);
   }
 
 
@@ -281,10 +278,7 @@ namespace GMlib {
     }
   }
 
-  void Scene::initRenderManager() {
-
-    _rm = new RenderManager(this);
-  }
+  void Scene::updateMaxObjects(int /*no_objects*/) {}
 
 
 } // END namespace GMlib

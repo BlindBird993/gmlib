@@ -69,7 +69,7 @@ namespace GMlib {
       addViewSet( getCameraIndex(cam) );
     }
 
-    initRenderManager();
+    _rm = new RenderManager(this);
   }
 
 
@@ -170,6 +170,11 @@ namespace GMlib {
 
     if( _running )
       Scene::start();
+  }
+
+  RenderManager* GMWindow::getRenderManager() const {
+
+    return _rm;
   }
 
   const Color& GMWindow::getSelectColor() const {

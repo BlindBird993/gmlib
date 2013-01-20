@@ -33,6 +33,7 @@
 #include "../camera/gmcamera.h"
 #include "../gmscene.h"
 #include "../gmsceneobject.h"
+#include "../window/gmwindow.h"
 #include "gmdisplayrenderer.h"
 #include "gmselectrenderer.h"
 
@@ -43,14 +44,14 @@
 
 namespace GMlib {
 
-  RenderManager::RenderManager(Scene *scene) : _objs(128), _clear_color( 0.5f, 0.5f, 0.5f, 1.0f ), _select_color( GMcolor::Pink ), _vbo_borders("ViewSetBorderVBO") {
+  RenderManager::RenderManager(GMWindow *window) : _objs(128), _clear_color( 0.5f, 0.5f, 0.5f, 1.0f ), _select_color( GMcolor::Pink ) {
 
 
 
-
-    _scene = scene;
-    _disp = new DisplayRenderer( scene );
-    _select = new SelectRenderer( scene );
+    _window = window;
+    _scene = static_cast<Scene*>( window );
+    _disp = new DisplayRenderer( window );
+    _select = new SelectRenderer( window );
 
 
     glGenBuffers( 1, &_vbo_quad );
@@ -115,13 +116,19 @@ namespace GMlib {
 
   void RenderManager::render(const Array<Camera*>& cameras ) {
 
+
+    // Initialize scene
     GL::glClearColor( getClearColor() );
     ::glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,GL_TRUE);
     ::glShadeModel(GL_SMOOTH);
     ::glEnable(GL_DEPTH_TEST);
     ::glEnable(GL_LIGHTING);
 
+    // Update camera orientation
+    for( int i = 0; i < cameras.getSize(); ++i )
+      cameras(i)->updateCameraOrientation();
 
+    // Render
     _disp->render( _objs, cameras );
 
 
@@ -200,34 +207,28 @@ namespace GMlib {
 
     prog.unbind();
 
-
-    GL::GLProgram color_prog( "color" );
-    color_prog.bind();
-
-    color_prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
-    color_prog.setUniform( "u_selected", false );
-
-
     {
+      const ViewSet &top_view_set = _window->getTopViewSet();
+      GL::GLProgram color_prog( "color" );
+      color_prog.bind();
 
-      color_prog.setUniform( "u_color", GMcolor::Blue );
+      color_prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
+      color_prog.setUniform( "u_selected", false );
+      color_prog.setUniform( "u_color", top_view_set.getBorderColor() );
 
       GLuint vert_loc = color_prog.getAttributeLocation( "in_vertex" );
-      _vbo_borders.bind();
-//      _vbo.enable( vert_loc, 2, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
+      top_view_set.getBorderVBO().bind();
       glVertexAttribPointer( vert_loc, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
       glEnableVertexAttribArray( vert_loc );
       glPointSize( 10.0f );
-      glDrawArrays( GL_QUADS, 0,  4 );
+      glDrawArrays( GL_QUADS, 0, top_view_set.getNoBorders() * 4 );
 
       glDisableVertexAttribArray( vert_loc );
 
-      _vbo_borders.unbind();
+      top_view_set.getBorderVBO().unbind();
+
+      color_prog.unbind();
     }
-//    _view_set_stack.back().drawBorder();
-
-    color_prog.unbind();
-
 
     glEnable(GL_DEPTH_TEST);
   }

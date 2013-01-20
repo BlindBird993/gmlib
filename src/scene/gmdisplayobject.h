@@ -119,8 +119,6 @@ namespace GMlib {
     virtual void              translate(const Vector<float,3>& trans_vector);
     virtual void              translateGlobal(const Vector<float,3>& trans_vector);
 
-
-
   protected:
     // Matrices from Scene to this
   public:
@@ -370,7 +368,6 @@ namespace GMlib {
     else
       return _matrix_scene_inv * _lock_pos;
   }
-
 
   /*! void DisplayObject::updateOrientation(const Point<float,3>& lock_pos )
    *  \brief Pending Documentation

@@ -47,6 +47,7 @@ namespace GMlib {
   class SceneObject;
   class Camera;
   class ViewSet;
+  class GMWindow;
 
   class Renderer;
   class DisplayRenderer;
@@ -55,7 +56,7 @@ namespace GMlib {
 
   class RenderManager {
   public:
-    RenderManager( Scene* scene );
+    RenderManager( GMWindow* window );
 
     /* Buffers and internal workings */
     void            updateMaxObjects( int no_objs );
@@ -77,6 +78,7 @@ namespace GMlib {
 
 
   private:
+    GMWindow                  *_window;
     Scene                     *_scene;
     Array<SceneObject*>       _objs;      //! Render objects "cache" array
 
@@ -90,8 +92,6 @@ namespace GMlib {
 
     GLuint          _vbo_quad;
     GLuint          _vbo_quad_tex;
-
-    GL::VertexBufferObject    _vbo_borders;
 
   }; // END class RenderManager
 

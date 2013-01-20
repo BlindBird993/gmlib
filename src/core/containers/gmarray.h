@@ -62,10 +62,12 @@ namespace GMlib {
     virtual ~Array();
 
     T&              back();
+    const T&        back() const;
     virtual void    clear();
     bool            empty() const;
     bool            exist( const T& t ) const;
     T&              front();
+    const T&        front() const;
     T&              getBack();                    // Alias: back()
     T&              getFront();                   // Alias: front()
     int             getIndex( const T& t ) const; // Alias: index(const T& t)

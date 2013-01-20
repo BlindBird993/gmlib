@@ -123,6 +123,14 @@ namespace GMlib {
 
   template <typename T>
   inline
+  const T& Array<T>::back() const {
+
+    return (*this)(_no_elements-1);
+  }
+
+
+  template <typename T>
+  inline
   void Array<T>::clear() {
 
     if(_max_elements > 6) { delete [] _data_ptr; }
@@ -149,6 +157,12 @@ namespace GMlib {
     return bool(index(t) >= 0);
   }
 
+  template <typename T>
+  inline
+  const T& Array<T>::front() const {
+
+    return (*this)(0);
+  }
 
   template <typename T>
   inline

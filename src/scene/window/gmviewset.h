@@ -62,6 +62,11 @@ namespace GMlib {
     const Array<Camera*>&   getCameras() const;
     int                     getSize();
     Point2D<int>            getViewPortSize();
+
+    const Color&                      getBorderColor() const;
+    const GL::VertexBufferObject&     getBorderVBO() const;
+    int                               getNoBorders() const;
+
     void 								prepare(int w, int h);
     void 								removeCamera(Camera*);
 
@@ -121,8 +126,17 @@ namespace GMlib {
 
 
 
+  inline
+  const GL::VertexBufferObject& ViewSet::getBorderVBO() const {
 
+    return _vbo;
+  }
 
+  inline
+  int ViewSet::getNoBorders() const {
+
+    return _no_borders;
+  }
 
   inline
   const Array<Camera*>& ViewSet::getCameras() const {
@@ -142,6 +156,11 @@ namespace GMlib {
     return Point2D<int>(_vp_w, _vp_h);
   }
 
+  inline
+  const Color &ViewSet::getBorderColor() const {
+
+    return _border_color;
+  }
 
   /*! bool ViewSet::operator<(const ViewSet& viewset) const
    *	\brief DUMMY!!

@@ -91,7 +91,6 @@ namespace GMlib{
     SceneObject*          getActiveObject();
     double                getElapsedTime();
     Array<Light*>&        getLights();
-    RenderManager*        getRenderManager() const;
     Array<SceneObject*>&  getSelectedObjects();
     int                   getSize();
     Sphere<float,3>       getSphere();
@@ -113,6 +112,8 @@ namespace GMlib{
 
     void                  toggleSelection( SceneObject* obj );
 
+    virtual RenderManager*    getRenderManager() const;
+
     SceneObject*          operator [] (int i);
     SceneObject*          operator () (int i);
     Scene&                operator =  (const Scene& sc);
@@ -122,10 +123,10 @@ namespace GMlib{
 
     void                  simulate();
 
-    void                  initRenderManager();
+    virtual void          updateMaxObjects( int no_objects );
+
 
   private:
-    RenderManager         *_rm;
     Array<SceneObject*>   _scene;
 
     Array<Light*>         _lights;

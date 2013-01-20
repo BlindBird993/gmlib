@@ -137,6 +137,8 @@ namespace GMlib {
     virtual void                zoom(float z);
 
 
+    void                        updateCameraOrientation();
+
 	protected:
     float                       _near_plane;
     float                       _far_plane;
@@ -742,6 +744,16 @@ namespace GMlib {
   void Camera::setScene(Scene *s) {
 
     _scene = s;
+  }
+
+  inline
+  void Camera::updateCameraOrientation() {
+
+    if( _locked ) {
+
+      updateOrientation( getSceneLockPos() );
+      basisChange( _side, _up, _dir, _pos );
+    }
   }
 
 
