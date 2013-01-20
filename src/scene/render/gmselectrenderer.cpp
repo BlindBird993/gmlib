@@ -44,9 +44,12 @@ namespace GMlib {
 
     _fbo.attachRenderbuffer( _rbo_color, GL_COLOR_ATTACHMENT0 );
     _fbo.attachRenderbuffer( _rbo_depth, GL_DEPTH_ATTACHMENT );
+
+
+    _std_rep_visu = new VisualizerStdRep;
   }
 
-  SceneObject *SelectRenderer::findObject(int x, int y) {
+  SceneObject *SelectRenderer::findObject(int x, int y) const {
 
     Color c;
     _fbo.bind();
@@ -60,7 +63,7 @@ namespace GMlib {
     return obj;
   }
 
-  Array<SceneObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) {
+  Array<SceneObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) const {
 
     Array<SceneObject* > sel;
     int dx=(xmax-xmin)+1;
@@ -86,7 +89,7 @@ namespace GMlib {
     return sel;
   }
 
-  void SelectRenderer::prepare(Array<SceneObject *> &objs, Camera *cam){
+  void SelectRenderer::prepare(Array<SceneObject *> &objs, Camera *cam) const{
 
     cam->applyViewport();
 

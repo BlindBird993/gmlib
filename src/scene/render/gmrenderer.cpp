@@ -93,7 +93,7 @@ namespace GMlib {
   MultiObjectRenderer::MultiObjectRenderer(Scene *scene) : Renderer(scene) {
   }
 
-  void MultiObjectRenderer::prepare(Array<SceneObject *> &objs, Camera *cam) {
+  void MultiObjectRenderer::prepare(Array<SceneObject *> &objs, Camera *cam) const {
 
     // Compute frustum/frustum-matrix, set glViewport
     cam->setupDisplay();

@@ -89,7 +89,7 @@ namespace GMlib {
   public:
     MultiObjectRenderer( Scene* scene );
 
-    virtual void      prepare( Array<SceneObject*>& objs, Camera* cam );
+    virtual void      prepare( Array<SceneObject*>& objs, Camera* cam ) const;
   }; // END class MultiObjectRenderer
 
 

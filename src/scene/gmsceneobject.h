@@ -237,11 +237,13 @@ namespace GMlib{
     virtual void                setSelected(bool s);
     void                        setSelectProgram( const GL::GLProgram& prog );
     virtual void                setVisible( bool v, int prop = 0 );
-    void                        setStandardRepVisualizer( Visualizer* visu = 0x0 );
     virtual bool                toggleCollapsed();
     virtual bool                toggleVisible();
     virtual void                translate(const Vector<float,3>& trans_vector);
     virtual void                translateGlobal(const Vector<float,3>& trans_vector);
+
+    virtual void                localDisplay();     //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!)
+    virtual void                localSelect();      //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!)
 
   protected:
     friend class Scene;
@@ -282,10 +284,7 @@ namespace GMlib{
     bool                        _opaque;
 
     Array<Visualizer*>          _visualizers;
-    Visualizer                  *_std_rep_visu;
 
-    virtual void                localDisplay();
-    virtual void                localSelect();
     virtual void                localSimulate(double dt);
     void                        reset();
     void                        setSurroundingSphere( const Sphere<float,3>& b );
@@ -309,10 +308,6 @@ namespace GMlib{
   public:
     virtual void                culling( Array<SceneObject*>&, const Frustum& );
     void                        fillObj( Array<SceneObject*>& );
-    void                        display( Camera* cam );
-    void                        displayDepth( Camera* cam );
-    void                        displaySelection( Camera* cam );
-    void                        select(int what = -1, Camera* cam = 0x0 );
 
 
 
@@ -382,108 +377,6 @@ namespace GMlib{
 
 
 
-
-  /*! void SceneObject::_display()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void SceneObject::display( Camera* cam ) {
-
-    if(!_active) {
-
-      const HqMatrix<float,3> &mvmat = getModelViewMatrix(cam);
-      const HqMatrix<float,3> &pmat = getProjectionMatrix(cam);
-
-      if(_collapsed) {
-
-        const GL::GLProgram &prog = _std_rep_visu->getRenderProgram();
-        prog.bind();
-        prog.setUniform( "u_mvmat", mvmat, 1, true );
-        prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
-        _std_rep_visu->display();
-        prog.unbind();
-      }
-      else {
-
-        for( int i = 0; i < _visualizers.getSize(); ++i ) {
-
-          const GL::GLProgram &prog = _visualizers[i]->getRenderProgram();
-          prog.bind();
-          prog.setUniform( "u_mvmat", mvmat, 1, true );
-          prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
-          _visualizers[i]->display();
-          prog.unbind();
-        }
-
-        localDisplay();
-      }
-    }
-  }
-
-  inline
-  void SceneObject::displayDepth( Camera* cam ) {
-
-    if(!_active ) {
-
-      const GL::GLProgram render_select_prog("render_select");
-      render_select_prog.bind();
-      render_select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
-
-      if( _collapsed )
-        _std_rep_visu->select();
-      else {
-
-        for( int i = 0; i < _visualizers.getSize(); ++i )
-          _visualizers[i]->select();
-      }
-//        localSelect();
-      render_select_prog.unbind();
-    }
-  }
-
-  inline
-  void SceneObject::displaySelection( Camera* cam ) {
-
-    if(!_active && _selected ) {
-
-      const GL::GLProgram render_select_prog("render_select");
-      render_select_prog.bind();
-      render_select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
-
-      if( _collapsed )
-        _std_rep_visu->select();
-      else {
-
-        for( int i = 0; i < _visualizers.getSize(); ++i )
-          _visualizers[i]->select();
-      }
-//        localSelect();
-      render_select_prog.unbind();
-    }
-  }
-
-  /*! void SceneObject::_select( int what, Camera* cam )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void SceneObject::select( int what, Camera* cam ) {
-
-    if( !_active && ( what == 0 || what == _type_id || ( what < 0 && what + _type_id != 0 ) ) ) {
-
-      const GL::GLProgram &select_prog = getSelectProgram();
-      select_prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam), 1, true );
-      select_prog.setUniform( "u_color", Color(getVirtualName()) );
-
-      if( _collapsed )
-        _std_rep_visu->select();
-      else
-        localSelect();
-    }
-  }
 
 
   /*! void SceneObject::edit(int selector_id)

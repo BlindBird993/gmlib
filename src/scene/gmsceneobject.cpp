@@ -87,8 +87,6 @@ namespace GMlib {
     _collapsed        = false;
 
     _children.clear();
-
-    setStandardRepVisualizer();
   }
 
 
@@ -128,8 +126,6 @@ namespace GMlib {
       if( child_copy )
         _children += child_copy;
     }
-
-    setStandardRepVisualizer();
   }
 
 
@@ -148,9 +144,6 @@ namespace GMlib {
         delete _children[i];
       }
     }
-
-    if(_std_rep_visu)
-      delete _std_rep_visu;
   }
 
 
@@ -413,18 +406,14 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localDisplay() {  }
+  void SceneObject::localDisplay() {}
 
   /*! void localSelect()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  void SceneObject::localSelect()  {
-
-    for( int i = 0; i < _visualizers.getSize(); ++i )
-      _visualizers[i]->select();
-  }
+  void SceneObject::localSelect()  {}
 
 
   /*! void localSimulate(double dt)
@@ -585,17 +574,6 @@ namespace GMlib {
 
     _select_prog = prog;
   }
-
-  void SceneObject::setStandardRepVisualizer( Visualizer* visu ) {
-
-    if( visu )
-      _std_rep_visu = visu;
-    else
-      _std_rep_visu = new VisualizerStdRep;
-
-    _std_rep_visu->set( this );
-  }
-
 
   /*! void SceneObject::setSurroundingSphere(const Sphere<float,3>& b)
    *  \brief Pending Documentation

@@ -36,6 +36,7 @@
 
 // local
 #include "../camera/gmcamera.h"
+#include "../visualizer/gmvisualizerstdrep.h"
 
 // gmlib
 #include <opengl/gmframebufferobject.h>
@@ -49,61 +50,95 @@ namespace GMlib {
   public:
     SelectRenderer( Scene* scene );
 
-    SceneObject*                findObject( int x, int y );
-    Array<SceneObject*>         findObjects(int xmin, int ymin, int xmax, int ymax );
+    SceneObject*                findObject( int x, int y ) const;
+    Array<SceneObject*>         findObjects(int xmin, int ymin, int xmax, int ymax ) const;
 
-    void                        select(Array<SceneObject*>& objs, Camera* cam, int type_id );
+    void                        select(Array<SceneObject*>& objs, Camera* cam, int type_id ) const;
 
     /* virtual from Renderer */
     void                        resize(int w, int h);
 
     /* virtual from MultiObjectRenderer */
-    void                        prepare(Array<SceneObject*>& objs, Camera *cam);
+    void                        prepare(Array<SceneObject*>& objs, Camera *cam) const;
+
+  protected:
+    void                        select(SceneObject* obj, Camera* cam, int what) const;
 
   private:
 
     GL::FramebufferObject       _fbo;
     GL::RenderbufferObject      _rbo_color;
     GL::RenderbufferObject      _rbo_depth;
+
+    VisualizerStdRep            *_std_rep_visu;
   };
 
 
 
 
 
+
+
+
   inline
-  void SelectRenderer::select(Array<SceneObject*>& objs, Camera *cam, int type_id) {
+  void SelectRenderer::select( SceneObject* obj, Camera* cam, int what ) const {
+
+    if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
+
+      const GL::GLProgram &select_prog = obj->getSelectProgram();
+      select_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam), 1, true );
+      select_prog.setUniform( "u_color", Color(obj->getVirtualName()) );
+
+      if( obj->isCollapsed() ) {
+
+        _std_rep_visu->set(obj);
+        _std_rep_visu->select();
+      }
+      else {
+
+        const Array<Visualizer*>& visus = obj->getVisualizers();
+        for( int i = 0; i < visus.getSize(); ++i )
+          visus(i)->select();
+
+        obj->localSelect();
+      }
+    }
+  }
 
 
-    prepare( objs, cam );
+  inline
+  void SelectRenderer::select(Array<SceneObject*>& objs, Camera *cam, int type_id) const {
 
+    // Clear buffers
     _fbo.clear( GL_DEPTH_BUFFER_BIT );
     _fbo.clearColorBuffer( GMcolor::Black );
 
+    // Prepare camera
+    prepare( objs, cam );
 
-    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
-    _fbo.bind();
-
+    // Render selection
     GLboolean depth_test_state;
     glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
     glEnable( GL_DEPTH_TEST );
-    {
+
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+
+    _fbo.bind(); {
 
       const GL::GLProgram select_prog("select");
 
       select_prog.bind();
 
-      for( int i=0; i < objs.getSize(); i++ )
-        objs[i]->select( type_id, cam );
+      for( int i=0; i < objs.getSize(); ++i )
+        select( objs[i], cam, type_id );
 
       select_prog.unbind();
 
-    }
+    }  _fbo.unbind();
+
     if( !depth_test_state )
       glDisable( GL_DEPTH_TEST );
-
-    _fbo.unbind();
 
   }
 

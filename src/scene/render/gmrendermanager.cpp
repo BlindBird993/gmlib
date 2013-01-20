@@ -181,8 +181,8 @@ namespace GMlib {
     prog.bind();
 
     prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
-    prog.setUniform( "u_tex", _disp->_rbo_color.getId(), (GLenum)GL_TEXTURE0, 0 );
-    prog.setUniform( "u_tex_selected", _disp->_rbo_select.getId(), (GLenum)GL_TEXTURE1, 1 );
+    prog.setUniform( "u_tex", _disp->getRenderTexture().getId(), (GLenum)GL_TEXTURE0, 0 );
+    prog.setUniform( "u_tex_selected", _disp->getSelectTexture().getId(), (GLenum)GL_TEXTURE1, 1 );
     prog.setUniform( "u_buf_w", float(_w) );
     prog.setUniform( "u_buf_h", float(_h) );
     prog.setUniform( "u_select_color", _select_color );

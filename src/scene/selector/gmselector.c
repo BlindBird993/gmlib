@@ -31,6 +31,7 @@
 
 
 #include "../displayobjects/gmsphere3d.h"
+#include "../visualizer/gmvisualizerstdrep.h"
 
 namespace GMlib {
 
@@ -60,6 +61,7 @@ namespace GMlib {
     translate( _position.toFloat() );
     if(r != 1.0) scale(Vector3D<float>(r,r,r));
 
+    _std_rep_visu = new VisualizerStdRep;
     insertVisualizer( _std_rep_visu );
   }
 

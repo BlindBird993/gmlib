@@ -36,6 +36,7 @@
 
 // local
 #include "../camera/gmcamera.h"
+#include "../visualizer/gmvisualizerstdrep.h"
 
 // gmlib
 #include <opengl/gmframebufferobject.h>
@@ -50,13 +51,18 @@ namespace GMlib {
   public:
     DisplayRenderer( Scene* scene );
 
-    void      render(Array<SceneObject*>& objs, const Array<Camera*>& cameras );
+    const GL::Texture&      getRenderTexture() const;
+    const GL::Texture&      getSelectTexture() const;
+
+    virtual void            render(Array<SceneObject*>& objs, const Array<Camera*>& cameras ) const;
 
     /* virtual from Renderer */
-    void      resize(int w, int h);
+    void                    resize(int w, int h);
 
 
-//  private:
+  private:
+    /* Visualizers */
+    VisualizerStdRep        *_std_rep_visu;
 
     /* Rendering */
     GL::FramebufferObject   _fbo;
@@ -71,6 +77,10 @@ namespace GMlib {
     GL::RenderbufferObject  _rbo_select_depth;
 
 
+    void                    render(SceneObject *obj, Camera *cam) const;
+    void                    renderSelection(SceneObject *obj, Camera *cam) const;
+    void                    renderSelectionDepth(SceneObject *obj, Camera *cam) const;
+
   }; // END class DisplayRenderer
 
 
@@ -78,8 +88,114 @@ namespace GMlib {
 
 
 
+
+
+
+
   inline
-  void DisplayRenderer::render(Array<SceneObject*>& objs, const Array<Camera *> &cameras) {
+  const GL::Texture& DisplayRenderer::getRenderTexture() const {
+
+    return _rbo_color;
+  }
+
+  inline
+  const GL::Texture& DisplayRenderer::getSelectTexture() const {
+
+    return _rbo_select;
+  }
+
+  inline
+  void DisplayRenderer::render( SceneObject* obj, Camera* cam ) const {
+
+    if( obj != cam ) {
+
+      const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
+      const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
+
+      if(obj->isCollapsed()) {
+
+        const GL::GLProgram &prog = _std_rep_visu->getRenderProgram();
+        prog.bind();
+        prog.setUniform( "u_mvmat", mvmat, 1, true );
+        prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
+        _std_rep_visu->set(obj);
+        _std_rep_visu->display();
+        prog.unbind();
+      }
+      else {
+
+        const Array<Visualizer*>& visus = obj->getVisualizers();
+        for( int i = 0; i < visus.getSize(); ++i ) {
+
+          const GL::GLProgram &prog = visus(i)->getRenderProgram();
+          prog.bind();
+          prog.setUniform( "u_mvmat", mvmat, 1, true );
+          prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
+          visus(i)->display();
+          prog.unbind();
+        }
+
+        obj->localDisplay();
+      }
+    }
+  }
+
+  inline
+  void DisplayRenderer::renderSelection(SceneObject *obj, Camera *cam) const {
+
+    if( obj != cam && obj->isSelected() ) {
+
+      const GL::GLProgram render_select_prog("render_select");
+      render_select_prog.bind();
+      render_select_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam), 1, true );
+
+      if( obj->isCollapsed() ) {
+
+        _std_rep_visu->set(obj);
+        _std_rep_visu->select();
+      }
+      else {
+
+        const Array<Visualizer*>& visus = obj->getVisualizers();
+        for( int i = 0; i < visus.getSize(); ++i )
+          visus(i)->select();
+
+        obj->localSelect();
+      }
+
+      render_select_prog.unbind();
+    }
+  }
+
+  inline
+  void DisplayRenderer::renderSelectionDepth(SceneObject *obj, Camera *cam) const {
+
+    if(obj != cam) {
+
+      const GL::GLProgram render_select_prog("render_select");
+      render_select_prog.bind();
+      render_select_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam), 1, true );
+
+      if( obj->isCollapsed() ) {
+
+        _std_rep_visu->set(obj);
+        _std_rep_visu->select();
+      }
+      else {
+
+        const Array<Visualizer*>& visus = obj->getVisualizers();
+        for( int i = 0; i < visus.getSize(); ++i )
+          visus(i)->select();
+
+        obj->localSelect();
+      }
+
+      render_select_prog.unbind();
+    }
+  }
+
+  inline
+  void DisplayRenderer::render(Array<SceneObject*>& objs, const Array<Camera *> &cameras) const {
 
     // Clear render buffers
     _fbo.clear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -87,87 +203,54 @@ namespace GMlib {
     _fbo_select.clearColorBuffer( GMcolor::Black );
     _fbo_select_depth.clear( GL_DEPTH_BUFFER_BIT );
 
-
-
-
-
-    // Object rendering
-
-    _fbo.bind();
-
+    // Render
     for( int i = 0; i < cameras.getSize(); ++i ) {
-
 
       Camera *cam = cameras(i);
       cam->markAsActive();
 
       prepare( objs, cam );
 
-      for( int i = 0; i < objs.getSize(); i++ )
-        objs[i]->display( cam );
+      // Object rendering
+      _fbo.bind(); {
+
+        for( int j = 0; j < objs.getSize(); ++j )
+          render( objs[j], cam);
+
+      } _fbo.unbind();
+
+      // Selection rendering - render to depth buffer
+      _fbo_select_depth.bind(); {
+
+        ::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+        for( int j = 0; j < objs.getSize(); ++j )
+          renderSelectionDepth( objs[j], cam);
+
+      } _fbo_select_depth.unbind();
+
+      // Selection rendering - render
+      _fbo_select.bind(); {
+
+        GLint depth_mask, depth_func;
+        ::glGetIntegerv( GL_DEPTH_WRITEMASK, &depth_mask );
+        ::glGetIntegerv( GL_DEPTH_FUNC, &depth_func);
+
+        ::glDepthFunc( GL_LEQUAL );
+        ::glDepthMask( GL_FALSE );
+
+        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+        for( int j = 0; j < objs.getSize(); ++j )
+          renderSelection( objs[j], cam );
+
+        ::glDepthFunc( depth_func );
+        ::glDepthMask( depth_mask );
+
+      } _fbo_select.unbind();
 
       cam->markAsInactive();
     }
-    _fbo.unbind();
-
-
-
-
-    // Selection rendering - render to depth buffer
-
-
-    _fbo_select_depth.bind();
-
-
-    for( int i = 0; i < cameras.getSize(); ++i ) {
-
-
-      Camera *cam = cameras(i);
-      cam->markAsActive();
-
-      prepare( objs, cam );
-
-
-      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-      for( int i = 0; i < objs.getSize(); ++i )
-        objs[i]->displayDepth( cam );
-
-      cam->markAsInactive();
-    }
-    _fbo_select_depth.unbind();
-
-
-    // Selection rendering - render
-
-    GLint depth_mask, depth_func;
-
-    ::glGetIntegerv( GL_DEPTH_WRITEMASK, &depth_mask );
-    ::glGetIntegerv( GL_DEPTH_FUNC, &depth_func);
-
-    ::glDepthFunc( GL_LEQUAL );
-    ::glDepthMask( GL_FALSE );
-
-    _fbo_select.bind();
-
-    for( int i = 0; i < cameras.getSize(); ++i ) {
-
-
-      Camera *cam = cameras(i);
-      cam->markAsActive();
-
-      prepare( objs, cam );
-
-
-      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-      for( int i = 0; i < objs.getSize(); ++i )
-        objs[i]->displaySelection( cam );
-
-      cam->markAsInactive();
-    }
-      _fbo_select.unbind();
-
-    ::glDepthFunc( depth_func );
-    ::glDepthMask( depth_mask );
   }
 
 

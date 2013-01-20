@@ -97,6 +97,8 @@ namespace GMlib{
     SceneObject*	        _parent;
     Point<T,n>&		        _position;
 
+    VisualizerStdRep      *_std_rep_visu;
+
   }; // END class Selector
 
 } // END namespace GMlib
