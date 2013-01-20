@@ -66,6 +66,27 @@ namespace GL {
       OGL::deleteFbo( _id );
   }
 
+  void FramebufferObject::attachTexture1D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
+
+    safeBind();
+    glFramebufferTexture1D( target, attachment, textarget, tex.getId(), level );
+    safeUnbind();
+  }
+
+  void FramebufferObject::attachTexture2D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
+
+    safeBind();
+    glFramebufferTexture2D( target, attachment, textarget, tex.getId(), level );
+    safeUnbind();
+  }
+
+  void FramebufferObject::attachTexture3D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level, GLint layer ) {
+
+    safeBind();
+    glFramebufferTexture3D( target, attachment, textarget, tex.getId(), level, layer );
+    safeUnbind();
+  }
+
   GLuint FramebufferObject::getId() const {
 
     return _id;
@@ -79,6 +100,17 @@ namespace GL {
   bool FramebufferObject::isValid() const {
 
     return _valid;
+  }
+
+  void FramebufferObject::safeBind() const {
+
+    glGetIntegerv( GL_FRAMEBUFFER_BINDING, &_safe_id );
+    bind();
+  }
+
+  void FramebufferObject::safeUnbind() const {
+
+    glBindFramebuffer( GL_FRAMEBUFFER, _safe_id );
   }
 
 

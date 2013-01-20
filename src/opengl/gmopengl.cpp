@@ -45,6 +45,7 @@ namespace GL {
   std::string OGL::_log;
   OGL::FBOMap   OGL::_fbos;
   OGL::BOMap    OGL::_bos;
+  OGL::TexMap   OGL::_texs;
 
   GLuint OGL::_select_fbo = 0;
   GLuint OGL::_select_rbo_color = 0;
@@ -119,6 +120,139 @@ namespace GL {
     }
 
     return bo_ex;
+  }
+
+  bool OGL::bindTex(const std::string &name) {
+  }
+
+  GLuint OGL::createTex() {
+
+    GLuint id;
+    glGenTextures( 1, &id );
+    return id;
+  }
+
+  bool OGL::createTex(const std::string &name, GLenum target) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "TEX" ) )
+      return false;
+
+    if( _texExists(name, false) )
+      return false;
+
+    TexInfo tex;
+    glGenTextures( 1, &tex.id );
+    tex.target = target;
+
+    _texs[name] = tex;
+
+    return true;
+  }
+
+  void OGL::deleteTex(GLuint id) {
+
+    glDeleteTextures( 1, &id );
+  }
+
+  bool OGL::deleteTex(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "TEX" ) )
+      return false;
+
+    if( !_texExists(name, true) )
+      return false;
+
+    glDeleteTextures( 1, &(_texs[name].id) );
+
+    _texs.erase( name );
+
+    return true;
+  }
+
+  GLuint OGL::getTexId(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty(name, "TEX") )
+      return -1;
+
+    if( !_texExists(name, true) )
+      return -1;
+
+    return _texs[name].id;
+  }
+
+  GLenum OGL::getTexTarget(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty(name, "TEX") )
+      return GL_NONE;
+
+    if( !_texExists(name, true) )
+      return GL_NONE;
+
+    return _texs[name].target;
+  }
+
+  const OGL::TexMap &OGL::getTexs() {
+
+    return _texs;
+  }
+
+  bool OGL::setTexTarget(const std::string &name, GLenum target) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "TEX" ) )
+      return false;
+
+    if( !_texExists(name, true) )
+      return false;
+
+    _texs[name].target = target;
+
+    return true;
+  }
+
+  bool OGL::unbindTex(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "TEX" ) )
+      return false;
+
+    if( !_texExists(name, true) )
+      return false;
+
+    glBindTexture( _texs[name].target, 0x0 );
+
+    return true;
+  }
+
+  bool OGL::_texExists(const std::string &name, bool exist) {
+
+    bool tex_ex = _texs.find(name) != _texs.end();
+
+    if( tex_ex != exist ) {
+
+      std::string log;
+      log.append( "TEX" );
+      log.append( name );
+
+      if( exist == false )
+        log.append( " exists." );
+      else if( exist == true )
+        log.append( " does not exist." );
+
+      _appendLog( log );
+    }
+
+    return tex_ex;
   }
 
   bool OGL::_fboExists(const std::string &name, bool exist) {

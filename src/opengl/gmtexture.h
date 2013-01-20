@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gmBUFFEROBJECT_H__
-#define __gmBUFFEROBJECT_H__
+#ifndef __gm_OPENGL_TEXTURE_H__
+#define __gm_OPENGL_TEXTURE_H__
 
 
 #include "gmopengl.h"
@@ -32,13 +32,13 @@ namespace GMlib {
 
 namespace GL {
 
-  class BufferObject {
+  class Texture {
   public:
-    explicit BufferObject( GLenum target = GL_ARRAY_BUFFER );
-    explicit BufferObject( const std::string name );
-    explicit BufferObject( const std::string name, GLenum target );
-    BufferObject( const BufferObject& copy );
-    virtual ~BufferObject();
+    explicit Texture( GLenum target = GL_TEXTURE_2D );
+    explicit Texture( const std::string name );
+    explicit Texture( const std::string name, GLenum target );
+    Texture( const Texture& copy );
+    virtual ~Texture();
 
     void                    bind() const;
     void                    unbind() const;
@@ -46,19 +46,15 @@ namespace GL {
     std::string             getName() const;
     GLuint                  getId() const;
     GLenum                  getTarget() const;
-    void                    setTarget( GLenum target = GL_ARRAY_BUFFER ) const;
+    void                    setTarget( GLenum target = GL_TEXTURE_2D ) const;
 
     bool                    isValid() const;
 
-    void                    createBufferData( GLsizeiptr size, const GLvoid* data, GLenum usage ) const;
-    void                    disableVertexArrayPointer( GLuint vert_loc ) const;
-    void                    enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset );
+    void                    setParameterf(GLenum pname, GLfloat param );
+    void                    setParameteri(GLenum pname, GLint param );
 
-    template <typename T>
-    T*                      mapBuffer( GLenum access = GL_WRITE_ONLY ) const;
-    void                    unmapBuffer() const;
+    Texture&                operator = ( const Texture& tex );
 
-    BufferObject&           operator = ( const BufferObject& obj );
 
   protected:
     bool                    _valid;
@@ -71,31 +67,30 @@ namespace GL {
   private:
     static GLuintCMap       _ids;
 
-  }; // END class BufferObject
+    /* safe-bind */
+    mutable GLint           _safe_id;
+
+    void                    safeBind() const;
+    void                    safeUnbind() const;
+
+  }; // END class Texture
 
 
 
   inline
-  void BufferObject::bind() const {
+  void Texture::bind() const {
 
-    glBindBuffer( _target, _id );
-  }
-
-  template <typename T>
-  inline
-  T* BufferObject::mapBuffer(GLenum access ) const {
-
-    return static_cast<T*>(glMapBuffer( _target, access ));
-  }
-
-  inline
-  void BufferObject::unbind() const {
-
-    glBindBuffer( _target, 0x0 );
+    glBindTexture( _target, _id );
   }
 
   inline
-  BufferObject& BufferObject::operator = ( const BufferObject& copy ) {
+  void Texture::unbind() const {
+
+    glBindTexture( _target, 0x0 );
+  }
+
+  inline
+  Texture& Texture::operator = ( const Texture& copy ) {
 
     _name     = copy._name;
     _id       = copy._id;
@@ -104,7 +99,6 @@ namespace GL {
     _valid    = copy._valid;
 
     _ids[_id]++;
-    return *this;
   }
 
 
@@ -112,4 +106,5 @@ namespace GL {
 
 } // END namespace GMlib
 
-#endif // __gmBUFFEROBJECT_H__
+
+#endif // __gm_OPENGL_TEXTURE_H__

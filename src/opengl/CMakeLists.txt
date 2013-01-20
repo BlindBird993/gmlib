@@ -24,12 +24,14 @@ addHeaders(
   gmBufferObject
   gmFramebufferObject
   gmOpenGL
+  gmTexture
 )
 
 addSources(
   gmbufferobject.cpp
   gmframebufferobject.cpp
   gmopengl.cpp
+  gmtexture.cpp
 )
 
 addSubDirectory(bufferobjects)           # <bufferobject> sub-module

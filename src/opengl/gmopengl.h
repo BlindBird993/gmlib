@@ -284,6 +284,39 @@ namespace GL {
 
 
 
+    // Texture
+  public:
+
+    struct TexInfo {
+      GLuint    id;
+      GLenum    target;
+    };
+
+    typedef std::map< std::string, OGL::TexInfo >    TexMap;
+
+    static bool             bindTex( const std::string& name );
+    static GLuint           createTex();
+    static bool             createTex( const std::string& name, GLenum target = GL_TEXTURE_2D );
+    static void             deleteTex( GLuint id );
+    static bool             deleteTex( const std::string& name );
+    static GLuint           getTexId( const std::string& name );
+    static GLenum           getTexTarget( const std::string& name );
+    static const TexMap&    getTexs();
+    static bool             setTexTarget( const std::string& name, GLenum target = GL_TEXTURE_2D  );
+    static bool             unbindTex( const std::string& name );
+
+  private:
+    static TexMap           _texs;
+
+    static bool             _texExists( const std::string& name, bool exist );
+
+
+
+
+
+
+
+
 
 
 

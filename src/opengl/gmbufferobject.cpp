@@ -81,12 +81,12 @@ namespace GL {
       OGL::deleteBo(_id);
   }
 
-  void BufferObject::createBufferData(GLsizeiptr size, const GLvoid *data, GLenum usage) {
+  void BufferObject::createBufferData(GLsizeiptr size, const GLvoid *data, GLenum usage) const {
 
     glBufferData( _target, size, data, usage );
   }
 
-  void BufferObject::disableVertexArrayPointer( GLuint vert_loc ) {
+  void BufferObject::disableVertexArrayPointer( GLuint vert_loc ) const {
 
     glDisableVertexAttribArray( vert_loc );
   //  release();
@@ -105,14 +105,14 @@ namespace GL {
     return _id;
   }
 
-  GLenum BufferObject::getTarget() const {
-
-    return _target;
-  }
-
   std::string BufferObject::getName() const {
 
     return _name;
+  }
+
+  GLenum BufferObject::getTarget() const {
+
+    return _target;
   }
 
   bool BufferObject::isValid() const {
@@ -120,7 +120,7 @@ namespace GL {
     return _valid;
   }
 
-  void BufferObject::setTarget( GLenum target ) {
+  void BufferObject::setTarget( GLenum target ) const {
 
     _target = target;
     OGL::setBoTarget( _name, _target );

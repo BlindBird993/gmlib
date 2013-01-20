@@ -171,8 +171,8 @@ namespace GMlib {
 //    prog.setUniform( "u_tex_selected", GL::OGL::getRenderSelectedBuffer(), (GLenum)GL_TEXTURE1, 1 );
 //    prog.setUniform( "u_buf_w", float(GL::OGL::getRenderBufferWidth()) );
 //    prog.setUniform( "u_buf_h", float(GL::OGL::getRenderBufferHeight()) );
-    prog.setUniform( "u_tex", _disp->_rbo_color, (GLenum)GL_TEXTURE0, 0 );
-    prog.setUniform( "u_tex_selected", _disp->_rbo_select, (GLenum)GL_TEXTURE1, 1 );
+    prog.setUniform( "u_tex", _disp->_rbo_color.getId(), (GLenum)GL_TEXTURE0, 0 );
+    prog.setUniform( "u_tex_selected", _disp->_rbo_select.getId(), (GLenum)GL_TEXTURE1, 1 );
     prog.setUniform( "u_buf_w", float(_w) );
     prog.setUniform( "u_buf_h", float(_h) );
     prog.setUniform( "u_select_color", _select_color );

@@ -100,28 +100,22 @@ namespace GMlib {
 
 
 
-  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject") {
+  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_select(GL_TEXTURE_2D) {
 
-    glGenTextures( 1, &_rbo_color );
-    glGenTextures( 1, &_rbo_select );
     glGenRenderbuffers( 1, &_rbo_depth );
 
+    // Color rbo texture parameters
+    _rbo_color.setParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    _rbo_color.setParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    _rbo_color.setParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    _rbo_color.setParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    glBindTexture( GL_TEXTURE_2D, _rbo_color ); {
+    // Select rbo texture parameters
+    _rbo_select.setParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    _rbo_select.setParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    _rbo_select.setParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    _rbo_select.setParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    } glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-    glBindTexture( GL_TEXTURE_2D, _rbo_select ); {
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    } glBindTexture( GL_TEXTURE_2D, 0x0 );
 
     // Bind render buffers to frame buffer.
     _fbo.bind(); {
@@ -129,34 +123,14 @@ namespace GMlib {
       glBindRenderbuffer( GL_RENDERBUFFER, _rbo_depth );
       glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _rbo_depth );
       glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
-
-      glBindTexture( GL_TEXTURE_2D, _rbo_color );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _rbo_color, 0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-      glBindTexture( GL_TEXTURE_2D, _rbo_select );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, _rbo_select, 0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-
     } _fbo.unbind();
 
-    _fbo_color.bind(); {
+    _fbo.attachTexture2D( _rbo_color,  GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
+    _fbo.attachTexture2D( _rbo_select, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1 );
 
-      glBindTexture( GL_TEXTURE_2D, _rbo_color );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _rbo_color, 0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-    } _fbo_color.unbind();
+    _fbo_color.attachTexture2D( _rbo_color, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
+    _fbo_select.attachTexture2D( _rbo_select, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
 
-
-    _fbo_select.bind(); {
-
-      glBindTexture( GL_TEXTURE_2D, _rbo_select );
-      glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _rbo_select, 0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-    } _fbo_select.unbind();
-
-
-    GL::OGL::createRenderBuffer();
   }
 
   void DisplayRenderer::prepare(Array<SceneObject*>& objs, Camera *cam) {
@@ -265,21 +239,17 @@ namespace GMlib {
 
     setBufferSize( w, h );
 
-    {
+    glBindRenderbuffer( GL_RENDERBUFFER, _rbo_depth );
+    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, w, h );
+    glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
 
-      glBindRenderbuffer( GL_RENDERBUFFER, _rbo_depth );
-      glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT, w, h );
-      glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
+    _rbo_color.bind();
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_color.unbind();
 
-      glBindTexture( GL_TEXTURE_2D, _rbo_color );
-      glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-      glBindTexture( GL_TEXTURE_2D, _rbo_select );
-      glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-      glBindTexture( GL_TEXTURE_2D, 0x0 );
-
-    } GL::OGL::setRenderBufferSize(w,h);
+    _rbo_select.bind();
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_select.unbind();
   }
 
 
