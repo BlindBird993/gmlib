@@ -62,7 +62,7 @@ namespace GMlib {
     protected:
       enum {
         TOTAL_SPHERE =  0x01,
-        CLEAN_SPHERE =  0x02,
+        CLEAN_SPHERE =  0x02
       };
 
       unsigned int      _spheres;

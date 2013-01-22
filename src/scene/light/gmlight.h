@@ -124,7 +124,7 @@ namespace GMlib{
   bool Light::isCullable() {
 
     return _cullable;
-  };
+  }
 
   inline
   bool Light::isEnabled() const {
@@ -161,7 +161,7 @@ namespace GMlib{
   void Light::setCullable( bool cullable ) {
 
     _cullable = cullable;
-  };
+  }
 
   /*! void Light::setIntensity(double d,int i)
    * \brief Pending Documentation

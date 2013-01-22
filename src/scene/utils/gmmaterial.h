@@ -384,7 +384,7 @@ namespace GMlib {
       return ( !((_source_blend_factor==GL_ONE) && (_destination_blend_factor==GL_ONE)) );
     else
       return ( (_amb.getAlpha() < 1.0) && (_dif.getAlpha() < 1.0) && (_spc.getAlpha() < 1.0) );
-  };
+  }
 
 
   /*! void Material::set( const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture )

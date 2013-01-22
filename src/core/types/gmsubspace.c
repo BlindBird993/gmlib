@@ -217,7 +217,7 @@ namespace GMlib {
   T SubSpace<T,n,0>::getDistanceAlong(const Point<T,n>& p, int i ) {
 
     return T(0);
-  };
+  }
 
 
   template <class T, int n>

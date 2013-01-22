@@ -560,7 +560,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Point<T,n> Vector<T, n>::getNormalized() {
+  Point<T,n> Vector<T, n>::getNormalized() const {
     return (*this)/Point<T,n>::getLength();
   }
 

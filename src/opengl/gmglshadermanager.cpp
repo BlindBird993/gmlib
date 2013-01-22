@@ -739,6 +739,7 @@ bool GLShaderManager::_initShaders() {
     "  if( u_selected )\n"
     "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
     "  gl_FragData[1] = sel_color;\n"
+              "if(!gl_FrontFacing) discard;\n"
     "}\n"
   );
 

@@ -95,6 +95,7 @@ namespace GMlib {
     _target = obj._target;
     _valid = obj._valid;
     _ids[_id]++;
+    return *this;
   }
 
 
