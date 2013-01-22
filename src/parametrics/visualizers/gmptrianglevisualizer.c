@@ -56,8 +56,8 @@ namespace GMlib {
 
 //      const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
 
-      a = p[i][3]-p[i][1];
-      b = p[i][2]-p[i][1];
+      a = p(i)(3)-p(i)(1);
+      b = p(i)(2)-p(i)(1);
       n = a^b;
 
       dp[i].x   = p(i)(0)(0);

@@ -56,17 +56,17 @@ namespace GMlib {
     void          select();
 
   protected:
-    GL::VertexBufferObject        _vbo;
-    GL::IndexBufferObject         _ibo;
-    GLuint                    _nmap;
+    GL::VertexBufferObject      _vbo;
+    GL::IndexBufferObject       _ibo;
+    GLuint                      _nmap;
 
-    GLuint                    _no_strips;
-    GLuint                    _no_strip_indices;
-    GLsizei                   _strip_size;
+    GLuint                      _no_strips;
+    GLuint                      _no_strip_indices;
+    GLsizei                     _strip_size;
 
-    void                      draw();
+    void                        draw();
 
-    unsigned int              _no_vertices;
+    unsigned int                _no_vertices;
 
   }; // END class PSurfDefaultVisualizer
 

@@ -45,13 +45,17 @@ namespace GMlib {
   public:
     TriangleFacetsDefaultVisualizer();
     ~TriangleFacetsDefaultVisualizer();
+
+    /* virtual from TriangleFacetsVisualizer */
     void          display();
-    virtual void  replot();
+    void          replot();
     void          select();
 
   protected:
     GL::VertexBufferObject        _vbo;
-    GL::TrianglesIBO              _ibo;
+    GL::IndexBufferObject         _ibo;
+
+    int                           _no_elements;
 
   }; // END class TriangleFacetsDefaultVisualizer
 

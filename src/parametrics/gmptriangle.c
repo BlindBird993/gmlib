@@ -41,7 +41,7 @@ namespace GMlib {
     _init();
     setEval( 0 );
 
-    _default_visualizer = new PTriangleVisualizer<T>();
+    _default_visualizer = new PTriangleDefaultVisualizer<T>();
     enableDefaultVisualizer( true );
   }
 
@@ -59,7 +59,7 @@ namespace GMlib {
 
     _default_d    = copy._default_d;
 
-    _default_visualizer = new PTriangleVisualizer<T>();
+    _default_visualizer = new PTriangleDefaultVisualizer<T>();
     enableDefaultVisualizer( true );
   }
 

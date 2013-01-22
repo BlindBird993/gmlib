@@ -172,7 +172,7 @@ namespace GMlib {
    TSTriangle<T>                      __t;		// dummy because of MS-VC++ compiler
 
     bool                              _fillPolygon(Array<TSEdge<T>*>&);
-    bool                              _removeLastVertex();;
+    bool                              _removeLastVertex();
     void                              _set(int i);
     int                               _surroundingTriangle(TSTriangle<T>*&, const TSVertex<T>&);// const;
 

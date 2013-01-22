@@ -35,7 +35,7 @@ namespace GMlib {
   template <typename T>
   PTriangleDefaultVisualizer<T>::PTriangleDefaultVisualizer() : _vbo(), _ibo() {
 
-    _no_triangles= 0;
+    _no_elements = 0;
   }
 
   template <typename T>
@@ -72,9 +72,7 @@ namespace GMlib {
     _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
     _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(sizeof(GL::GLVertex) ) );
 
-    _ibo.bind();
-    glDrawElements( GL_TRIANGLES, _no_triangles * 3, GL_UNSIGNED_INT, (GLvoid*)0x0 );
-    _ibo.unbind();
+    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, (GLvoid*)0x0 );
 
     _vbo.disable( vert_loc );
     _vbo.disable( normal_loc );
@@ -85,7 +83,7 @@ namespace GMlib {
   inline
   void PTriangleDefaultVisualizer<T>::replot( const DVector< DVector< Vector<T,3> > >& p, int m ) {
 
-    _no_triangles = PTriangleVisualizer<float>::getNoTriangles( m-1 );
+    _no_elements = PTriangleVisualizer<float>::getNoTriangles( m-1 ) * 3;
 
     // Fill VBO
     PTriangleVisualizer<float>::fillStandardVBO( _vbo, p );
@@ -103,9 +101,7 @@ namespace GMlib {
     _vbo.bind();
     _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
 
-    _ibo.bind();
-    glDrawElements( GL_TRIANGLES, _no_triangles * 3, GL_UNSIGNED_INT, (GLvoid*)0x0 );
-    _ibo.unbind();
+    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, (GLvoid*)0x0 );
 
     _vbo.unbind();
   }

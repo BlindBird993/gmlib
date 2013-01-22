@@ -63,6 +63,8 @@ namespace GMlib {
   }
 
   int Renderer::getBufferWidth() const {
+
+    return _buffer_width;
   }
 
   bool Renderer::isInitialized() const {

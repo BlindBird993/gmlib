@@ -63,7 +63,6 @@ namespace GMlib {
     static void   fillMap( GLuint map, const DMatrix< DMatrix< Vector< T,3> > >& p, int d1, int d2 );
     static void   fillNMap(GLuint nmap, const DMatrix< DMatrix< Vector<T, 3> > >& p , bool closed_u, bool closed_v);
     static void   fillStandardIBO( GLuint vbo_id, int m1, int m2 );
-//    static void   fillStandardTBO( GLuint tbo_id, GLuint tex_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1 = 0, int d2 = 0 );
     static void   fillStandardVBO(GL::VertexBufferObject &vbo,
                                   unsigned int &no_vertices,
                                   const DMatrix< DMatrix< Vector<T, 3> > >& p );

@@ -30,46 +30,11 @@ namespace GMlib {
 namespace GL {
 
 
-  IndexBufferObject::IndexBufferObject() : BufferObject( GL_ELEMENT_ARRAY_BUFFER ) {}
+  IndexBufferObject::IndexBufferObject()
+    : BufferObject( GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING ) {}
 
-  IndexBufferObject::IndexBufferObject(const std::string &name) :
-    BufferObject( std::string("ibo_") + name, GL_ELEMENT_ARRAY_BUFFER ) {
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-  TrianglesIBO::TrianglesIBO() : IndexBufferObject() {
-
-    init();
-  }
-
-  TrianglesIBO::TrianglesIBO(const std::string &name) :
-    IndexBufferObject( name ) {
-
-    init();
-  }
-
-  void TrianglesIBO::draw() {
-
-    bind();
-//    glDrawElements( GL_TRIANGLES, _no_indices, getType(), (const GLvoid*)0x0 );
-    unbind();
-  }
-
-  void TrianglesIBO::init() {
-
-    _no_indices = 0;
-  }
-
+  IndexBufferObject::IndexBufferObject(const std::string &name)
+    : BufferObject( std::string("ibo_") + name, GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING ) {}
 
 
 } // END namespace GL

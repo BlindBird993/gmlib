@@ -36,6 +36,21 @@
 #define __gmSCENEOBJECT_H__
 
 
+
+#include "gmfrustum.h"
+#include "gmscaleobject.h"
+#include "utils/gmmaterial.h"
+#include "visualizer/gmvisualizer.h"
+
+// stl
+#include <string>
+
+
+
+
+
+
+
 /////////////////////
 
 // getIdentity
@@ -73,13 +88,6 @@
 
 
 
-#include "gmfrustum.h"
-#include "gmscaleobject.h"
-#include "utils/gmmaterial.h"
-#include "visualizer/gmvisualizer.h"
-
-// stl
-#include <string>
 
 
 

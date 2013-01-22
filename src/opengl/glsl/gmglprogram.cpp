@@ -45,11 +45,9 @@ namespace GL {
 
     _name = name;
 
-    bool ok = GLShaderManager::createProgram( name );
+    GLShaderManager::createProgram( name );
 
     _id = GLShaderManager::getProgramID( _name );
-
-      std::cout << "  " << ( ok ? "Creating" : "Using" ) << " a GLProgram \"" << name << "\" with id: " << _id << std::endl;
   }
 
   GLProgram::GLProgram( const GLProgram &copy ) {
@@ -91,7 +89,7 @@ namespace GL {
 
   void GLProgram::bind() const {
 
-    glUseProgram( _id );
+    GL_CHECK(glUseProgram( _id ));
   }
 
   void GLProgram::disableAttributeArray( const std::string& name ) const {
@@ -101,7 +99,7 @@ namespace GL {
 
   void GLProgram::disableAttributeArray( GLuint loc ) const {
 
-    glDisableVertexAttribArray( loc );
+    GL_CHECK(glDisableVertexAttribArray( loc ));
   }
 
   void GLProgram::enableAttributeArray( const std::string& name ) const {
@@ -111,12 +109,14 @@ namespace GL {
 
   void GLProgram::enableAttributeArray( GLuint loc ) const {
 
-    glEnableVertexAttribArray( loc );
+    GL_CHECK(glEnableVertexAttribArray( loc ));
   }
 
   GLuint GLProgram::getAttributeLocation(const std::string& name) const {
 
-    return glGetAttribLocation( _id, name.c_str() );
+    GLuint loc;
+    GL_CHECK(loc = glGetAttribLocation( _id, name.c_str() ));
+    return loc;
   }
 
   GLuint GLProgram::getId() const {
@@ -143,12 +143,16 @@ namespace GL {
 
   GLuint GLProgram::getUniformBlockIndex(const std::string &name) const {
 
-    return glGetUniformBlockIndex( _id, name.c_str() );
+    GLuint block_index;
+    GL_CHECK(block_index = glGetUniformBlockIndex( _id, name.c_str() ));
+    return block_index;
   }
 
   GLuint GLProgram::getUniformLocation(const std::string& name) const {
 
-    return glGetUniformLocation( _id, name.c_str() );
+    GLuint uniform_loc;
+    GL_CHECK(uniform_loc = glGetUniformLocation( _id, name.c_str() ));
+    return uniform_loc;
   }
 
   bool GLProgram::link() const {
@@ -168,53 +172,53 @@ namespace GL {
 
   void GLProgram::setUniform(const std::string &name, bool b) const {
 
-    glUniform1i( getUniformLocation(name), b );
+    GL_CHECK(glUniform1i( getUniformLocation(name), b ));
   }
 
   void GLProgram::setUniform(const std::string& name, const Color &c) const {
 
-    glUniform4f(
+    GL_CHECK(glUniform4f(
         getUniformLocation( name ),
         c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC()
-        );
+        ));
   }
 
   void GLProgram::setUniform(const std::string& name, const HqMatrix<float, 3> &matrix, int count, bool transpose) const {
 
-    glUniformMatrix4fv(
+    GL_CHECK(glUniformMatrix4fv(
         getUniformLocation( name ),
         count, transpose, matrix.getPtr()
-        );
+        ));
   }
 
   void GLProgram::setUniform(const std::string &name, const Point<float, 3> &p) const {
 
-    glUniform3fv(
+    GL_CHECK(glUniform3fv(
         getUniformLocation(name),
         3 * sizeof(float), p.getPtr()
-        );
+        ));
   }
 
   void GLProgram::setUniform(const std::string &name, GLuint tex_id, GLenum tex_unit, GLuint tex_nr ) const {
 
-    glActiveTexture( tex_unit );
-    glBindTexture( GL_TEXTURE_2D, tex_id );
-    glUniform1i( getUniformLocation( name ), tex_nr );
+    GL_CHECK(glActiveTexture( tex_unit ));
+    GL_CHECK(glBindTexture( GL_TEXTURE_2D, tex_id ));
+    GL_CHECK(glUniform1i( getUniformLocation( name ), tex_nr ));
   }
 
   void GLProgram::setUniform(const std::string &name, float f) const {
 
-    glUniform1f( getUniformLocation( name ), f );
+    GL_CHECK(glUniform1f( getUniformLocation( name ), f ));
   }
 
   void GLProgram::setUniform( const std::string& name, int i ) const {
 
-    glUniform1i( getUniformLocation( name ), i );
+    GL_CHECK(glUniform1i( getUniformLocation( name ), i ));
   }
 
   void GLProgram::unbind() const {
 
-    glUseProgram( 0 );
+    GL_CHECK(glUseProgram( 0 ));
   }
 
   GLProgram& GLProgram::operator = ( const GLProgram& copy ) {

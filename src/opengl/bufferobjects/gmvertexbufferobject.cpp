@@ -30,10 +30,10 @@ namespace GMlib {
 namespace GL {
 
   VertexBufferObject::VertexBufferObject()
-    : BufferObject( GL_ARRAY_BUFFER ) {}
+    : BufferObject( GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING ) {}
 
   VertexBufferObject::VertexBufferObject( const std::string& name )
-    : BufferObject( std::string("vbo_") + name, GL_ARRAY_BUFFER ) {}
+    : BufferObject( std::string("vbo_") + name, GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING ) {}
 
 } // END namespace GL
 

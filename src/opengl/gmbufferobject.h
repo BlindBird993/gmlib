@@ -34,9 +34,9 @@ namespace GL {
 
   class BufferObject {
   public:
-    explicit BufferObject( GLenum target = GL_ARRAY_BUFFER );
+    explicit BufferObject( GLenum target = GL_ARRAY_BUFFER, GLenum binding = GL_ARRAY_BUFFER_BINDING );
     explicit BufferObject( const std::string name );
-    explicit BufferObject( const std::string name, GLenum target );
+    explicit BufferObject(const std::string name, GLenum target , GLenum binding);
     BufferObject( const BufferObject& copy );
     virtual ~BufferObject();
 
@@ -45,6 +45,10 @@ namespace GL {
 
     std::string             getName() const;
     GLuint                  getId() const;
+
+    GLenum                  getBinding() const;
+    void                    setBinding( GLenum binding = GL_ARRAY_BUFFER_BINDING ) const;
+
     GLenum                  getTarget() const;
     void                    setTarget( GLenum target = GL_ARRAY_BUFFER ) const;
 
@@ -67,9 +71,14 @@ namespace GL {
     mutable std::string     _name;
     mutable GLuint          _id;
     mutable GLenum          _target;
+    mutable GLenum          _binding;
 
   private:
     static GLuintCMap       _ids;
+
+    /* safe-bind */
+    virtual GLint           safeBind() const;
+    void                    safeUnbind( GLint id ) const;
 
   }; // END class BufferObject
 
@@ -78,20 +87,24 @@ namespace GL {
   inline
   void BufferObject::bind() const {
 
-    glBindBuffer( _target, _id );
+    GL_CHECK(glBindBuffer( _target, _id ));
   }
 
   template <typename T>
   inline
   T* BufferObject::mapBuffer(GLenum access ) const {
 
-    return static_cast<T*>(glMapBuffer( _target, access ));
+    GLint id = safeBind();
+    void *ptr;
+    GL_CHECK(ptr = glMapBuffer( _target, access ));
+    return static_cast<T*>(ptr);
+    safeUnbind(id);
   }
 
   inline
   void BufferObject::unbind() const {
 
-    glBindBuffer( _target, 0x0 );
+    GL_CHECK(glBindBuffer( _target, 0x0 ));
   }
 
   inline
@@ -104,6 +117,7 @@ namespace GL {
     _valid    = copy._valid;
 
     _ids[_id]++;
+
     return *this;
   }
 

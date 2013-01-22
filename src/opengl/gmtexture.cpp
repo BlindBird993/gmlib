@@ -31,7 +31,7 @@ namespace GL {
 
   GLuintCMap Texture::_ids;
 
-  Texture::Texture(GLenum target) : _name(""), _target(target), _valid(true) {
+  Texture::Texture(GLenum target) :  _valid(true), _name(""), _target(target) {
 
     _id = OGL::createTex();
 
@@ -97,28 +97,28 @@ namespace GL {
   void Texture::texImage1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data) {
 
     GLint id = safeBind();
-    glTexImage1D( _target, level, internal_format, width, border, format, type, data );
+    GL_CHECK(glTexImage1D( _target, level, internal_format, width, border, format, type, data ));
     safeUnbind(id);
   }
 
   void Texture::texImage2D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data) {
 
     GLint id = safeBind();
-    glTexImage2D( _target, level, internal_format, width, height, border, format, type, data );
+    GL_CHECK(glTexImage2D( _target, level, internal_format, width, height, border, format, type, data ));
     safeUnbind(id);
   }
 
   void Texture::texImage3D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data) {
 
     GLint id = safeBind();
-    glTexImage3D( _target, level, internal_format, width, height, depth, border, format, type, data );
+    GL_CHECK(glTexImage3D( _target, level, internal_format, width, height, depth, border, format, type, data ));
     safeUnbind(id);
   }
 
   GLint Texture::safeBind() const {
 
     GLint id;
-    glGetIntegerv( _target, &id );
+    GL_CHECK(glGetIntegerv( _target, &id ));
     bind();
 
     return id;
@@ -126,20 +126,20 @@ namespace GL {
 
   void Texture::safeUnbind( GLint id ) const {
 
-    glBindFramebuffer( _target, id );
+    GL_CHECK(glBindTexture( _target, id ));
   }
 
   void Texture::setParameterf(GLenum pname, GLfloat param) {
 
     GLint id = safeBind();
-    glTexParameterf( _target, pname, param );
+    GL_CHECK(glTexParameterf( _target, pname, param ));
     safeUnbind(id);
   }
 
   void Texture::setParameteri( GLenum pname, GLint param) {
 
     GLint id = safeBind();
-    glTexParameteri( _target, pname, param );
+    GL_CHECK(glTexParameteri( _target, pname, param ));
     safeUnbind(id);
   }
 

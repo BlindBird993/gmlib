@@ -1578,7 +1578,12 @@ namespace GMlib {
 
   template <typename T>
   inline
-  TSEdge<T>::TSEdge( const TSEdge<T>& e ) : _vertex( e._vertex ), _triangle( e._triangle ) {
+  TSEdge<T>::TSEdge( const TSEdge<T>& e ) {// : _vertex( e._vertex ), _triangle( e._triangle ) {
+
+    for( int i = 0; i < 2; ++i ) {
+      _vertex[i] = e._vertex[i];
+      _triangle[i] = e._triangle[i];
+    }
 
     _const = e._const;
     _upv();
@@ -2170,7 +2175,11 @@ namespace GMlib {
 
   template <typename T>
   inline
-  TSTriangle<T>::TSTriangle( const TSTriangle<T>& t ) : _edge(t._edge), _box(t._box) {}
+  TSTriangle<T>::TSTriangle( const TSTriangle<T>& t ) : _box(t._box) {
+
+    for( int i = 0; i < 3; ++i )
+      _edge[i]  = t._edge[i];
+  }
 
 
   template <typename T>

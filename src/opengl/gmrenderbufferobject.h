@@ -73,13 +73,13 @@ namespace GL {
   inline
   void RenderbufferObject::bind() const {
 
-    glBindRenderbuffer( GL_RENDERBUFFER, _id );
+    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, _id ));
   }
 
   inline
   void RenderbufferObject::unbind() const {
 
-    glBindFramebuffer( GL_RENDERBUFFER, 0x0 );
+    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, 0x0 ));
   }
 
 

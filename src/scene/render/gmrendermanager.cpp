@@ -102,7 +102,7 @@ namespace GMlib {
 
   SceneObject *RenderManager::findObject(int x, int y) {
 
-    _select->findObject( x, y );
+    return _select->findObject( x, y );
   }
 
   void RenderManager::resize(int w, int h) {

@@ -12,7 +12,8 @@ namespace GL {
   public:
     explicit UniformBufferObject();
     explicit UniformBufferObject( const std::string& name );
-  };
+
+  }; // END class UniformBufferObject
 
 } // END namespace GL
 

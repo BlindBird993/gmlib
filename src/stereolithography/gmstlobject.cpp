@@ -30,6 +30,8 @@
 
 #include "gmstlobject.h"
 
+// gmlib
+#include <core/utils/gmstream.h>
 
 namespace GMlib {
 

@@ -56,7 +56,7 @@ namespace GMlib {
     GL::VertexBufferObject    _vbo;
     GL::IndexBufferObject     _ibo;
 
-    int             _no_triangles;
+    int                       _no_elements;
 
   }; // END class PTriangleDefaultVisualizer
 

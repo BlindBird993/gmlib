@@ -30,12 +30,15 @@
 
 #include "../gmtrianglesystem.h"
 
+// gmlib
+#include <opengl/gmopengl.h>
+
 
 namespace GMlib {
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() :
-    _vbo(), _ibo() {}
+    _vbo(), _ibo(), _no_elements(0) {}
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::~TriangleFacetsDefaultVisualizer() {}
@@ -68,9 +71,11 @@ namespace GMlib {
     GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GL::GLVertexNormal), (const GLvoid*)0x0 );
-    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GL::GLVertexNormal), (const GLvoid*)sizeof(GL::GLVertex) );
-    _ibo.draw();
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GL::GLVertexNormal), 0x0 );
+    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(sizeof(GL::GLVertex)) );
+
+    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, static_cast<const GLvoid*>(0x0) );
+
     _vbo.disable( vert_loc );
     _vbo.disable( normal_loc );
     _vbo.unbind();
@@ -82,6 +87,8 @@ namespace GMlib {
 
     TriangleFacetsVisualizer<T>::fillStandardVBO( _vbo, this->_tf );
     TriangleFacetsVisualizer<T>::fillStandardIBO( _ibo, this->_tf );
+
+    _no_elements = this->_tf->getNoTriangles() * 3;
   }
 
   template <typename T>
@@ -91,8 +98,11 @@ namespace GMlib {
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), (const GLvoid*)0x0 );
-    _ibo.draw();
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), static_cast<const GLvoid*>(0x0) );
+
+    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, static_cast<const GLvoid*>(0x0) );
+
+    _ibo.unbind();
     _vbo.disable( vert_loc );
     _vbo.unbind();
   }

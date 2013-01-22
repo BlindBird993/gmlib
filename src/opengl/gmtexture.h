@@ -83,13 +83,13 @@ namespace GL {
   inline
   void Texture::bind() const {
 
-    glBindTexture( _target, _id );
+    GL_CHECK(glBindTexture( _target, _id ));
   }
 
   inline
   void Texture::unbind() const {
 
-    glBindTexture( _target, 0x0 );
+    GL_CHECK(glBindTexture( _target, 0x0 ));
   }
 
   inline
@@ -102,6 +102,8 @@ namespace GL {
     _valid    = copy._valid;
 
     _ids[_id]++;
+
+    return (*this);
   }
 
 

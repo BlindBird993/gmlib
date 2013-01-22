@@ -36,7 +36,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  ViewSet::ViewSet(Camera* cam) : _root(cam), _vbo() {
+  ViewSet::ViewSet(Camera* cam) : _vbo(), _root(cam) {
 
     if(cam)	_cameras += cam;
     _border_color = GMcolor::White;

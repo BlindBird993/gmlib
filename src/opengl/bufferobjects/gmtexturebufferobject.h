@@ -39,7 +39,7 @@ namespace GL {
     TextureBufferObject();
     TextureBufferObject( const std::string& name );
 
-  }; // END class VertexBufferObject
+  }; // END class TextureBufferObject
 
 } // END namespace GL
 

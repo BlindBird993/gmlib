@@ -42,7 +42,9 @@ namespace GMlib {
 
 
 
-  DisplayRenderer::DisplayRenderer(Scene *scene) : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _fbo_select("DefaultRenderSelectBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_select(GL_TEXTURE_2D), _rbo_depth() {
+  DisplayRenderer::DisplayRenderer(Scene *scene)
+    : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_depth(),
+      _fbo_select("DefaultRenderSelectBufferObject"), _rbo_select(GL_TEXTURE_2D) {
 
 
     // Color rbo texture parameters

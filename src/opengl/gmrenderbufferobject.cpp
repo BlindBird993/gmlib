@@ -66,7 +66,7 @@ namespace GL {
   void RenderbufferObject::createStorage(GLenum internal_format, GLsizei width, GLsizei height) const {
 
     GLuint id = safeBind();
-    glRenderbufferStorage( GL_RENDERBUFFER, internal_format, width, height );
+    GL_CHECK(glRenderbufferStorage( GL_RENDERBUFFER, internal_format, width, height ));
     safeUnbind(id);
   }
 
@@ -88,7 +88,7 @@ namespace GL {
   GLint RenderbufferObject::safeBind() const {
 
     GLint id;
-    glGetIntegerv( GL_RENDERBUFFER_BINDING, &id );
+    GL_CHECK(glGetIntegerv( GL_RENDERBUFFER_BINDING, &id ));
     bind();
 
     return id;
@@ -96,7 +96,7 @@ namespace GL {
 
   void RenderbufferObject::safeUnbind( GLint id ) const {
 
-    glBindFramebuffer( GL_RENDERBUFFER, id );
+    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, id ));
   }
 
 

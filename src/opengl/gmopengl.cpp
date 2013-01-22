@@ -94,7 +94,7 @@ namespace GL {
     if( !_rboExists(name, true) )
       return false;
 
-    glBindRenderbuffer( GL_RENDERBUFFER, _rbos[name].id );
+    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, _rbos[name].id ));
 
     return true;
   }
@@ -102,7 +102,7 @@ namespace GL {
   GLuint OGL::createRbo() {
 
     GLuint id;
-    glGenRenderbuffers( 1, &id );
+    GL_CHECK(glGenRenderbuffers( 1, &id ));
     return id;
   }
 
@@ -117,7 +117,7 @@ namespace GL {
       return false;
 
     RBOInfo rbo;
-    glGenRenderbuffers( 1, &rbo.id );
+    GL_CHECK(glGenRenderbuffers( 1, &rbo.id ));
 
     _rbos[name] = rbo;
 
@@ -126,10 +126,26 @@ namespace GL {
 
   void OGL::deleteRbo(GLuint id) {
 
-    glDeleteRenderbuffers( 1, &id );
+    GL_CHECK(glDeleteRenderbuffers( 1, &id ));
   }
 
   bool OGL::deleteRbo(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "RBO" ) )
+      return false;
+
+    if( !_rboExists(name, true) )
+      return false;
+
+    // Detach "render" buffers
+
+    GL_CHECK(glDeleteRenderbuffers( 1, &(_rbos[name].id) ));
+
+    _rbos.erase( name );
+
+    return true;
   }
 
   GLuint OGL::getRboId(const std::string &name) {
@@ -142,7 +158,7 @@ namespace GL {
     if( !_rboExists(name, true) )
       return false;
 
-    glDeleteRenderbuffers( 1, &(_rbos[name].id) );
+    GL_CHECK(glDeleteRenderbuffers( 1, &(_rbos[name].id) ));
 
     _rbos.erase( name );
 
@@ -164,7 +180,7 @@ namespace GL {
     if( !_rboExists(name, true) )
       return false;
 
-    glBindRenderbuffer( GL_RENDERBUFFER, 0x0 );
+    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, 0x0 ));
 
     return true;
   }
@@ -212,12 +228,24 @@ namespace GL {
   }
 
   bool OGL::bindTex(const std::string &name) {
+
+    _clearLog();
+
+    if( _nameEmpty( name, "RBO" ) )
+      return false;
+
+    if( !_rboExists(name, true) )
+      return false;
+
+    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, _rbos[name].id ));
+
+    return true;
   }
 
   GLuint OGL::createTex() {
 
     GLuint id;
-    glGenTextures( 1, &id );
+    GL_CHECK(glGenTextures( 1, &id ));
     return id;
   }
 
@@ -232,7 +260,7 @@ namespace GL {
       return false;
 
     TexInfo tex;
-    glGenTextures( 1, &tex.id );
+    GL_CHECK(glGenTextures( 1, &tex.id ));
     tex.target = target;
 
     _texs[name] = tex;
@@ -242,7 +270,7 @@ namespace GL {
 
   void OGL::deleteTex(GLuint id) {
 
-    glDeleteTextures( 1, &id );
+    GL_CHECK(glDeleteTextures( 1, &id ));
   }
 
   bool OGL::deleteTex(const std::string &name) {
@@ -255,7 +283,7 @@ namespace GL {
     if( !_texExists(name, true) )
       return false;
 
-    glDeleteTextures( 1, &(_texs[name].id) );
+    GL_CHECK(glDeleteTextures( 1, &(_texs[name].id) ));
 
     _texs.erase( name );
 
@@ -318,7 +346,7 @@ namespace GL {
     if( !_texExists(name, true) )
       return false;
 
-    glBindTexture( _texs[name].target, 0x0 );
+    GL_CHECK(glBindTexture( _texs[name].target, 0x0 ));
 
     return true;
   }
@@ -375,7 +403,7 @@ namespace GL {
     if( !_fboExists(name, true) )
       return false;
 
-    glBindFramebuffer( GL_FRAMEBUFFER, _fbos[name].id );
+    GL_CHECK(glBindFramebuffer( GL_FRAMEBUFFER, _fbos[name].id ));
 
     return true;
   }
@@ -390,7 +418,7 @@ namespace GL {
     if( !_boExists(name, true) )
       return false;
 
-    glBindBuffer( _bos[name].target, _bos[name].id );
+    GL_CHECK(glBindBuffer( _bos[name].target, _bos[name].id ));
 
     return true;
   }
@@ -405,7 +433,7 @@ namespace GL {
   GLuint OGL::createFbo() {
 
     GLuint id;
-    glGenFramebuffers( 1, &id );
+    GL_CHECK(glGenFramebuffers( 1, &id ));
     return id;
   }
 
@@ -420,7 +448,7 @@ namespace GL {
       return false;
 
     FBOInfo fbo;
-    glGenFramebuffers( 1, &fbo.id );
+    GL_CHECK(glGenFramebuffers( 1, &fbo.id ));
 
     _fbos[name] = fbo;
 
@@ -430,7 +458,7 @@ namespace GL {
   GLuint OGL::createBo() {
 
     GLuint id;
-    glGenBuffers( 1, &id );
+    GL_CHECK(glGenBuffers( 1, &id ));
     return id;
   }
 
@@ -445,7 +473,7 @@ namespace GL {
       return false;
 
     BOInfo bo;
-    glGenBuffers( 1, &bo.id );
+    GL_CHECK(glGenBuffers( 1, &bo.id ));
     bo.target = target;
 
     _bos[name] = bo;
@@ -455,7 +483,7 @@ namespace GL {
 
   void OGL::deleteFbo(GLuint id) {
 
-    glDeleteFramebuffers( 1, &id );
+    GL_CHECK(glDeleteFramebuffers( 1, &id ));
   }
 
   bool OGL::deleteFbo(const std::string &name) {
@@ -470,7 +498,7 @@ namespace GL {
 
     // Detach "render" buffers
 
-    glDeleteFramebuffers( 1, &(_fbos[name].id) );
+    GL_CHECK(glDeleteFramebuffers( 1, &(_fbos[name].id) ));
 
     _fbos.erase( name );
 
@@ -479,7 +507,7 @@ namespace GL {
 
   void OGL::deleteBo(GLuint id) {
 
-    glDeleteBuffers( 1, &id );
+    GL_CHECK(glDeleteBuffers( 1, &id ));
   }
 
   bool OGL::deleteBo(const std::string &name) {
@@ -492,7 +520,7 @@ namespace GL {
     if( !_boExists(name, true) )
       return false;
 
-    glDeleteBuffers( 1, &(_bos[name].id) );
+    GL_CHECK(glDeleteBuffers( 1, &(_bos[name].id) ));
 
     _bos.erase( name );
 
@@ -579,7 +607,7 @@ namespace GL {
     if( !_fboExists(name, true) )
       return false;
 
-    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+    GL_CHECK(glBindFramebuffer( GL_FRAMEBUFFER, 0x0 ));
 
     return true;
   }
@@ -594,7 +622,7 @@ namespace GL {
     if( !_boExists(name, true) )
       return false;
 
-    glBindFramebuffer( _bos[name].target, 0x0 );
+    GL_CHECK(glBindBuffer( _bos[name].target, 0x0 ));
 
     return true;
   }
@@ -703,15 +731,15 @@ namespace GL {
     };
 
     OGL::bindBo( "std_rep_cube" );
-    glBufferData( GL_ARRAY_BUFFER, 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
+    GL_CHECK(glBufferData( GL_ARRAY_BUFFER, 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW ));
     OGL::unbindBo( "std_rep_cube" );
 
     OGL::bindBo( "std_rep_cube_indices" );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
+    GL_CHECK(glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW ));
     OGL::unbindBo( "std_rep_cube_indices" );
 
     OGL::bindBo( "std_rep_frame_indices" );
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
+    GL_CHECK(glBufferData( GL_ELEMENT_ARRAY_BUFFER, 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW ));
     OGL::unbindBo( "std_rep_frame_indices" );
   }
 
@@ -757,16 +785,16 @@ namespace GL {
     bindLightBuffer();
 
     // create/reset buffer size
-    glBufferData( GL_UNIFORM_BUFFER,
+    GL_CHECK(glBufferData( GL_UNIFORM_BUFFER,
                   sizeof(GLVector<4,GLuint>) + lights.size() * sizeof(GLLight),
-                  0x0, GL_DYNAMIC_DRAW );
+                  0x0, GL_DYNAMIC_DRAW ));
 
     // upload header ( "number of info" )
-    glBufferSubData(  GL_UNIFORM_BUFFER, 0, sizeof(GLVector<4,GLuint>), &header );
+    GL_CHECK(glBufferSubData(  GL_UNIFORM_BUFFER, 0, sizeof(GLVector<4,GLuint>), &header ));
 
     // upload light data
-    glBufferSubData(  GL_UNIFORM_BUFFER,
-                      sizeof(GLVector<4,GLuint>), sizeof(GLLight) * lights.size(), &lights[0] );
+    GL_CHECK(glBufferSubData(  GL_UNIFORM_BUFFER,
+                      sizeof(GLVector<4,GLuint>), sizeof(GLLight) * lights.size(), &lights[0] ));
 
     unbindLightBuffer();
   }
@@ -786,8 +814,8 @@ namespace GL {
     bindLightBuffer();
 
     // update light data
-    glBufferSubData(  GL_UNIFORM_BUFFER,
-                      sizeof(GLVector<4>) + buffer_offset * sizeof(GLLight), sizeof(GLLight), &light );
+    GL_CHECK(glBufferSubData(  GL_UNIFORM_BUFFER,
+                      sizeof(GLVector<4>) + buffer_offset * sizeof(GLLight), sizeof(GLLight), &light ));
 
     unbindLightBuffer();
   }

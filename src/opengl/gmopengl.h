@@ -70,6 +70,7 @@
 
 
 
+
 // gmlib
 #include <core/containers/gmdmatrix.h>
 #include <core/types/gmpoint.h>
@@ -82,10 +83,14 @@
 // Include Glew header and leave the gl mangling to GLEW
 #include <GL/glew.h>
 
+// local
+#include "utils/gmutils.h"
+
 // STL
 #include <vector>
 #include <map>
 #include <string>
+#include <iostream>
 
 
 namespace GMlib {
@@ -107,7 +112,7 @@ namespace GL {
   inline
   void glClearColor( const Color& c ) {
 
-    ::glClearColor( GLclampf(c.getRedC()), GLclampf(c.getGreenC()), GLclampf(c.getBlueC()), GLclampf(c.getAlphaC()) );
+    GL_CHECK(::glClearColor( GLclampf(c.getRedC()), GLclampf(c.getGreenC()), GLclampf(c.getBlueC()), GLclampf(c.getAlphaC()) ));
   }
 
 

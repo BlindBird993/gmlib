@@ -44,27 +44,20 @@ namespace GL {
     explicit IndexBufferObject();
     explicit IndexBufferObject( const std::string& name );
 
+    void      drawElements( GLenum mode, GLsizei count, GLenum type, const GLvoid* indices );
+
   }; // END class IndexBufferObject
 
 
 
 
+  inline
+  void IndexBufferObject::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices) {
 
-
-  class TrianglesIBO : public IndexBufferObject {
-  public:
-    explicit TrianglesIBO();
-    explicit TrianglesIBO( const std::string& name );
-
-    virtual void      draw();
-
-    int       _no_indices;
-
-  private:
-
-    void      init();
-
-  }; // END class TrianglesIBO
+    bind();
+    GL_CHECK(::glDrawElements( mode, count, type, indices));
+    unbind();
+  }
 
 } // END namespace GL
 

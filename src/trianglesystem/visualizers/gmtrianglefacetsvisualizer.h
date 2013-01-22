@@ -54,7 +54,7 @@ namespace GMlib {
 
     static void   fillStandardVBO( GL::VertexBufferObject& vbo,
                                    const TriangleFacets<T>* tf );
-    static void   fillStandardIBO( GL::TrianglesIBO& ibo,
+    static void   fillStandardIBO( GL::IndexBufferObject& ibo,
                                    const TriangleFacets<T>* tf );
 
   protected:

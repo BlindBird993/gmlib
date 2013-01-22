@@ -30,11 +30,10 @@ namespace GMlib {
 namespace GL {
 
   TextureBufferObject::TextureBufferObject()
-    : BufferObject( GL_TEXTURE_BUFFER ) { }
+    : BufferObject( GL_TEXTURE_BUFFER, GL_TEXTURE_BUFFER ) { }
 
   TextureBufferObject::TextureBufferObject(const std::string &name)
-    : BufferObject( std::string("tbo_") + name, GL_TEXTURE_BUFFER ) {}
-
+    : BufferObject( std::string("tbo_") + name, GL_TEXTURE_BUFFER, GL_TEXTURE_BUFFER ) {}
 
 } // END namespace GL
 

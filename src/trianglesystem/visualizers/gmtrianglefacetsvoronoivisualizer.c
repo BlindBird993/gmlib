@@ -27,6 +27,12 @@
  *  TriangleFacetsVoronoiVisualizer implementations
  */
 
+
+// gmlib
+#include <opengl/glsl/gmglprogram.h>
+
+
+
 namespace GMlib {
 
   template <typename T>
@@ -52,7 +58,7 @@ namespace GMlib {
 //    Array< Light* > lights = this->_obj->getScene()->getLights();
 //    std::cout << "No. Lights: " << lights.getSize() << std::endl;
 
-    const GLProgram &prog = this->getRenderProgram();
+    const GL::GLProgram &prog = this->getRenderProgram();
 
     prog.setUniform( "u_color", this->_obj->getColor() );
     prog.setUniform( "u_selected", this->_obj->isSelected() );

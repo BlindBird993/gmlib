@@ -70,7 +70,7 @@ namespace GL {
 
     GLint id = safeBind();
     rbo.bind();
-    glFramebufferRenderbuffer( GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, rbo.getId() );
+    GL_CHECK(glFramebufferRenderbuffer( GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, rbo.getId() ));
     rbo.unbind();
     safeUnbind(id);
   }
@@ -78,21 +78,21 @@ namespace GL {
   void FramebufferObject::attachTexture1D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
 
     GLint id = safeBind();
-    glFramebufferTexture1D( target, attachment, textarget, tex.getId(), level );
+    GL_CHECK(glFramebufferTexture1D( target, attachment, textarget, tex.getId(), level ));
     safeUnbind(id);
   }
 
   void FramebufferObject::attachTexture2D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
 
     GLint id = safeBind();
-    glFramebufferTexture2D( target, attachment, textarget, tex.getId(), level );
+    GL_CHECK(glFramebufferTexture2D( target, attachment, textarget, tex.getId(), level ));
     safeUnbind(id);
   }
 
   void FramebufferObject::attachTexture3D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level, GLint layer ) {
 
     GLint id = safeBind();
-    glFramebufferTexture3D( target, attachment, textarget, tex.getId(), level, layer );
+    GL_CHECK(glFramebufferTexture3D( target, attachment, textarget, tex.getId(), level, layer ));
     safeUnbind(id);
   }
 
@@ -114,7 +114,7 @@ namespace GL {
   GLint FramebufferObject::safeBind() const {
 
     GLint id;
-    glGetIntegerv( GL_FRAMEBUFFER_BINDING, &id );
+    GL_CHECK(glGetIntegerv( GL_FRAMEBUFFER_BINDING, &id ));
     bind();
 
     return id;
@@ -122,7 +122,7 @@ namespace GL {
 
   void FramebufferObject::safeUnbind( GLint id ) const {
 
-    glBindFramebuffer( GL_FRAMEBUFFER, id );
+    GL_CHECK(glBindFramebuffer( GL_FRAMEBUFFER, id ));
   }
 
 

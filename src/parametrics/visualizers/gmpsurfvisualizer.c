@@ -132,8 +132,8 @@ namespace GMlib {
 
     no_vertices = p.getDim1() * p.getDim2();
 
-    vbo.bind();
     vbo.createBufferData( no_vertices * sizeof(GL::GLVertexTex2D), 0x0, GL_STATIC_DRAW );
+    vbo.bind();
     GL::GLVertexTex2D *ptr = vbo.mapBuffer<GL::GLVertexTex2D>();
     for( int i = 0; i < p.getDim1(); i++ ) {
       for( int j = 0; j < p.getDim2(); j++ ) {
@@ -154,34 +154,6 @@ namespace GMlib {
 
     vbo.unbind();
   }
-
-  //  template <typename T>
-  //  inline
-  //  void PSurfVisualizer<T>::fillStandardTBO( GLuint tbo_id, GLuint tex_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1, int d2 ) {
-
-  //    // Bind TBO
-  //    glBindBuffer( GL_TEXTURE_BUFFER, tbo_id ); {
-
-  //      // Allocate buffer memory
-  //      int dp = p.getDim1() * p.getDim2();
-  //      glBufferData( GL_TEXTURE_BUFFER, dp * 4 * sizeof(float), 0x0, GL_STATIC_DRAW );
-
-  //      float *ptr = (float*)glMapBuffer( GL_TEXTURE_BUFFER, GL_WRITE_ONLY );
-  //      if( ptr ) {
-
-  //        for( int i = 0; i < p.getDim1(); i++ )
-  //          for( int j = 0; j < p.getDim2(); j++ )
-  //            for( int k = 0; k < 3; k++ )
-  //              ptr[ ( i * p.getDim2() + j ) * 3 + k] = p[i][j][d1][d2][k];
-  //      }
-  //      glUnmapBuffer( GL_TEXTURE_BUFFER );
-
-  //      glBindTexture( GL_TEXTURE_BUFFER, tex_id );
-  //      glTexBuffer( GL_TEXTURE_BUFFER, GL_RGBA32F, tbo_id );
-  //      glBindTexture( GL_TEXTURE_BUFFER, 0x0 );
-
-  //    }glBindBuffer( GL_TEXTURE_BUFFER, 0x0 );
-  //  }
 
   template <typename T>
   inline

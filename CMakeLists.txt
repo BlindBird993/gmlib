@@ -29,6 +29,7 @@ cmake_minimum_required(VERSION 2.8)
 
 # Core types stream operators
 option( GMLIB_STREAM "Enable output stream operators for core types." TRUE )
+option( GMLIB_OGL_DEBUG "Enable opengl debug. OpenGL function calls are safe called." FALSE )
 
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE)
@@ -68,6 +69,15 @@ setupLibrary( GMlib 0 4 0 )
 if( GMLIB_STREAM )
   addDefinitions( GM_STREAM )
 endif()
+
+# add GM_OPENGL_DEBUG definition
+if( GMLIB_OGL_DEBUG )
+  addDefinitions( GM_GL_DEBUG )
+endif()
+
+###########
+# CXX Flags
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -Werror")
 
 #############################
 # Find 3rd party dependencies

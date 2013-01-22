@@ -80,20 +80,20 @@ namespace GL {
   inline
   void FramebufferObject::bind() const {
 
-    glBindFramebuffer( GL_FRAMEBUFFER, _id );
+    GL_CHECK(glBindFramebuffer( GL_FRAMEBUFFER, _id ));
   }
 
   inline
   void FramebufferObject::unbind() const {
 
-    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+    GL_CHECK(glBindFramebuffer( GL_FRAMEBUFFER, 0x0 ));
   }
 
   inline
   void FramebufferObject::clear(GLbitfield mask) const {
 
     GLint id = safeBind();
-    ::glClear( mask );
+    GL_CHECK(::glClear( mask ));
     safeUnbind(id);
   }
 
@@ -101,14 +101,14 @@ namespace GL {
   void FramebufferObject::clearColorBuffer(const Color &c ) const {
 
     static float cc[4];
-    ::glGetFloatv( GL_COLOR_CLEAR_VALUE, cc );
-    glClearColor( c );
+    GL_CHECK(::glGetFloatv( GL_COLOR_CLEAR_VALUE, cc ));
+    GL_CHECK(glClearColor( c ));
 
     GLint id = safeBind();
-    ::glClear( GL_COLOR_BUFFER_BIT );
+    GL_CHECK(::glClear( GL_COLOR_BUFFER_BIT ));
     safeUnbind(id);
 
-    ::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) );
+    GL_CHECK(::glClearColor( GLclampf(cc[0]), GLclampf(cc[1]), GLclampf(cc[2]), GLclampf(cc[3]) ));
   }
 
 
