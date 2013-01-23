@@ -225,7 +225,7 @@ namespace GMlib {
   T PCurve<T>::getCurvature( T t ) {
 
     _eval( t, 2 );
-    Vector3D<T> d1 = _p[1];
+    Vector<T,3> d1 = _p[1];
     T a1= d1.getLength();
 
     if( a1 < T(1.0e-5) ) return T(0);

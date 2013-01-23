@@ -151,8 +151,8 @@ namespace GMlib {
   void PTriangle<T>::_fuForm( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g)
   {
     _eval( u, v, 2);
-    Vector3D<T>     du = _p[2]-_p[1];
-    Vector3D<T>     dv = _p[3]-_p[1];
+    Vector<T,3>     du = _p[2]-_p[1];
+    Vector<T,3>     dv = _p[3]-_p[1];
     UnitVector<T,3> N  = du^dv;
 
     Vector<T,3>     duu = _p[6] - 2*_p[9] + _p[4];
@@ -279,7 +279,7 @@ namespace GMlib {
   const Vector<T,3>& PTriangle<T>::getNormal( T u, T v ) {
 
     _eval(u, v, 1);
-    _n = Vector3D<T>(_p[2]-_p[1])^(_p[3]-_p[1]);
+    _n = Vector<T,3>(_p[2]-_p[1])^(_p[3]-_p[1]);
     return _n;
   }
 
@@ -427,7 +427,7 @@ namespace GMlib {
         u = i*du;
         w = 1 - u;
         u -= v;
-        Point3D<T> pr = u*_pt[0] + v*_pt[a] + w*_pt[b];
+        Point<T,3> pr = u*_pt[0] + v*_pt[a] + w*_pt[b];
         eval(pr, 1);
         p[k++] = _p;
       }
@@ -440,10 +440,10 @@ namespace GMlib {
   void PTriangle<T>::_init() {
     T t= 1/3.0;
     _all = true;
-    _pt[0] = Point3D<T>(t, t, t);
-    _pt[1] = Point3D<T>(T(1), T(0), T(0));
-    _pt[2] = Point3D<T>(T(0), T(1), T(0));
-    _pt[3] = Point3D<T>(T(0), T(0), T(1));
+    _pt[0] = Point<T,3>(t, t, t);
+    _pt[1] = Point<T,3>(T(1), T(0), T(0));
+    _pt[2] = Point<T,3>(T(0), T(1), T(0));
+    _pt[3] = Point<T,3>(T(0), T(0), T(1));
   }
 
 

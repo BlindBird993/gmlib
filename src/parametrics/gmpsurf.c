@@ -233,7 +233,7 @@ namespace GMlib {
   inline
   void PSurf<T>::_evalNormal() {
 
-    _n = static_cast< Vector3D<T> >( _p(1)(0) ) ^ _p(0)(1);
+    _n = _p(1)(0)^_p(0)(1);
   }
 
 
@@ -370,7 +370,7 @@ namespace GMlib {
   T PSurf<T>::getCurvatureGauss( T u, T v ) {
 
     _eval(u, v, 2, 2);
-    UnitVector<T,3> N   = Vector3D<T>(_p[1][0])^_p[0][1];
+    UnitVector<T,3>   N   = _p[1][0]^_p[0][1];
     Vector<T,3>		  du  = _p[1][0];
     Vector<T,3>		  dv  = _p[0][1];
     Vector<T,3>		  duu = _p[2][0];
@@ -393,7 +393,7 @@ namespace GMlib {
   T PSurf<T>::getCurvatureMean( T u, T v ) {
 
     _eval(u,v,2,2);
-    UnitVector<T,3> N   = Vector3D<T>(_p[1][0])^_p[0][1];
+    UnitVector<T,3>   N   = _p[1][0]^_p[0][1];
     Vector<T,3>		  du  = _p[1][0];
     Vector<T,3>		  dv  = _p[0][1];
     Vector<T,3>		  duu = _p[2][0];
@@ -809,13 +809,13 @@ namespace GMlib {
 
 
   template <typename T>
-  void PSurf<T>::resampleNormals( const DMatrix<DMatrix<Vector<T, 3> > > &sample, DMatrix<Vector<T, 3> > &normals ) const {
+  void PSurf<T>::resampleNormals( const DMatrix<DMatrix<Vector<T,3> > > &sample, DMatrix<Vector<T,3> > &normals ) const {
 
     normals.setDim( sample.getDim1(), sample.getDim2() );
 
     for( int i = 0; i < sample.getDim1(); i++ )
       for( int j = 0; j < sample.getDim2(); j++ )
-        normals[i][j] = Vector3D<T>( sample(i)(j)(1)(0) ) ^ sample(i)(j)(0)(1);
+        normals[i][j] = sample(i)(j)(1)(0)^sample(i)(j)(0)(1);
   }
 
 
