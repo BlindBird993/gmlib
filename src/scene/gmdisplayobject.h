@@ -58,21 +58,21 @@ namespace GMlib {
   class DisplayObject : public SceneObject {
   public:
     DisplayObject(
-      const Point<float,3>&  pos = Point3D<float>(0,0,0),
-      const Vector<float,3>& dir = Vector3D<float>(1,0,0),
-      const Vector<float,3>& up = Vector3D<float>(0,0,1)
+      const Point<float,3>&  pos = Point<float,3>(0,0,0),
+      const Vector<float,3>& dir = Vector<float,3>(1,0,0),
+      const Vector<float,3>& up  = Vector<float,3>(0,0,1)
     );
 
     DisplayObject(
       const Point<float,3>&  lock_pos,
-      const Point<float,3>&  pos = Point3D<float>(0,0,0),
-      const Vector<float,3>& up = Vector3D<float>(0,0,1)
+      const Point<float,3>&  pos = Point<float,3>(0,0,0),
+      const Vector<float,3>& up  = Vector<float,3>(0,0,1)
     );
 
     DisplayObject(
       SceneObject* lock_object,
-      const Point<float,3>&  pos = Point3D<float>(0,0,0),
-      const Vector<float,3>& up = Vector3D<float>(0,0,1)
+      const Point<float,3>&  pos = Point<float,3>(0,0,0),
+      const Vector<float,3>& up  = Vector<float,3>(0,0,1)
     );
 
     DisplayObject(const DisplayObject& s);
@@ -105,7 +105,7 @@ namespace GMlib {
                               );
     virtual void              tilt(Angle a);
     virtual void              turn(Angle a);
-    void				              unLock();
+    void				      unLock();
 
 
 
@@ -122,34 +122,32 @@ namespace GMlib {
   protected:
     // Matrices from Scene to this
   public:
-    HqMatrix<float,3>				  _matrix_scene;
-    HqMatrix<float,3>				  _matrix_scene_inv;
+    HqMatrix<float,3>		  _matrix_scene;
+    HqMatrix<float,3>		  _matrix_scene_inv;
   protected:
 
-    Point3D<float>		        _pos;
-    UnitVector3D<float>	      _dir;
-    UnitVector3D<float>	      _side;
-    UnitVector3D<float>	      _up;
+    Point<float,3>		      _pos;
+    UnitVector<float,3>       _dir;
+    UnitVector<float,3>	      _side;
+    UnitVector<float,3>	      _up;
 
-    Point3D<float>		        _lock_pos;
-    SceneObject*			        _lock_object;
-    bool					            _locked;
+    Point<float,3>		      _lock_pos;
+    SceneObject*			  _lock_object;
+    bool					  _locked;
 
-    virtual void              basisChange(
-                                const Vector<float,3>& dir,
-                                const Vector<float,3>& side,
-                                const Vector<float,3>& up,
-                                const Vector<float,3>& pos
-                              );
+    virtual void              basisChange(const Vector<float,3>& dir,
+                                          const Vector<float,3>& side,
+                                          const Vector<float,3>& up,
+                                          const Vector<float,3>& pos);
 
     Point<float,3>	          getSceneLockPos();
-    void				              updateOrientation(const Point<float,3>& lock_at_p);
+    void				      updateOrientation(const Point<float,3>& lock_at_p);
 
     // *****************
     // Virtual functions
     // from SceneObject
-    void			                prepareDisplay(const HqMatrix<float,3>& m);
-    void			                localSimulate(double dt);
+    void			          prepareDisplay(const HqMatrix<float,3>& m);
+    void			          localSimulate(double dt);
 
 
     #ifdef GM_STREAM

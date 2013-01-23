@@ -176,9 +176,9 @@ namespace GMlib{
     mutable const SceneObject                 *_copy_of;    //! Internal variable for use when coping the object.
 
     SceneObject(
-      const Vector<float,3>& trans  = Vector3D<float>(0,0,0),
-      const Point<float,3>&  scale  = Point3D<float>(1,1,1),
-      const Vector<float,3>& rotate = Vector3D<float>(1,0,0),
+      const Vector<float,3>& trans  = Vector<float,3>(0,0,0),
+      const Point<float,3>&  scale  = Point<float,3>(1,1,1),
+      const Vector<float,3>& rotate = Vector<float,3>(1,0,0),
       Angle a=0);
 
     SceneObject( const SceneObject& d );

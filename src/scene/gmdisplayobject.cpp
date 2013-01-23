@@ -174,7 +174,7 @@ namespace GMlib {
    */
   void DisplayObject::move( const Vector<float,3>& t ) {
 
-    Point3D<float> lock_pos;
+    Point<float,3> lock_pos;
 
     if( _locked ) {
       lock_pos = getSceneLockPos();
@@ -196,7 +196,7 @@ namespace GMlib {
   void DisplayObject::move(char c, double d) {
 
     double dir_length = double();
-    Point3D<float> lock_pos;
+    Point<float,3> lock_pos;
 
     if(_locked)
     {
@@ -240,7 +240,7 @@ namespace GMlib {
   void DisplayObject::move(const Vector<float,2>& t) {
 
     double dir_length;
-    Point3D<float> lock_pos;
+    Point<float,3> lock_pos;
 
     if(_locked)
     {
@@ -266,8 +266,8 @@ namespace GMlib {
    */
   void DisplayObject::roll(Angle a) {
 
-    Vector3D<float> ra = _dir;
-    Vector3D<float> lu = ra.getLinIndVec();
+    Vector<float,3> ra = _dir;
+    Vector<float,3> lu = ra.getLinIndVec();
     Vector<float,3> u = lu ^ ra;
     Vector<float,3> v = ra ^ u;
 
@@ -310,10 +310,10 @@ namespace GMlib {
 
     if(!_locked) {
 
-      Vector3D<float> ra = _side;
-      Vector3D<float> lu = ra.getLinIndVec();
-      Vector<float,3> u = lu ^ ra;
-      Vector<float,3> v = ra ^ u;
+      Vector<float,3> ra = _side;
+      Vector<float,3> lu = ra.getLinIndVec();
+      Vector<float,3> u  = lu ^ ra;
+      Vector<float,3> v  = ra ^ u;
 
       HqMatrix<float,3> m( a, u, v );
       _up   = m * _up;
@@ -332,10 +332,10 @@ namespace GMlib {
 
     if(!_locked) {
 
-      Vector3D<float> ra = _up;
-      Vector3D<float> lu = ra.getLinIndVec();
-      Vector<float,3> u = lu ^ ra;
-      Vector<float,3> v = ra ^ u;
+      Vector<float,3> ra = _up;
+      Vector<float,3> lu = ra.getLinIndVec();
+      Vector<float,3> u  = lu ^ ra;
+      Vector<float,3> v  = ra ^ u;
 
       HqMatrix<float,3> m( a, u, v );
       _dir  = m * _dir;
@@ -368,27 +368,27 @@ namespace GMlib {
 
     if(_locked)
     {
-      Point3D<float> lock_pos = getSceneLockPos();
-      double dir_length = (lock_pos - _pos).getLength();
-      Vector3D<float> t,ra=rot_axel;
+      Point<float,3> lock_pos = getSceneLockPos();
+      double       dir_length = (lock_pos - _pos).getLength();
+      Vector<float,3> t,ra = rot_axel;
       double dd= a.getRad()/M_PI_4;
       while(dd > 1.0)
       {
         t = ra^_dir;
         t.setLength(dir_length);
-        move(Vector2D<float>(t*_side,t*_up));
+        move(Vector<float,2>(t*_side,t*_up));
         dd -= 1.0;
       }
       t = ra^_dir;
       t.setLength(tan(dd*M_PI_4)*dir_length);
-      move(Vector2D<float>(t*_side,t*_up));
+      move(Vector<float,2>(t*_side,t*_up));
     }
     else
     {
-      Vector3D<float> ra = rot_axel;
-      Vector3D<float> lu = ra.getLinIndVec();
-      Vector<float,3> u = lu ^ ra;
-      Vector<float,3> v = ra ^ u;
+      Vector<float,3> ra = rot_axel;
+      Vector<float,3> lu = ra.getLinIndVec();
+      Vector<float,3> u  = lu ^ ra;
+      Vector<float,3> v  = ra ^ u;
 
       HqMatrix<float,3> m( a, u, v );
       _up   = m * _up;
@@ -408,10 +408,10 @@ namespace GMlib {
    */
   void DisplayObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
 
-    Vector3D<float> ra = d;
-    Vector3D<float> lu = ra.getLinIndVec();
-    Vector<float,3> u = lu ^ ra;
-    Vector<float,3> v = ra ^ u;
+    Vector<float,3> ra = d;
+    Vector<float,3> lu = ra.getLinIndVec();
+    Vector<float,3> u  = lu ^ ra;
+    Vector<float,3> v  = ra ^ u;
 
     HqMatrix<float,3> m( a, u, v, p );
     _pos  = m * _pos;
@@ -421,7 +421,7 @@ namespace GMlib {
 
     if(_locked)
     {
-      Point3D<float> lock_pos = getSceneLockPos();
+      Point<float,3> lock_pos = getSceneLockPos();
       updateOrientation(lock_pos);
     }
 
