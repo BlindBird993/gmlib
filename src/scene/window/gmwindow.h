@@ -320,7 +320,7 @@ namespace GMlib {
   void GMWindow::setSunDirection(Angle d) {
 
     if(_sun)
-      _sun->rotateGlobal(d,Vector3D<float>(1.0,1.0,0.0));
+      _sun->rotateGlobal(d, Vector<float,3>(1.0,1.0,0.0));
   }
 
   /*! void GMWindow::display(void)

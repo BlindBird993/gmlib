@@ -306,10 +306,10 @@ namespace GMlib {
   inline
   Box<int,2>  ViewBorder::getBounds() const {
 
-    Box<int,2> box( Point2D<int>( _x1, _y1 ) );
-    box.insert( Point2D<int>( _x2, _y2 ) );
+    Box<int,2> box( Point<int,2>( _x1, _y1 ) );
+    box.insert( Point<int,2>( _x2, _y2 ) );
     return box;
-//    return Box<float,3>( Point2D<float>(_x1,_y1), Point2D<float>(_x2,_y2) );
+//    return Box<float,3>( Point<float,2>(_x1,_y1), Point<float,2>(_x2,_y2) );
   }
 
   /*! int  ViewBorder::getSize(bool vertical)

@@ -34,7 +34,7 @@
 
 // gmlib
 #include <core/containers/gmarray.h>
-#include <core/types/gmpoint2d.h>
+#include <core/types/gmpoint.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 
 namespace GMlib {
@@ -59,53 +59,52 @@ namespace GMlib {
     ViewSet(const ViewSet& viewset);
     ~ViewSet();
 
-    const Array<Camera*>&   getCameras() const;
-    int                     getSize();
-    Point2D<int>            getViewPortSize();
+    const Array<Camera*>&             getCameras() const;
+    int                               getSize();
+    Point<int,2>                      getViewPortSize();
 
     const Color&                      getBorderColor() const;
     const GL::VertexBufferObject&     getBorderVBO() const;
     int                               getNoBorders() const;
 
-    void 								prepare(int w, int h);
-    void 								removeCamera(Camera*);
+    void                              prepare(int w, int h);
+    void                              removeCamera(Camera*);
 
-    ViewSet& 						operator=(const ViewSet& viewset);
-    bool 								operator<(const ViewSet& viewset)const;
+    ViewSet&                          operator=(const ViewSet& viewset);
+    bool                              operator<(const ViewSet& viewset)const;
 
   protected:
-    void                prepareGraphics();
+    void                              prepareGraphics();
 
-    GL::VertexBufferObject        _vbo;
-    int                       _no_borders;
+    GL::VertexBufferObject            _vbo;
+    int                               _no_borders;
 
   private:
     friend class GMWindow;
 
-    int									_vp_w; // ViewPort size ( Width )
-    int 								_vp_h;	// Viewport size ( height )
-    Array<Camera*>			_cameras;
-    Array<ViewBorder*>	_borders;
-    View								_root;
-    Color							_border_color;
+    int                               _vp_w; // ViewPort size ( Width )
+    int                               _vp_h;	// Viewport size ( height )
+    Array<Camera*>                    _cameras;
+    Array<ViewBorder*>                _borders;
+    View                              _root;
+    Color                             _border_color;
 
-    Array<ViewBorder*>	_selected_borders;
+    Array<ViewBorder*>                _selected_borders;
 
 
-    void 								drawBorder();
+    void                              drawBorder();
 
   public:
-//    void 								drawCamera();
-    Camera* 						operator[](int i);
+//    void                            drawCamera();
+    Camera*                           operator[](int i);
 
   private:
-    bool 								find(int x, int y, Camera*& cam);
-    bool 								insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically=true, double d=0.5);
-    void 								moveBorder(int x, int y);
-    void 								removeCamera(int i);
-    void 								reset();
-    void 								setBorderColor(const Color& bc);
-
+    bool 					find(int x, int y, Camera*& cam);
+    bool 					insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically=true, double d=0.5);
+    void 					moveBorder(int x, int y);
+    void 					removeCamera(int i);
+    void 					reset();
+    void 					setBorderColor(const Color& bc);
 
   }; // END class ViewSet
 
@@ -145,15 +144,15 @@ namespace GMlib {
   }
 
 
-  /*! Point2D<int> ViewSet::getViewPortSize()
+  /*! Point<int,2> ViewSet::getViewPortSize()
    *	\brief Pending Documentation
    *
    *	Pending Documentation
    */
   inline
-  Point2D<int> ViewSet::getViewPortSize() {
+  Point<int,2> ViewSet::getViewPortSize() {
 
-    return Point2D<int>(_vp_w, _vp_h);
+    return Point<int,2>(_vp_w, _vp_h);
   }
 
   inline
@@ -257,7 +256,7 @@ namespace GMlib {
   inline
   void ViewSet::prepare(int w, int h) {
 
-    std::cout << "ViewSet::prepare (w,h): (" << w << "," << h << ")" << std::endl;
+//    std::cout << "ViewSet::prepare (w,h): (" << w << "," << h << ")" << std::endl;
     _vp_w = w; _vp_h = h;
     _borders.resetSize();
     _root.prepare(0,0, _vp_w, _vp_h, _borders );
@@ -298,11 +297,7 @@ namespace GMlib {
     }
   }
 
-
 } // END namespace GMlib
-
-
-
 
 
 #endif // __gmVIEWSET_H__
