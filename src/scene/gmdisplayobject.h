@@ -82,14 +82,14 @@ namespace GMlib {
 
 
     virtual Vector<float,3>	  getDir() const;
-    Point<float,3>	          getLockPos();
-    double				            getLockDist();
+    const Point<float,3>&     getLockPos() const;
+    double				            getLockDist() const;
     const HqMatrix<float,3>&  getMatrixToScene() const;
     const HqMatrix<float,3>&  getMatrixToSceneInverse() const;
-    virtual Point<float,3>	  getPos();
-    virtual Vector<float,3>   getSide();
-    virtual Vector<float,3>   getUp();
-    bool				              isLocked();
+    virtual Point<float,3>	  getPos() const;
+    virtual Vector<float,3>   getSide() const;
+    virtual Vector<float,3>   getUp() const;
+    bool				              isLocked() const;
     virtual void		          lock(SceneObject* obj);
     virtual void		          lock(const Point<float,3>& pos);
     virtual void		          lock(double d);
@@ -260,7 +260,6 @@ namespace GMlib {
     return _matrix_scene*_dir;
   }
 
-
   /*! Point<float,3>	DisplayObject::getLockPos()
    *  \brief Pending Documentation
    *
@@ -268,7 +267,7 @@ namespace GMlib {
    *  ** In the coordinates of the scene. **
    */
   inline
-  Point<float,3> DisplayObject::getLockPos() {
+  const Point<float,3>& DisplayObject::getLockPos() const {
 
     if(_lock_object)
       return  _lock_object->getCenterPos();
@@ -283,7 +282,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  double DisplayObject::getLockDist() {
+  double DisplayObject::getLockDist() const {
 
     if(_locked)
       return  ( getLockPos()-getPos() ).getLength();
@@ -311,7 +310,7 @@ namespace GMlib {
    *  ** In scene coordinates **
    */
   inline
-  Point<float,3> DisplayObject::getPos() {
+  Point<float,3> DisplayObject::getPos() const {
 
     return _matrix_scene * _pos;
   }
@@ -324,7 +323,7 @@ namespace GMlib {
    *  ** In scene coordinates **
    */
   inline
-  Vector<float,3>	DisplayObject::getSide() {
+  Vector<float,3>	DisplayObject::getSide() const {
 
     return _matrix_scene * _side;
   }
@@ -337,7 +336,7 @@ namespace GMlib {
    *  ** In scene coordinates **
    */
   inline
-  Vector<float,3>	DisplayObject::getUp() {
+  Vector<float,3>	DisplayObject::getUp() const {
 
     return _matrix_scene * _up;
   }
@@ -349,7 +348,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  bool DisplayObject::isLocked() {
+  bool DisplayObject::isLocked() const {
 
     return _locked;
   }

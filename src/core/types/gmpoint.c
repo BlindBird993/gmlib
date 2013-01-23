@@ -891,7 +891,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n> ScalarPoint<T, n>::getPos() const {
+  const Point<T, n>& ScalarPoint<T, n>::getPos() const {
     return _pos;
   }
 

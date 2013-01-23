@@ -523,7 +523,7 @@ namespace GMlib {
     ScalarPoint( const Point<T, n>& p, T v = T(0) );
     ScalarPoint( const ScalarPoint<T, n>& s );
 
-    Point<T, n>	          getPos() const;
+    const Point<T, n>&	  getPos() const;
     T*                    getPtr() const;
     T			                getValue() const;
     void                  reset( const Point<T, n>& p , T v = T(0) );

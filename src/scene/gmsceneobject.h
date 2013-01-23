@@ -194,7 +194,7 @@ namespace GMlib{
     virtual void                enableChildren( bool enable = true );
     SceneObject*                find(unsigned int name);
     bool                        flipSelected();
-    Point<float,3>              getCenterPos() const;
+    const Point<float,3>&       getCenterPos() const;
     Array<SceneObject*>&        getChildren();
     const Color&                getColor() const;
     Color&                      getColor();
@@ -457,7 +457,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  Point<float,3> SceneObject::getCenterPos() const	{
+  const Point<float,3>& SceneObject::getCenterPos() const	{
 
     return  getSurroundingSphere().getPos();
   }
