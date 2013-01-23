@@ -1,0 +1,101 @@
+/**********************************************************************************
+**
+** Copyright (C) 1994 Narvik University College
+** Contact: GMlib Online Portal at http://episteme.hin.no
+**
+** This file is part of the Geometric Modeling Library, GMlib.
+**
+** GMlib is free software: you can redistribute it and/or modify
+** it under the terms of the GNU Lesser General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** GMlib is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU Lesser General Public License for more details.
+**
+** You should have received a copy of the GNU Lesser General Public License
+** along with GMlib.  If not, see <http://www.gnu.org/licenses/>.
+**
+**********************************************************************************/
+
+
+
+/*! \file gmPTriangCurve.h
+ *
+ *  Interface for the PSurfCurve class.
+ *
+ *  \date   2011-04-06, ALA
+ */
+
+#ifndef __gmPTRIANGCURVE_H__
+#define __gmPTRIANGCURVE_H__
+
+
+// GMlib includes+
+#include "../gmpcurve.h"
+#include "../gmptriangle.h"
+#include "../evaluators/gmerbsevaluator.h"
+
+
+namespace GMlib {
+
+
+  template <typename T>
+  class PTriangCurve : public PCurve<T> {
+    GM_SCENEOBJECT(PTriangCurve)
+  public:
+    PTriangCurve( PTriangle<T>* s, const Point<T,3>& p1,  const Point<T,3>& p2);
+    PTriangCurve( PTriangle<T>* s, const Point<T,3>& p1,  const Point<T,3>& p2,
+                                   const Vector<T,3>& v1, const Vector<T,3>& v2);
+    PTriangCurve( const PTriangCurve<T>& copy );
+
+    virtual ~PTriangCurve();
+
+    bool          isClosed() const;
+
+    void          togglePlot();
+
+    virtual void  resample( DVector< DVector< Vector<T, 3> > >& p,
+                            int m, int d, T start, T end );
+
+    DVector<DVector<Vector<T,3> > >& getSample3(int m);
+
+  protected:
+
+    PTriangle<T>*               _s;
+
+    Point<T,3>                  _p1;
+    Point<T,3>                  _p2;
+
+    bool                        _der_curve;
+    Vector<T,3>                 _v1;
+    Vector<T,3>                 _v2;
+
+    bool                        _plot;
+
+    ERBSEvaluator<long double>  _basis;
+
+    void	     eval( T t, int d = 0, bool l = false );
+    T            getEndP();
+    T            getStartP();
+
+    void	     eval1( T t, int d);
+    void	     eval2( T t, int d);
+    void	     eval12( T t); // d=1
+    void	     eval123( T t); // d=2
+
+    Vector<T,3>  dS(Vector<T,3>& Su, Vector<T,3>& Sv, Vector<T,3>& Sw, Vector<T,3>& h);
+
+  }; // END class PTriangCurve
+
+} // END namepace GMlib
+
+
+// Include PSurfCurve class function implementations
+#include "gmptriangcurve.c"
+
+
+#endif // __gmPTRIANGCURVE_H__
+

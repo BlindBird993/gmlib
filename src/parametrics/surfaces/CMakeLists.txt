@@ -25,12 +25,14 @@ addHeaders(
   gmPApple2
   gmPAsteroidalSphere
   gmPBenthorns
+  gmPBezierCurveSurf
   gmPBezierSurf
   gmPBohemianDome
   gmPBottle8
   gmPBoysSurface
   gmPCircularSurface
   gmPCone
+  gmPCoonsPatch
   gmPCrossCap
   gmPCylinder
   gmPDiniSurface
@@ -38,18 +40,23 @@ addHeaders(
   gmPEnnepersSurface
   gmPERBSSurf
   gmPHeart
+  gmPHermiteCurveSurf
   gmPHermiteSurface
+  gmPHermiteSurf
   gmPInsideOutTorus
   gmPKleinsBottle
   gmPKuenSurface
   gmPMoebiusStrip
   gmPPlane
+  gmPRotationalSurf
   gmPSeashell
   gmPSinSurface
   gmPSlippersSurface
   gmPSphere
   gmPSteinerSurf
+  gmPSubSurf
   gmPSwallowTail
+  gmPSweepSurf
   gmPTorus
   gmPTrianguloidTrefoil
   gmPWhitneyUmbrella
@@ -60,12 +67,14 @@ addTemplateSources(
   gmpapple.c
   gmpasteroidalsphere.c
   gmpbenthorns.c
+  gmpbeziercurvesurf.c
   gmpbeziersurf.c
   gmpbohemiandome.c
   gmpbottle8.c
   gmpboyssurface.c
   gmpcircularsurface.c
   gmpcone.c
+  gmpcoonspatch.c
   gmpcrosscap.c
   gmpcylinder.c
   gmpdinisurface.c
@@ -73,18 +82,23 @@ addTemplateSources(
   gmpenneperssurface.c
   gmperbssurf.c
   gmpheart.c
+  gmphermitecurvesurf.c
   gmphermitesurface.c
+  gmphermitesurf.c
   gmpinsideouttorus.c
   gmpkleinsbottle.c
   gmpkuensurface.c
   gmpmoebiusstrip.c
   gmpplane.c
+  gmprotationalsurf.c
   gmpseashell.c
   gmpsinsurface.c
   gmpslipperssurface.c
   gmpsphere.c
   gmpsteinersurf.c
+  gmpsubsurf.c
   gmpswallowtail.c
+  gmpsweepsurf.c
   gmptorus.c
   gmptrianguloidtrefoil.c
   gmpwhitneyumbrella.c

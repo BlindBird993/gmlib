@@ -26,6 +26,7 @@ addHeaders(
   gmBFBSEvaluator
   gmERBSEvaluator
   gmEvaluatorStatic
+  gmHermite4Evaluator
 )
 
 addTemplateSources(
@@ -34,4 +35,5 @@ addTemplateSources(
   gmbfbsevaluator.c
   gmerbsevaluator.c
   gmevaluatorstatic.c
+  gmhermite4evaluator.c
 )

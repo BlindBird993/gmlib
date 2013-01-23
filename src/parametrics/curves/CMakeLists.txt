@@ -32,7 +32,9 @@ addHeaders(
   gmPHelicoid
   gmPRoseCurve
   gmPSubCurve
+  gmpSurfCurve
   gmPTCurve
+  gmPTriangCurve
 )
 
 addTemplateSources(
@@ -47,6 +49,8 @@ addTemplateSources(
   gmphelicoid.c
   gmprosecurve.c
   gmpsubcurve.c
+  gmpsurfcurve.c
   gmptcurve.c
+  gmptriangcurve.c
 )
 
