@@ -44,9 +44,9 @@ namespace GMlib {
     _point_size = 5.0f;
 
     _points.setDim(3);
-    _points[0] = Point3D<T>( 1.0f, 0.0f, 0.0f );
-    _points[1] = Point3D<T>( 0.0f, 1.0f, 0.0f );
-    _points[2] = Point3D<T>( 0.0f, 0.0f, 1.0f );
+    _points[0] = Point<T,3>( 1.0f, 0.0f, 0.0f );
+    _points[1] = Point<T,3>( 0.0f, 1.0f, 0.0f );
+    _points[2] = Point<T,3>( 0.0f, 0.0f, 1.0f );
   }
 
   template <typename T>

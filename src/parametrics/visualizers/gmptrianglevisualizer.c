@@ -48,7 +48,7 @@ namespace GMlib {
     int no_dp = p.getDim();
 
 
-    Vector3D<T> a, b;
+    Vector<T,3> a, b;
     UnitVector<T,3> n;
 
     DVector<GL::GLVertexNormal> dp(no_dp);

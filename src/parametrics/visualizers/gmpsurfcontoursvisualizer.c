@@ -127,7 +127,7 @@ namespace GMlib {
   inline
   T PSurfContoursVisualizer<T>::getCurvatureGauss( DMatrix< Vector<T,3> >& p ) {
 
-    UnitVector<T,3> N   = Vector3D<T>(p[1][0])^p[0][1];
+    UnitVector<T,3>   N   = p[1][0]^p[0][1];
     Vector<T,3>		  du  = p[1][0];
     Vector<T,3>		  dv  = p[0][1];
     Vector<T,3>		  duu = p[2][0];
@@ -148,7 +148,7 @@ namespace GMlib {
   inline
   T PSurfContoursVisualizer<T>::getCurvatureMean( DMatrix< Vector<T,3> >& p ) {
 
-    UnitVector<T,3> N   = Vector3D<T>(p[1][0])^p[0][1];
+    UnitVector<T,3>   N   = p[1][0]^p[0][1];
     Vector<T,3>		  du  = p[1][0];
     Vector<T,3>		  dv  = p[0][1];
     Vector<T,3>		  duu = p[2][0];
