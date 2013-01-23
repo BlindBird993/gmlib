@@ -74,8 +74,6 @@
 // gmlib
 #include <core/containers/gmdmatrix.h>
 #include <core/types/gmpoint.h>
-#include <core/types/gmpoint2d.h>
-#include <core/types/gmpoint3d.h>
 #include <core/types/gmmatrix.h>
 #include <core/utils/gmcolor.h>
 #include <core/utils/gmstream.h>
