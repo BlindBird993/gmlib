@@ -71,14 +71,14 @@ namespace GMlib {
   SpotLightG::SpotLightG( const SpotLightG& copy) : SpotLight( copy ) {
 
     _dlist = copy._dlist;
-    setSurroundingSphere( Sphere<float,3>( Point3D<float>( 0.0 ), 1.0 ) );
+    setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
   }
 
 
   void SpotLightG::_init() {
 
     _dlist = 0;
-    setSurroundingSphere( Sphere<float,3>( Point3D<float>( 0.0 ), 1.0 ) );
+    setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
 
     _makeDisplayList();
   }
@@ -93,12 +93,12 @@ namespace GMlib {
 //    double a = sqrt(k*k-b*b);
 //    if(_cutoff.getDeg()>90) b = -b;
 
-//    Vector3D<float> d = _dir;
-//    Vector3D<float> n = d^d.getLinIndVec();
+//    Vector<float,3> d = _dir;
+//    Vector<float,3> n = d^d.getLinIndVec();
 //    d.setLength(b);
 //    n.setLength(a);
-//    UnitVector3D<float> n2 = -d;
-//    if(_cutoff.getDeg()!=90) n2 = Vector3D<float>((b/a)*n-(a/b)*d);
+//    UnitVector<float,3> n2 = -d;
+//    if(_cutoff.getDeg()!=90) n2 = Vector<float,3>((b/a)*n-(a/b)*d);
 //    GLMatrix m1(Angle(30),_pos,_dir);
 //    GLMatrix m2(Angle(-30),_pos,_dir);
 
@@ -107,7 +107,7 @@ namespace GMlib {
 //    p1 += _pos+d+n;
 //    for(i=1; i<12; i++) p1 += m1*p1.back();
 
-//    Vector3D<float> bb=0.6*d;
+//    Vector<float,3> bb=0.6*d;
 //    if(b<0.0) bb.setLength(0.0);
 //    Array<Point<float,3> > p2;
 //    p2 += _pos+bb+0.1*_dir;

@@ -68,14 +68,14 @@ namespace GMlib {
   PointLightG::PointLightG( const PointLightG& copy ) : PointLight( copy ) {
 
     _dlist = copy._dlist;
-    setSurroundingSphere( Sphere<float,3>( Point3D<float>( 0.0 ), 1.0 ) );
+    setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
   }
 
 
   void PointLightG::_init() {
 
     _dlist = 0;
-    setSurroundingSphere( Sphere<float,3>( Point3D<float>( 0.0 ), 1.0 ) );
+    setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
 
     _makeDisplayList();
   }

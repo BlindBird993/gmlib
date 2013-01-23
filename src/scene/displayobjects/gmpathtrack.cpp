@@ -45,7 +45,7 @@ namespace GMlib {
     _recent_path.setSize( max_elements );
     _local_cs = false;									// Plotting in global coordinates.
 
-    setSurroundingSphere( Sphere<float,3>( Point3D<float>( 0.0f, 0.0f, 0.0f ), 100 ) );
+    setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0f, 0.0f, 0.0f ), 100 ) );
   }
 
 

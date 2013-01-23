@@ -253,7 +253,7 @@ namespace GMlib {
       float u;
       float su, cu, ru;
 
-      const Arrow<float,3> top = Arrow<float,3>(_pos+Point3D<float>(0,0,r), Vector3D<float>(0,0,1));
+      const Arrow<float,3> top = Arrow<float,3>(_pos+Point<float,3>(0,0,r), Vector<float,3>(0,0,1));
       *ptr_v++ = top.getPos()(0);
       *ptr_v++ = top.getPos()(1);
       *ptr_v++ = top.getPos()(2);
@@ -282,7 +282,7 @@ namespace GMlib {
       }
 
 
-      const Arrow<float,3> bottom = Arrow<float,3>(_pos+Point3D<float>(0,0,-r),Vector3D<float>(0,0,-1));
+      const Arrow<float,3> bottom = Arrow<float,3>(_pos+Point<float,3>(0,0,-r),Vector<float,3>(0,0,-1));
       *ptr_v++ = bottom.getPos()(0);
       *ptr_v++ = bottom.getPos()(1);
       *ptr_v++ = bottom.getPos()(2);

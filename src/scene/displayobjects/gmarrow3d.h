@@ -72,8 +72,8 @@ namespace GMlib {
   inline
   void Arrow3D::display() {
 
-//    const Point<float,3> pos = Vector3D<float>( 0.0f, 0.0f, getDir().getLength() );
-//    const Vector3D<float> axis = Vector3D<float>(0.0f, 0.0f, 1.0f)^getDir();
+//    const Point<float,3>  pos  = Vector<float,3>( 0.0f, 0.0f, getDir().getLength() );
+//    const Vector<float,3> axis = Vector<float,3>(0.0f, 0.0f, 1.0f)^getDir();
 
 //    glPushMatrix();
 
@@ -81,7 +81,7 @@ namespace GMlib {
 
 //      glPushMatrix();
 
-//      glRotate( Vector3D<float>( 0.0f, 0.0f, 1.0f ).getAngle( getDir() ), axis );
+//      glRotate( Vector<float,3>( 0.0f, 0.0f, 1.0f ).getAngle( getDir() ), axis );
 
 //        glPushMatrix();
 //  //        glLoadIdentity();
@@ -96,29 +96,29 @@ namespace GMlib {
 
 //              x = _r*cosf(((float)i*2.0f*M_PI)/(float)_m);
 //              y = _r*sinf(((float)i*2.0f*M_PI)/(float)_m);
-//              glPoint( pos + Point3D<float>( x, y, -_l*_h ) );
+//              glPoint( pos + Point<float,3>( x, y, -_l*_h ) );
 //            }
 //            x = _r*cosf( 0.0f );
 //            y = _r*sinf( 0.0f );
-//            glPoint( pos + Point3D<float>( x, y, -_l*_h ) );
+//            glPoint( pos + Point<float,3>( x, y, -_l*_h ) );
 
 //          } glEnd();
 
 //          // Arrow Head Bottom
 //          glBegin( GL_TRIANGLE_FAN ); {
 
-//            glPoint( pos + Point3D<float>( 0.0f, 0.0f, -_l*_h ) );
+//            glPoint( pos + Point<float,3>( 0.0f, 0.0f, -_l*_h ) );
 
 //            float x,y;
 //            for (int i = 0; i < _m; i++) {
 
 //              x = _r*cosf(((float)i*2.0f*M_PI)/(float)_m);
 //              y = _r*sinf(((float)i*2.0f*M_PI)/(float)_m);
-//              glPoint( pos + Point3D<float>( x, y, -_l*_h ) );
+//              glPoint( pos + Point<float,3>( x, y, -_l*_h ) );
 //            }
 //            x = _r*cosf( 0.0f );
 //            y = _r*sinf( 0.0f );
-//            glPoint( pos + Point3D<float>( x, y, -_l*_h ) );
+//            glPoint( pos + Point<float,3>( x, y, -_l*_h ) );
 
 //          } glEnd();
 
@@ -131,13 +131,13 @@ namespace GMlib {
 
 //              x = _r*0.5f*cosf(((float)i*2.0f*M_PI)/(float)_m);
 //              y = _r*0.5f*sinf(((float)i*2.0f*M_PI)/(float)_m);
-//              glPoint( pos + Point3D<float>( x, y, -_l ) );
-//              glPoint( pos + Point3D<float>( x, y, -_l * _h) );
+//              glPoint( pos + Point<float,3>( x, y, -_l ) );
+//              glPoint( pos + Point<float,3>( x, y, -_l * _h) );
 //            }
 //            x = _r*0.5f*cosf( 0.0f );
 //            y = _r*0.5f*sinf( 0.0f );
-//            glPoint( pos + Point3D<float>( x, y, -_l ) );
-//            glPoint( pos + Point3D<float>( x, y, -_l * _h ) );
+//            glPoint( pos + Point<float,3>( x, y, -_l ) );
+//            glPoint( pos + Point<float,3>( x, y, -_l * _h ) );
 
 //          } glEnd();
 
@@ -145,18 +145,18 @@ namespace GMlib {
 //          // Arrow Body Bottom
 //          glBegin( GL_TRIANGLE_FAN ); {
 
-//            glPoint( pos + Point3D<float>( 0.0f, 0.0f, -_l ) );
+//            glPoint( pos + Point<float,3>( 0.0f, 0.0f, -_l ) );
 
 //            float x,y;
 //            for (int i = 0; i < _m; i++) {
 
 //              x = _r*0.5f*cosf(((float)i*2.0f*M_PI)/(float)_m);
 //              y = _r*0.5f*sinf(((float)i*2.0f*M_PI)/(float)_m);
-//              glPoint( pos + Point3D<float>( x, y, -_l ) );
+//              glPoint( pos + Point<float,3>( x, y, -_l ) );
 //            }
 //            x = _r*0.5f*cosf( 0.0f );
 //            y = _r*0.5f*sinf( 0.0f );
-//            glPoint( pos + Point3D<float>( x, y, -_l ) );
+//            glPoint( pos + Point<float,3>( x, y, -_l ) );
 
 //          } glEnd();
 
