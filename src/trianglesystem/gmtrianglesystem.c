@@ -375,20 +375,20 @@ namespace GMlib {
   inline
   Point<T,3> TriangleFacets<T>::eval( T x, T y, int deg ) const {
 
-    return Point3D<T>( x, y, evalZ( x, y, deg ) );
+    return Point<T,3>( x, y, evalZ( x, y, deg ) );
   }
 
 
   template <typename T>
   inline
-  Point<T,3> TriangleFacets<T>::eval( const Point2D<T>& p, int deg ) const {
+  Point<T,3> TriangleFacets<T>::eval( const Point<T,2>& p, int deg ) const {
 
     return eval( p(0), p(1), deg );
   }
 
 
   template <typename T>
-  T TriangleFacets<T>::evalZ( const Point2D<T>& p, int deg ) {
+  T TriangleFacets<T>::evalZ( const Point<T,2>& p, int deg ) {
 
     T z = 0;
     TSTriangle<T>* t;
@@ -405,7 +405,7 @@ namespace GMlib {
   inline
   T TriangleFacets<T>::evalZ( T x, T y, int deg ) {
 
-    return evalZ( Point2D<T>( x, y ), deg );
+    return evalZ( Point<T,2>( x, y ), deg );
   }
 
 
@@ -451,24 +451,24 @@ namespace GMlib {
   void TriangleFacets<T>::createVoronoi() {
 
     for (int i=0; i<_triangles.size(); i++) {
-      Point2D<T> c;
+      Point<T,2> c;
 
       Array<TSVertex<T> *> v = _triangles(i)->getVertices();
 
-      Point<T,2> p1 = (Point2D<T>)v(0)->getPosition();
-      Point<T,2> p2 = (Point2D<T>)v(1)->getPosition();
-      Point<T,2> p3 = (Point2D<T>)v(2)->getPosition();
+      Point<T,2> p1 = (Point<T,2>)v(0)->getPosition();
+      Point<T,2> p2 = (Point<T,2>)v(1)->getPosition();
+      Point<T,2> p3 = (Point<T,2>)v(2)->getPosition();
 
       T b1 = p1*p1;
       T b2 = p2*p2;
       T b3 = p3*p3;
 
-      Point2D<T> b(b2-b1,b3-b2);
-      Point2D<T> a1 = p2 - p1;
-      Point2D<T> a2 = p3 - p2;
+      Point<T,2> b(b2-b1,b3-b2);
+      Point<T,2> a1 = p2 - p1;
+      Point<T,2> a2 = p3 - p2;
 
           c = (0.5/(a1^a2))*
-            Point2D<T>(Point2D<T>(a2[1],-a1[1])*b,Point2D<T>(-a2[0],a1[0])*b);
+            Point<T,2>(Point<T,2>(a2[1],-a1[1])*b,Point<T,2>(-a2[0],a1[0])*b);
       _triangles(i)->_vorpnt = c;
     }
 
@@ -592,22 +592,22 @@ namespace GMlib {
     {
       insertVertex(pwl[i]);
       j = index(pwl[i]);
-      Point2D<T> p  = (*this)[j].getParameter();		// current point
-      Point2D<T> np = pwl[i+1].getParameter();		// next new point
+      Point<T,2> p  = (*this)[j].getParameter();		// current point
+      Point<T,2> np = pwl[i+1].getParameter();		// next new point
 
       ArrayT<TSEdge<T>*> edges = (*this)[j].getEdges();
 
-      Array<Point2D<T> > pt;						// Find all neighbour points
+      Array<Point<T,2> > pt;						// Find all neighbour points
       for(k=0; k<edges.getSize(); k++)
         pt += edges[k]->otherVertex((*this)[j])->getParameter();
-      p.setTestType(3,p,Point2D<T>(0,1));
+      p.setTestType(3,p,Point<T,2>(0,1));
       pt.sort();									// All points sorted in a circle
       tt = 0;
 
       do
       {
-        UnitVector2D<T> v;
-        Vector2D<T> v1 = np - p;
+        UnitVector<T,2>  v;
+        Vector<T,2>      v1 = np - p;
 
         for(k=0; k<pt.getSize(); k++)				// If the next point is equal one of
           if(np == pt[k]) break;				// the neighbour points continue to
@@ -628,8 +628,8 @@ namespace GMlib {
           m = (k == (pt.getSize()-1))? 0:k+1;
           t = 2;
 
-          Vector2D<T> v2 = pt[k] - pt[m];
-          Vector2D<T> v3 = pt[k] - p;
+          Vector<T,2> v2 = pt[k] - pt[m];
+          Vector<T,2> v3 = pt[k] - p;
 
           T det = v1^v2;
           if (std::fabs(det) < 1e-15) continue;
@@ -659,7 +659,7 @@ namespace GMlib {
             pt.clear();						// Find all neighbour points
             for(k=0; k<edges.getSize(); k++)
               pt += edges[k]->otherVertex((*this)[j])->getParameter();
-            p.setTestType(3,p,Point2D<T>(0,1));
+            p.setTestType(3,p,Point<T,2>(0,1));
             pt.sort();						// All points sorted in a circle
 
             next = false;
@@ -958,8 +958,8 @@ namespace GMlib {
 
     for(i=0; i<n_bound;i++)
     {
-      Vector2D<T>		v = a->getVector2D();
-      UnitVector2D<T>	u = v + b->getVector2D();
+      Vector<T,2>		v = a->getVector2D();
+      UnitVector<T,2>	u = v + b->getVector2D();
       if((u^v) > POS_TOLERANCE) {
 
         TSEdge<T> *ne = new TSEdge<T>(*(a->getFirstVertex()),*(b->getLastVertex()));
@@ -1185,7 +1185,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  TSVertex<T>::TSVertex( const Point<T,2>& v ) : Arrow<T,3>( Point3D<T>( v(0), v(1), 0 ) ) {
+  TSVertex<T>::TSVertex( const Point<T,2>& v ) : Arrow<T,3>( Point<T,3>( v(0), v(1), 0 ) ) {
 
     _const = false;
     _maxradius = _radius = 0.0;
@@ -1212,7 +1212,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  TSVertex<T>::TSVertex( const T& x, const T& y, const T& z ) : Arrow<T,3>( Point3D<T>( x, y, z ) ), _edges() {
+  TSVertex<T>::TSVertex( const T& x, const T& y, const T& z ) : Arrow<T,3>( Point<T,3>( x, y, z ) ), _edges() {
 
     _const = false;
     _maxradius = _radius = 0.0;
@@ -1230,12 +1230,11 @@ namespace GMlib {
   void TSVertex<T>::_computeNormal() {
 
     Array<TSTriangle<T>*> tris = getTriangles();
-    Point<T,3> nor = Point<T,3>(T(0));
+    Vector<T,3> nor(T(0));
     for( int i = 0; i < tris.getSize(); i++ )
       nor += tris[i]->getNormal();
 
-    nor /= tris.getSize();
-    this->setDir( UnitVector3D<T>(nor) );
+    this->setDir( UnitVector<T,3>(nor) );
   }
 
 
@@ -1344,7 +1343,7 @@ namespace GMlib {
   inline
   Point<T,2> TSVertex<T>::getParameter() const {
 
-    return Point2D<T>( this->getPos() );
+    return Point<T,2>( this->getPos() );
   }
 
 
@@ -1408,7 +1407,7 @@ namespace GMlib {
     for( int i = 0; i < 3; i++ )
       a += v[i]->getParameter();
 
-    Point2D<T> p = this->getPos();
+    Point<T,2> p = this->getPos();
 
     return p.isInside( a );
   }
@@ -1449,7 +1448,7 @@ namespace GMlib {
   template <typename T>
   void TSVertex<T>::setZ( T z ) {
 
-    setPos( Point3D<T>( this->getPosition()[0], this->getPosition()[1], z ) );
+    setPos( Point<T,3>( this->getPosition()[0], this->getPosition()[1], z ) );
   }
 
 
@@ -1670,7 +1669,7 @@ namespace GMlib {
     a.remove( _vertex[0] );
     a.remove( _vertex[1] );
 
-    Point2D<T> pt = a[0]->getParameter();
+    Point<T,2> pt = a[0]->getParameter();
 
     if(
       pt.isInsideCircle(
@@ -2005,7 +2004,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vector2D<T> TSEdge<T>::getVector2D(){
+  Vector<T,2> TSEdge<T>::getVector2D(){
 
     return _vertex[1]->getParameter() - _vertex[0]->getParameter();
   }
@@ -2201,10 +2200,10 @@ namespace GMlib {
 
 
   template <typename T>
-  T TSTriangle<T>::_evalZ( const Point2D<T>& p, int deg ) const {
+  T TSTriangle<T>::_evalZ( const Point<T,2>& p, int deg ) const {
 
     Array<TSVertex<T>*> ve = getVertices();
-    Point2D<T> par[3];
+    Point<T,2> par[3];
     Point<T,3> pos[3];
     int i,j,k;
 
@@ -2233,20 +2232,20 @@ namespace GMlib {
       else		j = i+1;
       k = 2*i;
 
-      Vector3D<T>		vec = pos[j] - pos[i];
+      Vector<T,3>	  vec = pos[j] - pos[i];
       vec[2] = 0;
-      UnitVector3D<T> uv  = vec;
-      T		   vec2 = 0.33333333333333333333*(vec*vec);
+      UnitVector<T,3> uv  = vec;
+      T		         vec2 = 0.33333333333333333333*(vec*vec);
 
-      Vector3D<T> vv	= ve[i]->getNormal()[2]*uv;
-      vv[2]		   -= ve[i]->getNormal()*uv;
-      pt[k]			= pos[i][2] + vec2/(vv*vec)*vv[2];
+      Vector<T,3> vv = ve[i]->getNormal()[2]*uv;
+      vv[2]	-= ve[i]->getNormal()*uv;
+      pt[k]			 = pos[i][2] + vec2/(vv*vec)*vv[2];
 
-      vv				= ve[j]->getNormal()[2]*uv;
-      vv[2]          -= ve[j]->getNormal()*uv;
-      pt[k+1]			= pos[j][2] - vec2/(vv*vec)*vv[2];
+      vv			 = ve[j]->getNormal()[2]*uv;
+      vv[2] -= ve[j]->getNormal()*uv;
+      pt[k+1]		 = pos[j][2] - vec2/(vv*vec)*vv[2];
 
-      pt[6]		   += pt[k] + pt[k+1];
+      pt[6]	+= pt[k] + pt[k+1];
     }
 
     pt[6] /= 6;
@@ -2380,8 +2379,8 @@ namespace GMlib {
       k = j1 - s;
       if ( v[k] > b.getValueMax(1)) j1 = k;
     }
-    _box.reset(Point2D<unsigned char>((unsigned char)i0,(unsigned char)j0));
-    _box.insert(Point2D<unsigned char>((unsigned char)(i1-1),(unsigned char)(j1-1)));
+    _box.reset(Point<unsigned char,2>((unsigned char)i0,(unsigned char)j0));
+    _box.insert(Point<unsigned char,2>((unsigned char)(i1-1),(unsigned char)(j1-1)));
   }
 
 
@@ -2415,7 +2414,7 @@ namespace GMlib {
   inline
   T TSTriangle<T>::getArea() {
 
-    return ( Vector3D<T>(_edge[0]->getVector())^_edge[1]->getVector()).getLength() * 0.5;
+    return ( _edge[0]->getVector()^_edge[1]->getVector()).getLength() * 0.5;
   }
 
 
@@ -2478,8 +2477,8 @@ namespace GMlib {
   Vector<T,3> TSTriangle<T>::getNormal() const {
 
     Array<TSVertex<T>*> v = getVertices();
-    return  Vector3D<T>( v[1]->getPosition() - v[0]->getPosition() ) ^
-            Vector3D<T>( v[2]->getPosition() - v[1]->getPosition() );
+    return  Vector<T,3>( v[1]->getPosition() - v[0]->getPosition() ) ^
+                       ( v[2]->getPosition() - v[1]->getPosition() );
   }
 
 
@@ -2616,7 +2615,7 @@ namespace GMlib {
       Point<T,2> t;
       t = _voronoi(vertices[0]->getParameter(), vertices[1]->getParameter(), vertices[2]->getParameter());
 
-      if( domain.isSurrounding( Point3D<T>(t[0],t[1],0.2) ) )
+      if( domain.isSurrounding( Point<T,3>(t[0],t[1],0.2) ) )
         _vorpts.insertAlways(t);
     }
 
@@ -2625,7 +2624,7 @@ namespace GMlib {
 
 
     // make polygon, maybe edges should have been sorted first
-    _vorpts[0].setTestType( 3, _vertex->getPosition(), Vector2D<T>(0.0,1.0) );
+    _vorpts[0].setTestType( 3, _vertex->getPosition(), Vector<T,2>(0.0,1.0) );
 //    _vorpts.sort();
 ///////////
     _circumscribed=0.0;
@@ -2649,11 +2648,11 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Point2D<T> TSTile<T>::_voronoi( const Point2D<T>& v1, const Point2D<T>& v2, const Point2D<T>& v3 ) {
+  Point<T,2> TSTile<T>::_voronoi( const Point<T,2>& v1, const Point<T,2>& v2, const Point<T,2>& v3 ) {
 
-    Vector2D<T> d1 = v2 - v1;
-    Vector2D<T> d2 = v3 - v1;
-    Vector2D<T> d3 = v3 - v2;
+    Vector<T,2> d1 = v2 - v1;
+    Vector<T,2> d2 = v3 - v1;
+    Vector<T,2> d3 = v3 - v2;
     d1 = d2 - ((d1*d2)/(d1*d1))*d1;
     return 0.5*(v1+v2 + ((d3*d2)/(d1*d2))*d1);
   }
@@ -2689,12 +2688,12 @@ namespace GMlib {
     glBegin( GL_LINE_STRIP ); {
 
       //glBegin(GL_TRIANGLE_FAN);
-      //glVertex((Point3D<T>)myvtx->parameter());
+      //glVertex((Point<T,3>)myvtx->parameter());
       for( int i = 0; i < _vorpts.getSize(); i++ )
-        glVertex( (Point3D<T>)_vorpts(i) );
+        glVertex( (Point<T,3>)_vorpts(i) );
 
       if( !_vertex->boundary() )
-        glVertex( (Point3D<T>)_vorpts(0) );
+        glVertex( (Point<T,3>)_vorpts(0) );
 
     } glEnd();
   }
@@ -2708,9 +2707,9 @@ namespace GMlib {
       glBegin(GL_LINE_STRIP); {
 
         for( int i=0; i<_vorpts.size(); i++ )
-          glVertex( (Point3D<T>)_vorpts(i) );
+          glVertex( (Point<T,3>)_vorpts(i) );
 
-        if(!_vertex->boundary())  glVertex((Point3D<T>)_vorpts(0));
+        if(!_vertex->boundary())  glVertex((Point<T,3>)_vorpts(0));
 
       }glEnd();
     }glPopAttrib();

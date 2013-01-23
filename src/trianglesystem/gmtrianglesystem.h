@@ -35,8 +35,6 @@
 
 
 // gmlib
-#include <core/types/gmpoint3d.h>
-#include <core/types/gmpoint2d.h>
 #include <core/containers/gmarray.h>
 #include <core/containers/gmarrayt.h>
 #include <core/containers/gmarraylx.h>
@@ -102,10 +100,10 @@ namespace GMlib {
 
 
     Point<T,3>                        eval(T x, T y, int deg=1) const;
-    Point<T,3>                        eval(const Point2D<T>& p, int deg=1) const;
+    Point<T,3>                        eval(const Point<T,2>& p, int deg=1) const;
 
 
-    T                                 evalZ(const Point2D<T>&, int deg=1); //const
+    T                                 evalZ(const Point<T,2>&, int deg=1); //const
     T                                 evalZ(T x, T y, int deg=1);
 
     void                              clear(int d=-1);
@@ -379,7 +377,7 @@ namespace GMlib {
     T                       getLength2D();
     Array<TSTriangle<T>*>   getTriangle();
     Vector<T,3>             getVector();
-    Vector2D<T>             getVector2D();
+    Vector<T,2>             getVector2D();
     TSVertex<T>*            getLastVertex() const;
     TSVertex<T>*            getOtherVertex(const TSVertex<T>&) const;
     void                    setConst(bool c = true);
@@ -479,7 +477,7 @@ namespace GMlib {
     Point<T,2>              _vorpnt;
   private:
 
-    T                       _evalZ( const Point2D<T>& p, int deg = 1 ) const;
+    T                       _evalZ( const Point<T,2>& p, int deg = 1 ) const;
     Box<unsigned char,2>&   _getBox();
     void                    _render();//  const;
     bool                    _reverse( TSEdge<T>* edge );
@@ -532,7 +530,7 @@ namespace GMlib {
     T                     _inscribed;
     T                     _circumscribed;
 
-    Point2D<T>            _voronoi( const Point2D<T>& v1, const Point2D<T>& v2, const Point2D<T>& v3 );
+    Point<T,2>            _voronoi( const Point<T,2>& v1, const Point<T,2>& v2, const Point<T,2>& v3 );
   };
 
 
