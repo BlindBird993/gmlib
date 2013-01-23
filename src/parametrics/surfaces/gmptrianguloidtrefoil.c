@@ -83,28 +83,28 @@ namespace GMlib {
 
       switch(d1)
       {
-      case 3:  fu[3] = Point3D<T>(-54*c3u,-2*(cu+16*c2u), su-16*s2u);
-      case 2:  fu[2] = Point3D<T>(-18*s3u,-2*(su+8*s2u), -cu+8*c2u);
-      case 1:  fu[1] = Point3D<T>( 6*c3u,  2*(cu+4*c2u), -su+4*s2u);
-      default: fu[0] = Point3D<T>( 2*s3u,  2*(su+2*s2u),  cu-2*c2u);
+      case 3:  fu[3] = Point<T,3>(-54*c3u,-2*(cu+16*c2u), su-16*s2u);
+      case 2:  fu[2] = Point<T,3>(-18*s3u,-2*(su+8*s2u), -cu+8*c2u);
+      case 1:  fu[1] = Point<T,3>( 6*c3u,  2*(cu+4*c2u), -su+4*s2u);
+      default: fu[0] = Point<T,3>( 2*s3u,  2*(su+2*s2u),  cu-2*c2u);
       }
 
       switch(d2)
       {
-      case 3:  fv[3] = Point3D<T>(6*(sv*cv/pow(cvp2,3)+pow(sv,3)/pow(cvp2,4))+sv/(cvp2*cvp2),
-                    6*(sv23*cv23/pow(cv23p2,3)+pow(sv23,3)/pow(cv23p2,4))+sv23/(cv23p2*cv23p2),
-                    (sv*cv23p2+3*cv*sv23+3*sv*cv23+sv23*cvp2)/4);
-      case 2:  fv[2] = Point3D<T>(2*sv*sv/pow(cvp2,3)+cv/(cvp2*cvp2),
-                    2*(sv23*sv23/pow(cv23p2,3))+cv23/(cv23p2*cv23p2),
-                    -(cv*cv23p2-2*sv*sv23+cvp2*cv23)/4);
-      case 1:  fv[1] = Point3D<T>( sv/(cvp2*cvp2),  sv23/(cv23p2*cv23p2), -(sv*cv23p2+cvp2*sv23)/4);
-      default: fv[0] = Point3D<T>( 1/cvp2,  1/cv23p2,  cvp2*cv23p2/4);
+      case 3:  fv[3] = Point<T,3>(6*(sv*cv/pow(cvp2,3)+pow(sv,3)/pow(cvp2,4))+sv/(cvp2*cvp2),
+                            6*(sv23*cv23/pow(cv23p2,3)+pow(sv23,3)/pow(cv23p2,4))+sv23/(cv23p2*cv23p2),
+                            (sv*cv23p2+3*cv*sv23+3*sv*cv23+sv23*cvp2)/4);
+      case 2:  fv[2] = Point<T,3>(2*sv*sv/pow(cvp2,3)+cv/(cvp2*cvp2),
+                            2*(sv23*sv23/pow(cv23p2,3))+cv23/(cv23p2*cv23p2),
+                            -(cv*cv23p2-2*sv*sv23+cvp2*cv23)/4);
+      case 1:  fv[1] = Point<T,3>( sv/(cvp2*cvp2),  sv23/(cv23p2*cv23p2), -(sv*cv23p2+cvp2*sv23)/4);
+      default: fv[0] = Point<T,3>( 1/cvp2,  1/cv23p2,  cvp2*cv23p2/4);
       }
     }
     else {
 
-      fu[0] = Point3D<T>( 2*s3u,  2*(su+2*s2u),  cu-2*c2u);
-      fv[0] = Point3D<T>( 1/cvp2,  1/cv23p2,  cvp2*cv23p2/4);
+      fu[0] = Point<T,3>( 2*s3u,  2*(su+2*s2u),  cu-2*c2u);
+      fv[0] = Point<T,3>( 1/cvp2,  1/cv23p2,  cvp2*cv23p2/4);
     }
 
     for(int i=0; i<fu.getDim();i++)

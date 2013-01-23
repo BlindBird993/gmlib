@@ -36,10 +36,10 @@ namespace GMlib {
   PPlane<T>::PPlane( const Point<T,3>& p, const Vector<T,3>& u, const Vector<T,3>& v ) {
 
     _pt = p;
-    _u = u;
-    _v = v;
+    _u  = u;
+    _v  = v;
 
-    _n = Vector3D<T>(u)^v;
+    _n  = u^v;
 
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
