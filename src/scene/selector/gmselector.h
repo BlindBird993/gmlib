@@ -52,7 +52,7 @@ namespace GMlib{
 
   public:
     Selector(const Selector<T,n>& s);
-    Selector(Point<T,n>& mp, int id, SceneObject* parent, T r=1, const Color& c = Color(0.0,0.0,0.7), Selector<T,n>* root=NULL );
+    Selector(APoint<T,n>& mp, int id, SceneObject* parent, T r=1, const Color& c = Color(0.0,0.0,0.7), Selector<T,n>* root=NULL );
     virtual ~Selector();
 
     void	                disable();
@@ -60,12 +60,12 @@ namespace GMlib{
     void	                editPos(Vector<float,3> dp);
     void	                enable();
     void	                enableAll();
-    int                   getId() const;
-    const Point<T,n>&     getPosition() const;
+    int                     getId() const;
+    const APoint<T,n>&      getPosition() const;
     bool	                isEnabled() const;
     bool	                toggle();
-    void                  update();
-    void	                update(const Point<T,n>& p);
+    void                    update();
+    void	                update(const APoint<T,n>& p);
 
     // *******************
     // Derived functions
@@ -74,7 +74,7 @@ namespace GMlib{
 
 
   protected:
-    bool			            _enabled;
+    bool			      _enabled;
     Selector<T,n>*        _root;
     Color                 _default;
     Color                 _marked;
@@ -93,9 +93,9 @@ namespace GMlib{
 
 
   private:
-    int				            _id;
+    int				        _id;
     SceneObject*	        _parent;
-    Point<T,n>&		        _position;
+    APoint<T,n>&		    _position;
 
     VisualizerStdRep      *_std_rep_visu;
 

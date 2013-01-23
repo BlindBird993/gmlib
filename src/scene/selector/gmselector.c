@@ -42,7 +42,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   template <typename T, int n>
-  Selector<T,n>::Selector( Point<T,n>& mp, int id, SceneObject* parent, T r, const Color& c, Selector<T,n>* root )
+  Selector<T,n>::Selector( APoint<T,n>& mp, int id, SceneObject* parent, T r, const Color& c, Selector<T,n>* root )
     : _position(mp)/*, _display( "color" ),
     _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
     _bo_cube_frame_indices( "std_rep_frame_indices" )*/
@@ -59,7 +59,7 @@ namespace GMlib {
     _selected	= false;
     _root		= root;
     translate( _position.toFloat() );
-    if(r != 1.0) scale(Vector3D<float>(r,r,r));
+    if(r != 1.0) scale(Vector<float,3>(r,r,r));
 
     _std_rep_visu = new VisualizerStdRep;
     insertVisualizer( _std_rep_visu );
@@ -236,7 +236,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const Point<T,n>& Selector<T,n>::getPosition() const {
+  const APoint<T,n>& Selector<T,n>::getPosition() const {
 
     return _position;
   }
@@ -373,7 +373,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void Selector<T,n>::update( const Point<T,n>& p ) {
+  void Selector<T,n>::update( const APoint<T,n>& p ) {
 
     Vector<T,n> d=p-_position;
     _position=p;

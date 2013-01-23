@@ -42,14 +42,14 @@ namespace GMlib {
    *  add a new line
    */
   template <typename T, int n>
-  SelectorGrid<T,n>::SelectorGrid( Point<T,n>& mp, SceneObject* parent, const Color& c )
+  SelectorGrid<T,n>::SelectorGrid( APoint<T,n>& mp, SceneObject* parent, const Color& c )
     : Selector<T,n>( mp, -1, parent ),
     _prog( "color" )
   {
 
     this->_type_id	= GM_SO_TYPE_SELECTOR_GRID;
     this->_default	= c;
-    this->_marked		= c.getInverse();
+    this->_marked	= c.getInverse();
     this->_root		= NULL;
 //    this->_scale.reset();
     this->translate( -mp.toFloat());
@@ -125,7 +125,7 @@ namespace GMlib {
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
-  /*! void SelectorGrid::add(Point<T,n>& p1, Point<T,n>& p2)
+  /*! void SelectorGrid::add(APoint<T,n>& p1, APoint<T,n>& p2)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
@@ -133,7 +133,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void SelectorGrid<T,n>::add(Point<T,n>& p1, Point<T,n>& p2) {
+  void SelectorGrid<T,n>::add(APoint<T,n>& p1, APoint<T,n>& p2) {
 
     _c += &p1;
     _c += &p2;

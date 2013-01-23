@@ -51,10 +51,10 @@ namespace GMlib {
     GM_SCENEOBJECT_NULL(SelectorGrid)
 
   public:
-    SelectorGrid( Point<T,n>& mp, SceneObject* parent, const Color& c = Color(0.5,0.5,0.9));
+    SelectorGrid( APoint<T,n>& mp, SceneObject* parent, const Color& c = Color(0.5,0.5,0.9));
     ~SelectorGrid();
 
-    void add(Point<T,n>& p1, Point<T,n>& p2);
+    void add(APoint<T,n>& p1, APoint<T,n>& p2);
     void setSelectors( DMatrix< Vector<T,n> >& selectors );
 
   protected:
@@ -62,7 +62,7 @@ namespace GMlib {
     GLuint      _vbo;
     GLuint      _ibo;
 
-    Array<Point<T,n>* > _c;
+    Array< APoint<T,n>* >   _c;
     DMatrix< Vector<T,n> > *_selectors;
 
 
