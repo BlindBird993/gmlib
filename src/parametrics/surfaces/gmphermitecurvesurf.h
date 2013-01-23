@@ -38,7 +38,7 @@
 // GMlib
 #include "../gmpsurf.h"
 #include "../gmpcurve.h"
-#include "../evaluators/gmHermite4Evaluator.h"
+#include "../evaluators/gmhermite4evaluator.h"
 
 
 namespace GMlib {

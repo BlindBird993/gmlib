@@ -82,7 +82,7 @@ namespace GMlib {
 
 
     virtual Vector<float,3>	  getDir() const;
-    const Point<float,3>&     getLockPos() const;
+    const APoint<float,3>&    getLockPos() const;
     double				            getLockDist() const;
     const HqMatrix<float,3>&  getMatrixToScene() const;
     const HqMatrix<float,3>&  getMatrixToSceneInverse() const;
@@ -265,7 +265,7 @@ namespace GMlib {
    *  ** In the coordinates of the scene. **
    */
   inline
-  const Point<float,3>& DisplayObject::getLockPos() const {
+  const APoint<float,3>& DisplayObject::getLockPos() const {
 
     if(_lock_object)
       return  _lock_object->getCenterPos();

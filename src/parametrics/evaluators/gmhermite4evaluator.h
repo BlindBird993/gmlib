@@ -34,7 +34,7 @@
 
 
 // GMlib includes
-#include "gmERBSEvaluator.h"
+#include "gmerbsevaluator.h"
 
 
 namespace GMlib {
@@ -77,7 +77,7 @@ namespace GMlib {
 } // END namepace GMlib
 
 // Include Hermite4Evaluator class function implementations
-#include "gmHermite4Evaluator.c"
+#include "gmhermite4evaluator.c"
 
 
 #endif // __GMHERMITE4EVALUATOR_H__

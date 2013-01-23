@@ -69,46 +69,7 @@ namespace GMlib {
       addViewSet( getCameraIndex(cam) );
     }
 
-<<<<<<< HEAD:src/scene/window/gmwindow.cpp
     _rm = new RenderManager(this);
-=======
-
-    glGenBuffers( 1, &_vbo_quad );
-    glGenBuffers( 1, &_vbo_quad_tex );
-
-    // Gen quad data (vertex)
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
-
-    DVector< Point<float,3> > data(4);
-//    data[0] = Point<float,3>( 0.25f, 0.25f, 0.0f );
-//    data[1] = Point<float,3>( 0.25f, 0.75f, 0.0f );
-//    data[2] = Point<float,3>( 0.75f, 0.75f, 0.0f );
-//    data[3] = Point<float,3>( 0.75f, 0.25f, 0.0f );
-    data[0] = Point<float,3>( 0.0f, 0.0f, 0.0f );
-    data[1] = Point<float,3>( 0.0f, 1.0f, 0.0f );
-    data[2] = Point<float,3>( 1.0f, 1.0f, 0.0f );
-    data[3] = Point<float,3>( 1.0f, 0.0f, 0.0f );
-
-    glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-    // Gen quad data (tex)
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
-
-    DVector< Point<float,2> > data_tex(4);
-    data_tex[0] = Point<float,2>( 0.0f, 0.0f );
-    data_tex[1] = Point<float,2>( 0.0f, 1.0f );
-    data_tex[2] = Point<float,2>( 1.0f, 1.0f );
-    data_tex[3] = Point<float,2>( 1.0f, 0.0f );
-  //  data_tex[0] = Point<float,2>( 0.25f, 0.25f );
-  //  data_tex[1] = Point<float,2>( 0.25f, 0.75f );
-  //  data_tex[2] = Point<float,2>( 0.75f, 0.75f );
-  //  data_tex[3] = Point<float,2>( 0.75f, 0.25f );
-
-    glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
->>>>>>> Window core sync.:src/window/gmwindow.cpp
   }
 
 

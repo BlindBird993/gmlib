@@ -196,9 +196,9 @@ namespace GMlib {
 
     void    switchToRightEye() {
 
-      Point3D<float>		tmp_pos  = _pos  - _eye_dist*_side;
-      UnitVector3D<float>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
-      UnitVector3D<float>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
+      Point<float,3>		tmp_pos  = _pos  - _eye_dist*_side;
+      UnitVector<float,3>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
+      UnitVector<float,3>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
       basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
     }
 
