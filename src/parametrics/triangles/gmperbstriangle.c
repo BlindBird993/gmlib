@@ -188,11 +188,11 @@ namespace GMlib {
   Vector<Point<T,3>,3> PERBSTriangle<T>::getPoints() {
 
     Vector<Point<T,3>,3>  a;
-    DVector<Vector<T,3> > m = evaluateGlobal(Point3D<T>(1,0,0) , 0);
+    DVector<Vector<T,3> > m = evaluateGlobal(Point<T,3>(1,0,0) , 0);
     a[0] = m[0];
-    m = evaluateGlobal(Point3D<T>(0,1,0) , 0);
+    m = evaluateGlobal(Point<T,3>(0,1,0) , 0);
     a[1] = m[0];
-    m = evaluateGlobal(Point3D<T>(0,0,1) , 0);
+    m = evaluateGlobal(Point<T,3>(0,0,1) , 0);
     a[2] = m[0];
 
     return a;
