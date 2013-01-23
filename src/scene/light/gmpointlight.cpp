@@ -43,7 +43,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  PointLight::PointLight() : Light(), DisplayObject(), _pos(0.0f), _light_sphere(Point3D<float>(0,0,0), FLT_MAX ) {
+  PointLight::PointLight() : Light(), DisplayObject(), _pos(0.0f), _light_sphere(Point<float,3>(0,0,0), FLT_MAX ) {
 
     _type_id  = GM_SO_TYPE_LIGHT;
     setAttenuation( 0.8, 0.002, 0.0008 );

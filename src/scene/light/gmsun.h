@@ -52,7 +52,7 @@ namespace GMlib{
     GM_SCENEOBJECT(Sun)
 
   public:
-    Sun(const Vector<float,3>& dir = Vector3D<float>(1,1,1));
+    Sun(const Vector<float,3>& dir = Vector<float,3>(1,1,1));
     virtual ~Sun();
 
     Color                   getGlobalAmbient() const;

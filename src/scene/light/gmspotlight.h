@@ -44,35 +44,35 @@ namespace GMlib{
    *
    *	Pending Documentatioo
    */
+
   class SpotLight : public PointLight {
     GM_SCENEOBJECT(SpotLight)
   public:
     SpotLight();
-    SpotLight(
-      const Point<float,3>& pos,
-      const Vector<float,3>& dir,
-      Angle cut_off );
-    SpotLight(
-      const Color& amb,
-      const Color& dif,
-      const Color& spe,
-      const Point<float,3>& pos,
-      const Vector<float,3>& dir,
-      Angle cut_off = 90);
+    SpotLight( const Point<float,3>& pos,
+               const Vector<float,3>& dir,
+               Angle cut_off );
+    SpotLight( const Color& amb,
+               const Color& dif,
+               const Color& spe,
+               const Point<float,3>& pos,
+               const Vector<float,3>& dir,
+               Angle cut_off = 90);
     SpotLight( const SpotLight& pl);
+
     virtual ~SpotLight();
 
-    const Angle&            getCutOff() const;
-    double                  getExponent() const;
+    const Angle&         getCutOff() const;
+    double               getExponent() const;
 
-    virtual void            setCutOff( const Angle& cut_off);
-    void                    setExponent(double exp);
+    virtual void         setCutOff( const Angle& cut_off);
+    void                 setExponent(double exp);
 
 
   protected:
-    Vector3D<float>	        _dir;
-    Angle				            _cutoff;
-    double				          _exp;
+    Vector<float,3>	     _dir;
+    Angle				 _cutoff;
+    double				 _exp;
 
     void lighting();
 

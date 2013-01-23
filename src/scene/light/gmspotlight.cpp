@@ -47,7 +47,7 @@ namespace GMlib {
    */
   SpotLight::SpotLight() {
 
-    _dir = Vector3D<float>(0,0,1);
+    _dir = Vector<float,3>(0,0,1);
   }
 
 
@@ -62,7 +62,7 @@ namespace GMlib {
     Angle cut_off
   ) : PointLight(pos) {
 
-    _dir = Vector3D<float>(0,0,1);
+    _dir = Vector<float,3>(0,0,1);
     setCutOff(cut_off);
     rotate(_dir.getAngle(dir), _dir^dir);
   }
@@ -82,7 +82,7 @@ namespace GMlib {
     Angle cut_off
   )	:	PointLight(amb,dif,spe,pos) {
 
-    _dir = Vector3D<float>(0,0,1);
+    _dir = Vector<float,3>(0,0,1);
     setCutOff(cut_off);
     rotate( _dir.getAngle(dir), _dir^dir );
   }
