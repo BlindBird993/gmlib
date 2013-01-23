@@ -229,14 +229,13 @@ namespace GMlib {
 
     ar.setSize( this->_no_elements );
 
-    for(i = 0; i < this->_no_elements; i++) {
+    for(i = 0; i < this->_no_elements; i++)
       ar[i] = i;
-    }
 
     for(i = 0; i < this->_no_elements - 1; i++) {
-      for(k = i, j = i+1; j < this->_no_elements; j++) {
-        if( this->_data_ptr[ar[j]] < this->_data_ptr[ar[k]] ) { k = j; }
-      }
+      for(k = i, j = i+1; j < this->_no_elements; j++)
+        if( this->_data_ptr[ar[j]] < this->_data_ptr[ar[k]] )  k = j;
+
       ar.swap(i, k);
     }
     return ar;
@@ -253,11 +252,10 @@ namespace GMlib {
   template <typename T>
   int Array<T>::index( const T& t ) const {
 
-    for(int i = 0; i < _no_elements; i++) {
-      if(_data_ptr[i] == t) {
+    for(int i = 0; i < _no_elements; i++)
+      if(_data_ptr[i] == t)
         return i;
-      }
-    }
+
     return -1;
   }
 
@@ -266,9 +264,8 @@ namespace GMlib {
   inline
   void Array<T>::initialize( const T& t ) {
 
-    for(int i = 0; i < size(); i++) {
+    for(int i = 0; i < size(); i++)
       (*this)[i] = t;
-    }
   }
 
 
@@ -278,12 +275,8 @@ namespace GMlib {
 
     bool res = true;
 
-    if(exist(t)) {
-      res = false;
-
-    } else {
-      insertAlways(t, first);
-    }
+    if(exist(t)) res = false;
+    else         insertAlways(t, first);
 
     return res;
   }
@@ -295,15 +288,24 @@ namespace GMlib {
 
     bool res = true;
 
-    for(int i = 0; i < ar.size(); i++) {
-      if(exist(ar._data_ptr[i])) {
+    for(int i = 0; i < ar.size(); i++)
+      if(exist(ar._data_ptr[i]))
         res = false;
-
-      } else {
-//        insertAlways(ar._data_ptr(i), first);
+      else
         insertAlways(ar._data_ptr[i], first);
-      }
-    }
+
+    return res;
+  }
+
+
+  template <typename T>
+  inline
+  bool Array<T>::insert( const ArrayT<T>& ar, bool first ) {
+
+    bool res = true;
+    for(int i = 0; i < ar.size(); i++)
+      if(exist(ar(i))) res = false;
+      else             insert(ar(i), first);
 
     return res;
   }
@@ -317,28 +319,20 @@ namespace GMlib {
     // Expand the array if nessesary
     this->expand();
 
-
     if( _sorted ) {
-      for (i = this->_no_elements; i > 0 && t < this->_data_ptr[i-1]; --i) {
-
+      for (i = this->_no_elements; i > 0 && t < this->_data_ptr[i-1]; --i)
         this->_data_ptr[i] = this->_data_ptr[i-1];
-      }
 
       this->_data_ptr[i] = t;
 
     } else if(first) {
-      for(i = this->_no_elements; i > 0; i--) {
-
+      for(i = this->_no_elements; i > 0; i--)
         this->_data_ptr[i] = this->_data_ptr[i-1];
-      }
 
       this->_data_ptr[0] = t;
 
-    }
-    else {
-
+    } else
       this->_data_ptr[this->_no_elements] = t;
-    }
 
     this->_no_elements++;
   }
@@ -347,9 +341,16 @@ namespace GMlib {
   template <typename T>
   void Array<T>::insertAlways( const Array<T>& ar, bool first ) {
 
-    for(int i = 0; i < ar.size(); i++) {
+    for(int i = 0; i < ar.size(); i++)
       insertAlways(ar._data_ptr[i], first);
-    }
+  }
+
+
+  template <typename T>
+  void Array<T>::insertAlways( const ArrayT<T>& ar, bool first ) {
+
+    for(int i = 0; i < ar.size(); i++)
+        insertAlways(ar(i), first);
   }
 
 
@@ -371,6 +372,14 @@ namespace GMlib {
 
   template <typename T>
   inline
+  void Array<T>::insertBack( const ArrayT<T>& ar ) {
+
+    insertAlways(ar);
+  }
+
+
+  template <typename T>
+  inline
   void Array<T>::insertFront( const T& t ) {
 
     insertAlways(t, true);
@@ -380,6 +389,14 @@ namespace GMlib {
   template <typename T>
   inline
   void Array<T>::insertFront( const Array<T>& ar ) {
+
+    insertAlways(ar, true);
+  }
+
+
+  template <typename T>
+  inline
+  void Array<T>::insertFront( const ArrayT<T>& ar ) {
 
     insertAlways(ar, true);
   }
@@ -492,6 +509,14 @@ namespace GMlib {
 
   template <typename T>
   inline
+  void Array<T>::push_back( const ArrayT<T>& ar ) {
+
+    insertBack(ar);
+  }
+
+
+  template <typename T>
+  inline
   void Array<T>::push_front( const T& t ) {
 
     insertFront(t);
@@ -501,6 +526,14 @@ namespace GMlib {
   template <typename T>
   inline
   void Array<T>::push_front( const Array<T>& ar ) {
+
+    insertFront(ar);
+  }
+
+
+  template <typename T>
+  inline
+  void Array<T>::push_front( const ArrayT<T>& ar ) {
 
     insertFront(ar);
   }
@@ -655,6 +688,7 @@ namespace GMlib {
     }
   }
 
+
   template <typename T>
   inline
   void Array<T>::setSorted( bool sorted ) {
@@ -662,12 +696,14 @@ namespace GMlib {
     _sorted = sorted;
   }
 
+
   template <typename T>
   inline
   void Array<T>::setStreamMode( bool mode ) {
 
     _numb = mode;
   }
+
 
   template <typename T>
   void Array<T>::sort() {
@@ -684,6 +720,7 @@ namespace GMlib {
       if(i != k) { this->swap(i, k); }
     }
   }
+
 
   template <typename T>
   void Array<T>::strip() {

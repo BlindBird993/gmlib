@@ -80,12 +80,16 @@ namespace GMlib {
     void            initialize( const T& t );
     bool            insert( const T& t, bool first = false );
     bool            insert( const Array<T>& ar, bool first = false );
+    bool            insert( const ArrayT<T>& ar, bool first = false );
     void            insertAlways( const T& t, bool first = false );
     void            insertAlways( const Array<T>& ar, bool first = false );
+    void            insertAlways( const ArrayT<T>& ar, bool first = false );
     void            insertBack( const T& t );
     void            insertBack( const Array<T>& ar );
+    void            insertBack( const ArrayT<T>& ar );
     void            insertFront( const T& t );
     void            insertFront( const Array<T>& ar );
+    void            insertFront( const ArrayT<T>& ar );
     bool            isEmpty() const;                  // Alias: empty()
     bool            isExisting( const T& t ) const;   // Alias: exist(const T& t)
     void            makeUnique();
@@ -97,9 +101,11 @@ namespace GMlib {
     T*              ptr();
     void            push();
     void            push_back( const T& t );          // Alias: insertBack(const T&)
-    void            push_back( const Array<T>& ar );  // Alias: insertBack(const ArrayT<T>&)
+    void            push_back( const Array<T>& ar );  // Alias: insertBack(const Array<T>&)
+    void            push_back( const ArrayT<T>& ar ); // Alias: insertBack(const ArrayT<T>&)
     void            push_front( const T& t );         // Alias: insertFront(const T&)
-    void            push_front( const Array<T>& ar ); // Alias: insertFront(const ArrayT<T>&)
+    void            push_front( const Array<T>& ar ); // Alias: insertFront(const Array<T>&)
+    void            push_front( const ArrayT<T>& ar );// Alias: insertFront(const ArrayT<T>&)
     bool            remove( const T& t );
     bool            removeBack();
     bool            removeFront();
