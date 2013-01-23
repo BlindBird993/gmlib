@@ -75,7 +75,7 @@ namespace GMlib {
     if( y_.getLength() > 1e-5 ) {
 
       y = y_ / y_.getLength();
-      z = Vector3D<T>(y) ^ x;
+      z = y ^ x;
     }
     else
       y = z = Vector<T,3>( T(0) );
