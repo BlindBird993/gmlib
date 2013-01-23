@@ -122,7 +122,7 @@ namespace GMlib {
 //    int i,ih,iw;
 //    iw = _horisontal/_gw;
 //    ih = _ratio*_horisontal/_gh;
-//    Point3D<float> cp=_pos+(0.99*_near_plane+0.01*_far_plane)*_dir;
+//    Point<float,3> cp=_pos+(0.99*_near_plane+0.01*_far_plane)*_dir;
 //    GLboolean lg;
 //    glGetBooleanv(GL_LIGHTING,&lg);
 //    if(lg) glDisable(GL_LIGHTING);

@@ -312,7 +312,7 @@ namespace GMlib {
   void Camera::drawActiveCam() {
 
     float hh = -1.5*_near_plane*_angle_tan;
-    Point3D<float> cp(_ratio*hh, hh, -_near_plane-1.0);
+    Point<float,3> cp(_ratio*hh, hh, -_near_plane-1.0);
 
 
     /*! \todo check if this is correct and fix if not */
@@ -325,9 +325,9 @@ namespace GMlib {
 //    glPushAttrib( GL_LIGHTING );
 //    glDisable( GL_LIGHTING );
 //    glBegin(GL_LINES); // draw Coordsys
-//      glColor( GMcolor::Red );	glPoint(cp); glPoint(cp+Vector3D<float>(0.1,0,0));
-//      glColor( GMcolor::Green );	glPoint(cp); glPoint(cp+Vector3D<float>(0,0.1,0));
-//      glColor( GMcolor::Blue );	glPoint(cp); glPoint(cp+Vector3D<float>(0,0,0.1));
+//      glColor( GMcolor::Red );	glPoint(cp); glPoint(cp+Vector<float,3>(0.1,0,0));
+//      glColor( GMcolor::Green );	glPoint(cp); glPoint(cp+Vector<float,3>(0,0.1,0));
+//      glColor( GMcolor::Blue );	glPoint(cp); glPoint(cp+Vector<float,3>(0,0,0.1));
 //    glEnd();
 //    if(_locked && ! _lock_object)
 //    {
