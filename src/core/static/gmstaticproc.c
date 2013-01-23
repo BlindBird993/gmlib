@@ -242,7 +242,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void GM_Static_<T, n>::maxIdx(T *a, int& i) {
-    if( std::fabs(*a) > std::fabs(*(a+n-i))) i = n;
+    if( std::abs(*a) > std::abs(*(a+n-i))) i = n;
     GM_Static_<T,n-1>::maxIdx(a+1,i);
   }
 

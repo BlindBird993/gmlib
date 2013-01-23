@@ -154,6 +154,7 @@ class Cube;
 	 *  the embedding space can not be change. The template type must be clean,
    *  i.e. is not allocating memory and without any virtual functions.
    */
+
   template <class T, int n>
   class Plane : public SubSpace<T,n,2> {
   public:
@@ -164,7 +165,26 @@ class Cube;
     Plane( const Arrow<T,n>& a );                       // Call the SubSpace<T,n,2>(a)
     Plane( const SubSpace<T,n,2>& s );                  // Call the SubSpace<T,n,2>(a)
 
+  };
+
+  template <class T>
+  class Plane<T,3> : public SubSpace<T,3,2> {
+  public:
+    // All implemented constructor calls the default constructor of SubSpace
+    Plane(): SubSpace<T,3,2>(){}
+    Plane( const Point<T,3>& p ): SubSpace<T,3,2>(p){}
+    Plane( const Point<T,3>& p, const Vector<T,3>& v ): SubSpace<T,3,2>(p,v){}
+    Plane( const Arrow<T,3>& a ): SubSpace<T,3,2>(a){}
+    Plane( const SubSpace<T,3,2>& s ): SubSpace<T,3,2>(s){}
+
+    void                setNormal(const Vector<T,3>& v);
+
+    const Vector<T,3>&	getNormal() const;
+    Point<T,3>          getClosestPoint(const Point<T,3>& p) const;
+    Vector<T,3>         getDistanceVector(const Point<T,3>& p) const;
+    T                   getDistanceTo(const Point<T,3>& p) const;
   }; // END class Plane
+
 
 
 

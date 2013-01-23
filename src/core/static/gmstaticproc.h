@@ -50,8 +50,8 @@ namespace GMlib {
   template <typename T, int n>
   class GM_Static_ {
   public:
-    static T	    dpr(T *a, T *b);                                // a*b innerproduct
-    static T	    dprm(T *a, T *b);                               // -a*b innerproduct
+    static T	  dpr(T *a, T *b);                                // a*b innerproduct
+    static T	  dprm(T *a, T *b);                               // -a*b innerproduct
 
     static void   eq(T *a, const T& b);                           // a =  b  set equal
     static void   eqm(T *a, T* b);	                              // a = -b

@@ -269,13 +269,12 @@ namespace GMlib {
      *
      *  Multiply Angle object with the new angle in radian.
      *
-     *  \param  r Value of the angle in radian
-     *  \param  a Angle object
-     *  \return Copy of the Angle object
+     *  \param  r - Value of the angle in radian
+     *  \param  a - Angle object
+     *  \return Copy of the Angle object that is scaled by r.
      */
     friend
     Angle     operator * ( double r, Angle a ) {
-
       a *= r;
       return a;
     }
@@ -292,7 +291,7 @@ namespace GMlib {
    *
    *  Default initialize angle to 0.0.
    *
-   *  \param  r Value of the angle in radian
+   *  \param  r - Value of the angle in radian
    */
   inline
   Angle::Angle( double r ) {
@@ -307,7 +306,7 @@ namespace GMlib {
    *  Initialize incomming degrees as radian. Conversion between degrees
    *  and radian is defined as Radian = Degrees * PI / 180.
    *
-   *  \param  d Value of the angle in degrees
+   *  \param  d - Value of the angle in degrees
    */
   inline
   Angle::Angle( int d ) {
@@ -321,7 +320,7 @@ namespace GMlib {
    *
    *  Copy constructor.
    *
-   *  \param  a Angle object
+   *  \param  a - Angle object
    */
   inline
   Angle::Angle( const Angle &a ) {
@@ -331,12 +330,12 @@ namespace GMlib {
 
 
   /*! int Angle::getDegree() const
-   *  \brief  Return the angle (Degrees)
+   *  \brief  Return the angle in degrees (integer)
    *
    *  Return the angle in degrees. Conversion between radian and degrees
    *  is defined as Degrees = Radian * 180 / PI.
    *
-   *  \return The angle in degrees
+   *  \return The angle in degrees (int)
    */
   inline
   int Angle::getDeg() const {
@@ -346,11 +345,11 @@ namespace GMlib {
 
 
   /*! double Angle::getRadian() const
-   *  \brief  Return the angle (Radian)
+   *  \brief  Return the angle radian (double precision floating point)
    *
-   *  Return the angle in radian.
+   *  Return the angle in radian. That is double precision floating point.
    *
-   *  \return The angle in radian
+   *  \return The angle in radian (double)
    */
   inline
   double Angle::getRad() const {
@@ -359,25 +358,25 @@ namespace GMlib {
   }
 
 
-  /*! double Angle::translate( double lb = 0.0 )
+  /*! double Angle::translate( double b = 0.0 )
    *  \brief  Translate periodic
    *
    *  This function translate current angle to a choosen period
    *  and also ensure that the angle is inside the choosen period.
    *  Default period is [0, 2Pi].
    *
-   *  \param  b Lower boundary of the choosen period
+   *  \param  b Lower boundary of the choosen period (2 PI)
    *  \return The angle of the new period
    */
   inline
   double Angle::translate( double b ) {
 
-    double tmpAngle = _angle;
+    double tmp_angle = _angle;
 
     // If current angle (tmpAngle) is lower than LowerBondary (b),
     // then translate current angle forward with 2Pi until it
     // is higher than the bondary
-    while( tmpAngle < b ) { tmpAngle += M_2PI; }
+    while( tmp_angle < b ) { tmp_angle += M_2PI; }
 
     // Change to UpperBondary
     b += M_2PI;
@@ -385,9 +384,9 @@ namespace GMlib {
     // If current angle (tmpAngle) is higher than UpperBondary (b),
     // then translate current angle backward with 2Pi until it
     // is lower than the bondary
-    while( tmpAngle > b ) { tmpAngle -= M_2PI; }
+    while( tmp_angle > b ) { tmp_angle -= M_2PI; }
 
-    return tmpAngle;
+    return tmp_angle;
   }
 
 

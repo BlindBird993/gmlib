@@ -25,8 +25,6 @@ addHeaders(
   gmAngle
   gmMatrix
   gmPoint
-  gmPoint2D
-  gmPoint3D
   gmSimplex
   gmSubSpace
 )
@@ -34,8 +32,6 @@ addHeaders(
 addTemplateSources(
   gmmatrix.c
   gmpoint.c
-  gmpoint2d.c
-  gmpoint3d.c
   gmsimplex.c
   gmsubspace.c
 )

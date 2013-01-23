@@ -37,61 +37,61 @@ namespace GMlib {
   // class GM_Static_P_<T,n,m>
 
 
-  /*! void GM_Static_P_ <T,n,m>::mv_x(T *a, Point<T,m>* b, const Point<T,m>& c)
+  /*! void GM_Static_P_ <T,n,m>::mv_x(T *a, APoint<T,m>* b, const APoint<T,m>& c)
    *  \brief vec = mat x vec
    *  Pending Documentation
    */
   template <typename T, int n, int m>
   inline
-  void GM_Static_P_<T,n,m>::mv_x(T *a, Point<T,m>* b, const Point<T,m>& c) {
+  void GM_Static_P_<T,n,m>::mv_x(T *a, APoint<T,m>* b, const APoint<T,m>& c) {
 
     (*a)=(*b)*c; GM_Static_P_<T,n-1,m>::mv_x(a+1,b+1,c);
   }
 
 
-  /*! void GM_Static_P_ <T,n,m>::mv_xq(T *a, T* b, const Point<T,m>& c)
+  /*! void GM_Static_P_ <T,n,m>::mv_xq(T *a, T* b, const APoint<T,m>& c)
    *  \brief vec = HqMat x vec
    *  Pending Documentation
    */
   template <typename T, int n, int m>
   inline
-  void GM_Static_P_<T,n,m>::mv_xq(T *a, T* b, const Point<T,m>& c) {
+  void GM_Static_P_<T,n,m>::mv_xq(T *a, T* b, const APoint<T,m>& c) {
 
     (*a) = GM_Static_<T,m>::dpr(b,c.getPtr()); GM_Static_P_<T,n-1,m>::mv_xq(a+1,b+m+1,c);
   }
 
 
-  /*! void GM_Static_P_ <T,n,m>::mv_xqP(T *a, T* b, const Point<T,m>& c, T* d)
+  /*! void GM_Static_P_ <T,n,m>::mv_xqP(T *a, T* b, const APoint<T,m>& c, T* d)
    *  \brief vec = HqMat x vec + h(homogen col)
    *  Pending Documentation
    */
   template <typename T, int n, int m>
   inline
-  void GM_Static_P_<T,n,m>::mv_xqP(T *a, T* b, const Point<T,m>& c, T* d) {
+  void GM_Static_P_<T,n,m>::mv_xqP(T *a, T* b, const APoint<T,m>& c, T* d) {
 
     (*a) = GM_Static_<T,m>::dpr(b,c.getPtr())+(*d); GM_Static_P_<T,n-1,m>::mv_xqP(a+1,b+m+1,c,d+m+1);
   }
 
 
-  /*! void GM_Static_P_ <T,n,m>::eq_t(Point<T,m> *a, T *b)
+  /*! void GM_Static_P_ <T,n,m>::eq_t(APoint<T,m> *a, T *b)
    *  \brief a = b^T	matrix transposing
    *  Pending Documentation
    */
   template <typename T, int n, int m>
   inline
-  void GM_Static_P_<T,n,m>::eq_t(Point<T,m> *a, T *b) {
+  void GM_Static_P_<T,n,m>::eq_t(APoint<T,m> *a, T *b) {
 
     GM_Static_P2_<T,n,m,n>::eq_t(a,b);
   }
 
 
-  /*! void GM_Static_P_<T,n,m>::vv_ox(Point<T,m> *a, const Point<T,m> *b, T *c)
+  /*! void GM_Static_P_<T,n,m>::vv_ox(APoint<T,m> *a, const APoint<T,m> *b, T *c)
    *  \brief a = b x c tensor (outer) product
    *  Pending Documentation
    */
   template <typename T, int n, int m>
   inline
-  void GM_Static_P_<T,n,m>::vv_ox(Point<T,m> *a, const Point<T,m> *b, T *c) {
+  void GM_Static_P_<T,n,m>::vv_ox(APoint<T,m> *a, const APoint<T,m> *b, T *c) {
 
     GM_Static_<T,m>::sc_r(a->getPtr(),b->getPtr(),double(*c)); GM_Static_P_<T,n-1,m>::vv_ox(a+1,b,c+1);
   }
@@ -121,30 +121,30 @@ namespace GMlib {
   }
 
 
-  /*! void GM_Static_P_<T,n,m>::sc(Point<T,m>* a, T *b)
+  /*! void GM_Static_P_<T,n,m>::sc(APoint<T,m>* a, T *b)
    *  \brief scaling of matrix (row by row)
    *  Pending Documentation
    */
   template <typename T, int n, int m>
   inline
-  void GM_Static_P_<T,n,m>::sc(Point<T,m>* a, T *b) {
+  void GM_Static_P_<T,n,m>::sc(APoint<T,m>* a, T *b) {
 
     GM_Static_<T,m>::sc(a->getPtr(),(double)*b); return GM_Static_P_<T,n-1,m>::sc(a+1,b+1);
   }
 
-  /*! void GM_Static_P_<T,n,m>::hq_2x(T *a, T* b, const Point<T,m>& c)
+  /*! void GM_Static_P_<T,n,m>::hq_2x(T *a, T* b, const APoint<T,m>& c)
    *  \brief vec = HqMat x vec
    *  Pending Documentation
    */
   template <typename T, int n, int m>
   inline
-  void GM_Static_P_<T,n,m>::hq_2x(T *a, T* b, const Point<T,m>& c) {
+  void GM_Static_P_<T,n,m>::hq_2x(T *a, T* b, const APoint<T,m>& c) {
 
     (*a) = GM_Static_<T,m>::dpr(b,c.getPtr()); GM_Static_P_<T,n-1,m>::hq_2x(a+1,b+m+1,c);
   }
 
 
-  /*! void GM_Static_P_<T,n,m>::hq_3x(T *a, T* b, const Vector<T,m>& r, T* p)
+  /*! void GM_Static_P_<T,n,m>::hq_3x(T *a, T* b, const AVector<T,m>& r, T* p)
    *  \brief col = vec - vec x HqMat
    *  Pending Documentation
    */
@@ -163,49 +163,49 @@ namespace GMlib {
   //  class GM_Static_P_<T,1,m>
 
 
-  /*! void GM_Static_P_<T,n,m>::hq_3x(T *a, T* b, const Vector<T,m>& r, T* p)
+  /*! void GM_Static_P_<T,n,m>::hq_3x(T *a, T* b, const AVector<T,m>& r, T* p)
    *  \brief
    *  Pending Documentation
    */
   template <typename T,int m>
   inline
-  void GM_Static_P_<T,1,m>::mv_x(T *a, Point<T,m>* b, const Point<T,m>& c) {
+  void GM_Static_P_<T,1,m>::mv_x(T *a, APoint<T,m>* b, const APoint<T,m>& c) {
 
      (*a)=(*b)*c;
   }
 
 
-  /*! void GM_Static_P_<T,1,m>::mv_xq(T *a, T* b, const Point<T,m>& c)
+  /*! void GM_Static_P_<T,1,m>::mv_xq(T *a, T* b, const APoint<T,m>& c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T,int m>
   inline
-  void GM_Static_P_<T,1,m>::mv_xq(T *a, T* b, const Point<T,m>& c) {
+  void GM_Static_P_<T,1,m>::mv_xq(T *a, T* b, const APoint<T,m>& c) {
 
     (*a) = GM_Static_<T,m>::dpr(b,c.getPtr());
   }
 
 
-  /*! void GM_Static_P_<T,1,m>::mv_xqP(T *a, T* b, const Point<T,m>& c, T* d)
+  /*! void GM_Static_P_<T,1,m>::mv_xqP(T *a, T* b, const APoint<T,m>& c, T* d)
    *  \brief
    *  Pending Documentation
    */
   template <typename T,int m>
   inline
-  void GM_Static_P_<T,1,m>::mv_xqP(T *a, T* b, const Point<T,m>& c, T* d) {
+  void GM_Static_P_<T,1,m>::mv_xqP(T *a, T* b, const APoint<T,m>& c, T* d) {
 
     (*a) = GM_Static_<T,m>::dpr(b,c.getPtr())+(*d);
   }
 
 
-  /*! void GM_Static_P_<T,1,m>::vv_ox(Point<T,m> *a, const Point<T,m> *b, T *c)
+  /*! void GM_Static_P_<T,1,m>::vv_ox(APoint<T,m> *a, const APoint<T,m> *b, T *c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T,int m>
   inline
-  void GM_Static_P_<T,1,m>::vv_ox(Point<T,m> *a, const Point<T,m> *b, T *c) {
+  void GM_Static_P_<T,1,m>::vv_ox(APoint<T,m> *a, const APoint<T,m> *b, T *c) {
 
     GM_Static_<T,m>::sc_r(a->getPtr(),b->getPtr(),double(*c));
   }
@@ -232,29 +232,29 @@ namespace GMlib {
     GM_Static_P_<T,m,m>::cm_x(a,b,c);
   }
 
-  /*! void GM_Static_P_<T,1,m>::sc(Point<T,m>* a, T *b)
+  /*! void GM_Static_P_<T,1,m>::sc(APoint<T,m>* a, T *b)
    *  \brief
    *  Pending Documentation
    */
   template <typename T,int m>
   inline
-  void GM_Static_P_<T,1,m>::sc(Point<T,m>* a, T *b) {
+  void GM_Static_P_<T,1,m>::sc(APoint<T,m>* a, T *b) {
 
     GM_Static_<T,m>::sc(a->getPtr(),(double)*b);
   }
 
-  /*! void GM_Static_P_<T,1,m>::hq_2x(T *a, T* b, const Point<T,m>& c)
+  /*! void GM_Static_P_<T,1,m>::hq_2x(T *a, T* b, const APoint<T,m>& c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T,int m>
   inline
-  void GM_Static_P_<T,1,m>::hq_2x(T *a, T* b, const Point<T,m>& c) {
+  void GM_Static_P_<T,1,m>::hq_2x(T *a, T* b, const APoint<T,m>& c) {
 
     (*a) = GM_Static_<T,m>::dpr(b,c.getPtr());
   }
 
-  /*! void GM_Static_P_<T,1,m>::hq_3x(T *a, T* b, const Vector<T,m>& r, T* p)
+  /*! void GM_Static_P_<T,1,m>::hq_3x(T *a, T* b, const AVector<T,m>& r, T* p)
    *  \brief
    *  Pending Documentation
    */
@@ -271,47 +271,47 @@ namespace GMlib {
   //class GM_Static_P2_<T,n,m,k>
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::vm_x(T *a, Point<T,m>* b, T* c)
+  /*! void GM_Static_P2_<T,n,m,k>::vm_x(T *a, APoint<T,m>* b, T* c)
    *  \brief vec = vec x mat
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::vm_x(T *a, Point<T,m>* b, T* c) {
+  void GM_Static_P2_<T,n,m,k>::vm_x(T *a, APoint<T,m>* b, T* c) {
     (*a) = GM_Static2_<T,m,k>::dpr(b->getPtr(),c); GM_Static_P2_<T,n-1,m,k>::vm_x(a+1,b,c+1);
   }
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::mm_x(Point<T,k> *a, Point<T,m> *b, T *c)
+  /*! void GM_Static_P2_<T,n,m,k>::mm_x(APoint<T,k> *a, APoint<T,m> *b, T *c)
    *  \brief a = b*c	matrix multiplication
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::mm_x(Point<T,k> *a, Point<T,m> *b, T *c)	{
+  void GM_Static_P2_<T,n,m,k>::mm_x(APoint<T,k> *a, APoint<T,m> *b, T *c)	{
 
     GM_Static_P2_<T,k,m,k>::vm_x(a->getPtr(),b,c); GM_Static_P2_<T,n-1,m,k>::mm_x(a+1,b+1,c);
   }
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::vm_xT(T *a, Point<T,m>* b, T* c)
+  /*! void GM_Static_P2_<T,n,m,k>::vm_xT(T *a, APoint<T,m>* b, T* c)
    *  \brief vec =  mat x vec (a = c x b)
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::vm_xT(T *a, Point<T,m>* b, T* c)	{
+  void GM_Static_P2_<T,n,m,k>::vm_xT(T *a, APoint<T,m>* b, T* c)	{
     (*a) = GM_Static_<T,m>::dpr(b->getPtr(),c); GM_Static_P2_<T,n-1,m,k>::vm_xT(a+1,b,c+m);
   }
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::mm_xT(Point<T,k> *a, Point<T,m> *b, T *c)
+  /*! void GM_Static_P2_<T,n,m,k>::mm_xT(APoint<T,k> *a, APoint<T,m> *b, T *c)
    *  \brief a = b*c	matrix multiplication (c transposed)
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::mm_xT(Point<T,k> *a, Point<T,m> *b, T *c) {
+  void GM_Static_P2_<T,n,m,k>::mm_xT(APoint<T,k> *a, APoint<T,m> *b, T *c) {
     GM_Static_P2_<T,k,m,k>::vm_xT(a->getPtr(),b,c); GM_Static_P2_<T,n-1,m,k>::mm_xT(a+1,b+1,c);
   }
 
@@ -333,62 +333,62 @@ namespace GMlib {
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::mm_xTT(Point<T,k> *a, T *b, T *c)	{
+  void GM_Static_P2_<T,n,m,k>::mm_xTT(APoint<T,k> *a, T *b, T *c)	{
     GM_Static_P2_<T,k,m,k>::vm_xTT(a->getPtr(),b,c); GM_Static_P2_<T,n-1,m,k>::mm_xTT(a+1,b+1,c);
   }
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::vm_xH(T *a, Point<T,m+1>* b, T* c)
+  /*! void GM_Static_P2_<T,n,m,k>::vm_xH(T *a, APoint<T,m+1>* b, T* c)
    *  \brief vec(a) = vec(c) x mat(b) (b homogen)
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::vm_xH(T *a, Point<T,m+1>* b, T* c)	{
+  void GM_Static_P2_<T,n,m,k>::vm_xH(T *a, APoint<T,m+1>* b, T* c)	{
     (*a) = GM_Static2_<T,m,k>::dpr(b->getPtr(),c); GM_Static_P2_<T,n-1,m,k>::vm_xH(a+1,b,c+1);
   }
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::mm_xH(Point<T,k> *a, Point<T,m+1> *b, T *c)
+  /*! void GM_Static_P2_<T,n,m,k>::mm_xH(APoint<T,k> *a, APoint<T,m+1> *b, T *c)
    *  \brief a = Hb * c	matrix multiplication (b homogen)
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::mm_xH(Point<T,k> *a, Point<T,m+1> *b, T *c) {
+  void GM_Static_P2_<T,n,m,k>::mm_xH(APoint<T,k> *a, APoint<T,m+1> *b, T *c) {
     GM_Static_P2_<T,k,m,k>::vm_xH(a->getPtr(),b,c); GM_Static_P2_<T,n-1,m,k>::mm_xH(a+1,b+1,c);
   }
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::vm_xHT(T *a, Point<T,m+1>* b, T* c)
+  /*! void GM_Static_P2_<T,n,m,k>::vm_xHT(T *a, APoint<T,m+1>* b, T* c)
    *  \brief vec =  mat x vec (a = c x b)
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::vm_xHT(T *a, Point<T,m+1>* b, T* c) {
+  void GM_Static_P2_<T,n,m,k>::vm_xHT(T *a, APoint<T,m+1>* b, T* c) {
     (*a) = GM_Static_<T,m>::dpr(b->getPtr(),c); GM_Static_P2_<T,n-1,m,k>::vm_xHT(a+m,b,c+m);
   }
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::mm_xHT(T *a, Point<T,m+1> *b, T *c)
+  /*! void GM_Static_P2_<T,n,m,k>::mm_xHT(T *a, APoint<T,m+1> *b, T *c)
    *  \brief a = b*c	matrix multiplication (c transposed)
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::mm_xHT(T *a, Point<T,m+1> *b, T *c) {
+  void GM_Static_P2_<T,n,m,k>::mm_xHT(T *a, APoint<T,m+1> *b, T *c) {
     GM_Static_P2_<T,k,m,k>::vm_xHT(a,b,c); GM_Static_P2_<T,n-1,m,k>::mm_xHT(a+1,b+1,c);
   }
 
 
-  /*! void GM_Static_P2_<T,n,m,k>::eq_t(Point<T,m> *a, T *b)
+  /*! void GM_Static_P2_<T,n,m,k>::eq_t(APoint<T,m> *a, T *b)
    *  \brief a = b^T	matrix transposeing (a = n x m)
    *  Pending Documentation
    */
   template <typename T, int n, int m, int k>
   inline
-  void GM_Static_P2_<T,n,m,k>::eq_t(Point<T,m> *a, T *b) {
+  void GM_Static_P2_<T,n,m,k>::eq_t(APoint<T,m> *a, T *b) {
     GM_Static2_<T,m,n>::eq1(a->getPtr(),b); GM_Static_P2_<T,n,m,k-1>::eq_t(a+1,b+1);
   }
 
@@ -402,48 +402,48 @@ namespace GMlib {
   //  class GM_Static_P2_<T,1,m,k>
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::vm_x(T *a, Point<T,m>* b, T* c)
+  /*! void GM_Static_P2_<T,1,m,k>::vm_x(T *a, APoint<T,m>* b, T* c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::vm_x(T *a, Point<T,m>* b, T* c) {
+  void GM_Static_P2_<T,1,m,k>::vm_x(T *a, APoint<T,m>* b, T* c) {
     (*a) = GM_Static2_<T,m,k>::dpr(b->getPtr(),c);
   }
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::mm_x(Point<T,k> *a, Point<T,m> *b, T *c)
+  /*! void GM_Static_P2_<T,1,m,k>::mm_x(APoint<T,k> *a, APoint<T,m> *b, T *c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::mm_x(Point<T,k> *a, Point<T,m> *b, T *c)	{
+  void GM_Static_P2_<T,1,m,k>::mm_x(APoint<T,k> *a, APoint<T,m> *b, T *c)	{
 
     GM_Static_P2_<T,k,m,k>::vm_x( a->getPtr(), b, c );
   }
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::vm_xT(T *a, Point<T,m>* b, T* c)
+  /*! void GM_Static_P2_<T,1,m,k>::vm_xT(T *a, APoint<T,m>* b, T* c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::vm_xT(T *a, Point<T,m>* b, T* c)	{
+  void GM_Static_P2_<T,1,m,k>::vm_xT(T *a, APoint<T,m>* b, T* c)	{
 
     (*a) = GM_Static_<T,m>::dpr(b->getPtr(),c);
   }
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::mm_xT(Point<T,k> *a, Point<T,m> *b, T *c)
+  /*! void GM_Static_P2_<T,1,m,k>::mm_xT(APoint<T,k> *a, APoint<T,m> *b, T *c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::mm_xT(Point<T,k> *a, Point<T,m> *b, T *c) {
+  void GM_Static_P2_<T,1,m,k>::mm_xT(APoint<T,k> *a, APoint<T,m> *b, T *c) {
     GM_Static_P2_<T,k,m,k>::vm_xT(a->getPtr(),b,c);
   }
 
@@ -459,62 +459,59 @@ namespace GMlib {
   }
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::mm_xTT(Point<T,k> *a, T *b, T *c)
+  /*! void GM_Static_P2_<T,1,m,k>::mm_xTT(APoint<T,k> *a, T *b, T *c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::mm_xTT(Point<T,k> *a, T *b, T *c) {
+  void GM_Static_P2_<T,1,m,k>::mm_xTT(APoint<T,k> *a, T *b, T *c) {
     GM_Static_P2_<T,k,m,k>::vm_xTT(a->getPtr(),b,c);
   }
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::vm_xH(T *a, Point<T,m+1>* b, T* c)
+  /*! void GM_Static_P2_<T,1,m,k>::vm_xH(T *a, APoint<T,m+1>* b, T* c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::vm_xH(T *a, Point<T,m+1>* b, T* c) {
+  void GM_Static_P2_<T,1,m,k>::vm_xH(T *a, APoint<T,m+1>* b, T* c) {
     (*a) = GM_Static2_<T,m,k>::dpr(b->getPtr(),c);
   }
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::vm_xHT(T *a, Point<T,m+1>* b, T* c)
+  /*! void GM_Static_P2_<T,1,m,k>::vm_xHT(T *a, APoint<T,m+1>* b, T* c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::mm_xH(Point<T,k> *a, Point<T,m+1> *b, T *c) {
+  void GM_Static_P2_<T,1,m,k>::mm_xH(APoint<T,k> *a, APoint<T,m+1> *b, T *c) {
     GM_Static_P2_<T,k,m,k>::vm_xH(a->getPtr(),b,c);
   }
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::vm_xHT(T *a, Point<T,m+1>* b, T* c)
+  /*! void GM_Static_P2_<T,1,m,k>::vm_xHT(T *a, APoint<T,m+1>* b, T* c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::vm_xHT(T *a, Point<T,m+1>* b, T* c) {
+  void GM_Static_P2_<T,1,m,k>::vm_xHT(T *a, APoint<T,m+1>* b, T* c) {
     (*a) = GM_Static_<T,m>::dpr(b->getPtr(),c);
   }
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::mm_xHT(T *a, Point<T,m+1> *b, T *c)
+  /*! void GM_Static_P2_<T,1,m,k>::mm_xHT(T *a, APoint<T,m+1> *b, T *c)
    *  \brief
    *  Pending Documentation
    */
   template <typename T, int m, int k>
   inline
-  void GM_Static_P2_<T,1,m,k>::mm_xHT(T *a, Point<T,m+1> *b, T *c) {
+  void GM_Static_P2_<T,1,m,k>::mm_xHT(T *a, APoint<T,m+1> *b, T *c) {
     GM_Static_P2_<T,k,m,k>::vm_xHT(a,b,c);
   }
-
-
-
 
 
 
@@ -523,13 +520,13 @@ namespace GMlib {
   //class GM_Static_P2_<T,n,m,1>
 
 
-  /*! void GM_Static_P2_<T,1,m,k>::vm_x(T *a, Point<T,m>* b, T* c)
+  /*! void GM_Static_P2_<T,1,m,k>::vm_x(T *a, APoint<T,m>* b, T* c)
    *  \brief a = b^T	matrix transposeing
 
    *  Pending Documentation
    */
   template <typename T, int n, int m>
-  void GM_Static_P2_<T,n,m,1>::eq_t(Point<T,m> *a, T *b) {
+  void GM_Static_P2_<T,n,m,1>::eq_t(APoint<T,m> *a, T *b) {
     GM_Static2_<T,m,n>::eq1(a->getPtr(),b);
   }
 

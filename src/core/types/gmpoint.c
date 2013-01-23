@@ -23,9 +23,9 @@
 
 
 /*! \file gmpoint.c
- *  \brief Implementations for the Point class
+ *  \brief Implementations for the APoint class
  *
- *  Implementations for the Point class
+ *  Implementations for the APoint class
  */
 
 
@@ -33,49 +33,56 @@
 
 namespace GMlib {
 
-
+//******************************
+//** Static members of APoint **
+//******************************
 
   template <typename T, int n>
-  Arrow<T, n>* Point<T, n>::_arrow = new Arrow<T, n>();
+  Arrow<T, n>* APoint<T, n>::_arrow = new Arrow<T, n>();
 
   template <typename T, int n>
-  int Point<T, n>::_sortType = 1;
+  int APoint<T, n>::_sortType = 1;
 
 
 
-  /*! Point::Point()
+  //******************************
+  //**     Members of APoint    **
+  //******************************
+
+
+  /*! APoint::APoint()
    *  \brief  Default Constructor
    *
    *  Default constructor
    *  Takes no paramters, and will not initalize any values.
-   *  This has been done intentionaly, to speedup creation of matrices.
+   *  This has been done intentionaly, especially to speedup creation of matrices.
    *  If point should be used by itself, use one of the other constructors.
-   *  \see Point( T t )
-   *  \see Point( const T *t )
+   *  \see APoint( T t )
+   *  \see APoint( const T *t )
    */
   template <typename T, int n>
   inline
-  Point<T, n>::Point() {
+  APoint<T, n>::APoint() {
     // SHOULD NOT INITIALIZE ANYTHING
     // Intentinonal speed enhancement.
   }
 
 
-  /*! Point::Point( const Point<T, n> &p )
+  /*! APoint::APoint( const APoint<T, n> &p )
    *  \brief  Default Copy Constructor
    *
    *  Default copy constructor
    *
-   *  \param p The Point object to be copied.
+   *  \param p The APoint object to be copied.
    */
   template <typename T, int n>
   inline
-  Point<T, n>::Point( const Point<T, n> &p ) {
+  APoint<T, n>::APoint( const APoint<T, n> &p ) {
     _cpy(p);
   }
 
 
-  /*! Point::Point( T t )
+  /*! APoint::APoint( T t )
    *  \brief  Constructuer taking an init value
    *
    *  Initializing each component of the point to the init value
@@ -84,12 +91,12 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Point<T, n>::Point( T t ) {
+  APoint<T, n>::APoint( T t ) {
     _cpy(t);
   }
 
 
-  /*! Point::Point( const T *t )
+  /*! APoint::APoint( const T *t )
    *  \brief  Constructuer taking an array of n T values.
    *
    *  This constructor has been created to make the point class
@@ -100,12 +107,12 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Point<T, n>::Point( const T *t ) {
+  APoint<T, n>::APoint( const T *t ) {
     _cpy(t);
   }
 
 
-  /*! Angle Point<T, n>::getAngle( Point<T, n> v ) const
+  /*! Angle APoint<T, n>::getAngle( APoint<T, n> v ) const
    *  \brief Returns the angle between two points
    *
    *  Returns the angle between two vectors
@@ -116,9 +123,9 @@ namespace GMlib {
    *  \return The angle between this point and the given point.
    */
   template <typename T, int n>
-  Angle Point<T, n>::getAngle( Point<T, n> v ) const {
+  Angle APoint<T, n>::getAngle( APoint<T, n> v ) const {
 
-     Point<T, n> u = (*this);
+     APoint<T, n> u = (*this);
      u /= u.getLength();
      v /= v.getLength();
      double ang = u*v;
@@ -135,7 +142,7 @@ namespace GMlib {
   }
 
 
-  /*! T Point<T, n>::getLength() const
+  /*! T APoint<T, n>::getLength() const
    *  \brief Returns the length of the point (vector)
    *
    *  Returns the length of the point (vector)
@@ -145,12 +152,12 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  T Point<T, n>::getLength() const {
+  T APoint<T, n>::getLength() const {
     return T( sqrt( double( (*this) * (*this) ) ) );
   }
 
 
-  /*! int Point<T, n>::getMaxIndex() const
+  /*! int APoint<T, n>::getMaxIndex() const
    *  \brief Returns the index of the first point element with the max value.
    *
    *  Returns the index of the first point element with the max value.
@@ -160,7 +167,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  int Point<T, n>::getMaxIndex() const {
+  int APoint<T, n>::getMaxIndex() const {
     // return GM_Static_<T,n>::maxIndex(pt);
     int j=0;
     for(int i=1; i<n; i++)
@@ -169,7 +176,7 @@ namespace GMlib {
   }
 
 
-  /*! int Point<T, n>::getMaxAbsIndex() const
+  /*! int APoint<T, n>::getMaxAbsIndex() const
    *  \brief Returns the index of the first point element with the max absolute value.
    *
    *  Returns the index of the first point element with the max absolute value.
@@ -179,7 +186,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  int Point<T, n>::getMaxAbsIndex() const {
+  int APoint<T, n>::getMaxAbsIndex() const {
     // return GM_Static_<T,n>::maxIndex(pt);
     int j=0;
     for(int i=1; i<n; i++)
@@ -188,7 +195,7 @@ namespace GMlib {
   }
 
 
-  /*! T* Point<T, n>::getPtr() const
+  /*! T* APoint<T, n>::getPtr() const
    *  \brief Returns a pointer to the point element dataset.
    *
    *  Returns a pointer to the point element dataset.
@@ -197,12 +204,12 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  T* Point<T, n>::getPtr() const {
+  T* APoint<T, n>::getPtr() const {
     return (T*)this;
   }
 
 
-  /*! void Point<T, n>::setTestType( int t, const Point<T, n> &p, const Vector<T, n> &v )
+  /*! void APoint<T, n>::setTestType( int t, const APoint<T, n> &p, const Vector<T, n> &v )
    *  \brief Set how a point should be sorted in accordance to other points.
    *
    *  Set how a point should be sorted in accordance to other points.
@@ -216,7 +223,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void Point<T, n>::setTestType( int t, const Point<T, n> &p, const Vector<T, n> &v ) {
+  void APoint<T, n>::setTestType( int t, const APoint<T, n> &p, const Vector<T, n> &v ) {
 
     _sortType = t;
     if (t==1)
@@ -235,7 +242,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator = ( const T t ) {
+  APoint<T, n>& APoint<T, n>::operator = ( const T t ) {
     _cpy(t);
     return (*this);
   }
@@ -243,7 +250,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator = ( const T *t ) {
+  APoint<T, n>& APoint<T, n>::operator = ( const T *t ) {
     _cpy(t);
     return (*this);
   }
@@ -251,7 +258,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator = ( const Point<T, n>& p) {
+  APoint<T, n>& APoint<T, n>::operator = ( const APoint<T, n>& p) {
     _cpy(p);
     return (*this);
   }
@@ -259,7 +266,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator += ( const Point<T, n>& p ) {
+  APoint<T, n>& APoint<T, n>::operator += ( const APoint<T, n>& p ) {
     GM_Static_<T, n>::peq( getPtr(), p.getPtr() );
     return *this;
   }
@@ -267,7 +274,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator -= ( const Point<T, n>& p ) {
+  APoint<T, n>& APoint<T, n>::operator -= ( const APoint<T, n>& p ) {
     GM_Static_<T, n>::meq( getPtr(), p.getPtr() );
     return *this;
   }
@@ -275,8 +282,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator - () const {
-    static Point<T, n> r;
+  APoint<T, n>& APoint<T, n>::operator - () const {
+    static APoint<T, n> r;
     GM_Static_<T, n>::eqm( r.getPtr(), getPtr());
     return r;
   }
@@ -284,8 +291,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator + ( const Point<T, n> &p ) const {
-    static Point<T, n> r;
+  APoint<T, n>& APoint<T, n>::operator + ( const APoint<T, n> &p ) const {
+    static APoint<T, n> r;
     GM_Static_<T, n>::eq_p( r.getPtr(), getPtr(), p.getPtr());
     return r;
   }
@@ -293,8 +300,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator - ( const Point<T, n> &p ) const {
-    static Point<T, n> r;
+  APoint<T, n>& APoint<T, n>::operator - ( const APoint<T, n> &p ) const {
+    static APoint<T, n> r;
     GM_Static_<T, n>::eq_m( r.getPtr(), getPtr(), p.getPtr() );
     return r;
   }
@@ -302,26 +309,26 @@ namespace GMlib {
   // Inner product
   template <typename T, int n>
   inline
-  T Point<T, n>::operator * ( const Point<T, n> &p ) const {
+  T APoint<T, n>::operator * ( const APoint<T, n> &p ) const {
     return GM_Static_<T, n>::dpr( getPtr(), p.getPtr() );
   }
 
   template <typename T, int n>
   inline
-  T& Point<T, n>::operator [] ( int i) {
+  T& APoint<T, n>::operator [] ( int i) {
     return _pt[i];   //return given element.
   }
 
   template <typename T, int n>
   inline
-  T const& Point<T, n>::operator () ( int i) const {
+  T const& APoint<T, n>::operator () ( int i) const {
     return _pt[i]; //return copy.
   }
 
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator *= ( double d ) {
+  APoint<T, n>& APoint<T, n>::operator *= ( double d ) {
     GM_Static_<T, n>::sc( getPtr(), d );
     return *this;
   }
@@ -329,38 +336,38 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n> Point<T, n>::operator * ( double d ) const {
-  //  static Point<T, n> r;
-    Point<T, n> r;
+  APoint<T, n> APoint<T, n>::operator * ( double d ) const {
+  //  static APoint<T, n> r;
+    APoint<T, n> r;
     GM_Static_<T, n>::sc_r( r.getPtr(), getPtr(), d);
     return r;
   }
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator %= ( const Point<T, n> &p ) {
+  APoint<T, n>& APoint<T, n>::operator %= ( const APoint<T, n> &p ) {
     GM_Static_<T, n>::xeq( getPtr(), p.getPtr());
     return *this;
   }
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator % ( const Point<T, n> &p ) const {
-    static Point<T, n> r;
+  APoint<T, n>& APoint<T, n>::operator % ( const APoint<T, n> &p ) const {
+    static APoint<T, n> r;
     GM_Static_<T, n>::eq_x( r.getPtr(), getPtr(), p.getPtr());
     return r;
   }
 
   template <typename T, int n>
   inline
-  Point<T, n>& Point<T, n>::operator /= ( double d ) {
+  APoint<T, n>& APoint<T, n>::operator /= ( double d ) {
     d = 1/d;
     return (*this)*=d;
   }
 
   template <typename T, int n>
   inline
-  Point<T, n> Point<T, n>::operator /  ( double d ) const {
+  APoint<T, n> APoint<T, n>::operator /  ( double d ) const {
     d = 1/d;
     return (*this)*d;
   }
@@ -369,21 +376,21 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  bool Point<T, n>::operator == ( const Point<T, n> &p ) const {
-    Point<T,n> d=(*this)-p;
+  bool APoint<T, n>::operator == ( const APoint<T, n> &p ) const {
+    APoint<T,n> d=(*this)-p;
     return bool((d*d)<POS_TOLERANCE);
   }
 
 
   template <typename T, int n>
   inline
-  bool Point<T, n>::operator != ( const Point<T, n> &pt ) const {
+  bool APoint<T, n>::operator != ( const APoint<T, n> &pt ) const {
     return !((*this) == pt);
   }
 
   template <typename T, int n>
   inline
-  bool Point<T, n>::operator <  ( const Point<T, n> &v ) const {
+  bool APoint<T, n>::operator <  ( const APoint<T, n> &v ) const {
      switch(_sortType){
      case 1: return bool((_arrow->getPos()-(*this)).getLength() < (_arrow->getPos()-v).getLength());
      case 2: return bool((_arrow->getDir()*(*this)) <  (_arrow->getDir()*v));
@@ -394,7 +401,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  bool Point<T, n>::operator >  ( const Point<T, n> &v ) const {
+  bool APoint<T, n>::operator >  ( const APoint<T, n> &v ) const {
      switch(_sortType){
      case 1: return bool((_arrow->getPos()-(*this)).getLength() > (_arrow->getPos()-v).getLength());
      case 2: return bool((_arrow->getDir()*(*this)) >  (_arrow->getDir()*v));
@@ -405,13 +412,13 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  bool Point<T, n>::operator <= ( const Point<T, n> &v ) const {
+  bool APoint<T, n>::operator <= ( const APoint<T, n> &v ) const {
     return !((*this) > v);
   }
 
   template <typename T, int n>
   inline
-  bool Point<T, n>::operator >= ( const Point<T, n> &v ) const {
+  bool APoint<T, n>::operator >= ( const APoint<T, n> &v ) const {
     return !((*this) < v);
   }
 
@@ -419,14 +426,14 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  Point<T, n>::operator Point<G,m>& () const {
-    static Point<G,m> v;
+  APoint<T, n>::operator APoint<G,m>& () const {
+    static APoint<G,m> v;
     GM_Static1_<G,T,(n<m?n:m)>::eq( v.getPtr(), getPtr());
     return v;
   }
 
 
-  /*! Point<float,n>& Point<T, n>::toFloat() const
+  /*! APoint<float,n>& APoint<T, n>::toFloat() const
    *  \brief Returns a point where all point elements is casted to float type
    *
    *  Returns a point where all point elements is casted to float type
@@ -435,14 +442,14 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Point<float,n>& Point<T, n>::toFloat() const {
-    static Point<float,n> v;
+  APoint<float,n>& APoint<T, n>::toFloat() const {
+    static APoint<float,n> v;
     GM_Static1_<float,T,n>::eq(v.getPtr(), getPtr());
     return v;
   }
 
 
-  /*! Point<double,n> Point<T, n>::toDouble() const
+  /*! APoint<double,n> APoint<T, n>::toDouble() const
    *  \brief Returns a point where all point elements is casted to double type
    *
    *  Returns a point where all point elements is casted to double type
@@ -451,30 +458,30 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Point<double,n> Point<T, n>::toDouble() const {
-    static Point<double,n> v;
+  APoint<double,n>& APoint<T, n>::toDouble() const {
+    static APoint<double,n> v;
     GM_Static1_<double,T,n>::eq( v.getPtr(), getPtr());
     return v;
   }
 
 
-  /*! void Point<T, n>::_cpy( const Point<T, n> &v )
+  /*! void APoint<T, n>::_cpy( const APoint<T, n> &v )
    *  \brief Copys a point element data set.
    *
    *  Copys a point element data set.
    *  Takes a point-object as parameter,
    *  and uses memcpy to copy the data raw from the src point to the dest point (this).
    *
-   *  \param[in] v The src Point, from where the data is collected.
+   *  \param[in] v The src APoint, from where the data is collected.
    */
   template <typename T, int n>
   inline
-  void Point<T, n>::_cpy( const Point<T, n> &v ) {
-    std::memcpy( _pt, v._pt, sizeof( Point<T,n> ) );
+  void APoint<T, n>::_cpy( const APoint<T, n> &v ) {
+    std::memcpy( _pt, v._pt, sizeof( APoint<T,n> ) );
   }
 
 
-  /*! void Point<T, n>::_cpy( const T p[n] )
+  /*! void APoint<T, n>::_cpy( const T p[n] )
    *  \brief Copys a point element data set.
    *
    *  Copys a point element data set.
@@ -485,12 +492,12 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void Point<T, n>::_cpy( const T p[n] ) {
-    memcpy( _pt, p, sizeof( Point<T,n> ) );
+  void APoint<T, n>::_cpy( const T p[n] ) {
+    memcpy( _pt, p, sizeof( APoint<T,n> ) );
   }
 
 
-  /*! void Point<T, n>::_cpy( const T &d )
+  /*! void APoint<T, n>::_cpy( const T &d )
    *  \brief Copys a point element data set.
    *
    *  Copys a point element data set.
@@ -500,21 +507,182 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  void Point<T, n>::_cpy( const T &d ) {
+  void APoint<T, n>::_cpy( const T &d ) {
     GM_Static_<T,n>::eq( getPtr(), d );
   }
 
- /*! Vector<T, n>::Vector() : Point<T, n>()
+
+
+
+
+
+  //*************************************
+  //**  Special members of Point<T,2>  **
+  //*************************************
+
+
+
+  /*! Point<T,2>::Point<T,2>(const T& x,const T& y)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  Point<T,2>::Point(const T& x,const T& y) {
+    this->_pt[0]=x; this->_pt[1]=y;
+  }
+
+
+  /*! int Point<T,2>::isInside(const Point<T,2>& v1,const Point<T,2>& v2,const Point<T,2>& v3) const
+   *  \brief  Check if point is inside polygon
+   *
+   * See if this point is inside a closed polygon
+   * If it is inside the return value is 1.
+   * If it is on the edges the return value is -n,
+   * where n is the nuber on the actual edge.
+   * If it is outside the polygon the retun value is 0.
+   */
+  template <typename T>
+  int Point<T,2>::isInside(const Array<Point<T,2> >& a) const{
+    Array<int> v;
+    double r;
+
+    for (int i=0,j=1; i<a.size(); i++,j++) {
+      if (j == a.size())	j = 0;
+      UnitVector<T,2> b = a(j) - a(i);
+      r = b^((*this) - a(i));
+      if (r < - POS_TOLERANCE)		return 0;
+      if (std::fabs(r) < POS_TOLERANCE)	v += -i-1;
+    }
+
+    if (v.size() == 0)	return 1;
+    else				return v[0];
+  }
+
+
+  /*! int Point<T,2>::isInside(const APoint<T,2>& v1,const APoint<T,2>& v2,const APoint<T,2>& v3) const
+   *  \brief  Check if point is inside circle
+   *
+   * See if this point is inside a circle defined
+   * by tree points on the circle.
+   * If it is inside the circle the return value is true
+   * else it is false.
+   */
+  template <typename T>
+  int  Point<T,2>::isInsideCircle(const APoint<T,2>& p1,const APoint<T,2>& p2, const APoint<T,2>& p3) const {
+    T b1 = p1*p1;
+    T b2 = p2*p2;
+    T b3 = p3*p3;
+
+    Point<T,2> b(b2-b1,b3-b2);
+    Point<T,2> a1 = p2 - p1;
+    Point<T,2> a2 = p3 - p2;
+
+    Point<T,2> c = (0.5/(a1^a2))*Point<T,2>(Point<T,2>(a2[1],-a1[1])*b,Point<T,2>(-a2[0],a1[0])*b);
+    a1 = (*this) - c;
+    a2 = p1 - c;
+
+    T r = a1*a1;
+    T s = a2*a2;
+
+    if (std::fabs(r-s) < POS_TOLERANCE)	return -1;
+    else if (r < s)					return  1;
+    else							return  0;
+  }
+
+
+  /*! T Point2D<T>::operator^(const Point<T,2>& v) const
+   *  \brief  Operator ^ Semi vector product.
+   *
+   *  Detailed description of
+   *  the operator
+   */
+  template <typename T>
+  inline
+  T Point<T,2>::operator^(const APoint<T,2>& v) const {
+    return this->_pt[0]*v(1) - this->_pt[1]*v(0);
+  }
+
+  /*! Point<T,2> Point2D<T>::getNormal()
+   *  \brief  Return a vector 90 deg. to this.
+   *
+   *  Detailed description of
+   *  the operator
+   */
+  template <typename T>
+  inline
+  APoint<T,2> Point<T,2>::getNormal() {
+    return Point<T,2>(-this->_pt[1], this->_pt[0]);
+  }
+
+  /*! int Point<T,2>::isInside(const Point<T,2>& v1,const Point<T,2>& v2,const Point<T,2>& v3) const
+   *  \brief
+   *
+   *  Detailed description of
+   *  the function
+   */
+  template <typename T>
+  inline
+  int Point<T,2>::isInside(const APoint<T,2>& v1,const APoint<T,2>& v2,const APoint<T,2>& v3) const {
+    Array<Point<T,2> > arr;
+    arr+=v1;
+    arr+=v2;
+    arr+=v3;
+    return isInside(arr);
+  }
+
+
+  //*************************************
+  //**  Special members of Point<T,3>  **
+  //*************************************
+
+
+  /*! Point<T,3>::Point(const T& x,const T& y,const T& z)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  Point<T,3>::Point(const T& x,const T& y,const T& z) {
+    this->_pt[0]=x; this->_pt[1]=y; this->_pt[2]=z;
+  }
+
+  /*! Point<T,3> Point<T,3> ::operator^(const Point<T,3>& v)  const
+   *  \brief  Vector product
+   *
+   *  Detailed description of
+   *  the operator
+   */
+  template <typename T>
+  inline
+  APoint<T,3> Point<T,3>::operator^(const APoint<T,3>& v)  const {
+    return Point<T,3>( this->_pt[1]*v(2) - this->_pt[2]*v(1),
+                       this->_pt[2]*v(0) - this->_pt[0]*v(2),
+                       this->_pt[0]*v(1) - this->_pt[1]*v(0) );
+  }
+
+
+
+  //*******************************
+  //**     Members of Vector     **
+  //*******************************
+
+
+ /*! Vector<T,n>::Vector() : APoint<T, n>()
    *  \brief Default constructor, does not initalize the vector
    *
    *  Default constructor, does not initalize the vector.
    *  If the default constructor should be used, the vector needs to be initalized at a later point.
    */
-  template <typename T, int n>
-  inline
-  Vector<T, n>::Vector() : Point<T, n>() {}
+//  template <typename T, int n>
+//  inline
+//  Vector<T,n>::Vector() : APoint<T,n>() {}
 
-  /*! Vector<T, n>::Vector( T d ) : Point<T, n>(d)
+  /*! Vector<T, n>::Vector( T d ) : APoint<T, n>(d)
    *  \brief Constructor taking a value t of T
    *
    *  Constructor taking a value t of T.
@@ -522,11 +690,11 @@ namespace GMlib {
    *
    *  \param[in] t The initialization value.
    */
-  template <typename T, int n>
-  inline
-  Vector<T, n>::Vector( T t ) : Point<T, n>(t) {}
+//  template <typename T, int n>
+//  inline
+//  Vector<T, n>::Vector( T t ) : APoint<T,n>(t) {}
 
-  /*! Vector<T, n>::Vector( const T *t ) : Point<T, n>(t)
+  /*! Vector<T, n>::Vector( const T *t ) : APoint<T, n>(t)
    *  \brief  Constructuer taking an array of n T values.
    *
    *  This constructor has been created to make the vector class
@@ -535,34 +703,43 @@ namespace GMlib {
    *
    * \param[in] t A const T pointer of n values.
    */
-  template <typename T, int n>
-  inline
-  Vector<T, n>::Vector( const T *t ) : Point<T, n>(t) {}
+//  template <typename T, int n>
+//  inline
+//  Vector<T,n>::Vector( const T *t ) : APoint<T,n>(t) {}
 
-  /*! Vector<T, n>::Vector( const Point<T, n> &p ) : Point<T, n>(p)
+  /*! Vector<T, n>::Vector( const APoint<T, n> &p ) : APoint<T, n>(p)
    *  \brief Default copy constructor
    *
    *  Default copy constructor.
-   *  Taking a Point or Vector as parameter.
+   *  Taking a APoint or Vector as parameter.
    *
-   *  \param[in] p Point/Vector to copy from.
+   *  \param[in] p APoint/Vector to copy from.
    */
-  template <typename T, int n>
-  inline
-  Vector<T, n>::Vector( const Point<T, n> &p ) : Point<T, n>(p) {}
+//  template <typename T, int n>
+//  inline
+//  Vector<T,n>::Vector( const APoint<T,n> &p ) : APoint<T, n>(p) {}
 
-  /*! Point<T,n>& Vector<T, n>::getNormalized()
+  /*! APoint<T,n>& Vector<T, n>::getNormalized() const
    *  \brief Get the vector normalized.
    *
    *  Get the vector normalized.
    *
    *  \return A normalized Vector
    */
-  template <typename T, int n>
-  inline
-  Point<T,n> Vector<T, n>::getNormalized() const {
-    return (*this)/Point<T,n>::getLength();
+
+#define V_getnorm(n) inline\
+  APoint<T,n> Vector<T,n>::getNormalized() const {\
+    return (*this)/APoint<T,n>::getLength();\
   }
+
+  template <typename T, int n>
+  V_getnorm(n)
+
+  template <typename T>
+  V_getnorm(2)
+
+  template <typename T>
+  V_getnorm(3)
 
   /*! Vector<T,n> Vector<T, n>::getLinIndVec() const
    *  \brief Get a linear independent vector to the vector
@@ -571,37 +748,54 @@ namespace GMlib {
    *
    *  \return A linear independent vector
    */
-  template <typename T, int n>
-  Vector<T,n> Vector<T, n>::getLinIndVec() const {
 
-    if(n==1|| Point<T,n>::getLength()==0) return Vector<T,n>(T(0));
-    else
-    {
-      int i,j=0;
-      for(i=1; i < n;i++) if(( Point<T,n>::_pt[i]*Point<T,n>::_pt[i])>(Point<T,n>::_pt[j]*Point<T,n>::_pt[j])) j=i;
-      if(j==0) i = 1;
-      else	 i = j-1;
-
-      Vector<T,n> r = *this;
-      T tmp = -r[j];
-      r[j]  = r[i];
-      r[i]  = tmp;
-      r    -= ((r*(*this))/((*this)*(*this)))*(*this);
-      return r;
-    }
+#define V_getliniv(n) \
+  Vector<T,n> Vector<T,n>::getLinIndVec() const {\
+    if(n==1|| APoint<T,n>::getLength()==0) return Vector<T,n>(T(0));\
+    else\
+    {\
+      int i,j=0;\
+      for(i=1; i < n;i++) if(( this->_pt[i]*this->_pt[i])>(this->_pt[j]*this->_pt[j])) j=i;\
+      if(j==0) i = 1;\
+      else	 i = j-1;\
+      Vector<T,n> r = *this;\
+      T tmp = -r[j];\
+      r[j]  = r[i];\
+      r[i]  = tmp;\
+      r    -= ((r*(*this))/((*this)*(*this)))*(*this);\
+      return r;\
+    }\
   }
 
-  /*! Point<T,n>& Vector<T, n>::normalize()
+  template <typename T, int n>
+  V_getliniv(n)
+
+  template <typename T>
+  V_getliniv(2)
+
+  template <typename T>
+  V_getliniv(3)
+
+  /*! APoint<T,n>& Vector<T, n>::normalize()
    *  \brief Normalize the vector
    *
    *  Normalize the vector
    */
-  template <typename T, int n>
-  inline
-  Point<T,n>& Vector<T, n>::normalize() {
-    (*this)/=Point<T,n>::getLength();
-    return *this;
+
+#define V_getnormalize(n) inline\
+  APoint<T,n>& Vector<T,n>::normalize() {\
+  (*this)/=APoint<T,n>::getLength();\
+  return *this;\
   }
+
+  template <typename T, int n>
+  V_getnormalize(n)
+
+  template <typename T>
+  V_getnormalize(2)
+
+  template <typename T>
+  V_getnormalize(3)
 
   /*! void Vector<T, n>::setLength( T length )
    *  \brief Set the length of the vector
@@ -610,114 +804,380 @@ namespace GMlib {
    *
    *  \param[in] length The new vector length
    */
-  template <typename T, int n>
-  inline
-  void Vector<T, n>::setLength( T length ) {
-    length /= Point<T,n>::getLength();
-    (*this) *= length;
+
+#define V_setlength(n) inline\
+  void Vector<T,n>::setLength( T length ) {\
+    length /= APoint<T,n>::getLength();\
+    (*this) *= length;\
   }
 
   template <typename T, int n>
+  V_setlength(n)
+
+  template <typename T>
+  V_setlength(2)
+
+  template <typename T>
+  V_setlength(3)
+
+
+
+  //*************************************
+  //** Specific members of Vector<T,2> **
+  //*************************************
+
+
+
+  /*! Vector<T,2>::Vector<T,2>( const APoint<T,3> &p)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
   inline
-  UnitVector<T, n>::UnitVector( T t ) : Vector<T, n>(t) {
-    Point<T, n>::operator/=(Point<T,n>::getLength());
+  Vector<T,2>::Vector( const APoint<T,3> &p) {
+      this->_pt[0]=p(0); this->_pt[1]=p(1);
+  }
+
+
+  /*! Vector<T,2>::Vector<T,2>(const T& x,const T& y)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  Vector<T,2>::Vector( const T& x, const T& y) {
+      this->_pt[0]=x; this->_pt[1]=y;
+  }
+
+
+
+  /*! T Vector<T,2>::operator^(const Point<T,2>& v) const
+   *  \brief  Semi vector product.
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  T Vector<T,2>::operator^(const APoint<T,2>& v) const {
+    return this->_pt[0]*v(1) - this->_pt[1]*v(0);
+  }
+
+
+  /*! APoint<T,2>  Vector<T,2>:getNormal()
+   *  \brief  Return a vector 90 deg. to this.
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  APoint<T,2>  Vector<T,2>::getNormal() const {
+      return Point<T,2>( - this->_pt[1], this->_pt[0] );
+  }
+
+
+
+  //*************************************
+  //** Specific members of Vector<T,3> **
+  //*************************************
+
+
+  /*! Vector<T,3>::Vector<T,3>( const APoint<T,2> &p)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  Vector<T,3>::Vector( const APoint<T,2> &p) {
+      this->_pt[0]=p(0); this->_pt[1]=p(1); this->_pt[2]=T(0);
+  }
+
+
+  /*! Vector<T,3>::Vector<T,3>(const T& x,const T& y,const T& z)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  Vector<T,3>::Vector( const T& x, const T& y, const T& z) {
+      this->_pt[0]=x; this->_pt[1]=y; this->_pt[2]=z;
+  }
+
+
+
+  /*! APoint<T,3> Vector<T,3>::operator^(const APoint<T,3>& v) const
+   *  \brief  Vector product
+   *
+   *  Detailed description of
+   *  the operator
+   */
+  template <typename T>
+  inline
+  APoint<T,3> Vector<T,3>::operator^(const APoint<T,3>& v) const {
+    return Point<T,3>(
+      this->_pt[1]*v(2) - this->_pt[2]*v(1),
+      this->_pt[2]*v(0) - this->_pt[0]*v(2),
+      this->_pt[0]*v(1) - this->_pt[1]*v(0)
+    );
+  }
+
+
+  //****************************************************************
+  //******  The UnitVector class, constructors and functions  ******
+  //****************************************************************
+  //****************************************************************
+
+
+#define UV_conc(n) inline\
+  UnitVector<T,n>::UnitVector( T t ) : Vector<T,n>(t) {\
+    APoint<T,n>::operator/=(APoint<T,n>::getLength());\
   }
 
   template <typename T, int n>
-  inline
-  UnitVector<T, n>::UnitVector( const T t[n] ) : Vector<T, n>(t) {
-    Point<T, n>::operator/=( Point<T,n>::getLength() );
+  UV_conc(n)
+
+  template <typename T>
+  UV_conc(2)
+
+  template <typename T>
+  UV_conc(3)
+
+
+#define UV_conc0(n) inline\
+  UnitVector<T,n>::UnitVector( const T t[n] ) : Vector<T,n>(t) {\
+    APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
   template <typename T, int n>
-  inline
-  UnitVector<T, n>::UnitVector( const Point<T, n> &p ) : Vector<T,n>(p) {
-    Point<T, n>::operator/=( Point<T,n>::getLength() );
+  UV_conc0(n)
+
+  template <typename T>
+  UV_conc0(2)
+
+  template <typename T>
+  UV_conc0(3)
+
+
+#define UV_conc1(n) inline\
+  UnitVector<T,n>::UnitVector( const APoint<T,n> &p ) : Vector<T,n>(p) {\
+    APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
   template <typename T, int n>
+  UV_conc1(n)
+
+  template <typename T>
+  UV_conc1(2)
+
+  template <typename T>
+  UV_conc1(3)
+
+
+  /*! UnitVector<T,2>::UnitVector<T,2>(const T& x,const T& y)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
   inline
+  UnitVector<T,2>::UnitVector( const T& x, const T& y): Vector<T,2>(x,y) {}
+
+
+  /*! UnitVector<T,3>::UnitVector<T,3>(const T& x,const T& y,const T& z)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  UnitVector<T,3>::UnitVector( const T& x, const T& y, const T& z): Vector<T,3>(x,y,z) {}
+
+
+#define UV_conc2(n) inline\
   UnitVector<T, n>::UnitVector( const UnitVector<T, n> &uv ) : Vector<T, n>(uv) {}
 
-
   template <typename T, int n>
-  inline
-  Point<T, n>& UnitVector<T, n>::operator = ( const T t ) {
-    _cpy(t);
-    return Point<T,n>::operator/=( Point<T,n>::getLength() );
+  UV_conc2(n)
+
+  template <typename T>
+  UV_conc2(2)
+
+  template <typename T>
+  UV_conc2(3)
+
+
+#define UV_eq0(n) inline\
+  APoint<T, n>& UnitVector<T, n>::operator = ( const T t ) {\
+    _cpy(t);\
+    return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
-
   template <typename T, int n>
-  inline
-  Point<T, n>& UnitVector<T, n>::operator = ( const T t[n] ) {
-    _cpy(t);
-    return Point<T,n>::operator/=( Point<T,n>::getLength() );
+  UV_eq0(n)
+
+  template <typename T>
+  UV_eq0(2)
+
+  template <typename T>
+  UV_eq0(3)
+
+
+#define UV_eq1(n) inline\
+  APoint<T, n>& UnitVector<T, n>::operator = ( const T t[n] ) {\
+    _cpy(t);\
+    return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
-
   template <typename T, int n>
-  inline
-  Point<T, n>& UnitVector<T, n>::operator = ( const Point<T, n> &p ) {
-    this->_cpy(p);
-    return Point<T,n>::operator/=( Point<T,n>::getLength() );
+  UV_eq1(n)
+
+  template <typename T>
+  UV_eq1(2)
+
+  template <typename T>
+  UV_eq1(3)
+
+
+#define UV_eq2(n) inline\
+  APoint<T, n>& UnitVector<T, n>::operator = ( const APoint<T, n> &p ) {\
+    this->_cpy(p);\
+    return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
-
   template <typename T, int n>
-  inline
-  Point<T, n>& UnitVector<T, n>::operator = ( const UnitVector<T, n>& uv )	{
-    this->_cpy(uv);
-    return *this;
+  UV_eq2(n)
+
+  template <typename T>
+  UV_eq2(2)
+
+  template <typename T>
+  UV_eq2(3)
+
+
+#define UV_eq3(n) inline\
+  APoint<T, n>& UnitVector<T, n>::operator = ( const UnitVector<T, n>& uv )	{\
+    this->_cpy(uv);\
+    return *this;\
   }
 
-
   template <typename T, int n>
-  inline
-  const T& UnitVector<T, n>::operator [] ( int i ) {
-    return Point<T,n>::_pt[i];
+  UV_eq3(n)
+
+  template <typename T>
+  UV_eq3(2)
+
+  template <typename T>
+  UV_eq3(3)
+
+
+#define UV_op1(n) inline\
+  const T& UnitVector<T, n>::operator [] ( int i ) {\
+    return APoint<T,n>::_pt[i];\
   }
 
-
   template <typename T, int n>
-  inline
-  Point<T,n>& UnitVector<T, n>::operator += ( const Point<T, n> &p ) {
-    Point<T,n>::operator += (p);
-    return Point<T,n>::operator/=( Point<T,n>::getLength() );
+  UV_op1(n)
+
+  template <typename T>
+  UV_op1(2)
+
+  template <typename T>
+  UV_op1(3)
+
+
+#define UV_pe(n) inline\
+  APoint<T,n>& UnitVector<T, n>::operator += ( const APoint<T, n> &p ) {\
+    APoint<T,n>::operator += (p);\
+    return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
-
   template <typename T, int n>
-  inline
-  Point<T,n>& UnitVector<T, n>::operator -= ( const Point<T, n> &p ) {
+  UV_pe(n)
 
-    Point<T,n>::operator-=(p);
-    return Point<T,n>::operator/=( Point<T,n>::getLength() );
+  template <typename T>
+  UV_pe(2)
+
+  template <typename T>
+  UV_pe(3)
+
+
+#define UV_me(n) inline\
+  APoint<T,n>& UnitVector<T, n>::operator -= ( const APoint<T, n> &p ) {\
+    APoint<T,n>::operator-=(p);\
+    return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
-
   template <typename T, int n>
-  inline
-  Point<T,n>& UnitVector<T, n>::operator %= ( const Point<T, n> &p ) {
+  UV_me(n)
 
-    Point<T,n>::operator%=(p); return Point<T,n>::operator/=( Point<T,n>::getLength() );
+  template <typename T>
+  UV_me(2)
+
+  template <typename T>
+  UV_me(3)
+
+
+#define UV_pre(n) inline\
+  APoint<T,n>& UnitVector<T, n>::operator %= ( const APoint<T, n> &p ) {\
+    APoint<T,n>::operator%=(p); return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
-
   template <typename T, int n>
-  inline
-  Point<T,n>& UnitVector<T, n>::operator *= ( const double d ) {
+  UV_pre(n)
 
-    return *this;
+  template <typename T>
+  UV_pre(2)
+
+  template <typename T>
+  UV_pre(3)
+
+
+#define UV_ge(n) inline\
+  APoint<T,n>& UnitVector<T, n>::operator *= ( const double d ) {\
+    return *this;\
   }
 
+  template <typename T, int n>
+  UV_ge(n)
+
+  template <typename T>
+  UV_ge(2)
+
+  template <typename T>
+  UV_ge(3)
+
+
+#define UV_de(n) inline\
+  APoint<T,n>& UnitVector<T, n>::operator /= ( double d ) {\
+    return *this;\
+  }
 
   template <typename T, int n>
-  inline
-  Point<T,n>& UnitVector<T, n>::operator /= ( double d ) {
+  UV_de(n)
 
-    return *this;
-  }
+  template <typename T>
+  UV_de(2)
+
+  template <typename T>
+  UV_de(3)
+
+
+
+  //***********************************************************
+  //******  The Arrow class, constructors and functions  ******
+  //***********************************************************
+  //***********************************************************
+
 
   template <typename T, int n>
   inline
@@ -727,13 +1187,13 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Arrow<T, n>::Arrow( const Point<T, n> &p ) : Point<T, n>(p) {
+  Arrow<T, n>::Arrow( const APoint<T, n> &p ) : Point<T, n>(p) {
     _dir = Vector<T,n>(1);
   }
 
   template <typename T, int n>
   inline
-  Arrow<T, n>::Arrow( const Point<T, n> &p, const Vector<T, n> &v ) : Point<T,n>(p) {
+  Arrow<T, n>::Arrow( const APoint<T, n> &p, const Vector<T, n> &v ) : Point<T,n>(p) {
     _dir = v;
   }
 
@@ -751,7 +1211,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const Point<T, n>&  Arrow<T, n>::getPos() const {
+  const APoint<T, n>&  Arrow<T, n>::getPos() const {
     return (*this);
   }
 
@@ -763,35 +1223,35 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void Arrow<T, n>::setPos( const Point<T, n> &v ) {
+  void Arrow<T, n>::setPos( const APoint<T, n> &v ) {
     this->_cpy(v);
   }
 
   template <typename T, int n>
   inline
   Arrow<T, n>& Arrow<T, n>::operator = ( const Arrow<T, n> &a ) {
-    memcpy( Point<T, n>::getPtr(), a.getPtr(), sizeof( Arrow<T, n> ) );
+    memcpy( APoint<T, n>::getPtr(), a.getPtr(), sizeof( Arrow<T, n> ) );
     return *this;
   } // setPos(v.pos()); setDir(v.dir()); return *this;}
 
   template <typename T, int n>
   inline
   Arrow<T, n>& Arrow<T, n>::operator += ( const Point<T, n> &p ) {
-    Point<T, n>::operator += (p);
+    APoint<T, n>::operator += (p);
     return *this;
   }
 
   template <typename T, int n>
   inline
   Arrow<T, n>& Arrow<T, n>::operator -= ( const Point<T, n> &p ) {
-    Point<T,n>::operator-=(p);
+    APoint<T,n>::operator-=(p);
     return *this;
   }
 
   template <typename T, int n>
   inline
   Arrow<T, n> Arrow<T, n>::operator + ( const Point<T, n> &p ) const {
-    //Point<T, n> r = (*this);
+    //APoint<T, n> r = (*this);
     Arrow<T, n> r = (*this);
     return r += p;
   }
@@ -799,7 +1259,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Arrow<T, n> Arrow<T, n>::operator - ( const Point<T, n> &p ) const {
-    //Point<T,n> r = (*this);
+    //APoint<T,n> r = (*this);
     Arrow<T,n> r = (*this);
     return r -= p;
   }
@@ -821,7 +1281,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Arrow<T, n> Arrow<T, n>::operator + ( const Vector<T, n> &v ) const {
-    //Point<T, n> r = (*this);
+    //APoint<T, n> r = (*this);
     Arrow<T, n> r = (*this);
     return r += v;
   }
@@ -829,7 +1289,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Arrow<T, n> Arrow<T, n>::operator - ( const Vector<T, n> &v ) const {
-    //Point<T, n> r = (*this);
+    //APoint<T, n> r = (*this);
     Arrow<T, n> r = (*this);
     return r -= v;
   }
@@ -837,7 +1297,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   Arrow<T, n> Arrow<T, n>::operator - () const {
-    Point<T, n> p = -(*this);
+    APoint<T, n> p = -(*this);
     return p;
   }
 
@@ -846,7 +1306,7 @@ namespace GMlib {
   inline
   Arrow<T, n>::operator Arrow<G, m>& () const {
     static Arrow<G,m> v;
-    GM_Static1_<G,T,(n<m?n:m)>::eq( v.getPtr(), Point<T, n>::getPtr());
+    GM_Static1_<G,T,(n<m?n:m)>::eq( v.getPtr(), APoint<T, n>::getPtr());
     GM_Static1_<G,T,(n<m?n:m)>::eq( v.getDir().getPtr(), _dir.getPtr());
     return v;
   }
@@ -855,8 +1315,8 @@ namespace GMlib {
   inline
   Arrow<float, n>& Arrow<T, n>::toFloat() const {
     static Arrow<float,n> v;
-    GM_Static1_<float,T,n>::eq( v.getPtr(), Point<T, n>::getPtr() );
-    GM_Static1_<float,T,n>::eq( v.getDir().getPtr(), Point<T, n>::getPtr() );
+    GM_Static1_<float,T,n>::eq( v.getPtr(), APoint<T, n>::getPtr() );
+    GM_Static1_<float,T,n>::eq( v.getDir().getPtr(), APoint<T, n>::getPtr() );
     return v;
   }
 
@@ -865,10 +1325,18 @@ namespace GMlib {
   Arrow<double, n>& Arrow<T, n>::toDouble() const
   {
     static Arrow<double,n> v;
-    GM_Static1_<double,T,n>::eq( v.getPtr(), Point<T, n>::getPtr());
-    GM_Static1_<double,T,n>::eq( v.getDir().getPtr(), Point<T, n>::getPtr());
+    GM_Static1_<double,T,n>::eq( v.getPtr(), APoint<T, n>::getPtr());
+    GM_Static1_<double,T,n>::eq( v.getDir().getPtr(), APoint<T, n>::getPtr());
     return v;
   }
+
+
+
+
+  //******************************************************************
+  //******  The ScalarAPoint class, constructors and functions  ******
+  //******************************************************************
+  //******************************************************************
 
   template <typename T, int n>
   inline
@@ -877,7 +1345,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>::ScalarPoint( const Point<T, n>& p, T v )	{
+  ScalarPoint<T, n>::ScalarPoint( const APoint<T, n>& p, T v )	{
     _pos = p;
     _value = v;
   }
@@ -891,7 +1359,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const Point<T, n>& ScalarPoint<T, n>::getPos() const {
+  const APoint<T, n>& ScalarPoint<T, n>::getPos() const {
     return _pos;
   }
 
@@ -909,7 +1377,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void ScalarPoint<T, n>::reset( const Point<T, n>& p , T v )	{
+  void ScalarPoint<T, n>::reset( const APoint<T, n>& p , T v )	{
     _pos = p;
     _value = v;
   }
@@ -929,20 +1397,20 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void ScalarPoint<T, n>::resetPos( const Point<T, n>& p ) {
+  void ScalarPoint<T, n>::resetPos( const APoint<T, n>& p ) {
     _pos = p;
   }
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>& ScalarPoint<T, n>::operator += ( const Point<T, n>& p ) {
+  ScalarPoint<T, n>& ScalarPoint<T, n>::operator += ( const APoint<T, n>& p ) {
     _pos += p;
     return *this;
   }
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>  ScalarPoint<T, n>::operator +  ( const Point<T, n>& p ) const	{
+  ScalarPoint<T, n>  ScalarPoint<T, n>::operator +  ( const APoint<T, n>& p ) const	{
     ScalarPoint<T,n> a=(*this);
     a+=p;
     return a;
@@ -1013,18 +1481,27 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>& ScalarPoint<T, n>::operator %= ( const Point<T, n>& p ) {
+  ScalarPoint<T, n>& ScalarPoint<T, n>::operator %= ( const APoint<T, n>& p ) {
     _pos %= p;
     return *this;
   }
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>  ScalarPoint<T, n>::operator %  ( const Point<T, n>& p ) const	{
+  ScalarPoint<T, n>  ScalarPoint<T, n>::operator %  ( const APoint<T, n>& p ) const	{
     ScalarPoint<T,n> a=(*this);
     a%=p;
     return a;
   }
+
+
+
+
+
+  //*********************************************************
+  //*****  The Sphere class, constructors and functions  ****
+  //*********************************************************
+  //*********************************************************
 
   template <typename T, int n>
   inline
@@ -1034,7 +1511,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Sphere<T, n>::Sphere( const Point<T, n>& p, T v ) : ScalarPoint<T,n>(p,v)	{
+  Sphere<T, n>::Sphere( const APoint<T, n>& p, T v ) : ScalarPoint<T,n>(p,v)	{
     _valid = true;
   }
 
@@ -1053,7 +1530,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   T	Sphere<T, n>::getRadius() const	{
-    return ScalarPoint<T, n>::_value;
+    return this->_value;
   }
 
   template <typename T, int n>
@@ -1066,15 +1543,15 @@ namespace GMlib {
   bool Sphere<T, n>::isIntersecting(const Sphere<T,n>& p) const {
     if(ScalarPoint<T, n>::_valid && p._valid)
     {
-      T d = (ScalarPoint<T, n>::_pos - p._pos).getLength();
-      return (ScalarPoint<T, n>::_value+p._value) > d;
+      T d = (this->_pos - p._pos).getLength();
+      return (this->_value + p._value) > d;
     }
     return false;
   }
 
   template <typename T, int n>
   inline
-  void Sphere<T, n>::resetPos( const Point<T, n>& p )	{
+  void Sphere<T, n>::resetPos( const APoint<T, n>& p )	{
     _valid = true;
     ScalarPoint<T,n>::resetPos(p);
   }
@@ -1093,23 +1570,23 @@ namespace GMlib {
   }
 
   template <typename T, int n>
-  Sphere<T, n>& Sphere<T, n>::operator += ( const Point<T, n>& p ) {
+  Sphere<T, n>& Sphere<T, n>::operator += ( const APoint<T, n>& p ) {
     if(_valid)
     {
-      Vector<T,n> v = p - ScalarPoint<T, n>::_pos;
+      Vector<T,n> v = p - this->_pos;
       T r, d = v.getLength();
 
-      if (d > ScalarPoint<T, n>::_value)
+      if (d > this->_value)
       {
-        r		= (d+ScalarPoint<T, n>::_value)/2;
-        ScalarPoint<T, n>::_pos   += ((r-ScalarPoint<T, n>::_value)/d)*v;
-        ScalarPoint<T, n>::_value	= r;
+        r		      = (d+this->_value)/2;
+        this->_pos   += ((r-this->_value)/d)*v;
+        this->_value  = r;
       }
     }
     else
     {
-      ScalarPoint<T, n>::_pos   = p;
-      ScalarPoint<T, n>::_value = T(0);
+      this->_pos   = p;
+      this->_value = T(0);
       _valid = true;
     }
 
@@ -1118,7 +1595,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Sphere<T, n> Sphere<T, n>::operator +  ( const Point<T, n>& p ) const {
+  Sphere<T, n> Sphere<T, n>::operator +  ( const APoint<T, n>& p ) const {
 
     Sphere<T, n> a = (*this);
     a += p;
@@ -1132,24 +1609,24 @@ namespace GMlib {
     {
       if(_valid)
       {
-        Vector<T,n> v =  p._pos - ScalarPoint<T, n>::_pos;
+        Vector<T,n> v =  p._pos - this->_pos;
         T r, d = v.getLength();
-        if(ScalarPoint<T, n>::_value > p._value)
+        if(this->_value > p._value)
         {
-          if (d > ScalarPoint<T, n>::_value - p._value)
+          if (d > this->_value - p._value)
           {
-            r		= (d+ScalarPoint<T, n>::_value+p._value)/2;
-            ScalarPoint<T, n>::_pos   += ((r-ScalarPoint<T, n>::_value)/d)*v;
-            ScalarPoint<T, n>::_value	= r;
+            r		     = (d + this->_value + p._value)/2;
+            this->_pos  += ((r-this->_value)/d)*v;
+            this->_value = r;
           }
         }
         else
         {
-          if (d > p._value - ScalarPoint<T, n>::_value)
+          if (d > p._value - this->_value)
           {
-            r		= (d+ScalarPoint<T, n>::_value+p._value)/2;
-            ScalarPoint<T, n>::_pos   += ((r-ScalarPoint<T, n>::_value)/d)*v;
-            ScalarPoint<T, n>::_value	= r;
+            r		= (d + this->_value + p._value)/2;
+            this->_pos   += ((r - this->_value)/d)*v;
+            this->_value	= r;
           }
           else
             *this = p;
@@ -1169,6 +1646,13 @@ namespace GMlib {
     return a;
   }
 
+
+
+  //*********************************************************
+  //******  The Box class, constructors and functions  ******
+  //*********************************************************
+  //*********************************************************
+
   template <typename T, int n>
   inline
   Box<T, n>::Box() {
@@ -1177,7 +1661,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Box<T, n>::Box( const Point<T, n>& p ) {
+  Box<T, n>::Box( const APoint<T, n>& p ) {
     _min = _max = p;
   }
 
@@ -1190,14 +1674,14 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Box<T, n>::Box( const Point<T, n>& p1, const Point<T, n>& p2 )	{
+  Box<T, n>::Box( const APoint<T, n>& p1, const APoint<T, n>& p2 )	{
     _min = _max = p1;
     insert(p2);
   }
 
   template <typename T, int n>
   inline
-  Box<T, n>::Box( const Point<T, n>& p1, const Point<T, n>& p2, const Point<T,n>& p3 ) {
+  Box<T, n>::Box( const APoint<T, n>& p1, const APoint<T, n>& p2, const APoint<T,n>& p3 ) {
     _min = _max = p1;
     insert(p2);
     insert(p3);
@@ -1205,19 +1689,19 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Point<T, n>	Box<T, n>::getPointMin() const {
+  APoint<T, n>	Box<T, n>::getPointMin() const {
     return _min;
   }
 
   template <typename T, int n>
   inline
-  Point<T, n>	Box<T, n>::getPointMax() const {
+  APoint<T, n>	Box<T, n>::getPointMax() const {
     return _max;
   }
 
   template <typename T, int n>
   inline
-  Point<T, n>	Box<T, n>::getPointCenter() const {
+  APoint<T, n>	Box<T, n>::getPointCenter() const {
     return (_max + _min)*0.5;
   }
 
@@ -1235,7 +1719,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T&		Box<T, n>::getValueAt( int i, int j ) {
+  T& Box<T, n>::getValueAt( int i, int j ) {
     return i == 0 ? _min[j] : _max[j];
   }
 
@@ -1264,7 +1748,7 @@ namespace GMlib {
   }
 
   template <typename T, int n>
-  void Box<T, n>::insert( const Point<T, n>& p) {
+  void Box<T, n>::insert( const APoint<T, n>& p) {
     for(int i=0;i<n;i++)
     {
       if(p(i) < _min[i]) _min[i] = p(i);
@@ -1293,7 +1777,7 @@ namespace GMlib {
   }
 
   template <typename T, int n>
-  bool Box<T, n>::isSurrounding( const Point<T,n>& p ) const {
+  bool Box<T, n>::isSurrounding( const APoint<T,n>& p ) const {
     for(int i=0;i<n;i++)
     {
       if(p(i) < _min(i)) return false;
@@ -1315,25 +1799,25 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void Box<T, n>::reset() {
-    reset( Point<T, n>( (T)0 ) );
+    reset( APoint<T, n>( (T)0 ) );
   }
 
   template <typename T, int n>
   inline
-  void Box<T, n>::reset( const Point<T, n>& p ) {
+  void Box<T, n>::reset( const APoint<T, n>& p ) {
     _min = _max = p;
   }
 
   template <typename T, int n>
   inline
-  Box<T,n>&	Box<T, n>::operator += ( const Point<T, n>& p ) {
+  Box<T,n>&	Box<T, n>::operator += ( const APoint<T, n>& p ) {
     insert(p);
     return *this;
   }
 
   template <typename T, int n>
   inline
-  Box<T,n> Box<T, n>::operator +  ( const Point<T, n>& p ) {
+  Box<T,n> Box<T, n>::operator +  ( const APoint<T, n>& p ) {
     Box<T,n> a=(*this);
     a+=p;
     return a;
@@ -1354,6 +1838,142 @@ namespace GMlib {
     return a;
   }
 
+
+
+
+  //*********************************************************
+  //*** The PlaneArrow class, constructors and functions  ***
+  //*********************************************************
+  //*********************************************************
+
+
+  /*! PlaneArrow<T,n>:: PlaneArrow()
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  PlaneArrow<T,n>::PlaneArrow() : Arrow<T,n>() {
+    this->_dir.normalize();
+  }
+
+  /*! PlaneArrow<T,n>:: PlaneArrow()
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  PlaneArrow<T,n>::PlaneArrow(const Point<T,n>& p) : Arrow<T,n>(p) {
+    this->_dir.normalize();
+  }
+
+  /*! PlaneArrow<T,n>:: PlaneArrow()
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  PlaneArrow<T,n>::PlaneArrow(const Point<T,n>& p ,const Vector<T,n>& v) : Arrow<T,n>(p,UnitVector<T,n>(v)) {
+  }
+
+  /*! PlaneArrow<T,n>:: PlaneArrow()
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T, int n>
+  inline
+  PlaneArrow<T,n>::PlaneArrow(const Arrow<T,n>& a) : Arrow<T,n>(a) {
+  }
+
+  /*! void PlaneArrow<T,n>::setNormal(const Vector<T,n>& v)
+   *  \brief  setNormal
+   *
+   *  Detailed description of
+   *  the function
+   */
+  template <typename T, int n>
+  inline
+  void PlaneArrow<T,n>::setNormal(const Vector<T,n>& v) {
+    this->setDir(UnitVector<T,n>(v));
+  }
+
+  /*! const Vector<T,3>&	PlaneArrow<T,n>::getNormal()
+   *  \brief  getNormal
+   *
+   *  \return normal
+   *  Detailed description of
+   *  the function
+   */
+  template <typename T, int n>
+  inline
+  const Vector<T,n>&	PlaneArrow<T,n>::getNormal() const {
+    return this->getDir();
+  }
+
+  /*! Point<T,n> PlaneArrow<T,n>::getClosestPoint(const Point<T,n>& p) const
+   *  \brief  getNormal
+   *
+   *  Detailed description of
+   *  the function
+   *
+   *	\param[in] 	p
+   *  \return 		closestPoint
+   */
+  template <typename T, int n>
+  inline
+  APoint<T,n> PlaneArrow<T,n>::getClosestPoint(const Point<T,n>& p) const {
+
+    Vector<T,n> d = p - this->getPos();
+    return this->getPos() + d - (d*this->getNormal())*this->getNormal();
+  }
+
+  /*! Vector<T,n> PlaneArrow<T,n>::getDistanceVector(const Point<T,n>& p) const
+   *  \brief  getDistanceVector
+   *
+   *  \return distanceVector
+   *  Detailed description of
+   *  the function
+   */
+  template <typename T, int n>
+  inline
+  Vector<T,n> PlaneArrow<T,n>::getDistanceVector(const Point<T,n>& p) const {
+
+    Vector<T,n> d = p - this->getPos();
+    return (d*this->getNormal())*this->getNormal();
+  }
+
+  /*! T PlaneArrow<T,n>::getDistanceTo(const Point<T,3>& p) const
+   *  \brief  getDistanceTo
+   *
+   *  \return distanceTo
+   *  Detailed description of
+   *  the function
+   */
+  template <typename T, int n>
+  inline
+  T PlaneArrow<T,n>::getDistanceTo(const Point<T,n>& p) const {
+
+    return (p - this->getPos())*this->getNormal();
+  }
+
+
+
+
+  //*********************************************************
+  //********  M_I_ is a help class for I-matrix init ********
+  //********   This is a constructor and a function  ********
+  //************   NOT FOR EXTERNAL USE !!!!!!   ************
+  //*********************************************************
+
+
   template <typename T, int n, int m>
   M_I_<T, n, m>::M_I_() {
     for(int k=0,i=0; i<n; i++)
@@ -1369,3 +1989,4 @@ namespace GMlib {
   }
 
 } // END namespace GMlib
+

@@ -31,13 +31,11 @@
 #define __gmPOINT_H__
 
 
-
+// **** GMlib ****
 #include "gmangle.h"
 #include "../static/gmstaticproc.h"
 #include "../utils/gmstream.h"
-
-//// stl
-//#include <memory>
+#include "../containers/gmarray.h"
 
 
 namespace GMlib {
@@ -64,12 +62,110 @@ namespace GMlib {
   template <typename T, int n>
   class Box;
 
+  template <typename T, int n>
+  class PlaneArrow;
+
+
+
+// For following two classes are for internal use only
+// They are either abstract base classes or help classes
+
+  template <typename T, int n>
+  class APoint;
+
   template <typename T, int n, int m>
   class M_I_;
 
 
 
 
+  /*! \class  APoint gmpoint.h <gmapnt>
+   *  \brief  The Static APoint Class
+   *
+   *  This class is just a placeholder, not to be used !!!!
+   *
+   *  A template APoint, the APoint is static i.e. the dimentions
+   *  can not be change. The template type must be clean, i.e. is not allocating
+   *  memory and without any virtual functions
+   *
+   *  The point is only using n values, but it is acting as it is in homogenious
+   *  coordinates. The (n+1).nt element, which is not there, is actually implicite 1
+   */
+
+  template <typename T, int n>
+  class APoint {
+  public:
+    APoint();
+    APoint( T t );
+    APoint( const T *t );
+    APoint( const APoint<T, n> &p );
+
+    Angle                 getAngle(APoint<T,n> p) const;
+    T                     getLength() const;
+    int                   getMaxIndex() const;
+    int                   getMaxAbsIndex() const;
+    T*                    getPtr() const;
+    void                  setTestType( int t, const APoint<T,n>& p, const Vector<T,n>& v = T(0) );
+
+    APoint<T, n>&         operator =  ( const T t );
+    APoint<T, n>&         operator =  ( const T *t );
+    APoint<T, n>&         operator =  ( const APoint<T, n> &p );
+    APoint<T, n>&         operator += ( const APoint<T, n> &p );
+    APoint<T, n>&         operator -= ( const APoint<T, n> &p );
+    APoint<T, n>&         operator -  () const;
+    APoint<T, n>&         operator +  ( const APoint<T, n> &p ) const;
+    APoint<T, n>&         operator -  ( const APoint<T, n> &p ) const;
+    T                     operator *  ( const APoint<T,n>& p) const;
+    T&		              operator [] ( int i);
+    T const&              operator () ( int i) const;
+
+    // Scaling
+    APoint<T, n>&         operator *= ( double d );
+    APoint<T, n>          operator *  ( double d ) const;
+    APoint<T, n>&         operator %= ( const APoint<T, n> &p );
+    APoint<T, n>&         operator %  ( const APoint<T, n> &p ) const;
+
+    // Scaling: inverse
+    APoint<T, n>&         operator /= ( double d );
+    APoint<T, n>          operator /  ( double d ) const;
+
+    // Boolean on equality
+    bool                  operator == ( const APoint<T, n> &p ) const;
+    bool                  operator != ( const APoint<T, n> &p ) const; // caling operator == ()
+
+    // Boolean on sorting
+    bool                  operator <  ( const APoint<T, n> &v ) const;
+    bool                  operator >  ( const APoint<T, n> &v ) const;
+    bool                  operator <= ( const APoint<T, n> &v ) const;
+    bool                  operator >= ( const APoint<T, n> &v ) const;
+
+    // Casting
+    template <typename G, int m>
+    operator APoint<G,m>& () const;
+
+    APoint<float,n>&      toFloat() const;
+    APoint<double,n>&     toDouble() const;
+
+
+  protected:
+    T                     _pt[n];
+
+    void                  _cpy( const APoint<T, n> &v );
+    void                  _cpy( const T p[n] );
+    void                  _cpy( const T &d );
+
+  private:
+
+    static Arrow<T, n>*   _arrow;    // Used for < and sorting see setTestType()
+    static int			  _sortType;
+
+  }; // END class APoint
+
+
+
+  //******************************
+  //**      The Point class     **
+  //******************************
 
 
   /*! \class  Point gmpoint.h <gmPoint>
@@ -83,171 +179,184 @@ namespace GMlib {
    *  coordinates. The (n+1).nt element, which is not there, is actually implicite 1
    */
   template <typename T, int n>
-  class Point {
+  class Point: public APoint<T,n> {
   public:
-    Point();
-    Point( T t );
-    Point( const T *t );
-    Point( const Point<T, n> &p );
+    Point():APoint<T,n>(){}
+    Point( T t ):APoint<T,n>(t){}
+    Point( const T *t ):APoint<T,n>(t){}
+    Point( const APoint<T, n> &p ):APoint<T,n>(p){}
+  };
 
-    Angle                 getAngle(Point<T,n> p) const;
-    T                     getLength() const;
-    int                   getMaxIndex() const;
-    int                   getMaxAbsIndex() const;
-    T*                    getPtr() const;
-    void                  setTestType( int t, const Point<T,n>& p, const Vector<T,n>& v = T(0) );
 
-    Point<T, n>&          operator =  ( const T t );
-    Point<T, n>&          operator =  ( const T *t );
-    Point<T, n>&          operator =  ( const Point<T, n> &p );
-    Point<T, n>&          operator += ( const Point<T, n> &p );
-    Point<T, n>&          operator -= ( const Point<T, n> &p );
-    Point<T, n>&          operator -  () const;
-    Point<T, n>&          operator +  ( const Point<T, n> &p ) const;
-    Point<T, n>&          operator -  ( const Point<T, n> &p ) const;
-    T                     operator *  ( const Point<T,n>& p) const;
-    T&		                operator [] ( int i);
-    T const&              operator () ( int i) const;
+  template <typename T>
+  class Point<T,2>: public APoint<T,2> {
+  public:
+    Point<T,2>():APoint<T,2>(){}
+    Point<T,2>( T t ):APoint<T,2>(t){}
+    Point<T,2>( const T *t ):APoint<T,2>(t){}
+    Point<T,2>( const APoint<T,2> &p ):APoint<T,2>(p){}
 
-    // Scaling
-    Point<T, n>&          operator *= ( double d );
-    Point<T, n>           operator *  ( double d ) const;
-    Point<T, n>&          operator %= ( const Point<T, n> &p );
-    Point<T, n>&          operator %  ( const Point<T, n> &p ) const;
+    Point<T,2>( const APoint<T,3> &p );
+    Point<T,2>( const T& x, const T& y);
 
-    // Scaling: inverse
-    Point<T, n>&          operator /= ( double d );
-    Point<T, n>          operator /  ( double d ) const;
+    APoint<T,2>   getNormal();  // Return a vector 90 deg. to this.
+    int           isInside(const APoint<T,2>& p1,const APoint<T,2>& p2,const APoint<T,2>& p3) const;
+    int           isInside(const Array<Point<T,2> >& a) const;
+    int           isInsideCircle(const APoint<T,2>& p1,const APoint<T,2>& p2,const APoint<T,2>& p3) const;
 
-    // Boolean on equality
-    bool                  operator == ( const Point<T, n> &p ) const;
-    bool                  operator != ( const Point<T, n> &pt ) const; // caling operator == ()
+    T             operator^(const APoint<T,2>& v) const;	// wedge product.
+  };
 
-    // Boolean on sorting
-    bool                  operator <  ( const Point<T, n> &v ) const;
-    bool                  operator >  ( const Point<T, n> &v ) const;
-    bool                  operator <= ( const Point<T, n> &v ) const;
-    bool                  operator >= ( const Point<T, n> &v ) const;
 
-    // Casting
-    template <typename G, int m>
-    operator Point<G,m>& () const;
+  template <typename T>
+  class Point<T,3>: public APoint<T,3> {
+  public:
+    Point<T,3>():APoint<T,3>(){}
+    Point<T,3>( T t ):APoint<T,3>(t){}
+    Point<T,3>( const T *t ):APoint<T,3>(t){}
+    Point<T,3>( const APoint<T, 3> &p ):APoint<T,3>(p){}
 
-    Point<float,n>&       toFloat() const;
-    Point<double,n>       toDouble() const;
+    Point<T,3>( const APoint<T,2> &p );
+    Point<T,3>( const T& x, const T& y, const T& z);
+
+    APoint<T,3> operator^(const APoint<T,3>& v) const; // vector product.
+  };
+  // END class Point
 
 
 
-  protected:
-    T                     _pt[n];
-
-    void                  _cpy( const Point<T, n> &v );
-    void                  _cpy( const T p[n] );
-    void                  _cpy( const T &d );
-
-  private:
-
-    static Arrow<T, n>    *_arrow;    // Used for < and sorting see setTestType()
-    static int			      _sortType;
-
-  }; // END class Point
-
-
-
-
-
-
-
-
-
-
-
-  /*! \var static Arrow<T, n> *Point<T, n>::_arrow
+  /*! \var static Arrow<T, n> *APoint<T, n>::_arrow
    * \brief  Used for < and sorting. See setTestType()
    */
 
   /*! \var static int _type; */
 
-  /*! Point<T, n>& operator * ( double d, const Point<T, n> &p)
-   *  \brief Multiply a double with a Point<T, n>
+  /*! APoint<T, n>& operator * ( double d, const APoint<T, n> &p)
+   *  \brief Multiply a double with a APoint<T, n>
    *
-   *  Multiply a double with a Point<T, n>.
+   *  Multiply a double with a APoint<T, n>.
    *  This function overloads the * operator of the double.
    *
    *  \param[in] d The double
-   *  \param[in] p The Point<T,n>
+   *  \param[in] p The APoint<T,n>
    */
   template <typename T, int n>
   inline
-  Point<T, n> operator * ( double d, const Point<T, n> &p ) {
+  APoint<T, n> operator * ( double d, const APoint<T, n> &p ) {
     return p*d;
   }
 
+
+
+
+  /*! bool Point<T,2>::convexHullFrom(Array<Point<T,2> >& a, const Vector<T,2>& v)
+   *  \brief  Compute the convex hull of a point set
+   *
+   * This function compute the convex hull of a point
+   * set stored in the array a.
+   * The convex hull is also stored in the array a,
+   * and it is a counter clockwise oriented polygon.
+   * If the convex hull consist off all original points
+   * from a then false is retuned else true is returned.
+   */
+  template <typename T>
+  bool convexHullFrom(Array<Point<T,2> >& a, const Vector<T,2>& v) {
+
+    bool removed = false;
+    if (a.size()<4)	return removed;
+
+    int i,j,k;
+    Point<T,2> p;
+
+    for(i=0; i<a.size(); i++) p += a[i];
+
+    p.setTestType(3,p/a.size(),v);
+    a.sort();
+
+    for(i=0; i<a.size(); i++)	{
+      if(i<a.size()-2)		{ j=i+1; k=i+2; }
+      else if(i<a.size()-1)	{ j=i+1; k=0;   }
+      else					{ j=0;   k=1;   }
+      p = a[j]-a[i];
+      if((p^(a[k]-a[j])) < 0)	{
+        a.removeIndex(j);
+        removed = true;
+        if(i==a.size()) i-=3;
+        else if(i>0)	i-=2;
+        else			i--;
+      }
+    }
+    return removed;
+  }
+
+
+
+
   #ifdef GM_STREAM
-    /*! T_Stream &operator << ( T_Stream &out, const Point<T, n> &p )
+    /*! T_Stream &operator << ( T_Stream &out, const APoint<T, n> &p )
      *  \brief Stream output operator
      *
-     *  Stream output operator, taking a Point<T,n> as a second parameter.
+     *  Stream output operator, taking a APoint<T,n> as a second parameter.
      *
      *  \param out The output stream
-     *  \param p The Point<T, n>
+     *  \param p The APoint<T, n>
      *  \return The output stream
      */
     template <typename T_Stream, typename T, int n>
     inline
-    T_Stream& operator << ( T_Stream &out, const Point<T, n> &p ) {
+    T_Stream& operator << ( T_Stream &out, const APoint<T, n> &p ) {
       for(int i = 0; i < n; i++)
         out << p(i) << GMseparator::Element;
       return out;
     }
 
 
-    /*! T_Stream& operator << ( T_Stream &out, const Point<T, n> *p )
+    /*! T_Stream& operator << ( T_Stream &out, const APoint<T, n> *p )
      *  \brief Stream output operator
      *
-     *  Stream output operator, taking a Point<T,n> pointer as a second parameter.
+     *  Stream output operator, taking a APoint<T,n> pointer as a second parameter.
      *
      *  \param[in, out] out The output stream
-     *  \param[in] p The Point<T, n> pointer
+     *  \param[in] p The APoint<T, n> pointer
      *  \return The output stream
      */
     template <typename T_Stream, typename T, int n>
     inline
-    T_Stream& operator << ( T_Stream &out, const Point<T, n> *p ) {
+    T_Stream& operator << ( T_Stream &out, const APoint<T, n> *p ) {
       for(int i=0;i<n;i++) out << (*p)(i) << GMseparator::Element;
       return out;
     }
 
 
-    /*! T_Stream& operator >> ( T_Stream &in, Point<T, n> &p )
+    /*! T_Stream& operator >> ( T_Stream &in, APoint<T, n> &p )
      *  \brief Stream input operator
      *
-     *  Stream input operator, taking a Point<T,n> as a second parameter.
+     *  Stream input operator, taking a APoint<T,n> as a second parameter.
      *
      *  \param[in, out] in The input stream
-     *  \param[in] p The Point<T, n>
+     *  \param[in] p The APoint<T, n>
      *  \return The input stream
      */
     template <typename T_Stream, typename T, int n>
     inline
-    T_Stream& operator >> ( T_Stream &in, Point<T, n> &p ) {
+    T_Stream& operator >> ( T_Stream &in, APoint<T, n> &p ) {
       Separator es(GMseparator::Element);
       for(int i=0;i<n;i++) in >> p[i] >> es;
       return in;
     }
 
-    /*! T_Stream& operator >> ( T_Stream &in, Point<T, n> *p )
+    /*! T_Stream& operator >> ( T_Stream &in, APoint<T, n> *p )
      *  \brief Stream input operator
      *
-     *  Stream input operator, taking a Point<T,n> pointer as a second parameter.
+     *  Stream input operator, taking a APoint<T,n> pointer as a second parameter.
      *
      *  \param[in, out] in The input stream
-     *  \param[in] p The Point<T, n> pointer
+     *  \param[in] p The APoint<T, n> pointer
      *  \return The input stream
      */
     template <typename T_Stream, typename T, int n>
     inline
-    T_Stream& operator >> ( T_Stream &in, Point<T, n> *p ) {
+    T_Stream& operator >> ( T_Stream &in, APoint<T, n> *p ) {
       Separator es(GMseparator::Element);
       for(int i=0;i<n;i++) in >> (*p)[i] >> es;
       return in;
@@ -255,6 +364,10 @@ namespace GMlib {
   #endif
 
 
+
+    //*******************************
+    //**      The Vector class     **
+    //*******************************
 
 
   /*! \class Vector gmpoint.h <gmPoint>
@@ -268,26 +381,62 @@ namespace GMlib {
    *	coordinates. The (n+1).nt element, which is not there, is actually implicite 0.
    */
   template <typename T, int n>
-  class Vector : public Point<T, n> {
+  class Vector : public APoint<T,n> {
   public:
-    Vector();
-    Vector( T t );
-    Vector( const T *t );
-    Vector( const Point<T,n> &p );
+    Vector():APoint<T,n>(){}
+    Vector( T t ):APoint<T,n>(t){}
+    Vector( const T *t ):APoint<T,n>(t){}
+    Vector( const APoint<T,n> &p ):APoint<T,n>(p){}
 
-    Point<T,n>      getNormalized() const;
-    Vector<T,n>     getLinIndVec() const;
-    Point<T,n>&     normalize();
-    void            setLength( T length );
-
-
-  }; // END class Vector
+    APoint<T,n>    getNormalized() const;
+    Vector<T,n>    getLinIndVec() const;
+    APoint<T,n>&   normalize();
+    void           setLength( T length );
+  };
 
 
+  template <typename T>
+  class Vector<T,2> : public APoint<T,2> {
+  public:
+    Vector<T,2>():APoint<T,2>(){}
+    Vector<T,2>( T t ):APoint<T,2>(t){}
+    Vector<T,2>( const T *t ):APoint<T,2>(t){}
+    Vector<T,2>( const APoint<T,2> &p ):APoint<T,2>(p){}
+
+    Vector<T,2>( const APoint<T,3> &p );
+    Vector<T,2>( const T& x, const T& y);
+
+    APoint<T,2>    getNormalized() const;
+    Vector<T,2>    getLinIndVec() const;
+    APoint<T,2>&   normalize();
+    void           setLength( T length );
+
+    APoint<T,2>    getNormal() const;  // Return a vector 90 deg. to this.
+
+    T              operator^(const APoint<T,2>& v) const;// wedge product.
+  };
 
 
+  template <typename T>
+  class Vector<T,3> : public APoint<T,3> {
+  public:
+    Vector<T,3>():APoint<T,3>(){}
+    Vector<T,3>( T t ):APoint<T,3>(t){}
+    Vector<T,3>( const T *t ):APoint<T,3>(t){}
+    Vector<T,3>( const APoint<T,3> &p ):APoint<T,3>(p){}
 
+    Vector<T,3>( const APoint<T,2> &p );
+    Vector<T,3>( const T& x, const T& y, const T& z);
 
+    APoint<T,3>    getNormalized() const;
+    Vector<T,3>    getLinIndVec() const;
+    APoint<T,3>&   normalize();
+    void           setLength( T length );
+
+    APoint<T,3>    operator^(const APoint<T,3>& v) const;// vector product.
+  };
+
+  // END class Vector
 
 
 
@@ -308,8 +457,23 @@ namespace GMlib {
     return static_cast<Vector<T,n>& >(p);
   }
 
+  /*! Point<T, n>&   toPoint( Vector<T,n> &v )
+   *  \brief Casts a Vector<T,n> to a Point<T,n>
+   *
+   *  Casts a Vector<T,n> to a Point<T,n>
+   *
+   *  \param[in] p The Vector to be casted to Point
+   *  \return The casted point
+   */
+  template <typename T, int n>
+  Point<T, n>&   toPoint( Vector<T,n> &v ) {
+    return *((Point<T,n>*)(&v));
+  }
 
 
+    //***********************************
+    //**      The UnitVector class     **
+    //***********************************
 
   /*! \class UnitVector gmpoint.h <gmPoint>
    *  \brief The Static UnitVector class
@@ -329,22 +493,68 @@ namespace GMlib {
   public:
     UnitVector( T t = 1 );
     UnitVector( const T t[n]);
-    UnitVector( const Point<T, n>& p);
+    UnitVector( const APoint<T, n>& p);
     UnitVector( const UnitVector<T,n>& uv);
 
-    Point<T, n>&    operator =  ( const T t );
-    Point<T, n>&    operator =  ( const T t[n] );
-    Point<T, n>&    operator =  ( const Point<T, n> &p );
-    Point<T, n>&    operator =  ( const UnitVector<T, n>& uv );
+    APoint<T, n>&    operator =  ( const T t );
+    APoint<T, n>&    operator =  ( const T t[n] );
+    APoint<T, n>&    operator =  ( const APoint<T, n> &p );
+    APoint<T, n>&    operator =  ( const UnitVector<T, n>& uv );
     const T&        operator [] ( int i );
-    Point<T, n>&    operator += ( const Point<T, n> &p );
-    Point<T, n>&    operator -= ( const Point<T, n> &p );
-    Point<T, n>&    operator %= ( const Point<T, n> &p );
-    Point<T, n>&    operator *= ( const double d );
-    Point<T, n>&    operator /= ( double d );
+    APoint<T, n>&    operator += ( const APoint<T, n> &p );
+    APoint<T, n>&    operator -= ( const APoint<T, n> &p );
+    APoint<T, n>&    operator %= ( const APoint<T, n> &p );
+    APoint<T, n>&    operator *= ( const double d );
+    APoint<T, n>&    operator /= ( double d );
 
   }; // END class UnitVector
 
+
+  template <typename T>
+  class UnitVector<T,2> : public Vector<T,2> {
+  public:
+    UnitVector<T,2>( T t = 1 );
+    UnitVector<T,2>( const T t[2]);
+    UnitVector<T,2>( const APoint<T,2>& p);
+    UnitVector<T,2>( const UnitVector<T,2>& uv);
+    UnitVector<T,2>( const T& x, const T& y);
+
+    APoint<T,2>&    operator =  ( const T t );
+    APoint<T,2>&    operator =  ( const T t[2] );
+    APoint<T,2>&    operator =  ( const APoint<T,2> &p );
+    APoint<T,2>&    operator =  ( const UnitVector<T,2>& uv );
+    const T&        operator [] ( int i );
+    APoint<T,2>&    operator += ( const APoint<T,2> &p );
+    APoint<T,2>&    operator -= ( const APoint<T,2> &p );
+    APoint<T,2>&    operator %= ( const APoint<T,2> &p );
+    APoint<T,2>&    operator *= ( const double d );
+    APoint<T,2>&    operator /= ( double d );
+
+  }; // END class UnitVector
+
+
+
+  template <typename T>
+  class UnitVector<T,3> : public Vector<T,3> {
+  public:
+    UnitVector<T,3>( T t = 1 );
+    UnitVector<T,3>( const T t[3]);
+    UnitVector<T,3>( const APoint<T,3>& p);
+    UnitVector<T,3>( const UnitVector<T,3>& uv);
+    UnitVector<T,3>( const T& x, const T& y, const T& z);
+
+    APoint<T,3>&    operator =  ( const T t );
+    APoint<T,3>&    operator =  ( const T t[3] );
+    APoint<T,3>&    operator =  ( const APoint<T,3> &p );
+    APoint<T,3>&    operator =  ( const UnitVector<T,3>& uv );
+    const T&        operator [] ( int i );
+    APoint<T,3>&    operator += ( const APoint<T,3> &p );
+    APoint<T,3>&    operator -= ( const APoint<T,3> &p );
+    APoint<T,3>&    operator %= ( const APoint<T,3> &p );
+    APoint<T,3>&    operator *= ( const double d );
+    APoint<T,3>&    operator /= ( double d );
+
+  }; // END class UnitVector
 
   #ifdef GM_STREAM
     /*! T_Stream& operator >> ( T_Stream& in, UnitVector<T, n>& v )
@@ -378,9 +588,9 @@ namespace GMlib {
 
 
 
-
-
-
+    //*******************************
+    //**      The Arrow class     **
+    //*******************************
 
 
   /*! \class Arrow gmpoint.h <gmPoint>
@@ -396,35 +606,35 @@ namespace GMlib {
   class Arrow : public Point<T,n> {
   public:
     Arrow();
-    Arrow(const Point<T,n> &p);
-    Arrow(const Point<T,n> &p, const Vector<T,n> &v );
+    Arrow(const APoint<T,n> &p);
+    Arrow(const APoint<T,n> &p, const Vector<T,n> &v );
     Arrow(const Arrow<T,n> &a);
 
-    const Vector<T, n>&   getDir() const;
-    const Point<T, n>&    getPos() const;
-    void                  setDir( const Vector<T, n> &v );
-    void                  setPos( const Point<T, n> &p );
+    const Vector<T,n>&   getDir() const;
+    const APoint<T,n>&   getPos() const;
+    void                 setDir( const Vector<T,n> &v );
+    void                 setPos( const APoint<T,n> &p );
 
-    Arrow<T,n>&           operator =  ( const Arrow<T, n> &a );
-    Arrow<T,n>&           operator += ( const Point<T, n> &p );
-    Arrow<T,n>&           operator -= ( const Point<T, n> &p );
-    Arrow<T,n>            operator +  ( const Point<T, n> &p ) const;
-    Arrow<T,n>            operator -  ( const Point<T, n> &p ) const;
-    Arrow<T,n>&           operator += ( const Vector<T, n> &v );
-    Arrow<T,n>&           operator -= ( const Vector<T, n> &v );
-    Arrow<T,n>            operator +  ( const Vector<T, n> &v ) const;
-    Arrow<T,n>            operator -  ( const Vector<T, n> &v ) const;
-    Arrow<T,n>            operator -  () const;
+    Arrow<T,n>&          operator =  ( const Arrow<T,n> &a );
+    Arrow<T,n>&          operator += ( const Point<T,n> &p );
+    Arrow<T,n>&          operator -= ( const Point<T,n> &p );
+    Arrow<T,n>           operator +  ( const Point<T,n> &p ) const;
+    Arrow<T,n>           operator -  ( const Point<T,n> &p ) const;
+    Arrow<T,n>&          operator += ( const Vector<T,n> &v );
+    Arrow<T,n>&          operator -= ( const Vector<T,n> &v );
+    Arrow<T,n>           operator +  ( const Vector<T,n> &v ) const;
+    Arrow<T,n>           operator -  ( const Vector<T,n> &v ) const;
+    Arrow<T,n>           operator -  () const;
 
     template <typename G, int m>
     operator Arrow<G, m>& () const;
 
-    Arrow<float, n>&      toFloat() const;
-    Arrow<double, n>&     toDouble() const;
+    Arrow<float,n>&      toFloat() const;
+    Arrow<double,n>&     toDouble() const;
 
 
   protected:
-    Vector<T, n>          _dir;
+    Vector<T,n>          _dir;
 
   }; // END class Arrow
 
@@ -504,9 +714,9 @@ namespace GMlib {
 
 
 
-
-
-
+  //************************************
+  //**      The ScalarPoint class     **
+  //************************************
 
   /*! \class ScalarPoint gmpoint.h <gmPoint>
    *  \brief The Static ScalarPoint class
@@ -520,19 +730,19 @@ namespace GMlib {
   class ScalarPoint {
   public:
     ScalarPoint();
-    ScalarPoint( const Point<T, n>& p, T v = T(0) );
+    ScalarPoint( const APoint<T, n>& p, T v = T(0) );
     ScalarPoint( const ScalarPoint<T, n>& s );
 
-    const Point<T, n>&	  getPos() const;
+    const APoint<T, n>&	  getPos() const;
     T*                    getPtr() const;
-    T			                getValue() const;
-    void                  reset( const Point<T, n>& p , T v = T(0) );
+    T			          getValue() const;
+    void                  reset( const APoint<T, n>& p , T v = T(0) );
     void                  reset();
     void                  resetValue( T t );
-    void                  resetPos( const Point<T, n>& p );
+    void                  resetPos( const APoint<T, n>& p );
 
-    ScalarPoint<T, n>&    operator += ( const Point<T, n>& p );
-    ScalarPoint<T, n>     operator +  ( const Point<T, n>& p ) const;
+    ScalarPoint<T, n>&    operator += ( const APoint<T, n>& p );
+    ScalarPoint<T, n>     operator +  ( const APoint<T, n>& p ) const;
     ScalarPoint<T, n>&    operator += ( T p );
     ScalarPoint<T, n>     operator +  ( T p ) const;
     ScalarPoint<T, n>&    operator += ( const ScalarPoint<T, n>& p );
@@ -543,15 +753,15 @@ namespace GMlib {
     ScalarPoint<T, n>&    operator /= ( double d );
     ScalarPoint<T, n>     operator /  ( double d ) const;
 
-    ScalarPoint<T, n>&    operator %= ( const Point<T, n>& p );
-    ScalarPoint<T, n>     operator %  ( const Point<T, n>& p ) const;
+    ScalarPoint<T, n>&    operator %= ( const APoint<T, n>& p );
+    ScalarPoint<T, n>     operator %  ( const APoint<T, n>& p ) const;
 /*
     friend
     ScalarPoint<T, n>     operator *  ( double d, ScalarPoint<T, n> p ) { p*=d; return p; }
 */
   protected:
     Point<T, n>	          _pos;
-    T			                _value;
+    T			          _value;
 
   }; // END class ScalarPoint
 
@@ -620,7 +830,9 @@ namespace GMlib {
 
 
 
-
+    //*******************************
+    //**      The Sphere class     **
+    //*******************************
 
 
   /*! \class Sphere gmpoint.h <gmPoint>
@@ -636,19 +848,19 @@ namespace GMlib {
   class Sphere : public ScalarPoint<T, n> {
   public:
     Sphere( bool sphere = false );
-    Sphere( const Point<T, n>& p, T v = T(0) );
+    Sphere( const APoint<T, n>& p, T v = T(0) );
     Sphere( const ScalarPoint<T, n>& s );
     Sphere( const Sphere<T, n>& s );
 
-    T	              getRadius() const;
+    T	            getRadius() const;
     bool            isValid() const;
     bool            isIntersecting(const Sphere<T,n>& p) const;
-    void            resetPos( const Point<T, n>& p );
+    void            resetPos( const APoint<T, n>& p );
     void            resetRadius( T t );
     void            reset();
 
-    Sphere<T, n>&   operator += ( const Point<T, n>& p );
-    Sphere<T, n>    operator +  ( const Point<T, n>& p ) const;
+    Sphere<T, n>&   operator += ( const APoint<T, n>& p );
+    Sphere<T, n>    operator +  ( const APoint<T, n>& p ) const;
     Sphere<T, n>&   operator += ( const Sphere<T, n>& p );
     Sphere<T, n>    operator +  ( const Sphere<T, n>& p ) const;
 
@@ -738,9 +950,9 @@ namespace GMlib {
 
 
 
-
-
-
+    //****************************
+    //**      The Box class     **
+    //****************************
 
 
   /*! \class Box gmpoint.h <gmPoint>
@@ -755,34 +967,34 @@ namespace GMlib {
   class Box {
   public:
     Box();
-    Box( const Point<T, n>& p );
+    Box( const APoint<T, n>& p );
     Box( const Box<T, n>& b );
-    Box( const Point<T, n>& p1, const Point<T, n>& p2 );
-    Box( const Point<T, n>& p1, const Point<T, n>& p2, const Point<T,n>& p3 );
+    Box( const APoint<T, n>& p1, const APoint<T, n>& p2 );
+    Box( const APoint<T, n>& p1, const APoint<T, n>& p2, const APoint<T,n>& p3 );
 
-    Point<T, n>	    getPointMin() const;
-    Point<T, n>	    getPointMax() const;
-    Point<T, n>	    getPointCenter() const;
-    Vector<T, n>    getPointDelta() const;
+    APoint<T, n>	getPointMin() const;
+    APoint<T, n>	getPointMax() const;
+    APoint<T, n>	getPointCenter() const;
+    Vector<T, n>   getPointDelta() const;
     T*              getPtr() const;
 
-    T&		          getValueAt( int i, int j );
-    T			          getValueMin( int i ) const;
-    T			          getValueMax( int i ) const;
-    T			          getValueCenter( int i ) const;
-    T			          getValueDelta( int i ) const;
-    void		        insert( const Point<T, n>& );
-    void		        insert( const Box<T, n>& );
-    bool		        isIntersecting( const Box<T,n>& b ) const;
-    bool		        isSurrounding( const Point<T,n>& p ) const;
-    bool		        isSurrounding( const Box<T,n>& b )  const;
-    void		        reset();  // Default value for void reset( const Point<T, n>& p ); // got overload error
-    void		        reset( const Point<T, n>& p );
+    T&		        getValueAt( int i, int j );
+    T			    getValueMin( int i ) const;
+    T			    getValueMax( int i ) const;
+    T			    getValueCenter( int i ) const;
+    T			    getValueDelta( int i ) const;
+    void		    insert( const APoint<T, n>& );
+    void		    insert( const Box<T, n>& );
+    bool		    isIntersecting( const Box<T,n>& b ) const;
+    bool		    isSurrounding( const APoint<T,n>& p ) const;
+    bool		    isSurrounding( const Box<T,n>& b )  const;
+    void		    reset();
+    void		    reset( const APoint<T, n>& p );
 
-    Box<T,n>&       operator += ( const Point<T, n>& p );
-    Box<T,n>	      operator +  ( const Point<T, n>& p );
-    Box<T,n>&	      operator += ( const Box<T, n>& b );
-    Box<T,n>	      operator +  ( const Box<T, n>& b );
+    Box<T,n>&       operator += ( const APoint<T, n>& p );
+    Box<T,n>	    operator +  ( const APoint<T, n>& p );
+    Box<T,n>&	    operator += ( const Box<T, n>& b );
+    Box<T,n>	    operator +  ( const Box<T, n>& b );
 
 
 
@@ -791,9 +1003,6 @@ namespace GMlib {
     Point<T, n>     _max;
 
   }; // END class Box
-
-
-
 
 
 
@@ -857,6 +1066,34 @@ namespace GMlib {
 
 
 
+    //***********************************
+    //**      The PlaneArrow class     **
+    //***********************************
+
+
+  /*! \class  PlaneArrow gmpoint.h <gmPoint>
+   *
+   *  \brief  PlaneArrow class
+   *
+   *  Detailed Description of class
+   */
+
+  template <typename T, int n>
+  class PlaneArrow : public Arrow<T,n> {
+  public:
+    PlaneArrow();
+    PlaneArrow(const Point<T,n>& p);
+    PlaneArrow(const Point<T,n>& p ,const Vector<T,n>& v);
+    PlaneArrow(const Arrow<T,n>& a);
+
+    void                setNormal(const Vector<T,n>& v);
+
+    const Vector<T,n>&	getNormal() const;
+    APoint<T,n>         getClosestPoint(const Point<T,n>& p) const;
+    Vector<T,n>         getDistanceVector(const Point<T,n>& p) const;
+    T                   getDistanceTo(const Point<T,n>& p) const;
+
+  }; // END class PlaneArrow
 
 
 
