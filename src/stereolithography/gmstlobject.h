@@ -153,7 +153,7 @@ namespace GMlib {
   inline
   Array< Point<float,3> > StlObject::getPoints() {
 
-    Array< Point<float,3> > v;         // returns copy, no cast between Point3D<float> and Point<float,3>
+    Array< Point<float,3> > v;         // returns copy, no cast between Point<float,3> and Point<float,3>
     v.setSize( _vertices.getSize() );
     for( int i = 0; i < _vertices.getSize(); i++ )
       v[i] = _vertices[i];
@@ -172,7 +172,7 @@ namespace GMlib {
   inline
   ArrayLX< TSVertex<float> > StlObject::getVertices() {
 
-    ArrayLX< TSVertex<float> > v;         // returns copy, no cast between Point3D<float> and Point<float,3>
+    ArrayLX< TSVertex<float> > v;         // returns copy, no cast between Point<float,3> and Point<float,3>
     v.setSize( _vertices.getSize() );
     for( int i = 0; i < _vertices.getSize(); i++ )
       v[i] = TSVertex<float>( _vertices[i], _normals[i/3] );

@@ -43,7 +43,7 @@ namespace GMlib {
     insert( _sphere );
 
     // update bounding sphere
-    Point3D<float> pos(0,0,0);
+    Point<float,3> pos(0,0,0);
     Sphere<float,3> s(pos,r);
 
     setSurroundingSphere(s);
@@ -78,8 +78,8 @@ namespace GMlib {
         Vector<float,3> &v5 = p[i+1][j][0][0];
         Vector<float,3> &v6 = p[i][j][0][0];
 
-        Vector<float,3> n1 = Vector3D<float>(v2 - v1) ^ Vector3D<float>(v3 - v1);
-        Vector<float,3> n2 = Vector3D<float>(v5 - v4) ^ Vector3D<float>(v6 - v4);
+        Vector<float,3> n1 = Vector<float,3>(v2 - v1) ^ (v3 - v1);
+        Vector<float,3> n2 = Vector<float,3>(v5 - v4) ^ (v6 - v4);
 
         _normals.insertAlways( n1 );
         _vertices.insertAlways( v1 );
@@ -248,17 +248,17 @@ namespace GMlib {
 
       // and put in array
       x=_getFloat(); y=_getFloat(); z=_getFloat();
-      _normals.insertAlways( UnitVector3D<float>(x,y,z) );
+      _normals.insertAlways( UnitVector<float,3>(x,y,z) );
 
 
       x=_getFloat(); y=_getFloat(); z=_getFloat();
-      _vertices.insertAlways( Point3D<float> (x,y,z) );
+      _vertices.insertAlways( Point<float,3> (x,y,z) );
 
       x=_getFloat(); y=_getFloat(); z=_getFloat();
-      _vertices.insertAlways( Point3D<float> (x,y,z) );
+      _vertices.insertAlways( Point<float,3> (x,y,z) );
 
       x=_getFloat(); y=_getFloat(); z=_getFloat();
-      _vertices.insertAlways( Point3D<float> (x,y,z) );
+      _vertices.insertAlways( Point<float,3> (x,y,z) );
 
       // Get number of attribute bytes (is always zero and can be ignored)
       _getUint();
@@ -278,7 +278,7 @@ namespace GMlib {
       _bbox += _vertices[i];
 
     // update bounding sphere
-    Point3D<float> pos( _bbox.getPointCenter() );          // which can be far from origo
+    Point<float,3> pos( _bbox.getPointCenter() );          // which can be far from origo
     Sphere<float,3> s( pos, _bbox.getPointDelta().getLength() * 0.5 );
 
     setSurroundingSphere( s );
