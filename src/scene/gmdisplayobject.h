@@ -81,7 +81,7 @@ namespace GMlib {
 
 
 
-    virtual Vector<float,3>	  getDir();
+    virtual Vector<float,3>	  getDir() const;
     Point<float,3>	          getLockPos();
     double				            getLockDist();
     const HqMatrix<float,3>&  getMatrixToScene() const;
@@ -255,7 +255,7 @@ namespace GMlib {
    *  ** In scene coordinates **
    */
   inline
-  Vector<float,3>	DisplayObject::getDir()	{
+  Vector<float,3>	DisplayObject::getDir() const	{
 
     return _matrix_scene*_dir;
   }
