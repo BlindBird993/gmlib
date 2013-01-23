@@ -898,4 +898,10 @@ namespace GMlib {
     return !((*this) == ar);
   }
 
+  template <typename T>
+  inline
+  bool Array<T>::isSorted() const {
+    return _sorted;
+  }
+
 } // END namespace GMlib

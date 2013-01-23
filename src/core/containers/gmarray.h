@@ -92,6 +92,7 @@ namespace GMlib {
     void            insertFront( const ArrayT<T>& ar );
     bool            isEmpty() const;                  // Alias: empty()
     bool            isExisting( const T& t ) const;   // Alias: exist(const T& t)
+    bool            isSorted() const;
     void            makeUnique();
     void            makeUniqueD();
     int             max_size() const;
