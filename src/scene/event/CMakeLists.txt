@@ -1,4 +1,4 @@
-# ###############################################################################
+###############################################################################
 # #
 # # Copyright (C) 1994 Narvik University College
 # # Contact: GMlib Online Portal at http://episteme.hin.no
@@ -22,26 +22,15 @@
 
 
 addHeaders(
-  gmDisplayObject
-  gmFrustum
-  gmScaleObject
-  gmScene
-  gmSceneObject
+  gmEvent
+  gmEventController
+  gmEventManager
+  gmSceneObjectAttribute
 )
 
 addSources(
-  gmdisplayobject.cpp
-  gmscene.cpp
-  gmsceneobject.cpp
+  gmevent.cpp
+  gmeventcontroller.cpp
+  gmeventmanager.cpp
+  gmsceneobjectattribute.cpp
 )
-
-addSubDirectory(camera)           # <camera> sub-module
-addSubDirectory(displayobjects)   # <displayobject> sub-module
-addSubDirectory(event)            # <event> sub-module
-addSubDirectory(light)            # <light> sub-module
-addSubDirectory(render)           # <render> sub-module
-addSubDirectory(selector)         # <selector> sub-module
-addSubDirectory(utils)            # <utils> sub-module
-addSubDirectory(visualizer)       # <visualizer> sub-module
-addSubDirectory(window)           # <window> sub-module
-
