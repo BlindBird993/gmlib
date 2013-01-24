@@ -310,7 +310,11 @@ namespace GMlib {
    */
   const	HqMatrix<float,3>& SceneObject::getMatrixParentGlobal() const {
 
-    return _parent->getMatrixGlobal();
+    if(_parent)
+      return _parent->getMatrixGlobal();
+
+
+    return HqMatrix<float,3>();
   }
 
 
