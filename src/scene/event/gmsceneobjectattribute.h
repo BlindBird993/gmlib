@@ -25,8 +25,11 @@
 
 namespace GMlib {
 
+  /*!
+   * \class SceneObjectAttribute gmsceneobjectattribute.h <gmSceneObjectAttribute>
+   * \brief Base class for attributes to SceneObject
+   */
   class SceneObjectAttribute {
-
   };
 
 }
