@@ -468,28 +468,19 @@ namespace GMlib {
    */
   void SceneObject::rotate(Angle a, const Vector<float,3>& rot_axel) {
 
-    Vector<float,3> ra = rot_axel;
-    Vector<float,3> lu = ra.getLinIndVec();
-    Vector<float,3> u  = lu ^ ra;
-    Vector<float,3> v  = ra ^ u;
-
-    _matrix.rotate(a, u, v);
+    _matrix.rotate(a, rot_axel);
   }
 
 
-  /*! void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d)
+  /*! void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& rot_axel)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    *  ** In local coordinates.**
    */
-  void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
+  void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& rot_axel) {
 
-    Vector<float,3> ra = d;
-    Vector<float,3> lu = ra.getLinIndVec();
-    Vector<float,3> u  = lu ^ ra;
-    Vector<float,3> v  = ra ^ u;
-    _matrix.rotate(a, u, v, p);
+    _matrix.rotate(a, rot_axel, p);
   }
 
 
@@ -501,12 +492,7 @@ namespace GMlib {
    */
   void SceneObject::rotateGlobal( Angle a, const Vector<float,3>& rot_axel ) {
 
-    Vector<float,3> ra = rot_axel;
-    Vector<float,3> lu = ra.getLinIndVec();
-    Vector<float,3> u  = lu ^ ra;
-    Vector<float,3> v  = ra ^ u;
-
-    _matrix.rotateGlobal(a, u, v);
+    _matrix.rotateGlobal(a, rot_axel);
   }
 
 
@@ -516,14 +502,9 @@ namespace GMlib {
    *  Pending Documentation
    *  ** In Scene Coordinates **
    */
-  void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d) {
+  void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p, const UnitVector<float,3>& rot_axel) {
 
-    Vector<float,3> ra = d;
-    Vector<float,3> lu = ra.getLinIndVec();
-    Vector<float,3> u = lu ^ ra;
-    Vector<float,3> v = ra ^ u;
-
-    _matrix.rotateGlobal(a, u, v, p);
+    _matrix.rotateGlobal(a, rot_axel, p);
   }
 
 

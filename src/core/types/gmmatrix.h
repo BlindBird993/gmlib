@@ -43,13 +43,13 @@ namespace GMlib {
   //********************************************************************
 
   template <typename T, int n, int m>
-  class Matrix;							// The general (n x m) matrix
+  class Matrix;                            // The general (n x m) matrix
 
   template <typename T, int n>
-  class SqMatrix;							// The squere  (n x n) matrix
+  class SqMatrix;                          // The squere  (n x n) matrix
 
   template <typename T, int n>
-  class HqMatrix;							// The homogenius squere (n+1 x n+1) matrix (n->dim)
+  class HqMatrix;                          // The homogenius squere (n+1 x n+1) matrix (n->dim)
 
 
 
@@ -77,26 +77,26 @@ namespace GMlib {
     Matrix( const Vector<Vector<T,n>,m>& v, bool trans );
     Matrix( const T* v, bool trans );
 
-    APoint<T,n> const&	getCol(int i) const;
+    APoint<T,n> const&  getCol(int i) const;
     Matrix<T,n,n>       getMultTrans();
-    T*		            getPtr() const;
-    APoint<T,m>*		getPtrP() const;
-    APoint<T,m> const&	getRow(int j) const;
+    T*                  getPtr() const;
+    APoint<T,m>*        getPtrP() const;
+    APoint<T,m> const&  getRow(int j) const;
     Matrix<T,m,m>       getTransMult();
-    Matrix<T,m,n>	    getTransposed() const;
+    Matrix<T,m,n>       getTransposed() const;
 
-    void	            initCol(int i, int j);
-    void	            initRow(int i, int j);
+    void                initCol(int i, int j);
+    void                initRow(int i, int j);
 
-    void	            reset();
-    void	            setCol(const APoint<T,n>& c, int i);
-    void	            setRow(const APoint<T,m>& r, int j);
-    Matrix<T,n,m>&	    setTranspose(const Vector<Vector<T,m>,n>& mat);
-    void	            scale(const APoint<T,n>& s);
+    void                reset();
+    void                setCol(const APoint<T,n>& c, int i);
+    void                setRow(const APoint<T,m>& r, int j);
+    Matrix<T,n,m>&      setTranspose(const Vector<Vector<T,m>,n>& mat);
+    void                scale(const APoint<T,n>& s);
     void                swap(int i,int j);
     void                swap(int i,int j,int a,int b);
 
-    Matrix<T,n,m>&	    operator = (const Vector<Vector<T,m>,n>& mat);
+    Matrix<T,n,m>&      operator=(const Vector<Vector<T,m>,n>& mat);
 
     // ***** Additions and substractions. ******
     Matrix<T,n,m>&      operator+=(const Matrix<T,n,m>& mat);
@@ -106,7 +106,7 @@ namespace GMlib {
     Matrix<T,n,m>&      operator-() const;
 
     // ******* Multiplication vector ******
-    APoint<T,n>&         operator*(const APoint<T,m>& v) const;
+    APoint<T,n>&        operator*(const APoint<T,m>& v) const;
 
 
     //***** Scaling. *****
@@ -114,8 +114,8 @@ namespace GMlib {
     Matrix<T,n,m>&      operator*(const double d) const;
 
     //***** Invers scaling. *****
-    Matrix<T,n,m>&	    operator/=(double d);
-    Matrix<T,n,m>&	    operator/(double d) const;
+    Matrix<T,n,m>&      operator/=(double d);
+    Matrix<T,n,m>&      operator/(double d) const;
 
 
     // Dummy for Array - should maby use determinant
@@ -123,22 +123,22 @@ namespace GMlib {
 
   protected:
 
-    static                M_I_<T,n,m>	_I;
-    static                Vector<T,n>	_c;
+    static              M_I_<T,n,m>    _I;
+    static              Vector<T,n>    _c;
 
-    void                  cpy();
-    void                  cpy(const T* v);
-    void                  cpy(const Vector<Vector<T,m>,n>& v);
-    void                  cpy_t(const T* v);
-    void                  cpy_t(const Vector<Vector<T,n>,m>& v);
-    void                  cpy_r(const APoint<T,m>& p,int i);
-    void                  cpy_c(const APoint<T,n>& p,int j);
+    void                cpy();
+    void                cpy(const T* v);
+    void                cpy(const Vector<Vector<T,m>,n>& v);
+    void                cpy_t(const T* v);
+    void                cpy_t(const Vector<Vector<T,n>,m>& v);
+    void                cpy_r(const APoint<T,m>& p,int i);
+    void                cpy_c(const APoint<T,n>& p,int j);
 
-    const Vector<T,n>&    getStatCol( int j ) const;
-    const Vector<T,m>&    getStatRow( int i ) const;
+    const Vector<T,n>&  getStatCol( int j ) const;
+    const Vector<T,m>&  getStatRow( int i ) const;
 
-    void                  setOrtho( const Vector<T,m>& u );
-    void                  setOrtho( const Vector<T,m>& u, const Vector<T,m>& v );
+    void                setOrtho( const Vector<T,m>& u );
+    void                setOrtho( const Vector<T,m>& u, const Vector<T,m>& v );
 
   }; // END class Matrix
 
@@ -304,15 +304,15 @@ namespace GMlib {
     void                    basisChange(const Matrix<T,n,n>& x);
     void                    basisChangeInv(const Matrix<T,n,n>& x);
 
-    //T	                      getDeterminant(); // NOT IMPLEMENTED
-    APoint<T,n> const&       getDiagonal(int i) const;
-    //Matrix<T,n,n> const&    getInverse() const ;	// Not changing this: a = b-1// NOT IMPLEMENTED
+    //T                       getDeterminant(); // NOT IMPLEMENTED
+    APoint<T,n> const&      getDiagonal(int i) const;
+    //Matrix<T,n,n> const&    getInverse() const ;    // Not changing this: a = b-1// NOT IMPLEMENTED
     //Matrix<T,n,n> const&    getInverse2() const ;// NOT IMPLEMENTED
 
     void                    invert();
-    void                    invertOrthoNormal();	// Use only for orthonormal matrices (rotation matrices)
+    void                    invertOrthoNormal();    // Use only for orthonormal matrices (rotation matrices)
 
-    Matrix<T,n,n> const&    reverseMult(const Matrix<T,n,n>& m);			// Changing this ( is a kind of *= operator): *this = m * *this
+    Matrix<T,n,n> const&    reverseMult(const Matrix<T,n,n>& m);            // Changing this ( is a kind of *= operator): *this = m * *this
 
     void                    rotateXY(Angle a, int x=0, int y=1);
     void                    rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
@@ -321,22 +321,17 @@ namespace GMlib {
 
     // improve transpose by using swap!
     Matrix<T,n,n> const&    transpose();//Matrix<T,n,n> v(*this,true); *this = v; return(*this);}
-    Matrix<T,n,n> const&    transposeMult(const Matrix<T,n,n>& m) const ;	// Not changing this: a = this->transpose * m
+    Matrix<T,n,n> const&    transposeMult(const Matrix<T,n,n>& m) const ;    // Not changing this: a = this->transpose * m
 
 
 
   protected:
 
     void                    cpy_d(const APoint<T,n>& p);
-    const APoint<T,n>&       getStatDiagonal(int i)const;
+    const APoint<T,n>&      getStatDiagonal(int i)const;
     void                    makeOrtho(const Vector<T,n>& u, const Vector<T,n>& v, Matrix<T,n,n>& x);
 
   }; // END class SqMatrix
-
-
-
-
-
 
 
 
@@ -352,52 +347,93 @@ namespace GMlib {
    *  This Homogenious Matrix inherit from the static Square Matrix class
    */
   template <typename T, int n>
-  class HqMatrix: public SqMatrix<T,n+1> {
+  class HqMatrix_: public SqMatrix<T,n+1> {
   public:
-    HqMatrix();
-    HqMatrix(bool i);
-    HqMatrix(const Matrix<T,n+1,n+1>& v);
-    HqMatrix(const Matrix<T,n+1,n+1>& v, bool trans);
-    HqMatrix(const Matrix<T,n,n>& v, bool trans=false);
-    HqMatrix(const Vector<T,n>& d);
-    HqMatrix(Angle a,  int x, int y);
-    HqMatrix(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
-    HqMatrix(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
+    HqMatrix_();
+    HqMatrix_(bool i);
+    HqMatrix_(const Matrix<T,n+1,n+1>& v);
+    HqMatrix_(const Matrix<T,n+1,n+1>& v, bool trans);
+    HqMatrix_(const Matrix<T,n,n>& v, bool trans=false);
+    HqMatrix_(const Vector<T,n>& d);
+    HqMatrix_(Angle a,  int x, int y);
+    HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
+    HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
+
 
     //HqMatrix<T,n> const&    getInverse2() const; // NOT IMPLEMENTED
 
-    void                      invertOrthoNormal();		// overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
-    void                      rotateXY(Angle a, int x=0, int y=1);
-    void                      rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
-    void                      rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
-    void                      rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
-    void                      rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
-    Matrix<T,n+1,n+1>&        setTranspose(const Matrix<T,n+1,n+1>& v);
-    void                      translate(const Vector<T,n> d);
-    void                      translateGlobal(const Vector<T,n> d);
+    void                   invertOrthoNormal();        // overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
+    void                   rotateXY(Angle a, int x=0, int y=1);
+    void                   rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
+    void                   rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
+    void                   rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
+    void                   rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
+    Matrix<T,n+1,n+1>&     setTranspose(const Matrix<T,n+1,n+1>& v);
+    void                   translate(const Vector<T,n> d);
+    void                   translateGlobal(const Vector<T,n> d);
 
 
-    Matrix<T,n+1,n+1>&        operator=(const Matrix<T,n+1,n+1>& v);
+    Matrix<T,n+1,n+1>&     operator=(const Matrix<T,n+1,n+1>& v);
 
     // Multiplication vector
-    APoint<T,n>		          operator*(const APoint<T,n>& v)	const;
-    Vector<T,n>		          operator*(const Vector<T,n>& v)	const;
-    ScalarPoint<T,n>          operator*(const ScalarPoint<T,n>& v)const;
-    Sphere<T,n>		          operator*(const Sphere<T,n>& v)	const;
-    Arrow<T,n>		          operator*(const Arrow<T,n>& v)	const;
-    Box<T,n>		          operator*(const Box<T,n>& v)		const;
-    Matrix<T,n+1,n+1>         operator*(const HqMatrix<T,n>& v)	const;
+    APoint<T,n>            operator*(const APoint<T,n>& v)      const;
+    Vector<T,n>            operator*(const Vector<T,n>& v)      const;
+    ScalarPoint<T,n>       operator*(const ScalarPoint<T,n>& v)const;
+    Sphere<T,n>            operator*(const Sphere<T,n>& v)      const;
+    Arrow<T,n>             operator*(const Arrow<T,n>& v)      const;
+    Box<T,n>               operator*(const Box<T,n>& v)          const;
+    Matrix<T,n+1,n+1>      operator*(const HqMatrix_<T,n>& v)  const;
 
-  private:
-    void                      hq_cpy(const Matrix<T,n,n>& v);
-    void                      hq_cpy_t(const Matrix<T,n,n>& v);
-    void                      hq_cpy_r(const APoint<T,n>& p,int i);
-    void                      hq_cpy_c(const APoint<T,n>& p,int j);
+  protected:
+    void                   hq_cpy(const Matrix<T,n,n>& v);
+    void                   hq_cpy_t(const Matrix<T,n,n>& v);
+    void                   hq_cpy_r(const APoint<T,n>& p,int i);
+    void                   hq_cpy_c(const APoint<T,n>& p,int j);
 
-    void                      makeOrtho(const Vector<T,n>& u, const Vector<T,n>& v, Matrix<T,n+1,n+1>& x);
+    void                   makeOrtho(const Vector<T,n>& u, const Vector<T,n>& v, Matrix<T,n+1,n+1>& x);
+  };
 
+  template <typename T, int n>
+  class HqMatrix: public HqMatrix_<T,n> {
+  public:
+    HqMatrix():HqMatrix_<T,n>(){}
+    HqMatrix(bool i):HqMatrix_<T,n>(i){}
+    HqMatrix(const Matrix<T,n+1,n+1>& v):HqMatrix_<T,n>(v){}
+    HqMatrix(const Matrix<T,n+1,n+1>& v, bool trans):HqMatrix_<T,n>(v,trans){}
+    HqMatrix(const Matrix<T,n,n>& v, bool trans=false):HqMatrix_<T,n>(v,trans){}
+    HqMatrix(const Vector<T,n>& d):HqMatrix_<T,n>(d){}
+    HqMatrix(Angle a,  int x, int y):HqMatrix_<T,n>(a,x,y){}
+    HqMatrix(Angle a, const Vector<T,n>& u, const Vector<T,n>& v):HqMatrix_<T,n>(a,u,v){}
+    HqMatrix(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p):HqMatrix_<T,n>(a,u,v,p){}
+  };
 
-  }; // END class HqMatrix
+  template <typename T>
+  class HqMatrix<T,3>: public HqMatrix_<T,3> {
+  public:
+    HqMatrix():HqMatrix_<T,3>(){}
+    HqMatrix(bool i):HqMatrix_<T,3>(i){}
+    HqMatrix(const Matrix<T,4,4>& v):HqMatrix_<T,3>(v){}
+    HqMatrix(const Matrix<T,4,4>& v, bool trans):HqMatrix_<T,3>(v,trans){}
+    HqMatrix(const Matrix<T,3,3>& v, bool trans=false):HqMatrix_<T,3>(v,trans){}
+    HqMatrix(const Vector<T,3>& d):HqMatrix_<T,3>(d){}
+    HqMatrix(Angle a,  int x, int y):HqMatrix_<T,3>(a,x,y){}
+    HqMatrix(Angle a, const Vector<T,3>& u, const Vector<T,3>& v):HqMatrix_<T,3>(a,u,v){}
+    HqMatrix(Angle a, const Vector<T,3>& u, const Vector<T,3>& v, const APoint<T,3>& p):HqMatrix_<T,3>(a,u,v,p){}
+
+    HqMatrix(Angle a, const Vector<T,3>& rot_axis);
+    HqMatrix(Angle a, const Vector<T,3>& rot_axis, const APoint<T,3>& p);
+
+    void          rotate(Angle a, const Vector<T,3>& rot_axis);
+    void          rotate(Angle a, const Vector<T,3>& rot_axis, const APoint<T,3>& p);
+    void          rotateGlobal(Angle a, const Vector<T,3>& rot_axis);
+    void          rotateGlobal(Angle a, const Vector<T,3>& rot_axis, const APoint<T,3>& p);
+
+    void          rotate(Angle a, const Vector<T,3>& u, const Vector<T,3>& v){HqMatrix_<T,3>::rotate(a,u,v);}
+    void          rotate(Angle a, const Vector<T,3>& u, const Vector<T,3>& v, const APoint<T,3>& p){HqMatrix_<T,3>::rotate(a,u,v,p);}
+    void          rotateGlobal(Angle a, const Vector<T,3>& u, const Vector<T,3>& v){HqMatrix_<T,3>::rotateGlobal(a,u,v);}
+    void          rotateGlobal(Angle a, const Vector<T,3>& u, const Vector<T,3>& v, const APoint<T,3>& p){HqMatrix_<T,3>::rotateGlobal(a,u,v,p);}
+
+  };  // END class HqMatrix
 
 
 
