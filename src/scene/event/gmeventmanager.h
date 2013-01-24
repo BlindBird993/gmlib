@@ -31,8 +31,10 @@
 namespace GMlib {
 
   /*!
-   * \class EventManage gmeventmanager.h <gmEventManager>
+   * \class EventManager gmeventmanager.h <gmEventManager>
    * \brief The EventManager class
+   *
+   *  The central EventManager class that handles EventControllers.
    *
    */
   class EventManager {
