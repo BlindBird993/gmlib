@@ -31,19 +31,38 @@ namespace GMlib {
 
   class SceneObject;
 
+  /*!
+   * \class EventController gmeventcontroller.h <gmEventController>
+   * \brief EventController base class.
+   *
+   *  Provides an interface to detect and control Events that can happen
+   *  to SceneObjects during a time step dt.
+   *
+   *  Inherited classes need to implement functions which detects:
+   *    1. Events within a given dt (first pass)
+   *    2. Any events following after handling of a specific event
+   *       within that dt (second pass)
+   *    NB! Use insertAlways on the provided Array<Event>&
+   *        for performance reasons. (See EventManager::processEvents().
+   *        It removes duplicates after insert).
+   *
+   *  Optionally, inherited classes can store customized information
+   *  and perform updates based on events.
+   *
+   */
   class EventController {
   public:
     EventController();
 
+    bool add(SceneObject* so);
     bool getEvents(Array<Event>& events, double dt);
     bool handleEvent(Array<Event>& events, Event& event);
-    bool insert(SceneObject* so);
 
   private:
     virtual bool detectEvents(Array<Event>& events, double dt) = 0;
     virtual bool detectEvents(Array<Event>& events, Event& event) = 0;
-    virtual bool doInsert(SceneObject* so) = 0;
-    virtual bool doUpdate(Event& event) = 0;
+    virtual bool doInsert(SceneObject* so);
+    virtual bool doUpdate(Event& event);
 
   protected:
     Array<SceneObject*> _scene_objects;
