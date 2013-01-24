@@ -39,6 +39,7 @@
 
 #include "gmfrustum.h"
 #include "gmscaleobject.h"
+#include "event/gmsceneobjectattribute.h"
 #include "utils/gmmaterial.h"
 #include "visualizer/gmvisualizer.h"
 
@@ -187,6 +188,7 @@ namespace GMlib{
     virtual SceneObject*        makeCopy() = 0;
     virtual std::string         getIdentity() const = 0;
 
+    ArrayT<SceneObjectAttribute*>&  accessSceneObjectAttributes();
     virtual void                edit(int selector_id);
     virtual void                edit(SceneObject* lp);
     virtual void                edit();
@@ -291,6 +293,7 @@ namespace GMlib{
     bool                        _lighted;
     bool                        _opaque;
 
+    ArrayT<SceneObjectAttribute*> _scene_object_attributes;
     Array<Visualizer*>          _visualizers;
 
     virtual void                localSimulate(double dt);

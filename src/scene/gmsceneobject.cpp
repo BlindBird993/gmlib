@@ -135,7 +135,6 @@ namespace GMlib {
    *  Default Destructor
    */
   SceneObject::~SceneObject() {
-
     for(int i=0; i < _children.getSize(); i++) {
       if( _children[i] ) {
 
@@ -144,6 +143,14 @@ namespace GMlib {
         delete _children[i];
       }
     }
+
+    for(int i=0; i < _scene_object_attributes.getSize(); i++)
+      delete _scene_object_attributes[i];
+  }
+
+  ArrayT<SceneObjectAttribute *>&
+  SceneObject::accessSceneObjectAttributes() {
+    return _scene_object_attributes;
   }
 
 
