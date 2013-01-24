@@ -27,9 +27,9 @@ namespace GMlib {
 
 /*! \class Event gmevent.h <gmEvent>
  *
- *  \brief Represents a scene event
+ *  \brief Base class to represent a scene event.
  *
- *  Holds the relative time, x, within the current dt when the event occurs.
+ *  Stores the relative time, x, within the current dt when the event occurs.
  *
  */
   class Event {
@@ -38,8 +38,8 @@ namespace GMlib {
 
     double getX() const;
 
-    bool   operator < ( const Event &v ) const;
-    bool   operator== ( const Event& v ) const;
+    bool   operator <  ( const Event& v ) const;
+    bool   operator == ( const Event& v ) const;
 
   private:
     double _x;
