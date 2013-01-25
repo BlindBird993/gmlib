@@ -320,8 +320,8 @@ namespace GMlib {
     if(_parent)
       return _parent->getMatrixGlobal();
 
-
-    return HqMatrix<float,3>();
+    static HqMatrix<float,3> id;
+    return id;
   }
 
 
