@@ -1666,7 +1666,7 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
     Vector<float,3> lu = rot_axis.getLinIndVec();
     Vector<float,3> u  = lu ^ rot_axis;
     Vector<float,3> v  = rot_axis ^ u;
-    makeOrtho(u, v, *this);
+    this->makeOrtho(u, v, *this);
     Matrix<T,4,4> x(*this);
     this->rotateXY(a);
     this->basisChange(x);
