@@ -48,6 +48,7 @@
 
 namespace GMlib{
 
+  class EventManager;
   class SceneObject;
   class RenderManager;
   class Camera;
@@ -104,6 +105,7 @@ namespace GMlib{
     void                  resetTime();
 
     bool                  isSelected( SceneObject* obj ) const;
+    void                  setEventManager( EventManager* mgr );
     void                  setSelection( SceneObject* obj, bool selected );
     void                  setSingleSelection( SceneObject* obj );
     void                  setTimeScale(double s);
@@ -137,7 +139,7 @@ namespace GMlib{
     double                _timer_time_elapsed;
     double                _timer_time_scale;
 
-
+    EventManager*         _event_manager;
 
   }; // END class Scene
 

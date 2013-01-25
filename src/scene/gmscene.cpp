@@ -32,6 +32,7 @@
 #include "gmsceneobject.h"
 #include "light/gmlight.h"
 #include "camera/gmcamera.h"
+#include "event/gmeventmanager.h"
 #include "render/gmrendermanager.h"
 
 
@@ -44,7 +45,10 @@ namespace GMlib {
    *
    *  Default constructor
    */
-  Scene::Scene() : _scene(), _matrix_stack(32) {
+  Scene::Scene() :
+    _scene(),
+    _matrix_stack(32),
+    _event_manager(0) {
 
     _timer_active   = true;
     _timer_time_scale    = 1;
@@ -58,7 +62,11 @@ namespace GMlib {
    *
    *  Standar constructor
    */
-  Scene::Scene( SceneObject* obj ) : _scene(), _matrix_stack(32) {
+  Scene::Scene( SceneObject* obj ) :
+    _scene(),
+    _matrix_stack(32),
+    _event_manager(0) {
+
     _scene += obj;
     _timer_active = true;
     _timer_time_scale = 1;
@@ -72,7 +80,10 @@ namespace GMlib {
    *
    *  Copy constructor
    */
-  Scene::Scene( const Scene&  s ) : _scene(s._scene),_matrix_stack(s._matrix_stack) {
+  Scene::Scene( const Scene&  s ) :
+    _scene(s._scene),
+    _matrix_stack(s._matrix_stack),
+    _event_manager(0) {
 
     _timer_active   = true;
     _timer_time_scale    = 1;
@@ -214,12 +225,19 @@ namespace GMlib {
 
     _scene		            = sc._scene;
 
+    _event_manager        = sc._event_manager;
+
     return *this;
   }
 
   bool Scene::isSelected(SceneObject *obj) const {
 
     return _sel_objs.exist( obj );
+  }
+
+  void
+  Scene::setEventManager(EventManager *mgr) {
+    _event_manager = mgr;
   }
 
   void Scene::removeSelections() {
@@ -273,6 +291,7 @@ namespace GMlib {
     if(dt) {
 
       _timer_time_elapsed  += dt;
+      if ( _event_manager ) _event_manager->processEvents(dt);
       for( int i=0; i< _scene.getSize(); i++ )
         _scene[i]->simulate(dt);
     }
