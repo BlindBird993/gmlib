@@ -55,14 +55,14 @@ namespace GMlib {
     EventController();
 
     bool add(SceneObject* so);
-    bool getEvents(Array<Event>& events, double dt);
-    bool handleEvent(Array<Event>& events, Event& event);
+    bool getEvents(Array<Event*>& events, double dt);
+    bool handleEvent(Array<Event*>& events, Event* event);
 
   private:
-    virtual bool detectEvents(Array<Event>& events, double dt) = 0;
-    virtual bool detectEvents(Array<Event>& events, Event& event) = 0;
+    virtual bool detectEvents(Array<Event*>& events, double dt) = 0;
+    virtual bool detectEvents(Array<Event*>& events, Event* event) = 0;
     virtual bool doInsert(SceneObject* so);
-    virtual bool doUpdate(Event& event);
+    virtual bool doUpdate(Event* event);
 
   protected:
     Array<SceneObject*> _scene_objects;

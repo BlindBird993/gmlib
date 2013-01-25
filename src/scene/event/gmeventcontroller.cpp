@@ -26,7 +26,7 @@ EventController::add(SceneObject *so) {
  * \return Whether any events was added to the list of events
  */
 bool
-EventController::getEvents(Array<Event> &events, double dt) {
+EventController::getEvents(Array<Event*>& events, double dt) {
   return detectEvents(events, dt);
 }
 
@@ -37,7 +37,7 @@ EventController::getEvents(Array<Event> &events, double dt) {
  * \return Whether any events did update the scene
  */
 bool
-EventController::handleEvent(Array<Event> &events, Event &event) {
+EventController::handleEvent(Array<Event*>& events, Event* event) {
   bool did_update = doUpdate(event);
   detectEvents(events, event);
   return did_update;
@@ -50,7 +50,7 @@ EventController::doInsert(SceneObject *so) {
 }
 
 bool
-EventController::doUpdate(Event &event) {
+EventController::doUpdate(Event* event) {
   //- Default does nothing
   return false;
 }

@@ -47,11 +47,11 @@ namespace GMlib {
 
   private:
     void   clearEvents();
-    Event& firstEvent();
+    Event* firstEvent();
     void   removeDuplicateEvents();
     void   sortEvents();
 
-    Array<Event>            _events;
+    Array<Event*>           _events;
     Array<EventController*> _event_controllers;
   };
 

@@ -40,7 +40,7 @@ EventManager::processEvents(double dt) {
   removeDuplicateEvents();
 
   while ( !_events.empty() ) {
-    Event& c = _events.front();
+    Event* c = _events.front();
     for (int i=0; i < _event_controllers.size(); i++) {
       any_handled &= _event_controllers[i]->handleEvent(_events, c);
     }
@@ -70,7 +70,7 @@ EventManager::clearEvents() {
   _events.resetSize();
 }
 
-Event&
+Event*
 EventManager::firstEvent() {
   assert(_events.size());
   return _events.front();
