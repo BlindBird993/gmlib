@@ -148,7 +148,7 @@ namespace GMlib {
       delete _scene_object_attributes[i];
   }
 
-  ArrayT<SceneObjectAttribute *>&
+  ArrayT<SceneObjectAttribute*>&
   SceneObject::accessSceneObjectAttributes() {
     return _scene_object_attributes;
   }
