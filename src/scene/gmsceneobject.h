@@ -148,8 +148,8 @@ namespace GMlib{
    * 	Further, as protected members, two matrices for local transformation of the object, and a SurroundingSphere that always should be made.
    *
    *
-   * 				Det er to virtuelle funksjoner localDisplay og localSelect
-   * 					som alle avledede klasser må ha sin versjon av.
+   *        Det er to virtuelle funksjoner localDisplay og localSelect
+   *          som alle avledede klasser må ha sin versjon av.
    * 				Arbeidsdelingen er slik at display og select foretar
    * 					transformasjonen lagret i matrix, og displayer alle
    * 					sub-objektene til objektet. Men etter transformasjonen
@@ -212,7 +212,7 @@ namespace GMlib{
     SceneObject*                getParent() const;
     const HqMatrix<float,3>&    getProjectionMatrix( const Camera* cam ) const;
     Scene*                      getScene() const;
-    const GL::GLProgram&            getSelectProgram() const;
+    const GL::GLProgram&        getSelectProgram() const;
     bool                        getSelected() const;
     Sphere<float,3>             getSurroundingSphere() const;
     Sphere<float,3>             getSurroundingSphereClean() const;
@@ -230,11 +230,7 @@ namespace GMlib{
     virtual bool                isVisible() const;
     void                        remove(SceneObject* obj);
     virtual void                removeVisualizer( Visualizer* visualizer );
-    virtual void                rotate(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                scale(const Point<float,3>& scale_factor);
+
     virtual void                selectEvent(int selector_id);
     virtual void                setCollapsed(bool c);
     void                        setColor( const Color& c );
@@ -249,9 +245,20 @@ namespace GMlib{
     virtual void                setVisible( bool v, int prop = 0 );
     virtual bool                toggleCollapsed();
     virtual bool                toggleVisible();
+
+
+    /* transformation */
+    virtual void                rotate(Angle a, const Vector<float,3>& rot_axel);
+    virtual void                rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void                rotate(const UnitQuaternion<float>& q );
+    virtual void                rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
+    virtual void                rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void                rotateGlobal(const UnitQuaternion<float>& q );
+    virtual void                scale(const Point<float,3>& scale_factor);
     virtual void                translate(const Vector<float,3>& trans_vector);
     virtual void                translateGlobal(const Vector<float,3>& trans_vector);
 
+    /* deprecated */
     virtual void                localDisplay();     //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!)
     virtual void                localSelect();      //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!)
 
@@ -306,9 +313,9 @@ namespace GMlib{
 
   protected:
 //  private:
-    static unsigned int         _free_name;	//! For automatisk name-generations.
-    unsigned int                _name;		//! Unic name for this object, used for selecting
-    Sphere<float,3>             _sphere;	//! Surrounding sphere for this object
+    static unsigned int         _free_name;   //! For automatisk name-generations.
+    unsigned int                _name;        //! Unic name for this object, used for selecting
+    Sphere<float,3>             _sphere;      //! Surrounding sphere for this object
 
     GL::GLProgram                   _select_prog;
 

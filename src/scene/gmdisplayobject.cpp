@@ -266,12 +266,7 @@ namespace GMlib {
    */
   void DisplayObject::roll(Angle a) {
 
-    Vector<float,3> ra = _dir;
-    Vector<float,3> lu = ra.getLinIndVec();
-    Vector<float,3> u = lu ^ ra;
-    Vector<float,3> v = ra ^ u;
-
-    HqMatrix<float,3> m( a, u, v );
+    HqMatrix<float,3> m( a, _dir );
     _up   = m * _up;
     _side = m * _side;
     basisChange(_side, _up, _dir, _pos);
@@ -310,12 +305,7 @@ namespace GMlib {
 
     if(!_locked) {
 
-      Vector<float,3> ra = _side;
-      Vector<float,3> lu = ra.getLinIndVec();
-      Vector<float,3> u  = lu ^ ra;
-      Vector<float,3> v  = ra ^ u;
-
-      HqMatrix<float,3> m( a, u, v );
+      HqMatrix<float,3> m( a, _side );
       _up   = m * _up;
       _dir  = m * _dir;
       basisChange(_side, _up, _dir, _pos);
@@ -332,12 +322,7 @@ namespace GMlib {
 
     if(!_locked) {
 
-      Vector<float,3> ra = _up;
-      Vector<float,3> lu = ra.getLinIndVec();
-      Vector<float,3> u  = lu ^ ra;
-      Vector<float,3> v  = ra ^ u;
-
-      HqMatrix<float,3> m( a, u, v );
+      HqMatrix<float,3> m( a, _up );
       _dir  = m * _dir;
       _side = m * _side;
       basisChange(_side, _up, _dir, _pos);
@@ -385,12 +370,7 @@ namespace GMlib {
     }
     else
     {
-      Vector<float,3> ra = rot_axel;
-      Vector<float,3> lu = ra.getLinIndVec();
-      Vector<float,3> u  = lu ^ ra;
-      Vector<float,3> v  = ra ^ u;
-
-      HqMatrix<float,3> m( a, u, v );
+      HqMatrix<float,3> m( a, rot_axel );
       _up   = m * _up;
       _dir  = m * _dir;
       _side = m * _side;
@@ -408,12 +388,7 @@ namespace GMlib {
    */
   void DisplayObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
 
-    Vector<float,3> ra = d;
-    Vector<float,3> lu = ra.getLinIndVec();
-    Vector<float,3> u  = lu ^ ra;
-    Vector<float,3> v  = ra ^ u;
-
-    HqMatrix<float,3> m( a, u, v, p );
+    HqMatrix<float,3> m( a, d, p );
     _pos  = m * _pos;
     _up   = m * _up;
     _dir  = m * _dir;
@@ -428,6 +403,22 @@ namespace GMlib {
     basisChange(_side, _up, _dir, _pos);
   }
 
+  void DisplayObject::rotate(const UnitQuaternion<float>& d) {
+
+    HqMatrix<float,3> m(d);
+    _pos  = m * _pos;
+    _up   = m * _up;
+    _dir  = m * _dir;
+    _side = m * _side;
+
+    if(_locked)
+    {
+      Point<float,3> lock_pos = getSceneLockPos();
+      updateOrientation(lock_pos);
+    }
+
+    basisChange(_side, _up, _dir, _pos);
+  }
 
   /*! void DisplayObject::rotateGlobal(Angle a, const Vector<float,3>& rot_axel)
    *  \brief Pending Documentation
@@ -454,6 +445,22 @@ namespace GMlib {
     rotate( a, _matrix_scene_inv * p, _matrix_scene_inv *d );
   }
 
+  void DisplayObject::rotateGlobal(const UnitQuaternion<float>& d) {
+
+    HqMatrix<float,3> m = _matrix_scene_inv * HqMatrix<float,3>(d);
+    _pos  = m * _pos;
+    _up   = m * _up;
+    _dir  = m * _dir;
+    _side = m * _side;
+
+    if(_locked)
+    {
+      Point<float,3> lock_pos = getSceneLockPos();
+      updateOrientation(lock_pos);
+    }
+
+    basisChange(_side, _up, _dir, _pos);
+  }
 
   /*! void DisplayObject::translate( const Vector<float,3>& trans_vector )
    *  \brief Pending Documentation
@@ -479,7 +486,6 @@ namespace GMlib {
 
     move( _matrix_scene_inv * trans_vector );
   }
-
 
   /*! void DisplayObject::prepareDisplay(const HqMatrix<float,3>& m)
    *  \brief Pending Documentation

@@ -514,6 +514,16 @@ namespace GMlib {
     _matrix.rotateGlobal(a, rot_axel, p);
   }
 
+  void SceneObject::rotate(const UnitQuaternion<float>& q) {
+
+    _matrix.rotate(q);
+  }
+
+  void SceneObject::rotateGlobal(const UnitQuaternion<float>& q) {
+
+    _matrix.rotateGlobal(q);
+  }
+
 
   /*! void SceneObject::scale(const Point<float,3>& scale_factor)
    *  \brief Pending Documentation
@@ -530,7 +540,6 @@ namespace GMlib {
     _scale.scale(scale_factor);
     _sphere = _scale.scaleSphere(_sphere);
   }
-
 
   void SceneObject::setColor( const Color& c ) {
 

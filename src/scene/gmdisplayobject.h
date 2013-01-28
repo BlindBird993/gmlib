@@ -114,10 +114,13 @@ namespace GMlib {
     // from SceneObject
     virtual void              rotate(Angle a, const Vector<float,3>& rot_axel);
     virtual void              rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void              rotate(const UnitQuaternion<float>& q);
     virtual void              rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
     virtual void              rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void              rotateGlobal(const UnitQuaternion<float>& q);
     virtual void              translate(const Vector<float,3>& trans_vector);
     virtual void              translateGlobal(const Vector<float,3>& trans_vector);
+
 
   protected:
     // Matrices from Scene to this
