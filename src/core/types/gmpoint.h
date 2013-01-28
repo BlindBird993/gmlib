@@ -404,6 +404,7 @@ namespace GMlib {
     Vector<T,2>( const APoint<T,2> &p ):APoint<T,2>(p){}
 
     Vector<T,2>( const APoint<T,3> &p );
+    Vector<T,2>( const APoint<T,4> &p );
     Vector<T,2>( const T& x, const T& y);
 
     APoint<T,2>    getNormalized() const;
@@ -426,6 +427,7 @@ namespace GMlib {
     Vector<T,3>( const APoint<T,3> &p ):APoint<T,3>(p){}
 
     Vector<T,3>( const APoint<T,2> &p );
+    Vector<T,3>( const APoint<T,4> &p );
     Vector<T,3>( const T& x, const T& y, const T& z);
 
     APoint<T,3>    getNormalized() const;
@@ -436,8 +438,26 @@ namespace GMlib {
     APoint<T,3>    operator^(const APoint<T,3>& v) const;// vector product.
   };
 
-  // END class Vector
 
+  template <typename T>
+  class Vector<T,4> : public APoint<T,4> {
+  public:
+    Vector<T,4>():APoint<T,4>(){}
+    Vector<T,4>( T t ):APoint<T,4>(t){}
+    Vector<T,4>( const T *t ):APoint<T,4>(t){}
+    Vector<T,4>( const APoint<T,4> &p ):APoint<T,4>(p){}
+
+    Vector<T,4>( const APoint<T,2> &p );
+    Vector<T,4>( const APoint<T,3> &p );
+    Vector<T,4>( const T& x0, const T& x1, const T& x2, const T& x3 );
+
+    APoint<T,4>    getNormalized() const;
+    Vector<T,4>    getLinIndVec() const;
+    APoint<T,4>&   normalize();
+    void           setLength( T length );
+  };
+
+  // END class Vector
 
 
 
@@ -585,6 +605,60 @@ namespace GMlib {
       return in;
     }
   #endif
+
+
+
+
+    //***********************************
+    //**      The Quaternion class     **
+    //***********************************
+
+
+  /*! \class Quaternion gmpoint.h <gmPoint>
+   *  \brief The Static Quaternion class
+   */
+  template <typename T>
+  class Quaternion : public Vector<T,4> {
+  public:
+    Quaternion() : Vector<T,4>() {}
+    Quaternion( const T *t ):Vector<T,4>(t){}
+    Quaternion( const T& q0, const T& q1, const T& q2, const T& q3 ) : Vector<T,4>(q0,q1,q2,q3) {}
+    Quaternion( const Quaternion& q ):Vector<T,4>(q){}
+    Quaternion( const APoint<T,4> &p ):Vector<T,4>(p){}
+
+  }; // END class Quaternion
+
+
+
+    //***************************************
+    //**      The UnitQuaternion class     **
+    //***************************************
+
+
+  /*! \class UnitQuaternion gmpoint.h <gmPoint>
+   *  \brief The Static UnitQuaternion class
+   */
+  template <typename T>
+  class UnitQuaternion : public Quaternion<T> {
+  public:
+    UnitQuaternion();
+    UnitQuaternion( const T t[4] );
+    UnitQuaternion( const T& q0, const T& q1, const T& q2, const T& q3 );
+    UnitQuaternion( const UnitQuaternion& uq );
+    UnitQuaternion( const APoint<T,4> &p );
+
+    APoint<T,4>&    operator =  ( const T t );
+    APoint<T,4>&    operator =  ( const T t[3] );
+    APoint<T,4>&    operator =  ( const APoint<T,3> &p );
+    APoint<T,4>&    operator =  ( const UnitQuaternion<T>& uv );
+    const T&        operator [] ( int i );
+    APoint<T,4>&    operator += ( const APoint<T,4> &p );
+    APoint<T,4>&    operator -= ( const APoint<T,4> &p );
+    APoint<T,4>&    operator %= ( const APoint<T,4> &p );
+    APoint<T,4>&    operator *= ( const double d );
+    APoint<T,4>&    operator /= ( double d );
+  };
+
 
 
 

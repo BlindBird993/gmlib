@@ -741,6 +741,9 @@ namespace GMlib {
   template <typename T>
   V_getnorm(3)
 
+  template <typename T>
+  V_getnorm(4)
+
   /*! Vector<T,n> Vector<T, n>::getLinIndVec() const
    *  \brief Get a linear independent vector to the vector
    *
@@ -776,6 +779,10 @@ namespace GMlib {
   template <typename T>
   V_getliniv(3)
 
+  template <typename T>
+  V_getliniv(4)
+
+
   /*! APoint<T,n>& Vector<T, n>::normalize()
    *  \brief Normalize the vector
    *
@@ -796,6 +803,9 @@ namespace GMlib {
 
   template <typename T>
   V_getnormalize(3)
+
+  template <typename T>
+  V_getnormalize(4)
 
   /*! void Vector<T, n>::setLength( T length )
    *  \brief Set the length of the vector
@@ -820,6 +830,9 @@ namespace GMlib {
   template <typename T>
   V_setlength(3)
 
+  template <typename T>
+  V_setlength(4)
+
 
 
   //*************************************
@@ -840,6 +853,11 @@ namespace GMlib {
       this->_pt[0]=p(0); this->_pt[1]=p(1);
   }
 
+  template <typename T>
+  inline
+  Vector<T,2>::Vector( const APoint<T,4> &p) {
+      this->_pt[0]=p(0); this->_pt[1]=p(1);
+  }
 
   /*! Vector<T,2>::Vector<T,2>(const T& x,const T& y)
    *  \brief  Default Constructor
@@ -898,6 +916,12 @@ namespace GMlib {
       this->_pt[0]=p(0); this->_pt[1]=p(1); this->_pt[2]=T(0);
   }
 
+  template <typename T>
+  inline
+  Vector<T,3>::Vector( const APoint<T,4> &p) {
+      this->_pt[0]=p(0); this->_pt[1]=p(1); this->_pt[2]=p(2);
+  }
+
 
   /*! Vector<T,3>::Vector<T,3>(const T& x,const T& y,const T& z)
    *  \brief  Default Constructor
@@ -927,6 +951,31 @@ namespace GMlib {
       this->_pt[2]*v(0) - this->_pt[0]*v(2),
       this->_pt[0]*v(1) - this->_pt[1]*v(0)
     );
+  }
+
+
+
+  //*************************************
+  //** Specific members of Vector<T,4> **
+  //*************************************
+
+
+  template <typename T>
+  inline
+  Vector<T,4>::Vector( const APoint<T,2> &p) {
+      this->_pt[0]=p(0); this->_pt[1]=p(1); this->_pt[2]=T(0); this->_pt[3]=T(0);
+  }
+
+  template <typename T>
+  inline
+  Vector<T,4>::Vector( const APoint<T,3> &p) {
+      this->_pt[0]=p(0); this->_pt[1]=p(1); this->_pt[2]=p(2); this->_pt[3]=T(0);
+  }
+
+  template <typename T>
+  inline
+  Vector<T,4>::Vector( const T& x1, const T& x2, const T& x3, const T& x4) {
+      this->_pt[0]=x1; this->_pt[1]=x2; this->_pt[2]=x3; this->_pt[3]=x4;
   }
 
 
@@ -1170,6 +1219,107 @@ namespace GMlib {
 
   template <typename T>
   UV_de(3)
+
+
+  //********************************************************************
+  //******  The UnitQuaternion class, constructors and functions  ******
+  //********************************************************************
+  //********************************************************************
+
+  template <typename T>
+  inline
+  UnitQuaternion<T>::UnitQuaternion() : Quaternion<T>() {}
+
+  template <typename T>
+  inline
+  UnitQuaternion<T>::UnitQuaternion( const T t[4] ) : Quaternion<T>(t) {
+    APoint<T,4>::operator /= ( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  UnitQuaternion<T>::UnitQuaternion(const T& q0, const T& q1, const T& q2, const T& q3) :
+    Quaternion<T>( q0, q1, q2, q3 ) {
+
+    APoint<T,4>::operator /= ( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  UnitQuaternion<T>::UnitQuaternion( const UnitQuaternion& uq ) : Quaternion<T>(uq) {}
+
+  template <typename T>
+  inline
+  UnitQuaternion<T>::UnitQuaternion( const APoint<T,4> &p ) : Quaternion<T>(p) {
+    APoint<T,4>::operator /= ( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator =  ( const T t ) {
+    _cpy(t);
+    return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator =  ( const T t[3] ) {
+    _cpy(t);
+    return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator =  ( const APoint<T,3> &p ) {
+    _cpy(p);
+    return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator =  ( const UnitQuaternion<T>& uv ) {
+    _cpy(uv);
+    return *this;
+  }
+
+  template <typename T>
+  inline
+  const T& UnitQuaternion<T>::operator [] ( int i ) {
+    return APoint<T,4>::_pt[i];
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator += ( const APoint<T,4> &p ) {
+    _cpy(p);
+    return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator -= ( const APoint<T,4> &p ) {
+    _cpy(p);
+    return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator %= ( const APoint<T,4> &p ) {
+    _cpy(p);
+    return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator *= ( const double d ) {
+    return *this;
+  }
+
+  template <typename T>
+  inline
+  APoint<T,4>& UnitQuaternion<T>::operator /= ( double d ) {
+    return *this;
+  }
 
 
 

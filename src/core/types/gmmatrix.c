@@ -26,6 +26,10 @@
  *
  */
 
+
+
+#include <cmath>
+
 namespace GMlib {
 
 
@@ -1166,7 +1170,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  HqMatrix_<T, n>::HqMatrix_():SqMatrix<T,n+1>()				{}
+  HqMatrix_<T, n>::HqMatrix_():SqMatrix<T,n+1>() {}
 
 
   /*! HqMatrix_<T, n>::HqMatrix_(bool i):SqMatrix<T,n+1>(i)
@@ -1176,7 +1180,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  HqMatrix_<T, n>::HqMatrix_(bool i):SqMatrix<T,n+1>(i)			{}
+  HqMatrix_<T, n>::HqMatrix_(bool i):SqMatrix<T,n+1>(i) {}
 
 
   /*! HqMatrix_<T, n>::HqMatrix_(const Matrix<T,n+1,n+1>& v):SqMatrix<T,n+1>(v)
@@ -1223,7 +1227,6 @@ namespace GMlib {
 
     GM_Static2_<T,n,n+1>::eq2( d.getPtr(), this->getPtr()+n );
   }
-
 
   /*! HqMatrix_<T, n>::HqMatrix_(Angle a,  int x, int y)
    *  \brief The clean rotation constructor
@@ -1702,7 +1705,55 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
     GM_Static_P_<T,3,3>::hq_3x(this->getPtr()+3,x.getPtr(),r,p.getPtr());
   }
 
+  /*!
+   *  \brief Creates a rotation matrix from a Quaternion
+   *
+   * Creates a rotation matrix from a quaternion.
+   * Using homogeneous quaternion coordinates, which preserves orthogonality.
+   */
+  template <typename T>
+  inline
+  HqMatrix<T,3>::HqMatrix(const Quaternion<T>& q) {
 
+    // Homogeneous expression
+    (*this)[0][0] = std::pow(q(0),2) + std::pow(q(3),2) - std::pow(q(1),2) - std::pow(q(2),2);
+    (*this)[0][1] =     2 * ( q(0) * q(1) - q(2) * q(3) );
+    (*this)[0][2] =     2 * ( q(0) * q(2) + q(1) * q(3) );
+
+    (*this)[1][0] =     2 * ( q(0) * q(1) + q(2) * q(3) );
+    (*this)[1][1] = std::pow(q(1),2) + std::pow(q(3),2)- std::pow(q(2),2) - std::pow(q(0),2);
+    (*this)[1][2] =     2 * ( q(1) * q(2) - q(0) * q(3) );
+
+    (*this)[2][0] =     2 * ( q(0) * q(2) - q(1) * q(3) );
+    (*this)[2][1] =     2 * ( q(1) * q(2) + q(0) * q(3) );
+    (*this)[2][2] = std::pow(q(2),2) + std::pow(q(3),2) - std::pow(q(0),2) - std::pow(q(1),2);
+  }
+
+  /*!
+   *  \brief Creates a rotation matrix from a UnitQuaternion
+   *
+   * Creates a rotation matrix from a unit-quaternion.
+   * Using in-homogeneous quaternion coordinates.
+   * The orthogonality is preserved through the unit-length
+   * of the quaternion.
+   */
+  template <typename T>
+  inline
+  HqMatrix<T,3>::HqMatrix(const UnitQuaternion<T>& q) {
+
+    // In-homogeneous expression
+    (*this)[0][0] = 1 - 2 * ( std::pow(q(1),2) + std::pow(q(2),2));
+    (*this)[0][1] =     2 * ( q(0) * q(1) - q(2) * q(3) );
+    (*this)[0][2] =     2 * ( q(0) * q(2) + q(1) * q(3) );
+
+    (*this)[1][0] =     2 * ( q(0) * q(1) + q(2) * q(3) );
+    (*this)[1][1] = 1 - 2 * ( std::pow(q(0),2) + std::pow(q(2),2));
+    (*this)[1][2] =     2 * ( q(1) * q(2) - q(0) * q(3) );
+
+    (*this)[2][0] =     2 * ( q(0) * q(2) - q(1) * q(3) );
+    (*this)[2][1] =     2 * ( q(1) * q(2) + q(0) * q(3) );
+    (*this)[2][2] = 1 - 2 * ( std::pow(q(0),2) + std::pow(q(1),2));
+  }
 
   /*! void HqMatrix<T,3>::rotate(Angle a, const Vector<T,3>& rot_axis)
    *  \brief Add a rotation to this matrix: (*this) = HqMatrix<T,3>(a,rot_axis) * (*this)
@@ -1731,6 +1782,20 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
     *this = *this * x;
   }
 
+  template <typename T>
+  inline
+  void HqMatrix<T,3>::rotate(const Quaternion<T>& q ) {
+    HqMatrix<T,3> x(q);
+    *this = *this * x;
+  }
+
+  template <typename T>
+  inline
+  void HqMatrix<T,3>::rotateGlobal(const Quaternion<T>& q ) {
+    HqMatrix<T,3> x(q);
+    this->reverseMult(x);
+  }
+
 
   /*! void HqMatrix<T,3>::rotateGlobal(Angle a, const Vector<T,3>& rot_axis)
    *  \brief Add a rotation to this matrix: (*this) = HqMatrix<T,n>(a,rot_axis) * (*this)
@@ -1755,6 +1820,20 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
   void HqMatrix<T,3>::rotateGlobal(Angle a, const Vector<T,3>& rot_axis, const APoint<T,3>& p){
     HqMatrix<T,3> x(a,rot_axis,p);
     this->reverseMult( x );
+  }
+
+  template <typename T>
+  inline
+  void HqMatrix<T,3>::rotate(const UnitQuaternion<T>& q ) {
+    HqMatrix<T,3> x(q);
+    *this = *this * x;
+  }
+
+  template <typename T>
+  inline
+  void HqMatrix<T,3>::rotateGlobal(const UnitQuaternion<T>& q ) {
+    HqMatrix<T,3> x(q);
+    this->reverseMult(x);
   }
 
 

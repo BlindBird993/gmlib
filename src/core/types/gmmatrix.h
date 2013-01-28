@@ -423,13 +423,21 @@ namespace GMlib {
     HqMatrix(Angle a, const Vector<T,3>& rot_axis);
     HqMatrix(Angle a, const Vector<T,3>& rot_axis, const APoint<T,3>& p);
 
+    HqMatrix(const Quaternion<T>& q );
+    HqMatrix(const UnitQuaternion<T>& q );
+
     void          rotate(Angle a, const Vector<T,3>& rot_axis);
     void          rotate(Angle a, const Vector<T,3>& rot_axis, const APoint<T,3>& p);
+    void          rotate(const Quaternion<T>& q);
+    void          rotate(const UnitQuaternion<T>& q);
     void          rotateGlobal(Angle a, const Vector<T,3>& rot_axis);
     void          rotateGlobal(Angle a, const Vector<T,3>& rot_axis, const APoint<T,3>& p);
+    void          rotateGlobal(const Quaternion<T>& q);
+    void          rotateGlobal(const UnitQuaternion<T>& q);
 
     void          rotate(Angle a, const Vector<T,3>& u, const Vector<T,3>& v){HqMatrix_<T,3>::rotate(a,u,v);}
     void          rotate(Angle a, const Vector<T,3>& u, const Vector<T,3>& v, const APoint<T,3>& p){HqMatrix_<T,3>::rotate(a,u,v,p);}
+
     void          rotateGlobal(Angle a, const Vector<T,3>& u, const Vector<T,3>& v){HqMatrix_<T,3>::rotateGlobal(a,u,v);}
     void          rotateGlobal(Angle a, const Vector<T,3>& u, const Vector<T,3>& v, const APoint<T,3>& p){HqMatrix_<T,3>::rotateGlobal(a,u,v,p);}
 
