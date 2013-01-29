@@ -1,3 +1,6 @@
 [submodule "ecmake"]
 	path = ecmake
 	url = git://gitorious.hin.no/ecmake/ecmake.git
+[submodule "cmake/modules/findopencl"]
+	path = cmake/modules/findopencl
+	url = git://gitorious.org/findopencl/findopencl.git

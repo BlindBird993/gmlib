@@ -52,6 +52,16 @@ if( GMLIB_TEST )
   # Add Script module
   addModule(Script TestUtils Core)
 
+  if( OPENCL_ENABLED )
+
+    # Add OpenCL module
+    addModule(OpenCL TestUtils Core)
+
+    # Add Wavelet module
+    addModule(Wavelet OpenCL TestUtils Core)
+
+  endif( OPENCL_ENABLED )
+
 else( GMLIB_TEST )
 
   # Add core module
@@ -74,6 +84,17 @@ else( GMLIB_TEST )
 
   # Add Script module
   addModule(Script Core)
+
+
+  if( OPENCL_ENABLED )
+
+    # Add OpenCL module
+    addModule(OpenCL Core)
+
+    # Add Wavelet module
+    addModule(Wavelet OpenCL Core)
+
+  endif( OPENCL_ENABLED )
 
 endif( GMLIB_TEST )
 

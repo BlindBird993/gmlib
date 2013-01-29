@@ -31,6 +31,12 @@ cmake_minimum_required(VERSION 2.8)
 option( GMLIB_STREAM "Enable output stream operators for core types." TRUE )
 option( GMLIB_OGL_DEBUG "Enable opengl debug. OpenGL function calls are safe called." FALSE )
 
+# Open CL options
+option( GMLIB_OPENCL "Enable building of OpenCL dependent modules." FALSE )
+if( GMLIB_OPENCL )
+  set( OPENCL_ENABLED TRUE )
+endif()
+
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE)
   message(STATUS "Setting build type to 'Release' as none was specified.")
@@ -105,6 +111,17 @@ include(cmake/modules/FindGlew.cmake)
 #else( GLEW_FOUND )
 #  message( "GLEW NOT FOUND!" )
 #endif( GLEW_FOUND )
+
+# Find OpenCL
+if( OPENCL_ENABLED )
+
+  include( cmake/modules/findopencl/FindOpenCL.cmake)
+  set( OPENCL_ENABLED ${OPENCL_FOUND} )
+
+  if( OPENCL_ENABLED )
+    include_directories(${OPENCL_INCLUDE_DIRS})
+  endif()
+endif()
 
 ################################
 # Create source code build rules
