@@ -1,7 +1,9 @@
 #include "gmeventmanager.h"
 
 #include <assert.h>
+
 #include "gmevent.h"
+#include "gmeventcontroller.h"
 
 using namespace GMlib;
 

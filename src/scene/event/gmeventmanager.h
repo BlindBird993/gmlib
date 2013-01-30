@@ -23,12 +23,13 @@
 #ifndef __GM_SCENE_EVENT_GMEVENTMANAGER_H__
 #define __GM_SCENE_EVENT_GMEVENTMANAGER_H__
 
-#include <gmCoreModule>
-
-#include "gmevent.h"
-#include "gmeventcontroller.h"
+//- gmlib
+#include <core/containers/gmarray.h>
 
 namespace GMlib {
+
+  class Event;
+  class EventController;
 
   /*!
    * \class EventManager gmeventmanager.h <gmEventManager>

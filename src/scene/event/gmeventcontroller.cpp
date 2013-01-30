@@ -7,19 +7,6 @@ EventController::EventController() {
 }
 
 /*!
- * \brief EventController::add
- * \param so - scene object
- *
- *  Adds a scene object to be controlled by this controller
- *
- */
-bool
-EventController::add(SceneObject *so) {
-  _scene_objects.insert(so);
-  return doInsert(so);
-}
-
-/*!
  * \brief EventController::getEvents
  * \param events - list of events
  * \param dt - delta time
@@ -41,12 +28,6 @@ EventController::handleEvent(Array<Event*>& events, Event* event) {
   bool did_update = doUpdate(event);
   detectEvents(events, event);
   return did_update;
-}
-
-bool
-EventController::doInsert(SceneObject *so) {
-  //- Default does nothing
-  return false;
 }
 
 bool

@@ -23,12 +23,12 @@
 #ifndef __GM_SCENE_EVENT_GMEVENTCONTROLLER_H__
 #define __GM_SCENE_EVENT_GMEVENTCONTROLLER_H__
 
-#include "gmevent.h"
-
-#include <gmCoreModule>
+//- gmlib
+#include <core/containers/gmarray.h>
 
 namespace GMlib {
 
+  class Event;
   class SceneObject;
 
   /*!
@@ -54,18 +54,13 @@ namespace GMlib {
   public:
     EventController();
 
-    bool add(SceneObject* so);
     bool getEvents(Array<Event*>& events, double dt);
     bool handleEvent(Array<Event*>& events, Event* event);
 
   private:
     virtual bool detectEvents(Array<Event*>& events, double dt) = 0;
     virtual bool detectEvents(Array<Event*>& events, Event* event) = 0;
-    virtual bool doInsert(SceneObject* so);
     virtual bool doUpdate(Event* event);
-
-  protected:
-    Array<SceneObject*> _scene_objects;
   };
 
 }
