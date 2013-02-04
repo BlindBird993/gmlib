@@ -534,6 +534,13 @@ namespace GMlib {
     this->_pt[0]=x; this->_pt[1]=y;
   }
 
+
+  /*! Point<T,2>::Point(const Point<T,3>& p)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
   template <typename T>
   inline
   Point<T,2>::Point(const APoint<T,3>& p) {
@@ -655,6 +662,19 @@ namespace GMlib {
   inline
   Point<T,3>::Point(const T& x,const T& y,const T& z) {
     this->_pt[0]=x; this->_pt[1]=y; this->_pt[2]=z;
+  }
+
+
+  /*! Point<T,3>::Point(const Point<T,2>& p)
+   *  \brief  Default Constructor
+   *
+   *  Detailed description of
+   *  the default constructor
+   */
+  template <typename T>
+  inline
+  Point<T,3>::Point(const APoint<T,2>& p) {
+    this->_pt[0]=p(0); this->_pt[1]=p(1); this->_pt[2]=T(0);
   }
 
   /*! Point<T,3> Point<T,3> ::operator^(const Point<T,3>& v)  const
