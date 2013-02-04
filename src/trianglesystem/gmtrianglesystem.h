@@ -148,8 +148,8 @@ namespace GMlib {
     GL::GLProgram                         _dprog;
     GL::GLProgram                         _sprog;
 
-    Array< TriangleFacetsVisualizer<T>* >      _tf_visualizers;
-    TriangleFacetsDefaultVisualizer<T>         *_default_visualizer;
+    Array< TriangleFacetsVisualizer<T>* >    _tf_visualizers;
+    TriangleFacetsDefaultVisualizer<T>      *_default_visualizer;
 
   private:
     ArrayLX< TSEdge<T>* >             _edges;
@@ -286,7 +286,7 @@ namespace GMlib {
     bool                    boundary() const;
     Arrow<T,3>              getArrow();
     ArrayT<TSEdge<T>*>&	    getEdges();
-    Point<T,3>              getNormal() const;
+    Vector<T,3>             getNormal() const;
     Array<TSEdge<T>*>       getOuterEdges() const;
     Point<T,2>              getParameter() const;
     Point<T,3>              getPosition() const;

@@ -61,9 +61,9 @@ namespace GMlib {
     : ArrayLX<TSVertex<T> >(v.size()+3), _edges(),_triangles(),
     _dprog("default"), _sprog("select")
   {
+    this->setSize(v.size());
+    for(int i=0; i<v.size(); i++) (*this)[i] = v(i);
 
-    (*this) = v;
-    //setStreamMode();
     _dlist_name = 0;
     glGenBuffers( 1, &_vbo );
     glGenBuffers( 1, &_ibo );
@@ -290,11 +290,10 @@ namespace GMlib {
 
 
   template <typename T>
+  inline
   bool TriangleFacets<T>::_removeLastVertex() {
 
-    (*this)[ this->getSize()-1 ]._deleteEdges();
-    return this->removeIndex( this->getSize()-1 );
-
+    return removeVertex((*this)[this->getSize()-1]);
   }
 
 
@@ -566,17 +565,20 @@ namespace GMlib {
     return &this->getElement(i);
   }
 
+
   template <typename T>
   const Array<TSVEdge<T> >& TriangleFacets<T>::getVoronoiEdges() const {
 
     return _voredges;
   }
 
+
   template <typename T>
   const Array<Point<T,2> >& TriangleFacets<T>::getVoronoiPoints() const {
 
     return _vorpnts;
   }
+
 
 
   template <typename T>
@@ -671,6 +673,7 @@ namespace GMlib {
   }
 
 
+
   template <typename T>
   bool TriangleFacets<T>::insertVertex( TSVertex<T>& v, bool c ) {
 
@@ -703,6 +706,8 @@ namespace GMlib {
     return inserted;
   }
 
+
+
   template <typename T>
   bool TriangleFacets<T>::removeVertex( TSVertex<T>& v ) {
 
@@ -711,11 +716,11 @@ namespace GMlib {
     int id = getIndex(v);
     if( id < 0 ) return false;
 
-    v.deleteEdges();
+    v._deleteEdges();
 
     ArrayT<TSEdge<T>*> edges = (*this)[this->getSize()-1].getEdges();
     for ( int i=0; i < edges.getSize(); i++ )
-      edges[i]->swapVertex((*this)[this->getSize() - 1],(*this)[id]);
+      edges[i]->_swapVertex((*this)[this->getSize() - 1],(*this)[id]);
 
     return this->removeIndex(id);
   }
@@ -888,13 +893,13 @@ namespace GMlib {
     // Here we constuct the dervided structure for speeding up the algoritm
     //**********************************************************************
 
-    if(this->getSize() < 200)			_d = 2;
-    else if(this->getSize() < 800)		_d = 3;
-    else if(this->getSize() < 3200)		_d = 4;
-    else if(this->getSize() < 12800)		_d = 5;
-    else if(this->getSize() < 51200)		_d = 6;
-    else if(this->getSize() < 204800)	_d = 7;
-    else						_d = 8;
+    if(this->getSize() < 200)         _d = 2;
+    else if(this->getSize() < 800)    _d = 3;
+    else if(this->getSize() < 3200)   _d = 4;
+    else if(this->getSize() < 12800)  _d = 5;
+    else if(this->getSize() < 51200)  _d = 6;
+    else if(this->getSize() < 204800) _d = 7;
+    else                              _d = 8;
 
     int n = 1 << _d;
 
@@ -1230,6 +1235,7 @@ namespace GMlib {
   void TSVertex<T>::_computeNormal() {
 
     Array<TSTriangle<T>*> tris = getTriangles();
+
     Vector<T,3> nor(T(0));
     for( int i = 0; i < tris.getSize(); i++ )
       nor += tris[i]->getNormal();
@@ -1313,7 +1319,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Point<T,3> TSVertex<T>::getNormal() const {
+  Vector<T,3> TSVertex<T>::getNormal() const {
 
     return this->getDir();
   }
@@ -1323,8 +1329,8 @@ namespace GMlib {
   Array<TSEdge<T>*> TSVertex<T>::getOuterEdges() const {
 
     Array<TSTriangle<T>*> tris  = getTriangles();
-    Array<TSEdge<T>*>		s_edg = getEdges();
-    Array<TSEdge<T>*>		o_edg( s_edg.getSize() );
+    Array<TSEdge<T>*>     s_edg = getEdges();
+    Array<TSEdge<T>*>     o_edg( s_edg.getSize() );
 
     int i, j;
     for( i = 0; i < tris.getSize(); i++ ) {
@@ -1402,7 +1408,7 @@ namespace GMlib {
   int  TSVertex<T>::isInside( TSTriangle<T>* t ) const {
 
     Array<TSVertex<T>*> v = t->getVertices();
-    Array<Point<T,2> > a;
+    Array<Point<T,2> >  a;
 
     for( int i = 0; i < 3; i++ )
       a += v[i]->getParameter();
@@ -1458,7 +1464,7 @@ namespace GMlib {
     _edges = t._edges;
     _const = t._const;
 
-    _set( t.getPosition(),	t.getNormal() );
+    _set( t.getPosition(), t.getNormal() );
 
     return (*this);
   }
@@ -1593,7 +1599,7 @@ namespace GMlib {
   TSEdge<T>::~TSEdge() {
 
     if( _triangle[0] != NULL )  delete _triangle[0];
-    if( _triangle[1] != NULL )	delete _triangle[1];
+    if( _triangle[1] != NULL )  delete _triangle[1];
     if( _vertex[0] != NULL )  _vertex[0]->_removeEdge(this);
     if( _vertex[1] != NULL )  _vertex[1]->_removeEdge(this);
 
@@ -1746,10 +1752,8 @@ namespace GMlib {
       if( _triangle[0] != NULL ) edg1 = _triangle[0]->getEdges();
       if( _triangle[1] != NULL ) edg2 = _triangle[1]->getEdges();
 
-    if( _triangle[0] != NULL ) {
-      // swap triangles, _triang[0] should be on left
+    if( _triangle[0] != NULL ) { // swap triangles, _triang[0] should be on left
       if(_vertex[0] == getCommonVertex(*(edg1[1]))) {
-
         TSTriangle<T>* st = _triangle[0];
         _triangle[0] = _triangle[1];
         _triangle[1] = st;
@@ -1757,8 +1761,7 @@ namespace GMlib {
         if( _triangle[1] != NULL ) edg2 = _triangle[1]->getEdges();
       }
     }
-    else {
-      // swap triangles, _triang[0] should be on left
+    else { // swap triangles, _triang[0] should be on left
       if(_vertex[0] != getCommonVertex(*(edg2[1]))) {
 
         TSTriangle<T>* st = _triangle[0];
@@ -2477,8 +2480,10 @@ namespace GMlib {
   Vector<T,3> TSTriangle<T>::getNormal() const {
 
     Array<TSVertex<T>*> v = getVertices();
-    return  Vector<T,3>( v[1]->getPosition() - v[0]->getPosition() ) ^
-                       ( v[2]->getPosition() - v[1]->getPosition() );
+    Vector<T,3> a = v[1]->getPosition() - v[0]->getPosition();
+    Vector<T,3> b = v[2]->getPosition() - v[1]->getPosition();
+
+    return  a^b;
   }
 
 
@@ -2502,10 +2507,6 @@ namespace GMlib {
 
     return v.isInside(*this);
   }
-
-
-
-
 
 
 
