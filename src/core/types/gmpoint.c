@@ -534,6 +534,12 @@ namespace GMlib {
     this->_pt[0]=x; this->_pt[1]=y;
   }
 
+  template <typename T>
+  inline
+  Point<T,2>::Point(const APoint<T,3>& p) {
+    this->_pt[0]=p(0); this->_pt[1]=p(1);
+  }
+
 
   /*! int Point<T,2>::isInside(const Point<T,2>& v1,const Point<T,2>& v2,const Point<T,2>& v3) const
    *  \brief  Check if point is inside polygon
