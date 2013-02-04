@@ -65,7 +65,7 @@ namespace GMlib {
     prog.setUniform( "u_lighted", this->_obj->isLighted() );
     prog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
     prog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
-    prog.setUniform( "u_light_pos", Point3D<float>( 0.0f, 10.0f, 0.0f ) );
+    prog.setUniform( "u_light_pos", Point<float,3>( 0.0f, 10.0f, 0.0f ) );
 
     // Get Material Data
     const Material &m = this->_obj->getMaterial();
