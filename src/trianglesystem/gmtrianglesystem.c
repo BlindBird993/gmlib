@@ -654,7 +654,7 @@ namespace GMlib {
             TSVertex<T> vt = pwl.interpolate(i,tt);///FEILLLL
             vt.setConst();
             insertVertex(vt);
-            j = getIndex(vt);
+            j = this->getIndex(vt);
             p  = (*this)[j].getParameter();
 
             edges = (*this)[j].getEdges();
@@ -681,7 +681,7 @@ namespace GMlib {
 
     bool inserted = true;
 
-    int i = getIndex( v );
+    int i = this->getIndex( v );
 
     if (i<0) {
 
@@ -713,7 +713,7 @@ namespace GMlib {
 
     __e.set(*this);
 
-    int id = getIndex(v);
+    int id = this->getIndex(v);
     if( id < 0 ) return false;
 
     v._deleteEdges();
