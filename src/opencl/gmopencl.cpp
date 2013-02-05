@@ -77,7 +77,7 @@ namespace CL {
   const cl::Context&
   OpenCL::getContext() const {
 
-    _context;
+    return _context;
   }
 
   std::vector<cl::Device>
