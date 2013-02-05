@@ -21,19 +21,27 @@
 # ###############################################################################
 
 addHeaders(
-#  gmCommandQueue
-#  gmEvent
-#  gmKernel
+  gmCommandQueue
+  gmEvent
+  gmKernel
 #  gmMemory
   gmOpenCL
-#  gmProgram
+  gmProgram
+  gmSampler
 )
 
-addSources(gmopencl.cpp)
+addSources(
+  gmcommandqueue.cpp
+  gmevent.cpp
+  gmkernel.cpp
+#  gmmemory.cpp
+  gmopencl.cpp
+  gmprogram.cpp
+  gmsampler.cpp
+)
 
 addSubDirectory(memory)         # <memory> sub-module
 
 moduleLinkLibrary( ${OPENCL_LIBRARIES} )
 
-#addTestDir()
 

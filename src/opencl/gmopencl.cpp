@@ -82,7 +82,8 @@ namespace CL {
   }
 
 
-  bool OpenCL::createCommandQueue( const std::string &name, const cl::Device &device,
+  bool OpenCL::createCommandQueue( const std::string &name,
+                                   const cl::Device &device,
                                    cl_command_queue_properties properties) {
 
     if( name.empty() )
@@ -124,7 +125,22 @@ namespace CL {
     return true;
   }
 
-  bool OpenCL::buildProgram(const std::string &name, const cl::Program::Sources &sources) {
+  bool OpenCL::createProgram( const std::string &name,
+                              const cl::Program::Sources &sources) {
+
+    if( name.empty() )
+      return false;
+
+    if( _programs.find(name) != _programs.end() )
+      return false;
+
+    cl_int error;
+    _programs[name] = cl::Program(_context,sources,&error);
+    return error == CL_SUCCESS;
+  }
+
+  bool OpenCL::buildProgram( const std::string &name,
+                             const cl::Program::Sources &sources) {
 
     if( _programs.find(name) == _programs.end() )
       return false;
@@ -150,7 +166,8 @@ namespace CL {
     _programs.erase(name);
   }
 
-  cl::Kernel &OpenCL::getKernel(const std::string &program_name, const std::string &kernel_name) {
+  cl::Kernel &OpenCL::getKernel(const std::string &program_name,
+                                const std::string &kernel_name) {
 
     ProgramMap::iterator itr = _programs.find(program_name);
     if( itr == _programs.end() ) {
@@ -162,7 +179,57 @@ namespace CL {
     cl::Kernel( (*itr).second, kernel_name.c_str(), &error );
   }
 
-  bool OpenCL::createMemory(const std::string &name) {
+  bool OpenCL::createEvent(const std::string &name) {
+
+    if( name.empty() )
+      return false;
+
+    if( _events.find(name) != _events.end() )
+      return false;
+
+    _events[name].event = cl::Event();
+    _events[name].type  = EventInfo::EVENT;
+  }
+
+  bool OpenCL::createUserEvent(const std::string &name) {
+
+    if( name.empty() )
+      return false;
+
+    if( _events.find(name) != _events.end() )
+      return false;
+
+    _events[name].event = cl::UserEvent();
+    _events[name].type  = EventInfo::USER_EVENT;
+  }
+
+  void OpenCL::deleteEvent(const std::string &name) {
+
+    _events.erase(name);
+  }
+
+  cl::Event &OpenCL::getEvent(const std::string &name) {
+
+    EventMap::iterator itr = _events.find(name);
+    if( itr == _events.end() ) {
+      static cl::Event neutral_event;
+      return neutral_event;
+    }
+
+    return (*itr).second.event;
+  }
+
+  OpenCL::EventInfo::TYPE OpenCL::getEventType(const std::string &name) {
+
+    EventMap::iterator itr = _events.find(name);
+    if( itr == _events.end() )
+      return EventInfo::INVALID;
+
+    return (*itr).second.type;
+  }
+
+  bool OpenCL::createBuffer(const std::string &name, cl_mem_flags flags,
+                            size_t size, void *host_ptr) {
 
     if( name.empty() )
       return false;
@@ -170,7 +237,126 @@ namespace CL {
     if( _memory_objs.find(name) != _memory_objs.end() )
       return false;
 
-    _memory_objs[name] = cl::Memory();
+    cl_int error;
+    _memory_objs[name].memory = cl::Buffer(_context,flags,size,host_ptr,&error);
+    _memory_objs[name].type   = MemoryInfo::BUFFER;
+
+    return error == CL_SUCCESS;
+  }
+
+  bool OpenCL::createBufferGL(const std::string &name, cl_mem_flags flags,
+                              GLuint bufobj) {
+
+    if( name.empty() )
+      return false;
+
+    if( _memory_objs.find(name) != _memory_objs.end() )
+      return false;
+
+    cl_int error;
+    _memory_objs[name].memory = cl::BufferGL(_context,flags,bufobj,&error);
+    _memory_objs[name].type   = MemoryInfo::BUFFER_GL;
+
+    return error == CL_SUCCESS;
+  }
+
+  bool OpenCL::createBufferRenderGL(const std::string &name, cl_mem_flags flags,
+                                    GLuint bufobj) {
+
+    if( name.empty() )
+      return false;
+
+    if( _memory_objs.find(name) != _memory_objs.end() )
+      return false;
+
+    cl_int error;
+    _memory_objs[name].memory = cl::BufferRenderGL(_context,flags,bufobj,&error);
+    _memory_objs[name].type   = MemoryInfo::BUFFER_RENDER_GL;
+
+    return error == CL_SUCCESS;
+  }
+
+  bool OpenCL::createImage2D(const std::string &name, cl_mem_flags flags,
+                             cl::ImageFormat format, ::size_t width, ::size_t height,
+                             size_t row_pitch, void *host_ptr) {
+
+    if( name.empty() )
+      return false;
+
+    if( _memory_objs.find(name) != _memory_objs.end() )
+      return false;
+
+    cl_int error;
+    _memory_objs[name].memory = cl::Image2D(_context,
+                                         flags,format,
+                                         width,height,row_pitch,
+                                         host_ptr,
+                                         &error);
+    _memory_objs[name].type   = MemoryInfo::IMAGE_2D;
+
+    return error == CL_SUCCESS;
+  }
+
+  bool OpenCL::createImage2DGL(const std::string &name, cl_mem_flags flags,
+                               GLenum target, GLint miplevel, GLuint texobj) {
+
+    if( name.empty() )
+      return false;
+
+    if( _memory_objs.find(name) != _memory_objs.end() )
+      return false;
+
+    cl_int error;
+    _memory_objs[name].memory = cl::Image2DGL(_context,
+                                         flags,target,
+                                         miplevel, texobj,
+                                         &error);
+    _memory_objs[name].type   = MemoryInfo::IMAGE_2D_GL;
+
+    return error == CL_SUCCESS;
+  }
+
+  bool OpenCL::createImage3D(const std::string &name, cl_mem_flags flags,
+                             cl::ImageFormat format,
+                             ::size_t width, ::size_t height, ::size_t depth,
+                             ::size_t row_pitch, ::size_t slice_pitch,
+                             void *host_ptr) {
+
+    if( name.empty() )
+      return false;
+
+    if( _memory_objs.find(name) != _memory_objs.end() )
+      return false;
+
+    cl_int error;
+    _memory_objs[name].memory = cl::Image3D(_context,
+                                         flags,format,
+                                         width,height,depth,
+                                         row_pitch,slice_pitch,
+                                         host_ptr,
+                                         &error);
+    _memory_objs[name].type   = MemoryInfo::IMAGE_3D;
+
+    return error == CL_SUCCESS;
+  }
+
+  bool OpenCL::createImage3DGL(const std::string &name, cl_mem_flags flags,
+                               GLenum target, GLint miplevel, GLuint texobj) {
+
+    if( name.empty() )
+      return false;
+
+    if( _memory_objs.find(name) != _memory_objs.end() )
+      return false;
+
+    cl_int error;
+    _memory_objs[name].memory = cl::Image3DGL(_context,
+                                         flags,target,
+                                         miplevel, texobj,
+                                         &error);
+    _memory_objs[name].type = MemoryInfo::IMAGE_3D_GL;
+
+    return error == CL_SUCCESS;
   }
 
   void OpenCL::deleteMemory(const std::string &name) {
@@ -186,34 +372,48 @@ namespace CL {
       return invalid_memory_object;
     }
 
-    return (*itr).second;
+    return (*itr).second.memory;
   }
 
+  OpenCL::MemoryInfo::TYPE OpenCL::getMemoryType(const std::string &name) {
 
+    MemoryMap::iterator itr = _memory_objs.find(name);
+    if( itr == _memory_objs.end() )
+      return MemoryInfo::INVALID;
 
+    return (*itr).second.type;
+  }
 
+  bool OpenCL::createSampler( const std::string &name,
+                              cl_bool normalized_coords,
+                              cl_addressing_mode addressing_mode,
+                              cl_filter_mode filter_mode) {
 
+    if( name.empty() )
+      return false;
 
+    if( _samplers.find(name) != _samplers.end() )
+      return false;
 
+    _samplers[name] = cl::Sampler( _context, normalized_coords,
+                                   addressing_mode, filter_mode );
+  }
 
+  void OpenCL::deleteSampler(const std::string &name) {
 
+    _samplers.erase(name);
+  }
 
+  cl::Sampler &OpenCL::getSampler(const std::string &name) {
 
+    SamplerMap::iterator itr = _samplers.find(name);
+    if( itr == _samplers.end() ) {
+      static cl::Sampler invalid_sampler;
+      return invalid_sampler;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return (*itr).second;
+  }
 
 
 
