@@ -27,6 +27,9 @@
 #define __GM_OPENCL_GMOPENCL_H__
 
 
+// gmlib
+#include <core/utils/gmutils.h>
+
 // OpenCL
 #define __CL_ENABLE_EXCEPTIONS
 #include <CL/cl.hpp>
@@ -136,7 +139,8 @@ namespace CL {
     bool                                  createEvent( const std::string& name );
     bool                                  createUserEvent( const std::string& name );
     void                                  deleteEvent( const std::string& name );
-    cl::Event&                            getEvent( const std::string& name );
+    template <class T, OpenCL::EventInfo::TYPE T_type>
+    T&                                    getEvent( const std::string& name );
     EventInfo::TYPE                       getEventType( const std::string& name );
 
     // Memory
@@ -177,7 +181,8 @@ namespace CL {
                                                            GLint  miplevel,
                                                            GLuint texobj );
     void                                  deleteMemory( const std::string& name );
-    cl::Memory&                           getMemory( const std::string& name );
+    template <class T, OpenCL::MemoryInfo::TYPE T_type>
+    T&                                    getMemory( const std::string& name );
     MemoryInfo::TYPE                      getMemoryType( const std::string& name );
 
     // Sampler
@@ -200,8 +205,66 @@ namespace CL {
     MemoryMap           _memory_objs;
     SamplerMap          _samplers;
 
-
   }; // END class OpenCL
+
+  template <class T, OpenCL::EventInfo::TYPE T_type>
+  T& OpenCL::getEvent( const std::string& name ) {
+
+    GMutils::DerivedFrom<T,cl::Event>();
+
+    static T neutral_event;
+
+    EventMap::iterator itr = _events.find(name);
+    if( itr == _events.end() )
+      return neutral_event;
+
+    if( (*itr).second.type != T_type )
+      return neutral_event;
+
+    return *(T*)(void*)(&(*itr).second.event); // s@#%^*!
+  }
+
+  template <class T, OpenCL::MemoryInfo::TYPE T_type>
+  T& OpenCL::getMemory( const std::string& name ) {
+
+    GMutils::DerivedFrom<T,cl::Memory>();
+
+    static T invalid_memory_object;
+
+    MemoryMap::iterator itr = _memory_objs.find(name);
+    if( itr == _memory_objs.end() )
+      return invalid_memory_object;
+
+    if( (*itr).second.type != T_type )
+      return invalid_memory_object;
+
+    return *static_cast<T*>((void*)(&(*itr).second.memory)); // s@#%^*!
+  }
+
+
+//  template <class T, OpenCL::MemoryInfo::TYPE T_type>
+//  T OpenCL::get<T,T_type,cl::Event>( const std::string& name ) {
+//  }
+
+//  template <int T_type, class B>
+//  cl::Memory OpenCL<cl::Memory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -217,10 +280,10 @@ namespace CL {
   public:
     explicit CLObject();
     explicit CLObject( const std::string& name );
-    explicit CLObject( const std::string& name, T& obj );
+    explicit CLObject(const std::string& name, T obj );
     explicit CLObject( const CLObject& copy );
 
-    bool                    isValid() const;
+    bool                    isManaged() const;
     CLObject&               operator = ( const CLObject& other );
 
     // CL++ object access
@@ -236,7 +299,7 @@ namespace CL {
 
 
   protected:
-    bool                    _valid;
+    bool                    _managed;
 
     // variables "managed" by the backend
     mutable T               _obj;
@@ -246,14 +309,18 @@ namespace CL {
 
 
 
-  template <typename T>
-  CLObject<T>::CLObject() : _valid(false), _obj(), _name() {}
+
+
+
 
   template <typename T>
-  CLObject<T>::CLObject(const std::string &name) : _valid(false), _obj(), _name(name) {}
+  CLObject<T>::CLObject() : _managed(false), _obj(), _name() {}
 
   template <typename T>
-  CLObject<T>::CLObject(const std::string &name, T& obj) : _valid(false), _obj(obj), _name(name) {}
+  CLObject<T>::CLObject(const std::string &name) : _managed(false), _obj(), _name(name) {}
+
+  template <typename T>
+  CLObject<T>::CLObject(const std::string &name, T obj) : _managed(false), _obj(obj), _name(name) {}
 
   template <typename T>
   inline
@@ -278,9 +345,9 @@ namespace CL {
 
   template <typename T>
   inline
-  bool CLObject<T>::isValid() const {
+  bool CLObject<T>::isManaged() const {
 
-    return _valid;
+    return _managed;
   }
 
   template <typename T>
@@ -301,10 +368,11 @@ namespace CL {
   inline
   CLObject<T>& CLObject<T>::operator = ( const CLObject<T>& other ) {
 
-    _valid =  other._valid;
-    _obj =    other._obj;
-    _name =   other._name;
+    _managed = other._managed;
+    _obj     = other._obj;
+    _name    = other._name;
   }
+
 
 
 } // END namespace CL

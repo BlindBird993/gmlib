@@ -20,15 +20,14 @@
 **
 **********************************************************************************/
 
-//! \file gmevent.h
+//! \file gmbufferrendergl.h
 
 
-#ifndef __GM_OPENCL_GMEVENT_H__
-#define __GM_OPENCL_GMEVENT_H__
+#ifndef __GM_OPENCL_MEMORY_GMBUFFERRENDERGL_H__
+#define __GM_OPENCL_MEMORY_GMBUFFERRENDERGL_H__
 
 
-// local
-#include "gmopencl.h"
+#include "../gmmemory.h"
 
 // stl
 #include <string>
@@ -38,12 +37,13 @@ namespace GMlib {
 namespace CL {
 
 
-  class Event : public CLObject<cl::Event> {
+  class BufferRenderGL : public Memory<cl::BufferRenderGL,OpenCL::MemoryInfo::BUFFER_RENDER_GL> {
   public:
-    Event();
-    Event( const std::string& name );
+    BufferRenderGL();
+    BufferRenderGL( const std::string& name );
 
-  }; // END class Event
+
+  }; // END class BufferRenderGL
 
 
 
@@ -52,4 +52,4 @@ namespace CL {
 } // END namespace GMlib
 
 
-#endif // __GM_OPENCL_GMEVENT_H__
+#endif // __GM_OPENCL_MEMORY_GMBUFFERRENDERGL_H__

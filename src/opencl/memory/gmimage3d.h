@@ -20,22 +20,36 @@
 **
 **********************************************************************************/
 
-//! \file gmevent.cpp
+//! \file gmimage3d.h
 
-#include "gmevent.h"
+
+#ifndef __GM_OPENCL_MEMORY_GMIMAGE3D_H__
+#define __GM_OPENCL_MEMORY_GMIMAGE3D_H__
+
+
+#include "../gmmemory.h"
+
+// stl
+#include <string>
 
 namespace GMlib {
 
 namespace CL {
 
-  Event::Event() {}
 
-  Event::Event(const std::string &name)
-    : CLObject<cl::Event>(name, OpenCL::getInstance()->getEvent(name)) {}
+  class Image3D : public Memory<cl::Image3D,OpenCL::MemoryInfo::IMAGE_3D> {
+  public:
+    Image3D();
+    Image3D( const std::string& name );
+
+
+  }; // END class Image3D
+
+
 
 } // END namespace CL
 
 } // END namespace GMlib
 
 
-
+#endif // __GM_OPENCL_MEMORY_GMIMAGE3D_H__

@@ -22,9 +22,9 @@
 
 addHeaders(
   gmCommandQueue
-  gmEvent
+  gmEventBase
   gmKernel
-#  gmMemory
+  gmMemory
   gmOpenCL
   gmProgram
   gmSampler
@@ -32,14 +32,13 @@ addHeaders(
 
 addSources(
   gmcommandqueue.cpp
-  gmevent.cpp
   gmkernel.cpp
-#  gmmemory.cpp
   gmopencl.cpp
   gmprogram.cpp
   gmsampler.cpp
 )
 
+addSubDirectory(event)          # <event> sub-module
 addSubDirectory(memory)         # <memory> sub-module
 
 moduleLinkLibrary( ${OPENCL_LIBRARIES} )

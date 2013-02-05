@@ -208,17 +208,6 @@ namespace CL {
     _events.erase(name);
   }
 
-  cl::Event &OpenCL::getEvent(const std::string &name) {
-
-    EventMap::iterator itr = _events.find(name);
-    if( itr == _events.end() ) {
-      static cl::Event neutral_event;
-      return neutral_event;
-    }
-
-    return (*itr).second.event;
-  }
-
   OpenCL::EventInfo::TYPE OpenCL::getEventType(const std::string &name) {
 
     EventMap::iterator itr = _events.find(name);
@@ -362,17 +351,6 @@ namespace CL {
   void OpenCL::deleteMemory(const std::string &name) {
 
     _memory_objs.erase(name);
-  }
-
-  cl::Memory &OpenCL::getMemory(const std::string &name) {
-
-    MemoryMap::iterator itr = _memory_objs.find(name);
-    if( itr == _memory_objs.end() ) {
-      static cl::Memory invalid_memory_object;
-      return invalid_memory_object;
-    }
-
-    return (*itr).second.memory;
   }
 
   OpenCL::MemoryInfo::TYPE OpenCL::getMemoryType(const std::string &name) {

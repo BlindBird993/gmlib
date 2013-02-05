@@ -22,22 +22,12 @@
 
 
 addHeaders(
-  gmBuffer
-  gmBufferGL
-  gmBufferRenderGL
-  gmImage2D
-  gmImage2DGL
-  gmImage3D
-  gmImage3DGL
+  gmEvent
+  gmUserEvent
 )
 
 addSources(
-  gmbuffer.cpp
-  gmbuffergl.cpp
-  gmbufferrendergl.cpp
-  gmimage2d.cpp
-  gmimage2dgl.cpp
-  gmimage3d.cpp
-  gmimage3dgl.cpp
+  gmevent.cpp
+  gmuserevent.cpp
 )
 
