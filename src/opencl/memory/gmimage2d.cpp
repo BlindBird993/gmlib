@@ -30,8 +30,23 @@ namespace CL {
 
   Image2D::Image2D() {}
 
+  Image2D::Image2D(cl_mem_flags flags, cl::ImageFormat format, size_t width,
+                   size_t height, size_t row_pitch, void *host_ptr)
+    : Memory<cl::Image2D,OpenCL::MemoryInfo::IMAGE_2D>(
+        cl::Image2D( OpenCL::getInstance()->getContext(), flags, format, width,
+                     height, row_pitch, host_ptr ) ) {}
+
   Image2D::Image2D(const std::string &name)
     : Memory<cl::Image2D,OpenCL::MemoryInfo::IMAGE_2D>(name) {}
+
+  Image2D::Image2D(const std::string &name, cl_mem_flags flags,
+                   cl::ImageFormat format, size_t width, size_t height,
+                   size_t row_pitch, void *host_ptr)
+    : Memory<cl::Image2D,OpenCL::MemoryInfo::IMAGE_2D>(
+        name,
+        cl::Image2D( OpenCL::getInstance()->getContext(), flags, format, width,
+                     height, row_pitch, host_ptr ) ) {}
+
 
 } // END namespace CL
 

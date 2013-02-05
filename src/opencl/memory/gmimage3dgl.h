@@ -40,7 +40,10 @@ namespace CL {
   class Image3DGL : public Memory<cl::Image3DGL,OpenCL::MemoryInfo::IMAGE_3D_GL> {
   public:
     Image3DGL();
+    Image3DGL( cl_mem_flags flags, GLenum target, GLint  miplevel, GLuint texobj );
     Image3DGL( const std::string& name );
+    Image3DGL( const std::string& name,
+               cl_mem_flags flags, GLenum target, GLint  miplevel, GLuint texobj );
 
 
   }; // END class Image3DGL

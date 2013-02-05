@@ -30,8 +30,22 @@ namespace CL {
 
   Image3DGL::Image3DGL() {}
 
+  Image3DGL::Image3DGL(cl_mem_flags flags, GLenum target, GLint miplevel,
+                       GLuint texobj)
+    : Memory<cl::Image3DGL,OpenCL::MemoryInfo::IMAGE_3D_GL>(
+        cl::Image3DGL( OpenCL::getInstance()->getContext(),
+                       flags, target, miplevel, texobj ) ) {}
+
   Image3DGL::Image3DGL(const std::string &name)
     : Memory<cl::Image3DGL,OpenCL::MemoryInfo::IMAGE_3D_GL>(name) {}
+
+  Image3DGL::Image3DGL(const std::string &name, cl_mem_flags flags,
+                       GLenum target, GLint miplevel, GLuint texobj)
+    : Memory<cl::Image3DGL,OpenCL::MemoryInfo::IMAGE_3D_GL>(
+        name,
+        cl::Image3DGL( OpenCL::getInstance()->getContext(),
+                       flags, target, miplevel, texobj ) ) {}
+
 
 } // END namespace CL
 

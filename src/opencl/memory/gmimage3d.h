@@ -40,7 +40,14 @@ namespace CL {
   class Image3D : public Memory<cl::Image3D,OpenCL::MemoryInfo::IMAGE_3D> {
   public:
     Image3D();
+    Image3D( cl_mem_flags flags, cl::ImageFormat format, ::size_t width,
+             ::size_t height, ::size_t depth, ::size_t row_pitch = 0,
+             ::size_t slice_pitch = 0, void* host_ptr = 0x0 );
     Image3D( const std::string& name );
+    Image3D( const std::string& name,
+             cl_mem_flags flags, cl::ImageFormat format, ::size_t width,
+             ::size_t height, ::size_t depth, ::size_t row_pitch = 0,
+             ::size_t slice_pitch = 0, void* host_ptr = 0x0 );
 
 
   }; // END class Image3D

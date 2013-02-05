@@ -41,7 +41,11 @@ namespace CL {
   class Sampler : public CLObject<cl::Sampler> {
   public:
     Sampler();
+    Sampler( cl_bool normalized_coords, cl_addressing_mode addressing_mode,
+             cl_filter_mode filter_mode );
     Sampler( const std::string& name );
+    Sampler( const std::string& name, cl_bool normalized_coords,
+             cl_addressing_mode addressing_mode, cl_filter_mode filter_mode);
 
   }; // END class Sampler
 

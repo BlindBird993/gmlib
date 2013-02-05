@@ -30,8 +30,14 @@ namespace CL {
 
   Program::Program() {}
 
+  Program::Program(const cl::Program::Sources &sources)
+    : CLObject<cl::Program>( cl::Program(OpenCL::getInstance()->getContext(),sources) ) {}
+
   Program::Program(const std::string &name)
     : CLObject<cl::Program>(name, OpenCL::getInstance()->getProgram(name)) {}
+
+  Program::Program(const std::string &name,const cl::Program::Sources &sources)
+    : CLObject<cl::Program>(name, OpenCL::getInstance()->createProgram(name,sources)) {}
 
 } // END namespace CL
 

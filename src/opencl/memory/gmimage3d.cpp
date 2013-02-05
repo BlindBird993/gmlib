@@ -30,8 +30,26 @@ namespace CL {
 
   Image3D::Image3D() {}
 
+  Image3D::Image3D(cl_mem_flags flags, cl::ImageFormat format, size_t width,
+                   size_t height, size_t depth, size_t row_pitch,
+                   size_t slice_pitch, void *host_ptr)
+    : Memory<cl::Image3D,OpenCL::MemoryInfo::IMAGE_3D>(
+        cl::Image3D( OpenCL::getInstance()->getContext(),
+                     flags, format, width, height, depth,
+                     row_pitch, slice_pitch, host_ptr ) ) {}
+
   Image3D::Image3D(const std::string &name)
     : Memory<cl::Image3D,OpenCL::MemoryInfo::IMAGE_3D>(name) {}
+
+  Image3D::Image3D(const std::string &name, cl_mem_flags flags,
+                   cl::ImageFormat format, size_t width, size_t height,
+                   size_t depth, size_t row_pitch, size_t slice_pitch,
+                   void *host_ptr)
+    : Memory<cl::Image3D,OpenCL::MemoryInfo::IMAGE_3D>(
+        name,
+        cl::Image3D( OpenCL::getInstance()->getContext(),
+                     flags, format, width, height, depth,
+                     row_pitch, slice_pitch, host_ptr ) ) {}
 
 } // END namespace CL
 

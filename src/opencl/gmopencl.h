@@ -218,7 +218,7 @@ namespace CL {
     if( (*itr).second.type != T_type )
       return neutral_event;
 
-    return *(T*)(void*)(&(*itr).second.event); // s@#%^*!
+    return *static_cast<T*>((void*)(&(*itr).second.event)); // s@#%^*!
   }
 
   template <class T, OpenCL::MemoryInfo::TYPE T_type>
@@ -276,8 +276,9 @@ namespace CL {
   class CLObject {
   public:
     explicit CLObject();
+    explicit CLObject( T obj );
     explicit CLObject( const std::string& name );
-    explicit CLObject(const std::string& name, T obj );
+    explicit CLObject( const std::string& name, T obj );
     explicit CLObject( const CLObject& copy );
 
     bool                    isManaged() const;
@@ -299,8 +300,8 @@ namespace CL {
     bool                    _managed;
 
     // variables "managed" by the backend
-    mutable T               _obj;
-    mutable std::string     _name;
+    T                       _obj;
+    std::string             _name;
 
   }; // END class CLObject
 
@@ -312,6 +313,9 @@ namespace CL {
 
   template <typename T>
   CLObject<T>::CLObject() : _managed(false), _obj(), _name() {}
+
+  template <typename T>
+  CLObject<T>::CLObject(T obj) : _managed(false), _obj(obj), _name() {}
 
   template <typename T>
   CLObject<T>::CLObject(const std::string &name) : _managed(false), _obj(), _name(name) {}

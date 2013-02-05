@@ -41,7 +41,9 @@ namespace CL {
   class Program : public CLObject<cl::Program> {
   public:
     Program();
+    Program( const cl::Program::Sources& sources );
     Program( const std::string& name );
+    Program( const std::string& name, const cl::Program::Sources& sources );
 
   }; // END class Program
 

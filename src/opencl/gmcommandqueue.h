@@ -41,7 +41,11 @@ namespace CL {
   class CommandQueue : public CLObject<cl::CommandQueue> {
   public:
     CommandQueue();
+    CommandQueue( const cl::Device& device,
+                  cl_command_queue_properties properties = 0);
     CommandQueue( const std::string& name );
+    CommandQueue( const std::string& name, const cl::Device& device,
+                  cl_command_queue_properties properties = 0);
 
   }; // END class CommandQueue
 

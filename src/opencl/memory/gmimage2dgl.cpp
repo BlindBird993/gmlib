@@ -30,8 +30,21 @@ namespace CL {
 
   Image2DGL::Image2DGL() {}
 
+  Image2DGL::Image2DGL(cl_mem_flags flags, GLenum target, GLint miplevel, GLuint texobj)
+    : Memory<cl::Image2DGL,OpenCL::MemoryInfo::IMAGE_2D_GL>(
+        cl::Image2DGL( OpenCL::getInstance()->getContext(),
+                       flags, target, miplevel, texobj ) ) {}
+
   Image2DGL::Image2DGL(const std::string &name)
     : Memory<cl::Image2DGL,OpenCL::MemoryInfo::IMAGE_2D_GL>(name) {}
+
+  Image2DGL::Image2DGL(const std::string &name,
+                       cl_mem_flags flags, GLenum target, GLint miplevel, GLuint texobj)
+    : Memory<cl::Image2DGL,OpenCL::MemoryInfo::IMAGE_2D_GL>(
+        name,
+        cl::Image2DGL( OpenCL::getInstance()->getContext(),
+                       flags, target, miplevel, texobj ) ) {}
+
 
 } // END namespace CL
 

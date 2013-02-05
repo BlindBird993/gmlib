@@ -39,7 +39,9 @@ namespace CL {
   class Memory : public CLObject<T>, GMutils::DerivedFrom<T,cl::Memory> {
   public:
     Memory();
+    Memory( const T& obj );
     Memory( const std::string& name );
+    Memory( const std::string& name, const T& obj );
 
   }; // END class Memory
 
@@ -51,8 +53,16 @@ namespace CL {
   Memory<T,T_type>::Memory() {}
 
   template <typename T,OpenCL::MemoryInfo::TYPE T_type>
+  Memory<T,T_type>::Memory(const T& obj)
+    : CLObject<T>(obj) {}
+
+  template <typename T,OpenCL::MemoryInfo::TYPE T_type>
   Memory<T,T_type>::Memory( const std::string& name )
     : CLObject<T>(name, OpenCL::getInstance()->getMemory<T,T_type>(name)) {}
+
+  template <typename T,OpenCL::MemoryInfo::TYPE T_type>
+  Memory<T,T_type>::Memory(const std::string &name, const T& obj)
+    : CLObject<T>(name, obj) {}
 
 
 } // END namespace CL

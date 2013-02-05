@@ -40,7 +40,12 @@ namespace CL {
   class Image2D : public Memory<cl::Image2D,OpenCL::MemoryInfo::IMAGE_2D> {
   public:
     Image2D();
+    Image2D( cl_mem_flags flags, cl::ImageFormat format, ::size_t width,
+             ::size_t height, ::size_t row_pitch = 0, void* host_ptr = 0x0 );
     Image2D( const std::string& name );
+    Image2D( const std::string& name,
+             cl_mem_flags flags, cl::ImageFormat format, ::size_t width,
+             ::size_t height, ::size_t row_pitch = 0, void* host_ptr = 0x0 );
 
 
   }; // END class Image2D

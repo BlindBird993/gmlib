@@ -30,8 +30,19 @@ namespace CL {
 
   Buffer::Buffer() {}
 
+  Buffer::Buffer(cl_mem_flags flags, size_t size, void *host_ptr)
+    : Memory<cl::Buffer,OpenCL::MemoryInfo::BUFFER>(
+        cl::Buffer(OpenCL::getInstance()->getContext(), flags, size, host_ptr)
+        ) {}
+
   Buffer::Buffer(const std::string &name)
     : Memory<cl::Buffer,OpenCL::MemoryInfo::BUFFER>(name) {}
+
+  Buffer::Buffer(const std::string &name, cl_mem_flags flags, size_t size, void *host_ptr)
+    : Memory<cl::Buffer,OpenCL::MemoryInfo::BUFFER>(
+        name,
+        cl::Buffer(OpenCL::getInstance()->getContext(), flags, size, host_ptr)
+        ) {}
 
 } // END namespace CL
 

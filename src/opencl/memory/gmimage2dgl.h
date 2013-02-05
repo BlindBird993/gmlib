@@ -40,7 +40,10 @@ namespace CL {
   class Image2DGL : public Memory<cl::Image2DGL,OpenCL::MemoryInfo::IMAGE_2D_GL> {
   public:
     Image2DGL();
+    Image2DGL( cl_mem_flags flags, GLenum target, GLint  miplevel, GLuint texobj );
     Image2DGL( const std::string& name );
+    Image2DGL( const std::string& name, cl_mem_flags flags, GLenum target,
+               GLint  miplevel, GLuint texobj );
 
 
   }; // END class Image2DGL

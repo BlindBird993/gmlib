@@ -30,8 +30,19 @@ namespace CL {
 
   BufferRenderGL::BufferRenderGL() {}
 
+  BufferRenderGL::BufferRenderGL(cl_mem_flags flags, GLuint bufobj)
+    : Memory<cl::BufferRenderGL,OpenCL::MemoryInfo::BUFFER_RENDER_GL>(
+        cl::BufferRenderGL( OpenCL::getInstance()->getContext(),
+                            flags, bufobj ) ) {}
+
   BufferRenderGL::BufferRenderGL(const std::string &name)
     : Memory<cl::BufferRenderGL,OpenCL::MemoryInfo::BUFFER_RENDER_GL>(name) {}
+
+  BufferRenderGL::BufferRenderGL(const std::string &name, cl_mem_flags flags, GLuint bufobj)
+    : Memory<cl::BufferRenderGL,OpenCL::MemoryInfo::BUFFER_RENDER_GL>(
+        name,
+        cl::BufferRenderGL( OpenCL::getInstance()->getContext(),
+                            flags, bufobj ) ) {}
 
 } // END namespace CL
 

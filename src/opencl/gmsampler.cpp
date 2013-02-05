@@ -30,8 +30,16 @@ namespace CL {
 
   Sampler::Sampler() {}
 
+  Sampler::Sampler(cl_bool normalized_coords, cl_addressing_mode addressing_mode, cl_filter_mode filter_mode)
+    : CLObject<cl::Sampler>( cl::Sampler(OpenCL::getInstance()->getContext(), normalized_coords, addressing_mode, filter_mode) ) {}
+
   Sampler::Sampler(const std::string &name)
-    : CLObject<cl::Sampler>(name, OpenCL::getInstance()->getSampler(name)) {}
+    : CLObject<cl::Sampler>( name, OpenCL::getInstance()->getSampler(name) ) {}
+
+  Sampler::Sampler(const std::string &name, cl_bool normalized_coords,
+                   cl_addressing_mode addressing_mode, cl_filter_mode filter_mode)
+    : CLObject<cl::Sampler>( name, cl::Sampler(OpenCL::getInstance()->getContext(), normalized_coords, addressing_mode, filter_mode) ) {}
+
 
 } // END namespace CL
 

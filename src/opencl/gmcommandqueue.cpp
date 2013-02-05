@@ -30,8 +30,16 @@ namespace CL {
 
   CommandQueue::CommandQueue() {}
 
+  CommandQueue::CommandQueue(const cl::Device &device, cl_command_queue_properties properties)
+    : CLObject<cl::CommandQueue>( cl::CommandQueue(OpenCL::getInstance()->getContext(),device,properties) ) {}
+
   CommandQueue::CommandQueue(const std::string &name)
     : CLObject<cl::CommandQueue>(name, OpenCL::getInstance()->getCommandQueue(name)) {}
+
+  CommandQueue::CommandQueue(const std::string &name, const cl::Device &device,
+                             cl_command_queue_properties properties)
+    : CLObject<cl::CommandQueue>(name, OpenCL::getInstance()->createCommandQueue(name,device,properties)) {
+  }
 
 } // END namespace CL
 

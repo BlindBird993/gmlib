@@ -40,7 +40,9 @@ namespace CL {
   class Buffer : public Memory<cl::Buffer,OpenCL::MemoryInfo::BUFFER> {
   public:
     Buffer();
+    Buffer( cl_mem_flags flags, ::size_t size, void* host_ptr = 0x0);
     Buffer( const std::string& name );
+    Buffer( const std::string& name, cl_mem_flags flags, ::size_t size, void* host_ptr = 0x0);
 
 
   }; // END class Buffer

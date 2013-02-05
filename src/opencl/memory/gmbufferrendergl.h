@@ -40,7 +40,9 @@ namespace CL {
   class BufferRenderGL : public Memory<cl::BufferRenderGL,OpenCL::MemoryInfo::BUFFER_RENDER_GL> {
   public:
     BufferRenderGL();
+    BufferRenderGL( cl_mem_flags flags, GLuint bufobj );
     BufferRenderGL( const std::string& name );
+    BufferRenderGL( const std::string& name, cl_mem_flags flags, GLuint bufobj );
 
 
   }; // END class BufferRenderGL
