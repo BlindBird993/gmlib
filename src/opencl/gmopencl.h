@@ -116,57 +116,54 @@ namespace CL {
     std::vector<cl::Device>               getDevices() const;
 
     // Command Queues
-    bool                                  createCommandQueue( const std::string& name,
+    cl::CommandQueue                      createCommandQueue( const std::string& name,
                                                               const cl::Device& device ,
                                                               cl_command_queue_properties properties = 0);
     void                                  deleteCommandQueue( const std::string& name);
-    cl::CommandQueue&                     getCommandQueue( const std::string& name );
+    cl::CommandQueue                      getCommandQueue( const std::string& name ) const;
 
     // Program
-    bool                                  createProgram( const std::string& name);
-    bool                                  createProgram( const std::string& name,
+    cl::Program                           createProgram( const std::string& name,
                                                          const cl::Program::Sources& sources );
-    bool                                  buildProgram( const std::string& name,
-                                                        const cl::Program::Sources& sources );
     void                                  deleteProgram( const std::string& name );
-    cl::Program&                          getProgram( const std::string& name );
+    cl::Program                           getProgram( const std::string& name ) const;
 
     // Kernel
-    cl::Kernel&                           getKernel( const std::string& program_name,
-                                                     const std::string& kernel_name );
+    cl::Kernel                            getKernel( const std::string& program_name,
+                                                     const std::string& kernel_name ) const;
 
     // Event
-    bool                                  createEvent( const std::string& name );
-    bool                                  createUserEvent( const std::string& name );
+    cl::Event                             createEvent( const std::string& name );
+    cl::UserEvent                         createUserEvent( const std::string& name );
     void                                  deleteEvent( const std::string& name );
     template <class T, OpenCL::EventInfo::TYPE T_type>
-    T&                                    getEvent( const std::string& name );
+    T                                     getEvent( const std::string& name ) const;
     EventInfo::TYPE                       getEventType( const std::string& name );
 
     // Memory
-    bool                                  createBuffer( const std::string& name,
+    cl::Buffer                            createBuffer( const std::string& name,
                                                         cl_mem_flags flags,
                                                         ::size_t size,
                                                         void* host_ptr = 0x0);
-    bool                                  createBufferGL( const std::string& name,
+    cl::BufferGL                          createBufferGL( const std::string& name,
                                                           cl_mem_flags flags,
                                                           GLuint bufobj );
-    bool                                  createBufferRenderGL( const std::string& name,
+    cl::BufferRenderGL                    createBufferRenderGL( const std::string& name,
                                                                 cl_mem_flags flags,
                                                                 GLuint bufobj );
-    bool                                  createImage2D( const std::string& name,
+    cl::Image2D                           createImage2D( const std::string& name,
                                                          cl_mem_flags flags,
                                                          cl::ImageFormat format,
                                                          ::size_t width,
                                                          ::size_t height,
                                                          ::size_t row_pitch = 0,
                                                          void* host_ptr = 0x0 );
-    bool                                  createImage2DGL( const std::string& name,
+    cl::Image2DGL                         createImage2DGL( const std::string& name,
                                                            cl_mem_flags flags,
                                                            GLenum target,
                                                            GLint  miplevel,
                                                            GLuint texobj );
-    bool                                  createImage3D( const std::string& name,
+    cl::Image3D                           createImage3D( const std::string& name,
                                                          cl_mem_flags flags,
                                                          cl::ImageFormat format,
                                                          ::size_t width,
@@ -175,23 +172,23 @@ namespace CL {
                                                          ::size_t row_pitch = 0,
                                                          ::size_t slice_pitch = 0,
                                                          void* host_ptr = 0x0 );
-    bool                                  createImage3DGL( const std::string& name,
+    cl::Image3DGL                         createImage3DGL( const std::string& name,
                                                            cl_mem_flags flags,
                                                            GLenum target,
                                                            GLint  miplevel,
                                                            GLuint texobj );
     void                                  deleteMemory( const std::string& name );
     template <class T, OpenCL::MemoryInfo::TYPE T_type>
-    T&                                    getMemory( const std::string& name );
+    T                                     getMemory( const std::string& name ) const;
     MemoryInfo::TYPE                      getMemoryType( const std::string& name );
 
     // Sampler
-    bool                                  createSampler( const std::string& name,
+    cl::Sampler                           createSampler( const std::string& name,
                                                          cl_bool normalized_coords,
                                                          cl_addressing_mode addressing_mode,
                                                          cl_filter_mode filter_mode );
     void                                  deleteSampler( const std::string& name );
-    cl::Sampler&                          getSampler( const std::string& name );
+    cl::Sampler                           getSampler( const std::string& name ) const;
 
 
   private:
@@ -208,13 +205,13 @@ namespace CL {
   }; // END class OpenCL
 
   template <class T, OpenCL::EventInfo::TYPE T_type>
-  T& OpenCL::getEvent( const std::string& name ) {
+  T OpenCL::getEvent( const std::string& name ) const {
 
     GMutils::DerivedFrom<T,cl::Event>();
 
     static T neutral_event;
 
-    EventMap::iterator itr = _events.find(name);
+    EventMap::const_iterator itr = _events.find(name);
     if( itr == _events.end() )
       return neutral_event;
 
@@ -225,13 +222,13 @@ namespace CL {
   }
 
   template <class T, OpenCL::MemoryInfo::TYPE T_type>
-  T& OpenCL::getMemory( const std::string& name ) {
+  T OpenCL::getMemory( const std::string& name ) const {
 
     GMutils::DerivedFrom<T,cl::Memory>();
 
     static T invalid_memory_object;
 
-    MemoryMap::iterator itr = _memory_objs.find(name);
+    MemoryMap::const_iterator itr = _memory_objs.find(name);
     if( itr == _memory_objs.end() )
       return invalid_memory_object;
 
