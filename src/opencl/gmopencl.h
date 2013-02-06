@@ -218,7 +218,7 @@ namespace CL {
     if( (*itr).second.type != T_type )
       return neutral_event;
 
-    return *static_cast<T*>((void*)(&(*itr).second.event)); // s@#%^*!
+    return reinterpret_cast<const T&>((*itr).second.event); // s@#%^*!
   }
 
   template <class T, OpenCL::MemoryInfo::TYPE T_type>
@@ -235,7 +235,7 @@ namespace CL {
     if( (*itr).second.type != T_type )
       return invalid_memory_object;
 
-    return *static_cast<T*>((void*)(&(*itr).second.memory)); // s@#%^*!
+    return reinterpret_cast<const T&>((*itr).second.memory); // s@#%^*!
   }
 
 
