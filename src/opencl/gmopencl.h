@@ -281,28 +281,30 @@ namespace CL {
     explicit CLObject( const std::string& name, const T& obj );
     explicit CLObject( const CLObject& copy );
 
-    bool                    isManaged() const;
-    CLObject&               operator = ( const CLObject& other );
+    bool                            isManaged() const;
+    CLObject&                       operator = ( const CLObject& other );
 
     // Shallow propery access
-    const std::string&      getName() const;
-
-    // CL++ object access
-    T                       obj();
-    const T&                obj() const;
+    const std::string&              getName() const;
 
     // OCL object access
-    typename T::cl_type     operator() () const;
-    typename T::cl_type&    operator() ();
+    typename T::cl_type             getCLObjPtr();
+    const typename T::cl_type&      getCLObjPtr() const;
+
+    // CL++ object access
+    T                               operator() () const;
+    T&                              operator() ();
 
 
   protected:
-    bool                    _managed;
+    bool                            _managed;
 
     // variables "managed" by the backend
-    T                       _obj;
-    std::string             _name;
+    T                               _obj;
+    std::string                     _name;
 
+    T                               obj() const;
+    T&                              obj();
 
 
   }; // END class CLObject
@@ -342,14 +344,28 @@ namespace CL {
 
   template <typename T>
   inline
-  T CLObject<T>::obj() {
+  typename T::cl_type CLObject<T>::getCLObjPtr() {
 
     return _obj;
   }
 
   template <typename T>
   inline
-  const T& CLObject<T>::obj() const {
+  const typename T::cl_type& CLObject<T>::getCLObjPtr() const {
+
+    return _obj();
+  }
+
+  template <typename T>
+  inline
+  T CLObject<T>::obj() const {
+
+    return _obj;
+  }
+
+  template <typename T>
+  inline
+  T& CLObject<T>::obj() {
 
     return _obj;
   }
@@ -363,16 +379,16 @@ namespace CL {
 
   template <typename T>
   inline
-  typename T::cl_type CLObject<T>::operator() () const {
+  T CLObject<T>::operator() () const {
 
-    return _obj();
+    return obj();
   }
 
   template <typename T>
   inline
-  typename T::cl_type& CLObject<T>::operator() () {
+  T& CLObject<T>::operator() () {
 
-    return _obj();
+    return obj();
   }
 
   template <typename T>

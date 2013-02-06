@@ -46,6 +46,7 @@ namespace CL {
     Kernel( const Program& program, const std::string& kernel_name );
     Kernel( const std::string& prog_name, const std::string& kernel_name );
 
+
   }; // END class Kernel
 
 

@@ -31,7 +31,7 @@ namespace CL {
   Kernel::Kernel() {}
 
   Kernel::Kernel(const Program &program, const std::string &kernel_name)
-    : CLObject<cl::Kernel>( cl::Kernel( program.obj(), kernel_name.c_str() ) ) {}
+    : CLObject<cl::Kernel>( cl::Kernel( program(), kernel_name.c_str() ) ) {}
 
   Kernel::Kernel(const std::string& prog_name, const std::string& kernel_name)
     : CLObject<cl::Kernel>(kernel_name, OpenCL::getInstance()->getKernel(prog_name,kernel_name)) {}

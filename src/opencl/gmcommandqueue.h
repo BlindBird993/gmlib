@@ -29,6 +29,10 @@
 
 // local
 #include "gmopencl.h"
+#include "memory/gmbuffer.h"
+
+// gmlib
+#include <core/containers/gmdvector.h>
 
 // stl
 #include <string>
@@ -38,7 +42,6 @@ namespace GMlib {
 namespace CL {
 
   class Buffer;
-  class Event;
 
   class CommandQueue : public CLObject<cl::CommandQueue> {
   public:
@@ -51,9 +54,27 @@ namespace CL {
 
 
     // Memory operations
+    template <typename T>
+    cl_int        enqueueWriteBuffer( const Buffer& buffer, cl_bool blocking,
+                                      const DVector<T>& data );
 
   }; // END class CommandQueue
 
+
+
+
+
+
+
+  template <typename T>
+  inline
+  cl_int
+  CommandQueue::enqueueWriteBuffer(const Buffer &buffer, cl_bool blocking,
+                                      const DVector<T>& data) {
+
+    (*this)().enqueueWriteBuffer( buffer(), blocking, 0,
+                                  data.getDim() * sizeof(T), data.getPtr() );
+  }
 
 
 } // END namespace CL
