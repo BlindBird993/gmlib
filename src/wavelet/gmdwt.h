@@ -25,6 +25,11 @@
 
 #include <core/containers/gmdvector.h>
 
+#include <opencl/gmcommandqueue.h>
+#include <opencl/gmprogram.h>
+#include <opencl/gmkernel.h>
+#include <opencl/memory/gmbuffer.h>
+
 namespace GMlib {
 namespace Wavelet {
 
@@ -41,8 +46,17 @@ namespace Wavelet {
     void reConstruct();
 
   private:
+    void init();
+
     int                  _dimension;
     DVector<Filter<T>* > _filters;
+
+    CL::CommandQueue _queue;
+    CL::Program _program;
+    CL::Kernel  _kernel;
+    CL::Buffer _buffer_in;
+    CL::Buffer _buffer_out;
+
   };
 
 }
