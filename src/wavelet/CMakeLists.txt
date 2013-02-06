@@ -20,7 +20,17 @@
 # #
 # ###############################################################################
 
-#addHeaders()
+addHeaders(
+  gmDwt
+  gmFilter
+  gmOrthoFilter
+)
+
+addTemplateSources(
+  gmdwt.c
+  gmfilter.c
+  gmorthofilter.c
+)
 
 #addSources()
 
