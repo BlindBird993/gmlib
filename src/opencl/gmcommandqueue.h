@@ -37,6 +37,8 @@ namespace GMlib {
 
 namespace CL {
 
+  class Buffer;
+  class Event;
 
   class CommandQueue : public CLObject<cl::CommandQueue> {
   public:
@@ -46,6 +48,9 @@ namespace CL {
     CommandQueue( const std::string& name );
     CommandQueue( const std::string& name, const cl::Device& device,
                   cl_command_queue_properties properties = 0);
+
+
+    // Memory operations
 
   }; // END class CommandQueue
 

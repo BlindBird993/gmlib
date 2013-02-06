@@ -39,6 +39,20 @@ namespace CL {
   Program::Program(const std::string &name,const cl::Program::Sources &sources)
     : CLObject<cl::Program>(name, OpenCL::getInstance()->createProgram(name,sources)) {}
 
+  cl_int Program::build(const std::vector<cl::Device> &devices, const char *options,
+                        void (*notifyFptr)(cl_program, void *), void *data) const {
+
+    obj().build( devices, options, notifyFptr, data );
+  }
+
+  Kernel Program::getKernel(const std::string &name) const {
+
+    if( isManaged() )
+      return Kernel( getName(), name );
+    else
+      return Kernel( *this, name );
+  }
+
 } // END namespace CL
 
 } // END namespace GMlib

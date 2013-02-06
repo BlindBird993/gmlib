@@ -29,6 +29,7 @@
 
 // local
 #include "gmopencl.h"
+#include "gmkernel.h"
 
 // stl
 #include <string>
@@ -37,6 +38,7 @@ namespace GMlib {
 
 namespace CL {
 
+  class Kernel;
 
   class Program : public CLObject<cl::Program> {
   public:
@@ -44,6 +46,13 @@ namespace CL {
     Program( const cl::Program::Sources& sources );
     Program( const std::string& name );
     Program( const std::string& name, const cl::Program::Sources& sources );
+
+    cl_int        build( const VECTOR_CLASS<cl::Device>& devices,
+                         const char* options = NULL,
+                         void (CL_CALLBACK * notifyFptr)(cl_program, void *) = NULL,
+                         void* data = NULL) const;
+
+    Kernel        getKernel( const std::string& name ) const;
 
   }; // END class Program
 

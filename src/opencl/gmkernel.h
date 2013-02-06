@@ -29,6 +29,7 @@
 
 // local
 #include "gmopencl.h"
+#include "gmprogram.h"
 
 // stl
 #include <string>
@@ -37,10 +38,12 @@ namespace GMlib {
 
 namespace CL {
 
+  class Program;
 
   class Kernel : public CLObject<cl::Kernel> {
   public:
     Kernel();
+    Kernel( const Program& program, const std::string& kernel_name );
     Kernel( const std::string& prog_name, const std::string& kernel_name );
 
   }; // END class Kernel

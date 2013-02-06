@@ -31,7 +31,7 @@
 #include <core/utils/gmutils.h>
 
 // OpenCL
-#define __CL_ENABLE_EXCEPTIONS
+//#define __CL_ENABLE_EXCEPTIONS
 #include <CL/cl.hpp>
 
 // stl
@@ -276,20 +276,20 @@ namespace CL {
   class CLObject {
   public:
     explicit CLObject();
-    explicit CLObject( T obj );
+    explicit CLObject( const T& obj );
     explicit CLObject( const std::string& name );
-    explicit CLObject( const std::string& name, T obj );
+    explicit CLObject( const std::string& name, const T& obj );
     explicit CLObject( const CLObject& copy );
 
     bool                    isManaged() const;
     CLObject&               operator = ( const CLObject& other );
 
-    // CL++ object access
-    T                       getObject();
-    const T&                getObject() const;
-
     // Shallow propery access
     const std::string&      getName() const;
+
+    // CL++ object access
+    T                       obj();
+    const T&                obj() const;
 
     // OCL object access
     typename T::cl_type     operator() () const;
@@ -303,6 +303,8 @@ namespace CL {
     T                       _obj;
     std::string             _name;
 
+
+
   }; // END class CLObject
 
 
@@ -312,16 +314,24 @@ namespace CL {
 
 
   template <typename T>
-  CLObject<T>::CLObject() : _managed(false), _obj(), _name() {}
+  CLObject<T>::CLObject()
+    : _managed(false), _obj(), _name() {}
 
   template <typename T>
-  CLObject<T>::CLObject(T obj) : _managed(false), _obj(obj), _name() {}
+  CLObject<T>::CLObject(const T& obj)
+    : _managed(false), _obj(obj), _name() {}
 
   template <typename T>
-  CLObject<T>::CLObject(const std::string &name) : _managed(false), _obj(), _name(name) {}
+  CLObject<T>::CLObject(const std::string &name)
+    : _managed(false), _obj(), _name(name) {}
 
   template <typename T>
-  CLObject<T>::CLObject(const std::string &name, T obj) : _managed(false), _obj(obj), _name(name) {}
+  CLObject<T>::CLObject(const std::string &name, const T& obj)
+    : _managed(false), _obj(obj), _name(name) {}
+
+  template <typename T>
+  CLObject<T>::CLObject(const CLObject &copy)
+    : _managed(copy._managed), _obj(copy._obj), _name(copy._name) {}
 
   template <typename T>
   inline
@@ -332,14 +342,14 @@ namespace CL {
 
   template <typename T>
   inline
-  T CLObject<T>::getObject() {
+  T CLObject<T>::obj() {
 
     return _obj;
   }
 
   template <typename T>
   inline
-  const T& CLObject<T>::getObject() const {
+  const T& CLObject<T>::obj() const {
 
     return _obj;
   }
