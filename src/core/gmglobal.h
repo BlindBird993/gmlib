@@ -36,5 +36,10 @@
 #define GM_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 
 
+// Mark unused implemented function parameters
+
+#define GM_UNUSED(x) (void)x;
+
+
 
 
