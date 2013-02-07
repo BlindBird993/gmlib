@@ -43,12 +43,8 @@ namespace Wavelet {
       BUFFER_02 = 1
     };
 
-
   public:
     Dwt();
-
-//    // Filter control
-//    void setFilter(int dim, Filter<T>* filter);
 
     // Dwt Operations
     void deCompose( const Filter<T>& filter, int dim, int lvls, int s_lvl = 0 );
@@ -63,7 +59,6 @@ namespace Wavelet {
     void swapBuffers();
 
     int                     _resolution;
-//    DVector<Filter<T>* >    _filters;
 
     CL::CommandQueue        _queue;
     CL::Program             _program;
