@@ -57,57 +57,90 @@ namespace CL {
 
 
 
-
+    // Copy buffer operation
+    cl_int    enqueueCopyBuffer( const Buffer& src, const Buffer& dst,
+                                 ::size_t src_offset, ::size_t dst_offset,
+                                 ::size_t size,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0) const;
 
     // DVector Buffer R/W operations
     template <typename T>
     cl_int    enqueueReadBuffer( const Buffer& buffer, cl_bool blocking,
-                                 DVector<T>& data ) const;
+                                 DVector<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
     template <typename T>
     cl_int    enqueueReadBuffer( const Buffer& buffer, cl_bool blocking,
-                                 ::size_t offset, DVector<T>& data ) const;
+                                 ::size_t offset, DVector<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
     template <typename T>
     cl_int    enqueueWriteBuffer( const Buffer& buffer, cl_bool blocking,
-                                  const DVector<T>& data ) const;
+                                  const DVector<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
     template <typename T>
     cl_int    enqueueWriteBuffer( const Buffer& buffer, cl_bool blocking,
-                                  ::size_t offset, const DVector<T>& data ) const;
+                                  ::size_t offset, const DVector<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
 
     // DMatrix Buffer R/W operations
     template <typename T>
     cl_int    enqueueReadBuffer( const Buffer& buffer, cl_bool blocking,
-                                 DMatrix<T>& data ) const;
+                                 DMatrix<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
     template <typename T>
     cl_int    enqueueReadBuffer( const Buffer& buffer, cl_bool blocking,
-                                 ::size_t offset, DMatrix<T>& data ) const;
+                                 ::size_t offset, DMatrix<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
     template <typename T>
     cl_int    enqueueWriteBuffer( const Buffer& buffer, cl_bool blocking,
-                                  const DMatrix<T>& data ) const;
+                                  const DMatrix<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
     template <typename T>
     cl_int    enqueueWriteBuffer( const Buffer& buffer, cl_bool blocking,
-                                  ::size_t offset, const DMatrix<T>& data ) const;
+                                  ::size_t offset, const DMatrix<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
 
     // DMatrix Image R/W operations
     template <typename T>
     cl_int    enqueueReadImage( const Image2D& image, cl_bool blocking,
-                                DMatrix<T>& data ) const;
+                                DMatrix<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
 
     template <typename T>
     cl_int    enqueueReadImage( const Image2D& image, cl_bool blocking,
                                 const Vector<size_t,2>& origin,
-                                DMatrix<T>& data ) const;
+                                DMatrix<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
     template <typename T>
     cl_int    enqueueWriteImage( const Image2D& image, cl_bool blocking,
-                                 const DMatrix<T>& data ) const;
+                                 const DMatrix<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
 
     template <typename T>
     cl_int    enqueueWriteImage( const Image2D& image, cl_bool blocking,
                                  const Vector<size_t,2>& origin,
-                                 const DMatrix<T>& data ) const;
+                                 const DMatrix<T>& data,
+                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                 cl::Event* event = 0x0 ) const;
 
     // Kernel execution
-    cl_int    enqueueNDRangeKernel( const Kernel& kernel,  const cl::NDRange& offset,
-                                    const cl::NDRange& global, const cl::NDRange& local ) const;
+    cl_int    enqueueNDRangeKernel( const Kernel& kernel,
+                                    const cl::NDRange& offset,
+                                    const cl::NDRange& global,
+                                    const cl::NDRange& local,
+                                    const VECTOR_CLASS<cl::Event>* events = 0x0,
+                                    cl::Event* event = 0x0 ) const;
 
   }; // END class CommandQueue
 
@@ -129,20 +162,24 @@ namespace CL {
   inline
   cl_int
   CommandQueue::enqueueReadBuffer(const Buffer &buffer, cl_bool blocking,
-                                  DMatrix<T>& data) const {
+                                  DMatrix<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
-    return enqueueReadBuffer( buffer, blocking, 0, data );
+    return enqueueReadBuffer( buffer, blocking, 0, data, events, event );
   }
 
   template <typename T>
   inline
   cl_int
   CommandQueue::enqueueReadBuffer(const Buffer &buffer, cl_bool blocking,
-                                  ::size_t offset, DMatrix<T>& data) const {
+                                  ::size_t offset, DMatrix<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
     DVector<T> vec(data.getDim1() * data.getDim2());
     cl_int res;
-    res = enqueueReadBuffer( buffer, blocking, offset, vec );
+    res = enqueueReadBuffer( buffer, blocking, offset, vec, events, event );
     data = vec.getPtr();
 
     return res;
@@ -152,35 +189,44 @@ namespace CL {
   inline
   cl_int
   CommandQueue::enqueueReadBuffer(const Buffer &buffer, cl_bool blocking,
-                                  DVector<T>& data) const {
+                                  DVector<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
-    return enqueueReadBuffer( buffer, blocking, 0, data );
+    return enqueueReadBuffer( buffer, blocking, 0, data, events, event );
   }
 
   template <typename T>
   inline
   cl_int
   CommandQueue::enqueueReadBuffer(const Buffer &buffer, cl_bool blocking,
-                                  ::size_t offset, DVector<T>& data) const {
+                                  ::size_t offset, DVector<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
     return obj().enqueueReadBuffer( buffer(), blocking, offset,
                                         data.getDim() * sizeof(T),
-                                        data.getPtr() );
+                                        data.getPtr(), events, event );
   }
 
   template <typename T>
   cl_int
   CommandQueue::enqueueReadImage( const Image2D& image, cl_bool blocking,
-                                  DMatrix<T>& data ) const {
+                                  DMatrix<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event ) const {
 
-    return enqueueReadImage( image, blocking, Vector<size_t,2>(size_t(0)), data );
+    return enqueueReadImage( image, blocking, Vector<size_t,2>(size_t(0)), data,
+                             events, event );
   }
 
   template <typename T>
   cl_int
   CommandQueue::enqueueReadImage( const Image2D& image, cl_bool blocking,
                                   const Vector<size_t,2>& origin,
-                                  DMatrix<T>& data ) const {
+                                  DMatrix<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event ) const {
 
 
     DVector<T> vec(data.getDim1() * data.getDim2());
@@ -200,7 +246,8 @@ namespace CL {
     const ::size_t row_pitch = data.getDim1() * T_size;
 
     cl_int res;
-    res = obj().enqueueReadImage( image(), blocking, o, r, row_pitch, 0, vec.getPtr() );
+    res = obj().enqueueReadImage( image(), blocking, o, r, row_pitch, 0, vec.getPtr(),
+                                  events, event );
     data = vec.getPtr();
 
     return res;
@@ -210,54 +257,66 @@ namespace CL {
   inline
   cl_int
   CommandQueue::enqueueWriteBuffer(const Buffer &buffer, cl_bool blocking,
-                                   const DMatrix<T>& data) const {
+                                   const DMatrix<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
-    return enqueueWriteBuffer(buffer, blocking, 0, data );
+    return enqueueWriteBuffer(buffer, blocking, 0, data, events, event );
   }
 
   template <typename T>
   inline
   cl_int
   CommandQueue::enqueueWriteBuffer(const Buffer &buffer, cl_bool blocking,
-                                   ::size_t offset, const DMatrix<T>& data) const {
+                                   ::size_t offset, const DMatrix<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
     DVector<T> &vec = data.toDVector();
-    return enqueueReadBuffer( buffer, blocking, offset, vec );
+    return enqueueReadBuffer( buffer, blocking, offset, vec, events, event );
   }
 
   template <typename T>
   inline
   cl_int
   CommandQueue::enqueueWriteBuffer(const Buffer &buffer, cl_bool blocking,
-                                   const DVector<T>& data) const {
+                                   const DVector<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
-    return enqueueWriteBuffer( buffer, blocking, 0, data );
+    return enqueueWriteBuffer( buffer, blocking, 0, data, events, event );
   }
 
   template <typename T>
   inline
   cl_int
   CommandQueue::enqueueWriteBuffer(const Buffer &buffer, cl_bool blocking,
-                                   ::size_t offset, const DVector<T>& data) const {
+                                   ::size_t offset, const DVector<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
     return obj().enqueueWriteBuffer( buffer(), blocking, offset,
                                          data.getDim() * sizeof(T),
-                                         data.getPtr() );
+                                         data.getPtr(), events, event );
   }
 
   template <typename T>
   cl_int
   CommandQueue::enqueueWriteImage( const Image2D& image, cl_bool blocking,
-                                   const DMatrix<T>& data ) const {
+                                   const DMatrix<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event ) const {
 
-    return enqueueWriteImage( image, blocking, Vector<size_t,2>(size_t(0)), data );
+    return enqueueWriteImage( image, blocking, Vector<size_t,2>(size_t(0)), data, events, event );
   }
 
   template <typename T>
   cl_int
   CommandQueue::enqueueWriteImage( const Image2D& image, cl_bool blocking,
                                    const Vector<size_t,2>& origin,
-                                   const DMatrix<T>& data ) const {
+                                   const DMatrix<T>& data,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event ) const {
 
 
     DVector<T> &vec = data.toDVector();
@@ -276,7 +335,8 @@ namespace CL {
 
     const ::size_t row_pitch = data.getDim1() * T_size;
 
-    return obj().enqueueReadImage( image(), blocking, o, r, row_pitch, 0, vec.getPtr() );
+    return obj().enqueueReadImage( image(), blocking, o, r, row_pitch, 0, vec.getPtr(),
+                                   events, event );
   }
 
 

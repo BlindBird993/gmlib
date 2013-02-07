@@ -42,10 +42,26 @@ namespace CL {
   }
 
   cl_int
-  CommandQueue::enqueueNDRangeKernel(const Kernel &kernel, const cl::NDRange &offset,
-                                     const cl::NDRange &global, const cl::NDRange &local) const {
+  CommandQueue::enqueueNDRangeKernel(const Kernel &kernel,
+                                     const cl::NDRange &offset,
+                                     const cl::NDRange &global,
+                                     const cl::NDRange &local,
+                                     const VECTOR_CLASS<cl::Event>* events,
+                                     cl::Event* event) const {
 
-    return obj().enqueueNDRangeKernel( kernel(), offset, global, local );
+    return obj().enqueueNDRangeKernel( kernel(), offset, global, local,
+                                       events, event );
+  }
+
+  cl_int
+  CommandQueue::enqueueCopyBuffer(const Buffer &src, const Buffer &dst,
+                                  size_t src_offset, size_t dst_offset,
+                                  size_t size,
+                                  const std::vector<cl::Event> *events,
+                                  cl::Event *event) const {
+
+    return obj().enqueueCopyBuffer(src(), dst(), src_offset, dst_offset, size,
+                                   events, event );
   }
 
 } // END namespace CL
