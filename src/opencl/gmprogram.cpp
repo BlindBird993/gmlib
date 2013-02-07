@@ -42,7 +42,7 @@ namespace CL {
   cl_int Program::build(const std::vector<cl::Device> &devices, const char *options,
                         void (*notifyFptr)(cl_program, void *), void *data) const {
 
-    obj().build( devices, options, notifyFptr, data );
+    return obj().build( devices, options, notifyFptr, data );
   }
 
   Kernel Program::getKernel(const std::string &name) const {

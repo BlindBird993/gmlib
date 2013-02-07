@@ -47,22 +47,38 @@ namespace Wavelet {
     Dwt();
 
     // Dwt Operations
-    void deCompose( const Filter<T>& filter, int dim, int lvls, int s_lvl = 0 );
-    void reConstruct( const Filter<T>& filter, int dim, int lvls, int s_lvl = 0 );
+    void deCompose( const Filter<T>& filter, unsigned int dim,
+                    unsigned int lvls, unsigned int s_lvl = 0 );
+    void reConstruct( const Filter<T>& filter, unsigned int dim,
+                      unsigned int lvls, unsigned int s_lvl = 0 );
 
-    // load/read-back signal-data
-    void load( const CL::Buffer& signal, int resolution );
-    void read( CL::Buffer& signal, int resolution ) const;
+    // write/read-back signal-data
+    void writeToInBuffer( const T* signal, unsigned long int length );
+    void writeToInBuffer( const DVector<T>& signal );
+    void writeToInBuffer( const DMatrix<T>& signal );
+    void writeToInBuffer( const CL::Buffer& signal, unsigned long int length );
+    void readFromOutBuffer( T* signal, unsigned long int length ) const;
+    void readFromOutBuffer( DVector<T>& signal ) const;
+    void readFromOutBuffer( DMatrix<T>& signal ) const;
+    void readFromOutBuffer( CL::Buffer& signal, unsigned long int length) const;
+
+    void swapBuffers();
+
+//    template <typename G>
+    const CL::Buffer& getNativeInBuffer() const;
+
+//    template <typename G>
+    const CL::Buffer& getNativeOutBuffer() const;
 
   private:
     void init();
-    void swapBuffers();
 
     int                     _resolution;
 
     CL::CommandQueue        _queue;
     CL::Program             _program;
     CL::Kernel              _kernel;
+    mutable cl::Event       _event;
 
     // Two alternating buffers (input/output)
     BUFFER                  _b_in;

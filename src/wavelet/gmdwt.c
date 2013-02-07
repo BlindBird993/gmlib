@@ -82,22 +82,111 @@ namespace Wavelet {
     _program = CL::Program( sources );
     _program.build( cli->getDevices() ) ;
 
-
   }
 
   template <typename T>
   void
   Dwt<T>::swapBuffers() {
 
+    BUFFER tmp = _b_out;
+    _b_out = _b_in;
+    _b_in = tmp;
+  }
 
+  template <typename T>
+  const CL::Buffer&
+  Dwt<T>::getNativeInBuffer() const {
+
+    return _buffers[_b_in];
+  }
+
+  template <typename T>
+  const CL::Buffer&
+  Dwt<T>::getNativeOutBuffer() const {
+
+    return _buffers[_b_out];
+  }
+
+
+  template <typename T>
+  void
+  Dwt<T>::writeToInBuffer( const T* signal, unsigned long int length ) {
+
+    CL::Buffer &bi = _buffers[_b_in];
+    bi = CL::Buffer( CL_MEM_READ_WRITE, length * sizeof(T) );
+    _queue().enqueueWriteBuffer( bi(), CL_TRUE, 0, length * sizeof(T), signal, 0x0, &_event );
+    _event.wait();
   }
 
   template <typename T>
   void
-  Dwt<T>::load(const CL::Buffer &signal, int resolution) {
+  Dwt<T>::writeToInBuffer( const DVector<T>& signal ) {
 
-//    _queue.en
+    CL::Buffer &bi = _buffers[_b_in];
+    bi = CL::Buffer( CL_MEM_READ_WRITE, signal.getDim() * sizeof(T) );
+    _queue.enqueueWriteBuffer( bi, CL_TRUE, signal, 0x0, &_event );
+    _event.wait();
   }
+
+  template <typename T>
+  void
+  Dwt<T>::writeToInBuffer( const DMatrix<T>& signal ) {
+
+    CL::Buffer &bi = _buffers[_b_in];
+    bi = CL::Buffer( CL_MEM_READ_WRITE, signal.getDim1() * signal.getDim2() * sizeof(T) );
+    _queue.enqueueWriteBuffer( bi, CL_TRUE, signal, 0x0, &_event );
+    _event.wait();
+  }
+
+  template <typename T>
+  void
+  Dwt<T>::writeToInBuffer( const CL::Buffer& signal, unsigned long int length ) {
+
+    CL::Buffer &bi = _buffers[_b_in];
+    bi = CL::Buffer( CL_MEM_READ_WRITE, length * sizeof(T) );
+    _queue.enqueueCopyBuffer( signal, bi, 0, 0, length * sizeof(T), 0x0, &_event );
+    _event.wait();
+  }
+
+  template <typename T>
+  void
+  Dwt<T>::readFromOutBuffer( T* signal, unsigned long int length ) const {
+
+    CL::Buffer &bo = _buffers[_b_out];
+    _queue().enqueueReadBuffer( bo(), CL_TRUE, 0, length * sizeof(T), signal, 0x0, &_event );
+    _event.wait();
+  }
+
+  template <typename T>
+  void
+  Dwt<T>::readFromOutBuffer( DVector<T>& signal ) const {
+
+
+    CL::Buffer &bo = _buffers[_b_out];
+    _queue.enqueueReadBuffer( bo, CL_TRUE, signal, 0x0, &_event );
+    _event.wait();
+  }
+
+  template <typename T>
+  void
+  Dwt<T>::readFromOutBuffer( DMatrix<T>& signal ) const {
+
+    CL::Buffer &bo = _buffers[_b_out];
+    _queue.enqueueReadBuffer( bo, CL_TRUE, signal, 0x0, &_event );
+    _event.wait();
+  }
+
+  template <typename T>
+  void
+  Dwt<T>::readFromOutBuffer( CL::Buffer& signal, unsigned long int length) const {
+
+    CL::Buffer &bo = _buffers[_b_out];
+    _queue.enqueueCopyBuffer( bo, signal, 0, 0, length * sizeof(T), 0x0, &_event );
+    _event.wait();
+  }
+
+
+
 
 } // END namespace Wavelet
 } // END namespace GMlib
