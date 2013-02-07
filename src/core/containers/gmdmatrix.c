@@ -397,11 +397,11 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  DVector<T> DMatrix<T>::toDVector() {
+  DVector<T> DMatrix<T>::toDVector() const {
     DVector<T> r(getDim1()*getDim2());
     for(int k=0,i=0; i<getDim1(); i++)
       for(int j=0; j<getDim2(); j++)
-        r[k++]=(*this)[i][j];
+        r[k++]=(*this)(i)(j);
     return r;
   }
 
@@ -642,7 +642,7 @@ namespace GMlib {
   inline
   void  DMatrix<T>::_cpy(const T p[]) {
     for(int k=0,i=0; i<_n; i++)
-      for(int j=0;j<_p[i].dim();j++)	_p[i][j] = p[k++];
+      for(int j=0;j<_p[i].getDim();j++)	_p[i][j] = p[k++];
   }
 
 } // END namespace GMlib

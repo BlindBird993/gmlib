@@ -89,14 +89,10 @@ namespace CL {
     // DMatrix Buffer R/W operations
     template <typename T>
     cl_int    enqueueReadBuffer( const Buffer& buffer, cl_bool blocking,
-                                 DMatrix<T>& data,
-                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
-                                 cl::Event* event = 0x0 ) const;
+                                 DMatrix<T>& data ) const;
     template <typename T>
     cl_int    enqueueReadBuffer( const Buffer& buffer, cl_bool blocking,
-                                 ::size_t offset, DMatrix<T>& data,
-                                 const VECTOR_CLASS<cl::Event>* events = 0x0,
-                                 cl::Event* event = 0x0 ) const;
+                                 ::size_t offset, DMatrix<T>& data) const;
     template <typename T>
     cl_int    enqueueWriteBuffer( const Buffer& buffer, cl_bool blocking,
                                   const DMatrix<T>& data,
@@ -162,24 +158,24 @@ namespace CL {
   inline
   cl_int
   CommandQueue::enqueueReadBuffer(const Buffer &buffer, cl_bool blocking,
-                                  DMatrix<T>& data,
-                                     const VECTOR_CLASS<cl::Event>* events,
-                                     cl::Event* event) const {
+                                  DMatrix<T>& data) const {
 
-    return enqueueReadBuffer( buffer, blocking, 0, data, events, event );
+    return enqueueReadBuffer( buffer, blocking, 0, data );
   }
 
   template <typename T>
   inline
   cl_int
   CommandQueue::enqueueReadBuffer(const Buffer &buffer, cl_bool blocking,
-                                  ::size_t offset, DMatrix<T>& data,
-                                     const VECTOR_CLASS<cl::Event>* events,
-                                     cl::Event* event) const {
+                                  ::size_t offset, DMatrix<T>& data) const {
 
     DVector<T> vec(data.getDim1() * data.getDim2());
+
     cl_int res;
-    res = enqueueReadBuffer( buffer, blocking, offset, vec, events, event );
+    cl::Event event;
+    res = enqueueReadBuffer( buffer, blocking, offset, vec, 0x0, &event );
+
+    event.wait();
     data = vec.getPtr();
 
     return res;
@@ -272,8 +268,8 @@ namespace CL {
                                      const VECTOR_CLASS<cl::Event>* events,
                                      cl::Event* event) const {
 
-    DVector<T> &vec = data.toDVector();
-    return enqueueReadBuffer( buffer, blocking, offset, vec, events, event );
+    DVector<T> vec = data.toDVector();
+    return enqueueWriteBuffer( buffer, blocking, offset, vec, events, event );
   }
 
   template <typename T>
@@ -335,7 +331,7 @@ namespace CL {
 
     const ::size_t row_pitch = data.getDim1() * T_size;
 
-    return obj().enqueueReadImage( image(), blocking, o, r, row_pitch, 0, vec.getPtr(),
+    return obj().enqueueWriteImage( image(), blocking, o, r, row_pitch, 0, vec.getPtr(),
                                    events, event );
   }
 

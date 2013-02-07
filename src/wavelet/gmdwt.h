@@ -71,8 +71,6 @@ namespace Wavelet {
     const CL::Buffer& getNativeOutBuffer() const;
 
   private:
-    void init();
-
     int                     _resolution;
 
     CL::CommandQueue        _queue;
@@ -85,7 +83,10 @@ namespace Wavelet {
     BUFFER                  _b_out;
     CL::Buffer              _buffers[2];
 
-  };
+    void                    init();
+    void                    initBuffers(int length );
+
+  }; // END class Dwt
 
 } // END namespace Wavelet
 } // END namespace GMlib
