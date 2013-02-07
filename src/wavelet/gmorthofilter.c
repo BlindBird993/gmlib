@@ -1,4 +1,6 @@
 
+#include "gmorthofilter.h"
+
 namespace GMlib {
 namespace Wavelet {
 
