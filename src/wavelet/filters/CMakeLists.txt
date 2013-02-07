@@ -20,22 +20,9 @@
 # #
 # ###############################################################################
 
-addHeaders(
-  gmDwt
-  gmFilter
-  gmOrthoFilter
-)
+#addHeaders(
+#  gmHaarFilter
+#)
 
-addTemplateSources(
-  gmdwt.c
-  gmfilter.c
-  gmorthofilter.c
-)
-
-#addSources()
-
-addSubDirectory(filters)          # <filters> sub-module
-
-moduleLinkLibrary( ${OPENCL_LIBRARIES} )
 
 #addTestDir()

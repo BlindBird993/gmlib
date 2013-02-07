@@ -37,31 +37,48 @@ namespace Wavelet {
 
   template<typename T>
   class Dwt {
+
+    enum BUFFER {
+      BUFFER_01 = 0,
+      BUFFER_02 = 1
+    };
+
+
   public:
-    Dwt(int dim);
+    Dwt();
 
-    void setFilter(int dim, Filter<T>* filter);
+//    // Filter control
+//    void setFilter(int dim, Filter<T>* filter);
 
-    void deCompose();
-    void reConstruct();
+    // Dwt Operations
+    void deCompose( const Filter<T>& filter, int dim, int lvls, int s_lvl = 0 );
+    void reConstruct( const Filter<T>& filter, int dim, int lvls, int s_lvl = 0 );
+
+    // load/read-back signal-data
+    void load( const CL::Buffer& signal, int resolution );
+    void read( CL::Buffer& signal, int resolution ) const;
 
   private:
     void init();
+    void swapBuffers();
 
-    int                  _dimension;
-    DVector<Filter<T>* > _filters;
+    int                     _resolution;
+//    DVector<Filter<T>* >    _filters;
 
-    CL::CommandQueue _queue;
-    CL::Program _program;
-    CL::Kernel  _kernel;
-    CL::Buffer _buffer_in;
-    CL::Buffer _buffer_out;
+    CL::CommandQueue        _queue;
+    CL::Program             _program;
+    CL::Kernel              _kernel;
+
+    // Two alternating buffers (input/output)
+    BUFFER                  _b_in;
+    BUFFER                  _b_out;
+    CL::Buffer              _buffers[2];
 
   };
 
-}
-}
+} // END namespace Wavelet
+} // END namespace GMlib
 
 #include "gmdwt.c"
 
-#endif
+#endif // __GM_WAVELET_DWT_H__

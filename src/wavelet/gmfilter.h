@@ -23,6 +23,7 @@
 #ifndef __GM_WAVELET_FILTER_H__
 #define __GM_WAVELET_FILTER_H__
 
+// gmlib
 #include <core/containers/gmdvector.h>
 
 namespace GMlib {
@@ -58,11 +59,13 @@ namespace Wavelet {
     DVector<T> _d_lp;  // decompose low-pass filter
     DVector<T> _r_hp;  // reconstruct hi-pass filter
     DVector<T> _r_lp;  // reconstruct lo-pass filter
-  };
 
-}
-}
+  }; // END class Filter
+
+} // END namespace Wavelet
+} // END namespace GMlib
+
 
 #include "gmfilter.c"
 
-#endif
+#endif // __GM_WAVELET_FILTER_H__

@@ -42,11 +42,13 @@ namespace Wavelet {
   protected:
     //- Inherited from Filter<T>
     void calcFilters(const DVector<T>& coefs);
-  };
 
-}
-}
+  }; // END class OrthoFilter
+
+} // END namespace Wavelet
+} // END namespace GMlib
+
 
 #include "gmorthofilter.c"
 
-#endif
+#endif // __GM_WAVELET_ORTHOFILTER_H__
