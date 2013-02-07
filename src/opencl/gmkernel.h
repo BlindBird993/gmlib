@@ -38,7 +38,12 @@ namespace GMlib {
 
 namespace CL {
 
+
+  class Buffer;
   class Program;
+
+  template <typename T,OpenCL::MemoryInfo::TYPE T_type>
+  class Memory;
 
   class Kernel : public CLObject<cl::Kernel> {
   public:
@@ -46,8 +51,20 @@ namespace CL {
     Kernel( const Program& program, const std::string& kernel_name );
     Kernel( const std::string& prog_name, const std::string& kernel_name );
 
+    template <typename T,OpenCL::MemoryInfo::TYPE T_type>
+    cl_int setArg( cl_uint index, const Memory<T,T_type>& mem );
 
   }; // END class Kernel
+
+
+
+
+
+  template <typename T,OpenCL::MemoryInfo::TYPE T_type>
+  cl_int Kernel::setArg( cl_uint index, const Memory<T,T_type>& mem ) {
+
+    return obj().setArg( index, mem() );
+  }
 
 
 

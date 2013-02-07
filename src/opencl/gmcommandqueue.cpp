@@ -41,6 +41,13 @@ namespace CL {
     : CLObject<cl::CommandQueue>(name, OpenCL::getInstance()->createCommandQueue(name,device,properties)) {
   }
 
+  cl_int
+  CommandQueue::enqueueNDRangeKernel(const Kernel &kernel, const cl::NDRange &offset,
+                                     const cl::NDRange &global, const cl::NDRange &local) const {
+
+    return obj().enqueueNDRangeKernel( kernel(), offset, global, local );
+  }
+
 } // END namespace CL
 
 } // END namespace GMlib

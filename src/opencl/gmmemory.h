@@ -36,9 +36,7 @@ namespace GMlib {
 namespace CL {
 
   template <typename T,OpenCL::MemoryInfo::TYPE T_type>
-  class Memory :
-      public CLObject<T>,
-      GMutils::DerivedFrom<T,cl::Memory> {
+  class Memory : public CLObject<T>, GMutils::DerivedFrom<T,cl::Memory> {
   public:
     Memory();
     Memory( const T& obj );

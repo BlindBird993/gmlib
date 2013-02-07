@@ -292,7 +292,7 @@ namespace CL {
     const typename T::cl_type&      getCLObjPtr() const;
 
     // CL++ object access
-    T                               operator() () const;
+    const T&                        operator() () const;
     T&                              operator() ();
 
 
@@ -303,7 +303,7 @@ namespace CL {
     T                               _obj;
     std::string                     _name;
 
-    T                               obj() const;
+    const T&                        obj() const;
     T&                              obj();
 
 
@@ -358,7 +358,7 @@ namespace CL {
 
   template <typename T>
   inline
-  T CLObject<T>::obj() const {
+  const T& CLObject<T>::obj() const {
 
     return _obj;
   }
@@ -379,7 +379,7 @@ namespace CL {
 
   template <typename T>
   inline
-  T CLObject<T>::operator() () const {
+  const T& CLObject<T>::operator() () const {
 
     return obj();
   }
