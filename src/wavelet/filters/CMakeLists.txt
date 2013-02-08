@@ -20,9 +20,9 @@
 # #
 # ###############################################################################
 
-#addHeaders(
-#  gmHaarFilter
-#)
+addHeaders(
+  gmFilterFactory
+)
 
 
 #addTestDir()
