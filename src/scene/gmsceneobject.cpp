@@ -59,7 +59,7 @@ namespace GMlib {
     const Point<float,3>&  scale,
     const Vector<float,3>& rot_axel,
     Angle a
-  ) :_scale(scale),_select_prog("select") {
+  ) :_scale(scale) {
 
     _parent = 0;
     _matrix.translate(trans_vector);
@@ -88,8 +88,7 @@ namespace GMlib {
    *
    *  Copy constructor
    */
-  SceneObject::SceneObject( const SceneObject& copy ) :
-    _select_prog( copy._select_prog ) {
+  SceneObject::SceneObject( const SceneObject& copy ) {
 
     _copy_of          = &copy;
 
@@ -235,7 +234,6 @@ namespace GMlib {
       }
 
       for( int i = 0; i < _children.getSize(); i++ )
-//        _children[i]->culling( disp_objs, f );
         _children[i]->fillObj( disp_objs );
     }
     else { // if(k == 0)     Intersecting
@@ -468,11 +466,6 @@ namespace GMlib {
   void SceneObject::setMatrix( const HqMatrix<float,3>& mat ) {
 
     _matrix = mat;
-  }
-
-  void SceneObject::setSelectProgram(const GL::GLProgram &prog) {
-
-    _select_prog = prog;
   }
 
   /*! void SceneObject::setSurroundingSphere(const Sphere<float,3>& b)

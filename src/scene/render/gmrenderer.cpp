@@ -100,19 +100,10 @@ namespace GMlib {
     // Compute frustum/frustum-matrix, set glViewport
     cam->setupDisplay();
 
-    const Frustum &frustum = cam->getFrustum();
-    const bool is_culling = cam->isCulling();
-
-    objs.resetSize();
-
+    // Get displayable objects
     assert( _scene );
-
-    if(is_culling)
-      for( int i = 0; i < _scene->getSize(); ++i )
-        (*_scene)[i]->culling( objs, frustum );
-    else
-      for( int i = 0; i < _scene->getSize(); ++i )
-        (*_scene)[i]->fillObj( objs );
+    objs.resetSize();
+    _scene->getDisplayableObjects( objs, cam );
   }
 
 

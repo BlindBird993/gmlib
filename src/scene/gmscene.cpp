@@ -119,6 +119,19 @@ namespace GMlib {
 
   RenderManager *Scene::getRenderManager() const {  return 0x0; }
 
+  void Scene::getDisplayableObjects(Array<DisplayObject *> &disp_objs, Camera *cam)  const {
+
+    const Frustum &frustum = cam->getFrustum();
+    const bool is_culling = cam->isCulling();
+
+    if(is_culling)
+      for( int i = 0; i < _scene.getSize(); ++i )
+        _scene(i)->culling( disp_objs, frustum );
+    else
+      for( int i = 0; i < _scene.getSize(); ++i )
+        _scene(i)->fillObj( disp_objs );
+  }
+
 
   /*! int Scene::getSize()
    *  \brief Pending Documentation

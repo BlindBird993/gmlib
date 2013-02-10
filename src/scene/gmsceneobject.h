@@ -189,58 +189,56 @@ namespace GMlib{
     virtual SceneObject*                makeCopy() = 0;
     virtual std::string                 getIdentity() const = 0;
 
-    ArrayT<SceneObjectAttribute*>&      accessSceneObjectAttributes();
-
-    virtual const HqMatrix<float,3>&    getMatrix() const;
-    virtual HqMatrix<float,3>&          getMatrix();
-    const HqMatrix<float,3>&            getMatrixGlobal() const;
-    const HqMatrix<float,3>&            getMatrixParentGlobal() const;
-    void                                setMatrix( const HqMatrix<float,3>& mat );
-
-    virtual void                        edit(int selector_id);
-    virtual void                        edit(SceneObject* lp);
-    virtual void                        edit();
-    virtual void                        editPos(Vector<float,3> delta);
-    virtual void                        enableChildren( bool enable = true );
-
-    SceneObject*                        find(unsigned int name);
-    const APoint<float,3>&              getCenterPos() const;
-    Array<SceneObject*>&                getChildren();
-    SceneObject*                        getParent() const;
-    void                                setParent(SceneObject* obj);
+    Scene*                              getScene() const;
 
     int                                 getTypeId() const;
     unsigned int                        getName() const;
     virtual unsigned int                getVirtualName() const;
-
-    Scene*                              getScene() const;
-
-    bool                                isSelected() const;
-    bool                                getSelected() const;
-    bool                                flipSelected();
-    virtual void                        selectEvent(int selector_id);
-    virtual void                        setSelected(bool s);
-
-    Sphere<float,3>                     getSurroundingSphere() const;
-    Sphere<float,3>                     getSurroundingSphereClean() const;
 
     void                                insert(SceneObject* obj);
     void                                remove(SceneObject* obj);
     bool                                isPart() const;
     void                                setIsPart( bool part );
 
+    Array<SceneObject*>&                getChildren();
+    SceneObject*                        getParent() const;
+    void                                setParent(SceneObject* obj);
 
-    void                                setSelectProgram( const GL::GLProgram& prog );
+    SceneObject*                        find(unsigned int name);
 
+    const APoint<float,3>&              getCenterPos() const;
+
+    ArrayT<SceneObjectAttribute*>&      accessSceneObjectAttributes();
+
+    // Matrix/orientation
+    virtual const HqMatrix<float,3>&    getMatrix() const;
+    virtual HqMatrix<float,3>&          getMatrix();
+    const HqMatrix<float,3>&            getMatrixGlobal() const;
+    const HqMatrix<float,3>&            getMatrixParentGlobal() const;
+    void                                setMatrix( const HqMatrix<float,3>& mat );
+
+    // surrounding sphere
+    Sphere<float,3>                     getSurroundingSphere() const;
+    Sphere<float,3>                     getSurroundingSphereClean() const;
+
+    // editing/interaction
+    virtual void                        edit(int selector_id);
+    virtual void                        edit(SceneObject* lp);
+    virtual void                        edit();
+    virtual void                        editPos(Vector<float,3> delta);
+    virtual void                        enableChildren( bool enable = true );
+
+    // properties
+    bool                                isSelected() const;
+    bool                                getSelected() const;
+    bool                                flipSelected();
+    virtual void                        selectEvent(int selector_id);
+    virtual void                        setSelected(bool s);
     virtual bool                        isVisible() const;
     virtual void                        setVisible( bool v, int prop = 0 );
     virtual bool                        toggleVisible();
 
-
-
-
-
-    /* transformation */
+    // transformation
     virtual void                        rotate(Angle a, const Vector<float,3>& rot_axel);
     virtual void                        rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     virtual void                        rotate(const UnitQuaternion<float>& q );
@@ -251,68 +249,57 @@ namespace GMlib{
     virtual void                        translate(const Vector<float,3>& trans_vector);
     virtual void                        translateGlobal(const Vector<float,3>& trans_vector);
 
-    /* deprecated */
-    virtual void                        localDisplay();     //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!) \deprecated
-    virtual void                        localSelect();      //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!) \deprecated
+    // deprecated
+    virtual void                        localDisplay();         //! Lingering function convenient for Rapid Prototyping
+                                                                //! (may be removed without further notice!!!)
+                                                                //! \deprecated
+
+    virtual void                        localSelect();          //! Lingering function convenient for Rapid Prototyping
+                                                                //! (may be removed without further notice!!!)
+                                                                //! \deprecated
 
   protected:
     friend class Scene;
 
-    bool                        _is_part;  //! true if the object is seen as a part of a larger object
+    bool                                _is_part;               //! true if the object is seen as a part of a larger object
 
-    int                         _type_id;
-    Array<SceneObject*>	        _children;
-    //! The scene of the display hiearchy
-    Scene*                      _scene;
-    //! the mother in the hierarchy (tree). moved here from private
-    SceneObject*                _parent;
-    //! The difference matrix from mother to this.
-    HqMatrix<float,3>           _matrix;
-    //! The difference matrix from global to this.
-    HqMatrix<float,3>           _present;
-    //! The scaling for this and the children.
+    int                                 _type_id;
+    Array<SceneObject*>                 _children;
 
-  public:
-    ScaleObject                 _scale;
-  protected:
-    //! Using local coordinate system, default is true
-    bool                        _local_cs;
-    //! This variable is only for camera.
-    bool                        _active;
-    //! for this object
-    Sphere<float,3>             _global_sphere;
-    //! included all children
-    Sphere<float,3>             _global_total_sphere;
-    bool                        _selected;
-    //! culling on invisible items
-    bool                        _visible;
+    Scene*                              _scene;                 //! The scene of the display hiearchy
+    SceneObject*                        _parent;                //! the mother in the hierarchy (tree).
+    HqMatrix<float,3>                   _matrix;                //! The difference matrix from mother to this.
+    HqMatrix<float,3>                   _present;               //! The difference matrix from global to this.
+    ScaleObject                         _scale;                 //! The scaling for this and the children.
+    bool                                _local_cs;              //! Using local coordinate system, default is true
+    bool                                _active;                //! This variable is only for camera.
 
+    Sphere<float,3>                     _global_sphere;         //! for this object
+    Sphere<float,3>                     _global_total_sphere;   //! included all children
 
-    ArrayT<SceneObjectAttribute*> _scene_object_attributes;
+    bool                                _selected;
+    bool                                _visible;               //! culling on invisible items
 
-    virtual void                localSimulate(double dt);
-    void                        reset();
-    void                        setSurroundingSphere( const Sphere<float,3>& b );
-    void                        updateSurroundingSphere( const Point<float,3>& p );
+    ArrayT<SceneObjectAttribute*>       _scene_object_attributes;
 
+    virtual void                        simulate( double dt );
+    virtual void                        localSimulate(double dt);
 
-    virtual void                simulate( double dt );
+    void                                reset();
+
+    void                                setSurroundingSphere( const Sphere<float,3>& b );
+    void                                updateSurroundingSphere( const Point<float,3>& p );
 
   protected:
-//  private:
-    static unsigned int         _free_name;   //! For automatisk name-generations.
-    unsigned int                _name;        //! Unic name for this object, used for selecting
-    Sphere<float,3>             _sphere;      //! Surrounding sphere for this object
+    static unsigned int                 _free_name;   //! For automatisk name-generations.
+    unsigned int                        _name;        //! Unic name for this object, used for selecting
+    Sphere<float,3>                     _sphere;      //! Surrounding sphere for this object
 
-    GL::GLProgram                   _select_prog;
+    int                                 prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
+    virtual void                        prepareDisplay(const HqMatrix<float,3>& m);
 
-
-    int                         prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
-    virtual void                prepareDisplay(const HqMatrix<float,3>& m);
-
-  public:
-    virtual void                culling( Array<DisplayObject*>&, const Frustum& );
-    void                        fillObj( Array<DisplayObject*>& );
+    virtual void                        culling( Array<DisplayObject*>&, const Frustum& );
+    void                                fillObj( Array<DisplayObject*>& );
 
 
 
@@ -330,7 +317,7 @@ namespace GMlib{
       out << s._matrix  << GMseparator::Object
           << s._scale   << GMseparator::Object;
 
-  /*		if(st)
+  /*  if(st)
       {
         out << _object.size() << GMseparator::Object;
         for(int i=0; i<_object.size(); i++)
@@ -347,7 +334,7 @@ namespace GMlib{
 
       in >> s._type_id  >> os;
       in >> s._matrix   >> os >> s._scale >> os;
-  /*		if(st)
+  /*  if(st)
       {
         int nr;
         in >> nr >> os;
@@ -371,7 +358,6 @@ namespace GMlib{
     #endif
 
   }; // END class SceneObject
-
 
 
 

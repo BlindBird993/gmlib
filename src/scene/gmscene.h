@@ -50,14 +50,10 @@ namespace GMlib{
 
   class EventManager;
   class SceneObject;
+  class DisplayObject;
   class RenderManager;
   class Camera;
   class Light;
-
-  namespace GLSL { namespace GL {
-
-    class GLProgram;
-  } }
 
 
 
@@ -88,58 +84,65 @@ namespace GMlib{
     Scene( const Scene&  s );
     virtual ~Scene();
 
-    SceneObject*          find(unsigned int name);
-    SceneObject*          getActiveObject();
-    double                getElapsedTime();
-    Array<Light*>&        getLights();
-    Array<SceneObject*>&  getSelectedObjects();
-    int                   getSize();
-    Sphere<float,3>       getSphere();
-    Sphere<float,3>       getSphereClean() const;
-    double                getTimeScale();
-    virtual void          insert(SceneObject* obj);
-    bool                  isRunning();
-    void                  prepare();
-    void                  remove(SceneObject* obj);
-    void                  removeSelections();
-    void                  resetTime();
+    SceneObject*                find(unsigned int name);
+    SceneObject*                getActiveObject();
+    Array<Light*>&              getLights();
+    int                         getSize();
+    void                        prepare();
 
-    bool                  isSelected( SceneObject* obj ) const;
-    void                  setEventManager( EventManager* mgr );
-    void                  setSelection( SceneObject* obj, bool selected );
-    void                  setSingleSelection( SceneObject* obj );
-    void                  setTimeScale(double s);
-    void                  start();
-    void                  stop();
+    virtual void                insert(SceneObject* obj);
+    void                        remove(SceneObject* obj);
 
-    void                  toggleSelection( SceneObject* obj );
+    Sphere<float,3>             getSphere();
+    Sphere<float,3>             getSphereClean() const;
 
-    virtual RenderManager*    getRenderManager() const;
 
-    SceneObject*          operator [] (int i);
-    SceneObject*          operator () (int i);
-    Scene&                operator =  (const Scene& sc);
+    Array<SceneObject*>&        getSelectedObjects();
+    bool                        isSelected( SceneObject* obj ) const;
+    void                        removeSelections();
+    void                        setSelection( SceneObject* obj, bool selected );
+    void                        setSingleSelection( SceneObject* obj );
+    void                        toggleSelection( SceneObject* obj );
+
+    double                      getElapsedTime();
+    double                      getTimeScale();
+    void                        setTimeScale(double s);
+    bool                        isRunning();
+    void                        resetTime();
+    void                        start();
+    void                        stop();
+
+    void                        setEventManager( EventManager* mgr );
+
+
+    virtual RenderManager*      getRenderManager() const;
+    void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, Camera* cam) const;
+
+
+    SceneObject*                operator [] (int i);
+    SceneObject*                operator () (int i);
+    Scene&                      operator =  (const Scene& sc);
 
   protected:
-    Array<SceneObject*>   _sel_objs;
+    Array<SceneObject*>         _sel_objs;
 
-    void                  simulate();
+    void                        simulate();
 
-    virtual void          updateMaxObjects( int no_objects );
+    virtual void                updateMaxObjects( int no_objects );
 
 
   private:
-    Array<SceneObject*>   _scene;
+    Array<SceneObject*>         _scene;
 
-    Array<Light*>         _lights;
-    Array<HqMatrix<float,3> >                   _matrix_stack;
+    Array<Light*>               _lights;
+    Array<HqMatrix<float,3> >   _matrix_stack;
 
-    GMTimer               _timer;
-    bool                  _timer_active;
-    double                _timer_time_elapsed;
-    double                _timer_time_scale;
+    GMTimer                     _timer;
+    bool                        _timer_active;
+    double                      _timer_time_elapsed;
+    double                      _timer_time_scale;
 
-    EventManager*         _event_manager;
+    EventManager*               _event_manager;
 
   }; // END class Scene
 

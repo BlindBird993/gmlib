@@ -81,138 +81,113 @@ namespace GMlib {
 
 
 
-    virtual Vector<float,3>   getDir() const;
-    virtual Vector<float,3>   getSide() const;
-    virtual Vector<float,3>   getUp() const;
-    virtual Point<float,3>    getPos() const;
-    void                      set(
-                                const Point<float,3>&  pos,
-                                const Vector<float,3>& dir,
-                                const Vector<float,3>& up
-                              );
+    virtual Vector<float,3>       getDir() const;
+    virtual Vector<float,3>       getSide() const;
+    virtual Vector<float,3>       getUp() const;
+    virtual Point<float,3>        getPos() const;
+    void                          set( const Point<float,3>&  pos,
+                                       const Vector<float,3>& dir,
+                                       const Vector<float,3>& up );
 
-    const HqMatrix<float,3>&  getMatrixToScene() const;
-    const HqMatrix<float,3>&  getMatrixToSceneInverse() const;
+    const HqMatrix<float,3>&      getMatrixToScene() const;
+    const HqMatrix<float,3>&      getMatrixToSceneInverse() const;
 
-    const APoint<float,3>&    getLockPos() const;
-    double                    getLockDist() const;
-    bool                      isLocked() const;
-    virtual void              lock(SceneObject* obj);
-    virtual void              lock(const Point<float,3>& pos);
-    virtual void              lock(double d);
-    void                      unLock();
+    const APoint<float,3>&        getLockPos() const;
+    double                        getLockDist() const;
+    bool                          isLocked() const;
+    virtual void                  lock(SceneObject* obj);
+    virtual void                  lock(const Point<float,3>& pos);
+    virtual void                  lock(double d);
+    void                          unLock();
 
-    virtual void              move(float d);
-    virtual void              move(const Vector<float,3>& t);
-    virtual void              move(char,double);
-    virtual void              move(const Vector<float,2>& t);
-    virtual void              roll(Angle a);
-    virtual void              tilt(Angle a);
-    virtual void              turn(Angle a);
+    virtual void                  move(float d);
+    virtual void                  move(const Vector<float,3>& t);
+    virtual void                  move(char,double);
+    virtual void                  move(const Vector<float,2>& t);
+    virtual void                  roll(Angle a);
+    virtual void                  tilt(Angle a);
+    virtual void                  turn(Angle a);
 
+    const HqMatrix<float,3>&      getModelViewMatrix( const Camera *cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&      getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&      getProjectionMatrix( const Camera* cam ) const;
 
+    Array<Visualizer*>&           getVisualizers();
+    const Array<Visualizer*>&     getVisualizers() const;
+    virtual void                  insertVisualizer( Visualizer* visualizer );
+    virtual void                  removeVisualizer( Visualizer* visualizer );
 
+    const Color&                  getColor() const;
+    Color&                        getColor();
+    void                          setColor( const Color& c );
+    const Material&               getMaterial() const;
+    Material&                     getMaterial();
+    virtual void                  setMaterial(const Material& m);
 
+    bool                          isCollapsed() const;
+    virtual void                  setCollapsed(bool c);
+    virtual bool                  toggleCollapsed();
+    bool                          isLighted() const;
+    void                          setLighted( bool lighted );
+    bool                          isOpaque() const;
+    void                          setOpaque( bool o );
 
+    const GL::GLProgram&          getSelectProgram() const;
+    void                          setSelectProgram( const GL::GLProgram& prog );
 
-    Array<Visualizer*>&                 getVisualizers();
-    const Array<Visualizer*>&           getVisualizers() const;
-    virtual void                        insertVisualizer( Visualizer* visualizer );
-    virtual void                        removeVisualizer( Visualizer* visualizer );
-
-    Array<Visualizer*>          _visualizers;
-
-
-    const GL::GLProgram&                getSelectProgram() const;
-
-
-    const HqMatrix<float,3>&            getModelViewMatrix( const Camera *cam, bool local_cs = true ) const;
-    const HqMatrix<float,3>&            getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
-    const HqMatrix<float,3>&            getProjectionMatrix( const Camera* cam ) const;
-
-
-
-
-
-
-
-
-    const Color&                        getColor() const;
-    Color&                              getColor();
-    void                                setColor( const Color& c );
-    const Material&                     getMaterial() const;
-    Material&                           getMaterial();
-    virtual void                        setMaterial(const Material& m);
-
-    bool                                isCollapsed() const;
-    bool                                isLighted() const;
-    bool                                isOpaque() const;
-
-
-
-
-    bool                        _collapsed;
-
-    Material                    _material;
-    Color                       _color;
-    bool                        _lighted;
-    bool                        _opaque;
-
-    virtual void                        setCollapsed(bool c);
-    void                                setOpaque( bool o );
-    virtual bool                        toggleCollapsed();
-    void                                setLighted( bool lighted );
-
-
-
-
-
-    // *****************
-    // Virtual functions
-    // from SceneObject
-    virtual void              rotate(Angle a, const Vector<float,3>& rot_axel);
-    virtual void              rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void              rotate(const UnitQuaternion<float>& q);
-    virtual void              rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    virtual void              rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void              rotateGlobal(const UnitQuaternion<float>& q);
-    virtual void              translate(const Vector<float,3>& trans_vector);
-    virtual void              translateGlobal(const Vector<float,3>& trans_vector);
+    // Virtual from SceneObject
+    virtual void                  rotate(Angle a, const Vector<float,3>& rot_axel);
+    virtual void                  rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void                  rotate(const UnitQuaternion<float>& q);
+    virtual void                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
+    virtual void                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void                  rotateGlobal(const UnitQuaternion<float>& q);
+    virtual void                  translate(const Vector<float,3>& trans_vector);
+    virtual void                  translateGlobal(const Vector<float,3>& trans_vector);
 
 
   protected:
     // Matrices from Scene to this
-  public:
-    HqMatrix<float,3>         _matrix_scene;
-    HqMatrix<float,3>         _matrix_scene_inv;
-  protected:
+    HqMatrix<float,3>             _matrix_scene;
+    HqMatrix<float,3>             _matrix_scene_inv;
 
-    Point<float,3>            _pos;
-    UnitVector<float,3>       _dir;
-    UnitVector<float,3>       _side;
-    UnitVector<float,3>       _up;
+    Point<float,3>                _pos;
+    UnitVector<float,3>           _dir;
+    UnitVector<float,3>           _side;
+    UnitVector<float,3>           _up;
 
-    Point<float,3>            _lock_pos;
-    SceneObject*              _lock_object;
-    bool                      _locked;
+    Point<float,3>                _lock_pos;
+    SceneObject*                  _lock_object;
+    bool                          _locked;
 
-    virtual void              basisChange(const Vector<float,3>& dir,
-                                          const Vector<float,3>& side,
-                                          const Vector<float,3>& up,
-                                          const Vector<float,3>& pos);
+    bool                          _collapsed;
+    Material                      _material;
+    Color                         _color;
+    bool                          _lighted;
+    bool                          _opaque;
 
-    Point<float,3>            getSceneLockPos();
-    void                      updateOrientation(const Point<float,3>& lock_at_p);
+    Array<Visualizer*>            _visualizers;
+    GL::GLProgram                 _select_prog;
+
+    virtual void                  basisChange( const Vector<float,3>& dir,
+                                               const Vector<float,3>& side,
+                                               const Vector<float,3>& up,
+                                               const Vector<float,3>& pos);
+
+    Point<float,3>                getSceneLockPos();
+    void                          updateOrientation(const Point<float,3>& lock_at_p);
 
     // *****************
     // Virtual functions
     // from SceneObject
-    void                      prepareDisplay(const HqMatrix<float,3>& m);
-    void                      localSimulate(double dt);
+    void                          prepareDisplay(const HqMatrix<float,3>& m);
+    void                          localSimulate(double dt);
 
 
 
+  private:
     void                      init();
+
 
     #ifdef GM_STREAM
     public:
