@@ -38,7 +38,10 @@ namespace GMlib {
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() :
-    _vbo(), _ibo(), _no_elements(0) {}
+    _vbo(), _ibo(), _no_elements(0) {
+
+    this->setRenderProgram( GL::GLProgram("phong") );
+  }
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::~TriangleFacetsDefaultVisualizer() {}

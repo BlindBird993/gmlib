@@ -97,8 +97,8 @@ namespace GL {
 
     static void                                   _appendLog( const std::string& log );
     static void                                   _clearLog();
-    static bool                                   _initPrograms();
-    static bool                                   _initShaders();
+    static bool                                   _initDefaultPrograms();
+    static bool                                   _initDefaultShaders();
     static bool                                   _nameEmpty( const std::string& name, const std::string& type = std::string() );
     static bool                                   _programExists( const std::string& name, bool exist );
     static bool                                   _shaderExists( const std::string& name, bool exist );

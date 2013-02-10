@@ -63,7 +63,7 @@ namespace GL {
     _log.clear();
   }
 
-  bool GLShaderManager::_initPrograms() {
+  bool GLShaderManager::_initDefaultPrograms() {
 
     createProgram( "default" );
     addShaderToProgram( "default", "default_vs" );
@@ -119,16 +119,10 @@ namespace GL {
     if( !linkProgram( "render_select" ) )
       return false;
 
-  //    createProgram( "default_pass2" );
-  //    addShaderToProgram( "default_pass2", "default_pass2_vs" );
-  //    addShaderToProgram( "default_pass2", "default_pass2_fs" );
-  //    if( !linkProgram( "default_pass2" ) )
-  //      return false;
-
     return true;
   }
 
-  bool GLShaderManager::_initShaders() {
+  bool GLShaderManager::_initDefaultShaders() {
 
 
     std::string header_150(
@@ -343,7 +337,7 @@ namespace GL {
         "in vec3 ex_normal, ex_light_dir, ex_half_vector;\n"
         "in float ex_light_length;\n"
         "\n"
-        "out vec4 gl_FragData[2];\n"
+        "out vec4 gl_FragColor;\n"
         "\n"
         "void main() {\n"
         "\n"
@@ -386,13 +380,7 @@ namespace GL {
         "  if( !u_lighted )\n"
         "    color = u_color;\n"
         "\n"
-        "  gl_FragData[0] = color;\n"
-        "\n"
-        "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-        "\n"
-        "  if( u_selected )\n"
-        "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
-        "  gl_FragData[1] = sel_color;\n"
+        "  gl_FragColor = color;\n"
         "}\n"
         );
     if( !compileShader( "default_fs" ) )
@@ -447,9 +435,6 @@ namespace GL {
     phong_fs_str.append( func_pointlight );
     phong_fs_str.append( func_spotlight );
     phong_fs_str.append(
-      "uniform bool      u_selected;\n"
-      "uniform vec4      u_color;\n"
-      "uniform sampler2D u_nmap;\n"
       "uniform mat4      u_mvmat;\n"
       "\n"
       "uniform vec4      u_mat_amb;\n"
@@ -461,7 +446,7 @@ namespace GL {
       "smooth in vec3    ex_normal;\n"
       "smooth in vec2    ex_tex;\n"
       "\n"
-      "out vec4 gl_FragData[2];\n"
+      "out vec4 gl_FragColor;\n"
       "\n"
       "void main() {\n"
       "\n"
@@ -487,13 +472,7 @@ namespace GL {
       "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
       "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
       "\n"
-      "  gl_FragData[0] = light_color;\n"
-      "\n"
-      "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-      "\n"
-      "  if( u_selected )\n"
-      "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
-      "  gl_FragData[1] = sel_color;\n"
+      "  gl_FragColor = light_color;\n"
       "}\n"
     );
 
@@ -537,14 +516,11 @@ namespace GL {
         "uniform vec4 u_color;\n"
         "uniform bool u_selected;\n"
         "\n"
-        "out vec4 gl_FragData[2];\n"
+        "out vec4 gl_FragColor;\n"
         "\n"
         "void main() {\n"
         "\n"
-        "  gl_FragData[0] = u_color;\n"
-        "  gl_FragData[1] = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-        "  if( u_selected )\n"
-        "    gl_FragData[1] = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
+        "  gl_FragColor = u_color;\n"
         "}\n"
         );
     if( !compileShader( "color_fs" ) )
@@ -688,15 +664,11 @@ namespace GL {
         "\n"
         "in vec4 ex_color;\n"
         "\n"
-        "out vec4 gl_FragData[2];\n"
+        "out vec4 gl_FragColor;\n"
         "\n"
         "void main() {\n"
         "\n"
-        "  gl_FragData[0] = ex_color;\n"
-        "\n"
-        "  gl_FragData[1] = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-        "  if( u_selected )\n"
-        "    gl_FragData[1] = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
+        "  gl_FragColor = ex_color;\n"
         "}\n"
         );
 
@@ -746,8 +718,6 @@ namespace GL {
     psurf_phong_nmap_fs_str.append( func_pointlight );
     psurf_phong_nmap_fs_str.append( func_spotlight );
     psurf_phong_nmap_fs_str.append(
-      "uniform bool      u_selected;\n"
-      "uniform vec4      u_color;\n"
       "uniform sampler2D u_nmap;\n"
       "uniform mat4      u_mvmat;\n"
       "\n"
@@ -860,7 +830,7 @@ namespace GL {
       "smooth in vec3    ex_pos;\n"
       "smooth in vec2    ex_tex;\n"
       "\n"
-      "out vec4 gl_FragData[2];\n"
+      "out vec4 gl_FragColor;\n"
       "\n"
       "void main() {\n"
       "\n"
@@ -888,13 +858,7 @@ namespace GL {
       "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
       "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
       "\n"
-      "  gl_FragData[0] = light_color;\n"
-      "\n"
-      "  vec4 sel_color = vec4( 0.0, 0.0, 0.0, 1.0 );\n"
-      "\n"
-      "  if( u_selected )\n"
-      "    sel_color = vec4( 1.0, 1.0, 1.0, 1.0 );\n"
-      "  gl_FragData[1] = sel_color;\n"
+      "  gl_FragColor = light_color;\n"
       "}\n"
     );
 
@@ -1395,11 +1359,11 @@ namespace GL {
     std::cout << "###### Initializing GLSL Program and shaders!!" << std::endl;
 
     // Initialize default shaders
-    if( !_initShaders() )
+    if( !_initDefaultShaders() )
       return;
 
     // Build default programs
-    if( !_initPrograms() )
+    if( !_initDefaultPrograms() )
       return;
 
 

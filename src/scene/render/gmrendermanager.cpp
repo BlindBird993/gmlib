@@ -133,6 +133,16 @@ namespace GMlib {
 
 
 
+    // Blitting
+//    glBindFramebuffer( GL_READ_FRAMEBUFFER, _disp->_fbo.getId() );
+//    glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0x0 );
+
+//    glBlitFramebuffer( 0, 0, _w, _h, 0, 0, _w, _h, GL_COLOR_BUFFER_BIT, GL_NEAREST );
+
+//    glBindFramebuffer( GL_FRAMEBUFFER, 0x0 );
+
+
+
     float near_plane = -1.0f;
     float far_plane = 1.0f;
 
