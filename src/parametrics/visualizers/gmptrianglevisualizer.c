@@ -178,7 +178,7 @@ namespace GMlib {
   void PTriangleVisualizer<T>::replot( const DVector< DVector< Vector<T,3> > >& /*p*/, int /*m*/ ) {}
 
   template <typename T>
-  void PTriangleVisualizer<T>::set( SceneObject* obj ) {
+  void PTriangleVisualizer<T>::set( DisplayObject* obj ) {
 
     Visualizer::set( obj );
 

@@ -123,6 +123,8 @@ namespace GMlib {
     Array<Visualizer*>          _visualizers;
 
 
+    const GL::GLProgram&                getSelectProgram() const;
+
 
 
 
@@ -399,6 +401,12 @@ namespace GMlib {
     _dir		= lock_pos - _pos;
     _up			= _up - (_up * _dir) * _dir;
     _side		= _up ^ _dir;
+  }
+
+  inline
+  const GL::GLProgram &DisplayObject::getSelectProgram() const {
+
+    return _select_prog;
   }
 
 

@@ -69,7 +69,7 @@ namespace GMlib {
     virtual void    replot(
       const DVector< DVector< Vector<T,3> > >& p,int m
     );
-    void            set( SceneObject* obj );
+    void            set( DisplayObject* obj );
 
 
     static void     fillStandardVBO( GL::VertexBufferObject vbo, const DVector< DVector< Vector<T,3> > >& p );

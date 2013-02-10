@@ -58,7 +58,7 @@ namespace GMlib {
       int m1, int m2, int d1, int d2,
       bool closed_u, bool closed_v
     );
-    void          set( SceneObject* obj );
+    void          set( DisplayObject* obj );
 
     static void   fillMap( GLuint map, const DMatrix< DMatrix< Vector< T,3> > >& p, int d1, int d2 );
     static void   fillNMap(GLuint nmap, const DMatrix< DMatrix< Vector<T, 3> > >& p , bool closed_u, bool closed_v);

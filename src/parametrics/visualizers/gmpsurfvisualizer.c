@@ -310,7 +310,7 @@ namespace GMlib {
   ) {}
 
   template <typename T>
-  void PSurfVisualizer<T>::set( SceneObject* obj ) {
+  void PSurfVisualizer<T>::set( DisplayObject* obj ) {
 
     Visualizer::set( obj );
 

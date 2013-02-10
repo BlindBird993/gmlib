@@ -99,7 +99,7 @@ namespace GMlib {
   ) {}
 
   template <typename T>
-  void PCurveVisualizer<T>::set( SceneObject* obj ) {
+  void PCurveVisualizer<T>::set( DisplayObject* obj ) {
 
     Visualizer::set(obj);
 

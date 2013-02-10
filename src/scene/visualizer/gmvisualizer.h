@@ -44,7 +44,7 @@
 namespace GMlib {
 
   class Camera;
-  class SceneObject;
+  class DisplayObject;
 
   class Visualizer {
   public:
@@ -64,7 +64,7 @@ namespace GMlib {
     void                  glSetDisplayMode() const;
 
     virtual void          select();
-    virtual void          set( SceneObject* obj );
+    virtual void          set( DisplayObject* obj );
     void                  setDisplayMode( DISPLAY_MODE display_mode );
     void                  setRenderProgram( const GL::GLProgram& prog );
     void                  setSelectProgram( const GL::GLProgram& prog );
@@ -76,7 +76,7 @@ namespace GMlib {
 
 
   protected:
-    SceneObject           *_obj;
+    DisplayObject           *_obj;
 
     DISPLAY_MODE          _display_mode;
 

@@ -95,7 +95,7 @@ namespace GMlib {
   void TriangleFacetsVisualizer<T>::replot() {}
 
   template <typename T>
-  void TriangleFacetsVisualizer<T>::set( SceneObject* obj ) {
+  void TriangleFacetsVisualizer<T>::set( DisplayObject* obj ) {
 
     Visualizer::set( obj );
 

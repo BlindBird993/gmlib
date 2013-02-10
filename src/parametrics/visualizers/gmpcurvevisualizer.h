@@ -55,7 +55,7 @@ namespace GMlib {
       DVector< DVector< Vector<T, 3> > >& p,
       int m, int d, bool closed
     );
-    void          set( SceneObject* obj );
+    void          set( DisplayObject* obj );
 
     static void   fillStandardVBO( GL::VertexBufferObject& vbo, unsigned int& no_vertices,
                                    DVector< DVector< Vector<T, 3> > >& p, int d = 0);

@@ -31,7 +31,7 @@
 
 #include "gmvisualizer.h"
 
-#include "../gmsceneobject.h"
+#include "../gmdisplayobject.h"
 
 
 
@@ -82,7 +82,7 @@ namespace GMlib {
 
   void Visualizer::select() {}
 
-  void Visualizer::set( SceneObject* obj ) {
+  void Visualizer::set( DisplayObject* obj ) {
 
     _obj = obj;
   }

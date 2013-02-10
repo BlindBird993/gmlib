@@ -190,36 +190,44 @@ namespace GMlib{
     virtual std::string                 getIdentity() const = 0;
 
     ArrayT<SceneObjectAttribute*>&      accessSceneObjectAttributes();
+
+    virtual const HqMatrix<float,3>&    getMatrix() const;
+    virtual HqMatrix<float,3>&          getMatrix();
+    const HqMatrix<float,3>&            getMatrixGlobal() const;
+    const HqMatrix<float,3>&            getMatrixParentGlobal() const;
+
     virtual void                        edit(int selector_id);
     virtual void                        edit(SceneObject* lp);
     virtual void                        edit();
     virtual void                        editPos(Vector<float,3> delta);
     virtual void                        enableChildren( bool enable = true );
+
     SceneObject*                        find(unsigned int name);
-    bool                                flipSelected();
     const APoint<float,3>&              getCenterPos() const;
     Array<SceneObject*>&                getChildren();
-    virtual const HqMatrix<float,3>&    getMatrix() const;
-    virtual HqMatrix<float,3>&          getMatrix();
-    const HqMatrix<float,3>&            getMatrixGlobal() const;
-    const HqMatrix<float,3>&            getMatrixParentGlobal() const;
-    unsigned int                        getName() const;
     SceneObject*                        getParent() const;
+
+    int                                 getTypeId() const;
+    unsigned int                        getName() const;
+    virtual unsigned int                getVirtualName() const;
+
     Scene*                              getScene() const;
-    const GL::GLProgram&                getSelectProgram() const;
+    bool                                isSelected() const;
+
     bool                                getSelected() const;
+    bool                                flipSelected();
+
     Sphere<float,3>                     getSurroundingSphere() const;
     Sphere<float,3>                     getSurroundingSphereClean() const;
-    int                                 getTypeId() const;
-    virtual unsigned int                getVirtualName() const;
+
     void                                insert(SceneObject* obj);
+    void                                remove(SceneObject* obj);
+    bool                                isPart() const;
+
     bool                                isCollapsed() const;
     bool                                isLighted() const;
     bool                                isOpaque() const;
-    bool                                isPart() const;
-    bool                                isSelected() const;
     virtual bool                        isVisible() const;
-    void                                remove(SceneObject* obj);
 
     virtual void                        selectEvent(int selector_id);
     virtual void                        setCollapsed(bool c);
@@ -517,12 +525,6 @@ namespace GMlib{
   Scene* SceneObject::getScene() const {
 
     return _scene;
-  }
-
-  inline
-  const GL::GLProgram &SceneObject::getSelectProgram() const {
-
-    return _select_prog;
   }
 
 
