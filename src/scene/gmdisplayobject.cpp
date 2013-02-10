@@ -30,6 +30,9 @@
 #include "gmdisplayobject.h"
 
 
+#include "camera/gmcamera.h"
+
+
 namespace GMlib {
 
   /*! DisplayObject::DisplayObject( const Point<float,3>&  pos, const Vector<float,3>& dir, const Vector<float,3>& up )
@@ -105,6 +108,35 @@ namespace GMlib {
    *  Pending Documentation
    */
   DisplayObject::~DisplayObject() {}
+
+  const HqMatrix<float,3>& DisplayObject::getModelViewMatrix( const Camera* cam, bool local_cs ) const {
+
+    static HqMatrix<float,3> mv_mat;
+
+    // Translate to scene coordinates
+    mv_mat = cam->DisplayObject::getMatrix() * cam->getMatrixToSceneInverse();
+
+    // Apply local coordinate system
+    if( _local_cs && local_cs )
+      mv_mat = mv_mat * _present;
+
+    // Scale
+    mv_mat = mv_mat * _scale.getMatrix();
+
+    return mv_mat;
+  }
+
+  const HqMatrix<float,3>& DisplayObject::getModelViewProjectionMatrix( const Camera* cam, bool local_cs ) const {
+
+    static HqMatrix<float,3> mv_mat;
+    mv_mat = cam->getProjectionMatrix() * getModelViewMatrix( cam, local_cs );
+    return mv_mat;
+  }
+
+  const HqMatrix<float,3>& DisplayObject::getProjectionMatrix( const Camera* cam ) const {
+
+    return cam->getProjectionMatrix();
+  }
 
   Array<Visualizer*>& DisplayObject::getVisualizers() {
 

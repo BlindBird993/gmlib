@@ -126,6 +126,9 @@ namespace GMlib {
     const GL::GLProgram&                getSelectProgram() const;
 
 
+    const HqMatrix<float,3>&            getModelViewMatrix( const Camera *cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&            getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&            getProjectionMatrix( const Camera* cam ) const;
 
 
 
