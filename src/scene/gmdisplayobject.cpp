@@ -46,6 +46,7 @@ namespace GMlib {
     const Vector<float,3>& up
   ) : SceneObject(),_matrix_scene(),_matrix_scene_inv() {
 
+    init();
     set( pos, dir, up );
   }
 
@@ -61,6 +62,7 @@ namespace GMlib {
     const Vector<float,3>& up
   ) : SceneObject(), _matrix_scene(), _matrix_scene_inv() {
 
+    init();
     Vector<float,3> dir = up.getLinIndVec();
     set(pos,dir,up);
     _locked	= true;
@@ -79,6 +81,7 @@ namespace GMlib {
     const Vector<float,3>& up
   ) : SceneObject(), _matrix_scene(), _matrix_scene_inv() {
 
+    init();
     Vector<float,3> dir = up.getLinIndVec();
     set( pos, dir, up );
     _locked	= true;
@@ -91,14 +94,21 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  DisplayObject::DisplayObject( const DisplayObject& s )
-    : SceneObject(s), _matrix_scene( s._matrix_scene ), _matrix_scene_inv( s._matrix_scene_inv )
+  DisplayObject::DisplayObject( const DisplayObject& copy )
+    : SceneObject(copy), _matrix_scene( copy._matrix_scene ), _matrix_scene_inv( copy._matrix_scene_inv )
   {
 
-    set( s._pos, s._dir, s._up );
-    _locked	= s._locked;
-    _lock_object	= s._lock_object;
-    _lock_pos	= s._lock_pos;
+    set( copy._pos, copy._dir, copy._up );
+
+    _locked       = copy._locked;
+    _lock_object  = copy._lock_object;
+    _lock_pos     = copy._lock_pos;
+    _lighted      = copy._lighted;
+    _opaque       = copy._opaque;
+    _color        = copy._color;
+    _material     = copy._material;
+    _collapsed    = copy._collapsed;
+
   }
 
 
@@ -146,6 +156,15 @@ namespace GMlib {
   const Array<Visualizer*>& DisplayObject::getVisualizers() const {
 
     return _visualizers;
+  }
+
+  void DisplayObject::init() {
+
+    _lighted          = true;
+    _opaque           = true;
+    _material         = GMmaterial::Obsidian;
+    _color            = GMcolor::Red;
+    _collapsed        = false;
   }
 
   void DisplayObject::insertVisualizer( Visualizer* visualizer ) {
@@ -571,5 +590,49 @@ namespace GMlib {
       basisChange(_side, _up, _dir, _pos);
     }
   }
+
+  const Color& DisplayObject::getColor() const {
+
+    return _color;
+  }
+
+
+  Color& DisplayObject::getColor() {
+
+    return _color;
+  }
+
+
+  const Material& DisplayObject::getMaterial() const {
+
+    return _material;
+  }
+
+
+  Material& DisplayObject::getMaterial() {
+
+    return _material;
+  }
+
+  bool DisplayObject::isLighted() const {
+
+    return _lighted;
+  }
+
+  void DisplayObject::setColor( const Color& c ) {
+
+    _color = c;
+  }
+
+  void DisplayObject::setLighted( bool lighted ) {
+
+    _lighted = lighted;
+  }
+
+  void DisplayObject::setMaterial( const Material& m ) {
+
+    _material = m;
+  }
+
 
 } // END namespace GMlib

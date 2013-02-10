@@ -195,6 +195,7 @@ namespace GMlib{
     virtual HqMatrix<float,3>&          getMatrix();
     const HqMatrix<float,3>&            getMatrixGlobal() const;
     const HqMatrix<float,3>&            getMatrixParentGlobal() const;
+    void                                setMatrix( const HqMatrix<float,3>& mat );
 
     virtual void                        edit(int selector_id);
     virtual void                        edit(SceneObject* lp);
@@ -206,16 +207,19 @@ namespace GMlib{
     const APoint<float,3>&              getCenterPos() const;
     Array<SceneObject*>&                getChildren();
     SceneObject*                        getParent() const;
+    void                                setParent(SceneObject* obj);
 
     int                                 getTypeId() const;
     unsigned int                        getName() const;
     virtual unsigned int                getVirtualName() const;
 
     Scene*                              getScene() const;
-    bool                                isSelected() const;
 
+    bool                                isSelected() const;
     bool                                getSelected() const;
     bool                                flipSelected();
+    virtual void                        selectEvent(int selector_id);
+    virtual void                        setSelected(bool s);
 
     Sphere<float,3>                     getSurroundingSphere() const;
     Sphere<float,3>                     getSurroundingSphereClean() const;
@@ -223,32 +227,17 @@ namespace GMlib{
     void                                insert(SceneObject* obj);
     void                                remove(SceneObject* obj);
     bool                                isPart() const;
-
-    bool                                isCollapsed() const;
-    bool                                isLighted() const;
-    bool                                isOpaque() const;
-    virtual bool                        isVisible() const;
-
-    virtual void                        selectEvent(int selector_id);
-    virtual void                        setCollapsed(bool c);
     void                                setIsPart( bool part );
-    void                                setLighted( bool lighted );
-    void                                setMatrix( const HqMatrix<float,3>& mat );
-    void                                setOpaque( bool o );
-    void                                setParent(SceneObject* obj);
-    virtual void                        setSelected(bool s);
+
+
     void                                setSelectProgram( const GL::GLProgram& prog );
+
+    virtual bool                        isVisible() const;
     virtual void                        setVisible( bool v, int prop = 0 );
-    virtual bool                        toggleCollapsed();
     virtual bool                        toggleVisible();
 
 
-    const Color&                        getColor() const;
-    Color&                              getColor();
-    void                                setColor( const Color& c );
-    const Material&                     getMaterial() const;
-    Material&                           getMaterial();
-    virtual void                        setMaterial(const Material& m);
+
 
 
     /* transformation */
@@ -298,12 +287,6 @@ namespace GMlib{
     //! culling on invisible items
     bool                        _visible;
 
-    bool                        _collapsed;
-
-    Material                    _material;
-    Color                       _color;
-    bool                        _lighted;
-    bool                        _opaque;
 
     ArrayT<SceneObjectAttribute*> _scene_object_attributes;
 
@@ -383,7 +366,6 @@ namespace GMlib{
       _active	    = false;
       _local_cs   = true;
       _visible    = true;
-      _collapsed  = false;
     }
 
     #endif
@@ -567,23 +549,6 @@ namespace GMlib{
     else                      return getName();
   }
 
-  /*! bool SceneObject::isCollapsed() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  bool SceneObject::isCollapsed() const {
-
-    return _collapsed;
-  }
-
-
-  inline
-  bool SceneObject::isOpaque() const {
-
-    return _opaque;
-  }
 
 
   /*! bool SceneObject::isSelected() const
@@ -617,28 +582,6 @@ namespace GMlib{
    */
   inline
   void SceneObject::selectEvent( int /* selector_id */ ) {}
-
-
-
-  /*! void SceneObject::setCollapsed(bool c)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void SceneObject::setCollapsed(bool c) {
-
-    _collapsed = c;
-  }
-
-
-  inline
-  void SceneObject::setOpaque( bool o ) {
-
-    _opaque = o;
-  }
-
-
 
   /*! void SceneObject::setParent( SceneObject* obj )
    *  \brief Pending Documentation
@@ -687,18 +630,6 @@ namespace GMlib{
     }
   }
 
-
-
-  /*! void SceneObject::toggleCollapsed()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  bool SceneObject::toggleCollapsed() {
-
-    return _collapsed = !_collapsed;
-  }
 
   /*! void SceneObject::toggleVisible()
    *  \brief Pending Documentation

@@ -133,6 +133,40 @@ namespace GMlib {
 
 
 
+
+
+
+
+    const Color&                        getColor() const;
+    Color&                              getColor();
+    void                                setColor( const Color& c );
+    const Material&                     getMaterial() const;
+    Material&                           getMaterial();
+    virtual void                        setMaterial(const Material& m);
+
+    bool                                isCollapsed() const;
+    bool                                isLighted() const;
+    bool                                isOpaque() const;
+
+
+
+
+    bool                        _collapsed;
+
+    Material                    _material;
+    Color                       _color;
+    bool                        _lighted;
+    bool                        _opaque;
+
+    virtual void                        setCollapsed(bool c);
+    void                                setOpaque( bool o );
+    virtual bool                        toggleCollapsed();
+    void                                setLighted( bool lighted );
+
+
+
+
+
     // *****************
     // Virtual functions
     // from SceneObject
@@ -177,6 +211,9 @@ namespace GMlib {
     void                      localSimulate(double dt);
 
 
+
+    void                      init();
+
     #ifdef GM_STREAM
     public:
 
@@ -195,6 +232,7 @@ namespace GMlib {
       DisplayObject( T_Stream& in, int st) : SceneObject( in, st ), _matrix_scene_inv() {
 
         prIn(in);
+        init();
         _side	= _up^_dir;
         _locked	= false;
         _lock_object	= 0;
@@ -411,6 +449,39 @@ namespace GMlib {
 
     return _select_prog;
   }
+
+  inline
+  bool DisplayObject::isCollapsed() const {
+
+    return _collapsed;
+  }
+
+
+  inline
+  bool DisplayObject::isOpaque() const {
+
+    return _opaque;
+  }
+
+  inline
+  void DisplayObject::setCollapsed(bool c) {
+
+    _collapsed = c;
+  }
+
+
+  inline
+  void DisplayObject::setOpaque( bool o ) {
+
+    _opaque = o;
+  }
+
+  inline
+  bool DisplayObject::toggleCollapsed() {
+
+    return _collapsed = !_collapsed;
+  }
+
 
 
 } // END namespace GMlib

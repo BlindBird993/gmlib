@@ -76,13 +76,8 @@ namespace GMlib {
     _local_cs         = true;
     _type_id          = GM_SO_TYPE_SCENEOBJECT;
     _is_part          = false;
-    _lighted          = true;
-    _opaque           = true;
     _visible          = true;
     _selected         = false;
-    _material         = GMmaterial::Obsidian;
-    _color            = GMcolor::Red;
-    _collapsed        = false;
 
     _children.clear();
   }
@@ -100,8 +95,6 @@ namespace GMlib {
 
     _parent           = 0;
     _matrix	          = copy._matrix;
-    _lighted          = copy._lighted;
-    _opaque           = copy._opaque;
     _sphere	          = copy._sphere;
     _scale            = copy._scale;
     _name	            = _free_name++;
@@ -111,10 +104,6 @@ namespace GMlib {
     _is_part          = false;
     _visible          = copy._visible;
     _selected         = copy._selected;
-    _color            = copy._color;
-    _material         = copy._material;
-
-    _collapsed        = copy._collapsed;
 
 
     // update children
@@ -279,30 +268,6 @@ namespace GMlib {
     return 0;
   }
 
-  const Color& SceneObject::getColor() const {
-
-    return _color;
-  }
-
-
-  Color& SceneObject::getColor() {
-
-    return _color;
-  }
-
-
-  const Material& SceneObject::getMaterial() const {
-
-    return _material;
-  }
-
-
-  Material& SceneObject::getMaterial() {
-
-    return _material;
-  }
-
-
   /*! HqMatrix<flaot,3>& SceneObject::getMatrix()
    *  \brief Pending Documentation
    *
@@ -370,10 +335,6 @@ namespace GMlib {
     }
   }
 
-  bool SceneObject::isLighted() const {
-
-    return _lighted;
-  }
 
 
   /*! void localDisplay()
@@ -498,32 +459,11 @@ namespace GMlib {
     _sphere = _scale.scaleSphere(_sphere);
   }
 
-  void SceneObject::setColor( const Color& c ) {
-
-    _color = c;
-  }
 
   void SceneObject::setIsPart( bool is_part ) {
 
     _is_part = is_part;
   }
-
-  void SceneObject::setLighted( bool lighted ) {
-
-    _lighted = lighted;
-  }
-
-
-  /*! void SceneObject::setMaterial(const Material& m)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::setMaterial( const Material& m ) {
-
-    _material = m;
-  }
-
 
   void SceneObject::setMatrix( const HqMatrix<float,3>& mat ) {
 
