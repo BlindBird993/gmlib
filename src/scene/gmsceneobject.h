@@ -186,82 +186,80 @@ namespace GMlib{
     SceneObject( const SceneObject& d );
     virtual ~SceneObject();
 
-    virtual SceneObject*        makeCopy() = 0;
-    virtual std::string         getIdentity() const = 0;
+    virtual SceneObject*                makeCopy() = 0;
+    virtual std::string                 getIdentity() const = 0;
 
-    ArrayT<SceneObjectAttribute*>&  accessSceneObjectAttributes();
-    virtual void                edit(int selector_id);
-    virtual void                edit(SceneObject* lp);
-    virtual void                edit();
-    virtual void                editPos(Vector<float,3> delta);
-    virtual void                enableChildren( bool enable = true );
-    SceneObject*                find(unsigned int name);
-    bool                        flipSelected();
-    const APoint<float,3>&      getCenterPos() const;
-    Array<SceneObject*>&        getChildren();
-    const Color&                getColor() const;
-    Color&                      getColor();
-    const Material&             getMaterial() const;
-    Material&                   getMaterial();
-    virtual const HqMatrix<float,3>&  getMatrix() const;
-    virtual HqMatrix<float,3>&  getMatrix();
-    const HqMatrix<float,3>&    getMatrixGlobal() const;
-    const HqMatrix<float,3>&    getMatrixParentGlobal() const;
-    const HqMatrix<float,3>&    getModelViewMatrix( const Camera *cam, bool local_cs = true ) const;
-    const HqMatrix<float,3>&    getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
-    unsigned int                getName() const;
-    SceneObject*                getParent() const;
-    const HqMatrix<float,3>&    getProjectionMatrix( const Camera* cam ) const;
-    Scene*                      getScene() const;
-    const GL::GLProgram&        getSelectProgram() const;
-    bool                        getSelected() const;
-    Sphere<float,3>             getSurroundingSphere() const;
-    Sphere<float,3>             getSurroundingSphereClean() const;
-    int                         getTypeId() const;
-    virtual unsigned int        getVirtualName() const;
-    Array<Visualizer*>&         getVisualizers();
-    const Array<Visualizer*>&   getVisualizers() const;
-    void                        insert(SceneObject* obj);
-    virtual void                insertVisualizer( Visualizer* visualizer );
-    bool                        isCollapsed() const;
-    bool                        isLighted() const;
-    bool                        isOpaque() const;
-    bool                        isPart() const;
-    bool                        isSelected() const;
-    virtual bool                isVisible() const;
-    void                        remove(SceneObject* obj);
-    virtual void                removeVisualizer( Visualizer* visualizer );
+    ArrayT<SceneObjectAttribute*>&      accessSceneObjectAttributes();
+    virtual void                        edit(int selector_id);
+    virtual void                        edit(SceneObject* lp);
+    virtual void                        edit();
+    virtual void                        editPos(Vector<float,3> delta);
+    virtual void                        enableChildren( bool enable = true );
+    SceneObject*                        find(unsigned int name);
+    bool                                flipSelected();
+    const APoint<float,3>&              getCenterPos() const;
+    Array<SceneObject*>&                getChildren();
+    virtual const HqMatrix<float,3>&    getMatrix() const;
+    virtual HqMatrix<float,3>&          getMatrix();
+    const HqMatrix<float,3>&            getMatrixGlobal() const;
+    const HqMatrix<float,3>&            getMatrixParentGlobal() const;
+    unsigned int                        getName() const;
+    SceneObject*                        getParent() const;
+    Scene*                              getScene() const;
+    const GL::GLProgram&                getSelectProgram() const;
+    bool                                getSelected() const;
+    Sphere<float,3>                     getSurroundingSphere() const;
+    Sphere<float,3>                     getSurroundingSphereClean() const;
+    int                                 getTypeId() const;
+    virtual unsigned int                getVirtualName() const;
+    void                                insert(SceneObject* obj);
+    bool                                isCollapsed() const;
+    bool                                isLighted() const;
+    bool                                isOpaque() const;
+    bool                                isPart() const;
+    bool                                isSelected() const;
+    virtual bool                        isVisible() const;
+    void                                remove(SceneObject* obj);
 
-    virtual void                selectEvent(int selector_id);
-    virtual void                setCollapsed(bool c);
-    void                        setColor( const Color& c );
-    void                        setIsPart( bool part );
-    void                        setLighted( bool lighted );
-    virtual void                setMaterial(const Material& m);
-    void                        setMatrix( const HqMatrix<float,3>& mat );
-    void                        setOpaque( bool o );
-    void                        setParent(SceneObject* obj);
-    virtual void                setSelected(bool s);
-    void                        setSelectProgram( const GL::GLProgram& prog );
-    virtual void                setVisible( bool v, int prop = 0 );
-    virtual bool                toggleCollapsed();
-    virtual bool                toggleVisible();
+    virtual void                        selectEvent(int selector_id);
+    virtual void                        setCollapsed(bool c);
+    void                                setIsPart( bool part );
+    void                                setLighted( bool lighted );
+    void                                setMatrix( const HqMatrix<float,3>& mat );
+    void                                setOpaque( bool o );
+    void                                setParent(SceneObject* obj);
+    virtual void                        setSelected(bool s);
+    void                                setSelectProgram( const GL::GLProgram& prog );
+    virtual void                        setVisible( bool v, int prop = 0 );
+    virtual bool                        toggleCollapsed();
+    virtual bool                        toggleVisible();
+
+    const HqMatrix<float,3>&            getModelViewMatrix( const Camera *cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&            getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&            getProjectionMatrix( const Camera* cam ) const;
+
+    const Color&                        getColor() const;
+    Color&                              getColor();
+    void                                setColor( const Color& c );
+    const Material&                     getMaterial() const;
+    Material&                           getMaterial();
+    virtual void                        setMaterial(const Material& m);
 
 
     /* transformation */
-    virtual void                rotate(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                rotate(const UnitQuaternion<float>& q );
-    virtual void                rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                rotateGlobal(const UnitQuaternion<float>& q );
-    virtual void                scale(const Point<float,3>& scale_factor);
-    virtual void                translate(const Vector<float,3>& trans_vector);
-    virtual void                translateGlobal(const Vector<float,3>& trans_vector);
+    virtual void                        rotate(Angle a, const Vector<float,3>& rot_axel);
+    virtual void                        rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void                        rotate(const UnitQuaternion<float>& q );
+    virtual void                        rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
+    virtual void                        rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void                        rotateGlobal(const UnitQuaternion<float>& q );
+    virtual void                        scale(const Point<float,3>& scale_factor);
+    virtual void                        translate(const Vector<float,3>& trans_vector);
+    virtual void                        translateGlobal(const Vector<float,3>& trans_vector);
 
     /* deprecated */
-    virtual void                localDisplay();     //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!)
-    virtual void                localSelect();      //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!)
+    virtual void                        localDisplay();     //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!) \deprecated
+    virtual void                        localSelect();      //! Lingering function convenient for Rapid Prototyping  (may be removed without further notice!!!) \deprecated
 
   protected:
     friend class Scene;
@@ -279,6 +277,7 @@ namespace GMlib{
     //! The difference matrix from global to this.
     HqMatrix<float,3>           _present;
     //! The scaling for this and the children.
+
   public:
     ScaleObject                 _scale;
   protected:
@@ -302,7 +301,6 @@ namespace GMlib{
     bool                        _opaque;
 
     ArrayT<SceneObjectAttribute*> _scene_object_attributes;
-    Array<Visualizer*>          _visualizers;
 
     virtual void                localSimulate(double dt);
     void                        reset();

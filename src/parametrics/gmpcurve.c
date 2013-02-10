@@ -350,7 +350,7 @@ namespace GMlib {
   inline
   void PCurve<T>::insertVisualizer( Visualizer* visualizer ) {
 
-    SceneObject::insertVisualizer( visualizer );
+    DisplayObject::insertVisualizer( visualizer );
 
     PCurveVisualizer<T> *visu = dynamic_cast<PCurveVisualizer<T>*>( visualizer );
     if( !visu )
@@ -412,7 +412,7 @@ namespace GMlib {
     if( visu )
       _pcurve_visualizers.remove( visu );
 
-    SceneObject::removeVisualizer( visu );
+    DisplayObject::removeVisualizer( visu );
   }
 
 

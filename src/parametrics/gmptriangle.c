@@ -303,7 +303,7 @@ namespace GMlib {
 
     _ptriangle_visualizers += visu;
 
-    SceneObject::insertVisualizer( visualizer );
+    DisplayObject::insertVisualizer( visualizer );
   }
 
   template <typename T>
@@ -314,7 +314,7 @@ namespace GMlib {
     if( visu )
       _ptriangle_visualizers.remove( visu );
 
-    SceneObject::removeVisualizer( visualizer );
+    DisplayObject::removeVisualizer( visualizer );
   }
 
 

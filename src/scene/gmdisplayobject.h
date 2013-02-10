@@ -81,31 +81,50 @@ namespace GMlib {
 
 
 
-    virtual Vector<float,3>	  getDir() const;
-    const APoint<float,3>&    getLockPos() const;
-    double				            getLockDist() const;
-    const HqMatrix<float,3>&  getMatrixToScene() const;
-    const HqMatrix<float,3>&  getMatrixToSceneInverse() const;
-    virtual Point<float,3>	  getPos() const;
+    virtual Vector<float,3>   getDir() const;
     virtual Vector<float,3>   getSide() const;
     virtual Vector<float,3>   getUp() const;
-    bool				              isLocked() const;
-    virtual void		          lock(SceneObject* obj);
-    virtual void		          lock(const Point<float,3>& pos);
-    virtual void		          lock(double d);
-    virtual void              move(float d);
-    virtual void              move(const Vector<float,3>& t);
-    virtual void              move(char,double);
-    virtual void              move(const Vector<float,2>& t);
-    virtual void              roll(Angle a);
+    virtual Point<float,3>    getPos() const;
     void                      set(
                                 const Point<float,3>&  pos,
                                 const Vector<float,3>& dir,
                                 const Vector<float,3>& up
                               );
+
+    const HqMatrix<float,3>&  getMatrixToScene() const;
+    const HqMatrix<float,3>&  getMatrixToSceneInverse() const;
+
+    const APoint<float,3>&    getLockPos() const;
+    double                    getLockDist() const;
+    bool                      isLocked() const;
+    virtual void              lock(SceneObject* obj);
+    virtual void              lock(const Point<float,3>& pos);
+    virtual void              lock(double d);
+    void                      unLock();
+
+    virtual void              move(float d);
+    virtual void              move(const Vector<float,3>& t);
+    virtual void              move(char,double);
+    virtual void              move(const Vector<float,2>& t);
+    virtual void              roll(Angle a);
     virtual void              tilt(Angle a);
     virtual void              turn(Angle a);
-    void				      unLock();
+
+
+
+
+
+
+    Array<Visualizer*>&                 getVisualizers();
+    const Array<Visualizer*>&           getVisualizers() const;
+    virtual void                        insertVisualizer( Visualizer* visualizer );
+    virtual void                        removeVisualizer( Visualizer* visualizer );
+
+    Array<Visualizer*>          _visualizers;
+
+
+
+
 
 
 
@@ -125,32 +144,32 @@ namespace GMlib {
   protected:
     // Matrices from Scene to this
   public:
-    HqMatrix<float,3>		  _matrix_scene;
-    HqMatrix<float,3>		  _matrix_scene_inv;
+    HqMatrix<float,3>         _matrix_scene;
+    HqMatrix<float,3>         _matrix_scene_inv;
   protected:
 
-    Point<float,3>		      _pos;
+    Point<float,3>            _pos;
     UnitVector<float,3>       _dir;
-    UnitVector<float,3>	      _side;
-    UnitVector<float,3>	      _up;
+    UnitVector<float,3>       _side;
+    UnitVector<float,3>       _up;
 
-    Point<float,3>		      _lock_pos;
-    SceneObject*			  _lock_object;
-    bool					  _locked;
+    Point<float,3>            _lock_pos;
+    SceneObject*              _lock_object;
+    bool                      _locked;
 
     virtual void              basisChange(const Vector<float,3>& dir,
                                           const Vector<float,3>& side,
                                           const Vector<float,3>& up,
                                           const Vector<float,3>& pos);
 
-    Point<float,3>	          getSceneLockPos();
-    void				      updateOrientation(const Point<float,3>& lock_at_p);
+    Point<float,3>            getSceneLockPos();
+    void                      updateOrientation(const Point<float,3>& lock_at_p);
 
     // *****************
     // Virtual functions
     // from SceneObject
-    void			          prepareDisplay(const HqMatrix<float,3>& m);
-    void			          localSimulate(double dt);
+    void                      prepareDisplay(const HqMatrix<float,3>& m);
+    void                      localSimulate(double dt);
 
 
     #ifdef GM_STREAM

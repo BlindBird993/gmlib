@@ -106,6 +106,29 @@ namespace GMlib {
    */
   DisplayObject::~DisplayObject() {}
 
+  Array<Visualizer*>& DisplayObject::getVisualizers() {
+
+    return _visualizers;
+  }
+
+  const Array<Visualizer*>& DisplayObject::getVisualizers() const {
+
+    return _visualizers;
+  }
+
+  void DisplayObject::insertVisualizer( Visualizer* visualizer ) {
+
+    if( _visualizers.exist( visualizer ) )
+      return;
+
+    visualizer->set( this );
+    _visualizers += visualizer;
+  }
+
+  void DisplayObject::removeVisualizer( Visualizer* visualizer ) {
+
+    _visualizers.remove( visualizer );
+  }
 
   /*! void DisplayObject::lock(SceneObject* obj)
    *  \brief Pending Documentation

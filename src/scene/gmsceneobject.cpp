@@ -384,15 +384,6 @@ namespace GMlib {
     return sp;
   }
 
-  Array<Visualizer*>& SceneObject::getVisualizers() {
-
-    return _visualizers;
-  }
-
-  const Array<Visualizer*>& SceneObject::getVisualizers() const {
-
-    return _visualizers;
-  }
 
 
   /*! void SceneObject::insert(SceneObject* obj)
@@ -408,16 +399,6 @@ namespace GMlib {
       obj->_parent=this;
     }
   }
-
-  void SceneObject::insertVisualizer( Visualizer* visualizer ) {
-
-    if( _visualizers.exist( visualizer ) )
-      return;
-
-    visualizer->set( this );
-    _visualizers += visualizer;
-  }
-
 
   bool SceneObject::isLighted() const {
 
@@ -459,11 +440,6 @@ namespace GMlib {
       if(!_children.remove(obj))
         for(int i=0; i< _children.getSize(); i++)
           _children[i]->remove(obj);
-  }
-
-  void SceneObject::removeVisualizer( Visualizer* visualizer ) {
-
-    _visualizers.remove( visualizer );
   }
 
 
