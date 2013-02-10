@@ -39,7 +39,7 @@
 namespace GMlib {
 
   class Scene;
-  class SceneObject;
+  class DisplayObject;
   class Camera;
 
   class Renderer {
@@ -89,7 +89,7 @@ namespace GMlib {
   public:
     MultiObjectRenderer( Scene* scene );
 
-    virtual void      prepare( Array<SceneObject*>& objs, Camera* cam ) const;
+    virtual void      prepare( Array<DisplayObject*>& objs, Camera* cam ) const;
   }; // END class MultiObjectRenderer
 
 

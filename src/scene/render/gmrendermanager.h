@@ -44,7 +44,7 @@
 namespace GMlib {
 
   class Scene;
-  class SceneObject;
+  class DisplayObject;
   class Camera;
   class ViewSet;
   class GMWindow;
@@ -66,7 +66,7 @@ namespace GMlib {
     void            render(const Array<Camera *> &cameras );
 
     /* Selecting */
-    SceneObject*    findObject( int x, int y );
+    DisplayObject*  findObject( int x, int y );
     void            select(Camera* cam, int type_id );
 
     /* Rendering properties */
@@ -80,7 +80,7 @@ namespace GMlib {
   private:
     GMWindow                  *_window;
     Scene                     *_scene;
-    Array<SceneObject*>       _objs;      //! Render objects "cache" array
+    Array<DisplayObject*>       _objs;      //! Render objects "cache" array
 
     DisplayRenderer           *_disp;
     SelectRenderer            *_select;

@@ -159,10 +159,14 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::fillObj( Array<SceneObject*>& disp_objs ) {
+  void SceneObject::fillObj( Array<DisplayObject*>& disp_objs ) {
 
-    if(_sphere.isValid())
-      disp_objs += this;
+    if(_sphere.isValid()) {
+
+      DisplayObject *disp_obj = dynamic_cast<DisplayObject*>(this);
+      if( disp_obj )
+        disp_objs += disp_obj;
+    }
     for(int i=0; i< _children.getSize(); i++)
       _children[i]->fillObj(disp_objs);
   }
@@ -223,7 +227,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::culling( Array<SceneObject*>& disp_objs, const Frustum& f ) {
+  void SceneObject::culling( Array<DisplayObject*>& disp_objs, const Frustum& f ) {
 
     //if(!_visible) return;
     if(!_sphere.isValid())
@@ -237,16 +241,23 @@ namespace GMlib {
     // Inside
     if( k > 0 ) {
 
-      if(_visible)
-        disp_objs += this; // added check for visible, children don't automatic follow anymore
+      if(_visible) {
+        DisplayObject *disp_obj = dynamic_cast<DisplayObject*>(this);
+        if(disp_obj)
+          disp_objs += disp_obj; // added check for visible, children don't automatic follow anymore
+      }
+
       for( int i = 0; i < _children.getSize(); i++ )
 //        _children[i]->culling( disp_objs, f );
         _children[i]->fillObj( disp_objs );
     }
     else { // if(k == 0)     Intersecting
 
-      if( _visible && f.isInterfering( _global_sphere ) >= 0 )
-        disp_objs += this;
+      if( _visible && f.isInterfering( _global_sphere ) >= 0 ) {
+        DisplayObject *disp_obj = dynamic_cast<DisplayObject*>(this);
+        if(disp_obj)
+          disp_objs += disp_obj; // added check for visible, children don't automatic follow anymore
+      }
       for( int i = 0; i < _children.getSize(); i++ )
         _children[i]->culling( disp_objs, f );
     }

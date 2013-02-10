@@ -97,6 +97,7 @@
 namespace GMlib{
 
 
+  class DisplayObject;
   class Camera;
   class Scene;
   class Light;
@@ -324,8 +325,8 @@ namespace GMlib{
     virtual void                prepareDisplay(const HqMatrix<float,3>& m);
 
   public:
-    virtual void                culling( Array<SceneObject*>&, const Frustum& );
-    void                        fillObj( Array<SceneObject*>& );
+    virtual void                culling( Array<DisplayObject*>&, const Frustum& );
+    void                        fillObj( Array<DisplayObject*>& );
 
 
 

@@ -54,7 +54,7 @@ namespace GMlib {
     const GL::Texture&      getRenderTexture() const;
     const GL::Texture&      getSelectTexture() const;
 
-    virtual void            render(Array<SceneObject*>& objs, const Array<Camera*>& cameras ) const;
+    virtual void            render(Array<DisplayObject*>& objs, const Array<Camera*>& cameras ) const;
 
     /* virtual from Renderer */
     void                    resize(int w, int h);
@@ -77,9 +77,9 @@ namespace GMlib {
     GL::RenderbufferObject  _rbo_select_depth;
 
 
-    void                    render(SceneObject *obj, Camera *cam) const;
-    void                    renderSelection(SceneObject *obj, Camera *cam) const;
-    void                    renderSelectionDepth(SceneObject *obj, Camera *cam) const;
+    void                    render(DisplayObject *obj, Camera *cam) const;
+    void                    renderSelection(DisplayObject *obj, Camera *cam) const;
+    void                    renderSelectionDepth(DisplayObject *obj, Camera *cam) const;
 
   }; // END class DisplayRenderer
 
@@ -105,7 +105,7 @@ namespace GMlib {
   }
 
   inline
-  void DisplayRenderer::render( SceneObject* obj, Camera* cam ) const {
+  void DisplayRenderer::render( DisplayObject* obj, Camera* cam ) const {
 
     if( obj != cam ) {
 
@@ -141,7 +141,7 @@ namespace GMlib {
   }
 
   inline
-  void DisplayRenderer::renderSelection(SceneObject *obj, Camera *cam) const {
+  void DisplayRenderer::renderSelection(DisplayObject *obj, Camera *cam) const {
 
     if( obj != cam && obj->isSelected() ) {
 
@@ -168,7 +168,7 @@ namespace GMlib {
   }
 
   inline
-  void DisplayRenderer::renderSelectionDepth(SceneObject *obj, Camera *cam) const {
+  void DisplayRenderer::renderSelectionDepth(DisplayObject *obj, Camera *cam) const {
 
     if(obj != cam) {
 
@@ -195,7 +195,7 @@ namespace GMlib {
   }
 
   inline
-  void DisplayRenderer::render(Array<SceneObject*>& objs, const Array<Camera *> &cameras) const {
+  void DisplayRenderer::render(Array<DisplayObject*>& objs, const Array<Camera *> &cameras) const {
 
     // Clear render buffers
     _fbo.clear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

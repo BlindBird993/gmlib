@@ -50,19 +50,19 @@ namespace GMlib {
   public:
     SelectRenderer( Scene* scene );
 
-    SceneObject*                findObject( int x, int y ) const;
-    Array<SceneObject*>         findObjects(int xmin, int ymin, int xmax, int ymax ) const;
+    DisplayObject*              findObject( int x, int y ) const;
+    Array<DisplayObject*>       findObjects(int xmin, int ymin, int xmax, int ymax ) const;
 
-    void                        select(Array<SceneObject*>& objs, Camera* cam, int type_id ) const;
+    void                        select(Array<DisplayObject*>& objs, Camera* cam, int type_id ) const;
 
     /* virtual from Renderer */
     void                        resize(int w, int h);
 
     /* virtual from MultiObjectRenderer */
-    void                        prepare(Array<SceneObject*>& objs, Camera *cam) const;
+    void                        prepare(Array<DisplayObject*>& objs, Camera *cam) const;
 
   protected:
-    void                        select(SceneObject* obj, Camera* cam, int what) const;
+    void                        select(DisplayObject* obj, Camera* cam, int what) const;
 
   private:
 
@@ -81,7 +81,7 @@ namespace GMlib {
 
 
   inline
-  void SelectRenderer::select( SceneObject* obj, Camera* cam, int what ) const {
+  void SelectRenderer::select( DisplayObject* obj, Camera* cam, int what ) const {
 
     if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
 
@@ -107,7 +107,7 @@ namespace GMlib {
 
 
   inline
-  void SelectRenderer::select(Array<SceneObject*>& objs, Camera *cam, int type_id) const {
+  void SelectRenderer::select(Array<DisplayObject*>& objs, Camera *cam, int type_id) const {
 
     // Clear buffers
     _fbo.clear( GL_DEPTH_BUFFER_BIT );

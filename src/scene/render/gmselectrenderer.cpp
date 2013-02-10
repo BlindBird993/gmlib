@@ -49,23 +49,23 @@ namespace GMlib {
     _std_rep_visu = new VisualizerStdRep;
   }
 
-  SceneObject *SelectRenderer::findObject(int x, int y) const {
+  DisplayObject *SelectRenderer::findObject(int x, int y) const {
 
     Color c;
     _fbo.bind();
     glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
     _fbo.unbind();
 
-    SceneObject *obj = _scene->find(c.get());
+    DisplayObject *obj = dynamic_cast<DisplayObject*>(_scene->find(c.get()));
     if( obj )
       obj->setSelected(true);
 
     return obj;
   }
 
-  Array<SceneObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) const {
+  Array<DisplayObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) const {
 
-    Array<SceneObject* > sel;
+    Array<DisplayObject* > sel;
     int dx=(xmax-xmin)+1;
     int dy=(ymax-ymin)+1;
 
@@ -79,7 +79,7 @@ namespace GMlib {
     for(int i = ymin; i < ymax; ++i) {
       for(int j = xmin; j < xmax; ++j) {
         c = pixels[ct++];
-        SceneObject *tmp = _scene->find(c.get());
+        DisplayObject *tmp = dynamic_cast<DisplayObject*>(_scene->find(c.get()));
         if(tmp)
           if(!tmp->getSelected()) { sel.insertAlways(tmp); tmp->setSelected(true); }
       }
@@ -89,7 +89,7 @@ namespace GMlib {
     return sel;
   }
 
-  void SelectRenderer::prepare(Array<SceneObject *> &objs, Camera *cam) const{
+  void SelectRenderer::prepare(Array<DisplayObject *> &objs, Camera *cam) const{
 
     cam->applyViewport();
 

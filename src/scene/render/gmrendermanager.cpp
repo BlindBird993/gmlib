@@ -100,7 +100,7 @@ namespace GMlib {
     return _select_color;
   }
 
-  SceneObject *RenderManager::findObject(int x, int y) {
+  DisplayObject *RenderManager::findObject(int x, int y) {
 
     return _select->findObject( x, y );
   }
