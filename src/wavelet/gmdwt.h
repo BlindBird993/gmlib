@@ -47,10 +47,18 @@ namespace Wavelet {
     Dwt();
 
     // Dwt Operations
-    void deCompose( const Filter<T>& filter, unsigned int dim,
-                    unsigned int lvls, unsigned int s_lvl = 0 );
-    void reConstruct( const Filter<T>& filter, unsigned int dim,
-                      unsigned int lvls, unsigned int s_lvl = 0 );
+    void deCompose( const Filter<T>* filter, unsigned int dim,
+                    unsigned int res,
+                    int lvls, int s_lvl = 0 );
+//    void deCompose( const Filter<T>* filter, unsigned int dim,
+//                    Vector<unsigned int,>& res,
+//                    int lvls, int s_lvl = 0 );
+    void reConstruct( const Filter<T>* filter, unsigned int dim,
+                      unsigned int res,
+                      int lvls, int s_lvl = 0 );
+//    void reConstruct( const Filter<T>* filter, unsigned int dim,
+//                      Vector<unsigned int,>& res,
+//                      int lvls, int s_lvl = 0 );
 
     // write/read-back signal-data
     void writeToInBuffer( const T* signal, unsigned long int length );

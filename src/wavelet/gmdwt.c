@@ -40,11 +40,23 @@ namespace Wavelet {
     init();
   }
 
-  void Dwt::deCompose(const Filter<GMlib::Wavelet::T> &filter, unsigned int dim, unsigned int lvls, unsigned int s_lvl) {
+  template <typename T>
+  void Dwt<T>::deCompose(const Filter<T>* filter,
+                         unsigned int dim, unsigned int res,
+                         int lvls, int s_lvl) {
+
+
+
+
+
+
 
   }
 
-  void Dwt::reConstruct(const Filter<GMlib::Wavelet::T> &filter, unsigned int dim, unsigned int lvls, unsigned int s_lvl) {
+  template <typename T>
+  void Dwt<T>::reConstruct(const Filter<T>* filter,
+                           unsigned int dim, unsigned int res,
+                           int lvls, int s_lvl) {
 
   }
 
@@ -56,24 +68,73 @@ namespace Wavelet {
 
     cl::Program::Sources sources;
 
+    /*
+      __kernel void
+      dwt_nd( __global const float* src,
+                       __global float* dst,
+                       unsigned int src_offset,
+                       unsigned int dst_offset,
+                       float2 filter, unsigned int r, unsigned int p )
+      {
+        const int idx = get_global_id(0);
+        const int a = pow( (float)(r/2), (float)(p-1) );
+        const int i0 = idx + (int)( idx / a ) * a;
+        const int i1 = i0 + a;
+
+        dst[dst_offset + idx] = filter.s1 * src[src_offset+i1] + filter.s0 * src[src_offset+i0];
+      }
+      */
     const std::string dwt1_nd_src (
       "__kernel void \n"
-      "dwt_nd( __global const float* src, __global float* dst, unsigned int src_offset, unsigned int dst_offset, float2 filter, unsigned int r, unsigned int p ) \n"
+      "dwt_nd( __global const float* src, \n"
+      "        __global float* dst, \n"
+      "        unsigned int src_offset, \n"
+      "        unsigned int dst_offset, \n"
+      "        __global const float* hp, __global const float* lp, unsigned int filter_size, \n"
+      "        unsigned int res, unsigned int pass ) \n"
       "{ \n"
       "  const int idx = get_global_id(0); \n"
-      "  const int a = pow( (float)(r/2), (float)(p-1) ); \n"
-      "  const int i0 = idx + (int)( idx / a ) * a; \n"
-      "  const int i1 = i0 + a; \n"
       "\n"
-      "  dst[dst_offset + idx] = filter.s1 * src[src_offset+i1] + filter.s0 * src[src_offset+i0]; \n"
       "} \n"
       "\n"
       );
     sources.push_back( std::make_pair( dwt1_nd_src.c_str(), dwt1_nd_src.length() - 1 ) );
 
+
+
+
+
+
+
+
+
+
+    /*
+      __kernel void
+      idwt_nd( __global const float* src,
+               __global float* dst,
+               unsigned int src_offset,
+               unsigned int dst_offset,
+               unsigned int src_h_offset,
+               float2 lp, float2 hp, unsigned int r, unsigned int p )
+      {
+        const int idx = get_global_id(0);
+        const int a = pow( (float)(r/2), (float)(p-1) );
+        const int i0 = idx + (int)( idx / a ) * a;
+        const int i1 = i0 + a;
+
+        dst[dst_offset+i0] = lp.s0 * src[src_offset+idx] + hp.s1 * src[src_offset+src_h_offset+idx];
+        dst[dst_offset+i1] = lp.s1 * src[src_offset+idx] + hp.s0 * src[src_offset+src_h_offset+idx];
+      }
+      */
     const std::string idwt1_nd_src = std::string(
       "__kernel void \n"
-      "idwt_nd( __global const float* src, __global float* dst, unsigned int src_offset, unsigned int dst_offset, unsigned int src_h_offset, float2 lp, float2 hp, unsigned int r, unsigned int p ) \n"
+      "idwt_nd( __global const float* src, \n"
+      "         __global float* dst, \n"
+      "         unsigned int src_offset, \n"
+      "         unsigned int dst_offset, \n"
+      "         unsigned int src_h_offset, \n"
+      "         float2 lp, float2 hp, unsigned int r, unsigned int p ) \n"
       "{ \n"        "  const int idx = get_global_id(0); \n"
       "  const int a = pow( (float)(r/2), (float)(p-1) ); \n"
       "  const int i0 = idx + (int)( idx / a ) * a; \n"
@@ -92,6 +153,18 @@ namespace Wavelet {
     cl_int error;
     error = _program.build( cli->getDevices() ) ;
     std::cout << "  Compiling: " << error << std::endl;
+    if( error != CL_SUCCESS ) {
+
+      size_t length;
+      char buffer[2048];
+      clGetProgramBuildInfo( _program()(), cli->getDevices()[0](),CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &length);
+
+      std::cout << "  * Build log [BEGIN]: " << std::endl;
+      std::cout << "-------------------------------------" << std::endl;
+      std::cout << buffer << std::endl;
+      std::cout << "-------------------------------------" << std::endl;
+      std::cout << "  * Build log [BEGIN]: " << std::endl;
+    }
 
 
     _queue = CL::CommandQueue( cli->getDevices()[0] );
@@ -101,6 +174,10 @@ namespace Wavelet {
   template <typename T>
   void
   Dwt<T>::initBuffers(int length) {
+
+
+  //TODO: Find "optimal" buffer-size, aka: work size. Tune to "warp-size"
+
 
     _buffers[_b_in] = CL::Buffer( CL_MEM_READ_WRITE, length * sizeof(T) );
     _buffers[_b_out] = CL::Buffer( CL_MEM_READ_WRITE, length * sizeof(T) );
