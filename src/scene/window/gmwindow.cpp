@@ -334,10 +334,15 @@ namespace GMlib {
     }
 
     // Set header data
-    header.p[1] = _sun ? 1 : 0;
-    header.p[2] = point_lights.size();
-    header.p[3] = spot_lights.size();
-    header.p[0] = header.p[1] + header.p[2] + header.p[3];
+//    header.p[1] = _sun ? 1 : 0;
+//    header.p[2] = point_lights.size();
+//    header.p[3] = spot_lights.size();
+//    header.p[0] = header.p[1] + header.p[2] + header.p[3];
+
+    header.p[0] = _sun ? 1.: 0;
+    header.p[1] = header.p[0] + point_lights.size();
+    header.p[2] = header.p[1] + spot_lights.size();
+    header.p[3] = header.p[2];
 
     if( header.p[0] <= 0 )
       return;
@@ -429,14 +434,17 @@ namespace GMlib {
       light_ids.push_back(light->getLightName());
     }
 
+//    std::reverse( lights.begin(), lights.end() );
+//    std::reverse( light_ids.begin(), light_ids.end() );
+
     GL::OGL::resetLightBuffer( header, light_ids, lights );
 
     std::cout << "Updating light UBO!" << std::endl;
-    std::cout << "  - Sun(s):             " << header.p[1] << std::endl;
-    std::cout << "  - Point Light(s):     " << header.p[2] << std::endl;
-    std::cout << "  - Spot Light(s):      " << header.p[3] << std::endl;
+    std::cout << "  - Sun(s):             " << header.p[0] << std::endl;
+    std::cout << "  - Point Light(s):     " << header.p[1] - header.p[0] << std::endl;
+    std::cout << "  - Spot Light(s):      " << header.p[2] - header.p[1] << std::endl;
     std::cout << "  --------------------" << std::endl;
-    std::cout << "  - Total nr of Lights: "<< header.p[0] << std::endl;
+    std::cout << "  - Total nr of Lights: "<< header.p[3] << std::endl;
 
   }
 

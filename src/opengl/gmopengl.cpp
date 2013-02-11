@@ -772,6 +772,55 @@ namespace GL {
 
   void OGL::resetLightBuffer(const GLVector<4,GLuint>& header, const std::vector<unsigned int>& light_ids, const std::vector<GLLight>& lights) {
 
+    std::cout << "------------------------------------------" << std::endl;
+    std::cout << "Resetting light UBO to:" << std::endl;
+    std::cout << "Header:" << std::endl;
+    std::cout << " - Suns   end: " << header.p[0] << std::endl;
+    std::cout << " - PLs    end: " << header.p[1] << std::endl;
+    std::cout << " - SLs    end: " << header.p[2] << std::endl;
+    std::cout << " - Lights end: " << header.p[2] << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "Lights:" << std::endl;
+    for( int i = 0; i < lights.size(); ++i ) {
+
+      std::cout << "Light id: " << light_ids[i] << std::endl;
+      std::cout << " - Ambient:       " << " (" << lights[i].amb.p[0]
+                                        << ", " << lights[i].amb.p[1]
+                                        << ", " << lights[i].amb.p[2]
+                                        << ", " << lights[i].amb.p[3]
+                                        << ")"  << std::endl;
+      std::cout << " - Diffuse:       " << " (" << lights[i].dif.p[0]
+                                        << ", " << lights[i].dif.p[1]
+                                        << ", " << lights[i].dif.p[2]
+                                        << ", " << lights[i].dif.p[3]
+                                        << ")"  << std::endl;
+      std::cout << " - Specular:      " << " (" << lights[i].spc.p[0]
+                                        << ", " << lights[i].spc.p[1]
+                                        << ", " << lights[i].spc.p[2]
+                                        << ", " << lights[i].spc.p[3]
+                                        << ")"  << std::endl;
+      std::cout << " - Position:      " << " (" << lights[i].pos.p[0]
+                                        << ", " << lights[i].pos.p[1]
+                                        << ", " << lights[i].pos.p[2]
+                                        << ", " << lights[i].pos.p[3]
+                                        << ")"  << std::endl;
+      std::cout << " - Direction:     " << " (" << lights[i].dir.p[0]
+                                        << ", " << lights[i].dir.p[1]
+                                        << ", " << lights[i].dir.p[2]
+                                        << ")"  << std::endl;
+      std::cout << " - Attenuation:   " << " (" << lights[i].att.p[0]
+                                        << ", " << lights[i].att.p[1]
+                                        << ", " << lights[i].att.p[2]
+                                        << ")"  << std::endl;
+      std::cout << " - Spot cut-off:  " << lights[i].spot_cut << std::endl;
+      std::cout << " - Spot exponent: " << lights[i].spot_exp << std::endl;
+      std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    std::cout << "------------------------------------------" << std::endl;
+
+
     _lights_header = header;
     _lights = lights;
 

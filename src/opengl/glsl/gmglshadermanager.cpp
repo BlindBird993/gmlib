@@ -258,6 +258,29 @@ namespace GL {
       "\n"
     );
 
+    std::string func_computeLighting (
+
+      "vec4\n"
+      "computeLighting(Material mat, vec3 normal, vec3 cam_pos) {\n"
+      "\n"
+      "  vec4 color = vec4(0.0);\n"
+      "\n"
+      "  // Compute sun contribution\n"
+      "  for( uint i = uint(0); i < u_lights.info[0]; ++i )\n"
+      "    color += sunLight( u_lights.light[i], mat, normal, cam_pos );\n"
+      "\n"
+      "  // Compute point light contribution\n"
+      "  for( uint i = u_lights.info[0]; i < u_lights.info[1]; ++i )\n"
+      "    color += pointLight( u_lights.light[i], mat, normal, cam_pos );\n"
+      "\n"
+      "  // Compute spot light contribution\n"
+      "  for( uint i = u_lights.info[1]; i < u_lights.info[2]; ++i )\n"
+      "    color += spotLight(  u_lights.light[i], mat, normal, cam_pos );\n"
+      "\n"
+      "  return color;\n"
+      "}\n"
+      "\n"
+    );
 
 
     ///////////////////////////
@@ -434,6 +457,7 @@ namespace GL {
     phong_fs_str.append( func_sunlight );
     phong_fs_str.append( func_pointlight );
     phong_fs_str.append( func_spotlight );
+    phong_fs_str.append( func_computeLighting );
     phong_fs_str.append(
       "uniform mat4      u_mvmat;\n"
       "\n"
@@ -460,19 +484,7 @@ namespace GL {
       "\n"
       "  vec4 light_color = vec4(0.0);\n"
       "\n"
-      "  // Compute sun contribution\n"
-      "  for( uint i = uint(0); i < u_lights.info[1]; ++i )\n"
-      "    light_color += sunLight( u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  // Compute point light contribution\n"
-      "  for( uint i = u_lights.info[1]; i < u_lights.info[1] + u_lights.info[2]; ++i )\n"
-      "    light_color += pointLight( u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  // Compute spot light contribution\n"
-      "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
-      "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  gl_FragColor = light_color;\n"
+      "  gl_FragColor = computeLighting( mat, normal, ex_pos );\n"
       "}\n"
     );
 
@@ -717,6 +729,7 @@ namespace GL {
     psurf_phong_nmap_fs_str.append( func_sunlight );
     psurf_phong_nmap_fs_str.append( func_pointlight );
     psurf_phong_nmap_fs_str.append( func_spotlight );
+    psurf_phong_nmap_fs_str.append( func_computeLighting );
     psurf_phong_nmap_fs_str.append(
       "uniform sampler2D u_nmap;\n"
       "uniform mat4      u_mvmat;\n"
@@ -745,19 +758,7 @@ namespace GL {
       "\n"
       "  vec4 light_color = vec4(0.0);\n"
       "\n"
-      "  // Compute sun contribution\n"
-      "  for( uint i = uint(0); i < u_lights.info[1]; ++i )\n"
-      "    light_color += sunLight( u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  // Compute point light contribution\n"
-      "  for( uint i = u_lights.info[1]; i < u_lights.info[1] + u_lights.info[2]; ++i )\n"
-      "    light_color += pointLight( u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  // Compute spot light contribution\n"
-      "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
-      "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  gl_FragColor = light_color;\n"
+      "  gl_FragColor = computeLighting( mat, normal, ex_pos );\n"
       "\n"
       "}\n"
     );
@@ -814,6 +815,7 @@ namespace GL {
     psurf_contours_fs_str.append( func_sunlight );
     psurf_contours_fs_str.append( func_pointlight );
     psurf_contours_fs_str.append( func_spotlight );
+    psurf_contours_fs_str.append( func_computeLighting );
     psurf_contours_fs_str.append(
       "uniform bool      u_selected;\n"
       "uniform vec4      u_color;\n"
@@ -846,19 +848,7 @@ namespace GL {
       "\n"
       "  vec4 light_color = vec4(0.0);\n"
       "\n"
-      "  // Compute sun contribution\n"
-      "  for( uint i = uint(0); i < u_lights.info[1]; ++i )\n"
-      "    light_color += sunLight( u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  // Compute point light contribution\n"
-      "  for( uint i = u_lights.info[1]; i < u_lights.info[1] + u_lights.info[2]; ++i )\n"
-      "    light_color += pointLight( u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  // Compute spot light contribution\n"
-      "  for( uint i = u_lights.info[1] + u_lights.info[2]; i < u_lights.info[3]; ++i )\n"
-      "    light_color += spotLight(  u_lights.light[i], mat, normal, ex_pos );\n"
-      "\n"
-      "  gl_FragColor = light_color;\n"
+      "  gl_FragColor = computeLighting( mat, normal, ex_pos );\n"
       "}\n"
     );
 
