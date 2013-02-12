@@ -24,6 +24,7 @@ addHeaders(
   gmDwt
   gmFilter
   gmOrthoFilter
+  gmIndex
 )
 
 addTemplateSources(
