@@ -23,8 +23,9 @@
 #ifndef __GM_WAVELET_DWT_H__
 #define __GM_WAVELET_DWT_H__
 
-#include <core/containers/gmdvector.h>
 
+// gmlib
+#include <core/containers/gmdvector.h>
 #include <opencl/gmcommandqueue.h>
 #include <opencl/gmprogram.h>
 #include <opencl/gmkernel.h>
@@ -41,6 +42,16 @@ namespace Wavelet {
     enum BUFFER {
       BUFFER_01 = 0,
       BUFFER_02 = 1
+    };
+
+    enum FILTER {
+      FILTER_LP = 0,
+      FILTER_HP = 1
+    };
+
+    struct TmpFilterStruct {
+      float s0;
+      float s1;
     };
 
   public:
@@ -83,12 +94,14 @@ namespace Wavelet {
 
     CL::CommandQueue        _queue;
     CL::Program             _program;
-    CL::Kernel              _kernel;
+    CL::Kernel              _dwt_k;
+    CL::Kernel              _idwt_k;
+
     mutable cl::Event       _event;
 
     // Two alternating buffers (input/output)
-    BUFFER                  _b_in;
-    BUFFER                  _b_out;
+    BUFFER                  _bA;
+    BUFFER                  _bB;
     CL::Buffer              _buffers[2];
 
     void                    init();

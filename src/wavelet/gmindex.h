@@ -326,8 +326,8 @@ namespace Index {
 
       \param[out] gamma Level block offset index
       \param[out] kappa Current block - internal index
-      \param[in] i
       \param[in] j
+      \param[in] i
       \param[in] k
     */
     template <typename T, int n>

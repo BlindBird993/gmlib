@@ -38,25 +38,25 @@ namespace Wavelet {
   }
 
   template<typename T>
-  DVector<T>&
+  const DVector<T>&
   Filter<T>::getDecomposeHP() const {
     return _d_hp;
   }
 
   template<typename T>
-  DVector<T>&
+  const DVector<T>&
   Filter<T>::getDecomposeLP() const {
     return _d_lp;
   }
 
   template<typename T>
-  DVector<T>&
+  const DVector<T>&
   Filter<T>::getReconstructHP() const {
     return _r_hp;
   }
 
   template<typename T>
-  DVector<T>&
+  const DVector<T>&
   Filter<T>::getReconstructLP() const {
     return _r_lp;
   }

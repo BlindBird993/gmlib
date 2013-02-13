@@ -25,17 +25,19 @@
 // local
 #include "gmfilter.h"
 
-// gmlib
+//// gmlib
 #include <opencl/gmopencl.h>
+#include <opencl/gmkernel.h>
 
 // stl
 #include <string>
+#include <cassert>
 
 namespace GMlib {
 namespace Wavelet {
 
   template <typename T>
-  Dwt<T>::Dwt() : _resolution(0), _b_in(BUFFER_01), _b_out(BUFFER_02) {
+  Dwt<T>::Dwt() : _resolution(0), _bA(BUFFER_01), _bB(BUFFER_02) {
 
     init();
   }
@@ -45,10 +47,98 @@ namespace Wavelet {
                          unsigned int dim, unsigned int res,
                          int lvls, int s_lvl) {
 
+    assert(filter);
+
+    cl_int                  err;
+
+    const unsigned int s_size  = std::pow(res, dim);
+
+    int filter_len[2];
+    filter_len[FILTER_LP] = filter->getDecomposeLP().getDim();
+    filter_len[FILTER_HP] = filter->getDecomposeHP().getDim();
+
+    CL::Buffer filters[2];
+    filters[FILTER_LP] = CL::Buffer( CL_MEM_READ_ONLY, filter_len[FILTER_LP] * sizeof(T) );
+    filters[FILTER_HP] = CL::Buffer( CL_MEM_READ_ONLY, filter_len[FILTER_HP] * sizeof(T) );
+
+    err = _queue.enqueueWriteBuffer( filters[FILTER_LP], CL_TRUE, filter->getDecomposeLP(), 0x0, &_event );
+    _event.wait();
+    std::cout << "Load LP filter status: " << err << std::endl;
+
+    err = _queue.enqueueWriteBuffer( filters[FILTER_HP], CL_TRUE, filter->getDecomposeHP(), 0x0, &_event );
+    _event.wait();
+    std::cout << "Load HP filter status: " << err << std::endl;
+
+    FILTER f = FILTER_LP;
+
+    ////////////////////
+    // Execute kernel(s)
+
+    // tmp vars
+    unsigned int tmp_s_size = s_size;
+
+
+    // levels
+    for( unsigned int i = 0; i < lvls; i++ ) {
+
+      // Passes
+      for( unsigned int j = 0; j < dim; j++ ) {
+
+        // Filters
+        for( int k = 0; k < std::pow( 2, float(j+1) ); k++ ) {
 
 
 
+          // Common kernel parameters
+          cl_int arg_err;
+          arg_err = _dwt_k.setArg(   0, _buffers[_bA] );                // Source signal buffer
+          std::cout << "Kernel arg 0 status: " << arg_err << std::endl;
 
+          arg_err = _dwt_k.setArg(   1, _buffers[_bB] );               // Dwt signal buffer
+          std::cout << "Kernel arg 1 status: " << arg_err << std::endl;
+
+          arg_err = _dwt_k().setArg( 2, (unsigned int)(int(k/2) * tmp_s_size) );       // Source buffer offset
+          std::cout << "Kernel arg 2 status: " << arg_err << std::endl;
+
+          arg_err = _dwt_k().setArg( 3, (unsigned int)(k * tmp_s_size / 2) );          // Dwt signal buffer offset
+          std::cout << "Kernel arg 3 status: " << arg_err << std::endl;
+
+          arg_err = _dwt_k.setArg( 4, filters[f] );              // Filter
+          std::cout << "Kernel arg 4 status: " << arg_err << std::endl;
+
+          arg_err = _dwt_k().setArg( 5, (unsigned int)(filter_len[f]) );
+          std::cout << "Kernel arg 5 status: " << arg_err << std::endl;
+
+          arg_err = _dwt_k().setArg( 6, (unsigned int)(res/std::pow( 2, float(i) ) ) );   // Signal resolution (size)
+          std::cout << "Kernel arg 6 status: " << arg_err << std::endl;
+
+          arg_err = _dwt_k().setArg( 7, (unsigned int)(j+1) );                         // Pass dimension (1)
+          std::cout << "Kernel arg 7 status: " << arg_err << std::endl;
+
+
+          // Enqueue kernel for execution
+          err = _queue.enqueueNDRangeKernel( _dwt_k,
+                                             cl::NullRange,
+                                             cl::NDRange(tmp_s_size/2),
+                                             cl::NDRange(64),
+                                             0x0, &_event );
+          _event.wait();   // Wait for kernel
+
+          std::cout << "Running kernel status: " << err << std::endl;
+
+          f = (f == FILTER_LP ? FILTER_HP : FILTER_LP );
+//          f = (f+ 1) % 2;
+        }
+
+        tmp_s_size /= 2;
+
+        // Swap "working" buffers
+        swapBuffers();
+      }
+    }
+
+
+    swapBuffers();
 
 
   }
@@ -57,6 +147,109 @@ namespace Wavelet {
   void Dwt<T>::reConstruct(const Filter<T>* filter,
                            unsigned int dim, unsigned int res,
                            int lvls, int s_lvl) {
+
+    assert(filter);
+
+    cl_int                  err;
+
+    const unsigned int s_size  = std::pow(res,dim);
+
+
+    int lp_len, hp_len;
+    lp_len = filter->getReconstructLP().getDim();
+    hp_len = filter->getReconstructHP().getDim();
+
+    CL::Buffer lp, hp;
+    lp = CL::Buffer( CL_MEM_READ_ONLY, lp_len * sizeof(T) );
+    err = _queue.enqueueWriteBuffer( lp, CL_TRUE, filter->getReconstructLP(), 0x0, &_event );
+    _event.wait();
+    std::cout << "Load LP filter status: " << err << std::endl;
+
+    hp = CL::Buffer( CL_MEM_READ_ONLY, hp_len * sizeof(T) );
+    err = _queue.enqueueWriteBuffer( hp, CL_TRUE, filter->getReconstructHP(), 0x0, &_event );
+    _event.wait();
+    std::cout << "Load HP filter status: " << err << std::endl;
+
+
+
+
+
+    ////////////////////
+    // Execute kernel(s)
+
+    // tmp vars
+    unsigned int tmp_s_size = s_size / ( 2<<(lvls*dim-2) );
+
+    // levels
+    for( int i = lvls-1; i >= 0; i-- ) {
+
+      // Passes
+      for( int j = dim-1; j >= 0; j-- ) {
+
+        // Synthesising
+        for( int k = std::pow( 2, float(j-1) ); k >= 0; k-- ) {
+
+          const unsigned int io_o = k * tmp_s_size;   // I/O Buffer offset
+
+
+          // Common kernel parameters
+          cl_int arg_err;
+          arg_err = _idwt_k.setArg(    0, _buffers[_bA] );  // Source signal buffer
+          std::cout << "Kernel arg 0 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k.setArg(    1, _buffers[_bB] );  // Dwt signal buffer
+          std::cout << "Kernel arg 1 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k().setArg(  2, (unsigned int)(io_o)  );  // Source buffer offset
+          std::cout << "Kernel arg 2 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k().setArg(  3, (unsigned int)(io_o)  );  // Dwt signal buffer offset
+          std::cout << "Kernel arg 3 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k().setArg(  4, (unsigned int)(tmp_s_size/2)  );  // Dwt signal buffer offset
+          std::cout << "Kernel arg 4 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k.setArg(    5, lp);   // Filter
+          std::cout << "Kernel arg 5 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k().setArg(  6, (unsigned int)(lp_len)  );   // Filter LEN
+          std::cout << "Kernel arg 6 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k.setArg(    7, hp );   // Filter
+          std::cout << "Kernel arg 7 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k().setArg(  8, (unsigned int)(hp_len)  );   // Filter LEN
+          std::cout << "Kernel arg 8 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k().setArg(  9, (unsigned int)(res/std::pow( 2, float(i) ))  );    // Signal resolution (size)
+          std::cout << "Kernel arg 9 status: " << arg_err << std::endl;
+
+          arg_err = _idwt_k().setArg( 10, (unsigned int)(j+1) );    // Pass dimension (1)
+          std::cout << "Kernel arg 10 status: " << arg_err << std::endl;
+
+
+          // Enqueue kernel for execution
+          _queue.enqueueNDRangeKernel(
+                _idwt_k,
+                cl::NullRange,
+                cl::NDRange(tmp_s_size/2),
+                cl::NDRange(64),
+                0x0,
+                &_event
+                );
+          _event.wait();   // Wait for kernel
+
+          std::cout << "Running kernel status: " << err << std::endl;
+        }
+
+        tmp_s_size *= 2;
+
+        // Swap "working" buffers
+        swapBuffers();
+      }
+    }
+
+    swapBuffers();
 
   }
 
@@ -68,32 +261,23 @@ namespace Wavelet {
 
     cl::Program::Sources sources;
 
-    /*
-      __kernel void
-      dwt_nd( __global const float* src,
-                       __global float* dst,
-                       unsigned int src_offset,
-                       unsigned int dst_offset,
-                       float2 filter, unsigned int r, unsigned int p )
-      {
-        const int idx = get_global_id(0);
-        const int a = pow( (float)(r/2), (float)(p-1) );
-        const int i0 = idx + (int)( idx / a ) * a;
-        const int i1 = i0 + a;
-
-        dst[dst_offset + idx] = filter.s1 * src[src_offset+i1] + filter.s0 * src[src_offset+i0];
-      }
-      */
     const std::string dwt1_nd_src (
       "__kernel void \n"
       "dwt_nd( __global const float* src, \n"
       "        __global float* dst, \n"
       "        unsigned int src_offset, \n"
       "        unsigned int dst_offset, \n"
-      "        __global const float* hp, __global const float* lp, unsigned int filter_size, \n"
-      "        unsigned int res, unsigned int pass ) \n"
+      "        __global const float* filter, unsigned int filter_len, \n"
+      "        unsigned int r, unsigned int p \n"
+      "        ) \n"
       "{ \n"
       "  const int idx = get_global_id(0); \n"
+      "  const int a = pow( (float)(r/2), (float)(p-1) ); \n"
+      "  const int i0 = idx + (int)( idx / a ) * a; \n"
+      "  const int i1 = i0 + a; \n"
+      "\n"
+      "  dst[dst_offset + idx] = filter[1] * src[src_offset+i1] + filter[0] * src[src_offset+i0]; \n"
+      "\n"
       "\n"
       "} \n"
       "\n"
@@ -134,14 +318,16 @@ namespace Wavelet {
       "         unsigned int src_offset, \n"
       "         unsigned int dst_offset, \n"
       "         unsigned int src_h_offset, \n"
-      "         float2 lp, float2 hp, unsigned int r, unsigned int p ) \n"
+      "        __global const float* lp, unsigned int lp_len, \n"
+      "        __global const float* hp, unsigned int hp_len, \n"
+      "        unsigned int r, unsigned int p ) \n"
       "{ \n"        "  const int idx = get_global_id(0); \n"
       "  const int a = pow( (float)(r/2), (float)(p-1) ); \n"
       "  const int i0 = idx + (int)( idx / a ) * a; \n"
       "  const int i1 = i0 + a; \n"
       "\n"
-      "  dst[dst_offset+i0] = lp.s0 * src[src_offset+idx] + hp.s1 * src[src_offset+src_h_offset+idx]; \n"
-      "  dst[dst_offset+i1] = lp.s1 * src[src_offset+idx] + hp.s0 * src[src_offset+src_h_offset+idx]; \n"
+      "  dst[dst_offset+i0] = lp[0] * src[src_offset+idx] + hp[1] * src[src_offset+src_h_offset+idx]; \n"
+      "  dst[dst_offset+i1] = lp[1] * src[src_offset+idx] + hp[0] * src[src_offset+src_h_offset+idx]; \n"
       "} \n"
       "\n"
       );
@@ -169,6 +355,9 @@ namespace Wavelet {
 
     _queue = CL::CommandQueue( cli->getDevices()[0] );
 
+    _dwt_k= _program.getKernel("dwt_nd");
+    _idwt_k = _program.getKernel("idwt_nd");
+
   }
 
   template <typename T>
@@ -179,31 +368,31 @@ namespace Wavelet {
   //TODO: Find "optimal" buffer-size, aka: work size. Tune to "warp-size"
 
 
-    _buffers[_b_in] = CL::Buffer( CL_MEM_READ_WRITE, length * sizeof(T) );
-    _buffers[_b_out] = CL::Buffer( CL_MEM_READ_WRITE, length * sizeof(T) );
+    _buffers[_bA] = CL::Buffer( CL_MEM_READ_WRITE, length * sizeof(T) );
+    _buffers[_bB] = CL::Buffer( CL_MEM_READ_WRITE, length * sizeof(T) );
   }
 
   template <typename T>
   void
   Dwt<T>::swapBuffers() {
 
-    BUFFER tmp = _b_out;
-    _b_out = _b_in;
-    _b_in = tmp;
+    BUFFER tmp = _bB;
+    _bB = _bA;
+    _bA = tmp;
   }
 
   template <typename T>
   const CL::Buffer&
   Dwt<T>::getNativeInBuffer() const {
 
-    return _buffers[_b_in];
+    return _buffers[_bA];
   }
 
   template <typename T>
   const CL::Buffer&
   Dwt<T>::getNativeOutBuffer() const {
 
-    return _buffers[_b_out];
+    return _buffers[_bB];
   }
 
 
@@ -212,8 +401,7 @@ namespace Wavelet {
   Dwt<T>::writeToInBuffer( const T* signal, unsigned long int length ) {
 
     initBuffers(length);
-    CL::Buffer &bi = _buffers[_b_in];
-    _queue().enqueueWriteBuffer( bi(), CL_TRUE, 0, length * sizeof(T), signal, 0x0, &_event );
+    _queue().enqueueWriteBuffer( _buffers[_bA](), CL_TRUE, 0, length * sizeof(T), signal, 0x0, &_event );
     _event.wait();
   }
 
@@ -222,8 +410,7 @@ namespace Wavelet {
   Dwt<T>::writeToInBuffer( const DVector<T>& signal ) {
 
     initBuffers(signal.getDim());
-    CL::Buffer &bi = _buffers[_b_in];
-    _queue.enqueueWriteBuffer( bi, CL_TRUE, signal, 0x0, &_event );
+    _queue.enqueueWriteBuffer( _buffers[_bA], CL_TRUE, signal, 0x0, &_event );
     _event.wait();
   }
 
@@ -232,9 +419,8 @@ namespace Wavelet {
   Dwt<T>::writeToInBuffer( const DMatrix<T>& signal ) {
 
     initBuffers(signal.getDim1()*signal.getDim2());
-    CL::Buffer &bi = _buffers[_b_in];
     cl_int error;
-    error = _queue.enqueueWriteBuffer( bi, CL_TRUE, signal, 0x0, &_event );
+    error = _queue.enqueueWriteBuffer( _buffers[_bA], CL_TRUE, signal, 0x0, &_event );
     _event.wait();
   }
 
@@ -243,8 +429,7 @@ namespace Wavelet {
   Dwt<T>::writeToInBuffer( const CL::Buffer& signal, unsigned long int length ) {
 
     initBuffers(length);
-    CL::Buffer &bi = _buffers[_b_in];
-    _queue.enqueueCopyBuffer( signal, bi, 0, 0, length * sizeof(T), 0x0, &_event );
+    _queue.enqueueCopyBuffer( signal, _buffers[_bA], 0, 0, length * sizeof(T), 0x0, &_event );
     _event.wait();
   }
 
@@ -252,7 +437,7 @@ namespace Wavelet {
   void
   Dwt<T>::readFromOutBuffer( T* signal, unsigned long int length ) const {
 
-    CL::Buffer &bo = _buffers[_b_out];
+    CL::Buffer &bo = _buffers[_bB];
     _queue().enqueueReadBuffer( bo(), CL_TRUE, 0, length * sizeof(T), signal, 0x0, &_event );
     _event.wait();
   }
@@ -262,8 +447,7 @@ namespace Wavelet {
   Dwt<T>::readFromOutBuffer( DVector<T>& signal ) const {
 
 
-    CL::Buffer &bo = _buffers[_b_out];
-    _queue.enqueueReadBuffer( bo, CL_TRUE, signal, 0x0, &_event );
+    _queue.enqueueReadBuffer( _buffers[_bB], CL_TRUE, signal, 0x0, &_event );
     _event.wait();
   }
 
@@ -271,9 +455,8 @@ namespace Wavelet {
   void
   Dwt<T>::readFromOutBuffer( DMatrix<T>& signal ) const {
 
-    const CL::Buffer &bo = _buffers[_b_out];
     cl_int error;
-    error = _queue.enqueueReadBuffer( bo, CL_TRUE, signal );
+    error = _queue.enqueueReadBuffer( _buffers[_bB], CL_TRUE, signal );
     std::cout << "  Reading DMatrix data from buffer: " << error << std::endl;;
   }
 
@@ -281,8 +464,7 @@ namespace Wavelet {
   void
   Dwt<T>::readFromOutBuffer( CL::Buffer& signal, unsigned long int length) const {
 
-    CL::Buffer &bo = _buffers[_b_out];
-    _queue.enqueueCopyBuffer( bo, signal, 0, 0, length * sizeof(T), 0x0, &_event );
+    _queue.enqueueCopyBuffer( _buffers[_bB], signal, 0, 0, length * sizeof(T), 0x0, &_event );
     _event.wait();
   }
 

@@ -42,10 +42,10 @@ namespace Wavelet {
 
     void setFilterCoefs(const DVector<T> &coefs);
 
-    DVector<T>& getDecomposeHP() const;
-    DVector<T>& getDecomposeLP() const;
-    DVector<T>& getReconstructHP() const;
-    DVector<T>& getReconstructLP() const;
+    const DVector<T>& getDecomposeHP() const;
+    const DVector<T>& getDecomposeLP() const;
+    const DVector<T>& getReconstructHP() const;
+    const DVector<T>& getReconstructLP() const;
 
   protected:
     //- Re-implement this to generate filters from input coefficients
