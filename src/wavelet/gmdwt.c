@@ -92,29 +92,13 @@ namespace Wavelet {
           // Common kernel parameters
           cl_int arg_err;
           arg_err = _dwt_k.setArg(   0, _buffers[_bA] );                // Source signal buffer
-          std::cout << "Kernel arg 0 status: " << arg_err << std::endl;
-
           arg_err = _dwt_k.setArg(   1, _buffers[_bB] );               // Dwt signal buffer
-          std::cout << "Kernel arg 1 status: " << arg_err << std::endl;
-
-          arg_err = _dwt_k().setArg( 2, (unsigned int)(int(k/2) * tmp_s_size) );       // Source buffer offset
-          std::cout << "Kernel arg 2 status: " << arg_err << std::endl;
-
-          arg_err = _dwt_k().setArg( 3, (unsigned int)(k * tmp_s_size / 2) );          // Dwt signal buffer offset
-          std::cout << "Kernel arg 3 status: " << arg_err << std::endl;
-
-          arg_err = _dwt_k.setArg( 4, filters[f] );              // Filter
-          std::cout << "Kernel arg 4 status: " << arg_err << std::endl;
-
-          arg_err = _dwt_k().setArg( 5, (unsigned int)(filter_len[f]) );
-          std::cout << "Kernel arg 5 status: " << arg_err << std::endl;
-
-          arg_err = _dwt_k().setArg( 6, (unsigned int)(res/std::pow( 2, float(i) ) ) );   // Signal resolution (size)
-          std::cout << "Kernel arg 6 status: " << arg_err << std::endl;
-
-          arg_err = _dwt_k().setArg( 7, (unsigned int)(j+1) );                         // Pass dimension (1)
-          std::cout << "Kernel arg 7 status: " << arg_err << std::endl;
-
+          arg_err = _dwt_k().setArg( 2, static_cast<unsigned int>(int(k/2) * tmp_s_size) );       // Source buffer offset
+          arg_err = _dwt_k().setArg( 3, static_cast<unsigned int>(k * tmp_s_size / 2) );          // Dwt signal buffer offset
+          arg_err = _dwt_k.setArg(   4, filters[f] );              // Filter
+          arg_err = _dwt_k().setArg( 5, static_cast<unsigned int>(filter_len[f]) );
+          arg_err = _dwt_k().setArg( 6, static_cast<unsigned int>(res/std::pow( 2, float(i) ) ) );   // Signal resolution (size)
+          arg_err = _dwt_k().setArg( 7, static_cast<unsigned int>(j) );                         // Pass dimension (1)
 
           // Enqueue kernel for execution
           err = _queue.enqueueNDRangeKernel( _dwt_k,
@@ -195,38 +179,16 @@ namespace Wavelet {
           // Common kernel parameters
           cl_int arg_err;
           arg_err = _idwt_k.setArg(    0, _buffers[_bA] );  // Source signal buffer
-          std::cout << "Kernel arg 0 status: " << arg_err << std::endl;
-
           arg_err = _idwt_k.setArg(    1, _buffers[_bB] );  // Dwt signal buffer
-          std::cout << "Kernel arg 1 status: " << arg_err << std::endl;
-
-          arg_err = _idwt_k().setArg(  2, (unsigned int)(io_o)  );  // Source buffer offset
-          std::cout << "Kernel arg 2 status: " << arg_err << std::endl;
-
-          arg_err = _idwt_k().setArg(  3, (unsigned int)(io_o)  );  // Dwt signal buffer offset
-          std::cout << "Kernel arg 3 status: " << arg_err << std::endl;
-
-          arg_err = _idwt_k().setArg(  4, (unsigned int)(tmp_s_size/2)  );  // Dwt signal buffer offset
-          std::cout << "Kernel arg 4 status: " << arg_err << std::endl;
-
+          arg_err = _idwt_k().setArg(  2, static_cast<unsigned int>(io_o)  );  // Source buffer offset
+          arg_err = _idwt_k().setArg(  3, static_cast<unsigned int>(io_o)  );  // Dwt signal buffer offset
+          arg_err = _idwt_k().setArg(  4, static_cast<unsigned int>(tmp_s_size/2)  );  // Dwt signal buffer offset
           arg_err = _idwt_k.setArg(    5, lp);   // Filter
-          std::cout << "Kernel arg 5 status: " << arg_err << std::endl;
-
-          arg_err = _idwt_k().setArg(  6, (unsigned int)(lp_len)  );   // Filter LEN
-          std::cout << "Kernel arg 6 status: " << arg_err << std::endl;
-
+          arg_err = _idwt_k().setArg(  6, static_cast<unsigned int>(lp_len)  );   // Filter LEN
           arg_err = _idwt_k.setArg(    7, hp );   // Filter
-          std::cout << "Kernel arg 7 status: " << arg_err << std::endl;
-
-          arg_err = _idwt_k().setArg(  8, (unsigned int)(hp_len)  );   // Filter LEN
-          std::cout << "Kernel arg 8 status: " << arg_err << std::endl;
-
-          arg_err = _idwt_k().setArg(  9, (unsigned int)(res/std::pow( 2, float(i) ))  );    // Signal resolution (size)
-          std::cout << "Kernel arg 9 status: " << arg_err << std::endl;
-
-          arg_err = _idwt_k().setArg( 10, (unsigned int)(j+1) );    // Pass dimension (1)
-          std::cout << "Kernel arg 10 status: " << arg_err << std::endl;
-
+          arg_err = _idwt_k().setArg(  8, static_cast<unsigned int>(hp_len)  );   // Filter LEN
+          arg_err = _idwt_k().setArg(  9, static_cast<unsigned int>(res/std::pow( 2, float(i) ))  );    // Signal resolution (size)
+          arg_err = _idwt_k().setArg( 10, static_cast<unsigned int>(j) );    // Pass dimension (1)
 
           // Enqueue kernel for execution
           _queue.enqueueNDRangeKernel(
@@ -272,7 +234,7 @@ namespace Wavelet {
       "        ) \n"
       "{ \n"
       "  const int idx = get_global_id(0); \n"
-      "  const int a = pow( (float)(r/2), (float)(p-1) ); \n"
+      "  const int a = pow( (float)(r/2), (float)(p) ); \n"
       "  const int i0 = idx + (int)( idx / a ) * a; \n"
       "  const int i1 = i0 + a; \n"
       "\n"
@@ -286,31 +248,6 @@ namespace Wavelet {
 
 
 
-
-
-
-
-
-
-
-    /*
-      __kernel void
-      idwt_nd( __global const float* src,
-               __global float* dst,
-               unsigned int src_offset,
-               unsigned int dst_offset,
-               unsigned int src_h_offset,
-               float2 lp, float2 hp, unsigned int r, unsigned int p )
-      {
-        const int idx = get_global_id(0);
-        const int a = pow( (float)(r/2), (float)(p-1) );
-        const int i0 = idx + (int)( idx / a ) * a;
-        const int i1 = i0 + a;
-
-        dst[dst_offset+i0] = lp.s0 * src[src_offset+idx] + hp.s1 * src[src_offset+src_h_offset+idx];
-        dst[dst_offset+i1] = lp.s1 * src[src_offset+idx] + hp.s0 * src[src_offset+src_h_offset+idx];
-      }
-      */
     const std::string idwt1_nd_src = std::string(
       "__kernel void \n"
       "idwt_nd( __global const float* src, \n"
@@ -322,7 +259,7 @@ namespace Wavelet {
       "        __global const float* hp, unsigned int hp_len, \n"
       "        unsigned int r, unsigned int p ) \n"
       "{ \n"        "  const int idx = get_global_id(0); \n"
-      "  const int a = pow( (float)(r/2), (float)(p-1) ); \n"
+      "  const int a = pow( (float)(r/2), (float)(p) ); \n"
       "  const int i0 = idx + (int)( idx / a ) * a; \n"
       "  const int i1 = i0 + a; \n"
       "\n"
