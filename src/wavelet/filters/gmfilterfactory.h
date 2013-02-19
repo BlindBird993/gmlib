@@ -32,6 +32,7 @@ namespace Wavelet {
   class FilterFactory {
   public:
     static OrthoFilter<T>* createHaarFilter();
+    static OrthoFilter<T>* createDaub4Filter();
   };
 
 }
