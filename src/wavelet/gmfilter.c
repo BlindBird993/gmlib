@@ -76,7 +76,7 @@ namespace Wavelet {
   void
   Filter<T>::qmf(const DVector<T> &f, DVector<T> &v, int p) const {
     v = f.getReversed();
-    for (int i=1-p%2; i < v.getDim(); i++) {
+    for (int i=1-p%2; i < v.getDim(); i+=2) {
       v[i] = -v[i];
     }
   }

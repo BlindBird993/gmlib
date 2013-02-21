@@ -83,6 +83,8 @@ namespace Wavelet {
 
     void swapBuffers();
 
+    bool setDwtSrc( const std::string& dwt_src, const std::string& idwt_src );
+
 //    template <typename G>
     const CL::Buffer& getNativeInBuffer() const;
 
