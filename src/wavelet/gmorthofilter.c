@@ -34,7 +34,7 @@ namespace Wavelet {
   void
   OrthoFilter<T>::calcFilters(const DVector<T> &coefs) {
     //- Normalize filter sum and store as decompose low-pass filter
-    this->_r_lp = coefs * ( T(1) / coefs.getSum() ) * sqrt(T(2));
+    this->_r_lp = coefs * ( T(1) / coefs.getDim() ) * sqrt(T(coefs.getDim()));
 
     //- Compute hi-pass from low-pass
     this->qmf(this->_r_lp, this->_r_hp);
