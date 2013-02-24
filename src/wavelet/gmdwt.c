@@ -63,6 +63,9 @@ namespace Wavelet {
     lp_len = filter->getDecomposeLP().getDim();
     hp_len = filter->getDecomposeHP().getDim();
 
+    std::cout << "deComp: LP Filter:" << filter->getDecomposeLP() << std::endl;
+    std::cout << "deComp: HP Filter:" << filter->getDecomposeHP() << std::endl;
+
     CL::Buffer lp, hp;
     lp = CL::Buffer( CL_MEM_READ_ONLY, lp_len * sizeof(T) );
     hp = CL::Buffer( CL_MEM_READ_ONLY, hp_len * sizeof(T) );
@@ -86,7 +89,6 @@ namespace Wavelet {
 
     // levels
     for( unsigned int i = 0; i < lvls; ++i ) {
-//    for( unsigned int i = 1; i < 2; ++i ) {
 
       // Passes
       for( unsigned int j = 0; j < dim; ++j ) {
@@ -99,7 +101,7 @@ namespace Wavelet {
           const unsigned int vsrc_size   = static_cast<unsigned int>( tmp_s_size );
 
           const unsigned int vdst_offset = static_cast<unsigned int>( k * tmp_s_size );
-          const unsigned int vdst_size   = static_cast<unsigned int>( tmp_s_size/2 );
+          const unsigned int vdst_size   = static_cast<unsigned int>( tmp_s_size / std::pow( 2, dim-1 ) );
 
           const int r = res/std::pow( 2, i );
           const int p = dim - j - 1;
@@ -153,12 +155,15 @@ namespace Wavelet {
 
     cl_int                  err;
 
-    const unsigned int s_size  = std::pow(res,dim);
+    const unsigned int d_size  = std::pow(res,dim);
 
 
     int lp_len, hp_len;
     lp_len = filter->getReconstructLP().getDim();
     hp_len = filter->getReconstructHP().getDim();
+
+    std::cout << "reConst: LP Filter:" << filter->getReconstructLP() << std::endl;
+    std::cout << "reConst: HP Filter:" << filter->getReconstructHP() << std::endl;
 
     CL::Buffer lp, hp;
     lp = CL::Buffer( CL_MEM_READ_ONLY, lp_len * sizeof(T) );
@@ -179,52 +184,112 @@ namespace Wavelet {
     // Execute kernel(s)
 
     // tmp vars
-    unsigned int tmp_s_size = s_size / ( 2<<(lvls*dim-2) );
+    unsigned int tmp_d_size = d_size / ( 2<<(lvls*dim-2) );
 
     // levels
     for( int i = lvls-1; i >= 0; i-- ) {
+      std::cout << "---------- LVL: " << i << std::endl;
 
       // Passes
-      for( int j = dim-1; j >= 0; j-- ) {
+//      for( int j = 0; j < dim; ++j ) {
+      for( int j = dim-1; j >= /*dim-1*/0; j-- ) {
+        std::cout << "----------   PASS: " << j << std::endl;
 
         // Synthesising
-        for( int k = std::pow( 2, float(j-1) ); k >= 0; k-- ) {
+        for( int k = 0; k < std::pow( 2, j ); ++k ) {
+//        for( int k = std::pow( 2, float(j-1) ); k >= 0; k-- ) {
+          std::cout << "----------     SYNTH: " << k << std::endl;
 
-          const unsigned int io_o = k * tmp_s_size;   // I/O Buffer offset
+          std::cout << "  i: " << i << ", j: " << j << ", k: " << k << std::endl;
 
-          unsigned int r = static_cast<unsigned int>( res/std::pow( 2, i ) );
-          unsigned int p = static_cast<unsigned int>( dim - j - 1 );
-          unsigned int a = static_cast<unsigned int>( std::pow( r, p ) );
 
-          // Common kernel parameters
+
+          // Compute kernel parameters
+          const unsigned int vdst_offset = static_cast<unsigned int>( tmp_d_size * k );
+          const unsigned int vdst_size   = static_cast<unsigned int>( tmp_d_size );
+
+          const unsigned int vsrc_offset = static_cast<unsigned int>( tmp_d_size * k);
+          const unsigned int vsrc_size   = static_cast<unsigned int>( tmp_d_size / std::pow( 2, dim-1) );
+
+          const int r = res/std::pow( 2, i );
+          const int p = dim - j - 1;
+          const unsigned int a = static_cast<unsigned int>( std::pow( r, p ) );
+
+          std::cout << "  vsrc offset:  " << vsrc_offset << ", vdst offset:  " << vdst_offset << std::endl;
+          std::cout << "  vsrc size:    " << vsrc_size   << ", vdst size:    " << vdst_size << std::endl;
+          std::cout << "  ---" << std::endl;
+          std::cout << "  r:            " << r << std::endl;
+          std::cout << "  p:            " << p << std::endl;
+          std::cout << "  a:            " << a << std::endl;
+
+
+
+
+
+
+
+          // Set kernel parameters
           cl_int arg_err;
-          arg_err = _idwt_k.setArg(    0, _buffers[_bA] );  // Source signal buffer
-          arg_err = _idwt_k.setArg(    1, _buffers[_bB] );  // Dwt signal buffer
-          arg_err = _idwt_k().setArg(  2, static_cast<unsigned int>(io_o)  );  // Source buffer offset
-          arg_err = _idwt_k().setArg(  3, static_cast<unsigned int>(io_o)  );  // Dwt signal buffer offset
-          arg_err = _idwt_k().setArg(  4, static_cast<unsigned int>(tmp_s_size/2)  );  // Dwt signal buffer offset
-          arg_err = _idwt_k.setArg(    5, lp);   // Filter
-          arg_err = _idwt_k().setArg(  6, static_cast<unsigned int>(lp_len)  );   // Filter LEN
-          arg_err = _idwt_k.setArg(    7, hp );   // Filter
-          arg_err = _idwt_k().setArg(  8, static_cast<unsigned int>(hp_len)  );   // Filter LEN
-          arg_err = _idwt_k().setArg(  9, static_cast<unsigned int>(res/std::pow( 2, float(i) ))  );    // Signal resolution (size)
-          arg_err = _idwt_k().setArg( 10, static_cast<unsigned int>(j) );    // Pass dimension (1)
+          arg_err = _idwt_k.setArg(    0, _buffers[_bA] );         // src buffer
+          arg_err = _idwt_k.setArg(    1, _buffers[_bB] );         // dst buffer
+          arg_err = _idwt_k().setArg(  2, vsrc_offset );           // virtual source buffer offset
+          arg_err = _idwt_k().setArg(  3, vsrc_size );             // virtual source buffer size
+          arg_err = _idwt_k().setArg(  4, vdst_offset );           // virtual destination buffer offset
+          arg_err = _idwt_k().setArg(  5, vdst_size );             // virtual destination buffer size
+          arg_err = _idwt_k.setArg(    6, lp );    // LP filter
+          arg_err = _idwt_k().setArg(  7, lp_len );
+          arg_err = _idwt_k.setArg(    8, hp );    // HP filter
+          arg_err = _idwt_k().setArg(  9, lp_len );
+          arg_err = _idwt_k().setArg( 10, a );
 
           // Enqueue kernel for execution
-          _queue.enqueueNDRangeKernel(
-                _idwt_k,
-                cl::NullRange,
-                cl::NDRange(tmp_s_size/2),
-                cl::NDRange(64),
-                0x0,
-                &_event
-                );
+          err = _queue.enqueueNDRangeKernel( _idwt_k,
+                                             cl::NullRange,
+                                             cl::NDRange(tmp_d_size/2),
+                                             cl::NDRange(16),
+                                             0x0, &_event );
           _event.wait();   // Wait for kernel
 
           std::cout << "Running kernel status: " << err << std::endl;
+
+
+
+
+//          const unsigned int io_o = k * tmp_s_size;   // I/O Buffer offset
+
+//          unsigned int r = static_cast<unsigned int>( res/std::pow( 2, i ) );
+//          unsigned int p = static_cast<unsigned int>( dim - j - 1 );
+//          unsigned int a = static_cast<unsigned int>( std::pow( r, p ) );
+
+//          // Common kernel parameters
+//          cl_int arg_err;
+//          arg_err = _idwt_k.setArg(    0, _buffers[_bA] );  // Source signal buffer
+//          arg_err = _idwt_k.setArg(    1, _buffers[_bB] );  // Dwt signal buffer
+//          arg_err = _idwt_k().setArg(  2, static_cast<unsigned int>(io_o)  );  // Source buffer offset
+//          arg_err = _idwt_k().setArg(  3, static_cast<unsigned int>(io_o)  );  // Dwt signal buffer offset
+//          arg_err = _idwt_k().setArg(  4, static_cast<unsigned int>(tmp_s_size/2)  );  // Dwt signal buffer offset
+//          arg_err = _idwt_k.setArg(    5, lp);   // Filter
+//          arg_err = _idwt_k().setArg(  6, static_cast<unsigned int>(lp_len)  );   // Filter LEN
+//          arg_err = _idwt_k.setArg(    7, hp );   // Filter
+//          arg_err = _idwt_k().setArg(  8, static_cast<unsigned int>(hp_len)  );   // Filter LEN
+//          arg_err = _idwt_k().setArg(  9, static_cast<unsigned int>(res/std::pow( 2, float(i) ))  );    // Signal resolution (size)
+//          arg_err = _idwt_k().setArg( 10, static_cast<unsigned int>(j) );    // Pass dimension (1)
+
+//          // Enqueue kernel for execution
+//          _queue.enqueueNDRangeKernel(
+//                _idwt_k,
+//                cl::NullRange,
+//                cl::NDRange(tmp_s_size/2),
+//                cl::NDRange(64),
+//                0x0,
+//                &_event
+//                );
+//          _event.wait();   // Wait for kernel
+
+//          std::cout << "Running kernel status: " << err << std::endl;
         }
 
-        tmp_s_size *= 2;
+        tmp_d_size *= 2;
 
         // Swap "working" buffers
         swapBuffers();
@@ -280,7 +345,7 @@ namespace Wavelet {
       "      conv_val += f[i] * src[si]; \n"
       "  } \n"
       "\n"
-      "  return conv_val * sqrt(2.0); \n"
+      "  return conv_val; \n"
       "} \n"
       "\n"
       "void \n"
@@ -292,10 +357,10 @@ namespace Wavelet {
       "        unsigned int alpha \n"
       ") { \n"
       "\n"
-      "  int out_idx = cmpDstI( vdst_offset ); \n"
-      "  int out_bnd = cmpDstI( vdst_offset + vdst_size ); \n"
+      "  const int out_idx = cmpDstI( vdst_offset ); \n"
+      "  const int out_bnd = out_idx + vdst_size; \n"
       "  if( out_idx < out_bnd ) \n"
-      "    dst[out_idx] = computeConvol( src, vsrc_offset, vsrc_size, f, f_len, alpha ); \n"
+      "    dst[out_idx] = computeConvol( src, vsrc_offset, vsrc_size, f, f_len, alpha ) * sqrt((float)f_len); \n"
       "} \n"
       "\n"
       "__kernel void \n"
@@ -385,7 +450,7 @@ namespace Wavelet {
   void
   Dwt<T>::swapBuffers() {
 
-    std::cout << "    ------------  SWAPPING BUFFERS" << std::endl;
+//    std::cout << "    ------------  SWAPPING BUFFERS" << std::endl;
     BUFFER tmp = _bB;
     _bB = _bA;
     _bA = tmp;
