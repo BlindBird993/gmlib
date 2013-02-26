@@ -230,10 +230,10 @@ namespace GMlib{
 
     // properties
     bool                                isSelected() const;
-    bool                                getSelected() const;
-    bool                                flipSelected();
+    bool                                toggleSelected();
     virtual void                        selectEvent(int selector_id);
     virtual void                        setSelected(bool s);
+
     virtual bool                        isVisible() const;
     virtual void                        setVisible( bool v, int prop = 0 );
     virtual bool                        toggleVisible();
@@ -423,9 +423,9 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  bool SceneObject::flipSelected() {
+  bool SceneObject::toggleSelected() {
 
-    _selected = !_selected;
+    setSelected( !isSelected());
 
     if(_selected)
       edit();
@@ -491,19 +491,6 @@ namespace GMlib{
 
     return _scene;
   }
-
-
-  /*! bool SceneObject::getSelected()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  bool SceneObject::getSelected() const {
-
-    return _selected;
-  }
-
 
   /*! Sphere<float,3>	SceneObject::getSurroundingSphere() const
    *  \brief Pending Documentation
@@ -582,16 +569,6 @@ namespace GMlib{
 
 
 
-  /*! void SceneObject::setSelected( bool s )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void SceneObject::setSelected( bool s ) {
-
-    _selected = s;
-  }
 
 
 

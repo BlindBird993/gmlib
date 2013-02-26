@@ -97,12 +97,10 @@ namespace GMlib{
     Sphere<float,3>             getSphereClean() const;
 
 
+    void                        updateSelection(SceneObject *obj );
     Array<SceneObject*>&        getSelectedObjects();
     bool                        isSelected( SceneObject* obj ) const;
     void                        removeSelections();
-    void                        setSelection( SceneObject* obj, bool selected );
-    void                        setSingleSelection( SceneObject* obj );
-    void                        toggleSelection( SceneObject* obj );
 
     double                      getElapsedTime();
     double                      getTimeScale();

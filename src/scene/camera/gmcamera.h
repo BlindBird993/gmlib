@@ -26,8 +26,8 @@
  *
  *  Interface for the Camera class.
 
- *	\todo
- *	- Translate the already documented parts into English
+ *  \todo
+ *  - Translate the already documented parts into English
  */
 
 
@@ -47,57 +47,57 @@
 namespace GMlib {
 
 
-  /*!	\class Camera gmcamera.h <gmCamera>
-	 *	\brief	The Camera class
-	 *
-	 *	Inneholder:
-	 *		privat;
-	 *				Et navn for identifikasjon i select funksjonaliteten.
-	 *				To matriser for lokal transformasjon av objektet.
-	 *				En Omsluttende kule til objektet som må lages.
-	 *				En array av pekere til alle sub-objektene til dette objektet
-	 *		public:
-	 *				Konstuktør med mulige default verdier og sletter
-	 *				En display funksjon for displaying av objektet.
-	 *				En select funksjon for plukking(select) av objektet med mus.
-	 *				En simulate funksjon for at objektet kan bevege subobjekter.
-	 *				En find funksjon for å finne en funksjon med et gitt navn.
-	 *				En rotate, scale og translate funksjon for å
-   *				   posisjonere objektet relativt i forhold til morsobjektet
-	 *		protected:
-	 *				Det er to virtuelle funksjoner localDisplay og localSelect
-	 *					som alle avledede klasser må ha sin versjon av.
-	 *				Arbeidsdelingen er slik at display og select foretar
-	 *					transformasjonen lagret i matrix, og displayer alle
-	 *					sub-objektene til objektet. Men etter transformasjonen
-	 *					og før sub-objektene displayes kalles localDisplay
-	 *					(eventuelt localSelect). I localDisplay kan en så
-	 *					displaye det som ikke displayes i sub-objektene og/eller
-	 *					foreta transformasjoner av sub-objekter for
-	 *					å simulere bevegelser.
-	 *				Det er også en insert-funksjon som avledede klasser
-   *				    kan bruke for å lage sub-objekt. Hvis en avledet klasse
-	 *					trenger tilgang til et objekt for bevegelsessimulering
-	 *					bør den lage en egen peker for det.
-	 */
+  /*!  \class Camera gmcamera.h <gmCamera>
+   *  \brief  The Camera class
+   *
+   *  Inneholder:
+   *    privat;
+   *        Et navn for identifikasjon i select funksjonaliteten.
+   *        To matriser for lokal transformasjon av objektet.
+   *        En Omsluttende kule til objektet som må lages.
+   *        En array av pekere til alle sub-objektene til dette objektet
+   *    public:
+   *        Konstuktør med mulige default verdier og sletter
+   *        En display funksjon for displaying av objektet.
+   *        En select funksjon for plukking(select) av objektet med mus.
+   *        En simulate funksjon for at objektet kan bevege subobjekter.
+   *        En find funksjon for å finne en funksjon med et gitt navn.
+   *        En rotate, scale og translate funksjon for å
+   *           posisjonere objektet relativt i forhold til morsobjektet
+   *    protected:
+   *        Det er to virtuelle funksjoner localDisplay og localSelect
+   *          som alle avledede klasser må ha sin versjon av.
+   *        Arbeidsdelingen er slik at display og select foretar
+   *          transformasjonen lagret i matrix, og displayer alle
+   *          sub-objektene til objektet. Men etter transformasjonen
+   *          og før sub-objektene displayes kalles localDisplay
+   *          (eventuelt localSelect). I localDisplay kan en så
+   *          displaye det som ikke displayes i sub-objektene og/eller
+   *          foreta transformasjoner av sub-objekter for
+   *          å simulere bevegelser.
+   *        Det er også en insert-funksjon som avledede klasser
+   *            kan bruke for å lage sub-objekt. Hvis en avledet klasse
+   *          trenger tilgang til et objekt for bevegelsessimulering
+   *          bør den lage en egen peker for det.
+   */
   class Camera : public DisplayObject {
     GM_SCENEOBJECT(Camera)
-	public:
-		Camera( Scene& s = _default_scene );
-		Camera( Scene* s );
+  public:
+    Camera( Scene& s = _default_scene );
+    Camera( Scene* s );
 
     Camera( const Point<float,3>&  pos,
       const Point<float,3>&  look_at_pos);
 
     Camera( const Point<float,3>&  pos,
-			const Vector<float,3>& dir,
-			const Vector<float,3>& up,
-			float zoom=1);
+      const Vector<float,3>& dir,
+      const Vector<float,3>& up,
+      float zoom=1);
 
-		virtual ~Camera();
+    virtual ~Camera();
 
     void                        decreaseEyeDist(double delta=0.01);
-    void										    decreaseFocalDist(double delta=1);
+    void                        decreaseFocalDist(double delta=1);
     virtual double              deltaTranslate(DisplayObject * obj);
     void                        enableCulling( bool enable = true );
 //    SceneObject*                findSelectObject(int, int, int type_id=0);
@@ -118,15 +118,15 @@ namespace GMlib {
     void                        getViewport(int& w1, int& w2, int& h1, int& h2) const;
     int                         getViewportW() const;
     int                         getViewportH() const;
-//    virtual void                go(bool stereo=false);	// Running the Camera.
+//    virtual void                go(bool stereo=false);  // Running the Camera.
     void                        increaseEyeDist(double delta=0.01);
     void                        increaseFocalDist(double delta=1);
     bool                        isCoordSysVisible() const;
     bool                        isCulling() const;
     bool                        isFrustumVisible() const;
     virtual SceneObject*        lockTargetAtPixel(int,int);
-    void                        reset();						// To be used when changing Camera.
-    virtual void                reshape(int w1, int h1, int w2, int h2);		// To be used when changing size of window
+    void                        reset();            // To be used when changing Camera.
+    virtual void                reshape(int w1, int h1, int w2, int h2);    // To be used when changing size of window
     void                        setCuttingPlanes(float near_plane, float far_plane);
     void                        setCoordSysVisible(bool visible=true);
     void                        setEyeDist(double eye_dist=0.08);
@@ -139,41 +139,40 @@ namespace GMlib {
 
     void                        updateCameraOrientation();
 
-	protected:
+  protected:
     float                       _near_plane;
     float                       _far_plane;
     float                       _ratio;
 
     Frustum                     _frustum;
-    HqMatrix<float,3>           _frustum_matrix;					// Frustrum matrix
+    HqMatrix<float,3>           _frustum_matrix;          // Frustrum matrix
 
-    void                        basisChange(
-                                  const Vector<float,3>& x,
-                                  const Vector<float,3>& y,
-                                  const Vector<float,3>& z,
-                                  const Vector<float,3>& p);
+    void                        basisChange( const Vector<float,3>& x,
+                                             const Vector<float,3>& y,
+                                             const Vector<float,3>& z,
+                                             const Vector<float,3>& p);
 
 //    virtual void                display();
-    virtual	void                drawActiveCam();
+    virtual  void                drawActiveCam();
     SceneObject*                find(unsigned int name);
     virtual void                makeGraphics();
     void                        resetC(float z = 1);
 //    void                        select(int type_id);
     virtual void                setPerspective();
 
-		// *****************
-		// Virtual functions
-		// from SceneObject
+    // *****************
+    // Virtual functions
+    // from SceneObject
     void                        localDisplay();
     void                        localSelect();
 
 
-//	private:
+//  private:
     static Scene                _default_scene;
     static unsigned int         _display_list;
 
     Scene*                      _scene;
-    int                         _x,_y,_w,_h;					// Viewport position and size.
+    int                         _x,_y,_w,_h;          // Viewport position and size.
 
     bool                        _coord_sys_visible;
     bool                        _frustum_visible;
@@ -196,10 +195,10 @@ namespace GMlib {
 
     void    switchToRightEye() {
 
-      Point<float,3>		tmp_pos  = _pos  - _eye_dist*_side;
-      UnitVector<float,3>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
-      UnitVector<float,3>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
-      basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
+      Point<float,3>    tmp_pos  = _pos  - _eye_dist*_side;
+      UnitVector<float,3>  tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
+      UnitVector<float,3>  tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
+      basisChange(tmp_side, _up, tmp_dir, tmp_pos);      // Change to right eye
     }
 
     virtual void                setupDisplay();
@@ -216,9 +215,9 @@ namespace GMlib {
 
 
   /*! void Camera::basisChange(const Vector<float,3>& x, const Vector<float,3>& y, const Vector<float,3>& z, const Vector<float,3>& p)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::basisChange(
@@ -245,9 +244,9 @@ namespace GMlib {
 
 
   /*! void Camera::decreaseEyeDist(double delta)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::decreaseEyeDist(double delta) {
@@ -258,9 +257,9 @@ namespace GMlib {
 
 
   /*! void Camera::decreaseFocalDist(double delta)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::decreaseFocalDist(double delta) {
@@ -270,9 +269,9 @@ namespace GMlib {
 
 
 //  /*! void Camera::display()
-//   *	\brief Pending Documentation
+//   *  \brief Pending Documentation
 //   *
-//   *	Pending Documentation
+//   *  Pending Documentation
 //   */
 //  inline
 //  void Camera::display() {
@@ -304,9 +303,9 @@ namespace GMlib {
 
 
   /*! void Camera::drawActiveCam()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::drawActiveCam() {
@@ -319,15 +318,15 @@ namespace GMlib {
 //    cp = _matrix_scene * cp;
 //    cp = getMatrix() * cp;
 
-//  //	GLboolean lg;
-//  //	glGetBooleanv(GL_LIGHTING,&lg);
-//  //	if(lg) glDisable(GL_LIGHTING);
+//  //  GLboolean lg;
+//  //  glGetBooleanv(GL_LIGHTING,&lg);
+//  //  if(lg) glDisable(GL_LIGHTING);
 //    glPushAttrib( GL_LIGHTING );
 //    glDisable( GL_LIGHTING );
 //    glBegin(GL_LINES); // draw Coordsys
-//      glColor( GMcolor::Red );	glPoint(cp); glPoint(cp+Vector<float,3>(0.1,0,0));
-//      glColor( GMcolor::Green );	glPoint(cp); glPoint(cp+Vector<float,3>(0,0.1,0));
-//      glColor( GMcolor::Blue );	glPoint(cp); glPoint(cp+Vector<float,3>(0,0,0.1));
+//      glColor( GMcolor::Red );  glPoint(cp); glPoint(cp+Vector<float,3>(0.1,0,0));
+//      glColor( GMcolor::Green );  glPoint(cp); glPoint(cp+Vector<float,3>(0,0.1,0));
+//      glColor( GMcolor::Blue );  glPoint(cp); glPoint(cp+Vector<float,3>(0,0,0.1));
 //    glEnd();
 //    if(_locked && ! _lock_object)
 //    {
@@ -337,7 +336,7 @@ namespace GMlib {
 //      glPopMatrix();
 //    }
 //    glPopAttrib();
-//  //	if (lg) glEnable(GL_LIGHTING);
+//  //  if (lg) glEnable(GL_LIGHTING);
 
 
 
@@ -442,9 +441,9 @@ namespace GMlib {
 
 
   /*! void Camera::enableCulling( bool enable )
-   *	\brief Enable or disable culling
+   *  \brief Enable or disable culling
    *
-   *	Enable or disable Culling for this camera
+   *  Enable or disable Culling for this camera
    */
   inline
   void Camera::enableCulling( bool enable ) {
@@ -454,9 +453,9 @@ namespace GMlib {
 
 
   /*! SceneObject* Camera::find(unsigned int name
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   SceneObject* Camera::find(unsigned int name) {
@@ -466,9 +465,9 @@ namespace GMlib {
 
 
   /*! float Camera::getAngleTan() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   float Camera::getAngleTan() const {
@@ -478,20 +477,20 @@ namespace GMlib {
 
 
   /*! float Camera::getFarPlane() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  float Camera::getFarPlane() const	{
+  float Camera::getFarPlane() const  {
 
     return _far_plane;
   }
 
   /*! float Camera::getFocalLength() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   float Camera::getFocalLength() const {
@@ -513,9 +512,9 @@ namespace GMlib {
 
 
   /*! float Camera::getNearPlane() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   float Camera::getNearPlane() const {
@@ -532,9 +531,9 @@ namespace GMlib {
 
 
   /*! float Camera::getRatio() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   float Camera::getRatio() const {
@@ -545,9 +544,9 @@ namespace GMlib {
 
 
   /*!
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::getViewport(int& w1, int& w2, int& h1, int& h2) const {
@@ -560,9 +559,9 @@ namespace GMlib {
 
 
   /*! int Camera::getViewPortW() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   int Camera::getViewportW() const {
@@ -572,9 +571,9 @@ namespace GMlib {
 
 
   /*! int Camera::getViewPortH() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   int Camera::getViewportH() const {
@@ -584,9 +583,9 @@ namespace GMlib {
 
 
   /*! void Camera::increaseEyeDist(double delta)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::increaseEyeDist(double delta) {
@@ -597,9 +596,9 @@ namespace GMlib {
 
 
   /*! void Camera::increaseFocalDist(double delta)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::increaseFocalDist(double delta) {
@@ -609,9 +608,9 @@ namespace GMlib {
 
 
   /*! bool Camera::isCoordSysVisible() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool Camera::isCoordSysVisible() const {
@@ -621,9 +620,9 @@ namespace GMlib {
 
 
   /*! bool Camera::isCulling() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool Camera::isCulling() const {
@@ -632,9 +631,9 @@ namespace GMlib {
   }
 
   /*! bool Camera::isFrustumVisible() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool Camera::isFrustumVisible() const {
@@ -644,38 +643,38 @@ namespace GMlib {
 
 
   /*! void Camera::reset()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
-   *	To be used when changing Camera.
+   *  Pending Documentation
+   *  To be used when changing Camera.
    */
   inline
   void Camera::reset() {
 
-    int	wp[4];
+    int  wp[4];
     glGetIntegerv(GL_VIEWPORT,wp);
     reshape(wp[0],wp[1],wp[2],wp[3]);
   }
 
 
   /*! void Camera::setCuttingPlanes(float near_plane, float far_plane)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::setCuttingPlanes(float near_plane, float far_plane) {
 
     _near_plane = near_plane;
-    _far_plane	= far_plane;
-    _angle_tan	= 13.0f*_near_plane/_focal_length;
+    _far_plane  = far_plane;
+    _angle_tan  = 13.0f*_near_plane/_focal_length;
   }
 
 
   /*! void Camera::setCoordSysVisible(bool visible)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::setCoordSysVisible(bool visible) {
@@ -685,9 +684,9 @@ namespace GMlib {
 
 
   /*! void Camera::setEyeDist(double eye_dist)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::setEyeDist(double eye_dist) {
@@ -698,23 +697,23 @@ namespace GMlib {
 
 
   /*! void Camera::setFocalDist(double focal)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  void Camera::setFocalDist(double focal)	{
+  void Camera::setFocalDist(double focal)  {
 
     _focal_length   = focal;
-    _ed_fd			= _eye_dist/_focal_length;
-    _angle_tan		= 13.0f*_near_plane/_focal_length;
+    _ed_fd      = _eye_dist/_focal_length;
+    _angle_tan    = 13.0f*_near_plane/_focal_length;
   }
 
 
   /*! void Camera::setFrustumVisible(bool visible=true)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::setFrustumVisible(bool visible) {
@@ -724,9 +723,9 @@ namespace GMlib {
 
 
   /*! void Camera::setScene(Scene& s)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::setScene(Scene& s) {
@@ -736,9 +735,9 @@ namespace GMlib {
 
 
   /*! void Camera::setScene(Scene *s)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void Camera::setScene(Scene *s) {

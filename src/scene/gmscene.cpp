@@ -27,6 +27,7 @@
  *  Implementation of the Scene class.
  */
 
+
 #include "gmscene.h"
 
 #include "gmsceneobject.h"
@@ -171,6 +172,14 @@ namespace GMlib {
     return sp;
   }
 
+  void Scene::updateSelection(SceneObject *obj) {
+
+    if( obj->isSelected() )
+      _sel_objs.insert(obj);
+    else
+      _sel_objs.remove(obj);
+  }
+
 
   /*! void Scene::insert(SceneObject* obj)
    *  \brief Pending Documentation
@@ -262,29 +271,7 @@ namespace GMlib {
         _sel_objs[i]->setSelected( false );
 
     // Pop all array elements
-//    _sel_objs.setSize(0);
-    for( int i = 0; i < no_objs; i++ )
-      _sel_objs.pop();
-  }
-
-  void Scene::setSelection( SceneObject* obj, bool selected ) {
-
-    obj->setSelected( selected );
-    if( selected )
-      _sel_objs.insert( obj );
-    else
-      _sel_objs.remove( obj );
-  }
-
-  void Scene::setSingleSelection( SceneObject* obj ) {
-
-    removeSelections();
-    setSelection( obj, true );
-  }
-
-  void Scene::toggleSelection( SceneObject *obj ) {
-
-    setSelection( obj, !isSelected(obj) );
+    _sel_objs.resetSize();
   }
 
   /*! void Scene::simulate()

@@ -57,8 +57,8 @@ namespace GMlib {
     _fbo.unbind();
 
     DisplayObject *obj = dynamic_cast<DisplayObject*>(_scene->find(c.get()));
-    if( obj )
-      obj->setSelected(true);
+//    if( obj )
+//      obj->setSelected(true);
 
     return obj;
   }
@@ -81,7 +81,7 @@ namespace GMlib {
         c = pixels[ct++];
         DisplayObject *tmp = dynamic_cast<DisplayObject*>(_scene->find(c.get()));
         if(tmp)
-          if(!tmp->getSelected()) { sel.insertAlways(tmp); tmp->setSelected(true); }
+          if(!tmp->isSelected()) { sel.insertAlways(tmp); /*tmp->setSelected(true);*/ }
       }
     }
     delete [] pixels;

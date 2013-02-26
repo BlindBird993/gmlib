@@ -30,6 +30,8 @@
 
 #include "gmsceneobject.h"
 
+// local
+#include "gmscene.h"
 #include "gmdisplayobject.h"
 #include "light/gmlight.h"
 
@@ -466,6 +468,18 @@ namespace GMlib {
   void SceneObject::setMatrix( const HqMatrix<float,3>& mat ) {
 
     _matrix = mat;
+  }
+
+  /*! void SceneObject::setSelected( bool s )
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  void SceneObject::setSelected( bool s ) {
+
+    _selected = s;
+    if( _scene )
+      _scene->updateSelection(this);
   }
 
   /*! void SceneObject::setSurroundingSphere(const Sphere<float,3>& b)
