@@ -23,6 +23,7 @@
 # Minimum CMake version required
 cmake_minimum_required(VERSION 2.8)
 
+set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/" )
 
 ########################
 # Build options
@@ -62,6 +63,10 @@ option( GMLIB_DOXYGEN "Create build target for doxygen documentation." FALSE )
 # Turn on unit-test creation
 option( GMLIB_TEST "Create unit tests." FALSE )
 
+# Select BLAS implementation
+set(GMLIB_BLAS NONE CACHE STRING "Choose the type of BLAS implementation.")
+set_property(CACHE GMLIB_BLAS PROPERTY STRINGS "NONE" "CBLAS" "OpenBLAS" "ACML" "MKL" "APPML" "CuBLAS" "ViennaCL")
+add_definitions(-DGMLIB_BLAS=${GMLIB_BLAS})
 
 ##############################
 # EnhancedCMake: Setup && Load
@@ -125,6 +130,48 @@ if( OPENCL_ENABLED )
     include_directories(${OPENCL_INCLUDE_DIRS})
   endif()
 endif()
+
+message("Selected BLAS configuration: " ${GMLIB_BLAS})
+if(GMLIB_BLAS STREQUAL "OpenBLAS")
+  # Find OpenBLAS
+  find_package(OpenBLAS)
+  if(OPENBLAS_FOUND)
+    addCustomConfigLine( "set(OPENBLAS_FOUND ${OPENBLAS_FOUND})" )
+    addCustomConfigLine( "set(OPENBLAS_INCLUDE_DIRS \"${OPENBLAS_INCLUDE_DIRS}\")" )
+    addCustomConfigLine( "set(OPENBLAS_LIBRARIES \"${OPENBLAS_LIBRARIES}\")" )
+    include_directories(${OPENBLAS_INCLUDE_DIRS})
+  endif(OPENBLAS_FOUND)
+elseif(GMLIB_BLAS STREQUAL "MKL")
+  find_package(MKL)
+  if(MKL_FOUND)
+    addCustomConfigLine( "set(MKL_FOUND ${MKL_FOUND})" )
+    addCustomConfigLine( "set(MKL_INCLUDE_DIRS \"${MKL_INCLUDE_DIRS}\")" )
+    addCustomConfigLine( "set(MKL_LIBRARIES \"${MKL_LIBRARIES}\")" )
+    include_directories(${MKL_INCLUDE_DIRS})
+  endif()
+elseif(GMLIB_BLAS STREQUAL "ACML")
+  find_package(ACML)
+  if(ACML_FOUND)
+    addCustomConfigLine( "set(ACML_FOUND ${ACML_FOUND})" )
+    addCustomConfigLine( "set(ACML_INCLUDE_DIRS \"${ACML_INCLUDE_DIRS}\")" )
+    addCustomConfigLine( "set(ACML_LIBRARIES \"${ACML_LIBRARIES}\")" )
+    include_directories(${ACML_INCLUDE_DIRS})
+  endif(ACML_FOUND)
+elseif(GMLIB_BLAS STREQUAL "APPML")
+  #TODO
+elseif(GMLIB_BLAS STREQUAL "CuBLAS")
+  #TODO
+elseif(GMLIB_BLAS STREQUAL "ViennaCL")
+  #TODO
+elseif(GMLIB_BLAS STREQUAL "CBLAS")
+  set(GMLIB_BLAS_GENERIC_LIBRARY "/usr/lib/libgenericblas.so" CACHE FILEPATH "Path to a generic CBLAS implementation")
+  if(NOT EXISTS GMLIB_BLAS_GENERIC_LIBRARY)
+    message(WARNING "GMLIB_BLAS_GENERIC_LIBRARY=\"${GMLIB_BLAS_GENERIC_LIBRARY}\" is not an existing file!")
+  endif(NOT EXISTS GMLIB_BLAS_GENERIC_LIBRARY)
+else(GMLIB_BLAS STREQUAL "OpenBLAS") #NONE
+  #TODO
+endif(GMLIB_BLAS STREQUAL "OpenBLAS")
+
 
 ################################
 # Create source code build rules
