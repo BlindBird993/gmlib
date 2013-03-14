@@ -160,7 +160,13 @@ elseif(GMLIB_BLAS STREQUAL "ACML")
 elseif(GMLIB_BLAS STREQUAL "APPML")
   #TODO
 elseif(GMLIB_BLAS STREQUAL "CuBLAS")
-  #TODO
+  find_package(CuBLAS)
+  if(CUBLAS_FOUND)
+    addCustomConfigLine( "set(CUBLAS_FOUND ${CUBLAS_FOUND})" )
+    addCustomConfigLine( "set(CUBLAS_INCLUDE_DIRS \"${CUBLAS_INCLUDE_DIRS}\")" )
+    addCustomConfigLine( "set(CUBLAS_LIBRARIES \"${CUBLAS_LIBRARIES}\")" )
+    include_directories(${CUBLAS_INCLUDE_DIRS})
+  endif(CUBLAS_FOUND)
 elseif(GMLIB_BLAS STREQUAL "ViennaCL")
   #TODO
 elseif(GMLIB_BLAS STREQUAL "CBLAS")

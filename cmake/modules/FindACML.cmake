@@ -14,6 +14,8 @@ else(ACML_MULTITHREAD)
   set(ACML_MP_SUFFIX "")
 endif(ACML_MULTITHREAD)
 
+option(ACML_FMA4 "Utilize FMA4 instruction set (AMD only)")
+
 IF (WIN32)
 #TODO
 ELSEIF(APPLE)
@@ -22,11 +24,13 @@ ELSE (WIN32) #Linux
   unset(ACML_INCLUDE_DIR CACHE)
   unset(ACML_LIBRARY CACHE)
 
-  file(GLOB ACML_H_DIRS "/opt/acml*/gfortran32${ACML_MP_SUFFIX}/include")
-  list(GET ACML_H_DIRS 0 ACML_H_DIRS)
-  if(NOT ACML_H_DIRS)
+
+  file(GLOB ACML_H_DIRS "/opt/acml*/gfortran*${ACML_MP_SUFFIX}/include")
+  if(ACML_H_DIRS)
+    list(GET ACML_H_DIRS 0 ACML_H_DIRS)
+  else(ACML_H_DIRS)
     set(ACML_H_DIRS "/usr/include")
-  endif()
+  endif(ACML_H_DIRS)
   FIND_PATH( ACML_INCLUDE_DIR acml.h
     ${ACML_H_DIRS}
     /usr/include
@@ -34,11 +38,18 @@ ELSE (WIN32) #Linux
     /opt/local/include
     DOC "The directory where acml.h resides")
 
-  file(GLOB ACML_SO_DIRS "/opt/acml*/gfortran32${ACML_MP_SUFFIX}/lib")
-  list(GET ACML_SO_DIRS 0 ACML_SO_DIRS)
-  if(NOT ACML_SO_DIRS)
+  file(GLOB ACML_SO_DIRS "/opt/acml*/gfortran*${ACML_MP_SUFFIX}/lib")
+  file(GLOB ACML_SO_FMA4_DIRS "/opt/acml*/gfortran*_fma4*${ACML_MP_SUFFIX}/lib")
+  if(ACML_SO_DIRS)
+    if(NOT ACML_FMA4)
+      list(REMOVE_ITEM ACML_SO_DIRS ${ACML_SO_FMA4_DIRS})
+      list(GET ACML_SO_DIRS 0 ACML_SO_DIRS)
+    else(NOT ACML_FMA4)
+      list(GET ACML_SO_DIRS 0 ACML_SO_FMA4_DIRS)
+    endif(NOT ACML_FMA4)
+  else(ACML_SO_DIRS)
     set(ACML_SO_DIRS "/usr/lib")
-  endif()
+  endif(ACML_SO_DIRS)
   FIND_LIBRARY( ACML_LIBRARY
     NAMES acml acml_mp
     PATHS

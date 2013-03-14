@@ -7,7 +7,7 @@
 # MKL_LIBRARIES
 # 
 
-set(MKL_MULTITHREAD "YES")
+set(MKL_MULTITHREAD "YES" CACHE BOOL "Multithreaded MKL")
 option(MKL_MULTITHREAD "Multithreaded MKL")
 if(MKL_MULTITHREAD)
   set(MKL_THREAD_LIB "mkl_intel_thread")
