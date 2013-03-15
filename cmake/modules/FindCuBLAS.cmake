@@ -7,7 +7,11 @@
 # CUBLAS_LIBRARIES
 # 
 
-set(CUBLAS_64 "YES" CACHE BOOL "Use 64-bit CuBLAS implementation"	)
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+  set(CUBLAS_64 "YES" CACHE BOOL "Use 64-bit CuBLAS implementation")
+else(CMAKE_SIZEOF_VOID_P EQUAL 8)
+  set(CUBLAS_64 "NO" CACHE BOOL "Use 64-bit CuBLAS implementation")
+endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
 option(CUBLAS_64 "64-bit CuBLAS")
 if(CUBLAS_64)
   set(CUBLAS_64_SUFFIX "64")
