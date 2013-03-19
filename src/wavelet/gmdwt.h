@@ -69,6 +69,8 @@ namespace Wavelet {
     void reConstruct( const Filter<T>* filter, unsigned int dim,
                       unsigned int res,
                       int lvls, int s_lvl = 0 );
+    void reConstructLift2D( unsigned int res,
+                            int lvls, int s_lvl = 0 );
 //    void reConstruct( const Filter<T>* filter, unsigned int dim,
 //                      Vector<unsigned int,>& res,
 //                      int lvls, int s_lvl = 0 );
@@ -99,9 +101,11 @@ namespace Wavelet {
     CL::CommandQueue        _queue;
     CL::Program             _program;
     CL::Program             _program_lift_2d;
+    CL::Program             _program_ilift_2d;
     CL::Kernel              _dwt_k;
     CL::Kernel              _dwt_lift_2D;
     CL::Kernel              _idwt_k;
+    CL::Kernel              _idwt_lift_2D;
 
     mutable cl::Event       _event;
 
