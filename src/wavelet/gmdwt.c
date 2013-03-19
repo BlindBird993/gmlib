@@ -44,6 +44,50 @@ namespace Wavelet {
   }
 
   template <typename T>
+  void Dwt<T>::deComposeLift2D(unsigned int res, int lvls, int s_lvl) {
+
+    cl_int                  err;
+
+    const unsigned int s_size  = std::pow( res, 2 );
+
+    ////////////////////
+    // Execute kernel(s)
+
+    // tmp vars
+    unsigned int grid_res = res/2;
+    unsigned int dst_size = s_size / 2;
+
+
+    // levels
+    for( unsigned int i = 0; i < lvls; ++i ) {
+
+      // Set kernel parameters
+      cl_int arg_err;
+      arg_err = _dwt_lift_2D.setArg(    0, _buffers[_bA] );         // src buffer
+      arg_err = _dwt_lift_2D.setArg(    1, _buffers[_bB] );         // dst buffer
+      arg_err = _dwt_lift_2D().setArg(  2, dst_size );             // virtual destination buffer size
+
+      // Enqueue kernel for execution
+      err = _queue.enqueueNDRangeKernel( _dwt_lift_2D,
+                                         cl::NullRange,
+                                         cl::NDRange(grid_res, grid_res),
+                                         cl::NDRange(1,1),
+                                         0x0, &_event );
+      _event.wait();   // Wait for kernel
+
+      std::cout << "Running kernel status: " << err << std::endl;
+
+      dst_size /= 4;
+      grid_res /= 2;
+
+      // Swap "working" buffers
+      swapBuffers();
+    }
+
+    swapBuffers();
+  }
+
+  template <typename T>
   void Dwt<T>::deCompose(const Filter<T>* filter,
                          unsigned int dim, unsigned int res,
                          int lvls, int s_lvl) {
@@ -142,7 +186,6 @@ namespace Wavelet {
 
 
     swapBuffers();
-
 
   }
 
@@ -432,6 +475,277 @@ namespace Wavelet {
 //    _idwt_k = _program.getKernel("idwt_nd");
 
     setDwtSrc( dwt1_nd_src, idwt1_nd_src );
+
+
+
+   ////////////////////////  ################ LIFT DEV
+
+    const std::string dwt_2d_lift_src (
+
+          "int indexIn( int x, int y ) { \n"
+
+          "  return ( get_global_id(1)*2 + y ) * get_global_size(0)*2 + get_global_id(0)*2 + x; \n "
+          "}\n"
+          "\n"
+
+          "int indexOut( int quad, int x, int y ) { \n"
+
+          "  int offset_x, offset_y; \n"
+          "  switch( quad ) {\n "
+          "    case 3: \n"
+          "      offset_x = get_global_size(0);\n "
+          "      offset_y = get_global_size(1);\n "
+          "      break; \n"
+          "    case 2: \n"
+          "      offset_x = 0;\n "
+          "      offset_y = get_global_size(1);\n "
+          "      break; \n"
+          "    case 1: \n"
+          "      offset_x = get_global_size(0);\n "
+          "      offset_y = 0;\n "
+          "      break; \n"
+          "    case 0: \n"
+          "    default: \n "
+          "      offset_x = 0;\n "
+          "      offset_y = 0;\n "
+          "      break; \n"
+          "  }\n"
+          "  return ( get_global_id(1) + offset_y + y ) * get_global_size(0)*2 + get_global_id(0) + offset_x + x; \n "
+          "}\n"
+          "\n"
+
+          "int indexOutIX( int quad, int x, int y ) { \n"
+
+          "  int offset_x, offset_y; \n"
+          "  switch( quad ) {\n "
+          "    case 3: \n"
+          "      offset_x = 1; \n"
+          "      offset_y = 1; \n"
+          "      break; \n"
+          "    case 2: \n"
+          "      offset_x = 0;\n "
+          "      offset_y = 1;\n "
+          "      break; \n"
+          "    case 1: \n"
+          "      offset_x = 1;\n "
+          "      offset_y = 0;\n "
+          "      break; \n"
+          "    case 0: \n"
+          "    default: \n "
+          "      offset_x = 0;\n "
+          "      offset_y = 0;\n "
+          "      break; \n"
+          "  }\n"
+
+          " int offset = offset_x * ( get_global_size(0) ) + offset_y * ( get_global_size(0) * 2 * get_global_size(1) ); \n"
+
+          " return offset + \n"                                           // Offset Y
+          "        get_global_id(0) * 2 + \n"                             // Grid-movement X
+          "        get_global_size(0) * 2 * get_global_id(1) +  \n"       // Grid-movement Y
+          "        x + \n"                                                // Control X
+          "        y * get_global_size(0) * 2 \n"                         // Control Y
+          "        ; \n"
+//          "  return ( (get_global_id(1) + offset_y)*2 + y ) * get_global_size(0) + (get_global_id(0) + offset_x)*2 + x; \n "
+          "}\n"
+          "\n"
+
+          "int indexOutIY( int quad, int x, int y ) { \n"
+
+          "  int offset_x, offset_y; \n"
+          "  switch( quad ) {\n "
+          "    case 3: \n"
+          "      offset_x = 1; \n"
+          "      offset_y = 1; \n"
+          "      break; \n"
+          "    case 2: \n"
+          "      offset_x = 0;\n "
+          "      offset_y = 1;\n "
+          "      break; \n"
+          "    case 1: \n"
+          "      offset_x = 1;\n "
+          "      offset_y = 0;\n "
+          "      break; \n"
+          "    case 0: \n"
+          "    default: \n "
+          "      offset_x = 0;\n "
+          "      offset_y = 0;\n "
+          "      break; \n"
+          "  }\n"
+
+          " int offset = offset_x * ( get_global_size(0) ) + offset_y * ( get_global_size(0) * 2 * get_global_size(1) ); \n"
+
+          " return offset + \n"                                           // Offset Y
+          "        get_global_size(0) * 2 * get_global_id(0) * 2 + \n"    // Grid-movement X
+          "        get_global_id(1) +  \n"                                // Grid-movement Y
+          "        x + \n"                                                // Control X
+          "        y * get_global_size(0) * 2 \n"                         // Control Y
+          "        ; \n"
+          "}\n"
+          "\n"
+
+          "bool isValid( int idx, int size ) {\n"
+          "  return !(idx < 0 || idx >= size); \n"
+          "}\n"
+
+          "float read( int x, int y, const __global float* src, unsigned int dst_size ) {\n"
+
+          "  int idx = indexIn( x, y ); \n"
+          "  if( isValid( idx, dst_size*2 ) ) return src[idx]; \n"
+          "  return 0.0f; \n"
+          "}\n"
+
+          "void writeQuad( float value, int quad, int x, int y, __global float* dst, unsigned int dst_size ) {\n"
+
+          "  int idx = indexOut( quad, x, y );\n "
+          "  if( isValid( idx, dst_size*2 ) ) dst[idx] = value; \n"
+          "}\n"
+
+          "void writeQuadIX( float value, int quad, int x, int y, __global float* dst, unsigned int dst_size ) {\n"
+
+          "  int idx = indexOutIX( quad, x, y );\n "
+          "  if( isValid( idx, dst_size*2 ) ) dst[idx] = value; \n"
+          "}\n"
+
+          "void writeQuadIY( float value, int quad, int x, int y, __global float* dst, unsigned int dst_size ) {\n"
+
+          "  int idx = indexOutIY( quad, x, y );\n "
+          "  if( isValid( idx, dst_size*2 ) ) dst[idx] = value; \n"
+          "}\n"
+
+          "float2 liftY( int x, __global const float* src, unsigned int dst_size ) { \n"
+
+          "  float ok    = read(  x,  0, src, dst_size ); \n"
+          "  float ok_m1 = read(  x, -2, src, dst_size ); \n"
+          "  float ok_p1 = read(  x, +2, src, dst_size ); \n"
+          "  float ek    = read(  x, +1, src, dst_size ); \n"
+          "  float ek_m1 = read(  x, -1, src, dst_size ); \n"
+          "\n"
+          "  float dk    = ek    - 0.5  * ( ok    + ok_p1 ); \n"
+          "  float dk_m1 = ek_m1 - 0.5  * ( ok_m1 + ok    ); \n"
+          "  float sk    = ok    + 0.25 * ( dk    + dk_m1 ); \n"
+          "\n"
+          "  float2 ret; \n"
+          "  ret.s0 = sk; \n"
+          "  ret.s1 = dk; \n"
+          "\n"
+          "  return ret;\n "
+          "} \n"
+
+          "float4 lift( int x, __global const float* src, unsigned int dst_size ) { \n"
+
+          "  float2 ok    = liftY( x,   src, dst_size ); \n"
+          "  float2 ok_m1 = liftY( x-2, src, dst_size ); \n"
+          "  float2 ok_p1 = liftY( x+2, src, dst_size ); \n"
+          "  float2 ek    = liftY( x+1, src, dst_size ); \n"
+          "  float2 ek_m1 = liftY( x-1, src, dst_size ); \n"
+
+          "  float2 dk, dk_m1, sk; \n"
+
+          "  dk.s0    = ek.s0    - 0.5  * ( ok.s0    + ok_p1.s0 ); \n"
+          "  dk_m1.s0 = ek_m1.s0 - 0.5  * ( ok_m1.s0 + ok.s0    ); \n"
+          "  sk.s0    = ok.s0    + 0.25 * ( dk.s0    + dk_m1.s0 ); \n"
+
+          "  dk.s1    = ek.s1    - 0.5  * ( ok.s1    + ok_p1.s1 ); \n"
+          "  dk_m1.s1 = ek_m1.s1 - 0.5  * ( ok_m1.s1 + ok.s1    ); \n"
+          "  sk.s1    = ok.s1    + 0.25 * ( dk.s1    + dk_m1.s1 ); \n"
+
+          "  float4 ret; \n"
+          "  ret.s0 = sk.s0; \n"  // S - LL
+          "  ret.s1 = sk.s1; \n"  // H - LH
+          "  ret.s2 = dk.s0; \n"  // V - HL
+          "  ret.s3 = dk.s1; \n"  // D - HH
+
+          "  return ret;\n "
+          "} \n"
+
+
+
+          "__kernel void \n"
+          "dwt_2d_lift( __global const float* src, \n"
+          "             __global float* dst, \n"
+          "             unsigned int dst_size \n"
+          ") { \n"
+          "\n"
+
+          // scan X, reduce Y
+//          "  float2 c0 = liftY( 0, src, dst_size ); \n"
+//          "  float2 c1 = liftY( 1, src, dst_size ); \n"
+//          "writeQuadIX( c0.s0, 0, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIX( c1.s0, 0, 1, 0, dst, dst_size ); \n"
+//          "writeQuadIX( c0.s1, 2, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIX( c1.s1, 2, 1, 0, dst, dst_size ); \n"
+
+          "float4 c =  lift( 0, src, dst_size ); \n"
+          "writeQuad( c.s0, 0, 0, 0, dst, dst_size ); \n"
+          "writeQuad( c.s1, 1, 0, 0, dst, dst_size ); \n"
+          "writeQuad( c.s2, 2, 0, 0, dst, dst_size ); \n"
+          "writeQuad( c.s3, 3, 0, 0, dst, dst_size ); \n"
+
+
+
+          // scan Y reduce X
+
+//          "writeQuadIY( sk1, 0, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIY( sk2, 0, 0, 1, dst, dst_size ); \n"
+//          "writeQuadIY( dk1, 1, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIY( sk2, 1, 0, 1, dst, dst_size ); \n"
+
+
+
+
+
+
+          // Test Write "Interlaced" X
+//          "writeQuadIY( 1.0, 0, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIY( 1.0, 0, 0, 1, dst, dst_size ); \n"
+//          "writeQuadIY( 1.0, 1, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIY( 1.0, 1, 0, 1, dst, dst_size ); \n"
+//          "writeQuadIX( 6.0, 0, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIX( 7.0, 0, 1, 0, dst, dst_size ); \n"
+//          "writeQuadIX( 8.0, 2, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIX( 9.0, 2, 1, 0, dst, dst_size ); \n"
+
+          // Test Write "Interlaced" Y
+//          "writeQuadIX( 1.0, 0, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIX( 1.0, 0, 1, 0, dst, dst_size ); \n"
+//          "writeQuadIX( 1.0, 2, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIX( 1.0, 2, 1, 0, dst, dst_size ); \n"
+//          "writeQuadIY( 6.0, 0, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIY( 7.0, 0, 0, 1, dst, dst_size ); \n"
+//          "writeQuadIY( 8.0, 1, 0, 0, dst, dst_size ); \n"
+//          "writeQuadIY( 9.0, 1, 0, 1, dst, dst_size ); \n"
+
+          "}\n"
+          );
+
+    cl::Program::Sources sources_lift;
+    sources_lift.push_back( std::make_pair(dwt_2d_lift_src.c_str(),dwt_2d_lift_src.length()) );
+
+    _program_lift_2d = CL::Program( sources_lift );
+
+    cl_int error;
+    error = _program_lift_2d.build( cli->getDevices() ) ;
+    std::cout << "  Compiling 2D lift kernel: " << error << std::endl;
+    if( error != CL_SUCCESS ) {
+
+      size_t length;
+      char buffer[2048];
+      clGetProgramBuildInfo( _program_lift_2d()(), cli->getDevices()[0](),CL_PROGRAM_BUILD_LOG, sizeof(buffer), buffer, &length);
+
+      std::cout << "  * Build log [BEGIN]: " << std::endl;
+      std::cout << "-------------------------------------" << std::endl;
+      std::cout << buffer << std::endl;
+      std::cout << "-------------------------------------" << std::endl;
+      std::cout << "  * Build log [BEGIN]: " << std::endl;
+      std::cout << std::flush;
+
+      assert( 0 );
+    }
+
+    _dwt_lift_2D = _program_lift_2d.getKernel("dwt_2d_lift");
+
+   ////////////////////////  ################ LIFT DEV
+
   }
 
   template <typename T>
@@ -490,6 +804,7 @@ namespace Wavelet {
 
     _dwt_k= _program.getKernel("dwt_nd");
     _idwt_k = _program.getKernel("idwt_nd");
+
 
     return true;
   }
