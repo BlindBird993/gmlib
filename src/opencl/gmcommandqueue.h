@@ -64,6 +64,14 @@ namespace CL {
                                  const VECTOR_CLASS<cl::Event>* events = 0x0,
                                  cl::Event* event = 0x0) const;
 
+    cl_int    enqueueCopyBufferRect(const Buffer &src, const Buffer &dst,
+                                    const cl::size_t<3> src_origin, const cl::size_t<3> dst_origin,
+                                    const cl::size_t<3> region,
+                                    ::size_t src_row_pitch, ::size_t src_row_slice,
+                                    ::size_t dst_row_pitch, ::size_t dst_row_slice,
+                                    const std::vector<cl::Event> *events,
+                                    cl::Event *event) const;
+
     // DVector Buffer R/W operations
     template <typename T>
     cl_int    enqueueReadBuffer( const Buffer& buffer, cl_bool blocking,

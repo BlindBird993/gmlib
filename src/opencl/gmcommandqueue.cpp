@@ -64,6 +64,22 @@ namespace CL {
                                    events, event );
   }
 
+  cl_int
+  CommandQueue::enqueueCopyBufferRect(const Buffer &src, const Buffer &dst,
+                                      const cl::size_t<3> src_origin,
+                                      const cl::size_t<3> dst_origin,
+                                      const cl::size_t<3> region,
+                                      size_t src_row_pitch, size_t src_row_slice,
+                                      size_t dst_row_pitch, size_t dst_row_slice,
+                                      const std::vector<cl::Event> *events,
+                                      cl::Event *event) const {
+
+    return obj().enqueueCopyBufferRect( src(), dst(), src_origin, dst_origin, region,
+                                        src_row_pitch, src_row_slice,
+                                        dst_row_pitch, dst_row_slice,
+                                        events, event );
+  }
+
 } // END namespace CL
 
 } // END namespace GMlib
