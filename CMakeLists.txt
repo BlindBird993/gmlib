@@ -103,7 +103,7 @@ if( OPENGL_FOUND )
 endif( OPENGL_FOUND )
 
 # Find GLEW package (local package)
-include(cmake/modules/FindGlew.cmake)
+find_package(Glew)
 if( GLEW_FOUND )
   addCustomConfigLine( "set(GLEW_FOUND ${GLEW_FOUND})" )
   addCustomConfigLine( "set(GLEW_INCLUDE_DIRS \"${GLEW_INCLUDE_DIRS}\")" )
