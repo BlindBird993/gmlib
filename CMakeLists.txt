@@ -66,7 +66,6 @@ option( GMLIB_TEST "Create unit tests." FALSE )
 # Select BLAS implementation
 set(GMLIB_BLAS NONE CACHE STRING "Choose the type of BLAS implementation.")
 set_property(CACHE GMLIB_BLAS PROPERTY STRINGS "NONE" "CBLAS" "OpenBLAS" "ACML" "MKL" "APPML" "CuBLAS" "ViennaCL")
-add_definitions(-DGMLIB_BLAS=${GMLIB_BLAS})
 
 ##############################
 # EnhancedCMake: Setup && Load
@@ -175,8 +174,10 @@ elseif(GMLIB_BLAS STREQUAL "CBLAS")
     message(WARNING "GMLIB_BLAS_GENERIC_LIBRARY=\"${GMLIB_BLAS_GENERIC_LIBRARY}\" is not an existing file!")
   endif(NOT EXISTS GMLIB_BLAS_GENERIC_LIBRARY)
 else(GMLIB_BLAS STREQUAL "OpenBLAS") #NONE
+  set(GMLIB_BLAS NONE CACHE STRING "Choose the type of BLAS implementation." FORCE)
   #TODO
 endif(GMLIB_BLAS STREQUAL "OpenBLAS")
+add_definitions(-DGMLIB_BLAS=${GMLIB_BLAS})
 
 
 ################################
