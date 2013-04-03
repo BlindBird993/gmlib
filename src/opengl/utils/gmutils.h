@@ -31,6 +31,9 @@
 #define __GM_OPENL_UTILS_GMUTILS_H__
 
 
+// stl
+#include <iostream>
+
 namespace GMlib {
 
 namespace GL {

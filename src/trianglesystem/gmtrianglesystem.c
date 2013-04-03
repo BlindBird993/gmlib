@@ -1454,7 +1454,7 @@ namespace GMlib {
   template <typename T>
   void TSVertex<T>::setZ( T z ) {
 
-    setPos( Point<T,3>( this->getPosition()[0], this->getPosition()[1], z ) );
+    this->setPos( Point<T,3>( this->getPosition()[0], this->getPosition()[1], z ) );
   }
 
 

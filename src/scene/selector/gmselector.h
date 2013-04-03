@@ -41,6 +41,10 @@
 
 namespace GMlib{
 
+
+  class VisualizerStdRep;
+
+
   /*! \class Selector gmselector.h <gmSelector>
    *  \brief Pending Documentation
    *

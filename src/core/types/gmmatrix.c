@@ -1026,7 +1026,7 @@ namespace GMlib {
         for (j=i+1;j<n;j++)  sum -= a[i][j]*vv[j];
         vv[i]=sum/a[i][i];
       }
-      setCol(vv,cols);		// inverse stored in this, a and vv is disappearing?
+      this->setCol(vv,cols);		// inverse stored in this, a and vv is disappearing?
     }									// LU-back subst. finished,
   }
 
