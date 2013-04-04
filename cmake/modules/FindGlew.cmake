@@ -46,6 +46,6 @@ set(GLEW_INCLUDE_DIRS ${GLEW_INCLUDE_DIR})
 set(GLEW_LIBRARIES ${GLEW_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Glew "GLEW not found!" GLEW_INCLUDE_DIR GLEW_LIBRARY)
+find_package_handle_standard_args(Glew "GLEW not found!" GLEW_LIBRARY GLEW_INCLUDE_DIR)
 
 MARK_AS_ADVANCED( GLEW_INCLUDE_DIR GLEW_LIBRARY )

@@ -67,6 +67,6 @@ set(ACML_INCLUDE_DIRS ${ACML_INCLUDE_DIR})
 set(ACML_LIBRARIES ${ACML_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(ACML "ACML not found!" ACML_INCLUDE_DIR ACML_LIBRARY)
+find_package_handle_standard_args(ACML "ACML not found!" ACML_LIBRARY ACML_INCLUDE_DIR)
 
 MARK_AS_ADVANCED( ACML_INCLUDE_DIR ACML_LIBRARY )

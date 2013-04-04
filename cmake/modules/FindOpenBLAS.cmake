@@ -33,6 +33,6 @@ set(OPENBLAS_INCLUDE_DIRS ${OPENBLAS_INCLUDE_DIR})
 set(OPENBLAS_LIBRARIES ${OPENBLAS_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(OpenBLAS "OpenBLAS not found!" OPENBLAS_INCLUDE_DIR OPENBLAS_LIBRARY)
+find_package_handle_standard_args(OpenBLAS "OpenBLAS not found!" OPENBLAS_LIBRARY OPENBLAS_INCLUDE_DIR)
 
 MARK_AS_ADVANCED( OPENBLAS_INCLUDE_DIR OPENBLAS_LIBRARY )
