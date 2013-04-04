@@ -574,12 +574,12 @@ namespace GMlib {
   inline
   void PCurve<T>::setSurroundingSphere( const DVector< DVector< Vector<T, 3> > >& p ) {
 
-    Sphere<float,3>  s;
-    s.resetPos( Point<float,3>( p(0)(0) ) );
-    s += Point<float,3>( p(p.getDim() - 1)(0) );
+    Sphere<T,3>  s;
+    s.resetPos( p(0)(0) );
+    s += p(p.getDim() - 1)(0);
     for( int i = p.getDim() - 2; i > 0; i-- )
-      s += Point<float,3>( p(i)(0) );
-    Parametrics<T,1>::setSurroundingSphere(s);
+      s += p(i)(0);
+    Parametrics<T,1>::setSurroundingSphere( s.template toType<float>() );
   }
 
 

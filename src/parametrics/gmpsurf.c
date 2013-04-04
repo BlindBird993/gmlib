@@ -634,7 +634,7 @@ namespace GMlib {
     T du, dv, det;
 
     /*! \todo fix matrix */
-    HqMatrix<float,3> invmat = this->_present;
+    HqMatrix<T,3> invmat = this->_present;
     invmat.invertOrthoNormal();
     Point<T,3> p = invmat * q;  // Egentlig _present
 
@@ -880,16 +880,16 @@ namespace GMlib {
   template <typename T>
   void PSurf<T>::setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p ) {
 
-    Sphere<float, 3>  s( (p(0)(0)(0)(0)).toFloat() );
-    s += Point<float,3>( p( p.getDim1()-1 )( p.getDim2()-1 )(0)(0));
-    s += Point<float,3>( p( p.getDim1()/2 )( p.getDim2()/2 )(0)(0));
-    s += Point<float,3>( p( p.getDim1()-1 )( 0             )(0)(0));
-    s += Point<float,3>( p( 0             )( p.getDim2()-1 )(0)(0));
-    s += Point<float,3>( p( p.getDim1()-1 )( p.getDim2()/2 )(0)(0));
-    s += Point<float,3>( p( p.getDim1()/2 )( p.getDim2()-1 )(0)(0));
-    s += Point<float,3>( p( 0             )( p.getDim2()/2 )(0)(0));
-    s += Point<float,3>( p( p.getDim1()/2 )( 0             )(0)(0));
-    Parametrics<T,2>::setSurroundingSphere(s);
+    Sphere<T, 3>  s( p(0)(0)(0)(0) );
+    s += Point<T,3>( p( p.getDim1()-1 )( p.getDim2()-1 )(0)(0) );
+    s += Point<T,3>( p( p.getDim1()/2 )( p.getDim2()/2 )(0)(0) );
+    s += Point<T,3>( p( p.getDim1()-1 )( 0             )(0)(0) );
+    s += Point<T,3>( p( 0             )( p.getDim2()-1 )(0)(0) );
+    s += Point<T,3>( p( p.getDim1()-1 )( p.getDim2()/2 )(0)(0) );
+    s += Point<T,3>( p( p.getDim1()/2 )( p.getDim2()-1 )(0)(0) );
+    s += Point<T,3>( p( 0             )( p.getDim2()/2 )(0)(0) );
+    s += Point<T,3>( p( p.getDim1()/2 )( 0             )(0)(0) );
+    Parametrics<T,2>::setSurroundingSphere(s.template toType<float>());
   }
 
 

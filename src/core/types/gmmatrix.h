@@ -117,6 +117,14 @@ namespace GMlib {
     Matrix<T,n,m>&      operator/=(double d);
     Matrix<T,n,m>&      operator/(double d) const;
 
+    // Casting
+    template <typename G>
+    operator Matrix<G,n,m>& () const {
+
+      static Matrix<G,n,m> v;
+      GM_Static1_<G,T,n*m>::eq( v.getPtr(), getPtr() );
+      return v;
+    }
 
     // Dummy for Array - should maby use determinant
     bool                operator < ( const Matrix<T,n,m>& ) const;
@@ -290,7 +298,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   class SqMatrix: public Matrix<T,n,n> {
-    public:
+  public:
     SqMatrix();
     SqMatrix( bool i);
     SqMatrix( const APoint<T,n>& r, const APoint<T,n>& c);
@@ -323,6 +331,14 @@ namespace GMlib {
     Matrix<T,n,n> const&    transpose();//Matrix<T,n,n> v(*this,true); *this = v; return(*this);}
     Matrix<T,n,n> const&    transposeMult(const Matrix<T,n,n>& m) const ;    // Not changing this: a = this->transpose * m
 
+    // Casting
+    template <typename G>
+    operator SqMatrix<G,n>& () const {
+
+      static SqMatrix<G,n> v;
+      GM_Static1_<G,T,n*n>::eq( v.getPtr(), this->getPtr() );
+      return v;
+    }
 
 
   protected:
@@ -383,6 +399,16 @@ namespace GMlib {
     Arrow<T,n>             operator*(const Arrow<T,n>& v)      const;
     Box<T,n>               operator*(const Box<T,n>& v)          const;
     Matrix<T,n+1,n+1>      operator*(const HqMatrix_<T,n>& v)  const;
+
+    // Casting
+    template <typename G>
+    operator HqMatrix<G,n>& () const {
+
+      static HqMatrix<G,n> v;
+      GM_Static1_<G,T,(n+1)*(n+1)>::eq( v.getPtr(), this->getPtr() );
+      return v;
+    }
+
 
   protected:
     void                   hq_cpy(const Matrix<T,n,n>& v);

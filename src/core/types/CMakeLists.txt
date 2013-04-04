@@ -35,3 +35,5 @@ addTemplateSources(
   gmsimplex.c
   gmsubspace.c
 )
+
+addTestDir(test)

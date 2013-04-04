@@ -58,7 +58,7 @@ namespace GMlib {
     _marked		= c.getInverse();
     _selected	= false;
     _root		= root;
-    translate( _position.toFloat() );
+    translate( _position );
     if(r != 1.0) scale(Vector<float,3>(r,r,r));
 
     _std_rep_visu = new VisualizerStdRep;

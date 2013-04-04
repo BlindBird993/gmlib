@@ -75,7 +75,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void Parametrics<T,n>::rotate(Angle a, const Vector<float,3>& rot_axel) {
+  void Parametrics<T,n>::rotate(Angle a, const Vector<T,3>& rot_axel) {
 
     DisplayObject::rotate( a, rot_axel );
     if( this->_parent )
@@ -85,7 +85,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void Parametrics<T,n>::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
+  void Parametrics<T,n>::rotate(Angle a, const Point<T,3>& p,const UnitVector<T,3>& d) {
 
     DisplayObject::rotate( a, p, d );
     if( this->_parent )
@@ -95,7 +95,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void Parametrics<T,n>::rotateGlobal(Angle a, const Vector<float,3>& rot_axel) {
+  void Parametrics<T,n>::rotateGlobal(Angle a, const Vector<T,3>& rot_axel) {
 
     DisplayObject::rotateGlobal( a, rot_axel );
     if( this->_parent )
@@ -105,7 +105,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void Parametrics<T,n>::rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d) {
+  void Parametrics<T,n>::rotateGlobal(Angle a, const Point<T,3>& p,const UnitVector<T,3>& d) {
 
     DisplayObject::rotateGlobal( a, p, d );
     if( this->_parent )
@@ -122,9 +122,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void Parametrics<T,n>::translate( const Vector<float,3>& trans_vector ) {
+  void Parametrics<T,n>::translate( const Vector<T,3>& trans_vector ) {
 
-    DisplayObject::translate( trans_vector );
+    DisplayObject::translate( trans_vector.template toType<float>() );
     if( this->_parent )
       this->_parent->edit( this );
   }
@@ -132,9 +132,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void Parametrics<T,n>::translateGlobal( const Vector<float,3>& trans_vector ) {
+  void Parametrics<T,n>::translateGlobal( const Vector<T,3>& trans_vector ) {
 
-    DisplayObject::translateGlobal( trans_vector );
+    DisplayObject::translateGlobal( trans_vector.template toType<float>() );
     if( this->_parent )
       this->_parent->edit( this );
   }

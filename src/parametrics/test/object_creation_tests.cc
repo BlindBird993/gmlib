@@ -6,17 +6,7 @@
 using namespace GMlib;
 
 
-
-//#define PSURF_OBJECT_CREATE_TEST( CNAME, T ) \
-//  TEST( ObjectCreation, CNAME ) { \
-//    GMtest::createDestroyObject< CNAME<T> >(); \
-//  }
-
-
-
 namespace {
-
-//  PSURF_OBJECT_CREATE_TEST(PApple,float)
 
 
   template <typename T>
@@ -63,14 +53,14 @@ namespace {
   }
 
 
-  TEST(ObjectCreation, PCurves) {
+  TEST(Parametrics, ObjectCreation__PCurves) {
 
     createAndDestroyBasicCurves<float>();
     createAndDestroyBasicCurves<double>();
     createAndDestroyBasicCurves<int>();
   }
 
-  TEST(ObjectCreation, PSurfs) {
+  TEST(Parametrics, ObjectCreation__PSurfs) {
 
     createAndDestroyBasicSurfaces<float>();
     createAndDestroyBasicSurfaces<double>();

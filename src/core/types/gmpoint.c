@@ -433,35 +433,39 @@ namespace GMlib {
   }
 
 
-  /*! APoint<float,n>& APoint<T, n>::toFloat() const
-   *  \brief Returns a point where all point elements is casted to float type
+  /*!
+   *  Returns a point converted to dimension n where all point elements is casted to G type.
    *
-   *  Returns a point where all point elements is casted to float type
+   *  \tparam T Type
+   *  \tparam n Dimension
+   *  \tparam G Convert-to Type
+   *  \tparam m Convert-to Dimension
    *
-   *  \return A point where all point elemets is of float type
+   *  \return A point where all point elemets is of G type
    */
   template <typename T, int n>
+  template <typename G, int m>
   inline
-  APoint<float,n>& APoint<T, n>::toFloat() const {
-    static APoint<float,n> v;
-    GM_Static1_<float,T,n>::eq(v.getPtr(), getPtr());
-    return v;
+  APoint<G,m>& APoint<T, n>::to() const {
+    return operator APoint<G,m>& ();
   }
 
 
-  /*! APoint<double,n> APoint<T, n>::toDouble() const
-   *  \brief Returns a point where all point elements is casted to double type
+  /*!
+   *  Returns a point where all point elements is casted to G type.
    *
-   *  Returns a point where all point elements is casted to double type
+   *  \tparam T Type
+   *  \tparam n Dimension
+   *  \tparam G Convert-to Type
+   *  \tparam m Convert-to Dimension
    *
-   *  \return A point where all point elemets is of double type
+   *  \return A point where all point elemets is of G type
    */
   template <typename T, int n>
+  template <typename G>
   inline
-  APoint<double,n>& APoint<T, n>::toDouble() const {
-    static APoint<double,n> v;
-    GM_Static1_<double,T,n>::eq( v.getPtr(), getPtr());
-    return v;
+  APoint<G,n>& APoint<T, n>::toType() const {
+    return to<G,n>();
   }
 
 
@@ -972,7 +976,7 @@ namespace GMlib {
   template <typename T>
   inline
   APoint<T,3> Vector<T,3>::operator^(const APoint<T,3>& v) const {
-    return Point<T,3>(
+    return Vector<T,3>(
       this->_pt[1]*v(2) - this->_pt[2]*v(1),
       this->_pt[2]*v(0) - this->_pt[0]*v(2),
       this->_pt[0]*v(1) - this->_pt[1]*v(0)
@@ -1670,6 +1674,30 @@ namespace GMlib {
     return a;
   }
 
+  template <typename T, int n>
+  template <typename G, int m>
+  inline
+  ScalarPoint<T,n>::operator ScalarPoint<G,m>& () const {
+    static ScalarPoint<G,m> v;
+    v.resetPos(this->_pos);
+    v.resetValue(this->_value);
+    return v;
+  }
+
+  template <typename T, int n>
+  template <typename G, int m>
+  inline
+  ScalarPoint<G,m>& ScalarPoint<T, n>::to() const {
+    return operator ScalarPoint<G,m>& ();
+  }
+
+  template <typename T, int n>
+  template <typename G>
+  inline
+  ScalarPoint<G,n>& ScalarPoint<T, n>::toType() const {
+    return to<G,n>();
+  }
+
 
 
 
@@ -1822,6 +1850,14 @@ namespace GMlib {
     return a;
   }
 
+  template <typename T, int n>
+  template <typename G, int m>
+  inline
+  Sphere<T,n>::operator Sphere<G,m>& () const {
+    static Sphere<G,m> v = ScalarPoint<T,n>::operator ScalarPoint<G,m>& ();
+    // _valid is set by Sphere
+    return v;
+  }
 
 
   //*********************************************************

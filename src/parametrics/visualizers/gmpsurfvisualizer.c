@@ -87,8 +87,9 @@ namespace GMlib {
     DVector< Vector<float,3> > tex_data(m1 * m2);
     Vector<float,3> *ptr = tex_data.getPtr();
     for( int j = 0; j < m1; ++j )
-      for( int i = 0; i < m2; ++i )
-        *ptr++ = p(i)(j)(1)(0) ^ p(i)(j)(0)(1);
+      for( int i = 0; i < m2; ++i ) {
+        *ptr++ = (p(i)(j)(1)(0) ^ p(i)(j)(0)(1)).template toType<float>();
+      }
 
 
     // Create Normal map texture and set texture parameters

@@ -31,9 +31,20 @@
 #ifndef __gmTESTUTILS_H__
 #define __gmTESTUTILS_H__
 
+#include <gtest/gtest.h>
 
 namespace GMlib {
 namespace GMtest {
+
+  template <typename T, int n>
+  ::testing::AssertionResult assertArrays( const T* arr1, const T* arr2 ) {
+
+    for( int i = 0; i < n; ++i )
+      if( arr1[i] != arr2[i] )
+        return ::testing::AssertionFailure() << "array[i]: " << i << arr1[i] << " != " << arr2[i];
+
+    return ::testing::AssertionSuccess();
+  }
 
 
 

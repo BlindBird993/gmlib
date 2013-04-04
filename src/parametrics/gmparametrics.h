@@ -73,13 +73,13 @@ namespace GMlib {
     Parametrics( const Parametrics<T,n>& copy );
     ~Parametrics();
 
-    void                                  rotate(Angle a, const Vector<float,3>& rot_axel);
-    void                                  rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    void                                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    void                                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    void                                  rotate(Angle a, const Vector<T,3>& rot_axel);
+    void                                  rotate(Angle a, const Point<T,3>& p,const UnitVector<T,3>& d);
+    void                                  rotateGlobal(Angle a, const Vector<T,3>& rot_axel);
+    void                                  rotateGlobal(Angle a, const Point<T,3>& p,const UnitVector<T,3>& d);
     void                                  setDerivationMethod( GM_DERIVATION_METHOD method );
-    void                                  translate(const Vector<float,3>& trans_vector);
-    void                                  translateGlobal(const Vector<float,3>& trans_vector);
+    void                                  translate(const Vector<T,3>& trans_vector);
+    void                                  translateGlobal(const Vector<T,3>& trans_vector);
 
   protected:
     GM_DERIVATION_METHOD                  _dm;

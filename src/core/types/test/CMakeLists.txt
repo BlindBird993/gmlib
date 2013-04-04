@@ -22,6 +22,5 @@
 
 
 
-addTest(dummy_test)
-addTest(parametrics_transform_tests)
-addTest(object_creation_tests)
+addTest(gmmatrix_tests)
+addTest(gmpoint_tests)

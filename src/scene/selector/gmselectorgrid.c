@@ -52,7 +52,7 @@ namespace GMlib {
     this->_marked	= c.getInverse();
     this->_root		= NULL;
 //    this->_scale.reset();
-    this->translate( -mp.toFloat());
+    this->translate( -mp );
 
     Sphere<float,3> ts(Point<float,3>(float(0)),0.866);
     this->setSurroundingSphere(ts);

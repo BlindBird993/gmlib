@@ -116,7 +116,7 @@ namespace GMlib {
     APoint<T, n>&         operator +  ( const APoint<T, n> &p ) const;
     APoint<T, n>&         operator -  ( const APoint<T, n> &p ) const;
     T                     operator *  ( const APoint<T,n>& p) const;
-    T&		              operator [] ( int i);
+    T&                    operator [] ( int i);
     T const&              operator () ( int i) const;
 
     // Scaling
@@ -143,8 +143,12 @@ namespace GMlib {
     template <typename G, int m>
     operator APoint<G,m>& () const;
 
-    APoint<float,n>&      toFloat() const;
-    APoint<double,n>&     toDouble() const;
+    template <typename G,int m>
+    APoint<G,m>&          to() const;
+
+    template <typename G>
+    APoint<G,n>&          toType() const;
+
 
 
   protected:
@@ -157,7 +161,7 @@ namespace GMlib {
   private:
 
     static Arrow<T, n>*   _arrow;    // Used for < and sorting see setTestType()
-    static int			  _sortType;
+    static int            _sortType;
 
   }; // END class APoint
 
@@ -204,7 +208,7 @@ namespace GMlib {
     int           isInside(const Array<Point<T,2> >& a) const;
     int           isInsideCircle(const APoint<T,2>& p1,const APoint<T,2>& p2,const APoint<T,2>& p3) const;
 
-    T             operator^(const APoint<T,2>& v) const;	// wedge product.
+    T             operator^(const APoint<T,2>& v) const;  // wedge product.
   };
 
 
@@ -263,7 +267,7 @@ namespace GMlib {
   bool convexHullFrom(Array<Point<T,2> >& a, const Vector<T,2>& v) {
 
     bool removed = false;
-    if (a.size()<4)	return removed;
+    if (a.size()<4)  return removed;
 
     int i,j,k;
     Point<T,2> p;
@@ -273,17 +277,17 @@ namespace GMlib {
     p.setTestType(3,p/a.size(),v);
     a.sort();
 
-    for(i=0; i<a.size(); i++)	{
-      if(i<a.size()-2)		{ j=i+1; k=i+2; }
-      else if(i<a.size()-1)	{ j=i+1; k=0;   }
-      else					{ j=0;   k=1;   }
+    for(i=0; i<a.size(); i++)  {
+      if(i<a.size()-2)    { j=i+1; k=i+2; }
+      else if(i<a.size()-1)  { j=i+1; k=0;   }
+      else          { j=0;   k=1;   }
       p = a[j]-a[i];
-      if((p^(a[k]-a[j])) < 0)	{
+      if((p^(a[k]-a[j])) < 0)  {
         a.removeIndex(j);
         removed = true;
         if(i==a.size()) i-=3;
-        else if(i>0)	i-=2;
-        else			i--;
+        else if(i>0)  i-=2;
+        else      i--;
       }
     }
     return removed;
@@ -373,12 +377,12 @@ namespace GMlib {
   /*! \class Vector gmpoint.h <gmPoint>
    *  \brief The Static Vector Class
    *
-   *	A template Vector, the Vector is static i.e. the dimentions
-   *	can not be change. The template type must be clean, i.e. is not allocating
-   *	memory and without any virtual functions.
+   *  A template Vector, the Vector is static i.e. the dimentions
+   *  can not be change. The template type must be clean, i.e. is not allocating
+   *  memory and without any virtual functions.
    *
-   *	The vector is only using n values, but it is acting as it is in homogenious
-   *	coordinates. The (n+1).nt element, which is not there, is actually implicite 0.
+   *  The vector is only using n values, but it is acting as it is in homogenious
+   *  coordinates. The (n+1).nt element, which is not there, is actually implicite 0.
    */
   template <typename T, int n>
   class Vector : public APoint<T,n> {
@@ -498,15 +502,15 @@ namespace GMlib {
   /*! \class UnitVector gmpoint.h <gmPoint>
    *  \brief The Static UnitVector class
    *
-   *	A template UnitVector, the UnitVector is static i.e. the dimentions
-   *	can not be change. The template type must be clean, i.e. is not allocating
-   *	memory and without any virtual functions.
+   *  A template UnitVector, the UnitVector is static i.e. the dimentions
+   *  can not be change. The template type must be clean, i.e. is not allocating
+   *  memory and without any virtual functions.
    *
-   *	The UnitVector has, as the name indicate, always length 1. Be aware the you do not
-   *	initiate it by a zero vector or by zero constant. In that case it will produce an overflow.
+   *  The UnitVector has, as the name indicate, always length 1. Be aware the you do not
+   *  initiate it by a zero vector or by zero constant. In that case it will produce an overflow.
    *
-   *	The unit vector is only using n values, but it is acting as it is in homogenious
-   *	coordinates. The (n+1).nt element (there is not there) is actually implicite 0
+   *  The unit vector is only using n values, but it is acting as it is in homogenious
+   *  coordinates. The (n+1).nt element (there is not there) is actually implicite 0
    */
   template <typename T, int n>
   class UnitVector : public Vector<T,n> {
@@ -670,11 +674,11 @@ namespace GMlib {
   /*! \class Arrow gmpoint.h <gmPoint>
    *  \brief The Static Arrow class
    *
-   *	A template Arrow, the Arrow is static i.e. the dimentions
-   *	can not be change. The template type must be clean, i.e. is not allocating
-   *	memory and without any virtual functions.
+   *  A template Arrow, the Arrow is static i.e. the dimentions
+   *  can not be change. The template type must be clean, i.e. is not allocating
+   *  memory and without any virtual functions.
    *
-   *	The Arrow is a Point and a conected Vector.
+   *  The Arrow is a Point and a conected Vector.
    */
   template <typename T, int n>
   class Arrow : public Point<T,n> {
@@ -794,11 +798,11 @@ namespace GMlib {
 
   /*! \class ScalarPoint gmpoint.h <gmPoint>
    *  \brief The Static ScalarPoint class
-   *	A template ScalarPoint, the ScalarPoint is static i.e. the dimentions
-   *	can not be change. The template type must be clean, i.e. is not allocating
-   *	memory and without any virtual functions.
+   *  A template ScalarPoint, the ScalarPoint is static i.e. the dimentions
+   *  can not be change. The template type must be clean, i.e. is not allocating
+   *  memory and without any virtual functions.
    *
-   *	The ScalarPoint is a Point and a conected scalar value.
+   *  The ScalarPoint is a Point and a conected scalar value.
    */
   template <typename T, int n>
   class ScalarPoint {
@@ -807,9 +811,9 @@ namespace GMlib {
     ScalarPoint( const APoint<T, n>& p, T v = T(0) );
     ScalarPoint( const ScalarPoint<T, n>& s );
 
-    const APoint<T, n>&	  getPos() const;
+    const APoint<T, n>&   getPos() const;
     T*                    getPtr() const;
-    T			          getValue() const;
+    T                     getValue() const;
     void                  reset( const APoint<T, n>& p , T v = T(0) );
     void                  reset();
     void                  resetValue( T t );
@@ -833,9 +837,22 @@ namespace GMlib {
     friend
     ScalarPoint<T, n>     operator *  ( double d, ScalarPoint<T, n> p ) { p*=d; return p; }
 */
+
+    // Casting
+    template <typename G, int m>
+    operator ScalarPoint<G, m>& () const;
+
+    template <typename G,int m>
+    ScalarPoint<G,m>&     to() const;
+
+    template <typename G>
+    ScalarPoint<G,n>&     toType() const;
+
+
+
   protected:
-    Point<T, n>	          _pos;
-    T			          _value;
+    Point<T, n>           _pos;
+    T                     _value;
 
   }; // END class ScalarPoint
 
@@ -911,12 +928,12 @@ namespace GMlib {
 
   /*! \class Sphere gmpoint.h <gmPoint>
    *  \brief The Static Sphere class
-   *	A template Sphere, the Sphere is static i.e. the dimentions
-   *	can not be change. The template type must be clean, i.e. is not allocating
-   *	memory and without any virtual functions.
+   *  A template Sphere, the Sphere is static i.e. the dimentions
+   *  can not be change. The template type must be clean, i.e. is not allocating
+   *  memory and without any virtual functions.
    *
-   *	The Sphere is a centre Point and a conected scalar value, radius.
-   *	It also inclue a boolean telling if the Sphere is valid or not.
+   *  The Sphere is a centre Point and a conected scalar value, radius.
+   *  It also inclue a boolean telling if the Sphere is valid or not.
    */
   template <typename T, int n>
   class Sphere : public ScalarPoint<T, n> {
@@ -926,7 +943,7 @@ namespace GMlib {
     Sphere( const ScalarPoint<T, n>& s );
     Sphere( const Sphere<T, n>& s );
 
-    T	            getRadius() const;
+    T              getRadius() const;
     bool            isValid() const;
     bool            isIntersecting(const Sphere<T,n>& p) const;
     void            resetPos( const APoint<T, n>& p );
@@ -938,6 +955,9 @@ namespace GMlib {
     Sphere<T, n>&   operator += ( const Sphere<T, n>& p );
     Sphere<T, n>    operator +  ( const Sphere<T, n>& p ) const;
 
+    // Casting
+    template <typename G, int m>
+    operator Sphere<G, m>& () const;
 
   private:
     bool _valid;
@@ -1031,11 +1051,11 @@ namespace GMlib {
 
   /*! \class Box gmpoint.h <gmPoint>
    *  \brief The Static Box class
-   *	A template Box, the Box is static i.e. the dimentions
-   *	can not be change. The template type must be clean, i.e. is not allocating
-   *	memory and without any virtual functions.
+   *  A template Box, the Box is static i.e. the dimentions
+   *  can not be change. The template type must be clean, i.e. is not allocating
+   *  memory and without any virtual functions.
    *
-   *	The Box is described by a minimum Point and a maximum Point (the diaginal).
+   *  The Box is described by a minimum Point and a maximum Point (the diaginal).
    */
   template <typename T, int n>
   class Box {
@@ -1046,29 +1066,29 @@ namespace GMlib {
     Box( const APoint<T, n>& p1, const APoint<T, n>& p2 );
     Box( const APoint<T, n>& p1, const APoint<T, n>& p2, const APoint<T,n>& p3 );
 
-    APoint<T, n>	getPointMin() const;
-    APoint<T, n>	getPointMax() const;
-    APoint<T, n>	getPointCenter() const;
+    APoint<T, n>  getPointMin() const;
+    APoint<T, n>  getPointMax() const;
+    APoint<T, n>  getPointCenter() const;
     Vector<T, n>   getPointDelta() const;
     T*              getPtr() const;
 
-    T&		        getValueAt( int i, int j );
-    T			    getValueMin( int i ) const;
-    T			    getValueMax( int i ) const;
-    T			    getValueCenter( int i ) const;
-    T			    getValueDelta( int i ) const;
-    void		    insert( const APoint<T, n>& );
-    void		    insert( const Box<T, n>& );
-    bool		    isIntersecting( const Box<T,n>& b ) const;
-    bool		    isSurrounding( const APoint<T,n>& p ) const;
-    bool		    isSurrounding( const Box<T,n>& b )  const;
-    void		    reset();
-    void		    reset( const APoint<T, n>& p );
+    T&            getValueAt( int i, int j );
+    T          getValueMin( int i ) const;
+    T          getValueMax( int i ) const;
+    T          getValueCenter( int i ) const;
+    T          getValueDelta( int i ) const;
+    void        insert( const APoint<T, n>& );
+    void        insert( const Box<T, n>& );
+    bool        isIntersecting( const Box<T,n>& b ) const;
+    bool        isSurrounding( const APoint<T,n>& p ) const;
+    bool        isSurrounding( const Box<T,n>& b )  const;
+    void        reset();
+    void        reset( const APoint<T, n>& p );
 
     Box<T,n>&       operator += ( const APoint<T, n>& p );
-    Box<T,n>	    operator +  ( const APoint<T, n>& p );
-    Box<T,n>&	    operator += ( const Box<T, n>& b );
-    Box<T,n>	    operator +  ( const Box<T, n>& b );
+    Box<T,n>      operator +  ( const APoint<T, n>& p );
+    Box<T,n>&      operator += ( const Box<T, n>& b );
+    Box<T,n>      operator +  ( const Box<T, n>& b );
 
 
 
@@ -1162,7 +1182,7 @@ namespace GMlib {
 
     void                setNormal(const Vector<T,n>& v);
 
-    const Vector<T,n>&	getNormal() const;
+    const Vector<T,n>&  getNormal() const;
     APoint<T,n>         getClosestPoint(const Point<T,n>& p) const;
     Vector<T,n>         getDistanceVector(const Point<T,n>& p) const;
     T                   getDistanceTo(const Point<T,n>& p) const;
@@ -1180,7 +1200,7 @@ namespace GMlib {
   /*! \class M_I_ gmpoint.h <gmPoint>
    *  \brief The init of I-matrix and SubSpace
    *
-   *	NOT FOR EXTERNAL USE !!!!!!
+   *  NOT FOR EXTERNAL USE !!!!!!
    */
   template <typename T, int n, int m>
   class M_I_ {
@@ -1189,7 +1209,7 @@ namespace GMlib {
     T* getPtr() const;
 
   private:
-    T	_p[n*m];
+    T  _p[n*m];
   }; // END class M_I_
 
 } // END namespace GMlib

@@ -6,7 +6,7 @@ using namespace GMlib;
 
 namespace {
 
-  TEST(ArrayTest, SizeCheck) {
+  TEST(Core, Containers__Array__SizeCheck) {
 
 
     Array<int> array;
@@ -20,7 +20,7 @@ namespace {
     EXPECT_EQ( 6, array.size() );
   }
 
-  TEST(ArrayTest, SizeCheck2) {
+  TEST(Core, Containers__Array__SizeCheck2) {
 
     Array<int> array;
     array.push_back(1);
@@ -33,7 +33,7 @@ namespace {
     EXPECT_NE( 3, array.getSize() );
   }
 
-  TEST(ArrayTest, SizeCheck3) {
+  TEST(Core, Containers__Array__SizeCheck3) {
 
     Array<int> array;
     array.push_back(1);
@@ -43,7 +43,7 @@ namespace {
     EXPECT_EQ( 3, array.getSize() );
   }
 
-  TEST(ArrayTest, Sort) {
+  TEST(Core, Containers__Array__Sort) {
 
     Array<int> array;
     array.push_back(45);

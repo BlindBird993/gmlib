@@ -6,7 +6,7 @@ using namespace GMlib;
 
 namespace {
 
-  TEST(ColorTest, StreamInCheck) {
+  TEST(Core, Utils__Color__StreamInCheck) {
 
     std::stringstream ss( std::stringstream::in | std::stringstream::out );
     ss << "0.5 0.3 0.789 0.9";
