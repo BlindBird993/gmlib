@@ -66,20 +66,26 @@ namespace GMlib {
   };
 
 
-  template <typename T, int n>
+  /*!
+   *
+   *  \tparam T Template type parameter
+   *  \tparam m Manifold dimension \see GM_PARAMETRICS
+   *  \tparam n Manifold embedding dimension
+   */
+  template <typename T, int m, int n>
   class Parametrics : public DisplayObject {
   public:
     Parametrics();
-    Parametrics( const Parametrics<T,n>& copy );
+    Parametrics( const Parametrics<T,m,n>& copy );
     ~Parametrics();
 
-    void                                  rotate(Angle a, const Vector<T,3>& rot_axel);
-    void                                  rotate(Angle a, const Point<T,3>& p,const UnitVector<T,3>& d);
-    void                                  rotateGlobal(Angle a, const Vector<T,3>& rot_axel);
-    void                                  rotateGlobal(Angle a, const Point<T,3>& p,const UnitVector<T,3>& d);
+    void                                  rotate(Angle a, const Vector<T,n>& rot_axel);
+    void                                  rotate(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d);
+    void                                  rotateGlobal(Angle a, const Vector<T,n>& rot_axel);
+    void                                  rotateGlobal(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d);
     void                                  setDerivationMethod( GM_DERIVATION_METHOD method );
-    void                                  translate(const Vector<T,3>& trans_vector);
-    void                                  translateGlobal(const Vector<T,3>& trans_vector);
+    void                                  translate(const Vector<T,n>& trans_vector);
+    void                                  translateGlobal(const Vector<T,n>& trans_vector);
 
   protected:
     GM_DERIVATION_METHOD                  _dm;

@@ -39,9 +39,9 @@
 namespace GMlib {
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  PSurf<T>::PSurf( int s1, int s2 ) {
+  PSurf<T,n>::PSurf( int s1, int s2 ) {
 
     _no_sam_u                       = s1;
     _no_sam_v                       = s2;
@@ -62,9 +62,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  PSurf<T>::PSurf( const PSurf<T>& copy ) : Parametrics<T,2>( copy ) {
+  PSurf<T,n>::PSurf( const PSurf<T,n>& copy ) : Parametrics<T,2,n>( copy ) {
 
     _p            = copy._p;
     _n            = copy._n;
@@ -91,17 +91,17 @@ namespace GMlib {
     enableDefaultVisualizer( true );
   }
 
-  template <typename T>
-  PSurf<T>::~PSurf() {
+  template <typename T, int n>
+  PSurf<T,n>::~PSurf() {
 
     enableDefaultVisualizer( false );
     delete _default_visualizer;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::_eval( T u, T v, int d1, int d2 ) {
+  void PSurf<T,n>::_eval( T u, T v, int d1, int d2 ) {
 
     if( !(d1 <= _d1 && d2 <=_d2 && u == _u && v == _v) ) {
 
@@ -115,9 +115,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::_evalDerDD( DMatrix<DMatrix <Vector<T,3> > >& a, int d1, int d2, T du, T dv ) const {
+  void PSurf<T,n>::_evalDerDD( DMatrix<DMatrix <Vector<T,n> > >& a, int d1, int d2, T du, T dv ) const {
 
     T one_over_du;
     T one_over_dv;
@@ -229,21 +229,21 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::_evalNormal() {
+  void PSurf<T,n>::_evalNormal() {
 
     _n = _p(1)(0)^_p(0)(1);
   }
 
 
-//  template <typename T>
+//  template <typename T, int n>
 //  inline
-//  void PSurf<T>::estimateClpPar( const Point<T,3>& p, T& u, T& v ) {
+//  void PSurf<T,n>::estimateClpPar( const Point<T,n>& p, T& u, T& v ) {
 //  }
 
-  template <typename T>
-  void PSurf<T>::enableDefaultVisualizer( bool enable ) {
+  template <typename T, int n>
+  void PSurf<T,n>::enableDefaultVisualizer( bool enable ) {
 
     if( !enable )
       removeVisualizer( _default_visualizer );
@@ -252,17 +252,17 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  DMatrix<Vector<T,3> >& PSurf<T>::evaluate( Point<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( Point<T,2> p, int d ) {
 
     return evaluate( p[0], p[1], d, d);
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  DMatrix<Vector<T,3> >& PSurf<T>::evaluate( T u, T v, int d1, int d2 ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( T u, T v, int d1, int d2 ) {
 
     _eval(u, v, d1, d2);
     _evalNormal();
@@ -270,22 +270,22 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  DVector<Vector<T,3> > PSurf<T>::evaluateD( Point<T,2> p, int d ) {
+  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( Point<T,2> p, int d ) {
 
     return evaluateD(p[0], p[1], d, d);
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  DVector<Vector<T,3> > PSurf<T>::evaluateD( T u, T v, int d1, int d2 ) {
+  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( T u, T v, int d1, int d2 ) {
 
     // Here we are coopying diagonal wise the matrix into an vector
     // One problem is if d1 is not equal d2.
     _eval(u, v, d1, d2);
-    DVector<Vector<T,3> > p(_sum(d1, d2));
+    DVector<Vector<T,n> > p(_sum(d1, d2));
     int i,j;
 
     for(i = 0; i <= d1; i++) {
@@ -305,24 +305,24 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  DMatrix<Vector<T,3> >& PSurf<T>::evaluateGlobal( Point<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( Point<T,2> p, int d ) {
 
     return evaluateGlobal( p[0], p[1], d, d);
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  DMatrix<Vector<T,3> >& PSurf<T>::evaluateGlobal( T u, T v, int d1, int d2 ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( T u, T v, int d1, int d2 ) {
 
-    static DMatrix<Vector<T,3> > p;
+    static DMatrix<Vector<T,n> > p;
     p.setDim( d1+1, d2+1 );
 
     eval(u,v,d1,d2);
 
-    p[0][0] = this->_present * static_cast< Point<T,3> >(_p[0][0]);
+    p[0][0] = this->_present * static_cast< Point<T,n> >(_p[0][0]);
 
     for( int j = 1; j < p.getDim2(); j++ )
       p[0][j] = this->_present * _p[0][j];
@@ -335,24 +335,24 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  DMatrix<Vector<T,3> >& PSurf<T>::evaluateParent( Point<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( Point<T,2> p, int d ) {
 
     return evaluateParent( p[0], p[1], d, d );
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  DMatrix<Vector<T,3> >& PSurf<T>::evaluateParent( T u, T v, int d1, int d2 ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( T u, T v, int d1, int d2 ) {
 
-    static DMatrix<Vector<T,3> > p;
+    static DMatrix<Vector<T,n> > p;
     p.setDim( d1+1, d2+1 );
 
     eval(u,v,d1,d2);
 
-    p[0][0] = this->_matrix * static_cast< Point<T,3> >(_p[0][0]);
+    p[0][0] = this->_matrix * static_cast< Point<T,n> >(_p[0][0]);
 
     for( int j = 1; j < p.getDim2(); j++ )
       p[0][j] = this->_matrix * _p[0][j];
@@ -365,17 +365,17 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getCurvatureGauss( T u, T v ) {
+  T PSurf<T,n>::getCurvatureGauss( T u, T v ) {
 
     _eval(u, v, 2, 2);
-    UnitVector<T,3>   N   = _p[1][0]^_p[0][1];
-    Vector<T,3>		  du  = _p[1][0];
-    Vector<T,3>		  dv  = _p[0][1];
-    Vector<T,3>		  duu = _p[2][0];
-    Vector<T,3>		  duv = _p[1][1];
-    Vector<T,3>		  dvv = _p[0][2];
+    UnitVector<T,n>   N   = _p[1][0]^_p[0][1];
+    Vector<T,n>		  du  = _p[1][0];
+    Vector<T,n>		  dv  = _p[0][1];
+    Vector<T,n>		  duu = _p[2][0];
+    Vector<T,n>		  duv = _p[1][1];
+    Vector<T,n>		  dvv = _p[0][2];
 
     T E = du  * du;
     T F = du  * dv;
@@ -388,17 +388,17 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getCurvatureMean( T u, T v ) {
+  T PSurf<T,n>::getCurvatureMean( T u, T v ) {
 
     _eval(u,v,2,2);
-    UnitVector<T,3>   N   = _p[1][0]^_p[0][1];
-    Vector<T,3>		  du  = _p[1][0];
-    Vector<T,3>		  dv  = _p[0][1];
-    Vector<T,3>		  duu = _p[2][0];
-    Vector<T,3>		  duv = _p[1][1];
-    Vector<T,3>		  dvv = _p[0][2];
+    UnitVector<T,n>   N   = _p[1][0]^_p[0][1];
+    Vector<T,n>		  du  = _p[1][0];
+    Vector<T,n>		  dv  = _p[0][1];
+    Vector<T,n>		  duu = _p[2][0];
+    Vector<T,n>		  duv = _p[1][1];
+    Vector<T,n>		  dvv = _p[0][2];
 
     T E = du  * du;
     T F = du  * dv;
@@ -411,9 +411,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getCurvaturePrincipalMax( T u, T v ) {
+  T PSurf<T,n>::getCurvaturePrincipalMax( T u, T v ) {
 
     T K = getCurvatureGauss( u, v );
     T H = getCurvatureMean( u, v );
@@ -422,9 +422,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getCurvaturePrincipalMin( T u, T v ) {
+  T PSurf<T,n>::getCurvaturePrincipalMin( T u, T v ) {
 
     T K = getCurvatureGauss( u, v );
     T H = getCurvatureMean( u, v );
@@ -433,172 +433,172 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PSurf<T>::getDerivativesU() const {
+  int PSurf<T,n>::getDerivativesU() const {
 
     return _no_der_u;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PSurf<T>::getDerivativesV() const {
+  int PSurf<T,n>::getDerivativesV() const {
 
     return _no_der_v;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3>& PSurf<T>::getDerU( T u, T v ) {
+  Vector<T,n>& PSurf<T,n>::getDerU( T u, T v ) {
 
     _eval(u, v, 1, 0);
     return _p[1][0];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3>& PSurf<T>::getDerUU( T u, T v ) {
+  Vector<T,n>& PSurf<T,n>::getDerUU( T u, T v ) {
 
     _eval(u, v, 2, 0);
     return _p[2][0];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3>& PSurf<T>::getDerUV( T u, T v ) {
+  Vector<T,n>& PSurf<T,n>::getDerUV( T u, T v ) {
 
     _eval(u, v, 2, 2);
     return _p[1][1];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3>& PSurf<T>::getDerV( T u, T v ) {
+  Vector<T,n>& PSurf<T,n>::getDerV( T u, T v ) {
 
     _eval(u, v, 0, 1);
     return _p[0][1];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3>& PSurf<T>::getDerVV( T u, T v ) {
+  Vector<T,n>& PSurf<T,n>::getDerVV( T u, T v ) {
 
     _eval(u, v, 0, 2);
     return _p[0][2];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getLocalMapping( T t, T /*ts*/, T /*tt*/, T /*te*/ ) {
+  T PSurf<T,n>::getLocalMapping( T t, T /*ts*/, T /*tt*/, T /*te*/ ) {
 
     return t;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3>& PSurf<T>::getNormal() {
+  Vector<T,n>& PSurf<T,n>::getNormal() {
 
     return _n;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getParDeltaU() {
+  T PSurf<T,n>::getParDeltaU() {
 
     return _sc_u * (getEndPU() - getStartPU());
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getParDeltaV() {
+  T PSurf<T,n>::getParDeltaV() {
 
     return _sc_v * (getEndPV() - getStartPV());
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getParEndU() {
+  T PSurf<T,n>::getParEndU() {
 
     return getParStartU() + getParDeltaU();
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getParEndV() {
+  T PSurf<T,n>::getParEndV() {
 
     return getParStartV() + getParDeltaV();
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getParStartU() {
+  T PSurf<T,n>::getParStartU() {
 
     return getStartPU() + _tr_u;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::getParStartV() {
+  T PSurf<T,n>::getParStartV() {
 
     return getStartPV() + _tr_v;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3>& PSurf<T>::getPosition( T u, T v ) {
+  Vector<T,n>& PSurf<T,n>::getPosition( T u, T v ) {
 
     _eval(u, v, 0, 0);
     return _p[0][0];
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PSurf<T>::getSamPU( int i ) const {
+  int PSurf<T,n>::getSamPU( int i ) const {
 
     return _no_sam_p_u(i);
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PSurf<T>::getSamPV( int i ) const {
+  int PSurf<T,n>::getSamPV( int i ) const {
 
     return _no_sam_p_v(i);
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PSurf<T>::getSamplesU() const {
+  int PSurf<T,n>::getSamplesU() const {
 
     return _no_sam_u;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PSurf<T>::getSamplesV() const {
+  int PSurf<T,n>::getSamplesV() const {
 
     return _no_sam_v;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::insertVisualizer( Visualizer *visualizer ) {
+  void PSurf<T,n>::insertVisualizer( Visualizer *visualizer ) {
 
     DisplayObject::insertVisualizer( visualizer );
 
@@ -613,36 +613,36 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  bool PSurf<T>::isClosedU() const {
+  template <typename T, int n>
+  bool PSurf<T,n>::isClosedU() const {
 
     return false;
   }
 
 
-  template <typename T>
-  bool PSurf<T>::isClosedV() const {
+  template <typename T, int n>
+  bool PSurf<T,n>::isClosedV() const {
 
     return false;
   }
 
 
-  template <typename T>
-  bool PSurf<T>::getClosestPoint( const Point<T,3>& q, T& u, T& v ) {
+  template <typename T, int n>
+  bool PSurf<T,n>::getClosestPoint( const Point<T,n>& q, T& u, T& v ) {
 
     T a11, a12, a21, a22, b1, b2;
     T du, dv, det;
 
     /*! \todo fix matrix */
-    HqMatrix<T,3> invmat = this->_present;
+    HqMatrix<T,n> invmat = this->_present;
     invmat.invertOrthoNormal();
-    Point<T,3> p = invmat * q;  // Egentlig _present
+    Point<T,n> p = invmat * q;  // Egentlig _present
 
 
     for(int i = 0; i < 20; i++ ) {
 
-      DMatrix< Vector<T,3> > &r = evaluate( u, v, 2, 2 );
-      Vector<T,3> d = p-r[0][0];
+      DMatrix< Vector<T,n> > &r = evaluate( u, v, 2, 2 );
+      Vector<T,n> d = p-r[0][0];
 
       a11 = d*r[2][0] - r[1][0] * r[1][0];
       a12 = d*r[1][1] - r[1][0] * r[0][1];
@@ -665,23 +665,23 @@ namespace GMlib {
     return false;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  bool PSurf<T>::getClosestPoint( const Point<T,3>& q, Point<T,2>& uv ) {
+  bool PSurf<T,n>::getClosestPoint( const Point<T,n>& q, Point<T,2>& uv ) {
 
     return getClosestPoint(q, uv[0], uv[1]);
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::preSample(
+  void PSurf<T,n>::preSample(
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     T /*s_u*/, T /*s_v*/, T /*e_u*/, T /*e_v*/
   ) {}
 
 
-  template <typename T>
-  void PSurf<T>::replot( int m1, int m2, int d1, int d2 ) {
+  template <typename T, int n>
+  void PSurf<T,n>::replot( int m1, int m2, int d1, int d2 ) {
 
 
     // Correct sample domain
@@ -718,7 +718,7 @@ namespace GMlib {
 
 
     // Sample Positions and related Derivatives
-    DMatrix< DMatrix< Vector<T, 3> > > p;
+    DMatrix< DMatrix< Vector<T,n> > > p;
     resample(
       p, m1, m2, d1, d2,
       getStartPU(),
@@ -728,7 +728,7 @@ namespace GMlib {
     );
 
     // Sample Normals
-    DMatrix< Vector<T, 3> > normals;
+    DMatrix< Vector<T,n> > normals;
     resampleNormals( p, normals );
 
     // Set The Surrounding Sphere
@@ -739,9 +739,9 @@ namespace GMlib {
       this->_psurf_visualizers[i]->replot( p, normals, m1, m2, d1, d2, isClosedU(), isClosedV() );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::removeVisualizer( Visualizer *visualizer ) {
+  void PSurf<T,n>::removeVisualizer( Visualizer *visualizer ) {
 
     PSurfVisualizer<T> *visu = dynamic_cast<PSurfVisualizer<T>*>( visualizer );
     if( visu )
@@ -751,8 +751,8 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  void PSurf<T>::resample( DMatrix< DMatrix < Vector<T,3> > >& a,
+  template <typename T, int n>
+  void PSurf<T,n>::resample( DMatrix< DMatrix < Vector<T,n> > >& a,
                            int m1, int m2, int d1, int d2,
                            T s_u, T s_v, T e_u, T e_v ) {
 
@@ -799,17 +799,17 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::resample( DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a,
+  void PSurf<T,n>::resample( DMatrix<DMatrix <DMatrix <Vector<T,n> > > >	& a,
                            int m1, int m2, int d1, int d2 ) {
 
     resample( a, m1, m2, d1, d2, getStartPU(), getStartPV(), getEndPU(), getEndPV() );
   }
 
 
-  template <typename T>
-  void PSurf<T>::resampleNormals( const DMatrix<DMatrix<Vector<T,3> > > &sample, DMatrix<Vector<T,3> > &normals ) const {
+  template <typename T, int n>
+  void PSurf<T,n>::resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,n> > &normals ) const {
 
     normals.setDim( sample.getDim1(), sample.getDim2() );
 
@@ -819,104 +819,104 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::setDomainU( T start, T end ) {
+  void PSurf<T,n>::setDomainU( T start, T end ) {
 
     _sc_u  = (end - start) / (getEndPU() - getStartPU());
     _tr_u  = start - getStartPU();
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::setDomainUScale( T sc ) {
+  void PSurf<T,n>::setDomainUScale( T sc ) {
 
     _sc_u = sc;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::setDomainUTrans( T tr ) {
+  void PSurf<T,n>::setDomainUTrans( T tr ) {
 
     _tr_u = tr;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::setDomainV( T start, T end ) {
+  void PSurf<T,n>::setDomainV( T start, T end ) {
 
     _sc_v  = (end - start) / (getEndPV() - getStartPV());
     _tr_v  = start - getStartPV();
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::setDomainVScale( T sc ) {
+  void PSurf<T,n>::setDomainVScale( T sc ) {
 
     _sc_v = sc;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::setDomainVTrans( T tr ) {
+  void PSurf<T,n>::setDomainVTrans( T tr ) {
 
     _tr_v = tr;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurf<T>::setNoDer( int d ) {
+  void PSurf<T,n>::setNoDer( int d ) {
 
      _default_d  = d;
   }
 
 
-  template <typename T>
-  void PSurf<T>::setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p ) {
+  template <typename T, int n>
+  void PSurf<T,n>::setSurroundingSphere( const DMatrix< DMatrix< Vector<T,n> > >& p ) {
 
-    Sphere<T, 3>  s( p(0)(0)(0)(0) );
-    s += Point<T,3>( p( p.getDim1()-1 )( p.getDim2()-1 )(0)(0) );
-    s += Point<T,3>( p( p.getDim1()/2 )( p.getDim2()/2 )(0)(0) );
-    s += Point<T,3>( p( p.getDim1()-1 )( 0             )(0)(0) );
-    s += Point<T,3>( p( 0             )( p.getDim2()-1 )(0)(0) );
-    s += Point<T,3>( p( p.getDim1()-1 )( p.getDim2()/2 )(0)(0) );
-    s += Point<T,3>( p( p.getDim1()/2 )( p.getDim2()-1 )(0)(0) );
-    s += Point<T,3>( p( 0             )( p.getDim2()/2 )(0)(0) );
-    s += Point<T,3>( p( p.getDim1()/2 )( 0             )(0)(0) );
-    Parametrics<T,2>::setSurroundingSphere(s.template toType<float>());
+    Sphere<T,n>  s( p(0)(0)(0)(0) );
+    s += Point<T,n>( p( p.getDim1()-1 )( p.getDim2()-1 )(0)(0) );
+    s += Point<T,n>( p( p.getDim1()/2 )( p.getDim2()/2 )(0)(0) );
+    s += Point<T,n>( p( p.getDim1()-1 )( 0             )(0)(0) );
+    s += Point<T,n>( p( 0             )( p.getDim2()-1 )(0)(0) );
+    s += Point<T,n>( p( p.getDim1()-1 )( p.getDim2()/2 )(0)(0) );
+    s += Point<T,n>( p( p.getDim1()/2 )( p.getDim2()-1 )(0)(0) );
+    s += Point<T,n>( p( 0             )( p.getDim2()/2 )(0)(0) );
+    s += Point<T,n>( p( p.getDim1()/2 )( 0             )(0)(0) );
+    Parametrics<T,2,n>::setSurroundingSphere(s.template toType<float>());
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::shiftU( T u ) {
+  T PSurf<T,n>::shiftU( T u ) {
 
     return getStartPU() + _sc_u * ( u - getParStartU() );
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PSurf<T>::shiftV( T v ) {
+  T PSurf<T,n>::shiftV( T v ) {
 
     return getStartPV() + _sc_v * ( v - getParStartV() );
   }
 
 
-  template <typename T>
-  Parametrics<T,2>* PSurf<T>::split( T /*t*/, int /*uv*/ ) {
+  template <typename T, int n>
+  Parametrics<T,2,n>* PSurf<T,n>::split( T /*t*/, int /*uv*/ ) {
 
     return 0;
   }
 
-  template <typename T>
-  void PSurf<T>::toggleDefaultVisualizer() {
+  template <typename T, int n>
+  void PSurf<T,n>::toggleDefaultVisualizer() {
 
     if( !_psurf_visualizers.exist( _default_visualizer ) )
       enableDefaultVisualizer( true );
@@ -925,12 +925,12 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Point<T,3>& PSurf<T>::operator () ( T u, T v ) {
+  const Point<T,n>& PSurf<T,n>::operator () ( T u, T v ) {
 
     _eval(u, v, _default_d, _default_d);
-    return static_cast<Point<T,3> >(_p[0][0]);
+    return static_cast<Point<T,n> >(_p[0][0]);
   }
 
 

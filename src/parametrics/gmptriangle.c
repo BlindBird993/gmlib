@@ -33,8 +33,8 @@
 
 namespace GMlib {
 
-  template <typename T>
-  PTriangle<T>::PTriangle( int samples ) {
+  template <typename T, int n>
+  PTriangle<T,n>::PTriangle( int samples ) {
 
     _d      = -1;
     _no_sam  = samples;
@@ -45,8 +45,8 @@ namespace GMlib {
     enableDefaultVisualizer( true );
   }
 
-  template <typename T>
-  PTriangle<T>::PTriangle( const PTriangle<T>& copy ) {
+  template <typename T, int n>
+  PTriangle<T,n>::PTriangle( const PTriangle<T,n>& copy ) {
 
     _p            = copy._p;
     _n            = copy._n;
@@ -63,16 +63,16 @@ namespace GMlib {
     enableDefaultVisualizer( true );
   }
 
-  template <typename T>
-  PTriangle<T>::~PTriangle() {
+  template <typename T, int n>
+  PTriangle<T,n>::~PTriangle() {
 
     enableDefaultVisualizer( false );
     delete _default_visualizer;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::_eval( T u, T v, int d )
+  void PTriangle<T,n>::_eval( T u, T v, int d )
   {
       if(!(u == _u && v == _v && d <= _d))
       {
@@ -84,17 +84,17 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PTriangle<T>::_sum( int i ) {
+  int PTriangle<T,n>::_sum( int i ) {
 
     int r = 0;
     for(; i>0; i--) r += i;
     return r;
   }
 
-  template <typename T>
-  void PTriangle<T>::enableDefaultVisualizer( bool enable ) {
+  template <typename T, int n>
+  void PTriangle<T,n>::enableDefaultVisualizer( bool enable ) {
 
     if( !enable )
       removeVisualizer( _default_visualizer );
@@ -102,62 +102,62 @@ namespace GMlib {
       insertVisualizer( _default_visualizer );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const DVector<Vector<T,3> >& PTriangle<T>::evaluateGlobal( T u, T v, int d  )
+  const DVector<Vector<T,n> >& PTriangle<T,n>::evaluateGlobal( T u, T v, int d  )
   {
-    static DVector<Vector<T,3> > p;
+    static DVector<Vector<T,n> > p;
 
     _eval(u,v, d);
     p.setDim( _p.getDim() );
 
-    p[0] = this->_present * (Point<T,3>)_p[0];
+    p[0] = this->_present * static_cast< Point<T,n> >(_p[0]);
 
     for( int j = 1; j < p.getDim(); j++ )
-      p[j] = this->_present * _p[j]; //  They are Vector<T,3> as default
+      p[j] = this->_present * _p[j]; //  They are Vector<T,n> as default
 
     return p;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const DVector<Vector<T,3> >& PTriangle<T>::evaluateLocal( T u, T v, int d )
+  const DVector<Vector<T,n> >& PTriangle<T,n>::evaluateLocal( T u, T v, int d )
   {
     _eval(u, v, d);
     return _p;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const DVector<Vector<T,3> >& PTriangle<T>::evaluateParent( T u, T v, int d )
+  const DVector<Vector<T,n> >& PTriangle<T,n>::evaluateParent( T u, T v, int d )
   {
-    static DVector<Vector<T,3> > p;
+    static DVector<Vector<T,n> > p;
 
     _eval(u, v, d);
     p.setDim( _p.getDim() );
 
-    p[0] = this->_matrix * (Point<T,3>)_p[0];
+    p[0] = this->_matrix * static_cast< Point<T,n> >(_p[0]);
 
     for( int j = 1; j < p.getDim(); j++ )
-      p[j] = this->_matrix * _p[j]; //  They are Vector<T,3> as default
+      p[j] = this->_matrix * _p[j]; //  They are Vector<T,n> as default
 
     return p;
   }
 
 
-  template <typename T>
-  void PTriangle<T>::_fuForm( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g)
+  template <typename T, int n>
+  void PTriangle<T,n>::_fuForm( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g)
   {
     _eval( u, v, 2);
-    Vector<T,3>     du = _p[2]-_p[1];
-    Vector<T,3>     dv = _p[3]-_p[1];
-    UnitVector<T,3> N  = du^dv;
+    Vector<T,n>     du = _p[2]-_p[1];
+    Vector<T,n>     dv = _p[3]-_p[1];
+    UnitVector<T,n> N  = du^dv;
 
-    Vector<T,3>     duu = _p[6] - 2*_p[9] + _p[4];
-    Vector<T,3>     duv = getDerUV(u,v);
-    Vector<T,3>     dvv = _p[5] - 2*_p[8] + _p[4];
+    Vector<T,n>     duu = _p[6] - 2*_p[9] + _p[4];
+    Vector<T,n>     duv = getDerUV(u,v);
+    Vector<T,n>     dvv = _p[5] - 2*_p[8] + _p[4];
 
     E = du*du;
     F = du*dv;
@@ -169,8 +169,8 @@ namespace GMlib {
 
 
 
-  template <typename T>
-  T PTriangle<T>::getCurvatureGauss( T u, T v )
+  template <typename T, int n>
+  T PTriangle<T,n>::getCurvatureGauss( T u, T v )
   {
      T E, F, G, e, f, g;
 
@@ -180,8 +180,8 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  T PTriangle<T>::getCurvatureMean( T u, T v )
+  template <typename T, int n>
+  T PTriangle<T,n>::getCurvatureMean( T u, T v )
   {
      T E, F, G, e, f, g;
 
@@ -191,76 +191,76 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerU( T u, T v )
+  const Vector<T,n>& PTriangle<T,n>::getDerU( T u, T v )
   {
     _eval(u,v,1);
     return _p[1];
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerV( T u, T v )
+  const Vector<T,n>& PTriangle<T,n>::getDerV( T u, T v )
   {
     _eval(u,v,1);
     return _p[2];
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerW( T u, T v )
+  const Vector<T,n>& PTriangle<T,n>::getDerW( T u, T v )
   {
     _eval(u,v,1);
     return _p[3];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerUU( T u, T v ) {
+  const Vector<T,n>& PTriangle<T,n>::getDerUU( T u, T v ) {
 
     _eval(u,v,2);
     return _p[4];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerUV( T u, T v ) {
+  const Vector<T,n>& PTriangle<T,n>::getDerUV( T u, T v ) {
 
     _eval(u,v,2);
     return _p[5];
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerUW( T u, T v ) {
+  const Vector<T,n>& PTriangle<T,n>::getDerUW( T u, T v ) {
 
     _eval(u,v,2);
     return _p[6];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerVV( T u, T v ) {
+  const Vector<T,n>& PTriangle<T,n>::getDerVV( T u, T v ) {
 
     _eval(u,v,2);
     return _p[7];
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerVW( T u, T v ) {
+  const Vector<T,n>& PTriangle<T,n>::getDerVW( T u, T v ) {
 
     _eval(u,v,2);
     return _p[8];
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>& PTriangle<T>::getDerWW( T u, T v ) {
+  const Vector<T,n>& PTriangle<T,n>::getDerWW( T u, T v ) {
 
     _eval(u,v,2);
     return _p[9];
@@ -268,31 +268,31 @@ namespace GMlib {
 
 
 
-  template <typename T>
-  std::string PTriangle<T>::getIdentity() const {
+  template <typename T, int n>
+  std::string PTriangle<T,n>::getIdentity() const {
 
     return "PTriangle";
   }
 
 
-  template <typename T>
-  const Vector<T,3>& PTriangle<T>::getNormal( T u, T v ) {
+  template <typename T, int n>
+  const Vector<T,n>& PTriangle<T,n>::getNormal( T u, T v ) {
 
     _eval(u, v, 1);
-    _n = Vector<T,3>(_p[2]-_p[1])^(_p[3]-_p[1]);
+    _n = Vector<T,n>(_p[2]-_p[1])^(_p[3]-_p[1]);
     return _n;
   }
 
 
-  template <typename T>
-  UnitVector<T,3> PTriangle<T>::getUnitNormal( T u, T v ) {
+  template <typename T, int n>
+  UnitVector<T,n> PTriangle<T,n>::getUnitNormal( T u, T v ) {
 
     return getNormal( u, v );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::insertVisualizer( Visualizer *visualizer ) {
+  void PTriangle<T,n>::insertVisualizer( Visualizer *visualizer ) {
 
     PTriangleVisualizer<T> *visu = dynamic_cast<PTriangleVisualizer<T>*>( visualizer );
     if( !visu )
@@ -306,9 +306,9 @@ namespace GMlib {
     DisplayObject::insertVisualizer( visualizer );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::removeVisualizer( Visualizer *visualizer ) {
+  void PTriangle<T,n>::removeVisualizer( Visualizer *visualizer ) {
 
     PTriangleVisualizer<T> *visu = dynamic_cast<PTriangleVisualizer<T>*>( visualizer );
     if( visu )
@@ -318,21 +318,21 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  bool PTriangle<T>::isClosestPoint( const Point<T,3>& q, T& u, T& v ) {
+  template <typename T, int n>
+  bool PTriangle<T,n>::isClosestPoint( const Point<T,n>& q, T& u, T& v ) {
 
     T a11,a12,a21,a22,b1,b2;
     T du,dv,det;
 
     HqMatrix<float,3> invmat = this->_present;
     invmat.invertOrthoNormal();
-    Point<T,3> p = (invmat * q).template toType<T>();  // Egentlig _present
+    Point<T,n> p = (invmat * q).template toType<T>();  // Egentlig _present
 
     for(int i=0; i<20;i++) {
 
       _eval( u, v, 1 );
 
-      Vector<T,3> d = p - _p[0];
+      Vector<T,n> d = p - _p[0];
 
       a11 = d*(_p[7]-2*_p[5]+_p[4])-(_p[2]-_p[1])*(_p[2]-_p[1]);
       a12 = d*(_p[8]-_p[6]-_p[5]+_p[4])-(_p[2]-_p[1])*(_p[3]-_p[1]);
@@ -352,15 +352,15 @@ namespace GMlib {
     return true;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::replot( int m )
+  void PTriangle<T,n>::replot( int m )
   {
     if( m < 2 )  m = _no_sam;
     else         _no_sam = m;
 
     // Sample Positions and related Derivatives
-    DVector< DVector< Vector<T,3> > > p;
+    DVector< DVector< Vector<T,n> > > p;
     resample( p, m );
 
     setSurroundingSphere( p );
@@ -371,18 +371,18 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::setTriangNr(bool all, int nr)
+  void PTriangle<T,n>::setTriangNr(bool all, int nr)
   {
       _all  = all;
       _t_nr = nr;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::resample( DVector< DVector < Vector<T,3> > >& p, int m )
+  void PTriangle<T,n>::resample( DVector< DVector < Vector<T,n> > >& p, int m )
   {
     if(_all) resample1(p, m);
     else
@@ -394,9 +394,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::resample1( DVector< DVector < Vector<T,3> > >& p, int m )
+  void PTriangle<T,n>::resample1( DVector< DVector < Vector<T,n> > >& p, int m )
   {
     T u,v,du = T(1)/(m-1);
     p.setDim(_sum(m));
@@ -413,9 +413,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::resample2( DVector< DVector < Vector<T,3> > >& p, int m, int a, int b)
+  void PTriangle<T,n>::resample2( DVector< DVector < Vector<T,n> > >& p, int m, int a, int b)
   {
     T u,v,w,du = T(1)/(m-1);
     p.setDim(_sum(m));
@@ -427,7 +427,7 @@ namespace GMlib {
         u = i*du;
         w = 1 - u;
         u -= v;
-        Point<T,3> pr = u*_pt[0] + v*_pt[a] + w*_pt[b];
+        Point<T,n> pr = u*_pt[0] + v*_pt[a] + w*_pt[b];
         eval(pr, 1);
         p[k++] = _p;
       }
@@ -435,29 +435,29 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::_init() {
+  void PTriangle<T,n>::_init() {
     T t= 1/3.0;
     _all = true;
-    _pt[0] = Point<T,3>(t, t, t);
-    _pt[1] = Point<T,3>(T(1), T(0), T(0));
-    _pt[2] = Point<T,3>(T(0), T(1), T(0));
-    _pt[3] = Point<T,3>(T(0), T(0), T(1));
+    _pt[0] = Point<T,n>(t, t, t);
+    _pt[1] = Point<T,n>(T(1), T(0), T(0));
+    _pt[2] = Point<T,n>(T(0), T(1), T(0));
+    _pt[3] = Point<T,n>(T(0), T(0), T(1));
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::setEval( int d ) {
+  void PTriangle<T,n>::setEval( int d ) {
 
     _default_d = d;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::setSurroundingSphere( const DVector<DVector<Vector<T, 3> > >& p ) {
+  void PTriangle<T,n>::setSurroundingSphere( const DVector<DVector<Vector<T,n> > >& p ) {
 
     Sphere<float,3>  s( p(0)(0) );
 
@@ -465,19 +465,19 @@ namespace GMlib {
     for( int i = 1; i < p.getDim() - 1; i++ )
       s += p(i)(0);
 
-    Parametrics<T,2>::setSurroundingSphere(s.template toType<float>());
+    Parametrics<T,2,n>::setSurroundingSphere(s.template toType<float>());
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Parametrics<T,2>* PTriangle<T>::split( T t, int uv ) {
+  Parametrics<T,2,n>* PTriangle<T,n>::split( T t, int uv ) {
 
     return 0x0;
   }
 
-  template <typename T>
-  void PTriangle<T>::toggleDefaultVisualizer() {
+  template <typename T, int n>
+  void PTriangle<T,n>::toggleDefaultVisualizer() {
 
     if( !_ptriangle_visualizers.exist( _default_visualizer ) )
       enableDefaultVisualizer( true );
@@ -485,153 +485,153 @@ namespace GMlib {
       enableDefaultVisualizer( false );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangle<T>::updateCoeffs( const Vector<T,3>& /*d*/ ) {}
+  void PTriangle<T,n>::updateCoeffs( const Vector<T,n>& /*d*/ ) {}
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Point<T,3>& PTriangle<T>::operator()( T u, T v ) {
+  const Point<T,n>& PTriangle<T,n>::operator()( T u, T v ) {
 
     _eval(u,v);
-    return static_cast< Point<T,3> >( _p[0][0] );
+    return static_cast< Point<T,n> >( _p[0][0] );
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const DVector<Vector<T,3> >&  PTriangle<T>::evaluateGlobal(const Point<T,3> & p, int d)
+  const DVector<Vector<T,n> >&  PTriangle<T,n>::evaluateGlobal(const Point<T,3> & p, int d)
   {
       return  evaluateGlobal(p(0), p(1), d);
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const DVector<Vector<T,3> >&  PTriangle<T>::evaluateLocal(const Point<T,3> & p, int d)
+  const DVector<Vector<T,n> >&  PTriangle<T,n>::evaluateLocal(const Point<T,3> & p, int d)
   {
       return  evaluateLocal(p(0), p(1), d);
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const DVector<Vector<T,3> >&  PTriangle<T>::evaluateParent(const Point<T,3> & p, int d)
+  const DVector<Vector<T,n> >&  PTriangle<T,n>::evaluateParent(const Point<T,3> & p, int d)
   {
       return  evaluateParent(p(0), p(1), d);
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Point<T,3>&             PTriangle<T>::operator()(const Point<T,3> & p)
+  const Point<T,n>&             PTriangle<T,n>::operator()(const Point<T,3> & p)
   {
       return  operator()(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerU(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerU(const Point<T,3> & p)
   {
       return  getDerU(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerV(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerV(const Point<T,3> & p)
   {
       return  getDerV(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerW(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerW(const Point<T,3> & p)
   {
       return  getDerW(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerUU(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerUU(const Point<T,3> & p)
   {
       return  getDerUU(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerUV(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerUV(const Point<T,3> & p)
   {
       return  getDerUV(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerUW(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerUW(const Point<T,3> & p)
   {
       return  getDerUW(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerVV(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerVV(const Point<T,3> & p)
   {
       return  getDerVV(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerVW(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerVW(const Point<T,3> & p)
   {
       return  getDerVW(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDerWW(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getDerWW(const Point<T,3> & p)
   {
       return  getDerWW(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getNormal(const Point<T,3> & p)
+  const Vector<T,n>&            PTriangle<T,n>::getNormal(const Point<T,3> & p)
   {
       return  getNormal(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  UnitVector<T,3>               PTriangle<T>::getUnitNormal(const Point<T,3> & p)
+  UnitVector<T,n>               PTriangle<T,n>::getUnitNormal(const Point<T,3> & p)
   {
       return  getUnitNormal(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T                             PTriangle<T>::getCurvatureGauss(const Point<T,3> & p)
+  T                             PTriangle<T,n>::getCurvatureGauss(const Point<T,3> & p)
   {
       return  getCurvatureGauss(p(0), p(1));
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T                             PTriangle<T>::getCurvatureMean(const Point<T,3> & p)
+  T                             PTriangle<T,n>::getCurvatureMean(const Point<T,3> & p)
   {
       return  getCurvatureMean(p(0), p(1));
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  const Vector<T,3>&            PTriangle<T>::getDer_d(const Point<T,3> & p, const Vector<T,3> & d)
+  const Vector<T,n>&            PTriangle<T,n>::getDer_d(const Point<T,3> & p, const Vector<T,3> & d)
   {
       eval(p, 1);
       return d[0]*_p[1] + d[1]*_p[2] + d[2]*_p[3];
   }
 
 
-  template <typename T>
-  Vector<Point<T,3>,3>          PTriangle<T>::getPoints()
+  template <typename T, int n>
+  Vector<Point<T,n>,3>          PTriangle<T,n>::getPoints()
   {
-      Vector<Point<T,3>,3> a;
+      Vector<Point<T,n>,3> a;
 
       return a;
   }

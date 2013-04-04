@@ -50,44 +50,44 @@ namespace GMlib {
   template <typename T>
   class PSurfDefaultVisualizer;
 
-  template <typename T>
-  class PSurf : public Parametrics<T,2> {
+  template <typename T,int n>
+  class PSurf : public Parametrics<T,2,n> {
   public:
 
     PSurf( int s1 = 20, int s2 = 20 );
-    PSurf( const PSurf<T>& copy );
+    PSurf( const PSurf<T,n>& copy );
     virtual ~PSurf();
 
     void                          enableDefaultVisualizer( bool enable = true );
-    //virtual void                  estimateClpPar( const Point<T,3>& p, T& u, T& v );
-    DMatrix<Vector<T,3> >&        evaluate( Point<T,2> p, int d );
-    DMatrix<Vector<T,3> >&    	  evaluate( T u, T v, int d1, int d2 );
-    DVector<Vector<T,3> >         evaluateD( Point<T,2> p, int d );
-    DVector<Vector<T,3> >         evaluateD( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,3> >&    	  evaluateGlobal( Point<T,2> p, int d );
-    DMatrix<Vector<T,3> >&    	  evaluateGlobal( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,3> >&    	  evaluateParent( Point<T,2> p, int d );
-    DMatrix<Vector<T,3> >&    	  evaluateParent( T u, T v, int d1, int d2 );
+    //virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v );
+    DMatrix<Vector<T,n> >&        evaluate( Point<T,2> p, int d );
+    DMatrix<Vector<T,n> >&    	  evaluate( T u, T v, int d1, int d2 );
+    DVector<Vector<T,n> >         evaluateD( Point<T,2> p, int d );
+    DVector<Vector<T,n> >         evaluateD( T u, T v, int d1, int d2 );
+    DMatrix<Vector<T,n> >&    	  evaluateGlobal( Point<T,2> p, int d );
+    DMatrix<Vector<T,n> >&    	  evaluateGlobal( T u, T v, int d1, int d2 );
+    DMatrix<Vector<T,n> >&    	  evaluateParent( Point<T,2> p, int d );
+    DMatrix<Vector<T,n> >&    	  evaluateParent( T u, T v, int d1, int d2 );
     virtual T                     getCurvatureGauss( T u, T v );
     virtual T                     getCurvatureMean( T u, T v );
     virtual T                     getCurvaturePrincipalMax( T u, T v );
     virtual T                     getCurvaturePrincipalMin( T u, T v );
     int                           getDerivativesU() const;
     int                           getDerivativesV() const;
-    Vector<T,3>&                  getDerU( T u, T v );
-    Vector<T,3>&                  getDerV( T u, T v );
-    Vector<T,3>&                  getDerUU( T u, T v );
-    Vector<T,3>&                  getDerVV( T u, T v );
-    Vector<T,3>&                  getDerUV( T u, T v );
+    Vector<T,n>&                  getDerU( T u, T v );
+    Vector<T,n>&                  getDerV( T u, T v );
+    Vector<T,n>&                  getDerUU( T u, T v );
+    Vector<T,n>&                  getDerVV( T u, T v );
+    Vector<T,n>&                  getDerUV( T u, T v );
     virtual T                     getLocalMapping( T t, T ts, T tt, T te );
-    Vector<T,3>&                  getNormal();
+    Vector<T,n>&                  getNormal();
     T                             getParDeltaU();
     T                             getParDeltaV();
     T                             getParStartU();
     T                             getParStartV();
     T                             getParEndU();
     T                             getParEndV();
-    Vector<T,3>&                  getPosition( T u, T v );
+    Vector<T,n>&                  getPosition( T u, T v );
     int                           getSamPU( int i = 0 ) const;
     int                           getSamPV( int i = 0 ) const;
     int                           getSamplesU() const;
@@ -95,14 +95,14 @@ namespace GMlib {
     void                          insertVisualizer( Visualizer *visualizer );
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
-    virtual bool                  getClosestPoint( const Point<T,3>& q, T& u, T& v );
-    bool                          getClosestPoint( const Point<T,3>& q, Point<T,2>& uv );
+    virtual bool                  getClosestPoint( const Point<T,n>& q, T& u, T& v );
+    bool                          getClosestPoint( const Point<T,n>& q, Point<T,2>& uv );
     virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
     void                          removeVisualizer( Visualizer *visualizer );
     virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0 );
-    void                          resample(DMatrix<DMatrix <DMatrix <Vector<T,3> > > >	& a, int m1, int m2, int d1, int d2 );
-    virtual void                  resample(DMatrix<DMatrix <Vector<T,3> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
-    virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T, 3> > > &sample, DMatrix<Vector<T, 3> > &normals ) const;
+    void                          resample(DMatrix<DMatrix <DMatrix <Vector<T,n> > > >	& a, int m1, int m2, int d1, int d2 );
+    virtual void                  resample(DMatrix<DMatrix <Vector<T,n> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
+    virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,n> > &normals ) const;
     void                          setDomainU( T start, T end );
     void                          setDomainUScale( T sc );
     void                          setDomainUTrans( T tr );
@@ -110,11 +110,11 @@ namespace GMlib {
     void                          setDomainVScale( T sc );
     void                          setDomainVTrans( T tr );
     void                          setNoDer( int d );
-    virtual void                  setSurroundingSphere( const DMatrix< DMatrix< Vector<T, 3> > >& p );
-    virtual Parametrics<T,2>*     split( T t, int uv );
+    virtual void                  setSurroundingSphere( const DMatrix< DMatrix< Vector<T,n> > >& p );
+    virtual Parametrics<T,2,n>*   split( T t, int uv );
     void                          toggleDefaultVisualizer();
 
-    const Point<T,3>&             operator () ( T u, T v );
+    const Point<T,n>&             operator () ( T u, T v );
 
   protected:
     Array< PSurfVisualizer<T>* >  _psurf_visualizers;
@@ -138,8 +138,8 @@ namespace GMlib {
 
 
     // The result of the previous evaluation
-    DMatrix< Vector<T,3> >        _p;           // Position and belonging partial derivatives
-    Vector<T,3>                   _n;           // Surface normal, for display in 3D
+    DMatrix< Vector<T,n> >        _p;           // Position and belonging partial derivatives
+    Vector<T,n>                   _n;           // Surface normal, for display in 3D
     T                             _u;           // The parameter value in u-direction used for last evaluation
     T                             _v;           // The parameter value in v-direction used for last evaluation
     int                           _d1;          // Number of derivatives in u-direction computed last time
@@ -195,7 +195,7 @@ namespace GMlib {
 
   private:
     void                          _eval( T u, T v, int d1, int d2 );
-    void                          _evalDerDD( DMatrix< DMatrix< Vector<T,3> > >& a, int d1, int d2, T du, T dv ) const;
+    void                          _evalDerDD( DMatrix< DMatrix< Vector<T,n> > >& a, int d1, int d2, T du, T dv ) const;
     void                          _evalNormal();
     void                          _setSam( int m1, int m2 );
     int                           _sum( int i, int j );

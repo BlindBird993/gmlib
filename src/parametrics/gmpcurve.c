@@ -37,9 +37,9 @@
 namespace GMlib {
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  PCurve<T>::PCurve( int s ) {
+  PCurve<T,n>::PCurve( int s ) {
 
     _no_sam           = s;
     _no_der           = 1;
@@ -57,9 +57,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  PCurve<T>::PCurve( const PCurve<T>& copy ) : Parametrics<T,1>( copy ) {
+  PCurve<T,n>::PCurve( const PCurve<T,n>& copy ) : Parametrics<T,1,n>( copy ) {
 
 
     _no_sam       = copy._no_sam;
@@ -80,8 +80,8 @@ namespace GMlib {
     enableDefaultVisualizer( true );
   }
 
-  template <typename T>
-  PCurve<T>::~PCurve() {
+  template <typename T, int n>
+  PCurve<T,n>::~PCurve() {
 
     enableDefaultVisualizer( false );
     delete _default_visualizer;
@@ -89,9 +89,9 @@ namespace GMlib {
 
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void	PCurve<T>::_eval( T t, int d ) {
+  void	PCurve<T,n>::_eval( T t, int d ) {
 
     if( d <= _d && t == _t ) return;
 
@@ -100,9 +100,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::_evalDerDD( DVector< DVector< Vector<T, 3> > > & p, int d, T du ) const {
+  void PCurve<T,n>::_evalDerDD( DVector< DVector< Vector<T,n> > > & p, int d, T du ) const {
 
 
 
@@ -142,9 +142,9 @@ namespace GMlib {
     }
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::_integral(T a, T b, double eps) {
+  T PCurve<T,n>::_integral(T a, T b, double eps) {
 
     T t = b - a;
     T sum = (getSpeed(a)+getSpeed(b))/2;
@@ -170,8 +170,8 @@ namespace GMlib {
     return mat[15][0];
   }
 
-  template <typename T>
-  void PCurve<T>::enableDefaultVisualizer( bool enable ) {
+  template <typename T, int n>
+  void PCurve<T,n>::enableDefaultVisualizer( bool enable ) {
 
     if( !enable )
       removeVisualizer( _default_visualizer );
@@ -180,22 +180,22 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  DVector<Vector<T,3> >& PCurve<T>::evaluate( T t, int d ) {
+  template <typename T, int n>
+  DVector<Vector<T,n> >& PCurve<T,n>::evaluate( T t, int d ) {
 
     _eval(t,d);
     return _p;
   }
 
 
-  template <typename T>
-  DVector<Vector<T,3> >& PCurve<T>::evaluateGlobal( T t, int d ) {
+  template <typename T, int n>
+  DVector<Vector<T,n> >& PCurve<T,n>::evaluateGlobal( T t, int d ) {
 
-    static DVector< Vector<T,3> > p;
+    static DVector< Vector<T,n> > p;
     p.setDim(d+1);
     _eval(t,d);
 
-    p[0] = this->_present* static_cast< Point<T,3> >(_p[0]);
+    p[0] = this->_present* static_cast< Point<T,n> >(_p[0]);
 
     for( int i = 1; i <= d; i++ )
       p[i] = this->_present * _p[i];
@@ -204,14 +204,14 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  DVector<Vector<T,3> >& PCurve<T>::evaluateParent( T t, int d ) {
+  template <typename T, int n>
+  DVector<Vector<T,n> >& PCurve<T,n>::evaluateParent( T t, int d ) {
 
-    static DVector< Vector<T,3> > p;
+    static DVector< Vector<T,n> > p;
     p.setDim(d+1);
     _eval(t,d);
 
-    p[0] = this->_matrix * static_cast< Point<T,3> >(_p[0]);
+    p[0] = this->_matrix * static_cast< Point<T,n> >(_p[0]);
 
     for( int i = 1; i <= d; i++ )
       p[i] = this->_matrix * _p[i];
@@ -220,12 +220,12 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::getCurvature( T t ) {
+  T PCurve<T,n>::getCurvature( T t ) {
 
     _eval( t, 2 );
-    Vector<T,3> d1 = _p[1];
+    Vector<T,n> d1 = _p[1];
     T a1= d1.getLength();
 
     if( a1 < T(1.0e-5) ) return T(0);
@@ -234,9 +234,9 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::getCurveLength( T a , T b ) {
+  T PCurve<T,n>::getCurveLength( T a , T b ) {
 
     if(b<a)	{
 
@@ -248,107 +248,107 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PCurve<T>::getDerivatives() const {
+  int PCurve<T,n>::getDerivatives() const {
 
     return _no_der;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3> PCurve<T>::getDer1( T t ) {
+  Vector<T,n> PCurve<T,n>::getDer1( T t ) {
 
     _eval( t, 1 );
     return _p[1];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3> PCurve<T>::getDer2( T t ) {
+  Vector<T,n> PCurve<T,n>::getDer2( T t ) {
 
     _eval(t,2);
     return _p[2];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Vector<T,3> PCurve<T>::getDer3( T t ) {
+  Vector<T,n> PCurve<T,n>::getDer3( T t ) {
 
     _eval(t,3);
     return _p[3];
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  float PCurve<T>::getLineWidth() const {
+  float PCurve<T,n>::getLineWidth() const {
 
     return _line_width;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::getLocalMapping( T t, T /*ts*/, T /*ti*/, T /*te*/ ) {
+  T PCurve<T,n>::getLocalMapping( T t, T /*ts*/, T /*ti*/, T /*te*/ ) {
 
     return t;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::getParDelta()	{
+  T PCurve<T,n>::getParDelta()	{
 
     return _sc*( getEndP() - getStartP() );
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::getParEnd() {
+  T PCurve<T,n>::getParEnd() {
 
     return getParStart() + getParDelta();
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::getParStart()	{
+  T PCurve<T,n>::getParStart()	{
 
     return getStartP() + _tr;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::getRadius( T t ) {
+  T PCurve<T,n>::getRadius( T t ) {
 
     return T(1) / getCurvature( t );
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PCurve<T>::getSamples() const {
+  int PCurve<T,n>::getSamples() const {
 
     return _no_sam;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::getSpeed( T t ) {
+  T PCurve<T,n>::getSpeed( T t ) {
 
     return getDer1( t ).getLength();
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::insertVisualizer( Visualizer* visualizer ) {
+  void PCurve<T,n>::insertVisualizer( Visualizer* visualizer ) {
 
     DisplayObject::insertVisualizer( visualizer );
 
@@ -363,21 +363,21 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  bool PCurve<T>::isClosed() const {
+  bool PCurve<T,n>::isClosed() const {
 
     return false;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::preSample( int /*m*/, int /*d*/, T /*s*/, T /*e*/ ) {}
+  void PCurve<T,n>::preSample( int /*m*/, int /*d*/, T /*s*/, T /*e*/ ) {}
 
 
-  template <typename T>
-  void PCurve<T>::replot( int m, int d ) {
+  template <typename T, int n>
+  void PCurve<T,n>::replot( int m, int d ) {
 
 
     // Correct sample domain
@@ -393,7 +393,7 @@ namespace GMlib {
     preSample( m, d, getStartP(), getEndP() );
 
     // Resample
-    DVector< DVector< Vector<T, 3> > > p;
+    DVector< DVector< Vector<T,n> > > p;
     resample( p, m, d, getStartP(), getEndP() );
 
     // Set The Surrounding Sphere
@@ -405,8 +405,8 @@ namespace GMlib {
       this->_pcurve_visualizers[i]->replot( p, m, d, isClosed() );
   }
 
-  template <typename T>
-  void PCurve<T>::removeVisualizer( Visualizer* visualizer ) {
+  template <typename T, int n>
+  void PCurve<T,n>::removeVisualizer( Visualizer* visualizer ) {
 
     PCurveVisualizer<T> *visu = dynamic_cast<PCurveVisualizer<T>*>( visualizer );
     if( visu )
@@ -418,9 +418,9 @@ namespace GMlib {
 
 
 
-//  template <typename T>
+//  template <typename T, int n>
 //  inline
-//  void PCurve<T>::resample( Array< Point<T, 3> >& a, T eps ) {
+//  void PCurve<T,n>::resample( Array< Point<T,n> >& a, T eps ) {
 //
 //    _sam = 0; _s_sam = 0; _e_sam = 1;
 //    T t, ddt, dp5 = getParDelta()/5;
@@ -434,7 +434,7 @@ namespace GMlib {
 //        break;
 //
 //      T _r = _p[1] * _p[1];
-//      Vector<T,3> r = _p[2]-( (_p[2] * _p[1] ) / _r) * _p[1];
+//      Vector<T,n> r = _p[2]-( (_p[2] * _p[1] ) / _r) * _p[1];
 //      _r = sqrt(double(_r));
 //      ddt = 2 * _r / _p[1].getLength() * acos( ( _r - eps ) / _r);
 //
@@ -456,9 +456,9 @@ namespace GMlib {
 //  }
 //
 //
-//  template <typename T>
+//  template <typename T, int n>
 //  inline
-//  void PCurve<T>::resample( Array<Point<T,3> >& a, int m ) {
+//  void PCurve<T,n>::resample( Array<Point<T,n> >& a, int m ) {
 //
 //    _sam = m; _s_sam = 0; _e_sam = 1;
 //    T du = getParDelta() / ( m - 1 );
@@ -473,9 +473,9 @@ namespace GMlib {
 //  }
 //
 //
-//  template <typename T>
+//  template <typename T, int n>
 //  inline
-//  void PCurve<T>::resample( Array<Point<T,3> >& a, int m, T start, T end ) {
+//  void PCurve<T,n>::resample( Array<Point<T,n> >& a, int m, T start, T end ) {
 //
 //    _sam = m; _s_sam = start; _e_sam = end;
 //    T du = getParDelta();
@@ -491,16 +491,16 @@ namespace GMlib {
 //    }
 //  }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d ) {
+  void PCurve<T,n>::resample( DVector< DVector< Vector<T,n> > >& p, int m, int d ) {
 
     resample( p, m, d, getStartP(), getEndP() );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end ) {
+  void PCurve<T,n>::resample( DVector< DVector< Vector<T,n> > >& p, int m, int d, T start, T end ) {
 
     T du = (end-start)/(m-1);
     p.setDim(m);
@@ -529,70 +529,70 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::setDomain(T start, T end) {
+  void PCurve<T,n>::setDomain(T start, T end) {
 
     _sc = ( end - start );
     _tr= getStartP() + start;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::setDomainScale( T sc ) {
+  void PCurve<T,n>::setDomainScale( T sc ) {
 
     _sc = sc;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::setDomainTrans( T tr ) {
+  void PCurve<T,n>::setDomainTrans( T tr ) {
 
     _tr = tr;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::setLineWidth( float width ) {
+  void PCurve<T,n>::setLineWidth( float width ) {
 
     _line_width = width;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::setNoDer( int d ) {
+  void PCurve<T,n>::setNoDer( int d ) {
 
     _defalt_d = d;
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurve<T>::setSurroundingSphere( const DVector< DVector< Vector<T, 3> > >& p ) {
+  void PCurve<T,n>::setSurroundingSphere( const DVector< DVector< Vector<T,n> > >& p ) {
 
-    Sphere<T,3>  s;
+    Sphere<T,n>  s;
     s.resetPos( p(0)(0) );
     s += p(p.getDim() - 1)(0);
     for( int i = p.getDim() - 2; i > 0; i-- )
       s += p(i)(0);
-    Parametrics<T,1>::setSurroundingSphere( s.template toType<float>() );
+    Parametrics<T,1,n>::setSurroundingSphere( s.template toType<float>() );
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  T PCurve<T>::shift( T t ) {
+  T PCurve<T,n>::shift( T t ) {
 
     return t;
 //    return _tr + _sc * ( t - getStartP() );
   }
 
-  template <typename T>
-  void PCurve<T>::toggleDefaultVisualizer() {
+  template <typename T, int n>
+  void PCurve<T,n>::toggleDefaultVisualizer() {
 
     if( !_pcurve_visualizers.exist( _default_visualizer ) )
       enableDefaultVisualizer( true );
@@ -601,12 +601,12 @@ namespace GMlib {
   }
 
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  Point<T,3> PCurve<T>::operator()( T t )	{
+  Point<T,n> PCurve<T,n>::operator()( T t )	{
 
     eval( t, _defalt_d );
-    return ( Point<T,3> ) _p[0];
+    return ( Point<T,n> ) _p[0];
   }
 
 

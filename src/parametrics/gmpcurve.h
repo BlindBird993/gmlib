@@ -49,23 +49,23 @@ namespace GMlib {
   class PCurveDefaultVisualizer;
 
 
-  template <typename T>
-  class PCurve : public Parametrics<T,1> {
+  template <typename T,int n>
+  class PCurve : public Parametrics<T,1,n> {
   public:
     PCurve( int s = 20 );
-    PCurve( const PCurve<T>& copy );
+    PCurve( const PCurve<T,n>& copy );
     ~PCurve();
 
     void                      enableDefaultVisualizer( bool enable = true );
-    DVector<Vector<T,3> >&    evaluate( T t, int d );
-    DVector<Vector<T,3> >&    evaluateGlobal( T t, int d );
-    DVector<Vector<T,3> >&    evaluateParent( T t, int d );
+    DVector<Vector<T,n> >&    evaluate( T t, int d );
+    DVector<Vector<T,n> >&    evaluateGlobal( T t, int d );
+    DVector<Vector<T,n> >&    evaluateParent( T t, int d );
     T                         getCurvature( T t );
     T                         getCurveLength( T a = 0, T b = -1 );
     int                       getDerivatives() const;
-    Vector<T,3>               getDer1( T t );
-    Vector<T,3>               getDer2( T t );
-    Vector<T,3>               getDer3( T t );
+    Vector<T,n>               getDer1( T t );
+    Vector<T,n>               getDer2( T t );
+    Vector<T,n>               getDer3( T t );
     float                     getLineWidth() const;
     virtual T                 getLocalMapping( T t, T ts, T ti, T te );
     T                         getParDelta();
@@ -79,20 +79,20 @@ namespace GMlib {
     virtual void              preSample( int m, int d, T s = T(0), T e = T(0) );
     virtual void              replot( int m = 0, int d = 2 );
     void                      removeVisualizer( Visualizer* visualizer );
-//    virtual void              resample( Array<Point<T,3> >& a, T eps );	// Always smooth, requires derivatives
-//    virtual void              resample( Array<Point<T,3> >& a, int m );					// Given sampling rate
-//    virtual void              resample( Array<Point<T,3> >& a, int m, T start, T end );	// Given sampling rate
-    void                      resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d );
-    virtual void              resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end );
+//    virtual void              resample( Array<Point<T,n> >& a, T eps );	// Always smooth, requires derivatives
+//    virtual void              resample( Array<Point<T,n> >& a, int m );					// Given sampling rate
+//    virtual void              resample( Array<Point<T,n> >& a, int m, T start, T end );	// Given sampling rate
+    void                      resample( DVector< DVector< Vector<T,n> > >& p, int m, int d );
+    virtual void              resample( DVector< DVector< Vector<T,n> > >& p, int m, int d, T start, T end );
     void                      setDomain( T start, T end );
     void                      setDomainScale( T sc );
     void                      setDomainTrans( T tr );
     void                      setLineWidth( float width = 1.0 );
     void                      setNoDer( int d );
-    virtual void              setSurroundingSphere( const DVector< DVector< Vector<T, 3> > >& p );
+    virtual void              setSurroundingSphere( const DVector< DVector< Vector<T,n> > >& p );
     void                      toggleDefaultVisualizer();
 
-    Point<T,3>                operator()( T t );
+    Point<T,n>                operator()( T t );
 
   protected:
     Array<PCurveVisualizer<T>*>   _pcurve_visualizers;
@@ -109,7 +109,7 @@ namespace GMlib {
 
 
     // The result of the previous evaluation
-    DVector<Vector<T,3> >     _p;           // Position and belonging derivatives
+    DVector<Vector<T,n> >     _p;           // Position and belonging derivatives
     T                         _t;           // The parameter value used for last evaluation
     int                       _d;           // Number of derivatives computed last time
 
@@ -124,7 +124,7 @@ namespace GMlib {
 
   private:
     void                      _eval( T t, int d );
-    void                      _evalDerDD( DVector< DVector< Vector<T, 3> > > & p, int d, T du ) const;
+    void                      _evalDerDD( DVector< DVector< Vector<T,n> > > & p, int d, T du ) const;
     T                         _integral(T a, T b, double eps);
 
   }; // END class PCurve

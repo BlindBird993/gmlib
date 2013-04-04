@@ -30,29 +30,29 @@
 
 namespace GMlib {
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  Parametrics<T,n>::Parametrics() {
+  Parametrics<T,m,n>::Parametrics() {
 
     _dm = GM_DERIVATION_EXPLICIT;
     _initSoType();
   }
 
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  Parametrics<T,n>::Parametrics( const Parametrics<T,n>& copy ) : DisplayObject( copy ) {}
+  Parametrics<T,m,n>::Parametrics( const Parametrics<T,m,n>& copy ) : DisplayObject( copy ) {}
 
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  Parametrics<T,n>::~Parametrics() {}
+  Parametrics<T,m,n>::~Parametrics() {}
 
 
-  template <typename T, int n>
-  void Parametrics<T,n>::_initSoType() {
+  template <typename T, int m, int n>
+  void Parametrics<T,m,n>::_initSoType() {
 
-    switch( n ) {
+    switch( m ) {
 
       case GM_POINT:
         _type_id = GM_SO_TYPE_POINT;
@@ -73,9 +73,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  void Parametrics<T,n>::rotate(Angle a, const Vector<T,3>& rot_axel) {
+  void Parametrics<T,m,n>::rotate(Angle a, const Vector<T,n>& rot_axel) {
 
     DisplayObject::rotate( a, rot_axel );
     if( this->_parent )
@@ -83,9 +83,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  void Parametrics<T,n>::rotate(Angle a, const Point<T,3>& p,const UnitVector<T,3>& d) {
+  void Parametrics<T,m,n>::rotate(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d) {
 
     DisplayObject::rotate( a, p, d );
     if( this->_parent )
@@ -93,9 +93,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  void Parametrics<T,n>::rotateGlobal(Angle a, const Vector<T,3>& rot_axel) {
+  void Parametrics<T,m,n>::rotateGlobal(Angle a, const Vector<T,n>& rot_axel) {
 
     DisplayObject::rotateGlobal( a, rot_axel );
     if( this->_parent )
@@ -103,9 +103,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  void Parametrics<T,n>::rotateGlobal(Angle a, const Point<T,3>& p,const UnitVector<T,3>& d) {
+  void Parametrics<T,m,n>::rotateGlobal(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d) {
 
     DisplayObject::rotateGlobal( a, p, d );
     if( this->_parent )
@@ -113,16 +113,16 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
-  void Parametrics<T,n>::setDerivationMethod( GM_DERIVATION_METHOD method ) {
+  template <typename T, int m, int n>
+  void Parametrics<T,m,n>::setDerivationMethod( GM_DERIVATION_METHOD method ) {
 
     _dm = method;
   }
 
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  void Parametrics<T,n>::translate( const Vector<T,3>& trans_vector ) {
+  void Parametrics<T,m,n>::translate( const Vector<T,n>& trans_vector ) {
 
     DisplayObject::translate( trans_vector.template toType<float>() );
     if( this->_parent )
@@ -130,9 +130,9 @@ namespace GMlib {
   }
 
 
-  template <typename T, int n>
+  template <typename T, int m, int n>
   inline
-  void Parametrics<T,n>::translateGlobal( const Vector<T,3>& trans_vector ) {
+  void Parametrics<T,m,n>::translateGlobal( const Vector<T,n>& trans_vector ) {
 
     DisplayObject::translateGlobal( trans_vector.template toType<float>() );
     if( this->_parent )
