@@ -459,13 +459,13 @@ namespace GMlib {
   inline
   void PTriangle<T>::setSurroundingSphere( const DVector<DVector<Vector<T, 3> > >& p ) {
 
-    Sphere<float,3>  s( (p(0)(0)).toFloat() );
+    Sphere<float,3>  s( p(0)(0) );
 
-    s += Point<float,3>( p( p.getDim()-1)(0) );
+    s += p( p.getDim()-1)(0);
     for( int i = 1; i < p.getDim() - 1; i++ )
-      s += Point<float,3>( p(i)(0) );
+      s += p(i)(0);
 
-    Parametrics<T,2>::setSurroundingSphere(s);
+    Parametrics<T,2>::setSurroundingSphere(s.template toType<float>());
   }
 
 
