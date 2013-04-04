@@ -201,10 +201,10 @@ namespace GMlib {
       for( int i = 0; i < _c.getDim(); i++ ) {
 
         _c[i] += diff;
-        _s[i]->translate( diff );
+        _s[i]->translate( diff.template toType<float>() );
       }
 
-      DisplayObject::translate( -d );
+      DisplayObject::translate( -d.template toType<float>() );
     }
   }
 

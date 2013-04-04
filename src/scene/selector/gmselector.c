@@ -58,7 +58,7 @@ namespace GMlib {
     _marked		= c.getInverse();
     _selected	= false;
     _root		= root;
-    translate( _position );
+    translate( _position.template toType<float>() );
     if(r != 1.0) scale(Vector<float,3>(r,r,r));
 
     _std_rep_visu = new VisualizerStdRep;
@@ -190,7 +190,7 @@ namespace GMlib {
 
     HqMatrix<float,3> invmat = _present;
     invmat.invertOrthoNormal();
-    _position+=Point<T,n>(invmat*dp);
+    _position+=Point<float,n>(invmat*dp);
     translate(invmat*dp);
     _parent->edit(_id);
   }

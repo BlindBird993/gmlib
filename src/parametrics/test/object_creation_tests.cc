@@ -52,6 +52,18 @@ namespace {
     GMtest::createDestroyObject< PWhitneyUmbrella<T> >();
   }
 
+  template <typename T>
+  void createAndDestroyTriangles() {
+
+    DVector< Vector<T,3> > cp(3);
+    cp[0] = Vector<T,3>( 1.0f, 0.0f, 0.0f );
+    cp[1] = Vector<T,3>( 0.0f, 1.0f, 0.0f );
+    cp[2] = Vector<T,3>( 1.0f, 1.0f, 0.0f );
+
+    PBezierTriangle<T> *test_triangle_float = new PBezierTriangle<T>(cp);
+    delete test_triangle_float;
+  }
+
 
   TEST(Parametrics, ObjectCreation__PCurves) {
 
@@ -67,5 +79,11 @@ namespace {
     createAndDestroyBasicSurfaces<int>();
   }
 
+  TEST(Parametrics, ObjectCreation__PTriangle) {
+
+    createAndDestroyTriangles<float>();
+    createAndDestroyTriangles<double>();
+    createAndDestroyTriangles<int>();
+  }
 
 }

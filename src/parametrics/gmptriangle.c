@@ -326,7 +326,7 @@ namespace GMlib {
 
     HqMatrix<float,3> invmat = this->_present;
     invmat.invertOrthoNormal();
-    Point<T,3> p = invmat * q;  // Egentlig _present
+    Point<T,3> p = (invmat * q).template toType<T>();  // Egentlig _present
 
     for(int i=0; i<20;i++) {
 

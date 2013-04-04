@@ -86,10 +86,10 @@ namespace GMlib {
     _no_elements = PTriangleVisualizer<float>::getNoTriangles( m-1 ) * 3;
 
     // Fill VBO
-    PTriangleVisualizer<float>::fillStandardVBO( _vbo, p );
+    PTriangleVisualizer<T>::fillStandardVBO( _vbo, p );
 
     // Fill IBO
-    PTriangleVisualizer<float>::fillTriangleIBO( _ibo, m );
+    PTriangleVisualizer<T>::fillTriangleIBO( _ibo, m );
   }
 
   template <typename T>
