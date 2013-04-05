@@ -61,8 +61,7 @@ namespace GMlib {
     translate( _position.template toType<float>() );
     if(r != 1.0) scale(Vector<float,3>(r,r,r));
 
-    _std_rep_visu = new VisualizerStdRep;
-    insertVisualizer( _std_rep_visu );
+    insertVisualizer( VisualizerStdRep::getInstance() );
   }
 
 
@@ -94,7 +93,10 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  Selector<T,n>::~Selector() {}
+  Selector<T,n>::~Selector() {
+
+    removeVisualizer( VisualizerStdRep::getInstance() );
+  }
 
 
   /*! void Selector<T,n>::allEnable()

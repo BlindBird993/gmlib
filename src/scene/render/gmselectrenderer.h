@@ -69,8 +69,6 @@ namespace GMlib {
     GL::FramebufferObject       _fbo;
     GL::RenderbufferObject      _rbo_color;
     GL::RenderbufferObject      _rbo_depth;
-
-    VisualizerStdRep            *_std_rep_visu;
   };
 
 
@@ -91,8 +89,9 @@ namespace GMlib {
 
       if( obj->isCollapsed() ) {
 
-        _std_rep_visu->set(obj);
-        _std_rep_visu->select();
+        VisualizerStdRep *std_rep_visu = VisualizerStdRep::getInstance();
+        std_rep_visu->set(obj);
+        std_rep_visu->select();
       }
       else {
 

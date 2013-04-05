@@ -44,9 +44,6 @@ namespace GMlib {
 
     _fbo.attachRenderbuffer( _rbo_color, GL_COLOR_ATTACHMENT0 );
     _fbo.attachRenderbuffer( _rbo_depth, GL_DEPTH_ATTACHMENT );
-
-
-    _std_rep_visu = new VisualizerStdRep;
   }
 
   DisplayObject *SelectRenderer::findObject(int x, int y) const {

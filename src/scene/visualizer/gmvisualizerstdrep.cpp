@@ -34,6 +34,12 @@
 
 namespace GMlib {
 
+
+  VisualizerStdRep *VisualizerStdRep::_s_instance = 0x0;
+
+
+
+
   VisualizerStdRep::VisualizerStdRep() :
     _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
     _bo_cube_frame_indices( "std_rep_frame_indices" ) {
@@ -96,6 +102,14 @@ namespace GMlib {
     _bo_cube.unbind();
   }
 
+  VisualizerStdRep *VisualizerStdRep::getInstance() {
+
+    if( !_s_instance )
+      _s_instance = new VisualizerStdRep;
+
+    return _s_instance;
+  }
+
   void VisualizerStdRep::select() {
 
     GLuint vert_loc = getSelectProgram().getAttributeLocation( "in_vertex" );
@@ -107,5 +121,6 @@ namespace GMlib {
     _bo_cube.disableVertexArrayPointer( vert_loc );
     _bo_cube.unbind();
   }
+
 
 } // END namespace GMlib

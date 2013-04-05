@@ -61,9 +61,6 @@ namespace GMlib {
 
 
   private:
-    /* Visualizers */
-    VisualizerStdRep        *_std_rep_visu;
-
     /* Rendering */
     GL::FramebufferObject   _fbo;
     GL::Texture             _rbo_color;
@@ -114,12 +111,12 @@ namespace GMlib {
 
       if(obj->isCollapsed()) {
 
-        const GL::GLProgram &prog = _std_rep_visu->getRenderProgram();
+        const GL::GLProgram &prog = VisualizerStdRep::getInstance()->getRenderProgram();
         prog.bind();
         prog.setUniform( "u_mvmat", mvmat, 1, true );
         prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
-        _std_rep_visu->set(obj);
-        _std_rep_visu->display();
+        VisualizerStdRep::getInstance()->set(obj);
+        VisualizerStdRep::getInstance()->display();
         prog.unbind();
       }
       else {
@@ -151,8 +148,8 @@ namespace GMlib {
 
       if( obj->isCollapsed() ) {
 
-        _std_rep_visu->set(obj);
-        _std_rep_visu->select();
+        VisualizerStdRep::getInstance()->set(obj);
+        VisualizerStdRep::getInstance()->select();
       }
       else {
 
@@ -178,8 +175,8 @@ namespace GMlib {
 
       if( obj->isCollapsed() ) {
 
-        _std_rep_visu->set(obj);
-        _std_rep_visu->select();
+        VisualizerStdRep::getInstance()->set(obj);
+        VisualizerStdRep::getInstance()->select();
       }
       else {
 

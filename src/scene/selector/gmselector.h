@@ -42,8 +42,6 @@
 namespace GMlib{
 
 
-  class VisualizerStdRep;
-
 
   /*! \class Selector gmselector.h <gmSelector>
    *  \brief Pending Documentation
@@ -100,8 +98,6 @@ namespace GMlib{
     int				        _id;
     SceneObject*	        _parent;
     APoint<T,n>&		    _position;
-
-    VisualizerStdRep      *_std_rep_visu;
 
   }; // END class Selector
 

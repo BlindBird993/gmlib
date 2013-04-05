@@ -50,12 +50,17 @@ namespace GMlib {
     void              display();
     void              select();
 
+    static VisualizerStdRep*    getInstance();
+
   protected:
 
     // Cube buffer objects
     GL::BufferObject    _bo_cube;
     GL::BufferObject    _bo_cube_indices;
     GL::BufferObject    _bo_cube_frame_indices;
+
+  private:
+    static VisualizerStdRep*    _s_instance;
 
   }; // END class VisualizerStdRep
 

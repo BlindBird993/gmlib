@@ -32,7 +32,7 @@ namespace GMlib {
 
 
   template <typename T>
-  ERBSEvaluator<T> *ERBSEvaluator<T>::_s_instance = 0;
+  ERBSEvaluator<T> *ERBSEvaluator<T>::_s_instance = 0x0;
 
 
 
