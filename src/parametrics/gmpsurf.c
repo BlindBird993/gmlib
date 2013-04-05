@@ -57,8 +57,7 @@ namespace GMlib {
     setNoDer( 2 );
     //_setSam( s1, s2 );
 
-    _default_visualizer = new PSurfDefaultVisualizer<T,n>();
-    enableDefaultVisualizer( true );
+    _default_visualizer = 0x0;
   }
 
 
@@ -87,15 +86,15 @@ namespace GMlib {
     _no_der_u     = copy._no_sam_u;
     _no_der_v     = copy._no_sam_v;
 
-    _default_visualizer = new PSurfDefaultVisualizer<T,n>();
-    enableDefaultVisualizer( true );
+    _default_visualizer = 0x0;
   }
 
   template <typename T, int n>
   PSurf<T,n>::~PSurf() {
 
     enableDefaultVisualizer( false );
-    delete _default_visualizer;
+    if( _default_visualizer )
+      delete _default_visualizer;
   }
 
 
@@ -247,8 +246,13 @@ namespace GMlib {
 
     if( !enable )
       removeVisualizer( _default_visualizer );
-    else
+    else {
+
+      if( !_default_visualizer )
+        _default_visualizer = new PSurfDefaultVisualizer<T,n>();
+
       insertVisualizer( _default_visualizer );
+    }
   }
 
 

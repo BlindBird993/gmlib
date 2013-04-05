@@ -41,8 +41,7 @@ namespace GMlib {
     _init();
     setEval( 0 );
 
-    _default_visualizer = new PTriangleDefaultVisualizer<T,n>();
-    enableDefaultVisualizer( true );
+    _default_visualizer = 0x0;
   }
 
   template <typename T, int n>
@@ -59,15 +58,15 @@ namespace GMlib {
 
     _default_d    = copy._default_d;
 
-    _default_visualizer = new PTriangleDefaultVisualizer<T,n>();
-    enableDefaultVisualizer( true );
+    _default_visualizer = 0x0;
   }
 
   template <typename T, int n>
   PTriangle<T,n>::~PTriangle() {
 
     enableDefaultVisualizer( false );
-    delete _default_visualizer;
+    if( _default_visualizer )
+      delete _default_visualizer;
   }
 
   template <typename T, int n>
@@ -98,8 +97,13 @@ namespace GMlib {
 
     if( !enable )
       removeVisualizer( _default_visualizer );
-    else
+    else {
+
+      if( !_default_visualizer )
+        _default_visualizer = new PTriangleDefaultVisualizer<T,n>();
+
       insertVisualizer( _default_visualizer );
+    }
   }
 
   template <typename T, int n>

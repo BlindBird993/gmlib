@@ -52,8 +52,7 @@ namespace GMlib {
     this->_lighted    = false;
     _line_width       = 3.0;
 
-    _default_visualizer = new PCurveDefaultVisualizer<T,n>();
-    enableDefaultVisualizer( true );
+    _default_visualizer = 0x0;
   }
 
 
@@ -76,15 +75,15 @@ namespace GMlib {
 
     setNoDer(2);
 
-    _default_visualizer = new PCurveDefaultVisualizer<T,n>();
-    enableDefaultVisualizer( true );
+    _default_visualizer = 0x0;
   }
 
   template <typename T, int n>
   PCurve<T,n>::~PCurve() {
 
     enableDefaultVisualizer( false );
-    delete _default_visualizer;
+    if( _default_visualizer )
+      delete _default_visualizer;
   }
 
 
@@ -175,8 +174,13 @@ namespace GMlib {
 
     if( !enable )
       removeVisualizer( _default_visualizer );
-    else
+    else {
+
+      if( !_default_visualizer )
+        _default_visualizer = new PCurveDefaultVisualizer<T,n>();
+
       insertVisualizer( _default_visualizer );
+    }
   }
 
 

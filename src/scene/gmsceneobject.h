@@ -144,33 +144,33 @@ namespace GMlib{
   /*! \class SceneObject gmsceneobject.h <gmSceneObject>
    *  \brief SceneObject is the base class for anything that steps onto a Scene
    *
-   * 	It contains as private, a unique name for indentification used in Select(), and an array containg all its children.
+   *   It contains as private, a unique name for indentification used in Select(), and an array containg all its children.
    *
-   * 	Further, as protected members, two matrices for local transformation of the object, and a SurroundingSphere that always should be made.
+   *   Further, as protected members, two matrices for local transformation of the object, and a SurroundingSphere that always should be made.
    *
    *
    *        Det er to virtuelle funksjoner localDisplay og localSelect
    *          som alle avledede klasser må ha sin versjon av.
-   * 				Arbeidsdelingen er slik at display og select foretar
-   * 					transformasjonen lagret i matrix, og displayer alle
-   * 					sub-objektene til objektet. Men etter transformasjonen
-   * 					og før sub-objektene displayes kalles localDisplay
-   * 					(eventuelt localSelect). I localDisplay kan en så
-   * 					displaye det som ikke displayes i sub-objektene og/eller
-   * 					foreta transformasjoner av sub-objekter for
-   * 					å simulere bevegelser.
-   * 				Det er også en insertSubObject-funksjon som avledede klasser
-   * 				    kan bruke for å lage sub-objekt. Hvis en avledet klasse
-   * 					trenger tilgang til et objekt for bevegelsessimulering
-   * 					bør den lage en egen peker for det.
-   * 		public:
-   * 				Konstuktør med mulige default verdier og sletter
-   * 				En display funksjon for displaying av objektet.
-   * 				En select funksjon for plukking(select) av objektet med mus.
-   * 				En simulate funksjon for at objektet kan bevege subobjekter.
-   * 				En find funksjon for å finne en funksjon med et gitt navn.
-   * 				En rotate, scale og translate funksjon for å
-   * 				   posisjonere objektet relativt i forhold til morsobjektet
+   *         Arbeidsdelingen er slik at display og select foretar
+   *           transformasjonen lagret i matrix, og displayer alle
+   *           sub-objektene til objektet. Men etter transformasjonen
+   *           og før sub-objektene displayes kalles localDisplay
+   *           (eventuelt localSelect). I localDisplay kan en så
+   *           displaye det som ikke displayes i sub-objektene og/eller
+   *           foreta transformasjoner av sub-objekter for
+   *           å simulere bevegelser.
+   *         Det er også en insertSubObject-funksjon som avledede klasser
+   *             kan bruke for å lage sub-objekt. Hvis en avledet klasse
+   *           trenger tilgang til et objekt for bevegelsessimulering
+   *           bør den lage en egen peker for det.
+   *     public:
+   *         Konstuktør med mulige default verdier og sletter
+   *         En display funksjon for displaying av objektet.
+   *         En select funksjon for plukking(select) av objektet med mus.
+   *         En simulate funksjon for at objektet kan bevege subobjekter.
+   *         En find funksjon for å finne en funksjon med et gitt navn.
+   *         En rotate, scale og translate funksjon for å
+   *            posisjonere objektet relativt i forhold til morsobjektet
    */
   class SceneObject {
   public:
@@ -349,8 +349,8 @@ namespace GMlib{
 
       in >> *this;
 
-      _name	      = _free_name++;
-      _active	    = false;
+      _name       = _free_name++;
+      _active     = false;
       _local_cs   = true;
       _visible    = true;
     }
@@ -439,7 +439,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  const APoint<float,3>& SceneObject::getCenterPos() const	{
+  const APoint<float,3>& SceneObject::getCenterPos() const  {
 
     return  getSurroundingSphere().getPos();
   }
@@ -492,13 +492,13 @@ namespace GMlib{
     return _scene;
   }
 
-  /*! Sphere<float,3>	SceneObject::getSurroundingSphere() const
+  /*! Sphere<float,3>  SceneObject::getSurroundingSphere() const
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  Sphere<float,3> SceneObject::getSurroundingSphere() const	{
+  Sphere<float,3> SceneObject::getSurroundingSphere() const  {
 
     return  _global_total_sphere;
   }
