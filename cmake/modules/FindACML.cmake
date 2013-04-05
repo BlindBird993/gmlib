@@ -17,7 +17,30 @@ endif(ACML_MULTITHREAD)
 option(ACML_FMA4 "Utilize FMA4 instruction set (AMD only)")
 
 IF (WIN32)
-#TODO
+  set(ACML_PATH_WIN32 $ENV{PROGRAMFILES}/AMD CACHE PATH "ACML root directory.")
+  if(ACML_FMA4)
+	set(ACML_FMA4_SUFFIX "_fma4")
+  else(ACML_FMA4)
+	set(ACML_FMA4_SUFFIX "")
+  endif(ACML_FMA4)
+  
+  FIND_PATH(ACML_INCLUDE_DIR acml.h
+    PATHS
+    ${ACML_PATH_WIN32}/win64${ACML_FMA4_SUFFIX}${ACML_MP_SUFFIX}/include
+	DOC "The directory of acml.h")
+	
+  FIND_LIBRARY(ACML_LIBRARY
+    NAMES libacml${ACML_MP_SUFFIX}_dll
+	PATHS
+	${ACML_PATH_WIN32}/win64${ACML_FMA4_SUFFIX}${ACML_MP_SUFFIX}/lib
+	DOC "nuino")
+  
+  if(ACML_INCLUDE_DIR AND ACML_LIBRARY)
+    mark_as_advanced(FORCE ACML_PATH_WIN32)
+  else(ACML_INCLUDE_DIR AND ACML_LIBRARY)
+    mark_as_advanced(CLEAR ACML_PATH_WIN32)
+  endif(ACML_INCLUDE_DIR AND ACML_LIBRARY)
+
 ELSEIF(APPLE)
 #TODO
 ELSE (WIN32) #Linux
