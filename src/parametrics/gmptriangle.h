@@ -40,7 +40,7 @@
 
 namespace GMlib {
 
-  template <typename T>
+  template <typename T, int n>
   class PTriangleVisualizer;
 
   template <typename T, int n>
@@ -121,8 +121,8 @@ namespace GMlib {
     virtual Vector<Point<T,n>,3>      getPoints();
 
   protected:
-    Array< PTriangleVisualizer<T>* >  _ptriangle_visualizers;
-    PTriangleVisualizer<T>            *_default_visualizer;
+    Array< PTriangleVisualizer<T,n>* >  _ptriangle_visualizers;
+    PTriangleVisualizer<T,n>            *_default_visualizer;
 
     int                               _no_sam;      //  int		__sam;
     DVector< Vector<T,n> >            _p;           //  DMatrix<Vector<T,n> >	__p;

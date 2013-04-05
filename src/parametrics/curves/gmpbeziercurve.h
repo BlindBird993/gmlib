@@ -44,7 +44,7 @@ namespace GMlib {
   class SelectorGridVisualizer;
 
   template <typename T>
-  class PBezierCurve : public PCurve<T> {
+  class PBezierCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PBezierCurve)
   public:
     PBezierCurve( const DVector< Vector<T,3> >& c );

@@ -45,7 +45,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCone<T>::PCone( const PCone<T>& copy ) : PSurf<T>( copy ) {
+  PCone<T>::PCone( const PCone<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

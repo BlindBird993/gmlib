@@ -92,7 +92,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PArc<T>::PArc( const PArc<T>& copy ) : PCurve<T>(copy) {
+  PArc<T>::PArc( const PArc<T>& copy ) : PCurve<T,3>(copy) {
 
     _d = copy._d;
     _k = copy._k;

@@ -75,7 +75,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBezierSurf<T>::PBezierSurf( const PBezierSurf<T>& copy ) : PSurf<T>( copy ) {
+  PBezierSurf<T>::PBezierSurf( const PBezierSurf<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

@@ -36,7 +36,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PHeart : public PSurf<T> {
+  class PHeart : public PSurf<T,3> {
     GM_SCENEOBJECT(PHeart)
   public:
     PHeart();

@@ -41,7 +41,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PHelicoid : public PSurf<T> {
+  class PHelicoid : public PSurf<T,3> {
     GM_SCENEOBJECT(PHelicoid)
   public:
     PHelicoid( T scale_x = T(1), T scale_y = T(1), T scale_z = T(0.32) );

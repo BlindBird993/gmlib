@@ -46,22 +46,22 @@
 
 namespace GMlib {
 
-  template <typename T>
-  PSurfDefaultVisualizer<T>::PSurfDefaultVisualizer() : _vbo(), _ibo(), _no_vertices(0) {
+  template <typename T, int n>
+  PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer() : _vbo(), _ibo(), _no_vertices(0) {
 
     glGenTextures( 1, &_nmap );
     this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
   }
 
-  template <typename T>
-  PSurfDefaultVisualizer<T>::~PSurfDefaultVisualizer() {
+  template <typename T, int n>
+  PSurfDefaultVisualizer<T,n>::~PSurfDefaultVisualizer() {
 
     glDeleteTextures( 1, &_nmap );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T>::display() {
+  void PSurfDefaultVisualizer<T,n>::display() {
 
     this->glSetDisplayMode();
 
@@ -103,9 +103,9 @@ namespace GMlib {
     _vbo.unbind();
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T>::draw() {
+  void PSurfDefaultVisualizer<T,n>::draw() {
 
     _ibo.bind();
     for( unsigned int i = 0; i < _no_strips; ++i )
@@ -113,26 +113,26 @@ namespace GMlib {
     _ibo.unbind();
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T>::replot(
-    DMatrix< DMatrix< Vector<T, 3> > >& p,
+  void PSurfDefaultVisualizer<T,n>::replot(
+    DMatrix< DMatrix< Vector<T, n> > >& p,
     DMatrix< Vector<T, 3> >& normals,
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     bool closed_u, bool closed_v
   ) {
 
-    PSurfVisualizer<T>::fillNMap( _nmap, p, closed_u, closed_v );
+    PSurfVisualizer<T,n>::fillNMap( _nmap, p, closed_u, closed_v );
 
-    PSurfVisualizer<T>::fillStandardVBO( _vbo, _no_vertices, p );
+    PSurfVisualizer<T,n>::fillStandardVBO( _vbo, _no_vertices, p );
 
-    PSurfVisualizer<T>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2() );
-    PSurfVisualizer<T>::compTriangleStripProperties( p.getDim1(), p.getDim2(), _no_strips, _no_strip_indices, _strip_size );
+    PSurfVisualizer<T,n>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2() );
+    PSurfVisualizer<T,n>::compTriangleStripProperties( p.getDim1(), p.getDim2(), _no_strips, _no_strip_indices, _strip_size );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T>::select() {
+  void PSurfDefaultVisualizer<T,n>::select() {
 
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 

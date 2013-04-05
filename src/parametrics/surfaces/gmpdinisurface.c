@@ -45,7 +45,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PDiniSurface<T>::PDiniSurface( const PDiniSurface<T>& copy ) : PSurf<T>( copy ) {
+  PDiniSurface<T>::PDiniSurface( const PDiniSurface<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

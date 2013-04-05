@@ -33,23 +33,23 @@
 namespace GMlib {
 
 
-  template <typename T>
-  PTriangleVisualizer<T>::PTriangleVisualizer() {
+  template <typename T, int n>
+  PTriangleVisualizer<T,n>::PTriangleVisualizer() {
 
     _triangle = 0x0;
   }
 
-  template <typename T>
-  PTriangleVisualizer<T>::~PTriangleVisualizer() {}
+  template <typename T, int n>
+  PTriangleVisualizer<T,n>::~PTriangleVisualizer() {}
 
-  template <typename T>
-  void  PTriangleVisualizer<T>::fillStandardVBO(GL::VertexBufferObject vbo, const DVector<DVector<Vector<T,3> > > &p) {
+  template <typename T, int n>
+  void  PTriangleVisualizer<T,n>::fillStandardVBO(GL::VertexBufferObject vbo, const DVector<DVector<Vector<T,n> > > &p) {
 
     int no_dp = p.getDim();
 
 
     Vector<T,3> a, b;
-    UnitVector<T,3> n;
+    UnitVector<T,3> norm;
 
     DVector<GL::GLVertexNormal> dp(no_dp);
     for( int i = 0; i < p.getDim(); i++ ) {
@@ -58,14 +58,14 @@ namespace GMlib {
 
       a = p(i)(3)-p(i)(1);
       b = p(i)(2)-p(i)(1);
-      n = a^b;
+      norm = a^b;
 
       dp[i].x   = p(i)(0)(0);
       dp[i].y   = p(i)(0)(1);
       dp[i].z   = p(i)(0)(2);
-      dp[i].nx  = n(0);
-      dp[i].ny  = n(1);
-      dp[i].nz  = n(2);
+      dp[i].nx  = norm(0);
+      dp[i].ny  = norm(1);
+      dp[i].nz  = norm(2);
     }
 
     vbo.bind();
@@ -73,8 +73,8 @@ namespace GMlib {
     vbo.unbind();
   }
 
-  template <typename T>
-  void  PTriangleVisualizer<T>::fillTriangleIBO(GL::IndexBufferObject ibo, int m ) {
+  template <typename T, int n>
+  void  PTriangleVisualizer<T,n>::fillTriangleIBO(GL::IndexBufferObject ibo, int m ) {
 
     int no_indices = m*m*3;
 
@@ -108,8 +108,8 @@ namespace GMlib {
     ibo.unbind();
   }
 
-  template <typename T>
-  void  PTriangleVisualizer<T>::fillTriangleStripIBO( GLuint ibo_id, int m ) {
+  template <typename T, int n>
+  void  PTriangleVisualizer<T,n>::fillTriangleStripIBO( GLuint ibo_id, int m ) {
 
     m -= 1;
 
@@ -137,52 +137,52 @@ namespace GMlib {
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PTriangleVisualizer<T>::getNoTriangleStrips( int m ) {
+  int PTriangleVisualizer<T,n>::getNoTriangleStrips( int m ) {
 
     return m-1;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PTriangleVisualizer<T>::getNoTriangles(int m) {
+  int PTriangleVisualizer<T,n>::getNoTriangles(int m) {
 
     return m*m;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PTriangleVisualizer<T>::getNoIndicesInTriangleStrip( int strip_idx ) {
+  int PTriangleVisualizer<T,n>::getNoIndicesInTriangleStrip( int strip_idx ) {
 
     return 2*strip_idx+3;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangleVisualizer<T>::getTriangleStripDrawInfo( int strip_idx, int& offset, int& no_indices ) {
+  void PTriangleVisualizer<T,n>::getTriangleStripDrawInfo( int strip_idx, int& offset, int& no_indices ) {
 
     offset = strip_idx*(strip_idx+2);
     no_indices = 2*strip_idx+3;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  int PTriangleVisualizer<T>::getTriangleStripOffset( int strip_idx ) {
+  int PTriangleVisualizer<T,n>::getTriangleStripOffset( int strip_idx ) {
 
     return strip_idx*(strip_idx+2);
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangleVisualizer<T>::replot( const DVector< DVector< Vector<T,3> > >& /*p*/, int /*m*/ ) {}
+  void PTriangleVisualizer<T,n>::replot( const DVector< DVector< Vector<T,n> > >& /*p*/, int /*m*/ ) {}
 
-  template <typename T>
-  void PTriangleVisualizer<T>::set( DisplayObject* obj ) {
+  template <typename T, int n>
+  void PTriangleVisualizer<T,n>::set( DisplayObject* obj ) {
 
     Visualizer::set( obj );
 
-    _triangle = dynamic_cast<PTriangle<T>*>( obj );
+    _triangle = dynamic_cast<PTriangle<T,n>*>( obj );
   }
 
 

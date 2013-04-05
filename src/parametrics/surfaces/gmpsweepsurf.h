@@ -41,10 +41,10 @@
 namespace GMlib {
 
   template <typename T>
-  class PSweepSurf : public PSurf<T> {
+  class PSweepSurf : public PSurf<T,3> {
   GM_SCENEOBJECT(PSweepSurf)
   public:
-    PSweepSurf( PCurve<T>* profile, PCurve<T>* spine, bool RMF = false);
+    PSweepSurf( PCurve<T,3>* profile, PCurve<T,3>* spine, bool RMF = false);
     PSweepSurf( const PSweepSurf<T>& su );
     virtual ~PSweepSurf();
 
@@ -60,8 +60,8 @@ namespace GMlib {
     T             getStartPV();
 
 
-    PCurve<T>*    _profile;
-    PCurve<T>*    _spine;
+    PCurve<T,3>*    _profile;
+    PCurve<T,3>*    _spine;
 
     Vector<T,3>   _spv;
 

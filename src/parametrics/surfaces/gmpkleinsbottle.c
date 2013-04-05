@@ -46,7 +46,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PKleinsBottle<T>::PKleinsBottle( const PKleinsBottle<T>& copy ) : PSurf<T>( copy ) {
+  PKleinsBottle<T>::PKleinsBottle( const PKleinsBottle<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

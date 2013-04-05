@@ -32,6 +32,7 @@
 
 // gmlib
 #include <core/utils/gmstream.h>
+#include <parametrics/surfaces/gmpsphere.h>
 
 namespace GMlib {
 
@@ -52,7 +53,7 @@ namespace GMlib {
   }
 
 
-  StlObject::StlObject( PSurf<float> *obj, int m1, int m2, GM_STL_VISUALIZATION gsv ) {
+  StlObject::StlObject( PSurf<float,3> *obj, int m1, int m2, GM_STL_VISUALIZATION gsv ) {
 
     // Resample DSurf
     DMatrix< DMatrix< Vector<float, 3> > > p;

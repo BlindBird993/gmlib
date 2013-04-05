@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCircle<T>::PCircle( const PCircle<T>& copy ) : PCurve<T>(copy) {}
+  PCircle<T>::PCircle( const PCircle<T>& copy ) : PCurve<T,3>(copy) {}
 
 
   template <typename T>

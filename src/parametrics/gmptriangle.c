@@ -41,7 +41,7 @@ namespace GMlib {
     _init();
     setEval( 0 );
 
-    _default_visualizer = new PTriangleDefaultVisualizer<T>();
+    _default_visualizer = new PTriangleDefaultVisualizer<T,n>();
     enableDefaultVisualizer( true );
   }
 
@@ -59,7 +59,7 @@ namespace GMlib {
 
     _default_d    = copy._default_d;
 
-    _default_visualizer = new PTriangleDefaultVisualizer<T>();
+    _default_visualizer = new PTriangleDefaultVisualizer<T,n>();
     enableDefaultVisualizer( true );
   }
 
@@ -294,7 +294,7 @@ namespace GMlib {
   inline
   void PTriangle<T,n>::insertVisualizer( Visualizer *visualizer ) {
 
-    PTriangleVisualizer<T> *visu = dynamic_cast<PTriangleVisualizer<T>*>( visualizer );
+    PTriangleVisualizer<T,n> *visu = dynamic_cast<PTriangleVisualizer<T,n>*>( visualizer );
     if( !visu )
       return;
 
@@ -310,7 +310,7 @@ namespace GMlib {
   inline
   void PTriangle<T,n>::removeVisualizer( Visualizer *visualizer ) {
 
-    PTriangleVisualizer<T> *visu = dynamic_cast<PTriangleVisualizer<T>*>( visualizer );
+    PTriangleVisualizer<T,n> *visu = dynamic_cast<PTriangleVisualizer<T,n>*>( visualizer );
     if( visu )
       _ptriangle_visualizers.remove( visu );
 

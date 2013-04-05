@@ -41,7 +41,7 @@ namespace GMlib {
 
 
   template <typename T>
-  PChrysanthemumCurve<T>::PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy ) : PCurve<T>( copy ) {}
+  PChrysanthemumCurve<T>::PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy ) : PCurve<T,3>( copy ) {}
 
 
   template <typename T>

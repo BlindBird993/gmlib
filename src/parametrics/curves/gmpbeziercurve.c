@@ -67,7 +67,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBezierCurve<T>::PBezierCurve( const PBezierCurve<T>& copy ) : PCurve<T>( copy ) {
+  PBezierCurve<T>::PBezierCurve( const PBezierCurve<T>& copy ) : PCurve<T,3>( copy ) {
 
     init();
     _c = copy._c;

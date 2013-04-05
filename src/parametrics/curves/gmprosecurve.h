@@ -38,7 +38,7 @@ namespace GMlib {
 
 
   template <typename T>
-  class PRoseCurve : public PCurve<T> {
+  class PRoseCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PRoseCurve)
   public:
     PRoseCurve( T radius = T(5) );

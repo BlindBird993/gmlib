@@ -41,10 +41,10 @@
 namespace GMlib {
 
 template <typename T>
-class PSubTriangle : public PTriangle<T> {
+class PSubTriangle : public PTriangle<T,3> {
   GM_SCENEOBJECT(PSubTriangle)
 public:
-  PSubTriangle( PSurf<T>* s, Vector<Point<T,2>,3> p );
+  PSubTriangle( PSurf<T,3>* s, Vector<Point<T,2>,3> p );
   PSubTriangle( const PSubTriangle <T>& copy );
   virtual ~PSubTriangle ();
 
@@ -62,7 +62,7 @@ protected:
   void                  eval( T u, T v, T w, int d );
 
 private:
-  PSurf<T>*             _s;
+  PSurf<T,3>*             _s;
   Vector<Point<T,2>,3>  _q;
 
   Vector<T,3> dS (const Vector<T,3>& Su, const Vector<T,3>& Sv, const Point<T,2>& p);

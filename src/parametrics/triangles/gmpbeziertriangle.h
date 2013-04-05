@@ -42,7 +42,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PBezierTriangle : public PTriangle<T> {
+  class PBezierTriangle : public PTriangle<T,3> {
     GM_SCENEOBJECT(PBezierTriangle)
   public:
     PBezierTriangle( const DVector< Vector<T,3> >& c );

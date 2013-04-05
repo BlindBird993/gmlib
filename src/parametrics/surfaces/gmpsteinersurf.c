@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSteinerSurf<T>::PSteinerSurf( const PSteinerSurf<T>& copy ) : PSurf<T>( copy ) {
+  PSteinerSurf<T>::PSteinerSurf( const PSteinerSurf<T>& copy ) : PSurf<T,3>( copy ) {
 
     this->_dm = GM_DERIVATION_EXPLICIT;
     _r = copy._r;

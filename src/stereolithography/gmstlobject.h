@@ -34,7 +34,6 @@
 // gmlib
 #include <core/containers/gmarraylx.h>
 #include <scene/gmdisplayobject.h>
-#include <parametrics/surfaces/gmpsphere.h>
 #include <trianglesystem/gmtrianglesystem.h>
 
 // stl
@@ -43,9 +42,10 @@
 
 namespace GMlib {
 
+  template <typename T, int n>  class PSurf;
+  template <typename T>         class PSphere;
 
-  template <typename T>
-  class TSVertex;
+  template <typename T>         class TSVertex;
 
 
   enum GM_STL_VISUALIZATION {
@@ -59,7 +59,7 @@ namespace GMlib {
   public:
     StlObject( const std::string& filename, const Color& color = 5, int flip = 1 ); // From file, in given color
     StlObject( std::ifstream& stream, bool binary = true, const Color& color = GMcolor::Aqua );
-    StlObject( PSurf<float> *obj, int m1 = 20, int m2 = 20, GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
+    StlObject( PSurf<float,3> *obj, int m1 = 20, int m2 = 20, GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
     StlObject( float r = 10 );				 // Makes a Sphere, just for debugging
     ~StlObject();
 

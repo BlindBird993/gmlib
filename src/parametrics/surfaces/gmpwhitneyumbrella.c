@@ -41,7 +41,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PWhitneyUmbrella<T>::PWhitneyUmbrella( const PWhitneyUmbrella<T>& copy ) : PSurf<T>( copy ) {
+  PWhitneyUmbrella<T>::PWhitneyUmbrella( const PWhitneyUmbrella<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

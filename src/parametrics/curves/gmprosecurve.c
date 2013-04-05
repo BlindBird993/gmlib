@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PRoseCurve<T>::PRoseCurve( const PRoseCurve<T>& copy ) : PCurve<T>( copy ) {}
+  PRoseCurve<T>::PRoseCurve( const PRoseCurve<T>& copy ) : PCurve<T,3>( copy ) {}
 
 
   template <typename T>

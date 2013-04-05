@@ -30,18 +30,18 @@
 
 namespace GMlib {
 
-  template <typename T>
-  PCurveDefaultVisualizer<T>::PCurveDefaultVisualizer() : _vbo() {
+  template <typename T, int n>
+  PCurveDefaultVisualizer<T,n>::PCurveDefaultVisualizer() : _vbo() {
 
     _no_vertices = 0;
   }
 
-  template <typename T>
-  PCurveDefaultVisualizer<T>::~PCurveDefaultVisualizer() {}
+  template <typename T, int n>
+  PCurveDefaultVisualizer<T,n>::~PCurveDefaultVisualizer() {}
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T>::display() {
+  void PCurveDefaultVisualizer<T,n>::display() {
 
     // GL States
     glLineWidth( this->_curve->getLineWidth() );
@@ -60,19 +60,19 @@ namespace GMlib {
     _vbo.unbind();
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T>::replot(
-    DVector< DVector< Vector<T, 3> > >& p,
+  void PCurveDefaultVisualizer<T,n>::replot(
+    DVector< DVector< Vector<T, n> > >& p,
     int /*m*/, int /*d*/, bool /*closed*/
   ) {
 
-    PCurveVisualizer<T>::fillStandardVBO( _vbo, _no_vertices, p );
+    PCurveVisualizer<T,n>::fillStandardVBO( _vbo, _no_vertices, p );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T>::select() {
+  void PCurveDefaultVisualizer<T,n>::select() {
 
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 

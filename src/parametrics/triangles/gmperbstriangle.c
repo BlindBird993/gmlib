@@ -31,7 +31,7 @@
 namespace GMlib {
 
   template <typename T>
-  PERBSTriangle<T>::PERBSTriangle( PTriangle<T>* c0, PTriangle<T>* c1, PTriangle<T>* c2, BasisTriangleType t)
+  PERBSTriangle<T>::PERBSTriangle( PTriangle<T,3>* c0, PTriangle<T,3>* c1, PTriangle<T,3>* c2, BasisTriangleType t)
   {
     _B = new BasisTriangleERBS<T>(t);
 
@@ -67,7 +67,7 @@ namespace GMlib {
     if( bezier )
       bezier->updateCoeffs( _c[i]->getPos() - _c[i]->evaluateParent( 0.5, 0.5, 0 )(0) );
 
-    PTriangle<T>::replot();
+    PTriangle<T,3>::replot();
   }
 
   template <typename T>
@@ -179,7 +179,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  DVector< PTriangle<T>* >& PERBSTriangle<T>::getLocalPatches() {
+  DVector< PTriangle<T,3>* >& PERBSTriangle<T>::getLocalPatches() {
 
     return _c;
   }
@@ -208,7 +208,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void  PERBSTriangle<T>::insertPatch( PTriangle<T> *patch ) {
+  void  PERBSTriangle<T>::insertPatch( PTriangle<T,3> *patch ) {
 
     patch->replot( 10 );
     patch->setVisible( false );

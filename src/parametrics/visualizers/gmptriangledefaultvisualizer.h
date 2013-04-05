@@ -41,8 +41,8 @@
 
 namespace GMlib {
 
-  template <typename T>
-  class PTriangleDefaultVisualizer : public PTriangleVisualizer<T> {
+  template <typename T, int n>
+  class PTriangleDefaultVisualizer : public PTriangleVisualizer<T,n> {
   public:
     PTriangleDefaultVisualizer();
     virtual ~PTriangleDefaultVisualizer();

@@ -40,7 +40,7 @@ namespace GMlib {
 
 
   template <typename T>
-  class PERBSSurf : public PSurf<T> {
+  class PERBSSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PERBSSurf)
 
   public:
@@ -48,17 +48,17 @@ namespace GMlib {
     PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, const DVector<T>& u, const DVector<T>& v, bool closed_u = false, bool closed_v = false );
     PERBSSurf( const DMatrix< DMatrix< Vector<T,3> > >& c, T s_u = T(0), T e_u = T(1), T s_v = T(0), T e_v = T(1), bool closed_u = false, bool closed_v = false );
     PERBSSurf( const DMatrix< PBezierSurf<T>* >& c, DVector<T> u, DVector<T> v, bool closed_u, bool closed_v );
-    PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 );
-    PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e );
+    PERBSSurf( PSurf<T,3>* g, int no_locals_u, int no_locals_v, int d1, int d2 );
+    PERBSSurf( PSurf<T,3>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e );
     PERBSSurf( const PERBSSurf<T>& copy );
     virtual ~PERBSSurf();
 
     void                                edit( SceneObject *obj );
-    void                                generateKnotVector( PSurf<T>* g );
-    void                                generateKnotVector( PSurf<T>* g, T u_s, T u_e, T v_s, T v_e );
+    void                                generateKnotVector( PSurf<T,3>* g );
+    void                                generateKnotVector( PSurf<T,3>* g, T u_s, T u_e, T v_s, T v_e );
     DVector<T>&                         getKnotsU();
     DVector<T>&                         getKnotsV();
-    DMatrix<PSurf<T>* >&                getLocalPatches();
+    DMatrix<PSurf<T,3>* >&              getLocalPatches();
     int                                 getNoLocalPatchesU() const;
     int                                 getNoLocalPatchesV() const;
     virtual void                        hideLocalPatches();
@@ -90,7 +90,7 @@ namespace GMlib {
     GM_RESAMPLE_MODE                    _resamp_mode;
     bool                                _pre_eval;
 
-    DMatrix< PSurf<T>* >                _c;
+    DMatrix< PSurf<T,3>* >                _c;
 
     void	                              eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
     void                                evalPre( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
@@ -104,7 +104,7 @@ namespace GMlib {
     T                                   getStartPU();
     T                                   getStartPV();
     virtual void                        init();
-    void                                insertPatch( PSurf<T> *patch );
+    void                                insertPatch( PSurf<T,3> *patch );
     void                                padKnotVector( DVector<T>& kv, bool closed );
 
   }; // END class PERBSSurf

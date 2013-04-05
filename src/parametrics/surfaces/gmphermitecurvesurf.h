@@ -44,11 +44,11 @@
 namespace GMlib {
 
   template <typename T>
-  class PHermiteCurveSurf : public PSurf<T> {
+  class PHermiteCurveSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PHermiteCurveSurf)
   public:
-    PHermiteCurveSurf( PCurve<T>* c1, PCurve<T>* c2, PCurve<T>* c3, PCurve<T>* c4, bool swap_par=false);
-    PHermiteCurveSurf( Array<PCurve<T>*> cu, bool swap_par=false);
+    PHermiteCurveSurf( PCurve<T,3>* c1, PCurve<T,3>* c2, PCurve<T,3>* c3, PCurve<T,3>* c4, bool swap_par=false);
+    PHermiteCurveSurf( Array<PCurve<T,3>*> cu, bool swap_par=false);
     PHermiteCurveSurf( const PHermiteCurveSurf<T>& su );
     virtual ~PHermiteCurveSurf();
 
@@ -67,7 +67,7 @@ namespace GMlib {
 
     Hermite4Evaluator<T>*  _H;
 
-    Array<PCurve<T>*> _cu;
+    Array<PCurve<T,3>*> _cu;
     bool              _swap_par;
 
   public:

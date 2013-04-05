@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PEightSurface<T>::PEightSurface( const PEightSurface<T>& copy ) : PSurf<T>( copy ) {
+  PEightSurface<T>::PEightSurface( const PEightSurface<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

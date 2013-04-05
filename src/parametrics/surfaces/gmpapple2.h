@@ -37,7 +37,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PApple2 : public PSurf<T> {
+  class PApple2 : public PSurf<T,3> {
     GM_SCENEOBJECT(PApple2)
   public:
     PApple2( T radius = T(1) );

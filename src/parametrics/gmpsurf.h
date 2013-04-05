@@ -44,10 +44,10 @@
 
 namespace GMlib {
 
-  template <typename T>
+  template <typename T, int n>
   class PSurfVisualizer;
 
-  template <typename T>
+  template <typename T, int n>
   class PSurfDefaultVisualizer;
 
   template <typename T,int n>
@@ -102,7 +102,7 @@ namespace GMlib {
     virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0 );
     void                          resample(DMatrix<DMatrix <DMatrix <Vector<T,n> > > >	& a, int m1, int m2, int d1, int d2 );
     virtual void                  resample(DMatrix<DMatrix <Vector<T,n> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
-    virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,n> > &normals ) const;
+    virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,3> > &normals ) const;
     void                          setDomainU( T start, T end );
     void                          setDomainUScale( T sc );
     void                          setDomainUTrans( T tr );
@@ -117,8 +117,8 @@ namespace GMlib {
     const Point<T,n>&             operator () ( T u, T v );
 
   protected:
-    Array< PSurfVisualizer<T>* >  _psurf_visualizers;
-    PSurfDefaultVisualizer<T>    *_default_visualizer;
+    Array< PSurfVisualizer<T,n>* >  _psurf_visualizers;
+    PSurfDefaultVisualizer<T,n>    *_default_visualizer;
 
     int                           _no_sam_u;    // Number of samples u for single sampling
     int                           _no_sam_v;    // Number of samples v for single sampling
@@ -154,7 +154,7 @@ namespace GMlib {
     T                             _sc_v;        // Scale v-parametre
 
 
-    /*! virtual void PSurf<T>::eval( T u, T v, int d1, int d2, bool lu , bool lv ) = 0
+    /*! virtual void PSurf<T,3>::eval( T u, T v, int d1, int d2, bool lu , bool lv ) = 0
      *  Surface evaluator. (Requires implementation in PSurf sub-classes.)
      *  \param[in]  u   Evaluation parameter in u-direction.
      *  \param[in]  v   Evaluation parameter in v-direction.
@@ -165,26 +165,26 @@ namespace GMlib {
      */
     virtual void                  eval( T u, T v, int d1, int d2, bool lu = true, bool lv = true ) = 0;
 
-    /*! virtual T PSurf<T>::getEndPU() = 0
+    /*! virtual T PSurf<T,3>::getEndPU() = 0
      *  Returns the parametric end value in u-direction. (Requires implementation in PSurf sub-classes.)
      *  \return Parametric end value in u.
      */
     virtual T                     getEndPU() = 0;
 
-    /*! virtual T PSurf<T>::getEndPV() = 0
+    /*! virtual T PSurf<T,3>::getEndPV() = 0
      *  Returns the parametric end value in v-direction. (Requires implementation in PSurf sub-classes.)
      *  \return Parametric end value in v.
      */
     virtual T                     getEndPV() = 0;
 
-    /*! virtual T PSurf<T>::getStartPU() = 0
+    /*! virtual T PSurf<T,3>::getStartPU() = 0
      *  Returns the parametric start value in u-direction. (Requires implementation in PSurf sub-classes.)
      *  \return Parametric start value in u.
      */
     virtual T                     getStartPU() = 0;
 
 
-    /*! virtual T PSurf<T>::getStartPV() = 0
+    /*! virtual T PSurf<T,3>::getStartPV() = 0
      *  Returns the parametric start value in v-direction. (Requires implementation in PSurf sub-classes.)
      *  \return Parametric start value in v.
      */

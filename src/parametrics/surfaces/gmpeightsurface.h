@@ -36,7 +36,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PEightSurface : public PSurf<T> {
+  class PEightSurface : public PSurf<T,3> {
     GM_SCENEOBJECT(PEightSurface)
   public:
     PEightSurface();

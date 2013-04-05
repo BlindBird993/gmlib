@@ -36,7 +36,7 @@ namespace GMlib {
 
 template <typename T>
 inline
-PTriangCurve<T>::PTriangCurve(  PTriangle<T>* s,  const Point<T,3>& p1,   const Point<T,3>& p2 )
+PTriangCurve<T>::PTriangCurve(  PTriangle<T,3>* s,  const Point<T,3>& p1,   const Point<T,3>& p2 )
 {
   this->_dm = GM_DERIVATION_EXPLICIT;
 
@@ -50,7 +50,7 @@ PTriangCurve<T>::PTriangCurve(  PTriangle<T>* s,  const Point<T,3>& p1,   const 
 
 template <typename T>
 inline
-PTriangCurve<T>::PTriangCurve(  PTriangle<T>* s,  const Point<T,3>& p1,   const Point<T,3>& p2,
+PTriangCurve<T>::PTriangCurve(  PTriangle<T,3>* s,  const Point<T,3>& p1,   const Point<T,3>& p2,
                                 const Vector<T,3>& v1,  const Vector<T,3>& v2 )
 {
   this->_dm = GM_DERIVATION_EXPLICIT;
@@ -68,8 +68,8 @@ PTriangCurve<T>::PTriangCurve(  PTriangle<T>* s,  const Point<T,3>& p1,   const 
 
 template <typename T>
 inline
-PTriangCurve<T>::PTriangCurve( const PTriangCurve<T>& copy ) : PCurve<T>( copy )
-{
+PTriangCurve<T>::PTriangCurve( const PTriangCurve<T>& copy ) : PCurve<T,3>( copy ) {
+
   _der_curve = copy._der_curve;
   _plot = false;
 
@@ -327,7 +327,7 @@ void PTriangCurve<T>::resample( DVector< DVector< Vector<T, 3> > >& p, int m, in
     };
   }
   else
-    PCurve<T>::resample(  p, m, d, start, end );
+    PCurve<T,3>::resample(  p, m, d, start, end );
 }
 
 

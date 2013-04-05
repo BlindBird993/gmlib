@@ -33,17 +33,17 @@
 namespace GMlib {
 
 template <typename T>
-PSubTriangle<T>::PSubTriangle( PSurf<T>* s, Vector< Point<T,2>,3> p ) {
+PSubTriangle<T>::PSubTriangle( PSurf<T,3>* s, Vector< Point<T,2>,3> p ) {
 
   _s = s;
   _q = p;
 }
 
 template <typename T>
-PSubTriangle<T>::PSubTriangle( const PSubTriangle <T>& copy )
-{
-  _s			= copy._s;
-  _q			= copy._q;
+PSubTriangle<T>::PSubTriangle( const PSubTriangle <T>& copy ) : PTriangle<T,3>(copy) {
+
+  _s      = copy._s;
+  _q      = copy._q;
 }
 
 

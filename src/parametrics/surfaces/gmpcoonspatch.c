@@ -37,7 +37,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCoonsPatch<T>::PCoonsPatch( PSurf<T>* s1, PSurf<T>* s2, PSurf<T>* s3 ) {
+  PCoonsPatch<T>::PCoonsPatch( PSurf<T,3>* s1, PSurf<T,3>* s2, PSurf<T,3>* s3 ) {
 
     this->_dm = GM_DERIVATION_EXPLICIT;
     _s1 = s1;
@@ -48,7 +48,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCoonsPatch<T>::PCoonsPatch( const PCoonsPatch<T>& copy ) : PSurf<T>( copy ) {
+  PCoonsPatch<T>::PCoonsPatch( const PCoonsPatch<T>& copy ) : PSurf<T,3>( copy ) {
 
       _s1 = copy._s1;
       _s2 = copy._s2;

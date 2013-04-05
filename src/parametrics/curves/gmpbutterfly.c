@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PButterfly<T>::PButterfly( const PButterfly<T>& copy ) : PCurve<T>( copy ) {}
+  PButterfly<T>::PButterfly( const PButterfly<T>& copy ) : PCurve<T,3>( copy ) {}
 
 
   template <typename T>

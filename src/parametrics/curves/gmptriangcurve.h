@@ -43,12 +43,12 @@ namespace GMlib {
 
 
   template <typename T>
-  class PTriangCurve : public PCurve<T> {
+  class PTriangCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PTriangCurve)
   public:
-    PTriangCurve( PTriangle<T>* s, const Point<T,3>& p1,  const Point<T,3>& p2);
-    PTriangCurve( PTriangle<T>* s, const Point<T,3>& p1,  const Point<T,3>& p2,
-                                   const Vector<T,3>& v1, const Vector<T,3>& v2);
+    PTriangCurve( PTriangle<T,3>* s, const Point<T,3>& p1,  const Point<T,3>& p2);
+    PTriangCurve( PTriangle<T,3>* s, const Point<T,3>& p1,  const Point<T,3>& p2,
+                                     const Vector<T,3>& v1, const Vector<T,3>& v2);
     PTriangCurve( const PTriangCurve<T>& copy );
 
     virtual ~PTriangCurve();
@@ -64,7 +64,7 @@ namespace GMlib {
 
   protected:
 
-    PTriangle<T>*               _s;
+    PTriangle<T,3>*               _s;
 
     Point<T,3>                  _p1;
     Point<T,3>                  _p2;

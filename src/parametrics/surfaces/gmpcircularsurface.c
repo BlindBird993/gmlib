@@ -53,7 +53,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCircularSurface<T>::PCircularSurface( const PCircularSurface<T>& copy ) : PSurf<T>( copy ) {}
+  PCircularSurface<T>::PCircularSurface( const PCircularSurface<T>& copy ) : PSurf<T,3>( copy ) {}
 
 
   template <typename T>

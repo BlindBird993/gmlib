@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBoysSurface<T>::PBoysSurface( const PBoysSurface<T>& copy ) : PSurf<T>( copy ) {
+  PBoysSurface<T>::PBoysSurface( const PBoysSurface<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

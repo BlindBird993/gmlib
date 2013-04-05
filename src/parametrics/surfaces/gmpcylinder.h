@@ -38,7 +38,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PCylinder : public PSurf<T> {
+  class PCylinder : public PSurf<T,3> {
     GM_SCENEOBJECT(PCylinder)
   public:
     PCylinder( T rx = 4, T ry = 4, T h = 2 );

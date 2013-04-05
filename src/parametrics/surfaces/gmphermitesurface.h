@@ -47,17 +47,17 @@ namespace GMlib {
    *  A parametric tensor-product generic Hermite surface class.
    */
   template <typename T>
-  class PHermiteSurface : public PSurf<T> {
+  class PHermiteSurface : public PSurf<T,3> {
     GM_SCENEOBJECT(PHermiteSurface)
   public:
-    PHermiteSurface( const Array< PCurve<T>* >& c1, const Array<PCurve<T>* >& c2 );
+    PHermiteSurface( const Array< PCurve<T,3>* >& c1, const Array<PCurve<T,3>* >& c2 );
     ~PHermiteSurface();
 
     bool                    isValidCoonsPatch();
     bool                    isValidHermiteSurface();
 
   protected:
-    Array< PCurve<T>* >     _c1, _c2;
+    Array< PCurve<T,3>* >     _c1, _c2;
     DMatrix< Point<T,3> >   _b;
 
     void                    edit( SceneObject* obj );
@@ -69,7 +69,7 @@ namespace GMlib {
     T                       getStartPU();
     T                       getStartPV();
 
-    void                    insertPatch( PCurve<T>* patch );
+    void                    insertPatch( PCurve<T,3>* patch );
 
   }; // END class PHermiteSurf
 

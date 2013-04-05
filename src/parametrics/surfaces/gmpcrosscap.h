@@ -37,7 +37,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PCrossCap : public PSurf<T> {
+  class PCrossCap : public PSurf<T,3> {
     GM_SCENEOBJECT(PCrossCap)
   public:
     PCrossCap( T radius = T(2) );

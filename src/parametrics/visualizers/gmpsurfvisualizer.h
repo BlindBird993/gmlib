@@ -42,10 +42,10 @@
 
 namespace GMlib {
 
-  template <typename T>
+  template <typename T, int n>
   class PSurf;
 
-  template <typename T>
+  template <typename T, int n>
   class PSurfVisualizer : public Visualizer {
   public:
     PSurfVisualizer();
@@ -53,29 +53,29 @@ namespace GMlib {
 
 
     virtual void  replot(
-      DMatrix< DMatrix< Vector<T, 3> > >& p,
-      DMatrix< Vector<T, 3> >& normals,
+      DMatrix< DMatrix< Vector<T, n> > >& p,
+      DMatrix< Vector<T,3> >& normals,
       int m1, int m2, int d1, int d2,
       bool closed_u, bool closed_v
     );
     void          set( DisplayObject* obj );
 
-    static void   fillMap( GLuint map, const DMatrix< DMatrix< Vector< T,3> > >& p, int d1, int d2 );
-    static void   fillNMap(GLuint nmap, const DMatrix< DMatrix< Vector<T, 3> > >& p , bool closed_u, bool closed_v);
+    static void   fillMap( GLuint map, const DMatrix< DMatrix< Vector<T,n> > >& p, int d1, int d2 );
+    static void   fillNMap(GLuint nmap, const DMatrix< DMatrix< Vector<T,n> > >& p , bool closed_u, bool closed_v);
     static void   fillStandardIBO( GLuint vbo_id, int m1, int m2 );
     static void   fillStandardVBO(GL::VertexBufferObject &vbo,
                                   unsigned int &no_vertices,
-                                  const DMatrix< DMatrix< Vector<T, 3> > >& p );
+                                  const DMatrix< DMatrix< Vector<T,n> > >& p );
     static void   fillTriangleStripIBO(GL::IndexBufferObject& ibo, int m1, int m2 );
     static void   fillTriangleStripTexVBO( GLuint vbo_id, int m1, int m2 );
-    static void   fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< Vector<T, 3> >& normals );
-    static void   fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1 = 0, int d2 = 0 );
+    static void   fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< Vector<T,3> >& normals );
+    static void   fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix< Vector<T,n> > >& p, int d1 = 0, int d2 = 0 );
     static void   compTriangleStripProperties( int m1, int m2, GLuint& no_strips, GLuint& no_strip_indices, GLsizei& strip_size );
-    static void   getTriangleStripDataInfo( const DMatrix< DMatrix< Vector<T, 3> > >& p, int& no_dp, int& no_strips, int& no_verts_per_strips );
+    static void   getTriangleStripDataInfo( const DMatrix< DMatrix< Vector<T,n> > >& p, int& no_dp, int& no_strips, int& no_verts_per_strips );
 
 
   protected:
-    PSurf<T>      *_surf;
+    PSurf<T,3>    *_surf;
 
   }; // END class PSurfVisualizer
 

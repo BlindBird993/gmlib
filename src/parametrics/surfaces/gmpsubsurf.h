@@ -41,11 +41,11 @@ namespace GMlib {
 
 
   template <typename T>
-  class PSubSurf : public PSurf<T> {
+  class PSubSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PSubSurf)
   public:
-    PSubSurf( PSurf<T>* s, T su, T eu, T sv, T ev);
-    PSubSurf( PSurf<T>* s, T su, T eu, T u, T sv, T ev, T v);
+    PSubSurf( PSurf<T,3>* s, T su, T eu, T sv, T ev);
+    PSubSurf( PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v);
     PSubSurf( const PSubSurf<T>& copy );
 
     virtual ~PSubSurf();
@@ -58,7 +58,7 @@ namespace GMlib {
 
   protected:
 
-    PSurf<T>*           _s;
+    PSurf<T,3>*           _s;
     T                   _su;
     T                   _sv;
     T                   _u;
@@ -78,7 +78,7 @@ namespace GMlib {
   private:
 
     // Local help functions
-    void set(PSurf<T>* s, T su, T eu, T u, T sv, T ev, T v);
+    void set(PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v);
 
   }; // END class PSubSurf
 

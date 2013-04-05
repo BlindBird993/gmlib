@@ -41,11 +41,11 @@
 namespace GMlib {
 
   template <typename T>
-  class PBezierCurveSurf : public PSurf<T> {
+  class PBezierCurveSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PBezierCurveSurf)
   public:
-    PBezierCurveSurf( Array<PCurve<T>*> cu, bool swap_par=false);
-    PBezierCurveSurf( PCurve<T>* c1, PCurve<T>* c2, bool swap_par=false);
+    PBezierCurveSurf( Array<PCurve<T,3>*> cu, bool swap_par=false);
+    PBezierCurveSurf( PCurve<T,3>* c1, PCurve<T,3>* c2, bool swap_par=false);
     PBezierCurveSurf( const PBezierCurveSurf<T>& su );
     virtual ~PBezierCurveSurf();
 
@@ -60,7 +60,7 @@ namespace GMlib {
     T             getStartPU();
     T             getStartPV();
 
-    Array<PCurve<T>*>   _cu;
+    Array<PCurve<T,3>*>   _cu;
 
     bool                _swap_par;
 

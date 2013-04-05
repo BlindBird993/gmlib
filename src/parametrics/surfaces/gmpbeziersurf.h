@@ -44,7 +44,7 @@ namespace GMlib {
 
 
   template <typename T>
-  class PBezierSurf : public PSurf<T> {
+  class PBezierSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PBezierSurf)
 
   public:

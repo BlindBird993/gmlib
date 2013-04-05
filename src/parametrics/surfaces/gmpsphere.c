@@ -53,7 +53,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSphere<T>::PSphere( const PSphere<T>& copy ) : PSurf<T>( copy ) {}
+  PSphere<T>::PSphere( const PSphere<T>& copy ) : PSurf<T,3>( copy ) {}
 
 
   template <typename T>

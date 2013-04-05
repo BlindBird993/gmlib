@@ -36,7 +36,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSurfCurve<T>::PSurfCurve(  PSurf<T>* s,  const Point<T,2>& p1,   const Point<T,2>& p2 )
+  PSurfCurve<T>::PSurfCurve(  PSurf<T,3>* s,  const Point<T,2>& p1,   const Point<T,2>& p2 )
   {
     this->_dm = GM_DERIVATION_EXPLICIT;
 
@@ -51,7 +51,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSurfCurve<T>::PSurfCurve(  PSurf<T>* s,  const Point<T,2>& p1,   const Point<T,2>& p2,
+  PSurfCurve<T>::PSurfCurve(  PSurf<T,3>* s,  const Point<T,2>& p1,   const Point<T,2>& p2,
                                             const Vector<T,2>& v1,  const Vector<T,2>& v2 )
   {
      this->_dm = GM_DERIVATION_EXPLICIT;
@@ -70,7 +70,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSurfCurve<T>::PSurfCurve( const PSurfCurve<T>& copy ) : PCurve<T>( copy ) {
+  PSurfCurve<T>::PSurfCurve( const PSurfCurve<T>& copy ) : PCurve<T,3>( copy ) {
 
       _der_curve = copy._der_curve;
       _plot = false;
@@ -109,7 +109,7 @@ namespace GMlib {
   {
     this->_p.setDim( d + 1 );
 
-    DMatrix<Vector<T,3> > m = _s->evaluateParent(_p1 + t*_dv , d);
+    DMatrix< Vector<T,3> > m = _s->evaluateParent(_p1 + t*_dv , d);
 
     this->_p[0] = m[0][0];
     if(d>0)
@@ -302,7 +302,7 @@ namespace GMlib {
         };
       }
       else
-        PCurve<T>::resample(  p, m, d, start, end );
+        PCurve<T,3>::resample(  p, m, d, start, end );
   }
 
 

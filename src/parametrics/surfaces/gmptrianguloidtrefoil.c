@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PTrianguloidTrefoil<T>::PTrianguloidTrefoil( const PTrianguloidTrefoil<T>& copy ) : PSurf<T>( copy ) {
+  PTrianguloidTrefoil<T>::PTrianguloidTrefoil( const PTrianguloidTrefoil<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

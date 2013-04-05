@@ -45,18 +45,18 @@
 
 namespace GMlib {
 
-  template <typename T>
-  PSurfVisualizer<T>::PSurfVisualizer() {
+  template <typename T, int n>
+  PSurfVisualizer<T,n>::PSurfVisualizer() {
 
     _surf = 0x0;
   }
 
-  template <typename T>
-  PSurfVisualizer<T>::~PSurfVisualizer() {}
+  template <typename T, int n>
+  PSurfVisualizer<T,n>::~PSurfVisualizer() {}
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::fillMap(GLuint map, const DMatrix<DMatrix<Vector<T,3> > > &p, int d1, int d2) {
+  void PSurfVisualizer<T,n>::fillMap(GLuint map, const DMatrix<DMatrix<Vector<T,n> > > &p, int d1, int d2) {
 
     DVector< Vector<float,3> > tex_data(p.getDim1() * p.getDim2());
     Vector<float,3> *ptr = tex_data.getPtr();
@@ -76,9 +76,9 @@ namespace GMlib {
     glBindTexture( GL_TEXTURE_2D, map );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::fillNMap(GLuint nmap, const DMatrix<DMatrix<Vector<T,3> > >& p, bool closed_u, bool closed_v) {
+  void PSurfVisualizer<T,n>::fillNMap(GLuint nmap, const DMatrix<DMatrix<Vector<T,n> > >& p, bool closed_u, bool closed_v) {
 
     int m1 = closed_u ? p.getDim1()-1 : p.getDim1();
     int m2 = closed_v ? p.getDim2()-1 : p.getDim2();
@@ -107,9 +107,9 @@ namespace GMlib {
     glBindTexture( GL_TEXTURE_2D, 0 );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::fillStandardIBO( GLuint ibo_id, int m1, int m2 ) {
+  void PSurfVisualizer<T,n>::fillStandardIBO( GLuint ibo_id, int m1, int m2 ) {
 
     const int no_indices = m1 * m2;
 
@@ -125,11 +125,11 @@ namespace GMlib {
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::fillStandardVBO(GL::VertexBufferObject &vbo,
+  void PSurfVisualizer<T,n>::fillStandardVBO(GL::VertexBufferObject &vbo,
                                          unsigned int &no_vertices,
-                                         const DMatrix<DMatrix<Vector<T,3> > > &p) {
+                                         const DMatrix<DMatrix<Vector<T,n> > > &p) {
 
     no_vertices = p.getDim1() * p.getDim2();
 
@@ -156,9 +156,9 @@ namespace GMlib {
     vbo.unbind();
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::fillTriangleStripIBO(GL::IndexBufferObject& ibo, int m1, int m2) {
+  void PSurfVisualizer<T,n>::fillTriangleStripIBO(GL::IndexBufferObject& ibo, int m1, int m2) {
 
 
     const int no_indices = (m1-1) * m2 * 2;
@@ -180,9 +180,9 @@ namespace GMlib {
     ibo.unbind();
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< Vector<T, 3> >& normals ) {
+  void PSurfVisualizer<T,n>::fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< Vector<T,3> >& normals ) {
 
     int no_normals = (normals.getDim1()-1) * normals.getDim2() * 2;
 
@@ -216,9 +216,9 @@ namespace GMlib {
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::fillTriangleStripTexVBO( GLuint vbo_id, int m1, int m2 ) {
+  void PSurfVisualizer<T,n>::fillTriangleStripTexVBO( GLuint vbo_id, int m1, int m2 ) {
 
     int no_tex = (m1-1) * m2 * 2;
 
@@ -247,14 +247,14 @@ namespace GMlib {
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix< Vector<T, 3> > >& p, int d1, int d2 ) {
+  void PSurfVisualizer<T,n>::fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix< Vector<T,n> > >& p, int d1, int d2 ) {
 
     int no_dp;
     int no_strips;
     int no_verts_per_strips;
-    PSurfVisualizer<T>::getTriangleStripDataInfo( p, no_dp, no_strips, no_verts_per_strips );
+    PSurfVisualizer<T,n>::getTriangleStripDataInfo( p, no_dp, no_strips, no_verts_per_strips );
 
     glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
     glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(float), 0x0,  GL_DYNAMIC_DRAW );
@@ -283,39 +283,39 @@ namespace GMlib {
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::compTriangleStripProperties(int m1, int m2, GLuint &no_strips, GLuint &no_strip_indices, GLsizei &strip_size) {
+  void PSurfVisualizer<T,n>::compTriangleStripProperties(int m1, int m2, GLuint &no_strips, GLuint &no_strip_indices, GLsizei &strip_size) {
 
     no_strips = m1 - 1;
     no_strip_indices = m2 * 2;
     strip_size = no_strip_indices * sizeof(GLuint);
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::getTriangleStripDataInfo( const DMatrix< DMatrix< Vector<T, 3> > >& p, int& no_dp, int& no_strips, int& no_verts_per_strips ) {
+  void PSurfVisualizer<T,n>::getTriangleStripDataInfo( const DMatrix< DMatrix< Vector<T,n> > >& p, int& no_dp, int& no_strips, int& no_verts_per_strips ) {
 
     no_dp = (p.getDim1()-1) * p.getDim2() * 2;
     no_strips = p.getDim1()-1;
     no_verts_per_strips = p.getDim2()*2;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfVisualizer<T>::replot(
-    DMatrix< DMatrix< Vector<T, 3> > >& /*p*/,
-    DMatrix< Vector<T, 3> >& /*normals*/,
+  void PSurfVisualizer<T,n>::replot(
+    DMatrix< DMatrix< Vector<T,n> > >& /*p*/,
+    DMatrix< Vector<T,3> >& /*normals*/,
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     bool /*closed_u*/, bool /*closed_v*/
   ) {}
 
-  template <typename T>
-  void PSurfVisualizer<T>::set( DisplayObject* obj ) {
+  template <typename T, int n>
+  void PSurfVisualizer<T,n>::set( DisplayObject* obj ) {
 
     Visualizer::set( obj );
 
-    _surf = dynamic_cast<PSurf<T>*>( obj );
+    _surf = dynamic_cast<PSurf<T,n>*>( obj );
   }
 
 

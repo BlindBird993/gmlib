@@ -21,39 +21,39 @@
 # ###############################################################################
 
 addHeaders(
-  gmPCurveContoursVisualizer
+#  gmPCurveContoursVisualizer
   gmPCurveDefaultVisualizer
-  gmPCurveDerivativesVisualizer
-  gmPCurvePointsVisualizer
+#  gmPCurveDerivativesVisualizer
+#  gmPCurvePointsVisualizer
   gmPCurveVisualizer
-  gmPSurfContoursVisualizer
+#  gmPSurfContoursVisualizer
   gmPSurfDefaultVisualizer
-  gmPSurfDerivativesVisualizer
-  gmPSurfNormalsVisualizer
-  gmPSurfPointsVisualizer
+#  gmPSurfDerivativesVisualizer
+#  gmPSurfNormalsVisualizer
+#  gmPSurfPointsVisualizer
 #  gmPSurfTexVisualizer
   gmPSurfVisualizer
-  gmPTriangleColorPointVisualizer
-  gmPTriangleColorVisualizer
+#  gmPTriangleColorPointVisualizer
+#  gmPTriangleColorVisualizer
   gmPTriangleDefaultVisualizer
   gmPTriangleVisualizer
 )
 
 addTemplateSources(
-  gmpcurvecontoursvisualizer.c
+#  gmpcurvecontoursvisualizer.c
   gmpcurvedefaultvisualizer.c
-  gmpcurvederivativesvisualizer.c
-  gmpcurvepointsvisualizer.c
+#  gmpcurvederivativesvisualizer.c
+#  gmpcurvepointsvisualizer.c
   gmpcurvevisualizer.c
-  gmpsurfcontoursvisualizer.c
+#  gmpsurfcontoursvisualizer.c
   gmpsurfdefaultvisualizer.c
-  gmpsurfderivativesvisualizer.c
-  gmpsurfnormalsvisualizer.c
-  gmpsurfpointsvisualizer.c
+#  gmpsurfderivativesvisualizer.c
+#  gmpsurfnormalsvisualizer.c
+#  gmpsurfpointsvisualizer.c
 #  gmpsurftexvisualizer.c
   gmpsurfvisualizer.c
-  gmptrianglecolorpointvisualizer.c
-  gmptrianglecolorvisualizer.c
+#  gmptrianglecolorpointvisualizer.c
+#  gmptrianglecolorvisualizer.c
   gmptriangledefaultvisualizer.c
   gmptrianglevisualizer.c
 )

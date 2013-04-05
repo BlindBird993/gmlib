@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PEnnepersSurface<T>::PEnnepersSurface( const PEnnepersSurface<T>& copy ) : PSurf<T>( copy ) {
+  PEnnepersSurface<T>::PEnnepersSurface( const PEnnepersSurface<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

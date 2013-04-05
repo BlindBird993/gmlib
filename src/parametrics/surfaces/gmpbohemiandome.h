@@ -36,7 +36,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PBohemianDome : public PSurf<T> {
+  class PBohemianDome : public PSurf<T,3> {
     GM_SCENEOBJECT(PBohemianDome)
   public:
     PBohemianDome( T radius = T(5), T domewidth=T(2), T height=T(2) );

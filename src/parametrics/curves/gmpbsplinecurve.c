@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBSplineCurve<T>::PBSplineCurve( const PBSplineCurve<T>& copy ) : PCurve<T>( copy ) {}
+  PBSplineCurve<T>::PBSplineCurve( const PBSplineCurve<T>& copy ) : PCurve<T,3>( copy ) {}
 
 
   template <typename T>

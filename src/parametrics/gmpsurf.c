@@ -57,7 +57,7 @@ namespace GMlib {
     setNoDer( 2 );
     //_setSam( s1, s2 );
 
-    _default_visualizer = new PSurfDefaultVisualizer<T>();
+    _default_visualizer = new PSurfDefaultVisualizer<T,n>();
     enableDefaultVisualizer( true );
   }
 
@@ -87,7 +87,7 @@ namespace GMlib {
     _no_der_u     = copy._no_sam_u;
     _no_der_v     = copy._no_sam_v;
 
-    _default_visualizer = new PSurfDefaultVisualizer<T>();
+    _default_visualizer = new PSurfDefaultVisualizer<T,n>();
     enableDefaultVisualizer( true );
   }
 
@@ -602,7 +602,7 @@ namespace GMlib {
 
     DisplayObject::insertVisualizer( visualizer );
 
-    PSurfVisualizer<T> *visu = dynamic_cast<PSurfVisualizer<T>*>( visualizer );
+    PSurfVisualizer<T,n> *visu = dynamic_cast<PSurfVisualizer<T,n>*>( visualizer );
     if( !visu )
       return;
 
@@ -743,7 +743,7 @@ namespace GMlib {
   inline
   void PSurf<T,n>::removeVisualizer( Visualizer *visualizer ) {
 
-    PSurfVisualizer<T> *visu = dynamic_cast<PSurfVisualizer<T>*>( visualizer );
+    PSurfVisualizer<T,n> *visu = dynamic_cast<PSurfVisualizer<T,n>*>( visualizer );
     if( visu )
       _psurf_visualizers.remove( visu );
 
@@ -809,13 +809,13 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  void PSurf<T,n>::resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,n> > &normals ) const {
+  void PSurf<T,n>::resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,3> > &normals ) const {
 
     normals.setDim( sample.getDim1(), sample.getDim2() );
 
     for( int i = 0; i < sample.getDim1(); i++ )
       for( int j = 0; j < sample.getDim2(); j++ )
-        normals[i][j] = sample(i)(j)(1)(0)^sample(i)(j)(0)(1);
+        normals[i][j] = Vector<T,3>(sample(i)(j)(1)(0))^Vector<T,3>(sample(i)(j)(0)(1));
   }
 
 

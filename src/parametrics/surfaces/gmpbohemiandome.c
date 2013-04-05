@@ -46,7 +46,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBohemianDome<T>::PBohemianDome( const PBohemianDome<T>& copy ) : PSurf<T>( copy ) {
+  PBohemianDome<T>::PBohemianDome( const PBohemianDome<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

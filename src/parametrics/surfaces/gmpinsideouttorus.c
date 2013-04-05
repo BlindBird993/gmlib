@@ -46,7 +46,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PInsideOutTorus<T>::PInsideOutTorus( const PInsideOutTorus<T>& copy ) : PSurf<T>( copy ) {
+  PInsideOutTorus<T>::PInsideOutTorus( const PInsideOutTorus<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

@@ -43,10 +43,10 @@
 namespace GMlib {
 
   template <typename T>
-  class PRotationalSurf : public PSurf<T> {
+  class PRotationalSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PRotationalSurf)
   public:
-    PRotationalSurf( PCurve<T>* cu, T start_par, T end_par );
+    PRotationalSurf( PCurve<T,3>* cu, T start_par, T end_par );
     PRotationalSurf( const PRotationalSurf<T>& su );
     virtual ~PRotationalSurf();
 
@@ -62,7 +62,7 @@ namespace GMlib {
     T             getStartPV();
 
 
-    PCurve<T>*    _cu;
+    PCurve<T,3>*    _cu;
     T             _start_par;
     T             _end_par;
 

@@ -46,7 +46,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PTorus<T>::PTorus( const PTorus<T>& copy ) : PSurf<T>( copy ) {
+  PTorus<T>::PTorus( const PTorus<T>& copy ) : PSurf<T,3>(copy) {
 
     _a = copy._a;
     _b = copy._b;

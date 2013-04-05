@@ -45,7 +45,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PMoebiusStrip<T>::PMoebiusStrip( const PMoebiusStrip<T>& copy ) : PSurf<T>( copy ) {
+  PMoebiusStrip<T>::PMoebiusStrip( const PMoebiusStrip<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

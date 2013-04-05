@@ -44,7 +44,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PKuenSurface<T>::PKuenSurface( const PKuenSurface<T>& copy ) : PSurf<T>( copy ) {
+  PKuenSurface<T>::PKuenSurface( const PKuenSurface<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

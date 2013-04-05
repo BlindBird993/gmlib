@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSlippersSurface<T>::PSlippersSurface( const PSlippersSurface<T>& copy ) : PSurf<T>( copy ) {
+  PSlippersSurface<T>::PSlippersSurface( const PSlippersSurface<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

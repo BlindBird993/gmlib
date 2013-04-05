@@ -49,7 +49,7 @@ namespace GMlib {
 
 
   template <typename T, typename G = long double>
-  class PBasisCurve : public PCurve<T> {
+  class PBasisCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PBasisCurve)
   public:
     PBasisCurve();

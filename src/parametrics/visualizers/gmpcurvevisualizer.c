@@ -35,20 +35,20 @@
 
 namespace GMlib {
 
-  template <typename T>
-      PCurveVisualizer<T>::PCurveVisualizer() {
+  template <typename T, int n>
+  PCurveVisualizer<T,n>::PCurveVisualizer() {
 
     _curve = 0x0;
     setRenderProgram( GL::GLProgram("color") );
   }
 
-  template <typename T>
-  PCurveVisualizer<T>::~PCurveVisualizer() {}
+  template <typename T, int n>
+  PCurveVisualizer<T,n>::~PCurveVisualizer() {}
 
-  template <typename T>
-  void PCurveVisualizer<T>::fillStandardVBO(
+  template <typename T, int n>
+  void PCurveVisualizer<T,n>::fillStandardVBO(
       GL::VertexBufferObject &vbo, unsigned int &no_vertices,
-      DVector< DVector< Vector<T, 3> > >& p, int d ) {
+      DVector< DVector< Vector<T, n> > >& p, int d ) {
 
     no_vertices = p.getDim();
 
@@ -70,9 +70,9 @@ namespace GMlib {
     vbo.unbind();
   }
 
-//  template <typename T>
+//  template <typename T, int n>
 //  inline
-//  void PCurveVisualizer<T>::populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d ) {
+//  void PCurveVisualizer<T,n>::populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d ) {
 
 //    no_dp = p.getDim();
 
@@ -91,19 +91,19 @@ namespace GMlib {
 //    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 //  }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurveVisualizer<T>::replot(
-    DVector< DVector< Vector<T, 3> > >& /*p*/,
+  void PCurveVisualizer<T,n>::replot(
+    DVector< DVector< Vector<T, n> > >& /*p*/,
     int /*m*/, int /*d*/, bool /*closed*/
   ) {}
 
-  template <typename T>
-  void PCurveVisualizer<T>::set( DisplayObject* obj ) {
+  template <typename T, int n>
+  void PCurveVisualizer<T,n>::set( DisplayObject* obj ) {
 
     Visualizer::set(obj);
 
-    _curve = dynamic_cast<PCurve<T>*>( obj );
+    _curve = dynamic_cast<PCurve<T,n>*>( obj );
   }
 
 

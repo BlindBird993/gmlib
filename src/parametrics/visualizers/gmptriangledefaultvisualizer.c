@@ -32,18 +32,18 @@
 namespace GMlib {
 
 
-  template <typename T>
-  PTriangleDefaultVisualizer<T>::PTriangleDefaultVisualizer() : _vbo(), _ibo() {
+  template <typename T, int n>
+  PTriangleDefaultVisualizer<T,n>::PTriangleDefaultVisualizer() : _vbo(), _ibo() {
 
     _no_elements = 0;
   }
 
-  template <typename T>
-  PTriangleDefaultVisualizer<T>::~PTriangleDefaultVisualizer() {}
+  template <typename T, int n>
+  PTriangleDefaultVisualizer<T,n>::~PTriangleDefaultVisualizer() {}
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangleDefaultVisualizer<T>::display() {
+  void PTriangleDefaultVisualizer<T,n>::display() {
 
     this->glSetDisplayMode();
 
@@ -79,22 +79,22 @@ namespace GMlib {
     _vbo.unbind();
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangleDefaultVisualizer<T>::replot( const DVector< DVector< Vector<T,3> > >& p, int m ) {
+  void PTriangleDefaultVisualizer<T,n>::replot( const DVector< DVector< Vector<T,3> > >& p, int m ) {
 
-    _no_elements = PTriangleVisualizer<float>::getNoTriangles( m-1 ) * 3;
+    _no_elements = PTriangleVisualizer<T,n>::getNoTriangles( m-1 ) * 3;
 
     // Fill VBO
-    PTriangleVisualizer<T>::fillStandardVBO( _vbo, p );
+    PTriangleVisualizer<T,n>::fillStandardVBO( _vbo, p );
 
     // Fill IBO
-    PTriangleVisualizer<T>::fillTriangleIBO( _ibo, m );
+    PTriangleVisualizer<T,n>::fillTriangleIBO( _ibo, m );
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PTriangleDefaultVisualizer<T>::select() {
+  void PTriangleDefaultVisualizer<T,n>::select() {
 
     GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
 

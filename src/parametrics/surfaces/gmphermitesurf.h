@@ -51,7 +51,7 @@ namespace GMlib {
    *	This type of interpolation is called Hermite interpolation.
    */
   template <typename T>
-  class PHermiteSurf : public PSurf<T> {
+  class PHermiteSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PHermiteSurf)
   public:
     PHermiteSurf( const DMatrix<Vector<T,3> >& m);

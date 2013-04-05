@@ -38,7 +38,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PBottle8 : public PSurf<T> {
+  class PBottle8 : public PSurf<T,3> {
     GM_SCENEOBJECT(PBottle8)
   public:
     PBottle8( T radius = T(4) );

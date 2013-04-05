@@ -65,7 +65,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PHermiteSurf<T>::PHermiteSurf( const PHermiteSurf<T>& copy ) : PSurf<T>( copy )
+  PHermiteSurf<T>::PHermiteSurf( const PHermiteSurf<T>& copy ) : PSurf<T,3>( copy )
   {
     _m = copy._m;
   }

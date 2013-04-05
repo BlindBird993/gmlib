@@ -38,7 +38,7 @@ namespace GMlib {
 
 
   template <typename T>
-  class PCircle : public PCurve<T> {
+  class PCircle : public PCurve<T,3> {
     GM_SCENEOBJECT(PCircle)
   public:
     PCircle( T radius = T(20) );

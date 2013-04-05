@@ -46,7 +46,7 @@
 
 namespace GMlib {
 
-  template <typename T>
+  template <typename T, int n>
   class PTriangle;
 
   struct PTriangleVertex {
@@ -60,19 +60,19 @@ namespace GMlib {
     float padding[4];
   };
 
-  template <typename T>
+  template <typename T, int n>
   class PTriangleVisualizer : public Visualizer {
   public:
     PTriangleVisualizer();
     virtual ~PTriangleVisualizer();
 
     virtual void    replot(
-      const DVector< DVector< Vector<T,3> > >& p,int m
+      const DVector< DVector< Vector<T,n> > >& p,int m
     );
     void            set( DisplayObject* obj );
 
 
-    static void     fillStandardVBO( GL::VertexBufferObject vbo, const DVector< DVector< Vector<T,3> > >& p );
+    static void     fillStandardVBO( GL::VertexBufferObject vbo, const DVector< DVector< Vector<T,n> > >& p );
     static void     fillTriangleIBO( GL::IndexBufferObject ibo, int m );
     static void     fillTriangleStripIBO( GLuint ibo_id, int m );
     static int      getNoIndicesInTriangleStrip( int strip_idx );
@@ -82,7 +82,7 @@ namespace GMlib {
     static int      getTriangleStripOffset( int strip_idx );
 
   protected:
-    PTriangle<T>    *_triangle;
+    PTriangle<T,n>    *_triangle;
 
   }; // END class PTriangleVisualizer
 

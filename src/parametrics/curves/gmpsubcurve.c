@@ -36,7 +36,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSubCurve<T>::PSubCurve( PCurve<T>* c, T s, T e )
+  PSubCurve<T>::PSubCurve( PCurve<T,3>* c, T s, T e )
   {
     this->_dm = GM_DERIVATION_EXPLICIT;
 
@@ -50,7 +50,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSubCurve<T>::PSubCurve( PCurve<T>* c, T s, T e, T t )
+  PSubCurve<T>::PSubCurve( PCurve<T,3>* c, T s, T e, T t )
   {
     this->_dm = GM_DERIVATION_EXPLICIT;
 
@@ -64,7 +64,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSubCurve<T>::PSubCurve( const PSubCurve<T>& copy ) : PCurve<T>( copy )
+  PSubCurve<T>::PSubCurve( const PSubCurve<T>& copy ) : PCurve<T,3>( copy )
   {
     set(copy._c, copy._s, copy._e, copy._t);
 
@@ -113,7 +113,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSubCurve<T>::set(PCurve<T>* c, T s, T e, T t)
+  void PSubCurve<T>::set(PCurve<T,3>* c, T s, T e, T t)
   {
     _c = c;
     _s = s;

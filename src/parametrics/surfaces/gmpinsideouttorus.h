@@ -36,7 +36,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PInsideOutTorus : public PSurf<T> {
+  class PInsideOutTorus : public PSurf<T,3> {
     GM_SCENEOBJECT(PInsideOutTorus)
   public:
     PInsideOutTorus( T wheelrad=T(3), T tuberad1=T(1), T tuberad2=T(1) );

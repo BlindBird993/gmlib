@@ -38,7 +38,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSubSurf<T>::PSubSurf( PSurf<T>* s, T su, T eu, T sv, T ev )
+  PSubSurf<T>::PSubSurf( PSurf<T,3>* s, T su, T eu, T sv, T ev )
   {
     this->_dm = GM_DERIVATION_EXPLICIT;
     set(s, su, eu, (su+eu)/2, sv, ev, (sv+ev)/2);
@@ -51,7 +51,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSubSurf<T>::PSubSurf( PSurf<T>* s, T su, T eu, T u, T sv, T ev, T v )
+  PSubSurf<T>::PSubSurf( PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v )
   {
     this->_dm = GM_DERIVATION_EXPLICIT;
     set(s, su, eu, u, sv, ev, v);
@@ -64,7 +64,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSubSurf<T>::PSubSurf( const PSubSurf<T>& copy ) : PSurf<T>( copy )
+  PSubSurf<T>::PSubSurf( const PSubSurf<T>& copy ) : PSurf<T,3>( copy )
   {
     set(copy._s, copy._su, copy._eu, copy._u, copy._sv, copy._ev, copy._v);
     // Set local coordinate system
@@ -129,7 +129,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSubSurf<T>::set(PSurf<T>* s, T su, T eu, T u, T sv, T ev, T v)
+  void PSubSurf<T>::set(PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v)
   {
     _s  = s;
     _su = su;

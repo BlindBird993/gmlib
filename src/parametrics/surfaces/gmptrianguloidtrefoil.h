@@ -35,7 +35,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PTrianguloidTrefoil : public PSurf<T> {
+  class PTrianguloidTrefoil : public PSurf<T,3> {
     GM_SCENEOBJECT(PTrianguloidTrefoil)
   public:
     PTrianguloidTrefoil();

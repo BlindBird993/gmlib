@@ -41,7 +41,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSwallowTail<T>::PSwallowTail( const PSwallowTail<T>& copy ) : PSurf<T>( copy ) {
+  PSwallowTail<T>::PSwallowTail( const PSwallowTail<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

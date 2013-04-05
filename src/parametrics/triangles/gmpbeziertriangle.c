@@ -45,7 +45,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  PBezierTriangle<T>::PBezierTriangle( const PBezierTriangle<T>& copy ) : PTriangle<T>( copy ) {
+  PBezierTriangle<T>::PBezierTriangle( const PBezierTriangle<T>& copy ) : PTriangle<T,3>( copy ) {
 
     _c = copy._c;
 

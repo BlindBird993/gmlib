@@ -37,7 +37,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PChrysanthemumCurve : public PCurve<T> {
+  class PChrysanthemumCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PChrysanthemumCurve)
   public:
     PChrysanthemumCurve( T radius = T(1) );

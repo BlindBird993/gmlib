@@ -38,7 +38,7 @@ namespace GMlib {
 
 
   template <typename T>
-  class PArc : public PCurve<T> {
+  class PArc : public PCurve<T,3> {
     GM_SCENEOBJECT(PArc)
   public:
     PArc( T speed, T curvature );

@@ -39,7 +39,7 @@ namespace GMlib {
 
 
   template <typename T>
-  PAsteroidalSphere<T>::PAsteroidalSphere( const PAsteroidalSphere<T>& copy ) : PSurf<T>( copy ) {
+  PAsteroidalSphere<T>::PAsteroidalSphere( const PAsteroidalSphere<T>& copy ) : PSurf<T,3>( copy ) {
 
     _a = copy._a;
     _b = copy._b;

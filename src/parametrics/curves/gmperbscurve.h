@@ -40,7 +40,7 @@ namespace GMlib {
 
 
   template <typename T>
-  class PERBSCurve : public PCurve<T> {
+  class PERBSCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PERBSCurve)
   public:
 
@@ -51,12 +51,12 @@ namespace GMlib {
     };
 
     PERBSCurve(); // Dummy
-    PERBSCurve( CURVE_TYPE type, PCurve<T>* g, int n, int d = 2 );
+    PERBSCurve( CURVE_TYPE type, PCurve<T,3>* g, int n, int d = 2 );
     PERBSCurve( const PERBSCurve<T>& copy );
     virtual ~PERBSCurve();
 
     void                            edit( SceneObject *obj );
-    DVector< PCurve<T>* >&          getLocalPatches();
+    DVector< PCurve<T,3>* >&          getLocalPatches();
     int                             getNoLocalPatches() const;
     virtual void                    hideLocalPatches();
     bool                            isLocalPatchesVisible() const;
@@ -71,7 +71,7 @@ namespace GMlib {
   protected:
     bool                            _closed;
     DVector<T>                      _t;
-    DVector<PCurve<T>*>             _c;
+    DVector<PCurve<T,3>*>             _c;
 
     BasisEvaluator<long double>*    _evaluator;
 
@@ -93,10 +93,10 @@ namespace GMlib {
   private:
     // Local help functions
     void                            compEval( T t, int d, int k, const DVector<T>& B );
-    void                            generateKnotVector( PCurve<T>* g, int n );
+    void                            generateKnotVector( PCurve<T,3>* g, int n );
     virtual void                    init();
-    void                            insertLocal( PCurve<T> *patch );
-    PCurve<T>*                      makeLocal( CURVE_TYPE type, PCurve<T>* g, T s, T t, T e, int d=2);
+    void                            insertLocal( PCurve<T,3> *patch );
+    PCurve<T,3>*                      makeLocal( CURVE_TYPE type, PCurve<T,3>* g, T s, T t, T e, int d=2);
 
   }; // END class PERBSCurve
 

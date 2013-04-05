@@ -33,7 +33,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PTCurve<T>::PTCurve( PCurve<T>* pcA, PCurve<T>* pcB ) {
+  PTCurve<T>::PTCurve( PCurve<T,3>* pcA, PCurve<T,3>* pcB ) {
 
     _angle      = T(0);
     _pcA        = pcA;
@@ -86,7 +86,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PTCurve<T>::_resample( PCurve<T>* obj, DVector<DVector<Vector<T,3> > >& p, int m, int d ) {
+  void PTCurve<T>::_resample( PCurve<T,3>* obj, DVector<DVector<Vector<T,3> > >& p, int m, int d ) {
 
     p.setDim( m );
 
@@ -177,7 +177,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PTCurve<T>::setPA( PCurve<T>* pcA ) {
+  void PTCurve<T>::setPA( PCurve<T,3>* pcA ) {
 
     _pcA        = pcA;
     _resampleA  = true;
@@ -186,7 +186,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PTCurve<T>::setPB( PCurve<T>* pcB ) {
+  void PTCurve<T>::setPB( PCurve<T,3>* pcB ) {
 
     _pcB        = pcB;
     _resampleB  = true;

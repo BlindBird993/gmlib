@@ -42,7 +42,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBentHorns<T>::PBentHorns( const PBentHorns<T>& copy ) : PSurf<T>( copy ) {
+  PBentHorns<T>::PBentHorns( const PBentHorns<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

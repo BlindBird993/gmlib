@@ -42,27 +42,27 @@
 
 namespace GMlib {
 
-  template <typename T>
+  template <typename T, int n>
   class PCurve;
 
-  template <typename T>
+  template <typename T, int n>
   class PCurveVisualizer : public Visualizer {
   public:
     PCurveVisualizer();
     virtual ~PCurveVisualizer();
 
     virtual void  replot(
-      DVector< DVector< Vector<T, 3> > >& p,
+      DVector< DVector< Vector<T, n> > >& p,
       int m, int d, bool closed
     );
     void          set( DisplayObject* obj );
 
     static void   fillStandardVBO( GL::VertexBufferObject& vbo, unsigned int& no_vertices,
-                                   DVector< DVector< Vector<T, 3> > >& p, int d = 0);
+                                   DVector< DVector< Vector<T, n> > >& p, int d = 0);
 //    static void   populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d = 0 );
 
   protected:
-    PCurve<T>     *_curve;
+    PCurve<T,n>   *_curve;
 
   }; // END class PCurveVisualizer
 

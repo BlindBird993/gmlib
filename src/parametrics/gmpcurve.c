@@ -52,7 +52,7 @@ namespace GMlib {
     this->_lighted    = false;
     _line_width       = 3.0;
 
-    _default_visualizer = new PCurveDefaultVisualizer<T>();
+    _default_visualizer = new PCurveDefaultVisualizer<T,n>();
     enableDefaultVisualizer( true );
   }
 
@@ -76,7 +76,7 @@ namespace GMlib {
 
     setNoDer(2);
 
-    _default_visualizer = new PCurveDefaultVisualizer<T>();
+    _default_visualizer = new PCurveDefaultVisualizer<T,n>();
     enableDefaultVisualizer( true );
   }
 
@@ -352,7 +352,7 @@ namespace GMlib {
 
     DisplayObject::insertVisualizer( visualizer );
 
-    PCurveVisualizer<T> *visu = dynamic_cast<PCurveVisualizer<T>*>( visualizer );
+    PCurveVisualizer<T,n> *visu = dynamic_cast<PCurveVisualizer<T,n>*>( visualizer );
     if( !visu )
       return;
 
@@ -408,7 +408,7 @@ namespace GMlib {
   template <typename T, int n>
   void PCurve<T,n>::removeVisualizer( Visualizer* visualizer ) {
 
-    PCurveVisualizer<T> *visu = dynamic_cast<PCurveVisualizer<T>*>( visualizer );
+    PCurveVisualizer<T,n> *visu = dynamic_cast<PCurveVisualizer<T,n>*>( visualizer );
     if( visu )
       _pcurve_visualizers.remove( visu );
 

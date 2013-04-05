@@ -46,7 +46,7 @@ namespace GMlib {
     namespace Lua {
 
       template <typename T>
-      class PLuaScriptSurf : public PSurf<T>, public LuaScript {
+      class PLuaScriptSurf : public PSurf<T,3>, public LuaScript {
         GM_SCENEOBJECT(PLuaScriptSurf)
       public:
         PLuaScriptSurf();

@@ -46,7 +46,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PHelicoid<T>::PHelicoid( const PHelicoid<T>& copy ) : PSurf<T>( copy ) {
+  PHelicoid<T>::PHelicoid( const PHelicoid<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

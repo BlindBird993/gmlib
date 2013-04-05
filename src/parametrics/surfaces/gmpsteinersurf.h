@@ -35,7 +35,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PSteinerSurf : public PSurf<T> {
+  class PSteinerSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PSteinerSurf)
   public:
     PSteinerSurf( T radius = T(20) );

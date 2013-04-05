@@ -43,7 +43,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PApple<T>::PApple( const PApple<T>& copy ) : PSurf<T>( copy ) {
+  PApple<T>::PApple( const PApple<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

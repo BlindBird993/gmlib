@@ -224,7 +224,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  PERBSSurf<T>::PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2 ) {
+  PERBSSurf<T>::PERBSSurf( PSurf<T,3>* g, int no_locals_u, int no_locals_v, int d1, int d2 ) {
 
     this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
 
@@ -304,7 +304,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  PERBSSurf<T>::PERBSSurf( PSurf<T>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e ) {
+  PERBSSurf<T>::PERBSSurf( PSurf<T,3>* g, int no_locals_u, int no_locals_v, int d1, int d2, T u_s, T u_e, T v_s, T v_e ) {
 
     this->_type_id = GM_SO_TYPE_SURFACE_ERBS;
 
@@ -392,7 +392,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  PERBSSurf<T>::PERBSSurf( const PERBSSurf<T>& copy ) : PSurf<T>( copy ) {
+  PERBSSurf<T>::PERBSSurf( const PERBSSurf<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 
@@ -413,7 +413,7 @@ namespace GMlib {
     _v  = copy._v;
 
     // sync local patches
-    const DMatrix< PSurf<T>* >  &c = copy._c;
+    const DMatrix< PSurf<T,3>* >  &c = copy._c;
     _c.setDim( c.getDim1(), c.getDim2() );
     Array< unsigned int > cl;
     Array< std::pair<int,int> > cli;
@@ -437,7 +437,7 @@ namespace GMlib {
           std::pair<int,int> idx = cli[j];
 
           // Static cast to PSurf<T>* as the local patch has to be of this type.
-          _c[idx.first][idx.second] = static_cast<PSurf<T>*>(child);
+          _c[idx.first][idx.second] = static_cast<PSurf<T,3>*>(child);
 
           cl.removeIndex(j);
           cli.removeIndex(j);
@@ -475,7 +475,7 @@ namespace GMlib {
     if( bezier )
       bezier->updateCoeffs( _c[i][j]->getPos() - _c[i][j]->evaluate( 0.5, 0.5, 0, 0 )[0][0] );
 
-    PSurf<T>::replot(0,0);
+    PSurf<T,3>::replot(0,0);
   }
 
 
@@ -644,7 +644,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  void PERBSSurf<T>::generateKnotVector( PSurf<T>* g ) {
+  void PERBSSurf<T>::generateKnotVector( PSurf<T,3>* g ) {
 
     // Knot Vector in U direction
     generateKnotVector(
@@ -677,7 +677,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  void PERBSSurf<T>::generateKnotVector( PSurf<T>* g, T u_s, T u_e, T v_s, T v_e ) {
+  void PERBSSurf<T>::generateKnotVector( PSurf<T,3>* g, T u_s, T u_e, T v_s, T v_e ) {
 
     T start_u = g->getParStartU() + g->getParStartU() * u_s;
     T delta_u = g->getParDeltaU() * u_e - u_s;
@@ -866,7 +866,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  DMatrix< PSurf<T>* >& PERBSSurf<T>::getLocalPatches() {
+  DMatrix< PSurf<T,3>* >& PERBSSurf<T>::getLocalPatches() {
 
     return _c;
   }
@@ -943,7 +943,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  void PERBSSurf<T>::insertPatch( PSurf<T>* patch ) {
+  void PERBSSurf<T>::insertPatch( PSurf<T,3>* patch ) {
 
     patch->replot( 10, 10 );
     patch->setVisible( false );

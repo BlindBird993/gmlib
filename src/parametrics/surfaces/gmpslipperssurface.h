@@ -36,7 +36,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PSlippersSurface : public PSurf<T> {
+  class PSlippersSurface : public PSurf<T,3> {
     GM_SCENEOBJECT(PSlippersSurface)
   public:
     PSlippersSurface();

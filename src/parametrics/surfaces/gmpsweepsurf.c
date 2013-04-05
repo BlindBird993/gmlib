@@ -37,7 +37,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSweepSurf<T>::PSweepSurf( PCurve<T>* profile, PCurve<T>* spine, bool RMF) {
+  PSweepSurf<T>::PSweepSurf( PCurve<T,3>* profile, PCurve<T,3>* spine, bool RMF) {
 
     this->_dm = GM_DERIVATION_EXPLICIT;
 
@@ -52,7 +52,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSweepSurf<T>::PSweepSurf( const PSweepSurf<T>& copy ) : PSurf<T>( copy ) {
+  PSweepSurf<T>::PSweepSurf( const PSweepSurf<T>& copy ) : PSurf<T,3>( copy ) {
 
       _profile = copy._profile;
       _spine   = copy._spine;

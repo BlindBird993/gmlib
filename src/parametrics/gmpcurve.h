@@ -42,10 +42,10 @@
 
 namespace GMlib {
 
-  template <typename T>
+  template <typename T, int n>
   class PCurveVisualizer;
 
-  template <typename T>
+  template <typename T, int n>
   class PCurveDefaultVisualizer;
 
 
@@ -95,8 +95,8 @@ namespace GMlib {
     Point<T,n>                operator()( T t );
 
   protected:
-    Array<PCurveVisualizer<T>*>   _pcurve_visualizers;
-    PCurveDefaultVisualizer<T>    *_default_visualizer;
+    Array<PCurveVisualizer<T,n>*>   _pcurve_visualizers;
+    PCurveDefaultVisualizer<T,n>    *_default_visualizer;
 
     int                       _no_sam;      // Number of samples for single sampling
     int                       _no_der;      // Number of derivatives

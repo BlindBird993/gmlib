@@ -44,7 +44,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCrossCap<T>::PCrossCap( const PCrossCap<T>& copy ) : PSurf<T>( copy ) {
+  PCrossCap<T>::PCrossCap( const PCrossCap<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
 

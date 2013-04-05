@@ -36,7 +36,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PSwallowTail : public PSurf<T> {
+  class PSwallowTail : public PSurf<T,3> {
     GM_SCENEOBJECT(PSwallowTail)
   public:
     PSwallowTail();

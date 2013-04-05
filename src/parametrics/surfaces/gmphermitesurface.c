@@ -50,7 +50,7 @@ namespace GMlib {
    *  \param[in] c2 Curves describing the boundary in v-direction
    */
   template <typename T>
-  PHermiteSurface<T>::PHermiteSurface( const Array< PCurve<T>* >& c1, const Array<PCurve<T>* >& c2 ) {
+  PHermiteSurface<T>::PHermiteSurface( const Array< PCurve<T,3>* >& c1, const Array<PCurve<T,3>* >& c2 ) {
 
     _c1 = c1;
     _c2 = c2;
@@ -92,7 +92,7 @@ namespace GMlib {
     _b[0][1] = (_c2[0]->evaluateParent( _c2[0]->getParEnd(), 0 ))[0];
     _b[1][1] = (_c1[1]->evaluateParent( _c1[1]->getParEnd(), 0 ))[0];
 
-    PSurf<T>::replot();
+    PSurf<T,3>::replot();
   }
 
   template <typename T>
@@ -284,7 +284,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  void PHermiteSurface<T>::insertPatch( PCurve<T>* patch ) {
+  void PHermiteSurface<T>::insertPatch( PCurve<T,3>* patch ) {
 
     patch->replot( 10 );
     patch->setVisible( true );

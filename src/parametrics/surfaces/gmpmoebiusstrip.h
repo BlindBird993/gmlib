@@ -36,7 +36,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PMoebiusStrip : public PSurf<T> {
+  class PMoebiusStrip : public PSurf<T,3> {
     GM_SCENEOBJECT(PMoebiusStrip)
   public:
     PMoebiusStrip( T radius = T(2), T width = T(1) );

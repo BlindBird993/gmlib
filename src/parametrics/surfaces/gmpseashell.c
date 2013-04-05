@@ -41,7 +41,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSeashell<T>::PSeashell( const PSeashell<T>& copy ) : PSurf<T>( copy ) {
+  PSeashell<T>::PSeashell( const PSeashell<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
   }

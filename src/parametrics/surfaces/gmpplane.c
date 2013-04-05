@@ -47,7 +47,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PPlane<T>::PPlane( const PPlane<T>& copy ) : PSurf<T>( copy ) {
+  PPlane<T>::PPlane( const PPlane<T>& copy ) : PSurf<T,3>( copy ) {
 
     _pt   = copy._pt;
     _u    = copy._u;

@@ -37,7 +37,7 @@
 namespace GMlib {
 
   template <typename T>
-  class PAsteroidalSphere : public PSurf<T> {
+  class PAsteroidalSphere : public PSurf<T,3> {
     GM_SCENEOBJECT(PAsteroidalSphere)
   public:
     PAsteroidalSphere( T sx = T(1), T sy = T(1), T sz = T(1) );

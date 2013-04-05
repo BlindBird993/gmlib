@@ -49,7 +49,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PERBSCurve<T>::PERBSCurve( CURVE_TYPE type, PCurve<T>* g, int n, int d)
+  PERBSCurve<T>::PERBSCurve( CURVE_TYPE type, PCurve<T,3>* g, int n, int d)
   {
     this->_type_id = GM_SO_TYPE_CURVE_ERBS;
     init();
@@ -79,7 +79,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PERBSCurve<T>::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T>( copy )
+  PERBSCurve<T>::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T,3>( copy )
   {
     init();
 
@@ -87,7 +87,7 @@ namespace GMlib {
     _t = copy._t;
 
     // sync local patches
-    const DVector< PCurve<T>* > &c = copy._c;
+    const DVector< PCurve<T,3>* > &c = copy._c;
     _c.setDim( c.getDim() );
     Array< unsigned int > cl;
     Array< int > cli;
@@ -109,7 +109,7 @@ namespace GMlib {
 
           int idx = cli[j];
 
-          _c[idx] = static_cast<PCurve<T>*>(child);
+          _c[idx] = static_cast<PCurve<T,3>*>(child);
 
           cl.removeIndex(j);
           cli.removeIndex(j);
@@ -149,7 +149,7 @@ namespace GMlib {
     if( bezier )
       bezier->updateCoeffs( _c[i]->getPos() - _c[i]->evaluate(_t[i],0)[0]);
 
-    PCurve<T>::replot(0);
+    PCurve<T,3>::replot(0);
   }
 
 
@@ -236,7 +236,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  DVector< PCurve<T>* >& PERBSCurve<T>::getLocalPatches() {
+  DVector< PCurve<T,3>* >& PERBSCurve<T>::getLocalPatches() {
 
     return _c;
   }
@@ -291,7 +291,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::insertLocal( PCurve<T>* local ) {
+  void PERBSCurve<T>::insertLocal( PCurve<T,3>* local ) {
 
     local->replot( 30 );
     static Color cl= GMcolor::Blue;
@@ -379,7 +379,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCurve<T>* PERBSCurve<T>::makeLocal(CURVE_TYPE type, PCurve<T>* g, T s, T t, T e, int d) {
+  PCurve<T,3>* PERBSCurve<T>::makeLocal(CURVE_TYPE type, PCurve<T,3>* g, T s, T t, T e, int d) {
 
     switch(type) {
     case SUB_CURVE:
@@ -396,7 +396,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::generateKnotVector( PCurve<T>* g, int n ) {
+  void PERBSCurve<T>::generateKnotVector( PCurve<T,3>* g, int n ) {
 
     const T  sp = g->getParStart();
     const T  dt = g->getParDelta()/( n-1 );

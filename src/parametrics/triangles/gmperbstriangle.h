@@ -38,15 +38,15 @@
 namespace GMlib {
 
   template <typename T>
-  class PERBSTriangle : public PTriangle<T> {
+  class PERBSTriangle : public PTriangle<T,3> {
     GM_SCENEOBJECT(PERBSTriangle)
   public:
-    PERBSTriangle( PTriangle<T>* c0, PTriangle<T>* c1, PTriangle<T>* c2,
+    PERBSTriangle( PTriangle<T,3>* c0, PTriangle<T,3>* c1, PTriangle<T,3>* c2,
                    BasisTriangleType t = BFBS_2 );
     virtual ~PERBSTriangle();
 
     void                            edit( SceneObject *obj );
-    DVector< PTriangle<T>* >&       getLocalPatches();
+    DVector< PTriangle<T,3>* >&       getLocalPatches();
     virtual void                    hideLocalPatches();
     bool                            isLocalPatchesVisible() const;
     virtual void                    showLocalPatches();
@@ -59,11 +59,11 @@ namespace GMlib {
 
   protected:
     BasisTriangleERBS<T>            *_B;
-    DVector< PTriangle<T>* >        _c;
+    DVector< PTriangle<T,3>* >        _c;
 
     void                            eval( T u, T v, T w, int d );
 
-    void                            insertPatch( PTriangle<T> *patch );
+    void                            insertPatch( PTriangle<T,3> *patch );
 
   }; // END class PERBSTriangle
 

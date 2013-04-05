@@ -37,7 +37,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBezierCurveSurf<T>::PBezierCurveSurf( Array<PCurve<T>*> cu, bool swap_par)
+  PBezierCurveSurf<T>::PBezierCurveSurf( Array<PCurve<T,3>*> cu, bool swap_par)
   {
       this->_dm = GM_DERIVATION_EXPLICIT;
       _cu       = cu;
@@ -47,8 +47,8 @@ namespace GMlib {
 
    template <typename T>
    inline
-   PBezierCurveSurf<T>::PBezierCurveSurf(PCurve<T>* c1, PCurve<T>* c2, bool swap_par)
-   {
+   PBezierCurveSurf<T>::PBezierCurveSurf(PCurve<T,3>* c1, PCurve<T,3>* c2, bool swap_par) {
+
        this->_dm = GM_DERIVATION_EXPLICIT;
        _cu.setSize(2);
        _cu[0] = c1;
@@ -59,8 +59,8 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBezierCurveSurf<T>::PBezierCurveSurf( const PBezierCurveSurf<T>& copy ) : PSurf<T>( copy )
-  {
+  PBezierCurveSurf<T>::PBezierCurveSurf( const PBezierCurveSurf<T>& copy ) : PSurf<T,3>( copy ) {
+
       _cu       = copy._cu;
       _swap_par = copy._swap_par;
   }
@@ -72,8 +72,8 @@ namespace GMlib {
 
 
   template <typename T>
-  void PBezierCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ )
-  {    
+  void PBezierCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) {
+
       if(_swap_par)
       {
           std::swap(u,v);

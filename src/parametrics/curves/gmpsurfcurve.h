@@ -42,11 +42,11 @@ namespace GMlib {
 
 
   template <typename T>
-  class PSurfCurve : public PCurve<T> {
+  class PSurfCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PSurfCurve)
   public:
-    PSurfCurve( PSurf<T>* s, const Point<T,2>& p1,  const Point<T,2>& p2);
-    PSurfCurve( PSurf<T>* s, const Point<T,2>& p1,  const Point<T,2>& p2,
+    PSurfCurve( PSurf<T,3>* s, const Point<T,2>& p1,  const Point<T,2>& p2);
+    PSurfCurve( PSurf<T,3>* s, const Point<T,2>& p1,  const Point<T,2>& p2,
                              const Vector<T,2>& v1, const Vector<T,2>& v2);
     PSurfCurve( const PSurfCurve<T>& copy );
 
@@ -61,7 +61,7 @@ namespace GMlib {
 
   protected:
 
-    PSurf<T>*           _s;
+    PSurf<T,3>*           _s;
     Point<T,2>          _p1;
     Point<T,2>          _p2;
 

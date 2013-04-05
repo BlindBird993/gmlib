@@ -45,7 +45,7 @@ namespace GMlib {
     namespace Lua {
 
       template <typename T>
-      class PLuaScriptCurve : public PCurve<T>, public LuaScript {
+      class PLuaScriptCurve : public PCurve<T,3>, public LuaScript {
         GM_SCENEOBJECT(PLuaScriptCurve)
       public:
         PLuaScriptCurve();

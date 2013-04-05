@@ -36,15 +36,15 @@
 
 namespace GMlib {
 
-  template <typename T>
-  class PCurveDefaultVisualizer : public PCurveVisualizer<T> {
+  template <typename T, int n>
+  class PCurveDefaultVisualizer : public PCurveVisualizer<T,n> {
   public:
     PCurveDefaultVisualizer();
     virtual ~PCurveDefaultVisualizer();
 
     void          display();
     virtual void  replot(
-      DVector< DVector< Vector<T, 3> > >& p,
+      DVector< DVector< Vector<T, n> > >& p,
       int m, int d, bool closed
     );
     void          select();

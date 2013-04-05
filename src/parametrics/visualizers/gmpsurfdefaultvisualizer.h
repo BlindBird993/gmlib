@@ -41,14 +41,14 @@
 
 namespace GMlib {
 
-  template <typename T>
-  class PSurfDefaultVisualizer : public PSurfVisualizer<T> {
+  template <typename T, int n>
+  class PSurfDefaultVisualizer : public PSurfVisualizer<T,n> {
   public:
     PSurfDefaultVisualizer();
     virtual ~PSurfDefaultVisualizer();
     void          display();
     virtual void  replot(
-      DMatrix< DMatrix< Vector<T, 3> > >& p,
+      DMatrix< DMatrix< Vector<T, n> > >& p,
       DMatrix< Vector<T, 3> >& normals,
       int m1, int m2, int d1, int d2,
       bool closed_u, bool closed_v

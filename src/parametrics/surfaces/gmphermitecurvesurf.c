@@ -43,7 +43,7 @@ Hermite4Evaluator<T> PHermiteCurveSurf<T>::HCu;
 
 template <typename T>
 inline
-PHermiteCurveSurf<T>::PHermiteCurveSurf( PCurve<T>* c1, PCurve<T>* c2, PCurve<T>* c3, PCurve<T>* c4, bool swap_par)
+PHermiteCurveSurf<T>::PHermiteCurveSurf( PCurve<T,3>* c1, PCurve<T,3>* c2, PCurve<T,3>* c3, PCurve<T,3>* c4, bool swap_par)
 {
   this->_dm = GM_DERIVATION_EXPLICIT;
 
@@ -60,7 +60,7 @@ PHermiteCurveSurf<T>::PHermiteCurveSurf( PCurve<T>* c1, PCurve<T>* c2, PCurve<T>
 
 template <typename T>
 inline
-PHermiteCurveSurf<T>::PHermiteCurveSurf( Array<PCurve<T>*> cu, bool swap_par)
+PHermiteCurveSurf<T>::PHermiteCurveSurf( Array<PCurve<T,3>*> cu, bool swap_par)
 {
   this->_dm = GM_DERIVATION_EXPLICIT;
 
@@ -73,7 +73,7 @@ PHermiteCurveSurf<T>::PHermiteCurveSurf( Array<PCurve<T>*> cu, bool swap_par)
 
 template <typename T>
 inline
-PHermiteCurveSurf<T>::PHermiteCurveSurf( const PHermiteCurveSurf<T>& copy ) : PSurf<T>( copy )
+PHermiteCurveSurf<T>::PHermiteCurveSurf( const PHermiteCurveSurf<T>& copy ) : PSurf<T,3>( copy )
 {
   _cu = copy._cu;
   _swap_par = copy._swap_par;

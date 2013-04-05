@@ -35,7 +35,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PRotationalSurf<T>::PRotationalSurf( PCurve<T>* cu, T start_par, T end_par ) {
+  PRotationalSurf<T>::PRotationalSurf( PCurve<T,3>* cu, T start_par, T end_par ) {
 
     this->_dm = GM_DERIVATION_EXPLICIT;
 
@@ -47,7 +47,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PRotationalSurf<T>::PRotationalSurf( const PRotationalSurf<T>& copy ) : PSurf<T>( copy ) {
+  PRotationalSurf<T>::PRotationalSurf( const PRotationalSurf<T>& copy ) : PSurf<T,3>( copy ) {
 
   }
 

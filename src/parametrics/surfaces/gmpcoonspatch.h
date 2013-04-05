@@ -43,10 +43,10 @@
 namespace GMlib {
 
   template <typename T>
-  class PCoonsPatch : public PSurf<T> {
+  class PCoonsPatch : public PSurf<T,3> {
     GM_SCENEOBJECT(PCoonsPatch)
   public:
-    PCoonsPatch( PSurf<T>* s1, PSurf<T>* s2, PSurf<T>* s3 );
+    PCoonsPatch( PSurf<T,3>* s1, PSurf<T,3>* s2, PSurf<T,3>* s3 );
     PCoonsPatch( const PCoonsPatch<T>& su );
 
     virtual ~PCoonsPatch();
@@ -62,9 +62,9 @@ namespace GMlib {
     T             getStartPU();
     T             getStartPV();
 
-    PSurf<T>*    _s1;
-    PSurf<T>*    _s2;
-    PSurf<T>*    _s3;
+    PSurf<T,3>*    _s1;
+    PSurf<T,3>*    _s2;
+    PSurf<T,3>*    _s3;
 
   }; // END class PCoonsPatch
 
