@@ -21,10 +21,10 @@
 # ###############################################################################
 
 
-addHeaders( gmGlobal )
+addHeaders(
+  gmmklmatmult
+)
 
-addSubDirectory(containers)    # <containers> sub-module
-addSubDirectory(blas)		   # <blas> sub-module
-addSubDirectory(static)        # <static> sub-module
-addSubDirectory(types)         # <types> sub-module
-addSubDirectory(utils)         # <utils> sub-module
+addTemplateSources(
+  gmmklmatmult.c
+)
