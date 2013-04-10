@@ -21,19 +21,10 @@
 # ###############################################################################
 
 
+addHeaders(
+  gmappmlmatmult
+)
 
-if(GMLIB_BLAS STREQUAL "OpenBLAS")
-
-elseif(GMLIB_BLAS STREQUAL "MKL")
-  addSubDirectory(mkl)
-elseif(GMLIB_BLAS STREQUAL "ACML")
-  addSubDirectory(acml)
-elseif(GMLIB_BLAS STREQUAL "APPML")
-  addSubDirectory(appml)
-elseif(GMLIB_BLAS STREQUAL "CuBLAS")
-  addSubDirectory(cublas)
-elseif(GMLIB_BLAS STREQUAL "ViennaCL")
-
-elseif(GMLIB_BLAS STREQUAL "CBLAS")
-
-endif(GMLIB_BLAS STREQUAL "OpenBLAS")
+addTemplateSources(
+  gmappmlmatmult.c
+)
