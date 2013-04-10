@@ -153,7 +153,7 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
-			r[i][j]=(float) work[i+j*r.getDim1()];
+			r[i][j]=(double) work[i+j*r.getDim1()];
 			
 	cudaFree(d_A);
 	cudaFree(d_B);
