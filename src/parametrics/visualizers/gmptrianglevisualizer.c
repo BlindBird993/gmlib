@@ -76,18 +76,18 @@ namespace GMlib {
   template <typename T, int n>
   void  PTriangleVisualizer<T,n>::fillTriangleIBO(GL::IndexBufferObject ibo, int m ) {
 
-    int no_indices = m*m*3;
+    int no_indices = (m-1)*(m-1)*3;
 
     DVector<GLuint> indices(no_indices);
     GLuint *iptr = indices.getPtr();
-    for( int i = 0; i < m; i++ ) {
+    for( int i = 0; i < m-1; i++ ) {
 
       // Index row i and row i+1
       const int o1 = 0.5 *  i    * (i+1);
       const int o2 = 0.5 * (i+1) * (i+2);
 
       // Upper triangles (pointing down)
-      for( int j = 1; j < i+1; j++ ) {
+      for( int j = 1; j <= i; j++ ) {
 
         *iptr++ = o1 + j;
         *iptr++ = o1 + j - 1;
@@ -104,7 +104,7 @@ namespace GMlib {
     }
 
     ibo.bind();
-    ibo.createBufferData( no_indices, indices.getPtr(), GL_STATIC_DRAW );
+    ibo.createBufferData( sizeof(GLuint)*no_indices, indices.getPtr(), GL_STATIC_DRAW );
     ibo.unbind();
   }
 
@@ -148,7 +148,7 @@ namespace GMlib {
   inline
   int PTriangleVisualizer<T,n>::getNoTriangles(int m) {
 
-    return m*m;
+    return (m-1)*(m-1);
   }
 
   template <typename T, int n>

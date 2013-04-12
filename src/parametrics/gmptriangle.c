@@ -372,7 +372,7 @@ namespace GMlib {
 
     // Replot Visaulizers
     for( int i = 0; i < this->_ptriangle_visualizers.getSize(); i++ )
-      this->_ptriangle_visualizers[i]->replot( p, (m*(m+1))/2 );
+      this->_ptriangle_visualizers[i]->replot( p, m);
   }
 
 
