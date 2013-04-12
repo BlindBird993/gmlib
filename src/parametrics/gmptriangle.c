@@ -31,15 +31,16 @@
 #include "visualizers/gmptriangledefaultvisualizer.h"
 
 
+
 namespace GMlib {
 
   template <typename T, int n>
   PTriangle<T,n>::PTriangle( int samples ) {
 
     _d      = -1;
-    _no_sam  = samples;
+    _no_sam = samples;
     _init();
-    setEval( 0 );
+    setEval(0);
 
     _default_visualizer = 0x0;
   }
@@ -47,12 +48,12 @@ namespace GMlib {
   template <typename T, int n>
   PTriangle<T,n>::PTriangle( const PTriangle<T,n>& copy ) {
 
-    _p            = copy._p;
-    _n            = copy._n;
-    _u            = copy._u;
-    _v            = copy._v;
-    _d           = copy._d;
-    _all          = copy._all;
+    _p   = copy._p;
+    _n   = copy._n;
+    _u   = copy._u;
+    _v   = copy._v;
+    _d   = copy._d;
+    _all = copy._all;
 
     for( int i = 0; i < 4; ++i ) _pt[i] = copy._pt[i];
 
@@ -73,13 +74,13 @@ namespace GMlib {
   inline
   void PTriangle<T,n>::_eval( T u, T v, int d )
   {
-      if(!(u == _u && v == _v && d <= _d))
-      {
-          _u = u;
-          _v = v;
-          _d = d;
-          eval(u, v, 1-u-v, d);
-      }
+    if(!(u == _u && v == _v && d <= _d))
+    {
+      _u = u;
+      _v = v;
+      _d = d;
+      eval(u, v, 1-u-v, d);
+    }
   }
 
 
@@ -360,7 +361,7 @@ namespace GMlib {
   inline
   void PTriangle<T,n>::replot( int m )
   {
-    if( m < 2 )  m = _no_sam;
+    if( m < 2 )        m = _no_sam;
     else         _no_sam = m;
 
     // Sample Positions and related Derivatives
@@ -371,7 +372,7 @@ namespace GMlib {
 
     // Replot Visaulizers
     for( int i = 0; i < this->_ptriangle_visualizers.getSize(); i++ )
-      this->_ptriangle_visualizers[i]->replot( p, m );
+      this->_ptriangle_visualizers[i]->replot( p, (m*(m+1))/2 );
   }
 
 

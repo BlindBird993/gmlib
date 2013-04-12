@@ -25,6 +25,7 @@ addHeaders(
   gmPBasisCurve
   gmPBezierCurve
   gmPBSplineCurve
+  gmPBSplineBasisCurve
   gmPButterfly
   gmPChrysanthemumCurve
   gmPCircle
@@ -42,6 +43,7 @@ addTemplateSources(
   gmpbasiscurve.c
   gmpbeziercurve.c
   gmpbsplinecurve.c
+  gmpbsplinebasiscurve.c
   gmpbutterfly.c
   gmpchrysanthemumcurve.c
   gmpcircle.c

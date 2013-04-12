@@ -74,16 +74,16 @@ class Cube;
     SubSpace( const Point<T,n>& p, const Vector<Vector<T,n>,m>& v );
     SubSpace( const SubSpace<T,n,m>& s );
 
-    Point<T,n>	          getClosestPoint( const Point<T,n>& p ) const;
-    Vector<T,n>&		      getDir( int i = 0 );
-    Vector<T,n> const&	  getDirC( int i = 0 ) const;
+    Point<T,n>            getClosestPoint( const Point<T,n>& p ) const;
+    Vector<T,n>&          getDir( int i = 0 );
+    Vector<T,n> const&    getDirC( int i = 0 ) const;
     T                     getDistanceAlong( const Point<T,n>& p, int i = 0 ) const;
     T                     getDistanceTo( const Point<T,n>& p ) const;
     Vector<T,n>           getDistanceVector( const Point<T,n>& p ) const;
     Matrix<T,m,n>&        getMat();
-    Matrix<T,m,n> const&	getMatC() const;
+    Matrix<T,m,n> const&  getMatC() const;
     Point<T,n>&	          getPos();
-    Point<T,n> const&			getPosC() const;
+    Point<T,n> const&     getPosC() const;
 
 
   protected:
@@ -98,13 +98,13 @@ class Cube;
     SubSpace( const Point<T,n>& p );// = Point<T,n>(T(0)) );
     SubSpace( const SubSpace<T,n,0>& s );
 
-    Point<T,n>	        getClosestPoint( const Point<T,n>& p ) const;
-    Vector<T,n>			    getDir( int i = 0 );
+    Point<T,n>          getClosestPoint( const Point<T,n>& p ) const;
+    Vector<T,n>         getDir( int i = 0 );
     Vector<T,n> const   getDirC( int i = 0 ) const;
     T                   getDistanceAlong(const Point<T,n>& p, int i = 0);
     T                   getDistanceTo(const Point<T,n>& p) const;
     Vector<T,n>         getDistanceVector(const Point<T,n>& p) const;
-    Point<T,n>&			    getPos();
+    Point<T,n>&         getPos();
     Point<T,n> const&   getPosC() const;
 
   }; // END class SubSpace<t,n,0> "Terminator"

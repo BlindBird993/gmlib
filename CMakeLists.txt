@@ -78,6 +78,7 @@ endif()
 ###########
 # CXX Flags
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 
 #############################
 # Find 3rd party dependencies
@@ -95,15 +96,15 @@ option( NO_DEFAULT_GLEW_PATHS "Don't search for GLEW in predefined & default pat
 
 # Find GLEW package (local package)
 include(cmake/modules/FindGlew.cmake)
-if( GLEW_FOUND )
+#if( GLEW_FOUND )
   message( "GLEW FOUND!" )
   addCustomConfigLine( "set(GLEW_FOUND ${GLEW_FOUND})" )
   addCustomConfigLine( "set(GLEW_INCLUDE_PATH \"${GLEW_INCLUDE_PATH}\")" )
   addCustomConfigLine( "set(GLEW_LIBRARY \"${GLEW_LIBRARY}\")" )
   include_directories(${GLEW_INCLUDE_PATH})
-else( GLEW_FOUND )
-  message( "GLEW NOT FOUND!" )
-endif( GLEW_FOUND )
+#else( GLEW_FOUND )
+#  message( "GLEW NOT FOUND!" )
+#endif( GLEW_FOUND )
 
 ################################
 # Create source code build rules

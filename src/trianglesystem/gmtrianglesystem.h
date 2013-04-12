@@ -145,11 +145,11 @@ namespace GMlib {
     int	                              _dlist_name;
     GLuint                            _vbo;
     GLuint                            _ibo;
-    GL::GLProgram                         _dprog;
-    GL::GLProgram                         _sprog;
+    GL::GLProgram                     _dprog;
+    GL::GLProgram                     _sprog;
 
-    Array< TriangleFacetsVisualizer<T>* >    _tf_visualizers;
-    TriangleFacetsDefaultVisualizer<T>      *_default_visualizer;
+    Array< TriangleFacetsVisualizer<T>* >   _tf_visualizers;
+    TriangleFacetsDefaultVisualizer<T>     *_default_visualizer;
 
   private:
     ArrayLX< TSEdge<T>* >             _edges;
@@ -165,9 +165,9 @@ namespace GMlib {
     ArrayT<T>                         _v;
     Box<T,3>                          _box;
 
-   TSVertex<T>                        __v;		// dummy because of MS-VC++ compiler
-   TSEdge<T>                          __e;		// dummy because of MS-VC++ compiler
-   TSTriangle<T>                      __t;		// dummy because of MS-VC++ compiler
+    TSVertex<T>                       __v;  // dummy because of MS-VC++ compiler
+    TSEdge<T>                         __e;  // dummy because of MS-VC++ compiler
+    TSTriangle<T>                     __t;  // dummy because of MS-VC++ compiler
 
     bool                              _fillPolygon(Array<TSEdge<T>*>&);
     bool                              _removeLastVertex();
@@ -467,7 +467,7 @@ namespace GMlib {
 
 
   private:
-    TSEdge<T>               *_edge[3];
+    TSEdge<T>              *_edge[3];
     Box<unsigned char,2>    _box;
 
 

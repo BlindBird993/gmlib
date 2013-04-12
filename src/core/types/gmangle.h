@@ -205,6 +205,23 @@ namespace GMlib {
 #endif
 
 
+/*! \def  M_SQRT3
+ *  Value of Squart(3) : 1.73205080756887729353
+ */
+#ifndef M_SQRT3
+#define M_SQRT3         1.73205080756887729353
+#endif
+
+
+/*! \def  M_SQRT1_3
+ *  Value of Squart(1/3) : 0.57735026918962576451
+ *  Remember that: Squart(1/3) = 1/Squart(3) = Squart(3)/3
+ */
+#ifndef M_SQRT1_3
+#define M_SQRT1_3         0.57735026918962576451
+#endif
+
+
 /*! \def  NULL
  *  Value of NULL : 0
  */

@@ -66,7 +66,7 @@ namespace GMlib {
     Vector<T,3>   _spv;
 
     bool          _RMF;
-    Array<T>      _omega;
+    DVector<T>    _omega;
 
     void          makeOmega(int n = 100, T omega_0 = T(0));
     T             getOmega(T t);

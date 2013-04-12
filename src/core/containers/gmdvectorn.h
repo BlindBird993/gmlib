@@ -89,7 +89,7 @@ namespace GMlib {
     T                                   operator *  ( const DVectorN<T,n,K>& v );
 
   private:
-    DVectorN<T,n-1>                     *_pt;
+    DVectorN<T,n-1>                    *_pt;
     int                                 _n;
 
 

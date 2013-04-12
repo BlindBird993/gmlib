@@ -53,7 +53,7 @@ namespace GMlib {
     _type_id	= GM_SO_TYPE_SELECTOR;
     _id			= id;
     _parent		= parent;
-    _enabled			= true;
+    _enabled	= true;
     _default	= c;
     _marked		= c.getInverse();
     _selected	= false;
@@ -358,7 +358,7 @@ namespace GMlib {
   inline
   void Selector<T,n>::update() {
 
-    Vector<T,n> d= _position - _pos;
+    Vector<T,n> d = _position - _pos;
     translate(d.toFloat());
     for(int i=0; i<_children.getSize(); i++)
     {

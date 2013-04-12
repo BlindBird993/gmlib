@@ -68,7 +68,7 @@ namespace GMlib {
     GM_RESAMPLE_MODE          _resamp_mode;
     bool                      _pre_eval;
 
-    void	                    eval( T t, int d = 0, bool l = false );
+    void                      eval( T t, int d = 0, bool l = false );
     void                      evalBernsteinHermite( DMatrix<T>& bp_mat, T t, int idx ) const;
     T                         getEndP();
     int                       getIndex( T t, int m ) const;

@@ -36,7 +36,6 @@
 
 namespace GMlib {
 
-
   StlObject::StlObject(float r) {
     _header = std::string( "STL place holder" );
     _sphere = new PSphere<float>( r );
@@ -57,13 +56,11 @@ namespace GMlib {
 
     // Resample DSurf
     DMatrix< DMatrix< Vector<float, 3> > > p;
-    obj->resample(
-      p, m1, m2, 1, 1,
-      obj->getParStartU(),
-      obj->getParStartV(),
-      obj->getParEndU(),
-      obj->getParEndV()
-    );
+    obj->resample( p, m1, m2, 1, 1,
+                   obj->getParStartU(),
+                   obj->getParStartV(),
+                   obj->getParEndU(),
+                   obj->getParEndV() );
 
     // Set Array Max Size (speedup)
     _normals.setMaxSize( (p.getDim1()-1)*(p.getDim2()-1)*2 );
@@ -101,14 +98,13 @@ namespace GMlib {
 
   StlObject::StlObject( const std::string& filename, const Color& color, int /*flip*/ ) {
 
-    _dlist = 0;
-
-    _color = color;
+    _dlist  = 0;
+    _color  = color;
     _header = filename;
 
     _readStlBinary( filename );
-
     _init();
+
     replot();
   }
 
@@ -116,11 +112,11 @@ namespace GMlib {
   StlObject::StlObject( std::ifstream& stream, bool binary, const Color& color ) {
 
     _dlist = 0;
-
     _color = color;
 
     load( stream, binary );
     _init();
+
     replot();
   }
 
@@ -134,14 +130,15 @@ namespace GMlib {
 
   unsigned long StlObject::_getUli() {
 
-    unsigned char byte1,byte2,byte3,byte4;
-    unsigned long int number;
-    byte1=(unsigned char)fgetc( _stl_file );
-    byte2=(unsigned char)fgetc( _stl_file );
-    byte3=(unsigned char)fgetc( _stl_file );
-    byte4=(unsigned char)fgetc( _stl_file );
-    number = (unsigned long int)byte1 + ((unsigned long int)byte2<<8)
-        + ((unsigned long int)byte3<<16) + ((unsigned long int)byte4<<24);
+    unsigned char byte1 = (unsigned char)fgetc( _stl_file );
+    unsigned char byte2 = (unsigned char)fgetc( _stl_file );
+    unsigned char byte3 = (unsigned char)fgetc( _stl_file );
+    unsigned char byte4 = (unsigned char)fgetc( _stl_file );
+    unsigned long int number =  (unsigned long int)byte1
+                             + ((unsigned long int)byte2<<8)
+                             + ((unsigned long int)byte3<<16)
+                             + ((unsigned long int)byte4<<24);
+
     return( number );
   }
 
@@ -155,7 +152,6 @@ namespace GMlib {
     stream[1]=(unsigned char)fgetc( _stl_file );
     stream[2]=(unsigned char)fgetc( _stl_file );
     stream[3]=(unsigned char)fgetc( _stl_file );
-
     stream[4] = '\0';
 
     memcpy( &number, &stream, 4 );
@@ -166,11 +162,10 @@ namespace GMlib {
 
   unsigned int StlObject::_getUint() {
 
-    unsigned char byte1,byte2;
-    unsigned int number;
-    byte1=(unsigned char)fgetc( _stl_file );
-    byte2=(unsigned char)fgetc( _stl_file );
-    number = (unsigned int)byte1 + ((unsigned int)byte2<<8);
+    unsigned char byte1 = (unsigned char)fgetc( _stl_file );
+    unsigned char byte2 = (unsigned char)fgetc( _stl_file );
+    unsigned int number = (unsigned int)byte1 + ((unsigned int)byte2<<8);
+
     return( number );
   }
 
@@ -272,14 +267,13 @@ namespace GMlib {
 
   void StlObject::_updateBounding() {
 
-
     // update bounding box
     _bbox.reset( _vertices[0] );
     for( int i = 0; i < _vertices.getSize()-1; i++ )
       _bbox += _vertices[i];
 
-    // update bounding sphere
-    Point<float,3> pos( _bbox.getPointCenter() );          // which can be far from origo
+    // update surrouding sphere
+    Point<float,3> pos( _bbox.getPointCenter() );  // which can be far from origo
     Sphere<float,3> s( pos, _bbox.getPointDelta().getLength() * 0.5 );
 
     setSurroundingSphere( s );
@@ -341,7 +335,6 @@ namespace GMlib {
 
   void StlObject::save( std::ofstream& stream, bool binary ) {
 
-
     // Binary
     if( binary ) {
 
@@ -385,15 +378,14 @@ namespace GMlib {
 
         content << "  facet normal " << n(0) << " " << n(1) << " " << n(2) << std::endl;
 
-          content << "    outer loop" << std::endl;
+        content << "    outer loop" << std::endl;
 
+        // Vertices
+        content << "      vertex " << v0(0) << " " << v0(1) << " " << v0(2) << std::endl;
+        content << "      vertex " << v1(0) << " " << v1(1) << " " << v1(2) << std::endl;
+        content << "      vertex " << v2(0) << " " << v2(1) << " " << v2(2) << std::endl;
 
-            // Vertices
-            content << "      vertex " << v0(0) << " " << v0(1) << " " << v0(2) << std::endl;
-            content << "      vertex " << v1(0) << " " << v1(1) << " " << v1(2) << std::endl;
-            content << "      vertex " << v2(0) << " " << v2(1) << " " << v2(2) << std::endl;
-
-          content << "    endloop" << std::endl;
+        content << "    endloop" << std::endl;
 
         content << "  endfacet" << std::endl;
       }

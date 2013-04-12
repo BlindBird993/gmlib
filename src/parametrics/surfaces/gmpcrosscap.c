@@ -62,61 +62,59 @@ namespace GMlib {
 
     this->_p.setDim( d1+1, d2+1 );
 
-
-    this->_p[0][0][0] =	_r*_r*cos(v)*sin(u)*sin(v);
-    this->_p[0][0][1] =	_r*_r*cos(v)*cos(v)*sin(2*u);
-    this->_p[0][0][2] =	_r*_r*cos(2*u)*cos(v)*cos(v);
-
+    this->_p[0][0][0] =	_r*_r*cos(u)*sin(v)*sin(u);
+    this->_p[0][0][1] =	_r*_r*cos(u)*cos(u)*sin(2*v);
+    this->_p[0][0][2] =	_r*_r*cos(2*v)*cos(u)*cos(u);
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
       if(d1) //u
       {
-        this->_p[1][0][0] =	_r*_r*cos(v)*cos(u)*sin(v);
-        this->_p[1][0][1] =	2.0*_r*_r*cos(v)*cos(v)*cos(2*u);
-        this->_p[1][0][2] =	-2.0*_r*_r*cos(v)*cos(v)*sin(2*u);
+        this->_p[1][0][0] =	-_r*_r*sin(u)*sin(u)*sin(v)+_r*_r*cos(u)*cos(u)*sin(v);
+        this->_p[1][0][1] =	-2.0*_r*_r*cos(u)*sin(2*v)*sin(u);
+        this->_p[1][0][2] =	-2.0*_r*_r*cos(u)*cos(2*v)*sin(u);
       }
       if(d1>1)//uu
       {
-        this->_p[2][0][0] =	 -_r*_r*cos(v)*sin(u)*sin(v);
-        this->_p[2][0][1] =	 -4.0*_r*_r*cos(v)*cos(v)*sin(2.0*u);
-        this->_p[2][0][2] =	-4.0*_r*_r*cos(2.0*u)*cos(v)*cos(v);
+        this->_p[2][0][0] =	 -4.0*_r*_r*cos(u)*sin(v)*sin(u);
+        this->_p[2][0][1] =	2.0*_r*_r*sin(u)*sin(u)*sin(2.0*v)-2.0*_r*_r*cos(u)*cos(u)*sin(2.0*v);
+        this->_p[2][0][2] =	2.0*_r*_r*cos(2.0*v)*sin(u)*sin(u)-2.0*_r*_r*cos(2.0*v)*cos(u)*cos(u);
       }
       if(d2) //v
       {
-        this->_p[0][1][0] =	-_r*_r*sin(v)*sin(v)*sin(u)+_r*_r*cos(v)*cos(v)*sin(u);
-        this->_p[0][1][1] =	-2.0*_r*_r*cos(v)*sin(2*u)*sin(v);
-        this->_p[0][1][2] =	-2.0*_r*_r*cos(v)*cos(2*u)*sin(v);
+        this->_p[0][1][0] =	_r*_r*cos(u)*cos(v)*sin(u);
+        this->_p[0][1][1] =	2.0*_r*_r*cos(u)*cos(u)*cos(2*v);
+        this->_p[0][1][2] =	-2.0*_r*_r*cos(u)*cos(u)*sin(2*v);
       }
       if(d2>1) //vv
       {
-        this->_p[0][2][0] =	 -4.0*_r*_r*cos(v)*sin(u)*sin(v);
-        this->_p[0][2][1] =	2.0*_r*_r*sin(v)*sin(v)*sin(2.0*u)-2.0*_r*_r*cos(v)*cos(v)*sin(2.0*u);
-        this->_p[0][2][2] =	2.0*_r*_r*cos(2.0*u)*sin(v)*sin(v)-2.0*_r*_r*cos(2.0*u)*cos(v)*cos(v);
+        this->_p[0][2][0] =	 -_r*_r*cos(u)*sin(v)*sin(u);
+        this->_p[0][2][1] =	 -4.0*_r*_r*cos(u)*cos(u)*sin(2.0*v);
+        this->_p[0][2][2] =	-4.0*_r*_r*cos(2.0*v)*cos(u)*cos(u);
       }
       if(d1 && d2) //uv
       {
-        this->_p[1][1][0] =	-_r*_r*sin(v)*sin(v)*cos(u)+_r*_r*cos(v)*cos(v)*cos(u);
-        this->_p[1][1][1] =	 -4.0*_r*_r*cos(2.0*u)*cos(v)*sin(v);
-        this->_p[1][1][2] =	 4.0*_r*_r*cos(v)*sin(2.0*u)*sin(v);
+        this->_p[1][1][0] =	-_r*_r*sin(u)*sin(u)*cos(v)+_r*_r*cos(u)*cos(u)*cos(v);
+        this->_p[1][1][1] =	 -4.0*_r*_r*cos(2.0*v)*cos(u)*sin(u);
+        this->_p[1][1][2] =	 4.0*_r*_r*cos(u)*sin(2.0*v)*sin(u);
       }
       if(d1>1 && d2)//uuv
       {
-        this->_p[2][1][0] =	 _r*_r*sin(v)*sin(v)*sin(u)-_r*_r*cos(v)*cos(v)*sin(u);
-        this->_p[2][1][1] =	  8.0*_r*_r*cos(v)*sin(2.0*u)*sin(v);
-        this->_p[2][1][2] =	 8.0*_r*_r*cos(2.0*u)*cos(v)*sin(v);
+        this->_p[2][1][0] =	-4.0*_r*_r*cos(u)*cos(v)*sin(u);
+        this->_p[2][1][1] =	 4.0*_r*_r*cos(2.0*v)*sin(u)*sin(u)-4.0*_r*_r*cos(2.0*v)*cos(u)*cos(u);
+        this->_p[2][1][2] =	-4.0*_r*_r*sin(u)*sin(u)*sin(2.0*v)+4.0*_r*_r*cos(u)*cos(u)*sin(2.0*v);
       }
       if(d1 && d2>1) //uvv
       {
-        this->_p[1][2][0] =	-4.0*_r*_r*cos(v)*cos(u)*sin(v);
-        this->_p[1][2][1] =	 4.0*_r*_r*cos(2.0*u)*sin(v)*sin(v)-4.0*_r*_r*cos(2.0*u)*cos(v)*cos(v);
-        this->_p[1][2][2] =	-4.0*_r*_r*sin(v)*sin(v)*sin(2.0*u)+4.0*_r*_r*cos(v)*cos(v)*sin(2.0*u);
+        this->_p[1][2][0] =	 _r*_r*sin(u)*sin(u)*sin(v)-_r*_r*cos(u)*cos(u)*sin(v);
+        this->_p[1][2][1] =	  8.0*_r*_r*cos(u)*sin(2.0*v)*sin(u);
+        this->_p[1][2][2] =	 8.0*_r*_r*cos(2.0*v)*cos(u)*sin(u);
       }
       if(d1>1 && d2>1) //uuvv
       {
-        this->_p[2][2][0] =	 4.0*_r*_r*cos(v)*sin(u)*sin(v);
-        this->_p[2][2][1] =	 -8.0*_r*_r*sin(v)*sin(v)*sin(2.0*u)+8.0*_r*_r*cos(v)*cos(v)*sin(2.0*u);
-        this->_p[2][2][2] =	 -8.0*_r*_r*cos(2.0*u)*sin(v)*sin(v)+8.0*_r*_r*cos(2.0*u)*cos(v)*cos(v);
+        this->_p[2][2][0] =	 4.0*_r*_r*cos(u)*sin(v)*sin(u);
+        this->_p[2][2][1] =	 -8.0*_r*_r*sin(u)*sin(u)*sin(2.0*v)+8.0*_r*_r*cos(u)*cos(u)*sin(2.0*v);
+        this->_p[2][2][2] =	 -8.0*_r*_r*cos(2.0*v)*sin(u)*sin(u)+8.0*_r*_r*cos(2.0*v)*cos(u)*cos(u);
       }
     }
   }
@@ -126,7 +124,7 @@ namespace GMlib {
   inline
   T PCrossCap<T>::getEndPU() {
 
-    return T(2 * M_PI);
+    return T(/*2 */ M_PI);
   }
 
 
@@ -134,7 +132,7 @@ namespace GMlib {
   inline
   T PCrossCap<T>::getEndPV() {
 
-    return T(2 * M_PI);
+    return T(/*2 */ M_PI);
   }
 
 

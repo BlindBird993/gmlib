@@ -31,6 +31,8 @@
 // STL includes
 #include <cmath>
 
+#include "omp.h"
+
 
 #ifdef GM_INTEL
 #include <mkl_lapack.h>	// NBNBNB!!!   Remember also to link with mkl_c.lib // on mkl7.0 it is mkl_lapack32.h
@@ -201,38 +203,38 @@ namespace GMlib {
   template <typename T>
   DMatrix<T>& DMatrix<T>::invert() {
 
-  #ifdef GM_INTEL				// This requires MKL from Intel (mkl_c.lib),
-                // or BLAS and Lapack binaries in a compatible format
+  #ifdef GM_INTEL       // This requires MKL from Intel (mkl_c.lib),
+                        // or BLAS and Lapack binaries in a compatible format
     if(getDim1()==getDim2() && getDim1()>1)
     {
       int nk=getDim1();
       Array<float> aa;
       aa.setSize(nk*nk);
-      for(int i=0; i<nk; i++)	// daft cast
+      for(int i=0; i<nk; i++)   // daft cast
         for(int j=0; j<nk; j++) aa[i+nk*j] = (float) (*this)[i][j];
 
       Array<float> work; work.setSize(nk*32);	// temporary work array
-      int wsize=nk*32;						// work array size - should be optimized
-      Array<int> ipiv; ipiv.setSize(nk);		// pivot table (result), size max(1,mmm,nnn)
-      int info=0;								// error message, i=info>0 means that a[i][i]=0 ): singular,
-      int mmm=nk;								// dimentsion
-      int nnn=nk;								// dimentsion  i.e. a is mxn matrix
-      int lda=nk;								// leading dimentsion
-      // float *a								// input array
+      int wsize=nk*32;                          // work array size - should be optimized
+      Array<int> ipiv; ipiv.setSize(nk);        // pivot table (result), size max(1,mmm,nnn)
+      int info=0;                               // error message, i=info>0 means that a[i][i]=0 ): singular,
+      int mmm=nk;                               // dimentsion
+      int nnn=nk;                               // dimentsion  i.e. a is mxn matrix
+      int lda=nk;                               // leading dimentsion
+      // float *a                               // input array
 
       // LAPACK When calling LAPACK routines from C-language programs, make sure that you follow Fortran rules:
       // Pass variables by 'address' as opposed to pass by 'value'. Be sure to store your data Fortran-style,
       // i.e. data stored column-major rather than row-major order
       // Project neeeds mkl_c.lib and mkl_lapack32.h
 
-      sgetrf(&mmm, &nnn, aa.ptr(), &lda, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
+      sgetrf(&mmm, &nnn, aa.ptr(), &lda, ipiv.ptr(), &info);               // using Lapack LU-fact a is overwritten by LU
       sgetri(&mmm, aa.ptr(), &lda, ipiv.ptr(), work.ptr(), &wsize, &info); // a should now contain the inverse
 
       // if(info==0)
       for(int i=0; i<nk; i++)
         for(int j=0; j<nk; j++) (*this)[i][j]=(T) aa[i+j*nk];
     }
-  #else							// gauss-jordan implementation from Numerical recipes
+  #else           // gauss-jordan implementation from Numerical recipes
                   // Ordinary LU-decomp used.
     DMatrix<T> a=(*this);
     Array<int> indx(a.getDim2());
@@ -244,15 +246,18 @@ namespace GMlib {
     int n=a.getDim1();  //nrows
     Array<double> vv(n);
     double d=1.0;
+#pragma omp parallel for
     for (i=0;i<n;i++)
     {
       big=0.0;
-      for (j=0;j<n;j++) if ((temp=std::fabs(a[i][j])) > big) big=temp;
-      if (big == 0.0) return (*this);   //nrerror("Singular matrix in routine ludcmp");
+      for (j=0;j<n;j++) if ((temp=std::abs(a[i][j])) > big) big=temp;
+//      if (big == 0.0) return (*this);   //nrerror("Singular matrix in routine ludcmp");
       vv[i]=1.0/big;
     }
+#pragma omp parallel for
     for (j=0;j<n;j++)
     {
+#pragma omp parallel for
       for (i=0;i<j;i++)
       {
         sum=a[i][j];
@@ -260,15 +265,17 @@ namespace GMlib {
         a[i][j]=sum;
       }
       big=0.0;
+#pragma omp parallel for
       for (i=j;i<n;i++)
       {
         sum=a[i][j];
         for (k=0;k<j;k++) sum -= a[i][k]*a[k][j];
         a[i][j]=sum;
-        if ((dum=vv[i]*std::fabs(sum)) >= big) { big=dum; imax=i; }
+        if ((dum=vv[i]*std::abs(sum)) >= big) { big=dum; imax=i; }
       }
       if (j != imax)
       {
+#pragma omp parallel for
         for (k=0;k<n;k++)
         {
           dum=a[imax][k];
@@ -285,15 +292,17 @@ namespace GMlib {
         dum=1.0/(a[j][j]);
         for (i=j+1;i<n;i++) a[i][j] *= dum;
       }
-    }									// LU-decomp. finished, stored in a[][]
+    }                           // LU-decomp. finished, stored in a[][]
 
-    DVector<T> b(a.getDim1());				// LU-back subst. begins
+    DVector<T> b(a.getDim1());  // LU-back subst. begins
+#pragma omp parallel for
     for(int cols=0; cols<a.getDim2(); cols++)
     {
       int i,ii=0,ip,j;
       for(i=0; i<getDim1(); i++) if(i==cols) b[i]=T(1.0); else b[i]=T(0.0);
       T sum;
       int n=a.getDim1();
+#pragma omp parallel for
       for (i=0;i<n;i++)
       {
         ip=indx[i];
@@ -304,6 +313,7 @@ namespace GMlib {
         else if (sum != 0.0) ii=i+1;
         b[i]=sum;
       }
+#pragma omp parallel for
       for (i=n-1;i>=0;i--)
       {
         sum=b[i];
@@ -311,7 +321,8 @@ namespace GMlib {
         b[i]=sum/a[i][i];
       }
       // LU-back subst. finished,
-      for(i=0; i<getDim1(); i++)		// inverse stored in this, a and b is disappearing?
+#pragma omp parallel for
+      for(i=0; i<getDim1(); i++)    // inverse stored in this, a and b is disappearing?
         (*this)[i][cols]=b[i];
     }
   #endif
@@ -525,27 +536,27 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>	DMatrix<T>::operator+(const DMatrix<T>& a) const
+  /*! DMatrix<T> DMatrix<T>::operator+(const DMatrix<T>& a) const
    *  \brief Pending Documentation
    *
    *  (+)  On all elements.
    */
   template<typename T>
   inline
-  DMatrix<T>	DMatrix<T>::operator+(const DMatrix<T>& a) const {
+  DMatrix<T> DMatrix<T>::operator+(const DMatrix<T>& a) const {
     DMatrix<T> na=(*this);
     return na += a;
   }
 
 
-  /*! DMatrix<T>	DMatrix<T>::operator-(const DMatrix<T>& a) const
+  /*! DMatrix<T> DMatrix<T>::operator-(const DMatrix<T>& a) const
    *  \brief Pending Documentation
    *
    *  (-)  On all elements.
    */
   template<typename T>
   inline
-  DMatrix<T>	DMatrix<T>::operator-(const DMatrix<T>& a) const {
+  DMatrix<T> DMatrix<T>::operator-(const DMatrix<T>& a) const {
     DMatrix<T> na=(*this);
     return na -= a;
   }

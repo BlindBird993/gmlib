@@ -30,6 +30,7 @@ addHeaders(
   gmPBohemianDome
   gmPBottle8
   gmPBoysSurface
+  gmPBsplineSurf
   gmPCircularSurface
   gmPCone
   gmPCoonsPatch
@@ -72,6 +73,7 @@ addTemplateSources(
   gmpbohemiandome.c
   gmpbottle8.c
   gmpboyssurface.c
+  gmpbsplinesurf.c
   gmpcircularsurface.c
   gmpcone.c
   gmpcoonspatch.c

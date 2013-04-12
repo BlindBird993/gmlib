@@ -58,7 +58,7 @@ namespace GMlib {
    */
   void View::prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders) {
 
-    std::cout << "View::prepare (x1,y1,x2,y2): (" << x1 << ", " << y1 << ", " << x2 << ", " << y2 << ")" << std::endl;
+//    std::cout << "View::prepare (x1,y1,x2,y2): (" << x1 << ", " << y1 << ", " << x2 << ", " << y2 << ")" << std::endl;
     if( _camera )
       _camera->reshape( x1, y1, x2, y2 );
     else

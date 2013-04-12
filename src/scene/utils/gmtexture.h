@@ -50,38 +50,42 @@ namespace GMlib {
     };
 
     Texture();
-    Texture( unsigned char* data, unsigned int width, unsigned int height, Texture::DEPTH depth = Texture::GM_TEXTURE_DEPTH_24, bool gen_texture = false );
+    Texture( unsigned char* data, unsigned int width, unsigned int height,
+             Texture::DEPTH depth = Texture::GM_TEXTURE_DEPTH_24,
+             bool gen_texture = false );
     Texture( const Texture& copy );
-    ~Texture();
+   ~Texture();
 
-    bool                            genTexture();
-    unsigned short                  getDepth() const;
-    unsigned int                    getDimension() const;
-    unsigned int                    getHeight() const;
-    const unsigned char*            getPtr() const;
-    unsigned int                    getTextureId() const;
-    unsigned int                    getWidth() const;
-    bool                            isValid() const;
-    bool                            set( unsigned char* data, unsigned int width, unsigned int height, Texture::DEPTH depth = Texture::GM_TEXTURE_DEPTH_24, bool gen_texture = false );
-    void                            setDimension( unsigned int texture_dimension );
-    void                            setGenMode( unsigned int texture_gen_mode );
+    bool                     genTexture();
+    unsigned short           getDepth() const;
+    unsigned int             getDimension() const;
+    unsigned int             getHeight() const;
+    const unsigned char*     getPtr() const;
+    unsigned int             getTextureId() const;
+    unsigned int             getWidth() const;
+    bool                     isValid() const;
+    bool                     set( unsigned char* data, unsigned int width, unsigned int height,
+                                  Texture::DEPTH depth = Texture::GM_TEXTURE_DEPTH_24,
+                                  bool     gen_texture = false );
+    void                     setDimension( unsigned int texture_dimension );
+    void                     setGenMode( unsigned int texture_gen_mode );
 
-    Texture&                        operator = ( const Texture& texture );
-    const Color&                    operator()(int i, int j) const;
-    bool                            operator == ( const Texture& texture ) const;
+    Texture&                 operator =  ( const Texture& texture );
+    const Color&             operator () (int i, int j) const;
+    bool                     operator == ( const Texture& texture ) const;
 
 
   private:
     static std::map<unsigned int, int>   _texture_id_map;
 
-    unsigned char*                  _data;
-    unsigned int	                  _height;
-    unsigned int	                  _width;
-    unsigned short	                _depth;
+    unsigned char*           _data;
+    unsigned int             _height;
+    unsigned int             _width;
+    unsigned short           _depth;
 
-    unsigned int                    _texture_id;
-    unsigned int                    _texture_dimension;
-    unsigned int                    _texture_gen_mode;
+    unsigned int             _texture_id;
+    unsigned int             _texture_dimension;
+    unsigned int             _texture_gen_mode;
 
   }; // END class Texture
 

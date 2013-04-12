@@ -28,6 +28,8 @@
  *  Implementation of the PBezierTriangle template class.
  */
 
+#include <scene/selector/gmselector.h>
+#include <scene/selector/gmselectorgrid.h>
 
 namespace GMlib {
 
@@ -38,6 +40,8 @@ namespace GMlib {
     _c = c;
     for( int i = 0; i < _c.getDim(); i++ )
       _c[i] -= c(0);
+
+    this->translateGlobal(c(0));
 
     _selectors = false;
     _sg = 0x0;
@@ -97,9 +101,9 @@ namespace GMlib {
       this->_p[0] = _c[0]*(u*u*u) + _c[1]*(3*u*u*v) + _c[2]*(3*u*u*w) +
                     _c[3]*(3*u*v*v) + _c[4]*(6*u*v*w) + _c[5]*(3*u*w*w) +
                     _c[6]*(v*v*v) + _c[7]*(3*v*v*w) + _c[8]*(3*v*w*w) + _c[9]*(w*w*w);
-      this->_p[1] = _c[0]*(3*u*u) + _c[1]*(6*u*v) + _c[2]*(6*u*w) + _c[3]*(3*v*v)+_c[4]*(6*v*w) + _c[5]*(3*w*w);
-      this->_p[2] = _c[1]*(3*u*u) + _c[3]*(6*u*v) + _c[4]*(6*u*w) + _c[6]*(3*v*v)+_c[7]*(6*v*w) + _c[8]*(3*w*w);
-      this->_p[3] = _c[2]*(3*u*u) + _c[4]*(6*u*v) + _c[5]*(6*u*w) + _c[7]*(3*v*v)+_c[8]*(6*v*w) + _c[9]*(3*w*w);
+      this->_p[1] = _c[0]*(3*u*u) + _c[1]*(6*u*v) + _c[2]*(6*u*w) + _c[3]*(3*v*v) + _c[4]*(6*v*w) + _c[5]*(3*w*w);
+      this->_p[2] = _c[1]*(3*u*u) + _c[3]*(6*u*v) + _c[4]*(6*u*w) + _c[6]*(3*v*v) + _c[7]*(6*v*w) + _c[8]*(3*w*w);
+      this->_p[3] = _c[2]*(3*u*u) + _c[4]*(6*u*v) + _c[5]*(6*u*w) + _c[7]*(3*v*v) + _c[8]*(6*v*w) + _c[9]*(3*w*w);
     }
   }
 
@@ -158,9 +162,9 @@ namespace GMlib {
 
       Selector<T,3> *sel;
       if( i == 0 )
-         sel = new Selector<T,3>( _c[i], s_id++, this, T(1), GMcolor::Red );
+         sel = new Selector<T,3>( _c[i], s_id++, this, T(0.1), GMcolor::Red );
       else
-        sel = new Selector<T,3>( _c[i], s_id++, this, T(1), selector_color );
+        sel = new Selector<T,3>( _c[i], s_id++, this, T(0.1), selector_color );
 
       DisplayObject::insert( sel );
       _s[i] = sel;

@@ -293,7 +293,7 @@ namespace GMlib {
     int i,j;
 
     for(i = 0; i <= d1; i++) {
-      for(j = 0; j<= std::min<int>(i, d2); j++)	{
+      for(j = 0; j<= std::min<int>(i, d2); j++)  {
         p += _p[i-j][j];
       }
     }
@@ -805,7 +805,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurf<T,n>::resample( DMatrix<DMatrix <DMatrix <Vector<T,n> > > >	& a,
+  void PSurf<T,n>::resample( DMatrix<DMatrix <DMatrix <Vector<T,n> > > >& a,
                            int m1, int m2, int d1, int d2 ) {
 
     resample( a, m1, m2, d1, d2, getStartPU(), getStartPV(), getEndPU(), getEndPV() );

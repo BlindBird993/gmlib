@@ -60,22 +60,22 @@ namespace GMlib{
   /*! \class Scene gmscene.h <gmScene>
    *  \brief Pending Documentation cleanup, and general documentation
    *
-   *	Inneholder: Scenen er startnoden i ojecttreet
+   *    Inneholder: Scenen er startnoden i ojecttreet
    *
-   *		privat;
-   *				En array av pekere til førstenode objektene i ojecttreet
-   *		public:
-   *				Konstuktør med mulige default verdier og sletter
-   *				En display funksjon for displaying av objektet.
-   *				En select funksjon for plukking(select) av objektet med mus.
-   *				En simulate funksjon for at objektet kan bevege seg eller subobjekter.
-   *				En find funksjon for å finne en funksjon med et gitt navn.
-   *				En insert funksjon for å legge inn et nytt førstenode objekt
-   *				En remove funksjon for å fjerne et førstenode objekt
-   *				En operator [] som returnerer et gitt føstenode-element.
-   *				En funksjon size() som gir antallet føstenode-element.
-   *				En funksjon getMatrix(obj,mat,type) som gir transformasjonsmatrisen
-   *				   fra scenen til og med obj hvis type er 1 og til obj hvis type er 2.
+   *        privat;
+   *                En array av pekere til førstenode objektene i ojecttreet
+   *        public:
+   *                Konstuktør med mulige default verdier og sletter
+   *                En display funksjon for displaying av objektet.
+   *                En select funksjon for plukking(select) av objektet med mus.
+   *                En simulate funksjon for at objektet kan bevege seg eller subobjekter.
+   *                En find funksjon for å finne en funksjon med et gitt navn.
+   *                En insert funksjon for å legge inn et nytt førstenode objekt
+   *                En remove funksjon for å fjerne et førstenode objekt
+   *                En operator [] som returnerer et gitt føstenode-element.
+   *                En funksjon size() som gir antallet føstenode-element.
+   *                En funksjon getMatrix(obj,mat,type) som gir transformasjonsmatrisen
+   *                   fra scenen til og med obj hvis type er 1 og til obj hvis type er 2.
    */
   class Scene {
   public:

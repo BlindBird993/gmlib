@@ -47,46 +47,46 @@ namespace GMlib{
     DMatrix(int i, int j, T val);
     DMatrix(int i, int j, const T p[]);
     DMatrix(const DMatrix<T>& v);
-    ~DMatrix();
+   ~DMatrix();
 
-    T			              getDeterminant() const;
+    T                   getDeterminant() const;
     int                 getDim1() const;
     int                 getDim2() const;
-    void		            increaseDim(int i, int j, T val=T(0), bool h_end=true, bool v_end=true);
+    void                increaseDim(int i, int j, T val=T(0), bool h_end=true, bool v_end=true);
     DMatrix<T>&         invert();
-    void		            resetDim(int i, int j);
-    void		            setDim(int i, int j);
-    void		            setIdentity();
-    DVector<T>	        toDVector();
-    DMatrix<T>&	        transpose();
+    void                resetDim(int i, int j);
+    void                setDim(int i, int j);
+    void                setIdentity();
+    DVector<T>          toDVector();
+    DMatrix<T>&         transpose();
 
-    DMatrix<T>&         operator=(const DMatrix<T>& v);
-    DMatrix<T>&         operator=(T p[]);
+    DMatrix<T>&         operator = (const DMatrix<T>& v);
+    DMatrix<T>&         operator = (T p[]);
 
     // The += -=  + - operators NB!!!! assume the dimensions to be equal
     // NB!! this operators are not doubling the dimensions!!
     //-----------------------------------------------------------------
-    DMatrix<T>&         operator+=(const DMatrix<T>&);
-    DMatrix<T>&         operator-=(const DMatrix<T>&);
-    DMatrix<T>	        operator+( const DMatrix<T>&) const;
-    DMatrix<T>	        operator-( const DMatrix<T>&) const;
+    DMatrix<T>&         operator += (const DMatrix<T>&);
+    DMatrix<T>&         operator -= (const DMatrix<T>&);
+    DMatrix<T>	        operator +  ( const DMatrix<T>&) const;
+    DMatrix<T>	        operator -  ( const DMatrix<T>&) const;
 
     // The scalingoperator, there is also a non-member scaling operator with oposit order!!
     //-------------------------------------------------------------------------------------
-    DMatrix<T>&	        operator*=(double d);
-    DMatrix<T>	        operator*(double d) const;
-    DMatrix<T>&	        operator/=(double d);
-    DMatrix<T>	        operator/(double d) const;
+    DMatrix<T>&	        operator *= (double d);
+    DMatrix<T>	        operator *  (double d) const;
+    DMatrix<T>&	        operator /= (double d);
+    DMatrix<T>	        operator /  (double d) const;
 
-    DVector<T>&		      operator[](int i);
-    const DVector<T>&   operator()(int i) const;
-    bool		            operator<(const DMatrix<T>& m) const;
+    DVector<T>&         operator [] (int i);
+    const DVector<T>&   operator () (int i) const;
+    bool                operator <  (const DMatrix<T>& m) const;
 
 
   private:
-    int			            _n;
-    DVector<T>*	        _p;
-    DVector<T>	        _init[4];
+    int                 _n;
+    DVector<T>         *_p;
+    DVector<T>          _init[4];
 
     void                _cpy(const DMatrix<T>& v);
     void                _cpy(const T p[]);

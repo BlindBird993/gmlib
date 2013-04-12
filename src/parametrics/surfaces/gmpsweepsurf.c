@@ -150,18 +150,19 @@ namespace GMlib {
       T                     tau   = (h12*h[3])/h12_2;
       T                     prv   = omega_0;
 
-      _omega += prv;
+      _omega.setDim(n);
+      _omega[0] = prv;
 
       for(int i=1; i<=n; i++)
       {
-          h       = _spine->evaluate(start + delta*i,3);
-          h12     = h[1]^h[2];
-          h1_2    = h[1]*h[1];
-          h12_2   = h12*h12;
-          tau     = (h12*h[3])/h12_2;
-          T k     = tau*sqrt(h1_2);
-          _omega += _omega.back() - del_2*(k+prv);
-          prv     = k;
+          h         = _spine->evaluate(start + delta*i,3);
+          h12       = h[1]^h[2];
+          h1_2      = h[1]*h[1];
+          h12_2     = h12*h12;
+          tau       = (h12*h[3])/h12_2;
+          T k       = tau*sqrt(h1_2);
+          _omega[i] = _omega[i-1] - del_2*(k+prv);
+          prv       = k;
       }
   }
 
@@ -169,7 +170,7 @@ namespace GMlib {
   inline
   T PSweepSurf<T>::getOmega(T t)
   {
-      int   n  = _omega.getSize()-1;
+      int   n  = _omega.getDim()-1;
       T     d  = _spine->getParDelta();
       T     u  = t - _spine->getParStart();
       int   i  = n*u/d;

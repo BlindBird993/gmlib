@@ -167,6 +167,7 @@ namespace GMlib {
 
 
 
+
   //******************************
   //**      The Point class     **
   //******************************
@@ -1188,7 +1189,6 @@ namespace GMlib {
     T                   getDistanceTo(const Point<T,n>& p) const;
 
   }; // END class PlaneArrow
-
 
 
 

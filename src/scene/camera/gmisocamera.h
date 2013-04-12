@@ -42,79 +42,79 @@ namespace GMlib {
 
 
   /*! \class IsoCamera gmisocamera.h <gmIsoCamera>
-	 *	\brief Pending Documentation
-	 *
-	 *	Pending Documentation
-	 */
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
   class IsoCamera : public Camera {
     GM_SCENEOBJECT(IsoCamera)
   public:
     IsoCamera(Scene* s);
     IsoCamera(
-			const Point<float,3>&  pos,
-			const Point<float,3>&  look_pos
-		);
+      const Point<float,3>&  pos,
+      const Point<float,3>&  look_pos
+    );
     IsoCamera(
-			const Point<float,3>&  pos,
-			const Vector<float,3>& dir,
-			const Vector<float,3>& up,
-			float zoom=1
-		);
+      const Point<float,3>&  pos,
+      const Vector<float,3>& dir,
+      const Vector<float,3>& up,
+      float zoom=1
+    );
     ~IsoCamera();
 
-		double					deltaTranslate(DisplayObject *);
+    double          deltaTranslate(DisplayObject *);
 
-//		void 						go(bool stereo=false);
-		void						lockTarget(SceneObject* obj);
-		void						lockTarget(const Point<float,3>& p);
-		void						lockTarget(double d);
-		SceneObject*		lockTargetAtPixel(int,int);
-		void 						move(float d);
-		void 						move(const Vector<float,3>& t);
-
-
-		void 						rotate(Angle, const Vector<float,3>&);
-		void 						rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&);
-		void 						rotateGlobal(Angle, const Vector<float,3>&);
-		void 						rotateGlobal(Angle, const Point<float,3>&,const UnitVector<float,3>&);
-
-		void 						setGrid(double w, double h);
-		void 						tilt(Angle a);
-		void 						translate(const Vector<float,3>& trans_vector);
-		void 						translateGlobal(const Vector<float,3>&);
-		void 						turn(Angle a);
-		void 						zoom(float z);
+//    void             go(bool stereo=false);
+    void            lockTarget(SceneObject* obj);
+    void            lockTarget(const Point<float,3>& p);
+    void            lockTarget(double d);
+    SceneObject*    lockTargetAtPixel(int,int);
+    void            move(float d);
+    void            move(const Vector<float,3>& t);
 
 
-	protected:
-		// ***********
-		// From Camera
-		void						setPerspective();
+    void            rotate(Angle, const Vector<float,3>&);
+    void            rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&);
+    void            rotateGlobal(Angle, const Vector<float,3>&);
+    void            rotateGlobal(Angle, const Point<float,3>&,const UnitVector<float,3>&);
 
-		// ****************
-		// From SceneObject
-		void						localDisplay();
-		void						localSelect();
-
-
-	private:
-		double					_horisontal;
-		double					_gh,_gw;
-
-		// ***********
-		// From Camera
-		void						drawActiveCam();
-		SceneObject*		find(unsigned int name);				/// \todo ????? NOT IMPLEMENTED !!`????? why??
-		void						resetC(float z=1);
+    void            setGrid(double w, double h);
+    void            tilt(Angle a);
+    void            translate(const Vector<float,3>& trans_vector);
+    void            translateGlobal(const Vector<float,3>&);
+    void            turn(Angle a);
+    void            zoom(float z);
 
 
-  };	// END class IsoCamera
+  protected:
+    // ***********
+    // From Camera
+    void            setPerspective();
+
+    // ****************
+    // From SceneObject
+    void            localDisplay();
+    void            localSelect();
+
+
+  private:
+    double          _horisontal;
+    double          _gh,_gw;
+
+    // ***********
+    // From Camera
+    void            drawActiveCam();
+    SceneObject*    find(unsigned int name);        /// \todo ????? NOT IMPLEMENTED !!`????? why??
+    void            resetC(float z=1);
+
+
+  };  // END class IsoCamera
 
 
   /*! void IsoCamera::drawActivCam()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::drawActiveCam() {
@@ -149,65 +149,65 @@ namespace GMlib {
 
 
   /*! void IsoCamera::move(float d)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
-   *	Moveing in shooting direction
+   *  Pending Documentation
+   *  Moveing in shooting direction
    */
   inline
   void IsoCamera::move( float /* delta */ ) {}
 
 
   /*! void IsoCamera::move(const Vector<float,3>& t)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
-   *	Move in direction t.
+   *  Pending Documentation
+   *  Move in direction t.
    */
   inline
   void IsoCamera::move( const Vector<float,3>& /* delta */ ) {}
 
 
   /*! void IsoCamera::rotate(Angle, const Vector<float,3>&)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::rotate( Angle /*angle*/, const Vector<float,3>& /* axel */ ) {}
 
 
   /*! void IsoCamera::rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&) {}
 
 
   /*! void IsoCamera::rotateGlobal(Angle, const Vector<float,3>&)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::rotateGlobal(Angle, const Vector<float,3>&) {}
 
 
   /*! void IsoCamera::rotateGlobal(Angle, const Point<float,3>&,const UnitVector<float,3>&)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::rotateGlobal(Angle, const Point<float,3>&,const UnitVector<float,3>&) {}
 
 
   /*! void IsoCamera::setGrid(double w, double h)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::setGrid(double w, double h) {
@@ -217,36 +217,36 @@ namespace GMlib {
 
 
   /*! void IsoCamera::tilt(Angle a)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::tilt( Angle /* angle */ ) {}
 
 
   /*! void IsoCamera::translate(const Vector<float,3>& trans_vector)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::translate( const Vector<float,3>& /*trans_vector*/ ) {}
 
 
   /*! void IsoCamera::translateGlobal(const Vector<float,3>&)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::translateGlobal( const Vector<float,3>& /*trans_vector*/ ) {}
 
 
   /*! void IsoCamera::turn(Angle a)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void IsoCamera::turn( Angle /*angle*/ ) {}
@@ -256,6 +256,6 @@ namespace GMlib {
 
 
 
-}	// END namespace GMlib
+}  // END namespace GMlib
 
 #endif // __gmISOCAMERA_H__

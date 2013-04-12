@@ -25,7 +25,6 @@
 /*! \file gmcamera.h
  *
  *  Interface for the Camera class.
-
  *  \todo
  *  - Translate the already documented parts into English
  */
@@ -87,12 +86,12 @@ namespace GMlib {
     Camera( Scene* s );
 
     Camera( const Point<float,3>&  pos,
-      const Point<float,3>&  look_at_pos);
+            const Point<float,3>&  look_at_pos);
 
     Camera( const Point<float,3>&  pos,
-      const Vector<float,3>& dir,
-      const Vector<float,3>& up,
-      float zoom=1);
+            const Vector<float,3>& dir,
+            const Vector<float,3>& up,
+            float zoom=1);
 
     virtual ~Camera();
 
@@ -153,7 +152,7 @@ namespace GMlib {
                                              const Vector<float,3>& p);
 
 //    virtual void                display();
-    virtual  void                drawActiveCam();
+    virtual  void               drawActiveCam();
     SceneObject*                find(unsigned int name);
     virtual void                makeGraphics();
     void                        resetC(float z = 1);
@@ -185,23 +184,21 @@ namespace GMlib {
     bool                        _culling;
 
   public:
-    void    markAsActive() { _active = true; }
-    void    markAsInactive() { _active = false; }
+    void    markAsActive()    { _active = true; }
+    void    markAsInactive()  { _active = false; }
 
-    void    switchToLeftEye() {
-
-      basisChange( _side, _up, _dir, _pos );
-    }
+    void    switchToLeftEye() { basisChange( _side, _up, _dir, _pos ); }
 
     void    switchToRightEye() {
 
-      Point<float,3>    tmp_pos  = _pos  - _eye_dist*_side;
-      UnitVector<float,3>  tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
-      UnitVector<float,3>  tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
-      basisChange(tmp_side, _up, tmp_dir, tmp_pos);      // Change to right eye
+      Point<float,3>         tmp_pos  = _pos  - _eye_dist*_side;
+      UnitVector<float,3>    tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
+      UnitVector<float,3>    tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
+      basisChange(tmp_side, _up, tmp_dir, tmp_pos);            // Change to right eye
     }
 
-    virtual void                setupDisplay();
+    virtual
+    void                        setupDisplay();
     void                        applyViewport();
 
   }; // END class Camera
@@ -220,17 +217,16 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Camera::basisChange(
-    const Vector<float,3>& x,
-    const Vector<float,3>& y,
-    const Vector<float,3>& z,
-    const Vector<float,3>& p
-  ) {
+  void Camera::basisChange( const Vector<float,3>& x,
+                            const Vector<float,3>& y,
+                            const Vector<float,3>& z,
+                            const Vector<float,3>& p ) {
 
     static Vector<float,4> nx, ny, nz, nw(0.0f);
-    memcpy( nx.getPtr(), (-x).getPtr(), 12 );
-    memcpy( ny.getPtr(), y.getPtr(), 12 );
-    memcpy( nz.getPtr(), (-z).getPtr(), 12 );
+    nx = -x;
+    ny =  y;
+    nz = -z;
+
     nx[3] = x*p;
     ny[3] = -(y*p);
     nz[3] = z*p;
@@ -630,6 +626,7 @@ namespace GMlib {
     return _culling;
   }
 
+
   /*! bool Camera::isFrustumVisible() const
    *  \brief Pending Documentation
    *
@@ -718,7 +715,7 @@ namespace GMlib {
   inline
   void Camera::setFrustumVisible(bool visible) {
 
-    _frustum_visible=visible;
+    _frustum_visible = visible;
   }
 
 
@@ -745,6 +742,12 @@ namespace GMlib {
     _scene = s;
   }
 
+
+  /*! void Camera::updateCameraOrientation()
+   *    \brief Pending Documentation
+   *
+   *    Pending Documentation
+   */
   inline
   void Camera::updateCameraOrientation() {
 

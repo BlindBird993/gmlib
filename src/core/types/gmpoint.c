@@ -447,7 +447,9 @@ namespace GMlib {
   template <typename G, int m>
   inline
   APoint<G,m>& APoint<T, n>::to() const {
-    return operator APoint<G,m>& ();
+    static APoint<G,m> v;
+    v = *this;
+    return v;
   }
 
 
@@ -1688,7 +1690,9 @@ namespace GMlib {
   template <typename G, int m>
   inline
   ScalarPoint<G,m>& ScalarPoint<T, n>::to() const {
-    return operator ScalarPoint<G,m>& ();
+    static ScalarPoint<G,m> v;
+    v = *this;
+    return v;
   }
 
   template <typename T, int n>

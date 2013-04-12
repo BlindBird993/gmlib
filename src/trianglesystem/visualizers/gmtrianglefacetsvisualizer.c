@@ -64,7 +64,7 @@ namespace GMlib {
     vbo.createBufferData( no_vertices * sizeof(GL::GLVertexNormal), vertices.getPtr(), GL_STATIC_DRAW );
     vbo.unbind();
 
-    std::cout << "TriangleFacetsVisualizer: No. Vertices: " << no_vertices << std::endl;
+//    std::cout << "TriangleFacetsVisualizer: No. Vertices: " << no_vertices << std::endl;
   }
 
   template <typename T>
@@ -87,7 +87,7 @@ namespace GMlib {
 
     ibo.createBufferData( no_indices * sizeof(GLuint), indices.getPtr(), GL_STATIC_DRAW );
 
-    std::cout << "TriangleFacetsVisualizer: No. Indices: " << no_indices << std::endl;
+//    std::cout << "TriangleFacetsVisualizer: No. Indices: " << no_indices << std::endl;
   }
 
   template <typename T>

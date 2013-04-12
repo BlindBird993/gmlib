@@ -74,6 +74,67 @@ namespace GMlib {
     }
   }
 
+
+
+  template <typename T>
+  inline
+  int EvaluatorStatic<T>::evaluateBSp( DMatrix<T>& mat, T t, const DVector<T>& tv, int d){
+
+    // Find knot-index i such that: tv[ii] <= t < tv[ii+1]
+    int ii = d;
+    int jj = tv.getDim()-d-1;
+    do{
+      int k=(ii+jj)/2;
+      if(t < tv(k)) jj=k;
+      else          ii=k;
+    }while(jj-ii>1);
+
+    // Storing translated and scaled t values
+    DVector<T> w;
+
+    // Compute the Bernztein polynomials 1 -> d.
+    // One for each row, starting from the bottom up.
+    mat.setDim( d+1, d+1 );
+    mat[d-1][0] = 1 - getW( tv, t, ii, 1 );
+    mat[d-1][1] = getW( tv, t, ii, 1 );
+
+    for( int i = d - 2, d_c = 2; i >= 0; i--, d_c++ ) {
+
+      // Generate w
+      w.setDim(d_c);
+      for( int j = d_c; j > 0; j-- )
+        w[j-1] = getW( tv, t, ii - ( d_c - j ), d_c );
+
+      // Compute the k b-splines
+      mat[i][0] = ( 1 - w[0]) * mat[i+1][0];
+      for( int j = 1; j < d - i; j++ )
+        mat[i][j] = w[j-1] * mat[i+1][j-1] + (1 - w[j]) * mat[i+1][j];
+      mat[i][d-i] = w[d_c-1] * mat[i+1][d-i-1];
+    }
+
+    // Compute all the deriatives
+    mat[d][0] = -getWder( tv, ii, 1 );
+    mat[d][1] =  getWder( tv, ii, 1 );
+
+    for( int k = 2; k <= d; k++ ) {
+      for( int i = d, d_c = 2; i > d - k; i--, d_c++ ) {
+
+        // Generate w for the derivatives
+        w.setDim(d_c);
+        for( int j = 1; j <= d_c; j++ )
+          w[j-1] = k * getWder( tv, ii - ( d_c - j ), d_c );
+
+        // Complete the bernstein polynomials by adding the computation of derivatives
+        mat[i][k] = w[0] * mat[i][k-1];
+        for( int j = k - 1, ii_c = 1; j > 0; j--, ii_c++ )
+          mat[i][j] = w[ii_c] * ( mat[i][j-1] - mat[i][j] );
+        mat[i][0] = - w[d_c-1] * mat[i][0];
+      }
+    }
+    return ii;
+  }
+
+
   template <typename T>
   void EvaluatorStatic<T>::evaluateHp( DMatrix<T>& mat, int d, T t) {
 
@@ -108,6 +169,22 @@ namespace GMlib {
         }
       }
     }
+  }
+
+
+  template <typename T>
+  inline
+  T EvaluatorStatic<T>::getW( const DVector<T>& tv, T t, int i, int d ){
+
+    return (t-tv(i))/(tv(i+d)-tv(i));
+  }
+
+
+  template <typename T>
+  inline
+  T EvaluatorStatic<T>::getWder( const DVector<T>& tv, int i, int d ){
+
+    return T(1)/(tv(i+d)-tv(i));
   }
 
 } // END namespace GMlib

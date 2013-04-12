@@ -73,11 +73,11 @@ namespace GMlib {
     Simplex( const Vector< Point<T ,n>, m>& copy );
 
 
-    Point<T,n>	                      closestPoint(const Point<T,n>& p) const;
-    Vector<T,n>                       distanceVector(const Point<T,n>& p) const;
-    T                                 distanceTo(const Point<T,n>& p) const;
-    T                                 distanceAlong(const Point<T,n>& p, int i=0) const;
-    Vector<Simplex<T,n,m-1>,m+2>      sub();
+    Point<T,n>	                  closestPoint(const Point<T,n>& p) const;
+    Vector<T,n>                   distanceVector(const Point<T,n>& p) const;
+    T                             distanceTo(const Point<T,n>& p) const;
+    T                             distanceAlong(const Point<T,n>& p, int i=0) const;
+    Vector<Simplex<T,n,m-1>,m+2>  sub();
 
   }; // END class Simplex
 

@@ -59,11 +59,11 @@ namespace GMlib {
   public:
     StlObject( const std::string& filename, const Color& color = 5, int flip = 1 ); // From file, in given color
     StlObject( std::ifstream& stream, bool binary = true, const Color& color = GMcolor::Aqua );
+
     StlObject( PSurf<float,3> *obj, int m1 = 20, int m2 = 20, GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
-    StlObject( float r = 10 );				 // Makes a Sphere, just for debugging
+    StlObject( float r = 10 );       // Makes a Sphere, just for debugging
     ~StlObject();
 
-//    std::string                       getIdentity() const;
     unsigned int                      getNoNormals() const;
     unsigned int                      getNoPoints() const;
     Array< Vector<float,3> >          getNormals();
@@ -71,7 +71,7 @@ namespace GMlib {
     Array<Point<float,3> >            getPoints();
     const Array<Point<float,3> >&     getPoints() const;
     float                             getPointSize();
-    ArrayLX< TSVertex<float> >          getVertices();
+    ArrayLX< TSVertex<float> >        getVertices();
 
     void                              load( std::ifstream& stream, bool binary = true );
     void                              replot( GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
@@ -81,7 +81,6 @@ namespace GMlib {
   protected:
     void                              localDisplay();
     void                              localSelect();
-
 
   private:
     float                             _getFloat();
@@ -93,33 +92,23 @@ namespace GMlib {
     void                              _init();
 
     unsigned int                      _dlist;
-    PSphere<float>                    *_sphere;         // Debug
+    PSphere<float>                   *_sphere;      // Debug
 
-    std::string                       _header;				// I put the filename in here,
-    FILE*                             _stl_file;
+    std::string                       _header;      // I put the filename in here,
+    FILE                             *_stl_file;
 
-    Array<Point<float,3> >            _vertices;        // storage, each three makes a triangle
-    Array<Vector<float,3> >           _normals;         // with one normal for each triangle
-    Box<float,3>                      _bbox;					  // Bounding box, should be an options
+    Array<Point<float,3> >            _vertices;    // storage, each three makes a triangle
+    Array<Vector<float,3> >           _normals;     // with one normal for each triangle
+    Box<float,3>                      _bbox;        // Bounding box, should be an options
     float                             _point_size;
 
     // binary file utility functions to render it.
-
 
   }; // END class StlObject
 
 
 
 
-
-
-
-
-//  inline
-//  std::string StlObject::getIdentity() const {
-
-//    return _identity;
-//  }
 
 
   inline
@@ -153,12 +142,13 @@ namespace GMlib {
   inline
   Array< Point<float,3> > StlObject::getPoints() {
 
-    Array< Point<float,3> > v;         // returns copy, no cast between Point<float,3> and Point<float,3>
-    v.setSize( _vertices.getSize() );
-    for( int i = 0; i < _vertices.getSize(); i++ )
-      v[i] = _vertices[i];
+//    Array< Point<float,3> > v;         // returns copy, no cast between Point<float,3> and Point<float,3>
+//    v.setSize( _vertices.getSize() );
+//    for( int i = 0; i < _vertices.getSize(); i++ )
+//      v[i] = _vertices[i];
 
-    return v;
+//    return v;
+      return _vertices;
   }
 
 
@@ -172,7 +162,7 @@ namespace GMlib {
   inline
   ArrayLX< TSVertex<float> > StlObject::getVertices() {
 
-    ArrayLX< TSVertex<float> > v;         // returns copy, no cast between Point<float,3> and Point<float,3>
+    ArrayLX< TSVertex<float> > v;
     v.setSize( _vertices.getSize() );
     for( int i = 0; i < _vertices.getSize(); i++ )
       v[i] = TSVertex<float>( _vertices[i], _normals[i/3] );

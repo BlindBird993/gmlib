@@ -120,7 +120,7 @@ namespace GMlib {
 
       const int o1 = 0.5 *  i    * (i+1);
       const int o2 = 0.5 * (i+1) * (i+2);
-      const int o = i*(i+2);
+      const int o  = i*(i+2);
       const int is = 2 * i + 3;
 
       for( int j = 0; j < is/2; j++ ) {

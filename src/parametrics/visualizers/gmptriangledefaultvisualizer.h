@@ -47,9 +47,7 @@ namespace GMlib {
     PTriangleDefaultVisualizer();
     virtual ~PTriangleDefaultVisualizer();
     void            display();
-    virtual void    replot(
-      const DVector< DVector< Vector<T,3> > >& p,int m
-    );
+    virtual void    replot(const DVector< DVector< Vector<T,3> > >& p,int m);
     void            select();
 
   protected:

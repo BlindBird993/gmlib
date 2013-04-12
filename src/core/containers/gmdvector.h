@@ -29,7 +29,7 @@
  *  \todo
  *  - The invariants (stats) for DVector are: \n
  *    if no allocation: pt  = a, \n
- *    if allocation:	  pt != a. \n
+ *    if allocation:    pt != a. \n
  *    NB! There might be more memory allocated than used, \n
  *    but there is no knowledge about the real size!! \n
  *    To clean up there is the function: resetDim(int d)
@@ -53,8 +53,8 @@ namespace GMlib {
    *
    *  Interface for the Dynamic Vector class.
    *  DVector (Dynamic Vector) is a container class which can
-   *	dynamic change dimention. together with DMatrix a lot
-   *	of standard vector/matrix operations are available.
+   *  dynamic change dimention. together with DMatrix a lot
+   *  of standard vector/matrix operations are available.
    */
   template <typename T>
   class DVector {
@@ -63,59 +63,58 @@ namespace GMlib {
     DVector( int i, T val );
     DVector( int i, const T p[] );
     DVector( const DVector<T>& v );
-    ~DVector();
+   ~DVector();
 
-    void		      append(T val, int i=1);
-    void		      append(const DVector<T>& v);
-    void		      clear(T v = T(0));
-    int           getDim() const;
-    T			        getLength() const;
-    T*            getPtr() const;
-    DVector<T>&   getReversed() const;
-    DVector<T>&   getSubVector(int start, int end) const;
-    T&			      getSum() const;
-    T&			      getSum(int start, int end) const;
-    void		      increaseDim(int i, T val=T(0), bool at_end=true);
-    void		      prepend(T val, int i=1);
-    void		      prepend(const DVector<T>& v);
-    void		      push_back(T val, int i=1);
-    void		      push_back(const DVector<T>& v);
-    void		      push_front(T val, int i=1);
-    void		      push_front(const DVector<T>& v);
-    void		      resetDim(int i);
-    void		      setDim(int i);
-    Array<T>&	    toArray() const;
+    void             append(T val, int i=1);
+    void             append(const DVector<T>& v);
+    void             clear(T v = T(0));
+    int              getDim() const;
+    T                getLength() const;
+    T*               getPtr() const;
+    DVector<T>&      getReversed() const;
+    DVector<T>&      getSubVector(int start, int end) const;
+    T&               getSum() const;
+    T&               getSum(int start, int end) const;
+    void             increaseDim(int i, T val=T(0), bool at_end=true);
+    void             prepend(T val, int i=1);
+    void             prepend(const DVector<T>& v);
+    void             push_back(T val, int i=1);
+    void             push_back(const DVector<T>& v);
+    void             push_front(T val, int i=1);
+    void             push_front(const DVector<T>& v);
+    void             resetDim(int i);
+    void             setDim(int i);
+    Array<T>&        toArray() const;
 
-    bool		      operator<(const DVector<T>& m) const;
-    DVector<T>&   operator=(const DVector<T>& v);
-    DVector<T>&   operator=(T p[]);
+    bool             operator<(const DVector<T>& m) const;
+    DVector<T>&      operator=(const DVector<T>& v);
+    DVector<T>&      operator=(T p[]);
 
     // The += -= %= + - % operators NB!!!! assume the dimension to be equal
     // NB!! this operators are not doubling the dimension!!
     //-----------------------------------------------------------------
-    DVector<T>&   operator+=(const DVector<T>&);
-    DVector<T>&   operator-=(const DVector<T>&);
-    DVector<T>	  operator+( const DVector<T>&) const;
-    DVector<T>	  operator-( const DVector<T>&) const;
+    DVector<T>&      operator+=(const DVector<T>&);
+    DVector<T>&      operator-=(const DVector<T>&);
+    DVector<T>       operator+( const DVector<T>&) const;
+    DVector<T>       operator-( const DVector<T>&) const;
 
     // The scalingoperator, there is also a non-member scaling operator with oposit order!!
     //-------------------------------------------------------------------------------------
-    DVector<T>&	  operator*=(double d);
-    DVector<T>	  operator*(double d) const;
-    DVector<T>&	  operator/=(double d);
-    DVector<T>	  operator/(double d) const;
+    DVector<T>&      operator*=(double d);
+    DVector<T>       operator*(double d) const;
+    DVector<T>&      operator/=(double d);
+    DVector<T>       operator/(double d) const;
 
-    T&            operator[](int i);
-    const T&	    operator()(int i) const;
-
+    T&               operator[](int i);
+    const T&         operator()(int i) const;
 
   private:
-    int           _n;
-    T*            _p;
-    T	            _init[4];
+    int             _n;
+    T              *_p;
+    T               _init[4];
 
-    void          _cpy( const DVector<T>& v );
-    void          _cpy( const T p[] );
+    void            _cpy( const DVector<T>& v );
+    void            _cpy( const T p[] );
 
   }; // END class DVector
 
