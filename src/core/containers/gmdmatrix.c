@@ -31,7 +31,8 @@
 // STL includes
 #include <cmath>
 
-#include "omp.h"
+// Platform
+#include <omp.h>
 
 
 #ifdef GM_INTEL
