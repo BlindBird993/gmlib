@@ -23,10 +23,8 @@
 
 addHeaders(
   gmSelector
-  gmSelectorGrid
 )
 
 addTemplateSources(
   gmselector.c
-  gmselectorgrid.c
 )

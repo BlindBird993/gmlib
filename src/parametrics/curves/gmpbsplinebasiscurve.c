@@ -60,7 +60,7 @@ namespace GMlib {
 
 
   template <typename T>
-  PBSplineBasisCurve<T>::~PBezierCurve() {}
+  PBSplineBasisCurve<T>::~PBSplineBasisCurve() {}
 
 
   template <typename T>

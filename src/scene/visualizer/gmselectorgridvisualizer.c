@@ -55,7 +55,7 @@ namespace GMlib {
     const int no = _c.getDim();
     DVector<Vector<GLfloat,3> > dp(no);
     for( int i = 0; i < no; i++ )
-      dp[i] = *_c[i];
+      dp[i] = (*_c[i]).template toType<GLfloat>();
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
     glBufferData( GL_ARRAY_BUFFER, no * 3 * sizeof(GLfloat), dp[0].getPtr(), GL_STATIC_DRAW );
