@@ -57,29 +57,29 @@ namespace GMlib{
     Selector(APoint<T,n>& mp, int id, SceneObject* parent, T r=1, const Color& c = Color(0.0,0.0,0.7), Selector<T,n>* root=NULL );
     virtual ~Selector();
 
-    void	                disable();
-    void	                disableAll();
-    void	                editPos(Vector<float,3> dp);
-    void	                enable();
-    void	                enableAll();
-    int                     getId() const;
-    const APoint<T,n>&      getPosition() const;
-    bool	                isEnabled() const;
-    bool	                toggle();
-    void                    update();
-    void	                update(const APoint<T,n>& p);
+    void                 disable();
+    void                 disableAll();
+    void                 editPos(Vector<float,3> dp);
+    void                 enable();
+    void                 enableAll();
+    int                  getId() const;
+    const APoint<T,n>&   getPosition() const;
+    bool                 isEnabled() const;
+    bool                 toggle();
+    void                 update();
+    void                 update(const APoint<T,n>& p);
 
     // *******************
     // Derived functions
     // from SceneObject
-    virtual void	        edit();
+    virtual void         edit();
 
 
   protected:
-    bool			      _enabled;
-    Selector<T,n>*        _root;
-    Color                 _default;
-    Color                 _marked;
+    bool                 _enabled;
+    Selector<T,n>*       _root;
+    Color                _default;
+    Color                _marked;
 
 //    GL::GLProgram             _display;
 
@@ -88,16 +88,16 @@ namespace GMlib{
 //    BufferObject          _bo_cube_indices;
 //    BufferObject          _bo_cube_frame_indices;
 
-    void                  allDisable();
-    void                  allEnable();
+    void                 allDisable();
+    void                 allEnable();
 //    void                  localDisplay();
 //    void                  localSelect();
 
 
   private:
-    int				        _id;
-    SceneObject*	        _parent;
-    APoint<T,n>&		    _position;
+    int                  _id;
+    SceneObject*         _parent;
+    APoint<T,n>&         _position;
 
   }; // END class Selector
 
@@ -105,9 +105,6 @@ namespace GMlib{
 
 // Include inline Selector class implementations
 #include "gmselector.c"
-
-
-
 
 
 

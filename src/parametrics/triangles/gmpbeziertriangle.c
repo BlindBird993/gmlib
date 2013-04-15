@@ -28,8 +28,11 @@
  *  Implementation of the PBezierTriangle template class.
  */
 
-#include <scene/selector/gmselector.h>
-#include <scene/selector/gmselectorgrid.h>
+
+#include "../evaluators/gmevaluatorstatic.h"
+
+// gmlib
+#include <scene/visualizer/gmselectorgridvisualizer.h>
 
 namespace GMlib {
 
@@ -38,14 +41,13 @@ namespace GMlib {
   PBezierTriangle<T>::PBezierTriangle( const DVector< Vector<T,3> >& c ) {
 
     _c = c;
-    for( int i = 0; i < _c.getDim(); i++ )
-      _c[i] -= c(0);
-
-    this->translateGlobal(c(0));
+//    for( int i = 0; i < _c.getDim(); i++ )
+//      _c[i] -= c(0);
+//    this->translateGlobal(c(0));
 
     _selectors = false;
-    _sg = 0x0;
-    _c_moved = false;
+    _c_moved   = false;
+    _sgv       = new SelectorGridVisualizer<T>;
   }
 
   template <typename T>
@@ -54,28 +56,29 @@ namespace GMlib {
     _c = copy._c;
 
     _selectors = false;
-    _sg = 0x0;
-    _c_moved = false;
+    _c_moved   = false;
+    _sgv       = new SelectorGridVisualizer<T>;
   }
 
   template <typename T>
   PBezierTriangle<T>::~PBezierTriangle() {
 
-    if( _sg )
-      delete _sg;
+    delete _sgv;
   }
 
   template <typename T>
   inline
   void PBezierTriangle<T>::edit( int /*selector*/ ) {
 
-    _c_moved = true; {
+    _c_moved = true;
 
       if( this->_parent )
         this->_parent->edit( this );
 
       this->replot();
-    } _c_moved = false;
+    _sgv->update();
+
+    _c_moved = false;
   }
 
   template <typename T>
@@ -121,14 +124,12 @@ namespace GMlib {
     if( !_selectors )
       return;
 
-    // Remove Selector Grid
-    DisplayObject::remove( _sg );
-    delete _sg;
-    _sg = 0x0;
+    // Remove Selector Grid Visualizer
+    this->removeVisualizer( _sgv );
+    _sgv->reset();
 
     // Remove selectors
     for( int i = 0; i < _s.getDim(); i++ ) {
-
       DisplayObject::remove( _s[i] );
       delete _s[i];
     }
@@ -158,38 +159,25 @@ namespace GMlib {
       return;
 
     _s.setDim( _c.getDim() );
-    for( int i = 0, s_id = 0; i < _s.getDim(); i++ ) {
-
+    for( int i = 0, k = 0; i < _s.getDim(); i++ ) {
       Selector<T,3> *sel;
       if( i == 0 )
-         sel = new Selector<T,3>( _c[i], s_id++, this, T(0.1), GMcolor::Red );
+        sel = new Selector<T,3>( _c[i], k++, this, T(0.2), GMcolor::Red );
       else
-        sel = new Selector<T,3>( _c[i], s_id++, this, T(0.1), selector_color );
+        sel = new Selector<T,3>( _c[i], k++, this, T(0.2), selector_color );
 
       DisplayObject::insert( sel );
       _s[i] = sel;
     }
 
     if( grid ) {
-
-      _sg = new SelectorGrid<T,3>( _c[0], this, grid_color );
-
-      for( int i = 0; 0.5*(i+1)*(i+2) < _c.getDim(); i++ ) {
-
-        int o1 = 0.5 * i*(i+1);
-        int o2 = 0.5 * (i+1)*(i+2);
-        for( int j = 0, l = o2-o1; j < l; j++ ) {
-          _sg->add( _c[o2+j], _c[o2+j+1] );
-          _sg->add( _c[o1+j], _c[o2+j] );
-          _sg->add( _c[o1+j], _c[o2+j+1] );
-        }
-      }
-
-      DisplayObject::insert( _sg );
+      _sgv->setSelectors( _c, 1 );
+      this->insertVisualizer( _sgv );
     }
 
     _selectors = true;
   }
+
 
 
   template <typename T>
@@ -209,6 +197,8 @@ namespace GMlib {
       }
 
       DisplayObject::translate( -d.template toType<float>() );
+
+      _sgv->update();
     }
   }
 

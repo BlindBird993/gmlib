@@ -35,11 +35,17 @@
 #include "../gmptriangle.h"
 
 // gmlib
-#include <scene/selector/gmselector.h>
-#include <scene/selector/gmselectorgrid.h>
+
 
 
 namespace GMlib {
+
+template <typename T, int n>
+class Selector;
+
+template <typename T>
+class SelectorGridVisualizer;
+
 
   template <typename T>
   class PBezierTriangle : public PTriangle<T,3> {
@@ -61,7 +67,7 @@ namespace GMlib {
     DVector< Vector<T,3> >      _c;
 
     bool                        _selectors;
-    SelectorGrid<T,3>*          _sg;
+    SelectorGridVisualizer<T>  *_sgv;
     DVector< Selector<T,3>* >   _s;
     bool                        _c_moved;
 

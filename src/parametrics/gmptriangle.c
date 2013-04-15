@@ -299,7 +299,10 @@ namespace GMlib {
   inline
   void PTriangle<T,n>::insertVisualizer( Visualizer *visualizer ) {
 
+    DisplayObject::insertVisualizer( visualizer );
+
     PTriangleVisualizer<T,n> *visu = dynamic_cast<PTriangleVisualizer<T,n>*>( visualizer );
+
     if( !visu )
       return;
 
@@ -308,7 +311,7 @@ namespace GMlib {
 
     _ptriangle_visualizers += visu;
 
-    DisplayObject::insertVisualizer( visualizer );
+
   }
 
   template <typename T, int n>

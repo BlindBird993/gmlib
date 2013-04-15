@@ -47,7 +47,6 @@ namespace GMlib {
 
     int no_dp = p.getDim();
 
-
     Vector<T,3> a, b;
     UnitVector<T,3> norm;
 
@@ -83,12 +82,11 @@ namespace GMlib {
     for( int i = 0; i < m-1; i++ ) {
 
       // Index row i and row i+1
-      const int o1 = 0.5 *  i    * (i+1);
-      const int o2 = 0.5 * (i+1) * (i+2);
+        const int o1 = (i*(i+1))/2;
+        const int o2 = ((i+1)*(i+2))/2;
 
       // Upper triangles (pointing down)
       for( int j = 1; j <= i; j++ ) {
-
         *iptr++ = o1 + j;
         *iptr++ = o1 + j - 1;
         *iptr++ = o2 + j;
@@ -96,7 +94,6 @@ namespace GMlib {
 
       // Lower triangles (pointing up)
       for( int j = 1; j < i+2; j++ ) {
-
         *iptr++ = o2 + j - 1;
         *iptr++ = o2 + j;
         *iptr++ = o1 + j - 1;

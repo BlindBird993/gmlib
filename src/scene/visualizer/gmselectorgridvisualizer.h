@@ -48,7 +48,7 @@ namespace GMlib {
 
     void                          display();
     void                          reset();
-    void                          setSelectors( DVector< Vector<T,3> >& c );
+    void                          setSelectors( DVector< Vector<T,3> >& c, int tp=0 );
     void                          setSelectors( DMatrix< Vector<T,3> >& c );
     void                          update();
 
@@ -61,6 +61,9 @@ namespace GMlib {
 
   private:
     void                          _fillVBO();
+
+    void                          _makeLines();
+    void                          _makeTriangs();
 
   }; // END class SelectorGridVisualizer
 

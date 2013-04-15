@@ -105,6 +105,7 @@ namespace GMlib {
     if( this->_parent )
       this->_parent->edit( this );
 
+    this->replot();
     _sgv->update();
 
     _c_moved = false;
@@ -311,22 +312,20 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierCurve<T>::showSelectors( bool grid, const Color& _selector_color, const Color& grid_color ) {
+  void PBezierCurve<T>::showSelectors( bool grid, const Color& s_color, const Color& grid_color ) {
 
     if( _selectors )
       return;
 
     _s.setDim( _c.getDim() );
-    for( int i = 0, s_id = 0; i < _c.getDim(); i++ ) {
-
-      Selector<T,3> *sel = new Selector<T,3>( _c[i], s_id++, this, T(1), _selector_color );
+    for( int i = 0, k = 0; i < _c.getDim(); i++ ) {
+      Selector<T,3> *sel = new Selector<T,3>( _c[i], k++, this, T(0.3), s_color );
       DisplayObject::insert( sel );
       _s[i] = sel;
     }
 
 
     if( grid ) {
-
       _sgv->setSelectors( _c );
       this->insertVisualizer( _sgv );
     }

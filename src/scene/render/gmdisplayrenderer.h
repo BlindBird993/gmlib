@@ -209,12 +209,12 @@ namespace GMlib {
       prepare( objs, cam );
 
       // Object rendering
-      _fbo.bind(); {
+      _fbo.bind();
 
-        for( int j = 0; j < objs.getSize(); ++j )
-          render( objs[j], cam);
+      for( int j = 0; j < objs.getSize(); ++j )
+        render( objs[j], cam);
 
-      } _fbo.unbind();
+      _fbo.unbind();
 
       // Selection rendering - render to depth buffer
       _fbo_select_depth.bind(); {

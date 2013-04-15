@@ -62,7 +62,7 @@ namespace GMlib {
     void                            setControlPoints( const DVector< Vector<T,3> >& cv );
     void                            setResampleMode( GM_RESAMPLE_MODE mode );
     void                            setScale( T d );
-    virtual void                    showSelectors( bool grid = false, const Color& _selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
+    virtual void                    showSelectors( bool grid = false, const Color& selector_color = GMcolor::DarkBlue, const Color& grid_color = GMcolor::LightGreen );
     void                            updateCoeffs( const Vector<T,3>& d );
 
     // virtual from PCurve
