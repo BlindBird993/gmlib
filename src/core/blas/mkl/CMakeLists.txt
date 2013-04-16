@@ -23,8 +23,10 @@
 
 addHeaders(
   gmmklmatmult
+  gmmklmatinv
 )
 
 addTemplateSources(
   gmmklmatmult.c
+  gmmklmatinv.c
 )
