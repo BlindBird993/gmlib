@@ -22,7 +22,7 @@
 
 
 addHeaders(
-  gmviennaclmatmult
+  gmViennaclMatMult
 )
 
 addTemplateSources(

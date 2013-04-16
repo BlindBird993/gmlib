@@ -45,13 +45,9 @@ namespace GMlib
 			int wsize=nk*32;						// work array size - should be optimized
 			Array<int> ipiv; ipiv.setSize(nk);		// pivot table (result), size max(1,mmm,nnn)
 			int info=0;								// error message, i=info>0 means that a[i][i]=0 ): singular,
-			int mmm=nk;								// dimentsion
-			int nnn=nk;								// dimentsion  i.e. a is mxn matrix
-			int lda=nk;								// leading dimentsion
-
-			// LAPACK When calling LAPACK routines from C-language programs, make sure that you follow Fortran rules:
-			// Pass variables by 'address' as opposed to pass by 'value'. Be sure to store your data Fortran-style,
-			// i.e. data stored column-major rather than row-major order
+			int mmm=nk;								// dimension
+			int nnn=nk;								// dimension  i.e. a is mxn matrix
+			int lda=nk;								// leading dimension
 
 			sgetrf(&mmm, &nnn, aa.ptr(), &lda, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
 			sgetri(&mmm, aa.ptr(), &lda, ipiv.ptr(), work.ptr(), &wsize, &info); // a should now contain the inverse
@@ -76,13 +72,9 @@ namespace GMlib
 			int wsize=nk*32;						// work array size - should be optimized
 			Array<int> ipiv; ipiv.setSize(nk);		// pivot table (result), size max(1,mmm,nnn)
 			int info=0;								// error message, i=info>0 means that a[i][i]=0 ): singular,
-			int mmm=nk;								// dimentsion
-			int nnn=nk;								// dimentsion  i.e. a is mxn matrix
-			int lda=nk;								// leading dimentsion
-
-			// LAPACK When calling LAPACK routines from C-language programs, make sure that you follow Fortran rules:
-			// Pass variables by 'address' as opposed to pass by 'value'. Be sure to store your data Fortran-style,
-			// i.e. data stored column-major rather than row-major order
+			int mmm=nk;								// dimension
+			int nnn=nk;								// dimension  i.e. a is mxn matrix
+			int lda=nk;								// leading dimension
 
 			dgetrf(&mmm, &nnn, aa.ptr(), &lda, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
 			dgetri(&mmm, aa.ptr(), &lda, ipiv.ptr(), work.ptr(), &wsize, &info); // a should now contain the inverse

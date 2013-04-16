@@ -22,8 +22,8 @@
 
 
 addHeaders(
-  gmmklmatmult
-  gmmklmatinv
+  gmMklMatMult
+  gmMklMatInv
 )
 
 addTemplateSources(

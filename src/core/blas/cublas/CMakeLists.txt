@@ -22,7 +22,7 @@
 
 
 addHeaders(
-  gmcublasmatmult
+  gmCublasMatMult
 )
 
 addTemplateSources(

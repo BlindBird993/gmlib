@@ -22,7 +22,7 @@
 
 
 addHeaders(
-  gmacmlmatmult
+  gmAcmlMatMult
 )
 
 addTemplateSources(
