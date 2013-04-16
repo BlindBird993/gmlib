@@ -109,6 +109,13 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  const PTriangleVisualizer<T, n>* PTriangle<T,n>::getDefaultVisualizer() const {
+
+    return _default_visualizer;
+  }
+
+  template <typename T, int n>
+  inline
   const DVector<Vector<T,n> >& PTriangle<T,n>::evaluateGlobal( T u, T v, int d  )
   {
     static DVector<Vector<T,n> > p;

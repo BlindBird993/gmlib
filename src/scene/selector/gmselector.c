@@ -31,7 +31,7 @@
 
 
 #include "../displayobjects/gmsphere3d.h"
-#include "../visualizer/gmvisualizerstdrep.h"
+#include "../visualizer/gmselectorvisualizer.h"
 
 namespace GMlib {
 
@@ -42,28 +42,26 @@ namespace GMlib {
    *  Pending Documentation
    */
   template <typename T, int n>
-  Selector<T,n>::Selector( APoint<T,n>& mp, int id, SceneObject* parent, T r, const Color& c, Selector<T,n>* root )
-    : _position(mp)/*, _display( "color" ),
-    _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
-    _bo_cube_frame_indices( "std_rep_frame_indices" )*/
+  Selector<T,n>::Selector( APoint<T,n>& mp, int id, SceneObject* parent,
+                           T r, const Color& c, Selector<T,n>* root )
+    : _position(mp)
   {
 
     Sphere<float,3> ts(Point<float,3>(float(0)),0.866);
     setSurroundingSphere(ts);
-    _type_id	= GM_SO_TYPE_SELECTOR;
-    _id			= id;
-    _parent		= parent;
-    _enabled	= true;
-    _default	= c;
-    _marked		= c.getInverse();
-    _selected	= false;
-    _root		= root;
+    _type_id    = GM_SO_TYPE_SELECTOR;
+    _id         = id;
+    _parent     = parent;
+    _enabled    = true;
+    _default    = c;
+    _marked     = c.getInverse();
+    _selected   = false;
+    _root       = root;
     translate( _position.template toType<float>() );
     if(r != 1.0) scale(Vector<float,3>(r,r,r));
 
-    insertVisualizer( VisualizerStdRep::getInstance() );
+    insertVisualizer( SelectorVisualizer::getInstance() );
   }
-
 
   /*! Selector<T,n>::Selector(const Selector<T,n>& s)
    *  \brief Pending Documentation
@@ -72,18 +70,18 @@ namespace GMlib {
    */
   template <typename T, int n>
   Selector<T,n>::Selector(const Selector<T,n>& s)
-    : DisplayObject(s), _position( s._position )/*, _display( "color" ),
-    _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
-    _bo_cube_frame_indices( "std_rep_frame_indices" )*/
+    : DisplayObject(s), _position( s._position )
    {
 
-    _type_id	= GM_SO_TYPE_SELECTOR;
-    _id			= s._id;
-    _parent		= s._parent;
-    _enabled			= s._enabled;
-    _default	= s._default;
-    _marked		= s._marked;
-    _root		= s._root;
+    _type_id  = GM_SO_TYPE_SELECTOR;
+    _id       = s._id;
+    _parent   = s._parent;
+    _enabled  = s._enabled;
+    _default  = s._default;
+    _marked   = s._marked;
+    _root     = s._root;
+
+    insertVisualizer( SelectorVisualizer::getInstance() );
   }
 
   /*!virtual Selector<T,n>::~Selector()
@@ -95,7 +93,7 @@ namespace GMlib {
   inline
   Selector<T,n>::~Selector() {
 
-    removeVisualizer( VisualizerStdRep::getInstance() );
+    removeVisualizer( SelectorVisualizer::getInstance() );
   }
 
 
@@ -137,14 +135,14 @@ namespace GMlib {
 
 
 
-  /*! void	Selector<T,n>::disable()
+  /*! void  Selector<T,n>::disable()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   template <typename T, int n>
   inline
-  void	Selector<T,n>::disable() {
+  void  Selector<T,n>::disable() {
 
     _enabled=false;
     allEnable();
@@ -154,41 +152,41 @@ namespace GMlib {
   }
 
 
-  /*! void	Selector<T,n>::disableAll()
+  /*! void  Selector<T,n>::disableAll()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   template <typename T, int n>
   inline
-  void	Selector<T,n>::disableAll() {
+  void  Selector<T,n>::disableAll() {
 
     _enabled = false;
     allEnable();
   }
 
 
-  /*! virtual void	Selector<T,n>::edit()
+  /*! virtual void  Selector<T,n>::edit()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   template <typename T, int n>
   inline
-  void	Selector<T,n>::edit() {
+  void  Selector<T,n>::edit() {
 
     _parent->selectEvent(_id);
   }
 
 
-  /*! void	Selector<T,n>::editPos(Vector<float,3> dp)
+  /*! void  Selector<T,n>::editPos(Vector<float,3> dp)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   template <typename T, int n>
   inline
-  void	Selector<T,n>::editPos(Vector<float,3> dp) {
+  void  Selector<T,n>::editPos(Vector<float,3> dp) {
 
     HqMatrix<float,3> invmat = _present;
     invmat.invertOrthoNormal();
@@ -198,14 +196,14 @@ namespace GMlib {
   }
 
 
-  /*! void	Selector<T,n>::enable()
+  /*! void  Selector<T,n>::enable()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   template <typename T, int n>
   inline
-  void	Selector<T,n>::enable() {
+  void  Selector<T,n>::enable() {
 
     _enabled=true;
 
@@ -216,14 +214,14 @@ namespace GMlib {
   }
 
 
-  /*! void	Selector<T,n>::enableAll()
+  /*! void  Selector<T,n>::enableAll()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   template <typename T, int n>
   inline
-  void	Selector<T,n>::enableAll() {
+  void  Selector<T,n>::enableAll() {
 
     _enabled = true;
     allEnable();
@@ -244,14 +242,14 @@ namespace GMlib {
   }
 
 
-  /*! bool	Selector<T,n>::isEnabled() const
+  /*! bool  Selector<T,n>::isEnabled() const
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    *  Is the children or my self on?
    */
   template <typename T, int n>
-  bool	Selector<T,n>::isEnabled() const {
+  bool  Selector<T,n>::isEnabled() const {
 
     for(int i=0; i<_children.getSize(); i++)
     {
@@ -262,77 +260,6 @@ namespace GMlib {
     }
     return _enabled;
   }
-
-
-//  /*! void Selector<T,n>::localDisplay()
-//   *  \brief Pending Documentation
-//   *
-//   *  Pending Documentation
-//   */
-//  template <typename T, int n>
-//  void Selector<T,n>::localDisplay() {
-
-//    if( _enabled ) {
-
-//      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-
-//      _display.bind();
-
-//      GLuint vert_loc = _display.getAttributeLocation( "in_vertex" );
-
-//      Color blend_color = GMcolor::LightGreen;
-//      blend_color.setAlpha( 0.5 );
-
-//      _display.setUniform( "u_selected", isSelected() );
-
-//      _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-
-//      _bo_cube_frame_indices.bind(); {
-
-//        const GLsizei frame_stride = 2 * sizeof(GLushort);
-
-//        glLineWidth( 1.0f );
-//        _display.setUniform( "u_color", GMcolor::Green );
-//        glDrawElements( GL_LINES, 24, GL_UNSIGNED_SHORT, (const GLvoid*)(0x0) );
-
-//      } _bo_cube_frame_indices.unbind();
-
-//      glEnable( GL_BLEND ); {
-
-//        glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-//        _display.setUniform( "u_color", blend_color );
-//        _bo_cube_indices.bind();
-//          glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
-//        _bo_cube_indices.unbind();
-
-//      }glDisable( GL_BLEND );
-
-//      _bo_cube.disableVertexArrayPointer( vert_loc );
-
-//      _display.unbind();
-//    }
-//  }
-
-
-//  /*! void Selector<T,n>::localSelect()
-//   *  \brief Pending Documentation
-//   *
-//   *  Pending Documentation
-//   */
-//  template <typename T, int n>
-//  void Selector<T,n>::localSelect() {
-
-//    if( _enabled ) {
-
-//      GLuint vert_loc = getSelectProgram().getAttributeLocation( "in_vertex" );
-//      _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-//      _bo_cube_indices.bind();
-//        glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
-//      _bo_cube_indices.unbind();
-//      _bo_cube.disableVertexArrayPointer( vert_loc );
-//    }
-//  }
-
 
   /*! bool Selector<T,n>::toggle()
    *  \brief Pending Documentation

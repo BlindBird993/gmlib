@@ -260,7 +260,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::hideLocalPatches() {
+  void PERBSCurve<T>::hideLocalCurves() {
 
     for( int i = 0; i < _c.getDim(); i++ )
       _c[i]->setVisible( false, -1 );
@@ -268,10 +268,18 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::showLocalPatches() {
+  void PERBSCurve<T>::showLocalCurves() {
 
-    for( int i = 0; i < _c.getDim(); i++ )
+    for( int i = 0; i < _c.getDim(); i++ ) {
+
+      if( !_c[i]->getDefaultVisualizer() ) {
+
+        _c[i]->enableDefaultVisualizer();
+        _c[i]->replot(10);
+      }
+
       _c[i]->setVisible( true, -1 );
+    }
   }
 
 
@@ -313,7 +321,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool PERBSCurve<T>::isLocalPatchesVisible() const {
+  bool PERBSCurve<T>::isLocalCurvesVisible() const {
 
     for( int i = 0; i < _c.getDim(); i++ )
       if( _c(i)->isVisible() ) return true;
@@ -370,7 +378,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::toggleLocalCurvesVisible() {
+  void PERBSCurve<T>::toggleLocalCurves() {
 
     for( int i = 0; i < _c.getDim(); i++ )
       _c[i]->toggleVisible();

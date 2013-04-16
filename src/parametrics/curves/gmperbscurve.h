@@ -58,11 +58,12 @@ namespace GMlib {
     void                            edit( SceneObject *obj );
     DVector< PCurve<T,3>* >&          getLocalPatches();
     int                             getNoLocalPatches() const;
-    virtual void                    hideLocalPatches();
-    bool                            isLocalPatchesVisible() const;
-    virtual void                    showLocalPatches();
     void                            setResampleMode( GM_RESAMPLE_MODE mode );
-    virtual void                    toggleLocalCurvesVisible();
+
+    virtual void                    hideLocalCurves();
+    virtual void                    showLocalCurves();
+    virtual void                    toggleLocalCurves();
+    bool                            isLocalCurvesVisible() const;
 
     // virual functions from PSurf
     bool                            isClosed() const;

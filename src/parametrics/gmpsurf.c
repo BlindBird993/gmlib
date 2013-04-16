@@ -255,6 +255,12 @@ namespace GMlib {
     }
   }
 
+  template <typename T, int n>
+  const PSurfVisualizer<T, n> *PSurf<T,n>::getDefaultVisualizer() const {
+
+    return _default_visualizer;
+  }
+
 
   template <typename T, int n>
   inline

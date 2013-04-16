@@ -54,20 +54,23 @@ namespace GMlib {
     virtual ~PERBSSurf();
 
     void                                edit( SceneObject *obj );
+    bool                                isClosedU() const;
+    bool                                isClosedV() const;
+    void                                preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
+
     void                                generateKnotVector( PSurf<T,3>* g );
     void                                generateKnotVector( PSurf<T,3>* g, T u_s, T u_e, T v_s, T v_e );
     DVector<T>&                         getKnotsU();
     DVector<T>&                         getKnotsV();
+    void                                setResampleMode( GM_RESAMPLE_MODE mode );
+
     DMatrix<PSurf<T,3>* >&              getLocalPatches();
     int                                 getNoLocalPatchesU() const;
     int                                 getNoLocalPatchesV() const;
-    virtual void                        hideLocalPatches();
-    bool                                isClosedU() const;
-    bool                                isClosedV() const;
     bool                                isLocalPatchesVisible() const;
-    void                                preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
-    void                                setResampleMode( GM_RESAMPLE_MODE mode );
+    virtual void                        hideLocalPatches();
     virtual void                        showLocalPatches();
+    virtual void                        toggleLocalPatches();
 
 
   protected:

@@ -134,7 +134,6 @@ namespace GMlib {
     no_vertices = p.getDim1() * p.getDim2();
 
     vbo.createBufferData( no_vertices * sizeof(GL::GLVertexTex2D), 0x0, GL_STATIC_DRAW );
-    vbo.bind();
     GL::GLVertexTex2D *ptr = vbo.mapBuffer<GL::GLVertexTex2D>();
     for( int i = 0; i < p.getDim1(); i++ ) {
       for( int j = 0; j < p.getDim2(); j++ ) {
@@ -152,8 +151,6 @@ namespace GMlib {
       }
     }
     vbo.unmapBuffer();
-
-    vbo.unbind();
   }
 
   template <typename T, int n>
@@ -175,9 +172,7 @@ namespace GMlib {
       }
     }
 
-    ibo.bind();
     ibo.createBufferData( no_indices * sizeof(GLuint), indices.getPtr(), GL_STATIC_DRAW );
-    ibo.unbind();
   }
 
   template <typename T, int n>

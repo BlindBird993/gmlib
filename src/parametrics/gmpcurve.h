@@ -56,7 +56,6 @@ namespace GMlib {
     PCurve( const PCurve<T,n>& copy );
     ~PCurve();
 
-    void                      enableDefaultVisualizer( bool enable = true );
     DVector<Vector<T,n> >&    evaluate( T t, int d );
     DVector<Vector<T,n> >&    evaluateGlobal( T t, int d );
     DVector<Vector<T,n> >&    evaluateParent( T t, int d );
@@ -74,11 +73,9 @@ namespace GMlib {
     T                         getRadius( T t );
     int                       getSamples() const;
     T                         getSpeed( T t );
-    void                      insertVisualizer( Visualizer* visualizer );
     virtual bool              isClosed() const;
     virtual void              preSample( int m, int d, T s = T(0), T e = T(0) );
     virtual void              replot( int m = 0, int d = 2 );
-    void                      removeVisualizer( Visualizer* visualizer );
 //    virtual void              resample( Array<Point<T,n> >& a, T eps );	// Always smooth, requires derivatives
 //    virtual void              resample( Array<Point<T,n> >& a, int m );					// Given sampling rate
 //    virtual void              resample( Array<Point<T,n> >& a, int m, T start, T end );	// Given sampling rate
@@ -90,13 +87,18 @@ namespace GMlib {
     void                      setLineWidth( float width = 1.0 );
     void                      setNoDer( int d );
     virtual void              setSurroundingSphere( const DVector< DVector< Vector<T,n> > >& p );
+
+    void                      enableDefaultVisualizer( bool enable = true );
+    const PCurveVisualizer<T,n>*   getDefaultVisualizer() const;
     void                      toggleDefaultVisualizer();
+    void                      insertVisualizer( Visualizer* visualizer );
+    void                      removeVisualizer( Visualizer* visualizer );
 
     Point<T,n>                operator()( T t );
 
   protected:
     Array<PCurveVisualizer<T,n>*>   _pcurve_visualizers;
-    PCurveDefaultVisualizer<T,n>    *_default_visualizer;
+    PCurveVisualizer<T,n>    *_default_visualizer;
 
     int                       _no_sam;      // Number of samples for single sampling
     int                       _no_der;      // Number of derivatives

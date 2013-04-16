@@ -613,5 +613,12 @@ namespace GMlib {
     return ( Point<T,n> ) _p[0];
   }
 
+  template <typename T, int n>
+  inline
+  const PCurveVisualizer<T, n>* PCurve<T,n>::getDefaultVisualizer() const {
+
+    return _default_visualizer;
+  }
+
 
 } // END namespace GMlib

@@ -58,7 +58,6 @@ namespace GMlib {
     PSurf( const PSurf<T,n>& copy );
     virtual ~PSurf();
 
-    void                          enableDefaultVisualizer( bool enable = true );
     //virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v );
     DMatrix<Vector<T,n> >&        evaluate( Point<T,2> p, int d );
     DMatrix<Vector<T,n> >&    	  evaluate( T u, T v, int d1, int d2 );
@@ -92,13 +91,11 @@ namespace GMlib {
     int                           getSamPV( int i = 0 ) const;
     int                           getSamplesU() const;
     int                           getSamplesV() const;
-    void                          insertVisualizer( Visualizer *visualizer );
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
     virtual bool                  getClosestPoint( const Point<T,n>& q, T& u, T& v );
     bool                          getClosestPoint( const Point<T,n>& q, Point<T,2>& uv );
     virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
-    void                          removeVisualizer( Visualizer *visualizer );
     virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0 );
     void                          resample(DMatrix<DMatrix <DMatrix <Vector<T,n> > > >	& a, int m1, int m2, int d1, int d2 );
     virtual void                  resample(DMatrix<DMatrix <Vector<T,n> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
@@ -112,13 +109,18 @@ namespace GMlib {
     void                          setNoDer( int d );
     virtual void                  setSurroundingSphere( const DMatrix< DMatrix< Vector<T,n> > >& p );
     virtual Parametrics<T,2,n>*   split( T t, int uv );
+
+    void                          enableDefaultVisualizer( bool enable = true );
+    const PSurfVisualizer<T,n>*   getDefaultVisualizer() const;
     void                          toggleDefaultVisualizer();
+    void                          insertVisualizer( Visualizer *visualizer );
+    void                          removeVisualizer( Visualizer *visualizer );
 
     const Point<T,n>&             operator () ( T u, T v );
 
   protected:
     Array< PSurfVisualizer<T,n>* >  _psurf_visualizers;
-    PSurfDefaultVisualizer<T,n>    *_default_visualizer;
+    PSurfVisualizer<T,n>          *_default_visualizer;
 
     int                           _no_sam_u;    // Number of samples u for single sampling
     int                           _no_sam_v;    // Number of samples v for single sampling

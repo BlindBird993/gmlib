@@ -1090,9 +1090,26 @@ namespace GMlib {
   inline
   void PERBSSurf<T>::showLocalPatches() {
 
+    for( int i = 0; i < _c.getDim1(); i++ ) {
+      for( int j = 0; j < _c.getDim2(); j++ ) {
+
+        if( !_c[i][j]->getDefaultVisualizer() ) {
+
+          _c[i][j]->enableDefaultVisualizer(true);
+          _c[i][j]->replot( 10, 10, 1, 1 );
+        }
+
+        _c[i][j]->setVisible( true, -1 );
+      }
+    }
+  }
+
+  template <typename T>
+  void PERBSSurf<T>::toggleLocalPatches() {
+
     for( int i = 0; i < _c.getDim1(); i++ )
       for( int j = 0; j < _c.getDim2(); j++ )
-        _c[i][j]->setVisible( true, -1 );
+        _c[i][i]->toggleVisible();
   }
 
 

@@ -98,6 +98,7 @@ namespace GMlib {
 
 
     void                              enableDefaultVisualizer( bool enable = true );
+    const PTriangleVisualizer<T,n>*   getDefaultVisualizer() const;
     void                              toggleDefaultVisualizer();
     void                              insertVisualizer( Visualizer *visualizer );
     void                              removeVisualizer( Visualizer *visualizer );
