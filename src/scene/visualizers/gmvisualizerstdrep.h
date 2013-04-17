@@ -31,7 +31,7 @@
 #ifndef __gmVISUALIZERSTDREP_H__
 #define __gmVISUALIZERSTDREP_H__
 
-#include "gmvisualizer.h"
+#include "../gmvisualizer.h"
 
 // gmlib
 #include <core/utils/gmcolor.h>

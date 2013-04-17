@@ -30,7 +30,7 @@
 #include "../evaluators/gmevaluatorstatic.h"
 
 // gmlib
-#include <scene/visualizer/gmselectorgridvisualizer.h>
+#include <scene/visualizers/gmselectorgridvisualizer.h>
 
 namespace GMlib {
 

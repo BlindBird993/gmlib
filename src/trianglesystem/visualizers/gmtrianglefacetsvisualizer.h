@@ -33,7 +33,7 @@
 
 
 // gmlib
-#include <scene/visualizers/gmvisualizer.h>
+#include <scene/gmvisualizer.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 #include <opengl/bufferobjects/gmindexbufferobject.h>
 

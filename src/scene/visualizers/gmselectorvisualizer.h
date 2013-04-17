@@ -24,7 +24,7 @@
 #ifndef __GM_SCENE_VISUALIZERS_SELECTORVISUALIZER_H__
 #define __GM_SCENE_VISUALIZERS_SELECTORVISUALIZER_H__
 
-#include "gmvisualizer.h"
+#include "../gmvisualizer.h"
 
 // gmlib
 #include <core/utils/gmcolor.h>

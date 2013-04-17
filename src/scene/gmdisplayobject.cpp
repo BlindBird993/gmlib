@@ -30,6 +30,7 @@
 #include "gmdisplayobject.h"
 
 
+#include "gmvisualizer.h"
 #include "camera/gmcamera.h"
 
 

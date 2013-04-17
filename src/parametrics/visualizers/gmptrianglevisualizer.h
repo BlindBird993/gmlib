@@ -37,7 +37,7 @@
 #include <core/containers/gmdvector.h>
 #include <core/containers/gmdmatrix.h>
 #include <opengl/gmopengl.h>
-#include <scene/visualizers/gmvisualizer.h>
+#include <scene/gmvisualizer.h>
 
 
 

@@ -31,7 +31,7 @@
 #ifndef __gmSURROUNDINGSPHEREVISUALIZER_H__
 #define __gmSURROUNDINGSPHEREVISUALIZER_H__
 
-#include "gmvisualizer.h"
+#include "../gmvisualizer.h"
 
 // gmlib
 #include <core/utils/gmcolor.h>

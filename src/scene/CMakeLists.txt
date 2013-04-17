@@ -27,12 +27,14 @@ addHeaders(
   gmScaleObject
   gmScene
   gmSceneObject
+  gmVisualizer
 )
 
 addSources(
   gmdisplayobject.cpp
   gmscene.cpp
   gmsceneobject.cpp
+  gmvisualizer.cpp
 )
 
 addSubDirectory(camera)           # <camera> sub-module

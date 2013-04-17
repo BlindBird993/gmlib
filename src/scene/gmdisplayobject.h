@@ -40,6 +40,9 @@
 
 #include "gmsceneobject.h"
 
+// gmlib
+#include <opengl/glsl/gmglprogram.h>
+
 // stl
 #include <string>
 
@@ -48,6 +51,9 @@
 
 
 namespace GMlib {
+
+
+  class Visualizer;
 
 
   /*! \class DisplayObject gmdisplayobject.h <gmDisplayObject>

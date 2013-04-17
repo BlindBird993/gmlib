@@ -41,7 +41,6 @@
 #include "gmscaleobject.h"
 #include "event/gmsceneobjectattribute.h"
 #include "utils/gmmaterial.h"
-#include "visualizers/gmvisualizer.h"
 
 // stl
 #include <string>
@@ -101,7 +100,6 @@ namespace GMlib{
   class Camera;
   class Scene;
   class Light;
-  class Visualizer;
 
 
   enum GM_SO_TYPE {
