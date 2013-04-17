@@ -30,7 +30,6 @@ addHeaders(
   gmPChrysanthemumCurve
   gmPCircle
   gmPERBSCurve
-  gmPHelicoid
   gmPRoseCurve
   gmPSubCurve
   gmpSurfCurve

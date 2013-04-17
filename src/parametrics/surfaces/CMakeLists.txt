@@ -41,6 +41,7 @@ addHeaders(
   gmPEnnepersSurface
   gmPERBSSurf
   gmPHeart
+  gmPHelicoid
   gmPHermiteCurveSurf
   gmPHermiteSurface
   gmPHermiteSurf
