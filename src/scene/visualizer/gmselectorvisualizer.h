@@ -39,8 +39,8 @@ namespace GMlib {
 
   class SelectorVisualizer: public Visualizer {
   public:
-    SelectorVisualizer( float radius = 0.07, Material mat = GMmaterial::Jade );
-    SelectorVisualizer( int m1, int m2, float radius = 0.07, Material mat = GMmaterial::Jade );
+    SelectorVisualizer( float radius = 0.27, Material mat = GMmaterial::Jade );
+    SelectorVisualizer( int m1, int m2, float radius = 0.27, Material mat = GMmaterial::Jade );
     ~SelectorVisualizer();
 
     void                          display();
