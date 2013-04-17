@@ -30,7 +30,7 @@
 #define __gmSELECTORGRIDVISUALIZER_H__
 
 
-#include "../visualizer/gmvisualizer.h"
+#include "../visualizers/gmvisualizer.h"
 
 // gmlib
 #include <core/containers/gmdmatrix.h>

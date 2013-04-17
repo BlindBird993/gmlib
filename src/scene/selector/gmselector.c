@@ -31,7 +31,7 @@
 
 
 #include "../displayobjects/gmsphere3d.h"
-#include "../visualizer/gmselectorvisualizer.h"
+#include "../visualizers/gmselectorvisualizer.h"
 
 namespace GMlib {
 

@@ -36,7 +36,7 @@
 
 // local
 #include "../camera/gmcamera.h"
-#include "../visualizer/gmvisualizerstdrep.h"
+#include "../visualizers/gmvisualizerstdrep.h"
 
 // gmlib
 #include <opengl/gmframebufferobject.h>

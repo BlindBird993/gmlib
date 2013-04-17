@@ -37,7 +37,7 @@
 #include <core/containers/gmdvector.h>
 #include <core/utils/gmcolor.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
-#include <scene/visualizer/gmvisualizer.h>
+#include <scene/visualizers/gmvisualizer.h>
 
 
 namespace GMlib {

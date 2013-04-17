@@ -41,7 +41,7 @@
 #include "gmscaleobject.h"
 #include "event/gmsceneobjectattribute.h"
 #include "utils/gmmaterial.h"
-#include "visualizer/gmvisualizer.h"
+#include "visualizers/gmvisualizer.h"
 
 // stl
 #include <string>
