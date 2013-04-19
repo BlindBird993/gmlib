@@ -116,7 +116,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurf<T,n>::_evalDerDD( DMatrix<DMatrix <Vector<T,n> > >& a, int d1, int d2, T du, T dv ) const {
+  void PSurf<T,n>::_evalDerDD( DMatrix<DMatrix <Vector<T,n> > >& a, int d1, int d2, T du, T dv) const {
 
     T one_over_du;
     T one_over_dv;
@@ -264,7 +264,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( Point<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( APoint<T,2> p, int d ) {
 
     return evaluate( p[0], p[1], d, d);
   }
@@ -282,7 +282,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( Point<T,2> p, int d ) {
+  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( APoint<T,2> p, int d ) {
 
     return evaluateD(p[0], p[1], d, d);
   }
@@ -317,7 +317,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( Point<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( APoint<T,2> p, int d ) {
 
     return evaluateGlobal( p[0], p[1], d, d);
   }
@@ -347,7 +347,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( Point<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( APoint<T,2> p, int d ) {
 
     return evaluateParent( p[0], p[1], d, d );
   }

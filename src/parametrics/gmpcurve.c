@@ -101,42 +101,27 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurve<T,n>::_evalDerDD( DVector< DVector< Vector<T,n> > > & p, int d, T du ) const {
+  void PCurve<T,n>::_evalDerDD( DVector< DVector< Vector<T, n> > > & p, int d, T du ) const
+  {
+    T du2 = 2*du;
+    int k = p.getDim()-1;
 
+    for(int j = 1; j <= d; j++)
+    {
+      int j1 = j-1;
 
+      for(int i = 1; i < k; i++) // ordinary divided differences
+        p[i][j] = (p[i+1][j1] - p[i-1][j1])/du2;
 
-    T one_over_du = T(1) / du;
-    T one_over_2du = T(1) / ( T(2) * du );
-
-    int u, i, k;
-
-    for( u = 1; u < d; u++ ) {
-      for( i = 1; i < p.getDim() - 1; i++ ) {
-        for( k = 0; k < 3; k++ )
-          p[i][u][k] = p[i+1][u-1][k] - p[i-1][u-1][k];
-
-        p[i][u] *= one_over_2du;
+      if(isClosed()) // biting its own tail
+      {
+        p[0][j] = (p[1][j1] - p[k][j1]  )/du2;
+        p[k][j] = (p[0][j1] - p[k-1][j1])/du2;
       }
-    }
-
-    if( isClosed() ) {
-      for( u = 1; u < d; u++ ) {
-        for( k = 0; k < 3; k++ )
-          p[0][u][k] = p[p.getDim()-1][u][k] = p[1][u-1][k] - p[p.getDim() - 2][u-1][k];
-
-        p[0][u] = p[p.getDim()-1][u] *= one_over_2du;
-      }
-    }
-    else {
-      for( u = 1; u < d; u++ ) {
-        for( k = 0; k < 3; k++ ) {
-          p[0][u][k] = p[1][u-1][k] - p[0][u-1][k];
-          p[p.getDim()-1][u][k] = p[p.getDim()-1][u-1][k] - p[p.getDim()-2][u-1][k];
-
-        }
-
-        p[0][u] *= one_over_du;
-        p[p.getDim()-1][u] *= one_over_du;
+      else // second degree endpoints divided differences
+      {
+        p[0][j] = ( 4*p[1][j1]   - 3*p[0][j1] - p[2][j1]  )/du2;
+        p[k][j] = (-4*p[k-1][j1] + 3*p[k][j1] + p[k-2][j1])/du2;
       }
     }
   }

@@ -59,13 +59,13 @@ namespace GMlib {
     virtual ~PSurf();
 
     //virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v );
-    DMatrix<Vector<T,n> >&        evaluate( Point<T,2> p, int d );
+    DMatrix<Vector<T,n> >&        evaluate( APoint<T,2> p, int d );
     DMatrix<Vector<T,n> >&    	  evaluate( T u, T v, int d1, int d2 );
-    DVector<Vector<T,n> >         evaluateD( Point<T,2> p, int d );
+    DVector<Vector<T,n> >         evaluateD( APoint<T,2> p, int d );
     DVector<Vector<T,n> >         evaluateD( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,n> >&    	  evaluateGlobal( Point<T,2> p, int d );
+    DMatrix<Vector<T,n> >&    	  evaluateGlobal( APoint<T,2> p, int d );
     DMatrix<Vector<T,n> >&    	  evaluateGlobal( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,n> >&    	  evaluateParent( Point<T,2> p, int d );
+    DMatrix<Vector<T,n> >&    	  evaluateParent( APoint<T,2> p, int d );
     DMatrix<Vector<T,n> >&    	  evaluateParent( T u, T v, int d1, int d2 );
     virtual T                     getCurvatureGauss( T u, T v );
     virtual T                     getCurvatureMean( T u, T v );

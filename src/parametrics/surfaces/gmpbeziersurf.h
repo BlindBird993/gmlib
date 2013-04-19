@@ -48,12 +48,12 @@ namespace GMlib {
     GM_SCENEOBJECT(PBezierSurf)
 
   public:
-    PBezierSurf( const DMatrix< Vector<T,3> >& cp );
-    PBezierSurf( const DMatrix< Vector<T,3> >& cp, T u_s, T u, T u_e, T v_s, T v, T v_e  );
+    PBezierSurf( const DMatrix< Vector<T,3> >& cp);
+    PBezierSurf( const DMatrix< Vector<T,3> >& cp, T u_s, T u, T u_e, T v_s, T v, T v_e);
     PBezierSurf( const PBezierSurf<T>& dpbs );
     virtual ~PBezierSurf();
 
-    virtual void                  edit( int selector );
+    virtual void                  edit(int selector);
     DMatrix< Vector<T,3> >&       getControlPoints();
     int                           getDegreeU() const;
     int                           getDegreeV() const;

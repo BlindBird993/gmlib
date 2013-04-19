@@ -70,8 +70,6 @@ namespace GMlib {
     prog.setUniform( "u_color", GMcolor::LightGreen );
     prog.setUniform( "u_selected", false );
 
-//std::cout << "disply-antall:" << _no_indices << std::endl;
-
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
     glBindBuffer( GL_ARRAY_BUFFER, _vbo );
     glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0x0 );
@@ -124,8 +122,6 @@ namespace GMlib {
       indices[i+1] = j + 1;
     }
 
-    std::cout << "Kurve:" << indices << std::endl;
-
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, _no_indices * sizeof(GLushort), indices.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
@@ -148,7 +144,6 @@ namespace GMlib {
         indices[k++] = o2+j; indices[k++] = o2+j+1;
       }
     }
-    std::cout << "Triangel:" << indices << std::endl;
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, _ibo );
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, _no_indices * sizeof(GLushort), indices.getPtr(), GL_STATIC_DRAW );

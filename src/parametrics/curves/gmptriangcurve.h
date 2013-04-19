@@ -57,14 +57,13 @@ namespace GMlib {
 
     void          togglePlot();
 
-    virtual void  resample( DVector< DVector< Vector<T, 3> > >& p,
-                            int m, int d, T start, T end );
+    virtual void  resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end );
 
     DVector<DVector<Vector<T,3> > >& getSample3(int m);
 
   protected:
 
-    PTriangle<T,3>*               _s;
+    PTriangle<T,3>*             _s;
 
     Point<T,3>                  _p1;
     Point<T,3>                  _p2;
@@ -78,12 +77,14 @@ namespace GMlib {
     ERBSEvaluator<long double>  _basis;
 
     void	     eval( T t, int d = 0, bool l = false );
-    T            getEndP();
-    T            getStartP();
+    T          getEndP();
+    T          getStartP();
+
+    private:
 
     void	     eval1( T t, int d);
     void	     eval2( T t, int d);
-    void	     eval12( T t); // d=1
+    void	     eval12( T t);  // d=1
     void	     eval123( T t); // d=2
 
     Vector<T,3>  dS(Vector<T,3>& Su, Vector<T,3>& Sv, Vector<T,3>& Sw, Vector<T,3>& h);

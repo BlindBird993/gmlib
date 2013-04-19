@@ -171,7 +171,7 @@ void PTriangCurve<T>::eval2( T t, int d )
       Vector<T,3> d2 = dS(v2, v4, v5, dh);  // d(dS_v(dh))(v)
       Vector<T,3> d3 = dS(v3, v5, v6, dh);  // d(dS_w(dh))(v)
       Vector<T,3> d4 = dS(d1, d2, d3, v) + 2*v0 + dS(m[1], m[2], m[3], d2v);
-//cout << "d4=" << m[13] << endl;
+
       this->_p[2] = d4;
     }
   }
