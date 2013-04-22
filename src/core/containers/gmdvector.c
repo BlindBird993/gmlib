@@ -448,11 +448,10 @@ namespace GMlib {
 
 
   /*! void  DVector<T>::setDim(int i)
-   *  \brief Keep the previous contents intact if possible.
+   *  \brief In general, does not keep the previous contents intact.
    *
-   *  Keep the previous contents intact if possible.
-   *  Set dim to i, but if the previous dim is greater than i then
-   *  the memory is not realocated and therefor not accessable later!!
+   *  Set dim to i, but if i is less than the previous dim then
+   *  the memory is not realocated.
    *  This function is the speedy one.
    */
   template <typename T>
