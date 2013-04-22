@@ -23,8 +23,10 @@
 
 addHeaders(
   gmViennaclMatMult
+  gmViennaclMatInv
 )
 
 addTemplateSources(
   gmviennaclmatmult.c
+  gmviennaclmatinv.c
 )
