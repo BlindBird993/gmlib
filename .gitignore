@@ -51,6 +51,7 @@ include/
 lib/
 .kdev4/
 *.kdev4
+src/core/blas/viennacl/gmviennaclconfig.h
 
 #
 ##########################################
