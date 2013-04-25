@@ -98,7 +98,7 @@ namespace GMlib{
 
 
     void                        updateSelection(SceneObject *obj );
-    Array<SceneObject*>&        getSelectedObjects();
+    const Array<SceneObject*>&        getSelectedObjects();
     bool                        isSelected( SceneObject* obj ) const;
     void                        removeSelections();
 
@@ -181,7 +181,7 @@ namespace GMlib{
 
 
   inline
-  Array<SceneObject*>& Scene::getSelectedObjects() {
+  const Array<SceneObject*>& Scene::getSelectedObjects() {
 
     return _sel_objs;
   }

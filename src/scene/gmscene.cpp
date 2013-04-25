@@ -264,14 +264,12 @@ namespace GMlib {
 
   void Scene::removeSelections() {
 
-    int no_objs = _sel_objs.getSize();
+    // make a copy of the array instead of a reference as
+    // SceneObject->setSelected(...) updates the selected objects array.
+    Array<SceneObject*> sel_objs = getSelectedObjects();
 
-    // Remove Selections
-    for( int i = 0; i < no_objs; i++ )
-        _sel_objs[i]->setSelected( false );
-
-    // Pop all array elements
-    _sel_objs.resetSize();
+    for( int i = 0; i < sel_objs.getSize(); i++ )
+        sel_objs[i]->setSelected( false );
   }
 
   /*! void Scene::simulate()
