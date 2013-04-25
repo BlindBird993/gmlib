@@ -30,6 +30,7 @@
 #ifndef __GM_OPENL_UTILS_GMUTILS_H__
 #define __GM_OPENL_UTILS_GMUTILS_H__
 
+#include <iostream>
 
 // stl
 #include <iostream>
