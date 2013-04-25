@@ -22,3 +22,5 @@
 
 
 addBlasHeaders("gmmklmatmult.h" "gmmklmatinv.h")
+
+addSources(gmmklmatinv.cpp)

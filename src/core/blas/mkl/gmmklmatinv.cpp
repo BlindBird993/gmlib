@@ -22,16 +22,19 @@
 
 
 
-/*! \file gmacmlmatinv.c
+/*! \file gmmklmatinv.cpp
  *
- *  Implementation of ACML-specific matrix inversion operators.
+ *  Implementation of MKL-specific matrix inversion operators.
  */
  
-#include <acml.h>
+#include "gmmklmatinv.h"
+ 
+#include <mkl.h>
 
 
 namespace GMlib
 {
+	template<>
 	DMatrix<float>& DMatrix<float>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
 		{
@@ -41,11 +44,16 @@ namespace GMlib
 			for(int i=0; i<nk; i++)	// daft cast
 				for(int j=0; j<nk; j++) aa[i+nk*j] = (float) (*this)[i][j];
 
+			Array<float> work; work.setSize(nk*32);	// temporary work array
+			int wsize=nk*32;						// work array size - should be optimized
 			Array<int> ipiv; ipiv.setSize(nk);		// pivot table (result), size max(1,mmm,nnn)
 			int info=0;								// error message, i=info>0 means that a[i][i]=0 ): singular,
+			int mmm=nk;								// dimension
+			int nnn=nk;								// dimension  i.e. a is mxn matrix
+			int lda=nk;								// leading dimension
 
-			sgetrf(nk, nk, aa.ptr(), nk, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
-			sgetri(nk, aa.getPtr(), nk, ipiv.getPtr(), &info);
+			sgetrf(&mmm, &nnn, aa.ptr(), &lda, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
+			sgetri(&mmm, aa.ptr(), &lda, ipiv.ptr(), work.ptr(), &wsize, &info); // a should now contain the inverse
 
 			// if(info==0)
 			for(int i=0; i<nk; i++)
@@ -54,6 +62,7 @@ namespace GMlib
 		return (*this);
 	}
 
+	template<>
 	DMatrix<double>& DMatrix<double>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
 		{
@@ -63,11 +72,16 @@ namespace GMlib
 			for(int i=0; i<nk; i++)	// daft cast
 				for(int j=0; j<nk; j++) aa[i+nk*j] = (double) (*this)[i][j];
 
+			Array<double> work; work.setSize(nk*32);	// temporary work array
+			int wsize=nk*32;						// work array size - should be optimized
 			Array<int> ipiv; ipiv.setSize(nk);		// pivot table (result), size max(1,mmm,nnn)
 			int info=0;								// error message, i=info>0 means that a[i][i]=0 ): singular,
-			
-			dgetrf(nk, nk, aa.ptr(), nk, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
-			dgetri(nk, aa.getPtr(), nk, ipiv.getPtr(), &info);
+			int mmm=nk;								// dimension
+			int nnn=nk;								// dimension  i.e. a is mxn matrix
+			int lda=nk;								// leading dimension
+
+			dgetrf(&mmm, &nnn, aa.ptr(), &lda, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
+			dgetri(&mmm, aa.ptr(), &lda, ipiv.ptr(), work.ptr(), &wsize, &info); // a should now contain the inverse
 
 			// if(info==0)
 			for(int i=0; i<nk; i++)

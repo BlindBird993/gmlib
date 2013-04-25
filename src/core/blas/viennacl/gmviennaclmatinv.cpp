@@ -22,17 +22,20 @@
 
 
 
-/*! \file gmviennaclmatinv.c
+/*! \file gmviennaclmatinv.cpp
  *
  *  Implementation of ViennaCL-specific matrix inversion operators.
  */
 
+#include "gmviennaclmatinv.h"
+ 
 #include <viennacl/ocl/backend.hpp>
 #include <viennacl/matrix_proxy.hpp>
 #include <viennacl/linalg/lu.hpp>
 
 namespace GMlib
 {
+	template<>
 	DMatrix<float>& DMatrix<float>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
 		{
@@ -76,6 +79,7 @@ namespace GMlib
 		return (*this);
 	}
 
+	template<>
 	DMatrix<double>& DMatrix<double>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
 		{

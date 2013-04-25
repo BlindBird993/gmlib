@@ -29,3 +29,5 @@ endif(VIENNACL_WITH_OPENCL)
 
 addBlasHeaderLines(${VIENNACL_MODE_CONFIG})
 addBlasHeaders("gmviennaclmatmult.h" "gmviennaclmatinv.h")
+
+addSources(gmviennaclmatinv.cpp)

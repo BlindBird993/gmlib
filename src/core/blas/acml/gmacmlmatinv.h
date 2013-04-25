@@ -35,11 +35,13 @@
 
 namespace GMlib
 {
+	template<>
 	DMatrix<float>& DMatrix<float>::invert();
+	
+	template<>
 	DMatrix<double>& DMatrix<double>::invert();
 	
 } // namespace GMlib
 
-#include "gmacmlmatinv.c"
 
 #endif // __gmMATINV_H__

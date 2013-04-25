@@ -22,3 +22,5 @@
 
 
 addBlasHeaders("gmacmlmatmult.h" "gmacmlmatinv.h")
+
+addSources(gmacmlmatinv.cpp)
