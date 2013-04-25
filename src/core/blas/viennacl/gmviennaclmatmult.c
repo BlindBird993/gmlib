@@ -27,7 +27,6 @@
  *  Implementation of ViennaCL-specific matrix multiplication operators.
  */
 
-#include "gmviennaclconfig.h"
 #include <viennacl/ocl/backend.hpp>
 #include <viennacl/linalg/prod.hpp>
 #include <viennacl/matrix_proxy.hpp>

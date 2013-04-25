@@ -27,7 +27,6 @@
  *  Implementation of ViennaCL-specific matrix inversion operators.
  */
 
-#include "gmviennaclconfig.h"
 #include <viennacl/ocl/backend.hpp>
 #include <viennacl/matrix_proxy.hpp>
 #include <viennacl/linalg/lu.hpp>
