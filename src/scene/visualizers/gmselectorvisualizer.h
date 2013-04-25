@@ -26,11 +26,13 @@
 
 #include "../gmvisualizer.h"
 
+// local
+#include "../utils/gmmaterial.h"
+
 // gmlib
 #include <core/utils/gmcolor.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 #include <opengl/bufferobjects/gmindexbufferobject.h>
-#include <scene/utils/gmmaterial.h>
 
 
 namespace GMlib {
