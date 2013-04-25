@@ -31,7 +31,24 @@ IF (WIN32)
 ELSEIF(APPLE)
 #TODO
 ELSE (WIN32) #Linux
-#TODO
+  file(GLOB APPML_ROOT_DIR "/opt/clAmdBlas*")
+  if(APPML_ROOT_DIR)
+    list(GET APPML_ROOT_DIR 0 APPML_ROOT_DIR)
+  else(APPML_ROOT_DIR)
+    set(APPML_ROOT_DIR "/usr")
+  endif(APPML_ROOT_DIR)
+  find_path( APPML_INCLUDE_DIR clAmdBlas.h
+    ${APPML_ROOT_DIR}/include
+    /usr/include
+    /usr/local/include
+    /opt/local/include
+    DOC "The directory where clAmdBlas.h resides")
+
+  find_library(APPML_LIBRARY clAmdBlas
+    PATHS
+        ${APPML_ROOT_DIR}/lib64
+        ${APPML_ROOT_DIR}/lib32
+    DOC "The APPML library")
 ENDIF (WIN32)
 
 set(APPML_INCLUDE_DIRS ${APPML_INCLUDE_DIR} ${OPENCL_INCLUDE_DIRS})

@@ -29,6 +29,7 @@
 
 #include "gmappmlmatmult.h"
 #include <clAmdBlas.h>
+#include <cstdio>
 
 namespace GMlib
 {
@@ -67,27 +68,27 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
     err = clGetPlatformIDs(1, &platform, NULL);
     if (err != CL_SUCCESS) {
         printf( "clGetPlatformIDs() failed with %d\n", err );
-        return 1;
+        return r;
     }
 
     err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
     if (err != CL_SUCCESS) {
         printf( "clGetDeviceIDs() failed with %d\n", err );
-        return 1;
+        return r;
     }
 
     props[1] = (cl_context_properties)platform;
     ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
     if (err != CL_SUCCESS) {
         printf( "clCreateContext() failed with %d\n", err );
-        return 1;
+        return r;
     }
 
     queue = clCreateCommandQueue(ctx, device, 0, &err);
     if (err != CL_SUCCESS) {
         printf( "clCreateCommandQueue() failed with %d\n", err );
         clReleaseContext(ctx);
-        return 1;
+        return r;
     }
 
     /* Setup clAmdBlas. */
@@ -96,7 +97,7 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
         printf("clAmdBlasSetup() failed with %d\n", err);
         clReleaseCommandQueue(queue);
         clReleaseContext(ctx);
-        return 1;
+        return r;
     }
 
 	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(float), NULL, &err);
@@ -166,27 +167,27 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
     err = clGetPlatformIDs(1, &platform, NULL);
     if (err != CL_SUCCESS) {
         printf( "clGetPlatformIDs() failed with %d\n", err );
-        return 1;
+        return r;
     }
 
     err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
     if (err != CL_SUCCESS) {
         printf( "clGetDeviceIDs() failed with %d\n", err );
-        return 1;
+        return r;
     }
 
     props[1] = (cl_context_properties)platform;
     ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
     if (err != CL_SUCCESS) {
         printf( "clCreateContext() failed with %d\n", err );
-        return 1;
+        return r;
     }
 
     queue = clCreateCommandQueue(ctx, device, 0, &err);
     if (err != CL_SUCCESS) {
         printf( "clCreateCommandQueue() failed with %d\n", err );
         clReleaseContext(ctx);
-        return 1;
+        return r;
     }
 
     /* Setup clAmdBlas. */
@@ -195,7 +196,7 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
         printf("clAmdBlasSetup() failed with %d\n", err);
         clReleaseCommandQueue(queue);
         clReleaseContext(ctx);
-        return 1;
+        return r;
     }
 
 	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(double), NULL, &err);
