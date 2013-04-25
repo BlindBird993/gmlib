@@ -11,11 +11,11 @@
 
 option(VIENNACL_WITH_OPENCL "Use ViennaCL with OpenCL" YES)
 
+IF(VIENNACL_WITH_OPENCL)
+  find_package(OpenCL REQUIRED)
+ENDIF(VIENNACL_WITH_OPENCL)
+
 IF (WIN32)
-  IF(VIENNACL_WITH_OPENCL)
-    find_package(OpenCL REQUIRED)
-  ENDIF(VIENNACL_WITH_OPENCL)
-  
   set(VIENNACL_PATH_WIN32 $ENV{PROGRAMFILES}/ViennaCL CACHE PATH "ViennaCL root directory.")
 
   find_path(VIENNACL_INCLUDE_DIR viennacl/forwards.h
@@ -31,7 +31,9 @@ IF (WIN32)
 ELSEIF(APPLE)
 #TODO
 ELSE (WIN32) #Linux
-#TODO
+  find_path(VIENNACL_INCLUDE_DIR viennacl/forwards.h
+    PATHS /usr/local/include
+    DOC "The ViennaCL include path")
 ENDIF (WIN32)
 
 include(FindPackageHandleStandardArgs)
