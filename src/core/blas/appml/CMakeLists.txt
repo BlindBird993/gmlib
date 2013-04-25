@@ -21,10 +21,4 @@
 # ###############################################################################
 
 
-addHeaders(
-  gmAppmlMatMult
-)
-
-addTemplateSources(
-  gmappmlmatmult.c
-)
+addBlasHeaders("gmappmlmatmult.h")

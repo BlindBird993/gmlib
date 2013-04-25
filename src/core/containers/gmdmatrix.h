@@ -260,5 +260,6 @@ namespace GMlib{
 
 // Include DMatrix class function implementations
 #include "gmdmatrix.c"
+#include "../blas/gmblasdmatrixincludes.h"
 
 #endif  // __gmDMATRIX_H__

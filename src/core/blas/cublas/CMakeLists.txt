@@ -21,10 +21,4 @@
 # ###############################################################################
 
 
-addHeaders(
-  gmCublasMatMult
-)
-
-addTemplateSources(
-  gmcublasmatmult.c
-)
+addBlasHeaders("gmcublasmatmult.h")

@@ -21,12 +21,4 @@
 # ###############################################################################
 
 
-addHeaders(
-  gmAcmlMatMult
-  gmAcmlMatInv
-)
-
-addTemplateSources(
-  gmacmlmatmult.c
-  gmacmlmatinv.c
-)
+addBlasHeaders("gmacmlmatmult.h" "gmacmlmatinv.h")

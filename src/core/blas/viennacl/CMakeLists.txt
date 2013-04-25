@@ -26,14 +26,6 @@ if(VIENNACL_WITH_OPENCL)
 else(VIENNACL_WITH_OPENCL)
   set(VIENNACL_MODE_CONFIG "")
 endif(VIENNACL_WITH_OPENCL)
-file(WRITE ${CMAKE_CURRENT_LIST_DIR}/gmviennaclconfig.h ${VIENNACL_MODE_CONFIG})
 
-addHeaders(
-  gmViennaclMatMult
-  gmViennaclMatInv
-)
-
-addTemplateSources(
-  gmviennaclmatmult.c
-  gmviennaclmatinv.c
-)
+addBlasHeaderLines(${VIENNACL_MODE_CONFIG})
+addBlasHeaders("gmviennaclmatmult.h" "gmviennaclmatinv.h")

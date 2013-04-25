@@ -21,12 +21,4 @@
 # ###############################################################################
 
 
-addHeaders(
-  gmMklMatMult
-  gmMklMatInv
-)
-
-addTemplateSources(
-  gmmklmatmult.c
-  gmmklmatinv.c
-)
+addBlasHeaders("gmmklmatmult.h" "gmmklmatinv.h")
