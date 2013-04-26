@@ -953,7 +953,6 @@ namespace GMlib {
   inline
   void PERBSSurf<T>::insertPatch( PSurf<T,3>* patch ) {
 
-    patch->replot( 10, 10 );
     patch->setVisible( false );
     patch->setCollapsed( true );
     this->insert( patch );
