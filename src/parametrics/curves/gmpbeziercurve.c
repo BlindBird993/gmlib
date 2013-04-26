@@ -159,15 +159,6 @@ namespace GMlib {
     return T(1);
   }
 
-
-  template <typename T>
-  inline
-  T PBezierCurve<T>::getLocalMapping( T t, T ts, T /*ti*/, T te ) {
-
-    return (t - ts) / (te-ts);
-  }
-
-
   template <typename T>
   T PBezierCurve<T>::getStartP() {
 

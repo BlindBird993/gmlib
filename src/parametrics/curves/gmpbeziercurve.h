@@ -55,7 +55,6 @@ namespace GMlib {
     void                            edit( int selector );
     DVector< Vector<T,3> >&         getControlPoints();
     int                             getDegree() const;
-    T                               getLocalMapping( T t, T ts, T ti, T te );
     virtual void                    hideSelectors();
     bool                            isSelectorsVisible() const;
     void                            setClosed( bool state );

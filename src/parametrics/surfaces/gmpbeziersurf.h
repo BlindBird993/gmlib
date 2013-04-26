@@ -57,7 +57,6 @@ namespace GMlib {
     DMatrix< Vector<T,3> >&       getControlPoints();
     int                           getDegreeU() const;
     int                           getDegreeV() const;
-    T                             getLocalMapping( T t, T ts, T tt, T te );
     virtual void                  hideSelectors();
     bool                          isClosedU() const;
     bool                          isClosedV() const;

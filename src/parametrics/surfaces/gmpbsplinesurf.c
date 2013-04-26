@@ -201,14 +201,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T PBSplineSurf<T>::getLocalMapping( T t, T ts, T /*tt*/, T te ) {
-
-    return (t - ts) / (te-ts);
-  }
-
-
-  template <typename T>
-  inline
   T PBSplineSurf<T>::getStartPU() {
 
     return _u[_du];

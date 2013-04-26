@@ -205,14 +205,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T PBezierSurf<T>::getLocalMapping( T t, T ts, T /*tt*/, T te ) {
-
-    return (t - ts) / (te-ts);
-  }
-
-
-  template <typename T>
-  inline
   T PBezierSurf<T>::getStartPU() {
 
     return T(0);

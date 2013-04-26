@@ -229,22 +229,11 @@ namespace GMlib {
     return T(1);
   }
 
-
-
-//  template <typename T>
-//  inline
-//  T PSurfCurve<T>::getLocalMapping( T t, T ts, T /*ti*/, T te ) {
-//
-//    return (t - ts) / (te-ts);
-//  }
-
-
   template <typename T>
   T PSurfCurve<T>::getStartP() {
 
     return T(0);
   }
-
 
   template <typename T>
   inline
@@ -252,7 +241,6 @@ namespace GMlib {
   {
     return false;
   }
-
 
   template <typename T>
   inline

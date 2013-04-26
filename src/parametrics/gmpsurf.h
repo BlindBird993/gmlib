@@ -59,14 +59,14 @@ namespace GMlib {
     virtual ~PSurf();
 
     //virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v );
-    DMatrix<Vector<T,n> >&        evaluate( APoint<T,2> p, int d );
-    DMatrix<Vector<T,n> >&    	  evaluate( T u, T v, int d1, int d2 );
-    DVector<Vector<T,n> >         evaluateD( APoint<T,2> p, int d );
+    DMatrix<Vector<T,n> >&        evaluate( const APoint<T,2>& p, const APoint<int,2>& d );
+    DMatrix<Vector<T,n> >&        evaluate( T u, T v, int d1, int d2 );
+    DVector<Vector<T,n> >         evaluateD( const APoint<T,2>& p, const APoint<int,2>& d );
     DVector<Vector<T,n> >         evaluateD( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,n> >&    	  evaluateGlobal( APoint<T,2> p, int d );
-    DMatrix<Vector<T,n> >&    	  evaluateGlobal( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,n> >&    	  evaluateParent( APoint<T,2> p, int d );
-    DMatrix<Vector<T,n> >&    	  evaluateParent( T u, T v, int d1, int d2 );
+    DMatrix<Vector<T,n> >&        evaluateGlobal( const APoint<T,2>& p, const APoint<int,2>& d );
+    DMatrix<Vector<T,n> >&        evaluateGlobal( T u, T v, int d1, int d2 );
+    DMatrix<Vector<T,n> >&        evaluateParent( const APoint<T,2>& p, const APoint<int,2>& d );
+    DMatrix<Vector<T,n> >&        evaluateParent( T u, T v, int d1, int d2 );
     virtual T                     getCurvatureGauss( T u, T v );
     virtual T                     getCurvatureMean( T u, T v );
     virtual T                     getCurvaturePrincipalMax( T u, T v );
@@ -78,7 +78,9 @@ namespace GMlib {
     Vector<T,n>&                  getDerUU( T u, T v );
     Vector<T,n>&                  getDerVV( T u, T v );
     Vector<T,n>&                  getDerUV( T u, T v );
-    virtual T                     getLocalMapping( T t, T ts, T tt, T te );
+    virtual const APoint<T,2>&    getLocalMapping( const APoint<T,2>& t,
+                                                   const APoint<T,2>& s,
+                                                   const APoint<T,2>& e );
     Vector<T,n>&                  getNormal();
     T                             getParDeltaU();
     T                             getParDeltaV();

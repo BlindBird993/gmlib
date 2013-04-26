@@ -261,12 +261,11 @@ namespace GMlib {
     return _default_visualizer;
   }
 
-
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( APoint<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( const APoint<T,2>& p, const APoint<int,2>& d ) {
 
-    return evaluate( p[0], p[1], d, d);
+    return evaluate( p(0), p(1), d(0), d(1) );
   }
 
 
@@ -282,9 +281,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( APoint<T,2> p, int d ) {
+  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( const APoint<T,2>& p, const APoint<int,2>& d ) {
 
-    return evaluateD(p[0], p[1], d, d);
+    return evaluateD( p(0), p(1), d(0), d(1) );
   }
 
 
@@ -317,9 +316,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( APoint<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( const APoint<T,2>& p, const APoint<int,2>& d ) {
 
-    return evaluateGlobal( p[0], p[1], d, d);
+    return evaluateGlobal( p(0), p(1), d(0), d(1) );
   }
 
 
@@ -347,9 +346,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( APoint<T,2> p, int d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( const APoint<T,2>& p, const APoint<int,2>& d ) {
 
-    return evaluateParent( p[0], p[1], d, d );
+    return evaluateParent( p(0), p(1), d(0), d(1) );
   }
 
 
@@ -373,7 +372,6 @@ namespace GMlib {
 
     return p;
   }
-
 
   template <typename T, int n>
   inline
@@ -506,9 +504,14 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::getLocalMapping( T t, T /*ts*/, T /*tt*/, T /*te*/ ) {
+  const APoint<T,2>& PSurf<T,n>::getLocalMapping( const APoint<T,2>& t, const APoint<T,2>& s, const APoint<T,2>& e ) {
 
-    return t;
+    static APoint<T,2> t_local;
+
+    t_local[0] = getParStartU() + (t(0) - s(0)) / (e(0) - s(0)) * getParDeltaU();
+    t_local[1] = getParStartV() + (t(1) - s(1)) / (e(1) - s(1)) * getParDeltaV();
+
+    return t_local;
   }
 
 

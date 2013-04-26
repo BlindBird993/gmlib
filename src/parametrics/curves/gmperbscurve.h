@@ -56,7 +56,7 @@ namespace GMlib {
     virtual ~PERBSCurve();
 
     void                            edit( SceneObject *obj );
-    DVector< PCurve<T,3>* >&          getLocalPatches();
+    DVector< PCurve<T,3>* >&        getLocalPatches();
     int                             getNoLocalPatches() const;
     void                            setResampleMode( GM_RESAMPLE_MODE mode );
 
@@ -72,7 +72,7 @@ namespace GMlib {
   protected:
     bool                            _closed;
     DVector<T>                      _t;
-    DVector<PCurve<T,3>*>             _c;
+    DVector<PCurve<T,3>*>           _c;
 
     BasisEvaluator<long double>*    _evaluator;
 
@@ -97,7 +97,7 @@ namespace GMlib {
     void                            generateKnotVector( PCurve<T,3>* g, int n );
     virtual void                    init();
     void                            insertLocal( PCurve<T,3> *patch );
-    PCurve<T,3>*                      makeLocal( CURVE_TYPE type, PCurve<T,3>* g, T s, T t, T e, int d=2);
+    PCurve<T,3>*                    makeLocal( CURVE_TYPE type, PCurve<T,3>* g, T s, T t, T e, int d=2);
 
   }; // END class PERBSCurve
 

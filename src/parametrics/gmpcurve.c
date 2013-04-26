@@ -282,9 +282,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::getLocalMapping( T t, T /*ts*/, T /*ti*/, T /*te*/ ) {
+  T PCurve<T,n>::getLocalMapping( T t, T s, T e ) {
 
-    return t;
+    return getParStart() + (t-s)/(e-s) * getParDelta();
   }
 
 

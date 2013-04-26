@@ -76,7 +76,6 @@ namespace GMlib {
   }
 
 
-
   template <typename T>
   inline
   PERBSCurve<T>::PERBSCurve( const PERBSCurve<T>& copy ) : PCurve<T,3>( copy )
@@ -132,7 +131,6 @@ namespace GMlib {
       delete _evaluator;
   }
 
-
   template <typename T>
   inline
   void PERBSCurve<T>::edit( SceneObject *obj )
@@ -151,7 +149,6 @@ namespace GMlib {
 
     PCurve<T,3>::replot(0);
   }
-
 
 
   template <typename T>
@@ -176,14 +173,14 @@ namespace GMlib {
 
     // Evaluating first Local Curve @ (t-_t[k-1])/(_t[k+1]-_t[k-1])
     DVector< Vector<T,3> > c0 = _c[k-1]->evaluateParent(
-                                _c[k-1]->getLocalMapping(t,_t[k-1],_t[k],_t[k+1]), d);
+                                _c[k-1]->getLocalMapping(t,_t[k-1],_t[k+1]), d);
 
     // If t == _t[k], the sample is at the knot, set the values to the values of the first local curve.
     if( std::abs(t - _t[k]) < 1e-5 ) { this->_p = c0; return; }
 
     // Evaluating second Local Curve @ (t-_t[k])/(_t[k+2]-_t[k)
     DVector< Vector<T,3> > c1 = _c[k]->evaluateParent(
-                                _c[k]->getLocalMapping(t,_t[k],_t[k+1],_t[k+2]), d);
+                                _c[k]->getLocalMapping(t,_t[k],_t[k+2]), d);
     c0 -= c1;
 
     DVector<T> a(d+1);
@@ -199,7 +196,6 @@ namespace GMlib {
     }
     this->_p = c1;
   }
-
 
 
   template <typename T>

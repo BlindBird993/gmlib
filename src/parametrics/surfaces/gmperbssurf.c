@@ -724,11 +724,13 @@ namespace GMlib {
     // Init Indexes and get local u/v values
     const int cu = uk-1;
     const int cv = vk-1;
-    const T lu = _c[cu][cv]->getLocalMapping( u, _u[uk-1], _u[uk], _u[uk+1] );
-    const T lv = _c[cu][cv]->getLocalMapping( v, _v[vk-1], _v[vk], _v[vk+1] );
+    const Point<T,2>& lm =
+        _c[cu][cv]->getLocalMapping( Point<T,2>(u,v),
+                                     Point<T,2>( _u[uk-1], _v[vk-1] ),
+                                     Point<T,2>( _u[uk+1], _v[vk+1] ) );
 
     // Evaluate First local patch
-    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lu, lv, du, dv );
+    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lm(0), lm(1), du, dv );
 
     // If on a interpolation point return only first patch evaluation
     if( std::fabs(u - _u[uk]) < 1e-5 )
@@ -741,11 +743,13 @@ namespace GMlib {
     // Init Indexes and get local u/v values
     const int cu2 = uk-1;
     const int cv2 = vk-1;
-    const T lu2 = _c[cu2][cv2]->getLocalMapping( u, _u[uk-1], _u[uk], _u[uk+1] );
-    const T lv2 = _c[cu2][cv2]->getLocalMapping( v, _v[vk-1], _v[vk], _v[vk+1] );
+    const Point<T,2>& lm2 =
+        _c[cu2][cv2]->getLocalMapping( Point<T,2>(u,v),
+                                       Point<T,2>( _u[uk-1], _v[vk-1] ),
+                                       Point<T,2>( _u[uk+1], _v[vk+1] ) );
 
     // Evaluate Second local patch
-    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( lu2, lv2, du, dv );
+    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( lm2(0), lm2(1), du, dv );
 
     DVector<T> a(du+1);
 
@@ -776,11 +780,13 @@ namespace GMlib {
     // Init Indexes and get local u/v values
     const int cu = uk-1;
     const int cv = vk-1;
-    const T lu = _c[cu][cv]->getLocalMapping( u, _u[uk-1], _u[uk], _u[uk+1] );
-    const T lv = _c[cu][cv]->getLocalMapping( v, _v[vk-1], _v[vk], _v[vk+1] );
+    const Point<T,2>& lm =
+        _c[cu][cv]->getLocalMapping( Point<T,2>(u,v),
+                                     Point<T,2>( _u[uk-1], _v[vk-1] ),
+                                     Point<T,2>( _u[uk+1], _v[vk+1] ) );
 
     // Evaluate First local patch
-    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lu, lv, du, dv );
+    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lm(0), lm(1), du, dv );
 
     // If on a interpolation point return only first patch evaluation
     if( std::fabs(u - _u[uk]) < 1e-5 )
@@ -792,11 +798,13 @@ namespace GMlib {
     // Init Indexes and get local u/v values
     const int cu2 = uk-1;
     const int cv2 = vk-1;
-    const T lu2 = _c[cu2][cv2]->getLocalMapping( u, _u[uk-1], _u[uk], _u[uk+1] );
-    const T lv2 = _c[cu2][cv2]->getLocalMapping( v, _v[vk-1], _v[vk], _v[vk+1] );
+    const Point<T,2>& lm2 =
+        _c[cu][cv]->getLocalMapping( Point<T,2>(u,v),
+                                     Point<T,2>( _u[uk-1], _v[vk-1] ),
+                                     Point<T,2>( _u[uk+1], _v[vk+1] ) );
 
     // Evaluate Second local patch
-    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( lu2, lv2, du, dv );
+    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( lm2(0), lm2(1), du, dv );
 
     DVector<T> a(du+1);
 

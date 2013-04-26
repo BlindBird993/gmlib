@@ -202,15 +202,6 @@ namespace GMlib {
     return _end;
   }
 
-
-  template <typename T>
-  inline
-  T PArc<T>::getLocalMapping( T t, T ts, T ti, T te ) {
-
-    return this->getParStart() + (t - ti) / (te-ts) * this->getParDelta();
-  }
-
-
   template <typename T>
   inline
   T PArc<T>::getSpeed() const {
