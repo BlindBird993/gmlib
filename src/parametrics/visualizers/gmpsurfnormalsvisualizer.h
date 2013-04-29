@@ -48,8 +48,8 @@ namespace GMlib {
     GM_SURF_NORMALSVISUALIZER_BOUNDARY
   };
 
-  template <typename T>
-  class PSurfNormalsVisualizer : public PSurfVisualizer<T> {
+  template <typename T, int n>
+  class PSurfNormalsVisualizer : public PSurfVisualizer<T,n> {
   public:
     PSurfNormalsVisualizer();
     virtual ~PSurfNormalsVisualizer();
@@ -59,8 +59,8 @@ namespace GMlib {
     GM_SURF_NORMALSVISUALIZER_MODE    getMode() const;
     double                            getSize() const;
     void                              replot(
-      DMatrix< DMatrix< Vector<T, 3> > >& p,
-      DMatrix< Vector<T, 3> >& normals,
+      DMatrix< DMatrix< Vector<T, n> > >& p,
+      DMatrix< Vector<T, n> >& normals,
       int m1, int m2, int d1, int d2,
       bool closed_u, bool closed_v
     );
@@ -69,7 +69,7 @@ namespace GMlib {
     void                              setSize( double size = 1.0 );
 
   protected:
-    GLuint                            _vbo_v;
+    GL::VertexBufferObject            _vbo;
     int                               _no_elements;
 
     Color                             _color;

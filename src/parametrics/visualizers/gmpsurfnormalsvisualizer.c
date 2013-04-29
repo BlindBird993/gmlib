@@ -28,10 +28,15 @@
  */
 
 
+#include <opengl/gmopengl.h>
+#include <opengl/glsl/gmglprogram.h>
+#include <opengl/glsl/gmglshadermanager.h>
+
+
 namespace GMlib {
 
-  template <typename T>
-  PSurfNormalsVisualizer<T>::PSurfNormalsVisualizer() {
+  template <typename T, int n>
+  PSurfNormalsVisualizer<T,n>::PSurfNormalsVisualizer() {
 
     this->setRenderProgram( GL::GLProgram("color") );
 
@@ -39,20 +44,14 @@ namespace GMlib {
     _size = 1.0;
 
     _no_elements = 0;
-
-    glGenBuffers( 1, &_vbo_v );
   }
 
-  template <typename T>
-  PSurfNormalsVisualizer<T>::~PSurfNormalsVisualizer() {
+  template <typename T, int n>
+  PSurfNormalsVisualizer<T,n>::~PSurfNormalsVisualizer() {}
 
-    glDeleteBuffers( 1, &_vbo_v );
-  }
-
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfNormalsVisualizer<T>::display() {
-
+  void PSurfNormalsVisualizer<T,n>::display() {
 
     const GL::GLProgram &prog = this->getRenderProgram();
     prog.setUniform( "u_color", _color );
@@ -60,25 +59,23 @@ namespace GMlib {
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc );
+    _vbo.bind();
+    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
 
     // Draw
     glDrawArrays( GL_LINES, 0, _no_elements );
 
-    glDisableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.disable( vert_loc );
+    _vbo.unbind();
   }
 
-  template <typename T>
-  const Color& PSurfNormalsVisualizer<T>::getColor() const {
+  template <typename T, int n>
+  const Color& PSurfNormalsVisualizer<T,n>::getColor() const {
 
     return _color;
   }
 
-  /*! GM_SURF_NORMALSVISUALIZER_MODE PSurfNormalsVisualizer<T>::getMode() const
+  /*! GM_SURF_NORMALSVISUALIZER_MODE PSurfNormalsVisualizer<T,n>::getMode() const
    *
    *  Returns the displaymode of the visualizer.
    *  All       - Shows all normals.
@@ -87,149 +84,176 @@ namespace GMlib {
    *
    *  \return Visualizer normals mode.
    */
-  template <typename T>
-  GM_SURF_NORMALSVISUALIZER_MODE PSurfNormalsVisualizer<T>::getMode() const {
+  template <typename T, int n>
+  GM_SURF_NORMALSVISUALIZER_MODE PSurfNormalsVisualizer<T,n>::getMode() const {
 
     return _mode;
   }
 
-  template <typename T>
-  double PSurfNormalsVisualizer<T>::getSize() const {
+  template <typename T, int n>
+  double PSurfNormalsVisualizer<T,n>::getSize() const {
 
     return _size;
   }
 
-  /*! void PSurfNormalsVisualizer<T>::makePlotAll( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals )
+  /*! void PSurfNormalsVisualizer<T,n>::makePlotAll( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals )
    *
    *  Generates the plot data for all normals.
    *
    *  \param[in]  p         Evaluated position data.
    *  \param[in]  normals   Evaluated Normal data.
    */
-  template <typename T>
-  void PSurfNormalsVisualizer<T>::makePlotAll( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
+  template <typename T, int n>
+  void PSurfNormalsVisualizer<T,n>::makePlotAll( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
 
     int no_normals = p.getDim1() * p.getDim2();
     _no_elements = no_normals * 2;
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v);
-    glBufferData( GL_ARRAY_BUFFER, no_normals * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+    _vbo.bind();
+    _vbo.createBufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
-    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    GL::GLVertex *ptr = _vbo.mapBuffer<GL::GLVertex>();
     if( ptr ) {
 
-      for( int i = 0; i < p.getDim1(); i++ )
+      for( int i = 0; i < p.getDim1(); i++ ) {
         for( int j = 0; j < p.getDim2(); j++ ) {
 
-          for( int k = 0; k < 3; k++ )
-            *(ptr++) = p[i][j][0][0][k];
+          (*ptr).x = p[i][j][0][0][0];
+          (*ptr).y = p[i][j][0][0][1];
+          (*ptr).z = p[i][j][0][0][2];
+          ptr++;
 
           const Vector<T,3> N = normals[i][j].getNormalized() * _size;
-          for( int k = 0; k < 3; k++ )
-            *(ptr++) = p[i][j][0][0][k] + N(k);
+          (*ptr).x = p[i][j][0][0][0] + N(0);
+          (*ptr).y = p[i][j][0][0][1] + N(1);
+          (*ptr).z = p[i][j][0][0][2] + N(2);
+          ptr++;
         }
+      }
     }
 
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.unmapBuffer();
+    _vbo.unbind();
   }
 
-  /*! void PSurfNormalsVisualizer<T>::makePlotInterior( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals )
+  /*! void PSurfNormalsVisualizer<T,n>::makePlotInterior( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals )
    *
    *  Generates the plot data for all interior normals.
    *
    *  \param[in]  p         Evaluated position data.
    *  \param[in]  normals   Evaluated Normal data.
    */
-  template <typename T>
-  void PSurfNormalsVisualizer<T>::makePlotInterior( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
+  template <typename T, int n>
+  void PSurfNormalsVisualizer<T,n>::makePlotInterior( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
 
     int no_normals = ( p.getDim1() - 2 ) * ( p.getDim2() - 2 );
     _no_elements = no_normals * 2;
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v);
-    glBufferData( GL_ARRAY_BUFFER, no_normals * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+    _vbo.bind();
+    _vbo.createBufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
-    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    GL::GLVertex *ptr = _vbo.mapBuffer<GL::GLVertex>();
     if( ptr ) {
 
-      for( int i = 1; i < p.getDim1()-1; i++ )
+      for( int i = 1; i < p.getDim1()-1; i++ ) {
         for( int j = 1; j < p.getDim2()-1; j++ ) {
 
-          for( int k = 0; k < 3; k++ )
-            *(ptr++) = p[i][j][0][0][k];
+          (*ptr).x = p[i][j][0][0][0];
+          (*ptr).y = p[i][j][0][0][1];
+          (*ptr).z = p[i][j][0][0][2];
+          ptr++;
 
           const Vector<T,3> N = normals[i][j].getNormalized() * _size;
-          for( int k = 0; k < 3; k++ )
-            *(ptr++) = p[i][j][0][0][k] + N(k);
+          (*ptr).x = p[i][j][0][0][0] + N(0);
+          (*ptr).y = p[i][j][0][0][1] + N(1);
+          (*ptr).z = p[i][j][0][0][2] + N(2);
+          ptr++;
         }
+      }
     }
 
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.unmapBuffer();
+    _vbo.unbind();
   }
 
-  /*! void PSurfNormalsVisualizer<T>::makePlotBoundary( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals )
+  /*! void PSurfNormalsVisualizer<T,n>::makePlotBoundary( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals )
    *
    *  Generates the plot data for all boundary normals.
    *
    *  \param[in]  p         Evaluated position data.
    *  \param[in]  normals   Evaluated Normal data.
    */
-  template <typename T>
-  void PSurfNormalsVisualizer<T>::makePlotBoundary( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
+  template <typename T, int n>
+  void PSurfNormalsVisualizer<T,n>::makePlotBoundary( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
 
     int no_normals = ( p.getDim1() + p.getDim2() ) * 2 - 4;
     _no_elements = no_normals * 2;
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v);
-    glBufferData( GL_ARRAY_BUFFER, no_normals * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+    _vbo.bind();
+    _vbo.createBufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
-    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    GL::GLVertex *ptr = _vbo.mapBuffer<GL::GLVertex>();
     if( ptr ) {
 
       for( int i = 0, j; i < p.getDim1(); i++ ) {
 
-
         // j = 0
         j = 0;
-        for( int k = 0; k < 3; k++ )
-          *(ptr++) = p[i][j][0][0][k];
+
+        (*ptr).x = p[i][j][0][0][0];
+        (*ptr).y = p[i][j][0][0][1];
+        (*ptr).z = p[i][j][0][0][2];
+        ptr++;
 
         const Vector<T,3> N1 = normals[i][j].getNormalized() * _size;
-        for( int k = 0; k < 3; k++ )
-          *(ptr++) = p[i][j][0][0][k] + N1(k);
+        (*ptr).x = p[i][j][0][0][0] + N1(0);
+        (*ptr).y = p[i][j][0][0][1] + N1(1);
+        (*ptr).z = p[i][j][0][0][2] + N1(2);
+        ptr++;
 
         // j = p.getDim2() -1
         j = p.getDim2() - 1;
-        for( int k = 0; k < 3; k++ )
-          *(ptr++) = p[i][j][0][0][k];
+
+        (*ptr).x = p[i][j][0][0][0];
+        (*ptr).y = p[i][j][0][0][1];
+        (*ptr).z = p[i][j][0][0][2];
+        ptr++;
 
         const Vector<T,3> N2 = normals[i][j].getNormalized() * _size;
-        for( int k = 0; k < 3; k++ )
-          *(ptr++) = p[i][j][0][0][k] + N2(k);
-
+        (*ptr).x = p[i][j][0][0][0] + N2(0);
+        (*ptr).y = p[i][j][0][0][1] + N2(1);
+        (*ptr).z = p[i][j][0][0][2] + N2(2);
+        ptr++;
       }
 
       for( int i, j = 1; j < p.getDim2()-1; j++ ) {
 
         // i = 0
         i = 0;
-        for( int k = 0; k < 3; k++ )
-          *(ptr++) = p[i][j][0][0][k];
+
+        (*ptr).x = p[i][j][0][0][0];
+        (*ptr).y = p[i][j][0][0][1];
+        (*ptr).z = p[i][j][0][0][2];
+        ptr++;
 
         const Vector<T,3> N1 = normals[i][j].getNormalized() * _size;
-        for( int k = 0; k < 3; k++ )
-          *(ptr++) = p[i][j][0][0][k] + N1(k);
+        (*ptr).x = p[i][j][0][0][0] + N1(0);
+        (*ptr).y = p[i][j][0][0][1] + N1(1);
+        (*ptr).z = p[i][j][0][0][2] + N1(2);
+        ptr++;
 
         // j = p.getDim1() -1
         i = p.getDim1() - 1;
-        for( int k = 0; k < 3; k++ )
-          *(ptr++) = p[i][j][0][0][k];
+        (*ptr).x = p[i][j][0][0][0];
+        (*ptr).y = p[i][j][0][0][1];
+        (*ptr).z = p[i][j][0][0][2];
+        ptr++;
 
         const Vector<T,3> N2 = normals[i][j].getNormalized() * _size;
-        for( int k = 0; k < 3; k++ )
-          *(ptr++) = p[i][j][0][0][k] + N2(k);
+        (*ptr).x = p[i][j][0][0][0] + N2(0);
+        (*ptr).y = p[i][j][0][0][1] + N2(1);
+        (*ptr).z = p[i][j][0][0][2] + N2(2);
+        ptr++;
       }
     }
 
@@ -237,10 +261,10 @@ namespace GMlib {
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
-  template <typename T>
-  void PSurfNormalsVisualizer<T>::replot(
-    DMatrix< DMatrix< Vector<T, 3> > >& p,
-    DMatrix< Vector<T, 3> >& normals,
+  template <typename T, int n>
+  void PSurfNormalsVisualizer<T,n>::replot(
+    DMatrix< DMatrix< Vector<T, n> > >& p,
+    DMatrix< Vector<T, n> >& normals,
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     bool /*closed_u*/, bool /*closed_v*/
   ) {
@@ -262,13 +286,13 @@ namespace GMlib {
     }
   }
 
-  template <typename T>
-  void PSurfNormalsVisualizer<T>::setColor( const Color& color ) {
+  template <typename T, int n>
+  void PSurfNormalsVisualizer<T,n>::setColor( const Color& color ) {
 
     _color = color;
   }
 
-  /*! void PSurfNormalsVisualizer<T>::setMode( GM_SURF_NORMALSVISUALIZER_MODE mode )
+  /*! void PSurfNormalsVisualizer<T,n>::setMode( GM_SURF_NORMALSVISUALIZER_MODE mode )
    *
    *  Sets the normals mode for the visualizer.
    *
@@ -278,16 +302,16 @@ namespace GMlib {
    *
    *  \param[in]  mode  The normals mode.
    *
-   *  \see PSurfNormalsVisualizer<T>::GM_SURF_NORMALSVISUALIZER_MODE
+   *  \see PSurfNormalsVisualizer<T,n>::GM_SURF_NORMALSVISUALIZER_MODE
    */
-  template <typename T>
-  void PSurfNormalsVisualizer<T>::setMode( GM_SURF_NORMALSVISUALIZER_MODE mode ) {
+  template <typename T, int n>
+  void PSurfNormalsVisualizer<T,n>::setMode( GM_SURF_NORMALSVISUALIZER_MODE mode ) {
 
     _mode = mode;
   }
 
-  template <typename T>
-  void PSurfNormalsVisualizer<T>::setSize( double size ) {
+  template <typename T, int n>
+  void PSurfNormalsVisualizer<T,n>::setSize( double size ) {
 
     _size = size;
   }

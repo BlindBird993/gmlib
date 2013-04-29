@@ -29,7 +29,7 @@ addHeaders(
 #  gmPSurfContoursVisualizer
   gmPSurfDefaultVisualizer
 #  gmPSurfDerivativesVisualizer
-#  gmPSurfNormalsVisualizer
+  gmPSurfNormalsVisualizer
 #  gmPSurfPointsVisualizer
 #  gmPSurfTexVisualizer
   gmPSurfVisualizer
