@@ -41,6 +41,11 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 inline
 const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double>& b);
 
+inline
+const DVector<float>&  operator*(const DMatrix<float>& m, const DVector<float>& b);
+inline
+const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double>& b);
+
 } // namespace GMlib
 
 #include "gmacmlmatmult.c"

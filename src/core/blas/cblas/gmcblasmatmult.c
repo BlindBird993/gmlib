@@ -92,4 +92,36 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	return r;
 }
 
+inline
+const DVector<float>&  operator*(const DMatrix<float>& m, const DVector<float>& b) {
+	static DVector<float> r;
+
+	if(m.getDim2() != b.getDim()) return r;
+
+	r.setDim(m.getDim1());
+	int i;
+	const float* vec = &b(0);
+	for(i=0;i<m.getDim1();i++)
+	{
+		r[i] = cblas_sdot(m.getDim2(), &m(i)(0), 1, vec, 1);
+	}
+	return r;
+}
+
+inline
+const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double>& b) {
+	static DVector<double> r;
+
+	if(m.getDim2() != b.getDim()) return r;
+
+	r.setDim(m.getDim1());
+	int i;
+	const double* vec = &b(0);
+	for(i=0;i<m.getDim1();i++)
+	{
+		r[i] = cblas_ddot(m.getDim2(), &m(i)(0), 1, vec, 1);
+	}
+	return r;
+}
+
 } // namespace GMlib

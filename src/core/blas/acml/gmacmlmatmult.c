@@ -96,4 +96,36 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	return r;
 }
 
+inline
+const DVector<float>&  operator*(const DMatrix<float>& m, const DVector<float>& b) {
+	static DVector<float> r;
+
+	if(m.getDim2() != b.getDim()) return r;
+
+	r.setDim(m.getDim1());
+	int n = m.getDim2();
+	float* vec = const_cast<float*>(&b(0));
+	for(int i=0;i<m.getDim1();i++)
+	{
+		r[i] = sdot(m.getDim2(), const_cast<float*>(&m(i)(0)), 1, vec, 1);
+	}
+	return r;
+}
+
+inline
+const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double>& b) {
+	static DVector<double> r;
+
+	if(m.getDim2() != b.getDim()) return r;
+
+	r.setDim(m.getDim1());
+	int n = m.getDim2();
+	double* vec = const_cast<double*>(&b(0));
+	for(int i=0;i<m.getDim1();i++)
+	{
+		r[i] = ddot(m.getDim2(), const_cast<double*>(&m(i)(0)), 1, vec, 1);
+	}
+	return r;
+}
+
 } // namespace GMlib
