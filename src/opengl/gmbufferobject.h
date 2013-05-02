@@ -56,7 +56,7 @@ namespace GL {
 
     void                    createBufferData( GLsizeiptr size, const GLvoid* data, GLenum usage ) const;
     void                    disableVertexArrayPointer( GLuint vert_loc ) const;
-    void                    enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset );
+    void                    enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const;
 
     template <typename T>
     T*                      mapBuffer( GLenum access = GL_WRITE_ONLY ) const;

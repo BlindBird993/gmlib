@@ -82,7 +82,7 @@ namespace GL {
     GL_CHECK(glDisableVertexAttribArray( vert_loc ));
   }
 
-  void BufferObject::enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) {
+  void BufferObject::enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const {
 
     GL_CHECK(glVertexAttribPointer( vert_loc, size, type, normalized, stride, offset ));
     GL_CHECK(glEnableVertexAttribArray( vert_loc ));
