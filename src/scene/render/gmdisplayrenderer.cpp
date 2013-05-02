@@ -46,7 +46,6 @@ namespace GMlib {
     : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_depth(),
       _fbo_select("DefaultRenderSelectBufferObject"), _rbo_select(GL_TEXTURE_2D) {
 
-
     // Color rbo texture parameters
     _rbo_color.setParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     _rbo_color.setParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);

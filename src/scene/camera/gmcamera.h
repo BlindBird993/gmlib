@@ -138,7 +138,8 @@ namespace GMlib {
 
     void                        updateCameraOrientation();
 
-  protected:
+//  protected:
+  public:
     float                       _near_plane;
     float                       _far_plane;
     float                       _ratio;

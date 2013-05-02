@@ -42,6 +42,7 @@
 #include <opengl/gmframebufferobject.h>
 #include <opengl/gmrenderbufferobject.h>
 #include <opengl/gmtexture.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
 
 
 namespace GMlib {
@@ -73,8 +74,8 @@ namespace GMlib {
     GL::FramebufferObject   _fbo_select_depth;
     GL::RenderbufferObject  _rbo_select_depth;
 
-
     void                    render(DisplayObject *obj, Camera *cam) const;
+    void                    renderCoordSys( Camera *cam ) const;
     void                    renderSelection(DisplayObject *obj, Camera *cam) const;
     void                    renderSelectionDepth(DisplayObject *obj, Camera *cam) const;
 
@@ -135,6 +136,39 @@ namespace GMlib {
         obj->localDisplay();
       }
     }
+  }
+
+  inline
+  void DisplayRenderer::renderCoordSys(Camera *cam) const {
+
+      // Get matrix of present camera and
+      HqMatrix<float,3> base_mvmat;
+      HqMatrix<float,3> mvmat = cam->SceneObject::getMatrix();
+      mvmat[0][3] = 0.0f;
+      mvmat[1][3] = 0.0f;
+      mvmat[2][3] = 0.0f;
+      const HqMatrix<float,3> &pmat = cam->getProjectionMatrix();
+
+      // Compute the position of the of the "coordinate-system visualization"
+      // Relevant to the camera position
+      float hh = -1.5*cam->_near_plane*cam->_angle_tan;
+      Point<float,3> cp(cam->_ratio*hh, hh, -cam->_near_plane-1.0);
+      base_mvmat.translateGlobal(cp);
+      mvmat.translateGlobal(cp);
+
+      // Bind program
+      const GL::GLProgram &prog = VisualizerStdRep::getInstance()->getRenderProgram();
+      prog.bind();
+
+      prog.setUniform( "u_mvmat", mvmat, 1, true );
+      prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
+
+      // Render "coord-sys"
+      VisualizerStdRep::getInstance()->set(cam);
+      VisualizerStdRep::getInstance()->display();
+
+
+      prog.unbind();
   }
 
   inline
@@ -209,12 +243,17 @@ namespace GMlib {
       prepare( objs, cam );
 
       // Object rendering
-      _fbo.bind();
+      _fbo.bind(); {
 
-      for( int j = 0; j < objs.getSize(); ++j )
-        render( objs[j], cam);
+        // Render coordinate-system visualization
+        renderCoordSys( cam );
 
-      _fbo.unbind();
+        // Render the scene objects
+        for( int j = 0; j < objs.getSize(); ++j ) {
+          render( objs[j], cam);
+        }
+
+      } _fbo.unbind();
 
       // Selection rendering - render to depth buffer
       _fbo_select_depth.bind(); {
@@ -245,6 +284,12 @@ namespace GMlib {
         ::glDepthMask( depth_mask );
 
       } _fbo_select.unbind();
+
+
+
+
+
+
 
       cam->markAsInactive();
     }
