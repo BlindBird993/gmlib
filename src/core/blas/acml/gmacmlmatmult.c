@@ -26,7 +26,7 @@
  *
  *  Implementation of ACML-specific matrix multiplication operators.
  */
-
+#include "gmacmlmatmult.h"
 #include <acml.h>
 
 namespace GMlib
@@ -125,6 +125,74 @@ const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double
 	{
 		r[i] = ddot(m.getDim2(), const_cast<double*>(&m(i)(0)), 1, vec, 1);
 	}
+	return r;
+}
+
+inline
+const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
+{
+	static const char transpose = 'T';
+	static const char noTranspose = 'N';
+	static DMatrix<std::complex<float> > r;
+	std::complex<float>* cA = new std::complex<float>[m.getDim1() * m.getDim2()];
+	std::complex<float>* cB = new std::complex<float>[b.getDim1() * b.getDim2()];
+	r.setDim(m.getDim1(), b.getDim2());
+	for(int i=0; i<(m.getDim1() * m.getDim2()); i++)
+	{
+		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+	}
+	for(int i=0; i<(b.getDim1() * b.getDim2()); i++)
+	{
+		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+	}
+
+	std::complex<float>* work = new std::complex<float>[m.getDim1() * b.getDim2()];
+	complex alpha = {1.0f, 0.0f};
+	complex beta = {0.0f, 0.0f};
+
+	cgemm(noTranspose, noTranspose, m.getDim1(), b.getDim2(), m.getDim2(), &alpha, reinterpret_cast<complex*>(cA), m.getDim1(),
+		reinterpret_cast<complex*>(cB), b.getDim1(), &beta, reinterpret_cast<complex*>(work), m.getDim1());
+
+	for(int i=0; i<r.getDim1(); i++)
+		for(int j=0; j<r.getDim2(); j++)
+			r[i][j] = work[i+j*r.getDim1()];
+	delete[] cA;
+	delete[] cB;
+	delete[] work;
+	return r;
+}
+
+inline
+const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
+{
+	static const char transpose = 'T';
+	static const char noTranspose = 'N';
+	static DMatrix<std::complex<double> > r;
+	std::complex<double>* cA = new std::complex<double>[m.getDim1() * m.getDim2()];
+	std::complex<double>* cB = new std::complex<double>[b.getDim1() * b.getDim2()];
+	r.setDim(m.getDim1(), b.getDim2());
+	for(int i=0; i<(m.getDim1() * m.getDim2()); i++)
+	{
+		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+	}
+	for(int i=0; i<(b.getDim1() * b.getDim2()); i++)
+	{
+		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+	}
+
+	std::complex<double>* work = new std::complex<double>[m.getDim1() * b.getDim2()];
+	doublecomplex alpha = {1.0f, 0.0f};
+	doublecomplex beta = {0.0f, 0.0f};
+
+	zgemm(noTranspose, noTranspose, m.getDim1(), b.getDim2(), m.getDim2(), &alpha, reinterpret_cast<doublecomplex*>(cA), m.getDim1(),
+		reinterpret_cast<doublecomplex*>(cB), b.getDim1(), &beta, reinterpret_cast<doublecomplex*>(work), m.getDim1());
+
+	for(int i=0; i<r.getDim1(); i++)
+		for(int j=0; j<r.getDim2(); j++)
+			r[i][j] = work[i+j*r.getDim1()];
+	delete[] cA;
+	delete[] cB;
+	delete[] work;
 	return r;
 }
 
