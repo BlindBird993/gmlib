@@ -21,4 +21,4 @@
 # ###############################################################################
 
 
-addBlasHeaders(DMatrix "gmcblasmatmult.h" "gmcblasmatmult.h")
+addBlasHeaders(DMatrix "gmcblasmatmult.h")
