@@ -33,6 +33,8 @@
 #include "../../containers/gmdmatrix.h"
 #include "../../containers/gmarray.h"
 
+#include <complex>
+
 namespace GMlib
 {
 
@@ -40,6 +42,11 @@ inline
 const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& b);
 inline
 const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double>& b);
+
+inline
+const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b);
+inline
+const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b);
 
 } // namespace GMlib
 
