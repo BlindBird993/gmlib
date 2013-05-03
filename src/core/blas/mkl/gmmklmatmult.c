@@ -140,4 +140,78 @@ const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double
 	return r;
 }
 
+inline
+const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
+{
+	static const char transpose = 'T';
+	static const char noTranspose = 'N';
+	static DMatrix<std::complex<float> > r;
+	std::complex<float>* cA = new std::complex<float>[m.getDim1() * m.getDim2()];
+	std::complex<float>* cB = new std::complex<float>[b.getDim1() * b.getDim2()];
+	r.setDim(m.getDim1(), b.getDim2());
+	for(int i=0; i<(m.getDim1() * m.getDim2()); i++)
+	{
+		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+	}
+	for(int i=0; i<(b.getDim1() * b.getDim2()); i++)
+	{
+		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+	}
+
+	std::complex<float>* work = new std::complex<float>[m.getDim1() * b.getDim2()];
+	MKL_Complex8 alpha = {1.0f, 0.0f};
+	MKL_Complex8 beta = {0.0f, 0.0f};
+	const int m_ = m.getDim1();
+	const int n_ = b.getDim2();
+	const int k_ = m.getDim2();
+
+	cgemm(&noTranspose, &noTranspose, &m_, &n_, &k_, &alpha, reinterpret_cast<MKL_Complex8*>(cA), &m_,
+		reinterpret_cast<MKL_Complex8*>(cB), &k_, &beta, reinterpret_cast<MKL_Complex8*>(work), &m_);
+
+	for(int i=0; i<r.getDim1(); i++)
+		for(int j=0; j<r.getDim2(); j++)
+			r[i][j] = work[i+j*r.getDim1()];
+	delete[] cA;
+	delete[] cB;
+	delete[] work;
+	return r;
+}
+
+inline
+const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
+{
+	static const char transpose = 'T';
+	static const char noTranspose = 'N';
+	static DMatrix<std::complex<double> > r;
+	std::complex<double>* cA = new std::complex<double>[m.getDim1() * m.getDim2()];
+	std::complex<double>* cB = new std::complex<double>[b.getDim1() * b.getDim2()];
+	r.setDim(m.getDim1(), b.getDim2());
+	for(int i=0; i<(m.getDim1() * m.getDim2()); i++)
+	{
+		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+	}
+	for(int i=0; i<(b.getDim1() * b.getDim2()); i++)
+	{
+		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+	}
+
+	std::complex<double>* work = new std::complex<double>[m.getDim1() * b.getDim2()];
+	MKL_Complex16 alpha = {1.0f, 0.0f};
+	MKL_Complex16 beta = {0.0f, 0.0f};
+	const int m_ = m.getDim1();
+	const int n_ = b.getDim2();
+	const int k_ = m.getDim2();
+
+	zgemm(&noTranspose, &noTranspose, &m_, &n_, &k_, &alpha, reinterpret_cast<MKL_Complex16*>(cA), &m_,
+		reinterpret_cast<MKL_Complex16*>(cB), &k_, &beta, reinterpret_cast<MKL_Complex16*>(work), &m_);
+
+	for(int i=0; i<r.getDim1(); i++)
+		for(int j=0; j<r.getDim2(); j++)
+			r[i][j] = work[i+j*r.getDim1()];
+	delete[] cA;
+	delete[] cB;
+	delete[] work;
+	return r;
+}
+
 } // namespace GMlib
