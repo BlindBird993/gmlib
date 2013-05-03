@@ -163,4 +163,144 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	return r;
 }
 
+inline
+const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
+{
+	static DMatrix<std::complex<float>> r;
+	r.setDim(m.getDim1(), b.getDim2());
+
+	int cA_size = m.getDim1() * m.getDim2();
+	int cB_size = b.getDim1() * b.getDim2();
+	int work_size = m.getDim1() * b.getDim2();
+	std::complex<float>* cA = new std::complex<float>[cA_size];
+	std::complex<float>* cB = new std::complex<float>[cB_size];
+	std::complex<float>* work = new std::complex<float>[work_size];
+
+	for(int i=0; i<cA_size; i++)
+	{
+		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+	}
+	for(int i=0; i<cB_size; i++)
+	{
+		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+	}
+
+	int devID = 0;
+	cudaGetDevice(&devID);
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, devID);
+
+	cuComplex* d_A;
+	cuComplex* d_B;
+	cuComplex* d_C;
+
+	cudaMalloc((void**)&d_A, sizeof(std::complex<float>) * cA_size);
+	cudaMalloc((void**)&d_B, sizeof(std::complex<float>) * cB_size);
+	cudaMalloc((void**)&d_C, sizeof(std::complex<float>) * work_size);
+
+	cudaMemcpy(d_A, cA, sizeof(std::complex<float>)*cA_size, cudaMemcpyHostToDevice);
+	cudaMemcpy(d_B, cB, sizeof(std::complex<float>)*cB_size, cudaMemcpyHostToDevice);
+
+	cublasHandle_t handle;
+	cublasCreate(&handle);
+	static const cuComplex alpha = make_cuFloatComplex(1.0f, 0.0f);
+	static const cuComplex beta = make_cuFloatComplex(0.0f, 0.0f);
+
+	cublasCgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, m.getDim1(), b.getDim2(), m.getDim2(), &alpha, d_A, m.getDim1(), d_B, b.getDim1(), &beta, d_C, m.getDim1());
+
+	cudaEvent_t stop;
+	cudaEventCreate(&stop);
+	cudaEventRecord(stop, NULL);
+	cudaEventSynchronize(stop);
+
+	cudaMemcpy(work, d_C, sizeof(std::complex<float>)*work_size, cudaMemcpyDeviceToHost);
+
+	cublasDestroy(handle);
+
+	for(int i=0; i<r.getDim1(); i++)
+		for(int j=0; j<r.getDim2(); j++)
+			r[i][j] = work[i+j*r.getDim1()];
+			
+	cudaFree(d_A);
+	cudaFree(d_B);
+	cudaFree(d_C);
+	cudaDeviceReset();
+
+	delete[] cA;
+	delete[] cB;
+	delete[] work;
+
+	return r;
+}
+
+inline
+const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
+{
+	static DMatrix<std::complex<double>> r;
+	r.setDim(m.getDim1(), b.getDim2());
+
+	int cA_size = m.getDim1() * m.getDim2();
+	int cB_size = b.getDim1() * b.getDim2();
+	int work_size = m.getDim1() * b.getDim2();
+	std::complex<double>* cA = new std::complex<double>[cA_size];
+	std::complex<double>* cB = new std::complex<double>[cB_size];
+	std::complex<double>* work = new std::complex<double>[work_size];
+
+	for(int i=0; i<cA_size; i++)
+	{
+		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+	}
+	for(int i=0; i<cB_size; i++)
+	{
+		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+	}
+
+	int devID = 0;
+	cudaGetDevice(&devID);
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, devID);
+
+	cuDoubleComplex* d_A;
+	cuDoubleComplex* d_B;
+	cuDoubleComplex* d_C;
+
+	cudaMalloc((void**)&d_A, sizeof(std::complex<double>) * cA_size);
+	cudaMalloc((void**)&d_B, sizeof(std::complex<double>) * cB_size);
+	cudaMalloc((void**)&d_C, sizeof(std::complex<double>) * work_size);
+
+	cudaMemcpy(d_A, cA, sizeof(std::complex<double>)*cA_size, cudaMemcpyHostToDevice);
+	cudaMemcpy(d_B, cB, sizeof(std::complex<double>)*cB_size, cudaMemcpyHostToDevice);
+
+	cublasHandle_t handle;
+	cublasCreate(&handle);
+	static const cuDoubleComplex alpha = make_cuDoubleComplex(1.0, 0.0);
+	static const cuDoubleComplex beta = make_cuDoubleComplex(0.0, 0.0);
+
+	cublasZgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, m.getDim1(), b.getDim2(), m.getDim2(), &alpha, d_A, m.getDim1(), d_B, b.getDim1(), &beta, d_C, m.getDim1());
+
+	cudaEvent_t stop;
+	cudaEventCreate(&stop);
+	cudaEventRecord(stop, NULL);
+	cudaEventSynchronize(stop);
+
+	cudaMemcpy(work, d_C, sizeof(std::complex<double>)*work_size, cudaMemcpyDeviceToHost);
+
+	cublasDestroy(handle);
+
+	for(int i=0; i<r.getDim1(); i++)
+		for(int j=0; j<r.getDim2(); j++)
+			r[i][j] = work[i+j*r.getDim1()];
+			
+	cudaFree(d_A);
+	cudaFree(d_B);
+	cudaFree(d_C);
+	cudaDeviceReset();
+
+	delete[] cA;
+	delete[] cB;
+	delete[] work;
+
+	return r;
+}
+
 } // namespace GMlib
