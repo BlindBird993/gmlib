@@ -114,7 +114,7 @@ namespace GMlib{
 
 
     virtual RenderManager*      getRenderManager() const;
-    void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, Camera* cam) const;
+    void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, const Camera* cam) const;
 
 
     SceneObject*                operator [] (int i);

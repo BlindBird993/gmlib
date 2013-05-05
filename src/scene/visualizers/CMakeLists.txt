@@ -22,6 +22,7 @@
 
 
 addHeaders(
+  gmCoordSysRepVisualizer
   gmSelectorVisualizer
   gmSelectorGridVisualizer
   gmSurroundingSphereVisualizer
@@ -33,6 +34,7 @@ addTemplateSources(
 )
 
 addSources(
+  gmcoordsysrepvisualizer.cpp
   gmselectorvisualizer.cpp
   gmsurroundingspherevisualizer.cpp
   gmvisualizerstdrep.cpp

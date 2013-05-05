@@ -527,7 +527,6 @@ namespace GL {
         "#version 150 core\n"
         "\n"
         "uniform vec4 u_color;\n"
-        "uniform bool u_selected;\n"
         "\n"
         "out vec4 gl_FragColor;\n"
         "\n"

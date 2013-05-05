@@ -46,39 +46,41 @@
 namespace GMlib {
 
   template <typename T, int n>
-  PSurfVisualizer<T,n>::PSurfVisualizer() {
-
-    _surf = 0x0;
-  }
+  PSurfVisualizer<T,n>::PSurfVisualizer() {}
 
   template <typename T, int n>
   PSurfVisualizer<T,n>::~PSurfVisualizer() {}
 
   template <typename T, int n>
   inline
-  void PSurfVisualizer<T,n>::fillMap(GLuint map, const DMatrix<DMatrix<Vector<T,n> > > &p, int d1, int d2) {
+  void PSurfVisualizer<T,n>::fillMap(GL::Texture& map, const DMatrix<DMatrix<Vector<T,n> > > &p, int d1, int d2, bool closed_u, bool closed_v) {
 
-    DVector< Vector<float,3> > tex_data(p.getDim1() * p.getDim2());
+    int m1 = closed_u ? p.getDim1()-1 : p.getDim1();
+    int m2 = closed_v ? p.getDim2()-1 : p.getDim2();
+
+    DVector< Vector<float,3> > tex_data(m1*m2);
     Vector<float,3> *ptr = tex_data.getPtr();
-    for( int j = 0; j < p.getDim2(); ++j ) {
-      for( int i = 0; i < p.getDim1(); ++i ) {
+    for( int j = 0; j < m1; ++j ) {
+      for( int i = 0; i < m2; ++i ) {
 
         *ptr++ = p(i)(j)(d1)(d2);
       }
     }
 
-    glBindTexture( GL_TEXTURE_2D, map );
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB16F, p.getDim2(), p.getDim1(), 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glBindTexture( GL_TEXTURE_2D, map );
+    // Create Normal map texture and set texture parameters
+    map.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
+    map.setParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    map.setParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    if( closed_u )  map.setParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
+    else            map.setParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+
+    if( closed_v )  map.setParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
+    else            map.setParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   }
 
   template <typename T, int n>
   inline
-  void PSurfVisualizer<T,n>::fillNMap(GLuint nmap, const DMatrix<DMatrix<Vector<T,n> > >& p, bool closed_u, bool closed_v) {
+  void PSurfVisualizer<T,n>::fillNMap( GL::Texture& nmap, const DMatrix<DMatrix<Vector<T,n> > >& p, bool closed_u, bool closed_v) {
 
     int m1 = closed_u ? p.getDim1()-1 : p.getDim1();
     int m2 = closed_v ? p.getDim2()-1 : p.getDim2();
@@ -86,25 +88,21 @@ namespace GMlib {
     // Fill data
     DVector< Vector<float,3> > tex_data(m1 * m2);
     Vector<float,3> *ptr = tex_data.getPtr();
-    for( int j = 0; j < m1; ++j )
+    for( int j = 0; j < m1; ++j ) {
       for( int i = 0; i < m2; ++i ) {
         *ptr++ = (p(i)(j)(1)(0) ^ p(i)(j)(0)(1)).template toType<float>();
       }
-
+    }
 
     // Create Normal map texture and set texture parameters
-    glBindTexture( GL_TEXTURE_2D, nmap );
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    nmap.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
+    nmap.setParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+    nmap.setParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+    if( closed_u )  nmap.setParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
+    else            nmap.setParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
-    if( closed_u )  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    else            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-
-    if( closed_v )  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    else            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-    glBindTexture( GL_TEXTURE_2D, 0 );
+    if( closed_v )  nmap.setParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
+    else            nmap.setParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   }
 
   template <typename T, int n>
@@ -128,12 +126,11 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void PSurfVisualizer<T,n>::fillStandardVBO(GL::VertexBufferObject &vbo,
-                                         unsigned int &no_vertices,
                                          const DMatrix<DMatrix<Vector<T,n> > > &p) {
 
-    no_vertices = p.getDim1() * p.getDim2();
+    GLsizeiptr no_vertices = p.getDim1() * p.getDim2() * sizeof(GL::GLVertexTex2D);
 
-    vbo.createBufferData( no_vertices * sizeof(GL::GLVertexTex2D), 0x0, GL_STATIC_DRAW );
+    vbo.createBufferData( no_vertices, 0x0, GL_STATIC_DRAW );
     GL::GLVertexTex2D *ptr = vbo.mapBuffer<GL::GLVertexTex2D>();
     for( int i = 0; i < p.getDim1(); i++ ) {
       for( int j = 0; j < p.getDim2(); j++ ) {
@@ -155,7 +152,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfVisualizer<T,n>::fillTriangleStripIBO(GL::IndexBufferObject& ibo, int m1, int m2) {
+  void PSurfVisualizer<T,n>::fillTriangleStripIBO(GL::IndexBufferObject& ibo, int m1, int m2,
+                                                  GLuint& no_strips, GLuint& no_strip_indices,
+                                                  GLsizei& strip_size) {
 
 
     const int no_indices = (m1-1) * m2 * 2;
@@ -173,6 +172,8 @@ namespace GMlib {
     }
 
     ibo.createBufferData( no_indices * sizeof(GLuint), indices.getPtr(), GL_STATIC_DRAW );
+
+    compTriangleStripProperties( m1, m2, no_strips, no_strip_indices, strip_size );
   }
 
   template <typename T, int n>
@@ -304,14 +305,6 @@ namespace GMlib {
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     bool /*closed_u*/, bool /*closed_v*/
   ) {}
-
-  template <typename T, int n>
-  void PSurfVisualizer<T,n>::set( DisplayObject* obj ) {
-
-    Visualizer::set( obj );
-
-    _surf = dynamic_cast<PSurf<T,n>*>( obj );
-  }
 
 
 

@@ -248,13 +248,13 @@ namespace GMlib{
     virtual void                        translateGlobal(const Vector<float,3>& trans_vector);
 
     // deprecated
-    virtual void                        localDisplay();         //! Lingering function convenient for Rapid Prototyping
-                                                                //! (may be removed without further notice!!!)
-                                                                //! \deprecated
+    virtual void                        localDisplay( const Camera* cam ) const;  //! Lingering function convenient for Rapid Prototyping
+                                                                            //! (may be removed without further notice!!!)
+                                                                            //! \deprecated
 
-    virtual void                        localSelect();          //! Lingering function convenient for Rapid Prototyping
-                                                                //! (may be removed without further notice!!!)
-                                                                //! \deprecated
+    virtual void                        localSelect( const GL::AttributeLocation& loc ) const;   //! Lingering function convenient for Rapid Prototyping
+                                                                                        //! (may be removed without further notice!!!)
+                                                                                        //! \deprecated
 
   protected:
     friend class Scene;

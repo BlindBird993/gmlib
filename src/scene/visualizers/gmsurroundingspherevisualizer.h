@@ -48,7 +48,7 @@ namespace GMlib {
       SurroundingSphereVisualizer();
       ~SurroundingSphereVisualizer();
 
-      void              display();
+      void              render(const DisplayObject *obj, const Camera *cam) const;
       void              enableCleanSphere( bool enable );
       void              enableTotalSphere( bool enable );
       const Color&      getCleanSphereColor() const;
@@ -73,7 +73,7 @@ namespace GMlib {
       Sphere3D          *_sphere;
 
   private:
-      void              displaySphere(const Sphere<float,3>& ss);
+      void              displaySphere(const Sphere<float,3>& ss) const;
 
     }; // END class SurroundingSphereVisualizer
 

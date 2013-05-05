@@ -21,44 +21,46 @@
 **********************************************************************************/
 
 
-#ifndef __gmVERTEXBUFFEROBJECT_H__
-#define __gmVERTEXBUFFEROBJECT_H__
 
+/*! \file gmvisualizerstdrep.cpp
+ *
+ *  Implementations VisualizerStdRep class.
+ */
 
-#include "../gmbufferobject.h"
+#include "gmcoordsysrepvisualizer.h"
+
+// local
+#include "gmvisualizerstdrep.h"
+#include "../camera/gmcamera.h"
+
 
 
 namespace GMlib {
 
-namespace GL {
+  CoordSysRepVisualizer::CoordSysRepVisualizer() {
 
-  class VertexBufferObject : public BufferObject {
-  public:
-    explicit VertexBufferObject();
-    explicit VertexBufferObject( const std::string& name );
-
-    void    enable(const GL::AttributeLocation& location, GLint size, GLenum type, bool normalize, GLsizei stride, const GLvoid* offset ) const;
-    void    disable(const GL::AttributeLocation& location) const;
-
-  }; // END class VertexBufferObject
-
-
-  inline
-  void VertexBufferObject::enable(const GL::AttributeLocation& location, GLint size, GLenum type,
-                                  bool normalize, GLsizei stride, const GLvoid *offset) const {
-
-    this->enableVertexArrayPointer( location, size, type, normalize, stride, offset );
+    _s_instance = VisualizerStdRep::getInstance();
   }
 
-  inline
-  void VertexBufferObject::disable(const GL::AttributeLocation& location) const {
+  void CoordSysRepVisualizer::render(const DisplayObject* /*obj*/, const Camera *cam) {
 
-    this->disableVertexArrayPointer( location );
+    // Get matrix of present camera and
+    HqMatrix<float,3> base_mvmat;
+    HqMatrix<float,3> mvmat = cam->SceneObject::getMatrix();
+    mvmat[0][3] = 0.0f;
+    mvmat[1][3] = 0.0f;
+    mvmat[2][3] = 0.0f;
+    const HqMatrix<float,3> &pmat = cam->getProjectionMatrix();
+
+    // Compute the position of the of the "coordinate-system visualization"
+    // Relevant to the camera position
+    float hh = -1.5*cam->_near_plane*cam->_angle_tan;
+    Point<float,3> cp(cam->_ratio*hh, hh, -cam->_near_plane-1.0);
+    base_mvmat.translateGlobal(cp);
+    mvmat.translateGlobal(cp);
+
+    _s_instance->render( mvmat, pmat );
   }
 
-} // END namespace GL
 
 } // END namespace GMlib
-
-
-#endif // __gmVERTEXBUFFEROBJECT_H__

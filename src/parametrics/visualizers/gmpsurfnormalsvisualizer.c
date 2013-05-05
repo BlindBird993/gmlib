@@ -51,22 +51,28 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfNormalsVisualizer<T,n>::display() {
+  void PSurfNormalsVisualizer<T,n>::render( const DisplayObject* obj, const Camera* cam ) const {
+
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
     const GL::GLProgram &prog = this->getRenderProgram();
-    prog.setUniform( "u_color", _color );
+    prog.bind(); {
 
+      prog.setUniform( "u_mvpmat", mvpmat );
+      prog.setUniform( "u_color", _color );
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
 
-    _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+      _vbo.bind();
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
 
-    // Draw
-    glDrawArrays( GL_LINES, 0, _no_elements );
+      // Draw
+      glDrawArrays( GL_LINES, 0, _no_elements );
 
-    _vbo.disable( vert_loc );
-    _vbo.unbind();
+      _vbo.disable( vert_loc );
+      _vbo.unbind();
+
+    } prog.unbind();
   }
 
   template <typename T, int n>

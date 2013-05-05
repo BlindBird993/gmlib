@@ -69,6 +69,9 @@ namespace GMlib {
 
     // Bind depth buffer ot depthbuffer framebuffer
     _fbo_select_depth.attachRenderbuffer( _rbo_select_depth, GL_DEPTH_ATTACHMENT );
+
+
+    _coord_sys_visu = new CoordSysRepVisualizer;
   }
 
   void DisplayRenderer::resize(int w, int h) {

@@ -190,15 +190,15 @@ namespace GMlib {
 
       prog.setUniform( "u_color", _border_color );
 
-      GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
       _vbo.bind();
 //      _vbo.enable( vert_loc, 2, GL_FLOAT, GL_FALSE, (const GLvoid*)0x0 );
-      glVertexAttribPointer( vert_loc, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-      glEnableVertexAttribArray( vert_loc );
+      glVertexAttribPointer( vert_loc(), 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+      glEnableVertexAttribArray( vert_loc() );
       glPointSize( 10.0f );
       glDrawArrays( GL_QUADS, 0, _no_borders * 4 );
 
-      glDisableVertexAttribArray( vert_loc );
+      glDisableVertexAttribArray( vert_loc() );
 
       _vbo.unbind();
 

@@ -38,7 +38,7 @@ namespace GMlib {
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() :
-    _vbo(), _ibo(), _no_elements(0) {
+    _vbo(), _ibo(), _lights_ubo("lights_ubo"), _no_elements(0) {
 
     this->setRenderProgram( GL::GLProgram("phong") );
   }
@@ -48,65 +48,67 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleFacetsDefaultVisualizer<T>::display() {
+  void TriangleFacetsDefaultVisualizer<T>::render(const DisplayObject *obj, const Camera *cam) const {
+
+    const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
+    const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
 
     this->glSetDisplayMode();
 
     const GL::GLProgram &prog = this->getRenderProgram();
+    prog.bind(); {
 
-    prog.setUniform( "u_color", this->_obj->getColor() );
-    prog.setUniform( "u_selected", this->_obj->isSelected() );
-    prog.setUniform( "u_lighted", this->_obj->isLighted() );
+      // Model view and projection matrices
+      prog.setUniform( "u_mvmat", mvmat );
+      prog.setUniform( "u_mvpmat", pmat * mvmat );
 
-    // Light data
-    GLuint light_u_block_idx =  prog.getUniformBlockIndex( "Lights" );
-    glBindBufferBase( GL_UNIFORM_BUFFER, 0, GL::OGL::getLightBuffer() );
-    glUniformBlockBinding( prog.getId(), light_u_block_idx, 0 );
+      // Lights
+      prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
 
-    // Get Material Data
-    const Material &m = this->_obj->getMaterial();
-    prog.setUniform( "u_mat_amb", m.getAmb() );
-    prog.setUniform( "u_mat_dif", m.getDif() );
-    prog.setUniform( "u_mat_spc", m.getSpc() );
-    prog.setUniform( "u_mat_shin", m.getShininess() );
+      // Get Material Data
+      const Material &m = obj->getMaterial();
+      prog.setUniform( "u_mat_amb", m.getAmb() );
+      prog.setUniform( "u_mat_dif", m.getDif() );
+      prog.setUniform( "u_mat_spc", m.getSpc() );
+      prog.setUniform( "u_mat_shin", m.getShininess() );
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
-    GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
+      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation normal_loc = prog.getAttributeLocation( "in_normal" );
 
-    _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GL::GLVertexNormal), 0x0 );
-    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(sizeof(GL::GLVertex)) );
+      _vbo.bind();
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GL::GLVertexNormal), 0x0 );
+      _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(sizeof(GL::GLVertex)) );
 
-    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, static_cast<const GLvoid*>(0x0) );
+      _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid*>(0x0) );
 
-    _vbo.disable( vert_loc );
-    _vbo.disable( normal_loc );
-    _vbo.unbind();
+      _vbo.disable( vert_loc );
+      _vbo.disable( normal_loc );
+      _vbo.unbind();
+
+    } prog.unbind();
   }
 
   template <typename T>
   inline
-  void TriangleFacetsDefaultVisualizer<T>::replot() {
+  void TriangleFacetsDefaultVisualizer<T>::replot(TriangleFacets<T> *tf) {
 
-    TriangleFacetsVisualizer<T>::fillStandardVBO( _vbo, this->_tf );
-    TriangleFacetsVisualizer<T>::fillStandardIBO( _ibo, this->_tf );
+    TriangleFacetsVisualizer<T>::fillStandardVBO( _vbo, tf );
+    TriangleFacetsVisualizer<T>::fillStandardIBO( _ibo, tf );
 
-    _no_elements = this->_tf->getNoTriangles() * 3;
+    _no_elements = tf->getNoTriangles() * 3;
   }
 
   template <typename T>
   inline
-  void TriangleFacetsDefaultVisualizer<T>::select() {
-
-    GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
+  void TriangleFacetsDefaultVisualizer<T>::renderGeometry(const GL::AttributeLocation &vertice_loc) const {
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), static_cast<const GLvoid*>(0x0) );
+    _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
 
-    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, static_cast<const GLvoid*>(0x0) );
+    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid*>(0x0) );
 
     _ibo.unbind();
-    _vbo.disable( vert_loc );
+    _vbo.disable( vertice_loc );
     _vbo.unbind();
   }
 

@@ -69,8 +69,6 @@ namespace GMlib {
     virtual void    replot(
       const DVector< DVector< Vector<T,n> > >& p,int m
     );
-    void            set( DisplayObject* obj );
-
 
     static void     fillStandardVBO( GL::VertexBufferObject vbo, const DVector< DVector< Vector<T,n> > >& p );
     static void     fillTriangleIBO( GL::IndexBufferObject ibo, int m );
@@ -80,9 +78,6 @@ namespace GMlib {
     static int      getNoTriangles( int m );
     static void     getTriangleStripDrawInfo( int strip_idx, int& offset, int& no_indices );
     static int      getTriangleStripOffset( int strip_idx );
-
-  protected:
-    PTriangle<T,n>    *_triangle;
 
   }; // END class PTriangleVisualizer
 

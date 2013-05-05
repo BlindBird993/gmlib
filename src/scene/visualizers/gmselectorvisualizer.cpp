@@ -36,14 +36,18 @@ namespace GMlib {
 
 
   SelectorVisualizer::SelectorVisualizer( float r, Material mat )
-    : _vbo(), _ibo(), _mat(mat) {
+    : _vbo(), _ibo(), _lights_ubo("lights_ubo"),
+      _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
+      _mat(mat) {
 
     setRenderProgram( GL::GLProgram( "phong" ) );
     makeGeometry( r, 10, 10 );
   }
 
   SelectorVisualizer::SelectorVisualizer(int m1, int m2, float r, Material mat)
-    : _vbo(), _ibo(), _mat(mat) {
+    : _vbo(), _ibo(),
+      _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
+      _mat(mat) {
 
     setRenderProgram( GL::GLProgram( "phong" ) );
     makeGeometry( r, m1, m2 );
@@ -51,42 +55,49 @@ namespace GMlib {
 
   SelectorVisualizer::~SelectorVisualizer() {}
 
-  void SelectorVisualizer::display() {
+  void SelectorVisualizer::render(const DisplayObject* obj, const Camera *cam) const {
+
+    const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
+    const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
 
     const GL::GLProgram &prog = this->getRenderProgram();
+    prog.bind(); {
 
-    // Light data
-    GLuint light_u_block_idx =  prog.getUniformBlockIndex( "Lights" );
-    glBindBufferBase( GL_UNIFORM_BUFFER, 0, GL::OGL::getLightBuffer() );
-    glUniformBlockBinding( prog.getId(), light_u_block_idx, 0 );
+      // Model view and projection matrices
+      prog.setUniform( "u_mvmat", mvmat );
+      prog.setUniform( "u_mvpmat", pmat * mvmat );
 
-    // Material data
-    prog.setUniform( "u_mat_amb", _mat.getAmb() );
-    prog.setUniform( "u_mat_dif", _mat.getDif() );
-    prog.setUniform( "u_mat_spc", _mat.getSpc() );
-    prog.setUniform( "u_mat_shi", _mat.getShininess() );
+      // Lights
+      prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
 
+      // Material data
+      prog.setUniform( "u_mat_amb", _mat.getAmb() );
+      prog.setUniform( "u_mat_dif", _mat.getDif() );
+      prog.setUniform( "u_mat_spc", _mat.getSpc() );
+      prog.setUniform( "u_mat_shi", _mat.getShininess() );
 
+      // Shader attribute locations
+      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation normal_loc = prog.getAttributeLocation( "in_normal" );
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
-    GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
+      // Bind and draw
+      _vbo.bind();
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid *>(0x0) );
+      _vbo.enable( normal_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid *>(sizeof(GL::GLNormal)) );
 
-    _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid *>(0x0) );
-    _vbo.enable( normal_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid *>(sizeof(GL::GLNormal)) );
+      // Draw top and bottom caps
+      for( int i = 0; i < 2; i++ )
+        glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
 
-    // Draw top and bottom caps
-    for( int i = 0; i < 2; i++ )
-      glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
+      // Draw body strips
+      for( int i = 0; i < _mid_strips; i++ )
+        glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
 
-    // Draw body strips
-    for( int i = 0; i < _mid_strips; i++ )
-      glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
+      _vbo.disable( normal_loc );
+      _vbo.disable( vert_loc );
+      _vbo.unbind();
 
-    _vbo.disable( normal_loc );
-    _vbo.disable( vert_loc );
-    _vbo.unbind();
-
+    } prog.unbind();
   }
 
   SelectorVisualizer *SelectorVisualizer::getInstance() {
@@ -223,9 +234,7 @@ namespace GMlib {
 
   }
 
-  void SelectorVisualizer::select() {
-
-    GLuint vert_loc = getSelectProgram().getAttributeLocation( "in_vertex" );
+  void SelectorVisualizer::renderGeometry(const GL::AttributeLocation &vert_loc) const {
 
     _vbo.bind();
     _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid *>(0x0) );

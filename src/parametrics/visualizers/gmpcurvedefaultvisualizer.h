@@ -40,18 +40,19 @@ namespace GMlib {
   class PCurveDefaultVisualizer : public PCurveVisualizer<T,n> {
   public:
     PCurveDefaultVisualizer();
-    virtual ~PCurveDefaultVisualizer();
 
-    void          display();
+    void          render(const DisplayObject* obj, const Camera *cam) const;
+    void          renderGeometry(const GL::AttributeLocation& attrib_loc) const;
+
     virtual void  replot(
       DVector< DVector< Vector<T, n> > >& p,
       int m, int d, bool closed
     );
-    void          select();
 
   protected:
-    GL::VertexBufferObject      _vbo;
-    unsigned int            _no_vertices;
+    GL::VertexBufferObject    _vbo;
+    unsigned int              _no_vertices;
+    GLfloat                   _line_width;
 
   }; // END class PCurveDefaultVisualizer
 

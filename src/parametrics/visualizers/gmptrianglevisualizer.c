@@ -34,10 +34,7 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  PTriangleVisualizer<T,n>::PTriangleVisualizer() {
-
-    _triangle = 0x0;
-  }
+  PTriangleVisualizer<T,n>::PTriangleVisualizer() {}
 
   template <typename T, int n>
   PTriangleVisualizer<T,n>::~PTriangleVisualizer() {}
@@ -173,14 +170,6 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void PTriangleVisualizer<T,n>::replot( const DVector< DVector< Vector<T,n> > >& /*p*/, int /*m*/ ) {}
-
-  template <typename T, int n>
-  void PTriangleVisualizer<T,n>::set( DisplayObject* obj ) {
-
-    Visualizer::set( obj );
-
-    _triangle = dynamic_cast<PTriangle<T,n>*>( obj );
-  }
 
 
 

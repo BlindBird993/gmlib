@@ -53,7 +53,7 @@ namespace GMlib {
     delete _sphere;
   }
 
-  void SurroundingSphereVisualizer::display(){
+  void SurroundingSphereVisualizer::render(const DisplayObject *obj, const Camera *cam) const{
 
     int poly_mode;
     glGetIntegerv( GL_POLYGON_MODE, &poly_mode );
@@ -65,19 +65,19 @@ namespace GMlib {
     // Display Clean Surrounding Sphere
     if( (_spheres & CLEAN_SPHERE) == CLEAN_SPHERE ) {
 
-      displaySphere( _obj->getSurroundingSphere() );
+      displaySphere( obj->getSurroundingSphere() );
     }
 
     // Display Surrounding Sphere
     if( (_spheres & TOTAL_SPHERE) == TOTAL_SPHERE ) {
 
-      displaySphere( _obj->getSurroundingSphere() );
+      displaySphere( obj->getSurroundingSphere() );
     }
 
     glPolygonMode(GL_FRONT_AND_BACK, poly_mode);
   }
 
-  void SurroundingSphereVisualizer::displaySphere(const Sphere<float, 3> &ss ) {
+  void SurroundingSphereVisualizer::displaySphere(const Sphere<float, 3> &ss ) const {
 
     float r = ss.getRadius();
     Point<float,3> pos = ss.getPos();

@@ -37,25 +37,18 @@
 
 namespace GMlib {
 
-  Visualizer::Visualizer() : _render_prog("phong") {
+  Visualizer::Visualizer()
+    : _display_mode(DISPLAY_MODE_SHADED),
+      _render_prog("phong"), _select_prog("select") {}
 
-    _display_mode = DISPLAY_MODE_SHADED;
-  }
-
-  Visualizer::Visualizer( const Visualizer& copy ) :
-    _render_prog( copy._render_prog ) {
-
-    _display_mode = copy._display_mode;
-  }
+  Visualizer::Visualizer( const Visualizer& copy )
+    : _display_mode(copy._display_mode),
+      _render_prog(copy._render_prog), _select_prog(copy._select_prog) {}
 
   Visualizer::~Visualizer() {}
 
-  void Visualizer::_init() {
 
-    _obj = 0x0;
-  }
-
-  void Visualizer::display() {}
+  void Visualizer::render( const DisplayObject* /*obj*/, const Camera* /*cam*/ ) const {}
 
   Visualizer::DISPLAY_MODE Visualizer::getDisplayMode() const {
 
@@ -69,7 +62,7 @@ namespace GMlib {
 
   const GL::GLProgram& Visualizer::getSelectProgram() const {
 
-    return _obj->getSelectProgram();
+    return _select_prog;
   }
 
   void Visualizer::glSetDisplayMode() const {
@@ -80,12 +73,7 @@ namespace GMlib {
       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   }
 
-  void Visualizer::select() {}
-
-  void Visualizer::set( DisplayObject* obj ) {
-
-    _obj = obj;
-  }
+  void Visualizer::renderGeometry(const GL::AttributeLocation& /*vertice_loc*/) const {}
 
   void Visualizer::setDisplayMode( Visualizer::DISPLAY_MODE display_mode) {
 
@@ -99,7 +87,7 @@ namespace GMlib {
 
   void Visualizer::setSelectProgram(const GL::GLProgram &prog)
   {
-    _obj->setSelectProgram( prog );
+    _select_prog = prog;
   }
 
   void Visualizer::simulate( double /*dt*/ ) {}

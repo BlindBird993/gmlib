@@ -44,7 +44,7 @@ namespace GL {
     explicit IndexBufferObject();
     explicit IndexBufferObject( const std::string& name );
 
-    void      drawElements( GLenum mode, GLsizei count, GLenum type, const GLvoid* indices );
+    void      drawElements( GLenum mode, GLsizei count, GLenum type, const GLvoid* indices ) const;
 
   }; // END class IndexBufferObject
 
@@ -52,7 +52,7 @@ namespace GL {
 
 
   inline
-  void IndexBufferObject::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices) {
+  void IndexBufferObject::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices) const {
 
     bind();
     GL_CHECK(::glDrawElements( mode, count, type, indices));

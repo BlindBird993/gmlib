@@ -77,15 +77,15 @@ namespace GL {
     safeUnbind(id);
   }
 
-  void BufferObject::disableVertexArrayPointer( GLuint vert_loc ) const {
+  void BufferObject::disableVertexArrayPointer( const GL::AttributeLocation& vert_loc ) const {
 
-    GL_CHECK(glDisableVertexAttribArray( vert_loc ));
+    GL_CHECK(glDisableVertexAttribArray( vert_loc() ));
   }
 
-  void BufferObject::enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const {
+  void BufferObject::enableVertexArrayPointer( const GL::AttributeLocation& vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const {
 
-    GL_CHECK(glVertexAttribPointer( vert_loc, size, type, normalized, stride, offset ));
-    GL_CHECK(glEnableVertexAttribArray( vert_loc ));
+    GL_CHECK(glVertexAttribPointer( vert_loc(), size, type, normalized, stride, offset ));
+    GL_CHECK(glEnableVertexAttribArray( vert_loc() ));
 
   }
 

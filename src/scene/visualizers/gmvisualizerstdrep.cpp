@@ -30,6 +30,7 @@
 #include "gmvisualizerstdrep.h"
 
 #include "../gmdisplayobject.h"
+#include "../camera/gmcamera.h"
 
 
 namespace GMlib {
@@ -49,21 +50,47 @@ namespace GMlib {
 
   VisualizerStdRep::~VisualizerStdRep() {}
 
-  void VisualizerStdRep::display() {
+  void VisualizerStdRep::render( const DisplayObject* obj, const Camera* cam) const {
+
+    render( obj->getModelViewMatrix(cam),
+             obj->getProjectionMatrix(cam) );
+  }
+
+  VisualizerStdRep *VisualizerStdRep::getInstance() {
+
+    if( !_s_instance )
+      _s_instance = new VisualizerStdRep;
+
+    return _s_instance;
+  }
+
+  void VisualizerStdRep::renderGeometry(const GL::AttributeLocation& vert_loc) const {
+
+    _bo_cube.bind();
+    _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    _bo_cube_indices.bind();
+      glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
+    _bo_cube_indices.unbind();
+    _bo_cube.disableVertexArrayPointer( vert_loc );
+    _bo_cube.unbind();
+  }
+
+  void VisualizerStdRep::render(const HqMatrix<float,3> &mvmat,
+                                 const HqMatrix<float,3> &pmat) const {
 
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
 
     const GL::GLProgram &prog = this->getRenderProgram();
-//    prog.setUniform( "u_selected", this->_obj->isSelected() );
+    prog.bind();
 
+    prog.setUniform( "u_mvmat", mvmat );
+    prog.setUniform( "u_mvpmat", pmat * mvmat );
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
 
     Color blend_color = GMcolor::LightGrey;
     blend_color.setAlpha( 0.5 );
-
-    prog.setUniform( "u_selected", this->_obj->isSelected() );
 
     _bo_cube.bind();
     _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
@@ -98,26 +125,6 @@ namespace GMlib {
 
     }glDisable( GL_BLEND );
 
-    _bo_cube.disableVertexArrayPointer( vert_loc );
-    _bo_cube.unbind();
-  }
-
-  VisualizerStdRep *VisualizerStdRep::getInstance() {
-
-    if( !_s_instance )
-      _s_instance = new VisualizerStdRep;
-
-    return _s_instance;
-  }
-
-  void VisualizerStdRep::select() {
-
-    GLuint vert_loc = getSelectProgram().getAttributeLocation( "in_vertex" );
-    _bo_cube.bind();
-    _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    _bo_cube_indices.bind();
-      glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
-    _bo_cube_indices.unbind();
     _bo_cube.disableVertexArrayPointer( vert_loc );
     _bo_cube.unbind();
   }

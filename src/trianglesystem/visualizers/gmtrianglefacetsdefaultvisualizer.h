@@ -41,19 +41,24 @@
 namespace GMlib {
 
   template <typename T>
+  class TriangleFacets;
+
+  template <typename T>
   class TriangleFacetsDefaultVisualizer : public TriangleFacetsVisualizer<T> {
   public:
     TriangleFacetsDefaultVisualizer();
     ~TriangleFacetsDefaultVisualizer();
 
     /* virtual from TriangleFacetsVisualizer */
-    void          display();
-    void          replot();
-    void          select();
+    void          render(const DisplayObject *obj, const Camera *cam) const;
+    void          renderGeometry(const GL::AttributeLocation &vertice_loc) const;
+
+    void          replot(TriangleFacets<T> *tf);
 
   protected:
     GL::VertexBufferObject        _vbo;
     GL::IndexBufferObject         _ibo;
+    GL::UniformBufferObject       _lights_ubo;
 
     int                           _no_elements;
 

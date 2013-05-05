@@ -44,17 +44,16 @@ namespace GMlib {
   class SelectorGridVisualizer : public Visualizer {
   public:
     SelectorGridVisualizer();
-    ~SelectorGridVisualizer();
 
-    void                          display();
+    void                          render(const DisplayObject *obj, const Camera *cam) const;
     void                          reset();
     void                          setSelectors( DVector< Vector<T,3> >& c, int tp=0 );
     void                          setSelectors( DMatrix< Vector<T,3> >& c );
     void                          update();
 
   protected:
-    GLuint                        _ibo;
-    GLuint                        _vbo;
+    GL::VertexBufferObject        _vbo;
+    GL::IndexBufferObject         _ibo;
     int                           _no_indices;
 
     DVector< Vector<T,3>* >       _c;

@@ -45,8 +45,8 @@ namespace GMlib {
     SelectorVisualizer( int m1, int m2, float radius = 0.27, Material mat = GMmaterial::Jade );
     ~SelectorVisualizer();
 
-    void                          display();
-    void                          select();
+    void                          render( const DisplayObject* obj, const Camera* cam ) const;
+    void                          renderGeometry(const GL::AttributeLocation &attrib_loc) const;
 
     static SelectorVisualizer*    getInstance();
 
@@ -56,6 +56,7 @@ namespace GMlib {
     // Cube buffer objects
     GL::VertexBufferObject        _vbo;
     GL::IndexBufferObject         _ibo;
+    GL::UniformBufferObject       _lights_ubo;
 
     int                           _top_bot_verts;
     int                           _mid_strips;

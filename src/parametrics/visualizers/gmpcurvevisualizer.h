@@ -55,14 +55,11 @@ namespace GMlib {
       DVector< DVector< Vector<T, n> > >& p,
       int m, int d, bool closed
     );
-    void          set( DisplayObject* obj );
 
-    static void   fillStandardVBO( GL::VertexBufferObject& vbo, unsigned int& no_vertices,
-                                   DVector< DVector< Vector<T, n> > >& p, int d = 0);
+    static void   fillStandardVBO( GL::VertexBufferObject& vbo,
+                                   const DVector< DVector< Vector<T, n> > >& p,
+                                   unsigned int& no_vertices );
 //    static void   populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d = 0 );
-
-  protected:
-    PCurve<T,n>   *_curve;
 
   }; // END class PCurveVisualizer
 

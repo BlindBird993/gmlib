@@ -37,6 +37,7 @@
 // local
 #include "../camera/gmcamera.h"
 #include "../visualizers/gmvisualizerstdrep.h"
+#include "../visualizers/gmcoordsysrepvisualizer.h"
 
 // gmlib
 #include <opengl/gmframebufferobject.h>
@@ -74,10 +75,12 @@ namespace GMlib {
     GL::FramebufferObject   _fbo_select_depth;
     GL::RenderbufferObject  _rbo_select_depth;
 
-    void                    render(DisplayObject *obj, Camera *cam) const;
-    void                    renderCoordSys( Camera *cam ) const;
-    void                    renderSelection(DisplayObject *obj, Camera *cam) const;
-    void                    renderSelectionDepth(DisplayObject *obj, Camera *cam) const;
+    void                    render(const DisplayObject *obj, const Camera *cam) const;
+    void                    renderCoordSys(const Camera *cam ) const;
+    void                    renderGeometry(const DisplayObject *obj, const Camera *cam) const;
+
+
+    CoordSysRepVisualizer   *_coord_sys_visu;
 
   }; // END class DisplayRenderer
 
@@ -103,122 +106,56 @@ namespace GMlib {
   }
 
   inline
-  void DisplayRenderer::render( DisplayObject* obj, Camera* cam ) const {
+  void DisplayRenderer::render( const DisplayObject* obj, const Camera* cam ) const {
 
     if( obj != cam ) {
 
-      const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
-      const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
-
       if(obj->isCollapsed()) {
 
-        const GL::GLProgram &prog = VisualizerStdRep::getInstance()->getRenderProgram();
-        prog.bind();
-        prog.setUniform( "u_mvmat", mvmat, 1, true );
-        prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
-        VisualizerStdRep::getInstance()->set(obj);
-        VisualizerStdRep::getInstance()->display();
-        prog.unbind();
+        VisualizerStdRep::getInstance()->render(obj,cam);
       }
       else {
 
         const Array<Visualizer*>& visus = obj->getVisualizers();
         for( int i = 0; i < visus.getSize(); ++i ) {
 
-          const GL::GLProgram &prog = visus(i)->getRenderProgram();
-          prog.bind();
-          prog.setUniform( "u_mvmat", mvmat, 1, true );
-          prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
-          visus(i)->display();
-          prog.unbind();
+          visus(i)->render(obj,cam);
         }
 
-        obj->localDisplay();
+        obj->localDisplay(cam);
       }
     }
   }
 
   inline
-  void DisplayRenderer::renderCoordSys(Camera *cam) const {
+  void DisplayRenderer::renderCoordSys(const Camera *cam) const {
 
-      // Get matrix of present camera and
-      HqMatrix<float,3> base_mvmat;
-      HqMatrix<float,3> mvmat = cam->SceneObject::getMatrix();
-      mvmat[0][3] = 0.0f;
-      mvmat[1][3] = 0.0f;
-      mvmat[2][3] = 0.0f;
-      const HqMatrix<float,3> &pmat = cam->getProjectionMatrix();
-
-      // Compute the position of the of the "coordinate-system visualization"
-      // Relevant to the camera position
-      float hh = -1.5*cam->_near_plane*cam->_angle_tan;
-      Point<float,3> cp(cam->_ratio*hh, hh, -cam->_near_plane-1.0);
-      base_mvmat.translateGlobal(cp);
-      mvmat.translateGlobal(cp);
-
-      // Bind program
-      const GL::GLProgram &prog = VisualizerStdRep::getInstance()->getRenderProgram();
-      prog.bind();
-
-      prog.setUniform( "u_mvmat", mvmat, 1, true );
-      prog.setUniform( "u_mvpmat", pmat * mvmat, 1, true );
-
-      // Render "coord-sys"
-      VisualizerStdRep::getInstance()->set(cam);
-      VisualizerStdRep::getInstance()->display();
-
-
-      prog.unbind();
+    _coord_sys_visu->render(cam,cam);
   }
 
   inline
-  void DisplayRenderer::renderSelection(DisplayObject *obj, Camera *cam) const {
+  void DisplayRenderer::renderGeometry(const DisplayObject *obj, const Camera *cam) const {
 
     if( obj != cam && obj->isSelected() ) {
 
       const GL::GLProgram render_select_prog("render_select");
       render_select_prog.bind();
-      render_select_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam), 1, true );
+      render_select_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
+      render_select_prog.setUniform( "u_color", Color( obj->getVirtualName()) );
+
+      GL::AttributeLocation vert_loc = render_select_prog.getAttributeLocation( "in_vertex" );
 
       if( obj->isCollapsed() ) {
 
-        VisualizerStdRep::getInstance()->set(obj);
-        VisualizerStdRep::getInstance()->select();
+        VisualizerStdRep::getInstance()->renderGeometry(vert_loc);
       }
       else {
 
         const Array<Visualizer*>& visus = obj->getVisualizers();
         for( int i = 0; i < visus.getSize(); ++i )
-          visus(i)->select();
+          visus(i)->renderGeometry(vert_loc);
 
-        obj->localSelect();
-      }
-
-      render_select_prog.unbind();
-    }
-  }
-
-  inline
-  void DisplayRenderer::renderSelectionDepth(DisplayObject *obj, Camera *cam) const {
-
-    if(obj != cam) {
-
-      const GL::GLProgram render_select_prog("render_select");
-      render_select_prog.bind();
-      render_select_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam), 1, true );
-
-      if( obj->isCollapsed() ) {
-
-        VisualizerStdRep::getInstance()->set(obj);
-        VisualizerStdRep::getInstance()->select();
-      }
-      else {
-
-        const Array<Visualizer*>& visus = obj->getVisualizers();
-        for( int i = 0; i < visus.getSize(); ++i )
-          visus(i)->select();
-
-        obj->localSelect();
+        obj->localSelect(vert_loc);
       }
 
       render_select_prog.unbind();
@@ -249,9 +186,8 @@ namespace GMlib {
         renderCoordSys( cam );
 
         // Render the scene objects
-        for( int j = 0; j < objs.getSize(); ++j ) {
+        for( int j = 0; j < objs.getSize(); ++j )
           render( objs[j], cam);
-        }
 
       } _fbo.unbind();
 
@@ -261,7 +197,7 @@ namespace GMlib {
         ::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
         for( int j = 0; j < objs.getSize(); ++j )
-          renderSelectionDepth( objs[j], cam);
+          renderGeometry( objs[j], cam);
 
       } _fbo_select_depth.unbind();
 
@@ -273,23 +209,17 @@ namespace GMlib {
         ::glGetIntegerv( GL_DEPTH_FUNC, &depth_func);
 
         ::glDepthFunc( GL_LEQUAL );
-        ::glDepthMask( GL_FALSE );
+        ::glDepthMask( GL_TRUE );
 
-        glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+        ::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
         for( int j = 0; j < objs.getSize(); ++j )
-          renderSelection( objs[j], cam );
+          renderGeometry( objs[j], cam );
 
         ::glDepthFunc( depth_func );
         ::glDepthMask( depth_mask );
 
       } _fbo_select.unbind();
-
-
-
-
-
-
 
       cam->markAsInactive();
     }

@@ -48,7 +48,7 @@ namespace GMlib {
   public:
     TriangleFacetsVisualizer();
     ~TriangleFacetsVisualizer();
-    virtual void  replot();
+    virtual void  replot( TriangleFacets<T>* tf );
     void          set( DisplayObject* obj );
 
 
@@ -56,9 +56,6 @@ namespace GMlib {
                                    const TriangleFacets<T>* tf );
     static void   fillStandardIBO( GL::IndexBufferObject& ibo,
                                    const TriangleFacets<T>* tf );
-
-  protected:
-    TriangleFacets<T>      *_tf;
 
   }; // END class TriangleFacetsVisualizer
 

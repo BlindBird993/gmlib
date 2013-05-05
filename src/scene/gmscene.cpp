@@ -120,7 +120,7 @@ namespace GMlib {
 
   RenderManager *Scene::getRenderManager() const {  return 0x0; }
 
-  void Scene::getDisplayableObjects(Array<DisplayObject *> &disp_objs, Camera *cam)  const {
+  void Scene::getDisplayableObjects(Array<DisplayObject *> &disp_objs, const Camera *cam)  const {
 
     const Frustum &frustum = cam->getFrustum();
     const bool is_culling = cam->isCulling();

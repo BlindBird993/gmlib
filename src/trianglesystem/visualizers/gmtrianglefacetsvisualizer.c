@@ -30,10 +30,7 @@
 namespace GMlib {
 
   template <typename T>
-  TriangleFacetsVisualizer<T>::TriangleFacetsVisualizer() {
-
-    _tf = 0x0;
-  }
+  TriangleFacetsVisualizer<T>::TriangleFacetsVisualizer() {}
 
   template <typename T>
   TriangleFacetsVisualizer<T>::~TriangleFacetsVisualizer() {}
@@ -92,15 +89,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleFacetsVisualizer<T>::replot() {}
-
-  template <typename T>
-  void TriangleFacetsVisualizer<T>::set( DisplayObject* obj ) {
-
-    Visualizer::set( obj );
-
-    _tf = dynamic_cast<TriangleFacets<T>*>( obj );
-  }
+  void TriangleFacetsVisualizer<T>::replot( TriangleFacets<T>* /*tf*/ ) {}
 
 
 

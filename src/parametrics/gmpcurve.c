@@ -50,7 +50,6 @@ namespace GMlib {
     setNoDer(2);
 
     this->_lighted    = false;
-    _line_width       = 3.0;
 
     _default_visualizer = 0x0;
   }
@@ -70,8 +69,6 @@ namespace GMlib {
     _tr           = copy._tr;
     _sc           = copy._sc;
 
-
-    _line_width   = copy._line_width;
 
     setNoDer(2);
 
@@ -269,14 +266,6 @@ namespace GMlib {
 
     _eval(t,3);
     return _p[3];
-  }
-
-
-  template <typename T, int n>
-  inline
-  float PCurve<T,n>::getLineWidth() const {
-
-    return _line_width;
   }
 
 
@@ -540,14 +529,6 @@ namespace GMlib {
   void PCurve<T,n>::setDomainTrans( T tr ) {
 
     _tr = tr;
-  }
-
-
-  template <typename T, int n>
-  inline
-  void PCurve<T,n>::setLineWidth( float width ) {
-
-    _line_width = width;
   }
 
 

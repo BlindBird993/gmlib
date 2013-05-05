@@ -55,8 +55,8 @@ namespace GL {
     bool                    isValid() const;
 
     void                    createBufferData( GLsizeiptr size, const GLvoid* data, GLenum usage ) const;
-    void                    disableVertexArrayPointer( GLuint vert_loc ) const;
-    void                    enableVertexArrayPointer( GLuint vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const;
+    void                    disableVertexArrayPointer( const GL::AttributeLocation& vert_loc ) const;
+    void                    enableVertexArrayPointer( const GL::AttributeLocation& vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const;
 
     template <typename T>
     T*                      mapBuffer( GLenum access = GL_WRITE_ONLY ) const;

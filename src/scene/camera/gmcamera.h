@@ -200,7 +200,7 @@ namespace GMlib {
 
     virtual
     void                        setupDisplay();
-    void                        applyViewport();
+    void                        applyViewport() const;
 
   }; // END class Camera
 
@@ -293,7 +293,7 @@ namespace GMlib {
   }
 
   inline
-  void Camera::applyViewport() {
+  void Camera::applyViewport() const {
 
     ::glViewport(_x,_y,_w,_h);
   }

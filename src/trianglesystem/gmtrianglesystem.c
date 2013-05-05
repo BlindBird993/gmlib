@@ -813,7 +813,7 @@ namespace GMlib {
 
     // Replot Visaulizers
     for( int i = 0; i < this->_tf_visualizers.getSize(); i++ )
-      this->_tf_visualizers[i]->replot();
+      this->_tf_visualizers[i]->replot( this );
   }
 
  // #endif

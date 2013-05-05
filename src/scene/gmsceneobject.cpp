@@ -342,14 +342,14 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localDisplay() {}
+  void SceneObject::localDisplay( const Camera* /*cam*/ ) const {}
 
   /*! void localSelect()
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  void SceneObject::localSelect()  {}
+  void SceneObject::localSelect(const GL::AttributeLocation& /*loc*/ ) const {}
 
 
   /*! void localSimulate(double dt)

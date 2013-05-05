@@ -65,7 +65,6 @@ namespace GMlib {
     Vector<T,n>               getDer1( T t );
     Vector<T,n>               getDer2( T t );
     Vector<T,n>               getDer3( T t );
-    float                     getLineWidth() const;
     virtual T                 getLocalMapping( T t, T s, T e );
     T                         getParDelta();
     T                         getParEnd();
@@ -84,7 +83,6 @@ namespace GMlib {
     void                      setDomain( T start, T end );
     void                      setDomainScale( T sc );
     void                      setDomainTrans( T tr );
-    void                      setLineWidth( float width = 1.0 );
     void                      setNoDer( int d );
     virtual void              setSurroundingSphere( const DVector< DVector< Vector<T,n> > >& p );
 
@@ -102,7 +100,6 @@ namespace GMlib {
 
     int                       _no_sam;      // Number of samples for single sampling
     int                       _no_der;      // Number of derivatives
-    float                     _line_width;
 
 
     DVector< Vector<T,2> >    _sam_p;       // Sampling partition (start/stop)

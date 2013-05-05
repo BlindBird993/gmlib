@@ -125,6 +125,27 @@ namespace GL {
 
 
 
+  struct GLuintType {
+    explicit GLuintType() {}
+    explicit GLuintType( GLuint uint_data ) : data(uint_data) {}
+
+    const GLuint& operator() () const { return data; }
+    const GLuintType& operator = ( const GLuint& data_in ) { data = data_in; }
+
+    GLuint data;
+  };
+
+//  struct AttribLocation : GLuintType {
+//    explicit AttribLocation() {}
+//    AttribLocation( GLuint location_id ) : GLuintType(location_id) {}
+//  };
+
+
+  typedef GLuintType    AttributeLocation;
+  typedef GLuintType    UniformLocation;
+
+  typedef GLuintType    UniformBlockIndex;
+
 
 
 

@@ -47,19 +47,23 @@ namespace GMlib {
     VisualizerStdRep();
     ~VisualizerStdRep();
 
-    void              display();
-    void              select();
+    void              render( const DisplayObject* obj, const Camera* cam ) const;
+    void              renderGeometry( const GL::AttributeLocation& vert_loc ) const;
+
+
+    void              render( const HqMatrix<float,3>& mvmat,
+                               const HqMatrix<float,3>& pmat ) const;
 
     static VisualizerStdRep*    getInstance();
 
-  protected:
+
+  private:
 
     // Cube buffer objects
     GL::BufferObject    _bo_cube;
     GL::BufferObject    _bo_cube_indices;
     GL::BufferObject    _bo_cube_frame_indices;
 
-  private:
     static VisualizerStdRep*    _s_instance;
 
   }; // END class VisualizerStdRep

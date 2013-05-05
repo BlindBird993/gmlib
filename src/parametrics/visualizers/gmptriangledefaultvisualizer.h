@@ -45,14 +45,16 @@ namespace GMlib {
   class PTriangleDefaultVisualizer : public PTriangleVisualizer<T,n> {
   public:
     PTriangleDefaultVisualizer();
-    virtual ~PTriangleDefaultVisualizer();
-    void            display();
+
+    void            render(const DisplayObject *obj, const Camera *cam) const;
+    void            renderGeometry(const GL::AttributeLocation &vertice_loc) const;
+
     virtual void    replot(const DVector< DVector< Vector<T,3> > >& p,int m);
-    void            select();
 
   protected:
     GL::VertexBufferObject    _vbo;
     GL::IndexBufferObject     _ibo;
+    GL::UniformBufferObject   _lights_ubo;
 
     int                       _no_elements;
 

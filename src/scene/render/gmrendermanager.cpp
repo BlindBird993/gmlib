@@ -190,30 +190,30 @@ namespace GMlib {
 
     prog.bind();
 
-    prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
-    prog.setUniform( "u_tex", _disp->getRenderTexture().getId(), (GLenum)GL_TEXTURE0, 0 );
-    prog.setUniform( "u_tex_selected", _disp->getSelectTexture().getId(), (GLenum)GL_TEXTURE1, 1 );
+    prog.setUniform( "u_mvpmat", ortho_mat );
+    prog.setUniform( "u_tex", _disp->getRenderTexture(), (GLenum)GL_TEXTURE0, 0 );
+    prog.setUniform( "u_tex_selected", _disp->getSelectTexture(), (GLenum)GL_TEXTURE1, 1 );
     prog.setUniform( "u_buf_w", float(_w) );
     prog.setUniform( "u_buf_h", float(_h) );
     prog.setUniform( "u_select_color", _select_color );
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
-    GLuint tex_coord_loc = prog.getAttributeLocation( "in_tex_coord" );
+    GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GL::AttributeLocation tex_coord_loc = prog.getAttributeLocation( "in_tex_coord" );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc );
+    glVertexAttribPointer( vert_loc(), 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( vert_loc() );
 
     glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
-    glVertexAttribPointer( tex_coord_loc, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( tex_coord_loc );
+    glVertexAttribPointer( tex_coord_loc(), 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    glEnableVertexAttribArray( tex_coord_loc() );
 
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 
     glDrawArrays( GL_QUADS, 0, 4 );
 
-    glDisableVertexAttribArray( tex_coord_loc );
-    glDisableVertexAttribArray( vert_loc );
+    glDisableVertexAttribArray( tex_coord_loc() );
+    glDisableVertexAttribArray( vert_loc() );
 
     prog.unbind();
 
@@ -222,18 +222,18 @@ namespace GMlib {
       GL::GLProgram color_prog( "color" );
       color_prog.bind();
 
-      color_prog.setUniform( "u_mvpmat", ortho_mat, 1, true );
+      color_prog.setUniform( "u_mvpmat", ortho_mat );
       color_prog.setUniform( "u_selected", false );
       color_prog.setUniform( "u_color", top_view_set.getBorderColor() );
 
-      GLuint vert_loc = color_prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation vert_loc = color_prog.getAttributeLocation( "in_vertex" );
       top_view_set.getBorderVBO().bind();
-      glVertexAttribPointer( vert_loc, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-      glEnableVertexAttribArray( vert_loc );
+      glVertexAttribPointer( vert_loc(), 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+      glEnableVertexAttribArray( vert_loc() );
       glPointSize( 10.0f );
       glDrawArrays( GL_QUADS, 0, top_view_set.getNoBorders() * 4 );
 
-      glDisableVertexAttribArray( vert_loc );
+      glDisableVertexAttribArray( vert_loc() );
 
       top_view_set.getBorderVBO().unbind();
 

@@ -47,65 +47,63 @@
 namespace GMlib {
 
   template <typename T, int n>
-  PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer() : _vbo(), _ibo(), _no_vertices(0) {
+  PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer()
+    : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(),
+      _no_strips(0), _no_strip_indices(0), _strip_size(0) {
 
-    glGenTextures( 1, &_nmap );
     this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
   }
 
   template <typename T, int n>
-  PSurfDefaultVisualizer<T,n>::~PSurfDefaultVisualizer() {
-
-    glDeleteTextures( 1, &_nmap );
-  }
-
-  template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::display() {
+  void PSurfDefaultVisualizer<T,n>::render( const DisplayObject* obj, const Camera* cam ) const {
+
+    const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
+    const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
 
     this->glSetDisplayMode();
 
     const GL::GLProgram &prog = this->getRenderProgram();
+    prog.bind(); {
 
-    // States
-    prog.setUniform( "u_selected", this->_obj->isSelected() );
-    prog.setUniform( "u_lighted", this->_obj->isLighted() );
+      // Model view and projection matrices
+      prog.setUniform( "u_mvmat", mvmat );
+      prog.setUniform( "u_mvpmat", pmat * mvmat );
 
-    // Color
-    prog.setUniform( "u_color", this->_obj->getColor() );
+      // Lights
+      prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
 
-    // Light data
-    GLuint light_u_block_idx =  prog.getUniformBlockIndex( "Lights" );
-    glBindBufferBase( GL_UNIFORM_BUFFER, 0, GL::OGL::getLightBuffer() );
-    glUniformBlockBinding( prog.getId(), light_u_block_idx, 0 );
+      // Material
+      const Material &m = obj->getMaterial();
+      prog.setUniform( "u_mat_amb", m.getAmb() );
+      prog.setUniform( "u_mat_dif", m.getDif() );
+      prog.setUniform( "u_mat_spc", m.getSpc() );
+      prog.setUniform( "u_mat_shi", m.getShininess() );
 
-    // Material data
-    const Material &m = this->_obj->getMaterial();
-    prog.setUniform( "u_mat_amb", m.getAmb() );
-    prog.setUniform( "u_mat_dif", m.getDif() );
-    prog.setUniform( "u_mat_spc", m.getSpc() );
-    prog.setUniform( "u_mat_shi", m.getShininess() );
+      // Normal map
+      prog.setUniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
 
-    prog.setUniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
+      // Get vertex and texture attrib locations
+      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation tex_loc = prog.getAttributeLocation( "in_tex" );
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
-    GLuint tex_loc = prog.getAttributeLocation( "in_tex" );
+      // Bind and draw
+      _vbo.bind();
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
+      _vbo.enable( tex_loc,  2, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(3*sizeof(GLfloat)) );
 
+      draw();
 
-    _vbo.bind();
-    _vbo.enable( vert_loc,    3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
-    _vbo.enable( tex_loc,     2, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(3*sizeof(GLfloat)) );
+      _vbo.disable( vert_loc );
+      _vbo.disable( tex_loc );
+      _vbo.unbind();
 
-    draw();
-
-    _vbo.disable( vert_loc );
-    _vbo.disable( tex_loc );
-    _vbo.unbind();
+    } prog.unbind();
   }
 
   template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::draw() {
+  void PSurfDefaultVisualizer<T,n>::draw() const {
 
     _ibo.bind();
     for( unsigned int i = 0; i < _no_strips; ++i )
@@ -117,24 +115,19 @@ namespace GMlib {
   inline
   void PSurfDefaultVisualizer<T,n>::replot(
     DMatrix< DMatrix< Vector<T, n> > >& p,
-    DMatrix< Vector<T, 3> >& normals,
+    DMatrix< Vector<T, 3> >& /*normals*/,
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     bool closed_u, bool closed_v
   ) {
 
+    PSurfVisualizer<T,n>::fillStandardVBO( _vbo, p );
+    PSurfVisualizer<T,n>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2(), _no_strips, _no_strip_indices, _strip_size );
     PSurfVisualizer<T,n>::fillNMap( _nmap, p, closed_u, closed_v );
-
-    PSurfVisualizer<T,n>::fillStandardVBO( _vbo, _no_vertices, p );
-
-    PSurfVisualizer<T,n>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2() );
-    PSurfVisualizer<T,n>::compTriangleStripProperties( p.getDim1(), p.getDim2(), _no_strips, _no_strip_indices, _strip_size );
   }
 
   template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::select() {
-
-    GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
+  void PSurfDefaultVisualizer<T,n>::renderGeometry( const GL::AttributeLocation& vert_loc ) const {
 
     _vbo.bind();
     _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );

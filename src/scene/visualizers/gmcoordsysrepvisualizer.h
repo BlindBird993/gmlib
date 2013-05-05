@@ -21,44 +21,30 @@
 **********************************************************************************/
 
 
-#ifndef __gmVERTEXBUFFEROBJECT_H__
-#define __gmVERTEXBUFFEROBJECT_H__
+#ifndef __GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H__
+#define __GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H__
 
-
-#include "../gmbufferobject.h"
-
+#include "../gmvisualizer.h"
 
 namespace GMlib {
 
-namespace GL {
 
-  class VertexBufferObject : public BufferObject {
+  class Camera;
+  class VisualizerStdRep;
+
+  class CoordSysRepVisualizer : public Visualizer {
   public:
-    explicit VertexBufferObject();
-    explicit VertexBufferObject( const std::string& name );
+    CoordSysRepVisualizer();
 
-    void    enable(const GL::AttributeLocation& location, GLint size, GLenum type, bool normalize, GLsizei stride, const GLvoid* offset ) const;
-    void    disable(const GL::AttributeLocation& location) const;
-
-  }; // END class VertexBufferObject
+    void              render( const DisplayObject* obj, const Camera* cam );
 
 
-  inline
-  void VertexBufferObject::enable(const GL::AttributeLocation& location, GLint size, GLenum type,
-                                  bool normalize, GLsizei stride, const GLvoid *offset) const {
+  private:
+    VisualizerStdRep*    _s_instance;
 
-    this->enableVertexArrayPointer( location, size, type, normalize, stride, offset );
-  }
-
-  inline
-  void VertexBufferObject::disable(const GL::AttributeLocation& location) const {
-
-    this->disableVertexArrayPointer( location );
-  }
-
-} // END namespace GL
+  }; // END class CoordSysRepVisualizer
 
 } // END namespace GMlib
 
 
-#endif // __gmVERTEXBUFFEROBJECT_H__
+#endif // __GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H__

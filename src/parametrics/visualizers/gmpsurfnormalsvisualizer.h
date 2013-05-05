@@ -54,7 +54,8 @@ namespace GMlib {
     PSurfNormalsVisualizer();
     virtual ~PSurfNormalsVisualizer();
 
-    void                              display();
+    void                              render( const DisplayObject* obj, const Camera* cam ) const;
+
     const Color&                      getColor() const;
     GM_SURF_NORMALSVISUALIZER_MODE    getMode() const;
     double                            getSize() const;

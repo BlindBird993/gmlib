@@ -31,8 +31,10 @@
 #define __gmGLPROGRAM_H__
 
 
-#include "../gmopengl.h"
 #include "gmglshader.h"
+#include "../gmopengl.h"
+#include "../gmtexture.h"
+#include "../bufferobjects/gmuniformbufferobject.h"
 
 // gmlib
 #include <core/types/gmpoint.h>
@@ -57,26 +59,28 @@ namespace GL {
     bool                      addShader( const GLShader& shader ) const;
     void                      bind() const;
     void                      disableAttributeArray( const std::string& name ) const;
-    void                      disableAttributeArray( GLuint location ) const;
+    void                      disableAttributeArray( const GL::AttributeLocation& location ) const;
     void                      enableAttributeArray( const std::string& name ) const;
-    void                      enableAttributeArray( GLuint ) const;
-    GLuint                    getAttributeLocation( const std::string& name ) const;
+    void                      enableAttributeArray( const GL::AttributeLocation& location ) const;
+    GL::AttributeLocation     getAttributeLocation( const std::string& name ) const;
     GLuint                    getId() const;
     std::string               getInfoLog() const;
     const std::string&        getName() const;
     std::set< std::string>    getShaders() const;
-    GLuint                    getUniformBlockIndex( const std::string& name ) const;
-    GLuint                    getUniformLocation( const std::string& name ) const;
+    GL::UniformBlockIndex     getUniformBlockIndex( const std::string& name ) const;
+    GL::UniformLocation       getUniformLocation( const std::string& name ) const;
     bool                      link() const;
     bool                      removeShader( const std::string& name ) const;
     bool                      removeShader( GLShader* shader ) const;
     void                      setUniform( const std::string& name, bool b ) const;
     void                      setUniform( const std::string& name, const Color& c ) const;
-    void                      setUniform( const std::string& name, const HqMatrix<float,3>& matrix, int count, bool transpose ) const;
+    void                      setUniform( const std::string& name, const HqMatrix<float,3>& matrix, int count = 1, bool transpose = true ) const;
     void                      setUniform( const std::string& name, const Point<float,3>& p ) const;
-    void                      setUniform( const std::string& name, GLuint tex_id, GLenum tex_unit, GLuint tex_nr ) const;
+    void                      setUniform( const std::string& name, const GL::Texture&, GLenum tex_unit, GLuint tex_nr ) const;
     void                      setUniform( const std::string& name, float f ) const;
     void                      setUniform( const std::string& name, int i ) const;
+    void                      setUniformBlockBinding( const std::string& name, const GL::UniformBufferObject& ubo, GLuint binding_point ) const;
+
     void                      unbind() const;
 
     GLProgram&                operator = ( const GLProgram& copy );

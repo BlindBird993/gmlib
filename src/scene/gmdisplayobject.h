@@ -138,9 +138,6 @@ namespace GMlib {
     bool                          isOpaque() const;
     void                          setOpaque( bool o );
 
-    const GL::GLProgram&          getSelectProgram() const;
-    void                          setSelectProgram( const GL::GLProgram& prog );
-
     // Virtual from SceneObject
     virtual void                  rotate(Angle a, const Vector<float,3>& rot_axel);
     virtual void                  rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
@@ -173,7 +170,6 @@ namespace GMlib {
     bool                          _opaque;
 
     Array<Visualizer*>            _visualizers;
-    GL::GLProgram                 _select_prog;
 
     virtual void                  basisChange( const Vector<float,3>& dir,
                                                const Vector<float,3>& side,
@@ -423,12 +419,6 @@ namespace GMlib {
     _dir		= lock_pos - _pos;
     _up			= _up - (_up * _dir) * _dir;
     _side		= _up ^ _dir;
-  }
-
-  inline
-  const GL::GLProgram &DisplayObject::getSelectProgram() const {
-
-    return _select_prog;
   }
 
   inline

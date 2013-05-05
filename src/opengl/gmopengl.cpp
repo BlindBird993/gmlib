@@ -752,22 +752,22 @@ namespace GL {
 
   void OGL::bindLightBuffer() {
 
-    bindBo( "light_ubo" );
+    bindBo( "lights_ubo" );
   }
 
   void OGL::createLightBuffer() {
 
-    createBo( "light_ubo", GL_UNIFORM_BUFFER );
+    createBo( "lights_ubo", GL_UNIFORM_BUFFER );
   }
 
   void OGL::deleteLightBuffer() {
 
-    deleteBo( "light_ubo" );
+    deleteBo( "lights_ubo" );
   }
 
   GLuint OGL::getLightBuffer() {
 
-    return getBoId( "light_ubo" );
+    return getBoId( "lights_ubo" );
   }
 
   void OGL::resetLightBuffer(const GLVector<4,GLuint>& header, const std::vector<unsigned int>& light_ids, const std::vector<GLLight>& lights) {
@@ -850,7 +850,7 @@ namespace GL {
 
   void OGL::unbindLightBuffer() {
 
-    unbindBo( "light_ubo" );
+    unbindBo( "lights_ubo" );
   }
 
   void OGL::updateLight(unsigned int id, const GLLight& light) {

@@ -31,33 +31,35 @@
 namespace GMlib {
 
   template <typename T, int n>
-  PCurveDefaultVisualizer<T,n>::PCurveDefaultVisualizer() : _vbo() {
-
-    _no_vertices = 0;
-  }
-
-  template <typename T, int n>
-  PCurveDefaultVisualizer<T,n>::~PCurveDefaultVisualizer() {}
+  PCurveDefaultVisualizer<T,n>::PCurveDefaultVisualizer() : _vbo(), _no_vertices(0), _line_width(3.0f) {}
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::display() {
+  void PCurveDefaultVisualizer<T,n>::render(const DisplayObject* obj, const Camera *cam) const {
+
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
     // GL States
-    glLineWidth( this->_curve->getLineWidth() );
+    glLineWidth( _line_width );
 
     const GL::GLProgram &prog = this->getRenderProgram();
-    prog.setUniform( "u_color", this->_obj->getColor() );
-    prog.setUniform( "u_selected", this->_obj->isSelected() );
+    prog.bind(); {
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+      // Model view and projection matrices
+      prog.setUniform( "u_mvpmat", mvpmat );
+      prog.setUniform( "u_color", obj->getColor() );
 
-    _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
-    glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
+      // Vertex attribute location
+      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
 
-    _vbo.disable( vert_loc );
-    _vbo.unbind();
+      // Bind and draw
+      _vbo.bind();
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
+      glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
+      _vbo.disable( vert_loc );
+      _vbo.unbind();
+
+    } prog.unbind();
   }
 
   template <typename T, int n>
@@ -67,19 +69,16 @@ namespace GMlib {
     int /*m*/, int /*d*/, bool /*closed*/
   ) {
 
-    PCurveVisualizer<T,n>::fillStandardVBO( _vbo, _no_vertices, p );
+    PCurveVisualizer<T,n>::fillStandardVBO( _vbo, p, _no_vertices );
   }
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::select() {
-
-    GLuint vert_loc = this->getSelectProgram().getAttributeLocation( "in_vertex" );
+  void PCurveDefaultVisualizer<T,n>::renderGeometry(const GL::AttributeLocation& vert_loc) const {
 
     _vbo.bind();
     _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
-
     _vbo.disable( vert_loc );
     _vbo.unbind();
   }

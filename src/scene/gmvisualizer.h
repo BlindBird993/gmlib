@@ -57,33 +57,31 @@ namespace GMlib {
     Visualizer( const Visualizer& v );
     virtual ~Visualizer();
 
-    virtual void          display();
-    DISPLAY_MODE          getDisplayMode() const;
+    virtual void              render( const DisplayObject* obj, const Camera* cam ) const;
+    virtual void              renderGeometry( const GL::AttributeLocation& vertice_loc ) const;
+
     const GL::GLProgram&      getRenderProgram() const;
+    void                      setRenderProgram( const GL::GLProgram& prog );
+
     const GL::GLProgram&      getSelectProgram() const;
-    void                  glSetDisplayMode() const;
+    void                      setSelectProgram( const GL::GLProgram& prog );
 
-    virtual void          select();
-    virtual void          set( DisplayObject* obj );
-    void                  setDisplayMode( DISPLAY_MODE display_mode );
-    void                  setRenderProgram( const GL::GLProgram& prog );
-    void                  setSelectProgram( const GL::GLProgram& prog );
+    DISPLAY_MODE              getDisplayMode() const;
+    void                      setDisplayMode( DISPLAY_MODE display_mode );
+    void                      toggleDisplayMode();
 
-    virtual void          simulate( double dt );
-    void                  toggleDisplayMode();
+    void                      glSetDisplayMode() const;
 
-    virtual bool          operator == ( const Visualizer* v ) const;
+    virtual void              simulate( double dt );
 
+    virtual bool              operator == ( const Visualizer* v ) const;
 
-  protected:
-    DisplayObject           *_obj;
-
-    DISPLAY_MODE          _display_mode;
-
-    GL::GLProgram             _render_prog;
 
   private:
-    void                  _init();
+    DISPLAY_MODE              _display_mode;
+
+    GL::GLProgram             _render_prog;
+    GL::GLProgram             _select_prog;
   };
 
 

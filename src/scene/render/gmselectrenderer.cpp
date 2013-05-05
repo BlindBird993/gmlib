@@ -86,7 +86,7 @@ namespace GMlib {
     return sel;
   }
 
-  void SelectRenderer::prepare(Array<DisplayObject *> &objs, Camera *cam) const{
+  void SelectRenderer::prepare(Array<DisplayObject *> &objs, const Camera *cam) const{
 
     cam->applyViewport();
 
