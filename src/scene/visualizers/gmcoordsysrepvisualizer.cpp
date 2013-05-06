@@ -30,7 +30,7 @@
 #include "gmcoordsysrepvisualizer.h"
 
 // local
-#include "gmvisualizerstdrep.h"
+#include "gmstdrepvisualizer.h"
 #include "../camera/gmcamera.h"
 
 

@@ -27,7 +27,7 @@
  *  Implementations VisualizerStdRep class.
  */
 
-#include "gmvisualizerstdrep.h"
+#include "gmstdrepvisualizer.h"
 
 #include "../gmdisplayobject.h"
 #include "../camera/gmcamera.h"
@@ -110,12 +110,14 @@ namespace GMlib {
       glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(2*frame_stride) );
 
       glLineWidth( 1.0f );
-      prog.setUniform( "u_color", GMcolor::Grey );
+      prog.setUniform( "u_color", GMcolor::LightGrey );
       glDrawElements( GL_LINES, 18, GL_UNSIGNED_SHORT, (const GLvoid*)(3*frame_stride) );
 
     } _bo_cube_frame_indices.unbind();
 
-    glEnable( GL_BLEND ); {
+    ::glEnable( GL_CULL_FACE );
+    ::glCullFace( GL_BACK );
+    ::glEnable( GL_BLEND ); {
 
       glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
       prog.setUniform( "u_color", blend_color );
@@ -123,7 +125,9 @@ namespace GMlib {
         glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
       _bo_cube_indices.unbind();
 
-    }glDisable( GL_BLEND );
+    }
+    ::glDisable( GL_BLEND );
+    ::glDisable( GL_CULL_FACE );
 
     _bo_cube.disableVertexArrayPointer( vert_loc );
     _bo_cube.unbind();
