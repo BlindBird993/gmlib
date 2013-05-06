@@ -55,12 +55,14 @@ namespace GMlib {
 
     void          replot(TriangleFacets<T> *tf);
 
-  protected:
+  private:
     GL::VertexBufferObject        _vbo;
     GL::IndexBufferObject         _ibo;
     GL::UniformBufferObject       _lights_ubo;
 
     int                           _no_elements;
+
+    void                          draw() const;
 
   }; // END class TriangleFacetsDefaultVisualizer
 

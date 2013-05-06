@@ -107,7 +107,7 @@ namespace GMlib {
 
     _ibo.bind();
     for( unsigned int i = 0; i < _no_strips; ++i )
-      glDrawElements( GL_TRIANGLE_STRIP, _no_strip_indices, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid *>(i * _strip_size) );
+      _ibo.drawElements( GL_TRIANGLE_STRIP, _no_strip_indices, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid *>(i * _strip_size) );
     _ibo.unbind();
   }
 

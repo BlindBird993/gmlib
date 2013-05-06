@@ -51,12 +51,14 @@ namespace GMlib {
 
     virtual void    replot(const DVector< DVector< Vector<T,3> > >& p,int m);
 
-  protected:
+  private:
     GL::VertexBufferObject    _vbo;
     GL::IndexBufferObject     _ibo;
     GL::UniformBufferObject   _lights_ubo;
 
     int                       _no_elements;
+
+    void                      draw() const;
 
   }; // END class PTriangleDefaultVisualizer
 

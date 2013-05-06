@@ -58,7 +58,7 @@ namespace GMlib {
       bool closed_u, bool closed_v
     );
 
-  protected:
+  private:
     GL::VertexBufferObject      _vbo;
     GL::IndexBufferObject       _ibo;
     GL::UniformBufferObject     _lights_ubo;

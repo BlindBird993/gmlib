@@ -69,7 +69,7 @@ namespace GMlib {
       _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
       _vbo.enable( normal_loc, 3, GL_FLOAT, GL_TRUE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(sizeof(GL::GLVertex) ) );
 
-      _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid*>(0x0) );
+      draw();
 
       _vbo.disable( vert_loc );
       _vbo.disable( normal_loc );
@@ -98,10 +98,19 @@ namespace GMlib {
     _vbo.bind();
     _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
 
-    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid*>(0x0) );
+    draw();
 
     _vbo.disable( vertice_loc );
     _vbo.unbind();
+  }
+
+  template <typename T, int n>
+  inline
+  void PTriangleDefaultVisualizer<T,n>::draw() const {
+
+    _ibo.bind();
+    _ibo.drawElements( GL_TRIANGLES, _no_elements, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid*>(0x0) );
+    _ibo.unbind();
   }
 
 } // END namespace GMlib

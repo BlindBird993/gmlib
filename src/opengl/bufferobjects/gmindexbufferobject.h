@@ -54,9 +54,7 @@ namespace GL {
   inline
   void IndexBufferObject::drawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices) const {
 
-    bind();
     GL_CHECK(::glDrawElements( mode, count, type, indices));
-    unbind();
   }
 
 } // END namespace GL

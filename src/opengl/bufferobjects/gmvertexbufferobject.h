@@ -40,6 +40,8 @@ namespace GL {
     void    enable(const GL::AttributeLocation& location, GLint size, GLenum type, bool normalize, GLsizei stride, const GLvoid* offset ) const;
     void    disable(const GL::AttributeLocation& location) const;
 
+    void    drawArrays(GLenum mode, GLint first, GLsizei count) const;
+
   }; // END class VertexBufferObject
 
 
@@ -54,6 +56,12 @@ namespace GL {
   void VertexBufferObject::disable(const GL::AttributeLocation& location) const {
 
     this->disableVertexArrayPointer( location );
+  }
+
+  inline
+  void VertexBufferObject::drawArrays(GLenum mode, GLint first, GLsizei count) const {
+
+    GL_CHECK(::glDrawArrays(mode, first, count ));
   }
 
 } // END namespace GL
