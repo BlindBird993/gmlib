@@ -101,6 +101,12 @@ namespace GL {
     if( !linkProgram( "psurf_phong_nmap" ) )
       return false;
 
+    createProgram( "psurf_phong_nmap_ptex" );
+    addShaderToProgram( "psurf_phong_nmap_ptex", "psurf_phong_nmap_ptex_vs" );
+    addShaderToProgram( "psurf_phong_nmap_ptex", "psurf_phong_nmap_ptex_fs" );
+    if( !linkProgram( "psurf_phong_nmap_ptex" ) )
+      return false;
+
     createProgram( "psurf_contours" );
     addShaderToProgram( "psurf_contours", "psurf_contours_vs" );
     addShaderToProgram( "psurf_contours", "psurf_contours_fs" );
@@ -688,6 +694,7 @@ namespace GL {
       return false;
 
 
+
     /////////////////////////////
     // PSurf phong shader: NMap
 
@@ -765,6 +772,105 @@ namespace GL {
 
     createShader( "psurf_phong_nmap_fs", GL_FRAGMENT_SHADER );
     setShaderSource( "psurf_phong_nmap_fs", psurf_phong_nmap_fs_str );
+
+
+
+    /////////////////////////////
+    // PSurf phong shader: NMap - PTex
+
+    // Vertex shader
+    std::string psurf_phong_nmap_ptex_vs_str;
+    psurf_phong_nmap_ptex_vs_str.append( header_150 );
+    psurf_phong_nmap_ptex_vs_str.append(
+      "uniform mat4 u_mvmat, u_mvpmat;\n"
+      "\n"
+      "in vec4 in_vertex;\n"
+      "in vec2 in_tex;\n"
+      "\n"
+      "out vec4 gl_Position;\n"
+      "\n"
+      "smooth out vec3 ex_pos;\n"
+      "smooth out vec2 ex_tex;\n"
+      "\n"
+      "void main() {\n"
+      "\n"
+      "  vec4 v_pos = u_mvmat * in_vertex;\n"
+      "  ex_pos = v_pos.xyz * v_pos.w;\n"
+      "\n"
+      "  ex_tex = in_tex;\n"
+      "\n"
+      "  gl_Position = u_mvpmat * in_vertex;\n"
+      "}\n"
+    );
+
+    createShader( "psurf_phong_nmap_ptex_vs", GL_VERTEX_SHADER );
+    setShaderSource( "psurf_phong_nmap_ptex_vs", psurf_phong_nmap_ptex_vs_str );
+
+
+
+    // Fragment shader
+    std::string psurf_phong_nmap_ptex_fs_str;
+    psurf_phong_nmap_ptex_fs_str.append( header_150 );
+    psurf_phong_nmap_ptex_fs_str.append( struct_material );
+    psurf_phong_nmap_ptex_fs_str.append( uniform_lights );
+    psurf_phong_nmap_ptex_fs_str.append( func_sunlight );
+    psurf_phong_nmap_ptex_fs_str.append( func_pointlight );
+    psurf_phong_nmap_ptex_fs_str.append( func_spotlight );
+    psurf_phong_nmap_ptex_fs_str.append( func_computeLighting );
+    psurf_phong_nmap_ptex_fs_str.append(
+      "uniform sampler2D u_nmap;\n"
+      "uniform sampler2D u_ptex_u;\n"
+      "uniform sampler2D u_ptex_v;\n"
+      "uniform mat4      u_mvmat;\n"
+      "\n"
+      "uniform vec4      u_mat_amb;\n"
+      "uniform vec4      u_mat_dif;\n"
+      "uniform vec4      u_mat_spc;\n"
+      "uniform float     u_mat_shi;\n"
+      "\n"
+      "uniform vec4      u_mat_line_amb;\n"
+      "uniform vec4      u_mat_line_dif;\n"
+      "uniform vec4      u_mat_line_spc;\n"
+      "uniform float     u_mat_line_shi;\n"
+      "\n"
+      "smooth in vec3    ex_pos;\n"
+      "smooth in vec2    ex_tex;\n"
+      "\n"
+      "out vec4 gl_FragColor;\n"
+      "\n"
+      "void main() {\n"
+      "\n"
+      "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
+      "  vec3 nmap_normal = texture( u_nmap, ex_tex.st).xyz;\n"
+      "  vec3 normal = normalize( nmat * nmap_normal );\n"
+      "\n"
+      "  float pf_u = texture( u_ptex_u, ex_tex.st ).r;\n"
+      "  float pf_v = texture( u_ptex_v, ex_tex.st ).r;\n"
+      "\n"
+      "  Material mat;\n"
+      "\n"
+      "  if( max(pf_u,pf_v) < 0.5 ) {\n"
+      "    mat.ambient   = u_mat_amb;\n"
+      "    mat.diffuse   = u_mat_dif;\n"
+      "    mat.specular  = u_mat_spc;\n"
+      "    mat.shininess = u_mat_shi;\n"
+      "  }\n"
+      "  else {\n"
+      "    mat.ambient   = u_mat_line_amb;\n"
+      "    mat.diffuse   = u_mat_line_dif;\n"
+      "    mat.specular  = u_mat_line_spc;\n"
+      "    mat.shininess = u_mat_line_shi;\n"
+      "  }\n"
+      "\n"
+      "  vec4 light_color = vec4(0.0);\n"
+      "\n"
+      "  gl_FragColor = computeLighting( mat, normal, ex_pos );\n"
+      "\n"
+      "}\n"
+    );
+
+    createShader( "psurf_phong_nmap_ptex_fs", GL_FRAGMENT_SHADER );
+    setShaderSource( "psurf_phong_nmap_ptex_fs", psurf_phong_nmap_ptex_fs_str );
 
 
 

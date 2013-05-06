@@ -31,6 +31,7 @@ addHeaders(
 #  gmPSurfDerivativesVisualizer
   gmPSurfNormalsVisualizer
 #  gmPSurfPointsVisualizer
+  gmPSurfParamLinesVisualizer
 #  gmPSurfTexVisualizer
   gmPSurfVisualizer
 #  gmPTriangleColorPointVisualizer
@@ -50,6 +51,7 @@ addTemplateSources(
 #  gmpsurfderivativesvisualizer.c
 #  gmpsurfnormalsvisualizer.c
 #  gmpsurfpointsvisualizer.c
+  gmpsurfparamlinesvisualizer.c
 #  gmpsurftexvisualizer.c
   gmpsurfvisualizer.c
 #  gmptrianglecolorpointvisualizer.c

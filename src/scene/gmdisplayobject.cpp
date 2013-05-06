@@ -163,7 +163,7 @@ namespace GMlib {
 
     _lighted          = true;
     _opaque           = true;
-    _material         = GMmaterial::Obsidian;
+    _material         = GMmaterial::PolishedCopper;
     _color            = GMcolor::Red;
     _collapsed        = false;
   }
