@@ -166,7 +166,7 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 inline
 const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
 {
-	static DMatrix<std::complex<float>> r;
+    static DMatrix<std::complex<float> > r;
 	r.setDim(m.getDim1(), b.getDim2());
 
 	int cA_size = m.getDim1() * m.getDim2();
@@ -236,7 +236,7 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 inline
 const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
 {
-	static DMatrix<std::complex<double>> r;
+    static DMatrix<std::complex<double> > r;
 	r.setDim(m.getDim1(), b.getDim2());
 
 	int cA_size = m.getDim1() * m.getDim2();
