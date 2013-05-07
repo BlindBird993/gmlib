@@ -38,19 +38,7 @@ inline
 const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& b)
 {
 	static DMatrix<float> r;
-	static Array<float> cA;
-	static Array<float> cB;
 	r.setDim(m.getDim1(), b.getDim2());
-	cA.setSize(m.getDim1() * m.getDim2());
-	cB.setSize(b.getDim1() * b.getDim2());
-	for(int i=0; i<cA.getSize(); i++)
-	{
-		cA[i] = m(i%m.getDim1())(i/m.getDim1());
-	}
-	for(int i=0; i<cB.getSize(); i++)
-	{
-		cB[i] = b(i%b.getDim1())(i/b.getDim1());
-	}
 
 	static Array<float> work;
 	work.setSize(m.getDim1() * b.getDim2());
@@ -103,13 +91,18 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(float), NULL, &err);
 	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(float), NULL, &err);
 	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, work.getSize() * sizeof(float), NULL, &err);
-
-	err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, 0, cA.getSize()*sizeof(float), cA.getPtr(), 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, cB.getSize()*sizeof(float), cB.getPtr(), 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(queue, d_C, CL_TRUE, 0, work.getSize()*sizeof(float), work.getPtr(), 0, NULL, NULL);
-
-	err = clAmdBlasSgemm(clAmdBlasColumnMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), 1.0f,
-		d_A, m.getDim1(), d_B, b.getDim1(), 0.0f, d_C, m.getDim1(), 1, &queue, 0, NULL, &event);
+	
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(float), m(i).getDim()*sizeof(float), &m(i)(0), 0, NULL, NULL);
+	}
+	for(int i=0; i<b.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, i*b.getDim2()*sizeof(float), b(i).getDim()*sizeof(float), &b(i)(0), 0, NULL, NULL);
+	}
+	
+	err = clAmdBlasSgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), 1.0f,
+		d_A, m.getDim2(), d_B, b.getDim2(), 0.0f, d_C, m.getDim2(), 1, &queue, 0, NULL, &event);
 
 	if(err == CL_SUCCESS)
 	{
@@ -128,7 +121,7 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
-			r[i][j]=(float) work[i+j*r.getDim1()];
+			r[i][j] = work[i*r.getDim2()+j];
 			
 	return r;
 }
@@ -137,19 +130,7 @@ inline
 const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double>& b)
 {
 	static DMatrix<double> r;
-	static Array<double> cA;
-	static Array<double> cB;
 	r.setDim(m.getDim1(), b.getDim2());
-	cA.setSize(m.getDim1() * m.getDim2());
-	cB.setSize(b.getDim1() * b.getDim2());
-	for(int i=0; i<cA.getSize(); i++)
-	{
-		cA[i] = m(i%m.getDim1())(i/m.getDim1());
-	}
-	for(int i=0; i<cB.getSize(); i++)
-	{
-		cB[i] = b(i%b.getDim1())(i/b.getDim1());
-	}
 
 	static Array<double> work;
 	work.setSize(m.getDim1() * b.getDim2());
@@ -202,18 +183,23 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(double), NULL, &err);
 	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(double), NULL, &err);
 	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, work.getSize() * sizeof(double), NULL, &err);
-
-	err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, 0, cA.getSize()*sizeof(double), cA.getPtr(), 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, cB.getSize()*sizeof(double), cB.getPtr(), 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(queue, d_C, CL_TRUE, 0, work.getSize()*sizeof(double), work.getPtr(), 0, NULL, NULL);
-
-	err = clAmdBlasDgemm(clAmdBlasColumnMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), 1.0,
-		d_A, m.getDim1(), d_B, b.getDim1(), 0.0, d_C, m.getDim1(), 1, &queue, 0, NULL, &event);
+	
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(double), m(i).getDim()*sizeof(double), &m(i)(0), 0, NULL, NULL);
+	}
+	for(int i=0; i<b.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, i*b.getDim2()*sizeof(double), b(i).getDim()*sizeof(double), &b(i)(0), 0, NULL, NULL);
+	}
+	
+	err = clAmdBlasDgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), 1.0,
+		d_A, m.getDim2(), d_B, b.getDim2(), 0.0, d_C, m.getDim2(), 1, &queue, 0, NULL, &event);
 
 	if(err == CL_SUCCESS)
 	{
 		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, work.getSize()*sizeof(double), work.getPtr(), 0, NULL, NULL);
+		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, work.getSize()*sizeof(float), work.getPtr(), 0, NULL, NULL);
 	}
 
 	clReleaseMemObject(d_C);
@@ -227,7 +213,7 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
-			r[i][j]=(double) work[i+j*r.getDim1()];
+			r[i][j] = work[i*r.getDim2()+j];
 			
 	return r;
 }
@@ -236,21 +222,9 @@ inline
 const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
 {
 	static DMatrix<std::complex<float> > r;
-	int cA_size = m.getDim1() * m.getDim2();
-	int cB_size = b.getDim1() * b.getDim2();
 	int work_size = m.getDim1() * b.getDim2();
-	r.setDim(m.getDim1(), b.getDim2());
-	std::complex<float>* cA = new std::complex<float>[cA_size];
-	std::complex<float>* cB = new std::complex<float>[cB_size];
-	for(int i=0; i<(m.getDim1() * m.getDim2()); i++)
-	{
-		cA[i] = m(i%m.getDim1())(i/m.getDim1());
-	}
-	for(int i=0; i<(b.getDim1() * b.getDim2()); i++)
-	{
-		cB[i] = b(i%b.getDim1())(i/b.getDim1());
-	}
 
+	r.setDim(m.getDim1(), b.getDim2());
 	std::complex<float>* work = new std::complex<float>[work_size];
 
 	cl_int err;
@@ -301,16 +275,21 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<float>), NULL, &err);
 	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(std::complex<float>), NULL, &err);
 	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, work_size * sizeof(std::complex<float>), NULL, &err);
-
-	err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, 0, cA_size*sizeof(std::complex<float>), cA, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, cB_size*sizeof(std::complex<float>), cB, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(queue, d_C, CL_TRUE, 0, work_size*sizeof(std::complex<float>), work, 0, NULL, NULL);
+	
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<float>), m(i).getDim()*sizeof(std::complex<float>), &m(i)(0), 0, NULL, NULL);
+	}
+	for(int i=0; i<b.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, i*b.getDim2()*sizeof(std::complex<float>), b(i).getDim()*sizeof(std::complex<float>), &b(i)(0), 0, NULL, NULL);
+	}
 	
 	static const FloatComplex alpha = floatComplex(1.0f, 0.0f);
 	static const FloatComplex beta = floatComplex(0.0f, 0.0f);
 
-	err = clAmdBlasCgemm(clAmdBlasColumnMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), alpha,
-		d_A, m.getDim1(), d_B, b.getDim1(), beta, d_C, m.getDim1(), 1, &queue, 0, NULL, &event);
+	err = clAmdBlasCgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), alpha,
+		d_A, m.getDim2(), d_B, b.getDim2(), beta, d_C, m.getDim2(), 1, &queue, 0, NULL, &event);
 
 	if(err == CL_SUCCESS)
 	{
@@ -329,10 +308,8 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
-			r[i][j]= work[i+j*r.getDim1()];
+			r[i][j] = work[i*r.getDim2()+j];
 
-	delete[] cA;
-	delete[] cB;
 	delete[] work;
 			
 	return r;
@@ -342,21 +319,9 @@ inline
 const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
 {
 	static DMatrix<std::complex<double> > r;
-	int cA_size = m.getDim1() * m.getDim2();
-	int cB_size = b.getDim1() * b.getDim2();
 	int work_size = m.getDim1() * b.getDim2();
-	r.setDim(m.getDim1(), b.getDim2());
-	std::complex<double>* cA = new std::complex<double>[cA_size];
-	std::complex<double>* cB = new std::complex<double>[cB_size];
-	for(int i=0; i<(m.getDim1() * m.getDim2()); i++)
-	{
-		cA[i] = m(i%m.getDim1())(i/m.getDim1());
-	}
-	for(int i=0; i<(b.getDim1() * b.getDim2()); i++)
-	{
-		cB[i] = b(i%b.getDim1())(i/b.getDim1());
-	}
 
+	r.setDim(m.getDim1(), b.getDim2());
 	std::complex<double>* work = new std::complex<double>[work_size];
 
 	cl_int err;
@@ -407,16 +372,21 @@ const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<double>), NULL, &err);
 	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(std::complex<double>), NULL, &err);
 	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, work_size * sizeof(std::complex<double>), NULL, &err);
-
-	err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, 0, cA_size*sizeof(std::complex<double>), cA, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, cB_size*sizeof(std::complex<double>), cB, 0, NULL, NULL);
-	err = clEnqueueWriteBuffer(queue, d_C, CL_TRUE, 0, work_size*sizeof(std::complex<double>), work, 0, NULL, NULL);
+	
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<double>), m(i).getDim()*sizeof(std::complex<double>), &m(i)(0), 0, NULL, NULL);
+	}
+	for(int i=0; i<b.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, i*b.getDim2()*sizeof(std::complex<double>), b(i).getDim()*sizeof(std::complex<double>), &b(i)(0), 0, NULL, NULL);
+	}
 	
 	static const DoubleComplex alpha = doubleComplex(1.0, 0.0);
 	static const DoubleComplex beta = doubleComplex(0.0, 0.0);
 
-	err = clAmdBlasZgemm(clAmdBlasColumnMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), alpha,
-		d_A, m.getDim1(), d_B, b.getDim1(), beta, d_C, m.getDim1(), 1, &queue, 0, NULL, &event);
+	err = clAmdBlasZgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), alpha,
+		d_A, m.getDim2(), d_B, b.getDim2(), beta, d_C, m.getDim2(), 1, &queue, 0, NULL, &event);
 
 	if(err == CL_SUCCESS)
 	{
@@ -435,12 +405,176 @@ const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
-			r[i][j]= work[i+j*r.getDim1()];
+			r[i][j] = work[i*r.getDim2()+j];
 
-	delete[] cA;
-	delete[] cB;
 	delete[] work;
 			
+	return r;
+}
+
+inline
+const DVector<float>&  operator*(const DMatrix<float>& m, const DVector<float>& b)
+{
+	static DVector<float> r;
+	r.setDim(m.getDim1());
+
+	cl_int err;
+    cl_platform_id platform = 0;
+    cl_device_id device = 0;
+    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
+    cl_context ctx = 0;
+    cl_command_queue queue = 0;
+    cl_event event = NULL;
+    int ret = 0;
+
+    /* Setup OpenCL environment. */
+    err = clGetPlatformIDs(1, &platform, NULL);
+    if (err != CL_SUCCESS) {
+        printf( "clGetPlatformIDs() failed with %d\n", err );
+        return r;
+    }
+
+    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+    if (err != CL_SUCCESS) {
+        printf( "clGetDeviceIDs() failed with %d\n", err );
+        return r;
+    }
+
+    props[1] = (cl_context_properties)platform;
+    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
+    if (err != CL_SUCCESS) {
+        printf( "clCreateContext() failed with %d\n", err );
+        return r;
+    }
+
+    queue = clCreateCommandQueue(ctx, device, 0, &err);
+    if (err != CL_SUCCESS) {
+        printf( "clCreateCommandQueue() failed with %d\n", err );
+        clReleaseContext(ctx);
+        return r;
+    }
+
+    /* Setup clAmdBlas. */
+    err = clAmdBlasSetup();
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasSetup() failed with %d\n", err);
+        clReleaseCommandQueue(queue);
+        clReleaseContext(ctx);
+        return r;
+    }
+
+	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(float), NULL, &err);
+	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim() * sizeof(float), NULL, &err);
+	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, r.getDim() * sizeof(float), NULL, &err);
+
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(float), m(i).getDim()*sizeof(float), &m(i)(0), 0, NULL, NULL);
+	}
+
+	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, b.getDim()*sizeof(float), &b(0), 0, NULL, NULL);
+
+	err = clAmdBlasSgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), 1.0f, d_A, m.getDim1(), d_B, 0,
+		1, 0.0f, d_C, 0, 1, 1, &queue, 0, NULL, &event);
+
+	if(err == CL_SUCCESS)
+	{
+		err = clWaitForEvents(1, &event);
+		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, r.getDim()*sizeof(float), &r[0], 0, NULL, NULL);
+	}
+	
+	clReleaseMemObject(d_C);
+	clReleaseMemObject(d_B);
+	clReleaseMemObject(d_A);
+
+	clAmdBlasTeardown();
+
+	clReleaseCommandQueue(queue);
+	clReleaseContext(ctx);
+			
+	return r;
+}
+
+inline
+const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double>& b)
+{
+	static DVector<double> r;
+	r.setDim(m.getDim1());
+
+	cl_int err;
+    cl_platform_id platform = 0;
+    cl_device_id device = 0;
+    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
+    cl_context ctx = 0;
+    cl_command_queue queue = 0;
+    cl_event event = NULL;
+    int ret = 0;
+
+    /* Setup OpenCL environment. */
+    err = clGetPlatformIDs(1, &platform, NULL);
+    if (err != CL_SUCCESS) {
+        printf( "clGetPlatformIDs() failed with %d\n", err );
+        return r;
+    }
+
+    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+    if (err != CL_SUCCESS) {
+        printf( "clGetDeviceIDs() failed with %d\n", err );
+        return r;
+    }
+
+    props[1] = (cl_context_properties)platform;
+    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
+    if (err != CL_SUCCESS) {
+        printf( "clCreateContext() failed with %d\n", err );
+        return r;
+    }
+
+    queue = clCreateCommandQueue(ctx, device, 0, &err);
+    if (err != CL_SUCCESS) {
+        printf( "clCreateCommandQueue() failed with %d\n", err );
+        clReleaseContext(ctx);
+        return r;
+    }
+
+    /* Setup clAmdBlas. */
+    err = clAmdBlasSetup();
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasSetup() failed with %d\n", err);
+        clReleaseCommandQueue(queue);
+        clReleaseContext(ctx);
+        return r;
+    }
+
+	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(double), NULL, &err);
+	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim() * sizeof(double), NULL, &err);
+	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, r.getDim() * sizeof(double), NULL, &err);
+
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(double), m(i).getDim()*sizeof(double), &m(i)(0), 0, NULL, NULL);
+	}
+
+	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, b.getDim()*sizeof(double), &b(0), 0, NULL, NULL);
+
+	err = clAmdBlasDgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), 1.0, d_A, m.getDim1(), d_B, 0,
+		1, 0.0, d_C, 0, 1, 1, &queue, 0, NULL, &event);
+
+	if(err == CL_SUCCESS)
+	{
+		err = clWaitForEvents(1, &event);
+		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, r.getDim()*sizeof(double), &r[0], 0, NULL, NULL);
+	}
+	
+	clReleaseMemObject(d_C);
+	clReleaseMemObject(d_B);
+	clReleaseMemObject(d_A);
+
+	clAmdBlasTeardown();
+
+	clReleaseCommandQueue(queue);
+	clReleaseContext(ctx);
+
 	return r;
 }
 
