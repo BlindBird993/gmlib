@@ -273,4 +273,102 @@ const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	return r;
 }
 
+inline
+const DVector<float>&  operator*(const DMatrix<float>& m, const DVector<float>& b)
+{
+	static DVector<float> r;
+	r.setDim(m.getDim1());
+
+	int devID = 0;
+	cudaGetDevice(&devID);
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, devID);
+
+	float* d_A;
+	float* d_B;
+	float* d_C;
+
+	cudaMalloc((void**)&d_A, sizeof(float) * m.getDim1() * m.getDim2());
+	cudaMalloc((void**)&d_B, sizeof(float) * b.getDim());
+	cudaMalloc((void**)&d_C, sizeof(float) * r.getDim());
+	
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		cudaMemcpy(&d_A[i*m.getDim2()], &m(i)(0), sizeof(float)*m.getDim2(), cudaMemcpyHostToDevice);
+	}
+	cudaMemcpy(d_B, &b(0), sizeof(float)*b.getDim(), cudaMemcpyHostToDevice);
+	
+	cublasHandle_t handle;
+	cublasCreate(&handle);
+	const float alpha = 1.0f;
+	const float beta = 0.0f;
+
+	cublasSgemv(handle, CUBLAS_OP_T, m.getDim1(), m.getDim2(), &alpha, d_A, m.getDim1(), d_B, 1, &beta, d_C, 1);
+
+	cudaEvent_t stop;
+	cudaEventCreate(&stop);
+	cudaEventRecord(stop, NULL);
+	cudaEventSynchronize(stop);
+
+	cudaMemcpy(&r[0], d_C, sizeof(float)*r.getDim(), cudaMemcpyDeviceToHost);
+
+	cublasDestroy(handle);
+			
+	cudaFree(d_A);
+	cudaFree(d_B);
+	cudaFree(d_C);
+	cudaDeviceReset();
+
+	return r;
+}
+
+inline
+const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double>& b)
+{
+	static DVector<double> r;
+	r.setDim(m.getDim1());
+
+	int devID = 0;
+	cudaGetDevice(&devID);
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, devID);
+
+	double* d_A;
+	double* d_B;
+	double* d_C;
+
+	cudaMalloc((void**)&d_A, sizeof(double) * m.getDim1() * m.getDim2());
+	cudaMalloc((void**)&d_B, sizeof(double) * b.getDim());
+	cudaMalloc((void**)&d_C, sizeof(double) * r.getDim());
+	
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		cudaMemcpy(&d_A[i*m.getDim2()], &m(i)(0), sizeof(double)*m.getDim2(), cudaMemcpyHostToDevice);
+	}
+	cudaMemcpy(d_B, &b(0), sizeof(double)*b.getDim(), cudaMemcpyHostToDevice);
+	
+	cublasHandle_t handle;
+	cublasCreate(&handle);
+	const double alpha = 1.0;
+	const double beta = 0.0;
+
+	cublasDgemv(handle, CUBLAS_OP_T, m.getDim1(), m.getDim2(), &alpha, d_A, m.getDim1(), d_B, 1, &beta, d_C, 1);
+
+	cudaEvent_t stop;
+	cudaEventCreate(&stop);
+	cudaEventRecord(stop, NULL);
+	cudaEventSynchronize(stop);
+
+	cudaMemcpy(&r[0], d_C, sizeof(double)*r.getDim(), cudaMemcpyDeviceToHost);
+
+	cublasDestroy(handle);
+			
+	cudaFree(d_A);
+	cudaFree(d_B);
+	cudaFree(d_C);
+	cudaDeviceReset();
+
+	return r;
+}
+
 } // namespace GMlib
