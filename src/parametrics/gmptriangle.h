@@ -103,8 +103,8 @@ namespace GMlib {
     void                              insertVisualizer( Visualizer *visualizer );
     void                              removeVisualizer( Visualizer *visualizer );
 
-    virtual void                      replot( int m = 0 );
-    virtual void                      resample( DVector<DVector<Vector<T,n> > > &p, int m );
+    virtual void                      replot( int m = 2, int d = 1 );
+    virtual void                      resample( DVector<DVector<Vector<T,n> > > &p, int m, int d );
 
 
     std::string                       getIdentity() const;
@@ -139,7 +139,7 @@ namespace GMlib {
     Point<T,n>                        _pt[4];
 
     virtual void                      eval( T u, T v, T w, int d ) = 0;
-    void                              eval( const Point<T,n>& p, int d ) { eval(p(0),p(1),p(2),d); }
+    void                              eval( const Point<T,3>& p, int d );
 
     virtual void                      setSurroundingSphere( const DVector<DVector<Vector<T,n> > > &p );
 
@@ -150,7 +150,7 @@ namespace GMlib {
 
     void _fuForm( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g);
 
-    void                              resample1( DVector<DVector<Vector<T,n> > > &p, int m );
+    void                              resample1( DVector<DVector<Vector<T,n> > > &p, int m, int d );
     void                              resample2( DVector<DVector<Vector<T,n> > > &p, int m, int a, int b );
   }; // END class PTriangle
 

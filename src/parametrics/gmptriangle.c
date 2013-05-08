@@ -369,14 +369,14 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PTriangle<T,n>::replot( int m )
+  void PTriangle<T,n>::replot( int m, int d )
   {
     if( m < 2 )        m = _no_sam;
     else         _no_sam = m;
 
     // Sample Positions and related Derivatives
     DVector< DVector< Vector<T,n> > > p;
-    resample( p, m );
+    resample( p, m, d );
 
     setSurroundingSphere( p );
 
@@ -397,9 +397,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PTriangle<T,n>::resample( DVector< DVector < Vector<T,n> > >& p, int m )
+  void PTriangle<T,n>::resample( DVector< DVector < Vector<T,n> > >& p, int m, int d )
   {
-    if(_all) resample1(p, m);
+    if(_all) resample1(p, m, d);
     else
     {
         if (_t_nr == 1) resample2(p, m, 1, 2);
@@ -411,7 +411,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PTriangle<T,n>::resample1( DVector< DVector < Vector<T,n> > >& p, int m )
+  void PTriangle<T,n>::resample1( DVector< DVector < Vector<T,n> > >& p, int m, int d )
   {
     T u,v,du = T(1)/(m-1);
     p.setDim(_sum(m));
@@ -421,7 +421,7 @@ namespace GMlib {
       {
         v = j*du;
         u = (i-j)*du;
-        eval(u, v, 1-u-v, 1);
+        eval(u, v, 1-u-v, d);
         p[k++] = _p;
       }
     }
@@ -513,6 +513,9 @@ namespace GMlib {
     return static_cast< Point<T,n> >( _p[0][0] );
   }
 
+  template <typename T, int n>
+  inline
+  void PTriangle<T,n>::eval(const Point<T,3> &p, int d) { eval(p(0),p(1),p(2),d); }
 
   template <typename T, int n>
   inline
@@ -650,6 +653,5 @@ namespace GMlib {
 
       return a;
   }
-
 
 } // END namespace GMlib
