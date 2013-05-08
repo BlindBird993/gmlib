@@ -141,6 +141,40 @@ const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double
 }
 
 inline
+const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DVector<std::complex<float> >& b) {
+	static DVector<std::complex<float> > r;
+
+	if(m.getDim2() != b.getDim()) return r;
+
+	r.setDim(m.getDim1());
+	int n = m.getDim2();
+	const MKL_Complex8* vec = reinterpret_cast<const MKL_Complex8*>(&b(0));
+	for(int i=0;i<m.getDim1();i++)
+	{
+		static const int inc = 1;
+		cdotu(reinterpret_cast<MKL_Complex8*>(&r[i]), &n, reinterpret_cast<const MKL_Complex8*>(&m(i)(0)), &inc, vec, &inc);
+	}
+	return r;
+}
+
+inline
+const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DVector<std::complex<double> >& b) {
+	static DVector<std::complex<double> > r;
+
+	if(m.getDim2() != b.getDim()) return r;
+
+	r.setDim(m.getDim1());
+	int n = m.getDim2();
+	const MKL_Complex16* vec = reinterpret_cast<const MKL_Complex16*>(&b(0));
+	for(int i=0;i<m.getDim1();i++)
+	{
+		static const int inc = 1;
+		zdotu(reinterpret_cast<MKL_Complex16*>(&r[i]), &n, reinterpret_cast<const MKL_Complex16*>(&m(i)(0)), &inc, vec, &inc);
+	}
+	return r;
+}
+
+inline
 const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
 {
 	static const char transpose = 'T';

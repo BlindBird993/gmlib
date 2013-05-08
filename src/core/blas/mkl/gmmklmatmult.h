@@ -53,6 +53,11 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 inline
 const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b);
 
+inline
+const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DVector<std::complex<float> >& b);
+inline
+const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DVector<std::complex<double> >& b);
+
 } // namespace GMlib
 
 #include "gmmklmatmult.c"
