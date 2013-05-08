@@ -43,13 +43,14 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 	r.setDim(m.getDim1(), b.getDim2());
 	cA.setSize(m.getDim1() * m.getDim2());
 	cB.setSize(b.getDim1() * b.getDim2());
-	for(int i=0; i<cA.getSize(); i++)
+
+	for(int i=0; i<m.getDim1(); i++)
 	{
-		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+		memcpy(&cA[i*m.getDim2()], &m(i)(0), m.getDim2()*sizeof(float));
 	}
-	for(int i=0; i<cB.getSize(); i++)
+	for(int i=0; i<b.getDim1(); i++)
 	{
-		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+		memcpy(&cB[i*b.getDim2()], &b(i)(0), b.getDim2()*sizeof(float));
 	}
 
 	static Array<float> work;
@@ -60,7 +61,7 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 	int K = m.getDim2();
 	const float alpha = 1.0f;
 	const float beta = 0.0f;
-	sgemm(&noTranspose, &noTranspose, &M, &N, &K, &alpha, cA.getPtr(), &M, cB.getPtr(), &K, &beta, work.getPtr(), &M);
+	sgemm(&transpose, &transpose, &M, &N, &K, &alpha, cA.getPtr(), &K, cB.getPtr(), &N, &beta, work.getPtr(), &M);
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
@@ -80,13 +81,14 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	r.setDim(m.getDim1(), b.getDim2());
 	cA.setSize(m.getDim1() * m.getDim2());
 	cB.setSize(b.getDim1() * b.getDim2());
-	for(int i=0; i<cA.getSize(); i++)
+
+	for(int i=0; i<m.getDim1(); i++)
 	{
-		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+		memcpy(&cA[i*m.getDim2()], &m(i)(0), m.getDim2()*sizeof(double));
 	}
-	for(int i=0; i<cB.getSize(); i++)
+	for(int i=0; i<b.getDim1(); i++)
 	{
-		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+		memcpy(&cB[i*b.getDim2()], &b(i)(0), b.getDim2()*sizeof(double));
 	}
 
 	static Array<double> work;
@@ -95,9 +97,9 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	int M = m.getDim1();
 	int N = b.getDim2();
 	int K = m.getDim2();
-	const double alpha = 1.0f;
-	const double beta = 0.0f;
-	dgemm(&noTranspose, &noTranspose, &M, &N, &K, &alpha, cA.getPtr(), &M, cB.getPtr(), &K, &beta, work.getPtr(), &M);
+	const double alpha = 1.0;
+	const double beta = 0.0;
+	dgemm(&transpose, &transpose, &M, &N, &K, &alpha, cA.getPtr(), &K, cB.getPtr(), &N, &beta, work.getPtr(), &M);
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
@@ -183,13 +185,14 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	std::complex<float>* cA = new std::complex<float>[m.getDim1() * m.getDim2()];
 	std::complex<float>* cB = new std::complex<float>[b.getDim1() * b.getDim2()];
 	r.setDim(m.getDim1(), b.getDim2());
-	for(int i=0; i<(m.getDim1() * m.getDim2()); i++)
+
+	for(int i=0; i<m.getDim1(); i++)
 	{
-		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+		memcpy(&cA[i*m.getDim2()], &m(i)(0), m.getDim2()*sizeof(std::complex<float>));
 	}
-	for(int i=0; i<(b.getDim1() * b.getDim2()); i++)
+	for(int i=0; i<b.getDim1(); i++)
 	{
-		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+		memcpy(&cB[i*b.getDim2()], &b(i)(0), b.getDim2()*sizeof(std::complex<float>));
 	}
 
 	std::complex<float>* work = new std::complex<float>[m.getDim1() * b.getDim2()];
@@ -199,8 +202,8 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	const int n_ = b.getDim2();
 	const int k_ = m.getDim2();
 
-	cgemm(&noTranspose, &noTranspose, &m_, &n_, &k_, &alpha, reinterpret_cast<MKL_Complex8*>(cA), &m_,
-		reinterpret_cast<MKL_Complex8*>(cB), &k_, &beta, reinterpret_cast<MKL_Complex8*>(work), &m_);
+	cgemm(&transpose, &transpose, &m_, &n_, &k_, &alpha, reinterpret_cast<MKL_Complex8*>(cA), &k_,
+		reinterpret_cast<MKL_Complex8*>(cB), &n_, &beta, reinterpret_cast<MKL_Complex8*>(work), &m_);
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
@@ -220,24 +223,25 @@ const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	std::complex<double>* cA = new std::complex<double>[m.getDim1() * m.getDim2()];
 	std::complex<double>* cB = new std::complex<double>[b.getDim1() * b.getDim2()];
 	r.setDim(m.getDim1(), b.getDim2());
-	for(int i=0; i<(m.getDim1() * m.getDim2()); i++)
+
+	for(int i=0; i<m.getDim1(); i++)
 	{
-		cA[i] = m(i%m.getDim1())(i/m.getDim1());
+		memcpy(&cA[i*m.getDim2()], &m(i)(0), m.getDim2()*sizeof(std::complex<double>));
 	}
-	for(int i=0; i<(b.getDim1() * b.getDim2()); i++)
+	for(int i=0; i<b.getDim1(); i++)
 	{
-		cB[i] = b(i%b.getDim1())(i/b.getDim1());
+		memcpy(&cB[i*b.getDim2()], &b(i)(0), b.getDim2()*sizeof(std::complex<double>));
 	}
 
 	std::complex<double>* work = new std::complex<double>[m.getDim1() * b.getDim2()];
-	MKL_Complex16 alpha = {1.0f, 0.0f};
-	MKL_Complex16 beta = {0.0f, 0.0f};
+	MKL_Complex16 alpha = {1.0, 0.0};
+	MKL_Complex16 beta = {0.0, 0.0};
 	const int m_ = m.getDim1();
 	const int n_ = b.getDim2();
 	const int k_ = m.getDim2();
 
-	zgemm(&noTranspose, &noTranspose, &m_, &n_, &k_, &alpha, reinterpret_cast<MKL_Complex16*>(cA), &m_,
-		reinterpret_cast<MKL_Complex16*>(cB), &k_, &beta, reinterpret_cast<MKL_Complex16*>(work), &m_);
+	zgemm(&transpose, &transpose, &m_, &n_, &k_, &alpha, reinterpret_cast<MKL_Complex16*>(cA), &k_,
+		reinterpret_cast<MKL_Complex16*>(cB), &n_, &beta, reinterpret_cast<MKL_Complex16*>(work), &m_);
 
 	for(int i=0; i<r.getDim1(); i++)
 		for(int j=0; j<r.getDim2(); j++)
