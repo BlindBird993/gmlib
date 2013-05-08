@@ -120,8 +120,7 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 	clReleaseContext(ctx);
 
 	for(int i=0; i<r.getDim1(); i++)
-		for(int j=0; j<r.getDim2(); j++)
-			r[i][j] = work[i*r.getDim2()+j];
+		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(float));
 			
 	return r;
 }
@@ -210,10 +209,9 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 
 	clReleaseCommandQueue(queue);
 	clReleaseContext(ctx);
-
+	
 	for(int i=0; i<r.getDim1(); i++)
-		for(int j=0; j<r.getDim2(); j++)
-			r[i][j] = work[i*r.getDim2()+j];
+		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(double));
 			
 	return r;
 }
@@ -307,8 +305,7 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	clReleaseContext(ctx);
 
 	for(int i=0; i<r.getDim1(); i++)
-		for(int j=0; j<r.getDim2(); j++)
-			r[i][j] = work[i*r.getDim2()+j];
+		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(std::complex<float>));
 
 	delete[] work;
 			
@@ -402,10 +399,9 @@ const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 
 	clReleaseCommandQueue(queue);
 	clReleaseContext(ctx);
-
+	
 	for(int i=0; i<r.getDim1(); i++)
-		for(int j=0; j<r.getDim2(); j++)
-			r[i][j] = work[i*r.getDim2()+j];
+		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(std::complex<double>));
 
 	delete[] work;
 			
