@@ -578,4 +578,176 @@ const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double
 	return r;
 }
 
+inline
+const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DVector<std::complex<float> >& b)
+{
+	static DVector<std::complex<float> > r;
+	r.setDim(m.getDim1());
+
+	cl_int err;
+    cl_platform_id platform = 0;
+    cl_device_id device = 0;
+    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
+    cl_context ctx = 0;
+    cl_command_queue queue = 0;
+    cl_event event = NULL;
+    int ret = 0;
+
+    /* Setup OpenCL environment. */
+    err = clGetPlatformIDs(1, &platform, NULL);
+    if (err != CL_SUCCESS) {
+        printf( "clGetPlatformIDs() failed with %d\n", err );
+        return r;
+    }
+
+    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+    if (err != CL_SUCCESS) {
+        printf( "clGetDeviceIDs() failed with %d\n", err );
+        return r;
+    }
+
+    props[1] = (cl_context_properties)platform;
+    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
+    if (err != CL_SUCCESS) {
+        printf( "clCreateContext() failed with %d\n", err );
+        return r;
+    }
+
+    queue = clCreateCommandQueue(ctx, device, 0, &err);
+    if (err != CL_SUCCESS) {
+        printf( "clCreateCommandQueue() failed with %d\n", err );
+        clReleaseContext(ctx);
+        return r;
+    }
+
+    /* Setup clAmdBlas. */
+    err = clAmdBlasSetup();
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasSetup() failed with %d\n", err);
+        clReleaseCommandQueue(queue);
+        clReleaseContext(ctx);
+        return r;
+    }
+
+	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<float>), NULL, &err);
+	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim() * sizeof(std::complex<float>), NULL, &err);
+	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, r.getDim() * sizeof(std::complex<float>), NULL, &err);
+
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<float>), m(i).getDim()*sizeof(std::complex<float>), &m(i)(0), 0, NULL, NULL);
+	}
+
+	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, b.getDim()*sizeof(std::complex<float>), &b(0), 0, NULL, NULL);
+
+	static const FloatComplex alpha = floatComplex(1.0f, 0.0f);
+	static const FloatComplex beta = floatComplex(0.0f, 0.0f);
+
+	err = clAmdBlasCgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), alpha, d_A, m.getDim1(), d_B, 0,
+		1, beta, d_C, 0, 1, 1, &queue, 0, NULL, &event);
+
+	if(err == CL_SUCCESS)
+	{
+		err = clWaitForEvents(1, &event);
+		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, r.getDim()*sizeof(std::complex<float>), &r[0], 0, NULL, NULL);
+	}
+	
+	clReleaseMemObject(d_C);
+	clReleaseMemObject(d_B);
+	clReleaseMemObject(d_A);
+
+	clAmdBlasTeardown();
+
+	clReleaseCommandQueue(queue);
+	clReleaseContext(ctx);
+			
+	return r;
+}
+
+inline
+const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DVector<std::complex<double> >& b)
+{
+	static DVector<std::complex<double> > r;
+	r.setDim(m.getDim1());
+
+	cl_int err;
+    cl_platform_id platform = 0;
+    cl_device_id device = 0;
+    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
+    cl_context ctx = 0;
+    cl_command_queue queue = 0;
+    cl_event event = NULL;
+    int ret = 0;
+
+    /* Setup OpenCL environment. */
+    err = clGetPlatformIDs(1, &platform, NULL);
+    if (err != CL_SUCCESS) {
+        printf( "clGetPlatformIDs() failed with %d\n", err );
+        return r;
+    }
+
+    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
+    if (err != CL_SUCCESS) {
+        printf( "clGetDeviceIDs() failed with %d\n", err );
+        return r;
+    }
+
+    props[1] = (cl_context_properties)platform;
+    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
+    if (err != CL_SUCCESS) {
+        printf( "clCreateContext() failed with %d\n", err );
+        return r;
+    }
+
+    queue = clCreateCommandQueue(ctx, device, 0, &err);
+    if (err != CL_SUCCESS) {
+        printf( "clCreateCommandQueue() failed with %d\n", err );
+        clReleaseContext(ctx);
+        return r;
+    }
+
+    /* Setup clAmdBlas. */
+    err = clAmdBlasSetup();
+    if (err != CL_SUCCESS) {
+        printf("clAmdBlasSetup() failed with %d\n", err);
+        clReleaseCommandQueue(queue);
+        clReleaseContext(ctx);
+        return r;
+    }
+
+	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<double>), NULL, &err);
+	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim() * sizeof(std::complex<double>), NULL, &err);
+	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, r.getDim() * sizeof(std::complex<double>), NULL, &err);
+
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<double>), m(i).getDim()*sizeof(std::complex<double>), &m(i)(0), 0, NULL, NULL);
+	}
+
+	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, b.getDim()*sizeof(std::complex<double>), &b(0), 0, NULL, NULL);
+
+	static const DoubleComplex alpha = doubleComplex(1.0, 0.0);
+	static const DoubleComplex beta = doubleComplex(0.0, 0.0);
+
+	err = clAmdBlasZgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), alpha, d_A, m.getDim1(), d_B, 0,
+		1, beta, d_C, 0, 1, 1, &queue, 0, NULL, &event);
+
+	if(err == CL_SUCCESS)
+	{
+		err = clWaitForEvents(1, &event);
+		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, r.getDim()*sizeof(std::complex<double>), &r[0], 0, NULL, NULL);
+	}
+	
+	clReleaseMemObject(d_C);
+	clReleaseMemObject(d_B);
+	clReleaseMemObject(d_A);
+
+	clAmdBlasTeardown();
+
+	clReleaseCommandQueue(queue);
+	clReleaseContext(ctx);
+			
+	return r;
+}
+
 } // namespace GMlib
