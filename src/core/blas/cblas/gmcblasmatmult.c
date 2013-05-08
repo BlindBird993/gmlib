@@ -125,6 +125,38 @@ const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double
 }
 
 inline
+const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DVector<std::complex<float> >& b) {
+	static DVector<std::complex<float> > r;
+
+	if(m.getDim2() != b.getDim()) return r;
+
+	r.setDim(m.getDim1());
+	int i;
+	const std::complex<float>* vec = &b(0);
+	for(i=0;i<m.getDim1();i++)
+	{
+		cblas_cdotu_sub(m.getDim2(), &m(i)(0), 1, vec, 1, &r[i]);
+	}
+	return r;
+}
+
+inline
+const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DVector<std::complex<double> >& b) {
+	static DVector<std::complex<double> > r;
+
+	if(m.getDim2() != b.getDim()) return r;
+
+	r.setDim(m.getDim1());
+	int i;
+	const std::complex<double>* vec = &b(0);
+	for(i=0;i<m.getDim1();i++)
+	{
+		cblas_zdotu_sub(m.getDim2(), &m(i)(0), 1, vec, 1, &r[i]);
+	}
+	return r;
+}
+
+inline
 const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
 {
 	static DMatrix<std::complex<float> > r;
