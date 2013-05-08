@@ -371,4 +371,102 @@ const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double
 	return r;
 }
 
+inline
+const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DVector<std::complex<float> >& b)
+{
+	static DVector<std::complex<float> > r;
+	r.setDim(m.getDim1());
+
+	int devID = 0;
+	cudaGetDevice(&devID);
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, devID);
+
+	cuComplex* d_A;
+	cuComplex* d_B;
+	cuComplex* d_C;
+
+	cudaMalloc((void**)&d_A, sizeof(std::complex<float>) * m.getDim1() * m.getDim2());
+	cudaMalloc((void**)&d_B, sizeof(std::complex<float>) * b.getDim());
+	cudaMalloc((void**)&d_C, sizeof(std::complex<float>) * r.getDim());
+	
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		cudaMemcpy(&d_A[i*m.getDim2()], &m(i)(0), sizeof(std::complex<float>)*m.getDim2(), cudaMemcpyHostToDevice);
+	}
+	cudaMemcpy(d_B, &b(0), sizeof(std::complex<float>)*b.getDim(), cudaMemcpyHostToDevice);
+	
+	cublasHandle_t handle;
+	cublasCreate(&handle);
+	const cuComplex alpha = make_cuComplex(1.0f, 0.0f);
+	const cuComplex beta = make_cuComplex(0.0f, 0.0f);
+
+	cublasCgemv(handle, CUBLAS_OP_T, m.getDim1(), m.getDim2(), &alpha, d_A, m.getDim1(), d_B, 1, &beta, d_C, 1);
+
+	cudaEvent_t stop;
+	cudaEventCreate(&stop);
+	cudaEventRecord(stop, NULL);
+	cudaEventSynchronize(stop);
+
+	cudaMemcpy(&r[0], d_C, sizeof(std::complex<float>)*r.getDim(), cudaMemcpyDeviceToHost);
+
+	cublasDestroy(handle);
+			
+	cudaFree(d_A);
+	cudaFree(d_B);
+	cudaFree(d_C);
+	cudaDeviceReset();
+
+	return r;
+}
+
+inline
+const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DVector<std::complex<double> >& b)
+{
+	static DVector<std::complex<double> > r;
+	r.setDim(m.getDim1());
+
+	int devID = 0;
+	cudaGetDevice(&devID);
+	cudaDeviceProp deviceProp;
+	cudaGetDeviceProperties(&deviceProp, devID);
+
+	cuDoubleComplex* d_A;
+	cuDoubleComplex* d_B;
+	cuDoubleComplex* d_C;
+
+	cudaMalloc((void**)&d_A, sizeof(std::complex<double>) * m.getDim1() * m.getDim2());
+	cudaMalloc((void**)&d_B, sizeof(std::complex<double>) * b.getDim());
+	cudaMalloc((void**)&d_C, sizeof(std::complex<double>) * r.getDim());
+	
+	for(int i=0; i<m.getDim1(); i++)
+	{
+		cudaMemcpy(&d_A[i*m.getDim2()], &m(i)(0), sizeof(std::complex<double>)*m.getDim2(), cudaMemcpyHostToDevice);
+	}
+	cudaMemcpy(d_B, &b(0), sizeof(std::complex<double>)*b.getDim(), cudaMemcpyHostToDevice);
+	
+	cublasHandle_t handle;
+	cublasCreate(&handle);
+	const cuDoubleComplex alpha = make_cuDoubleComplex(1.0, 0.0);
+	const cuDoubleComplex beta = make_cuDoubleComplex(0.0, 0.0);
+
+	cublasZgemv(handle, CUBLAS_OP_T, m.getDim1(), m.getDim2(), &alpha, d_A, m.getDim1(), d_B, 1, &beta, d_C, 1);
+
+	cudaEvent_t stop;
+	cudaEventCreate(&stop);
+	cudaEventRecord(stop, NULL);
+	cudaEventSynchronize(stop);
+
+	cudaMemcpy(&r[0], d_C, sizeof(std::complex<double>)*r.getDim(), cudaMemcpyDeviceToHost);
+
+	cublasDestroy(handle);
+			
+	cudaFree(d_A);
+	cudaFree(d_B);
+	cudaFree(d_C);
+	cudaDeviceReset();
+
+	return r;
+}
+
 } // namespace GMlib
