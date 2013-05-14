@@ -134,7 +134,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const DVector<Vector<T,n> >& PTriangle<T,n>::evaluateLocal( T u, T v, int d )
+  const DVector<Vector<T,n> >& PTriangle<T,n>::evaluate( T u, T v, int d )
   {
     _eval(u, v, d);
     return _p;
@@ -526,9 +526,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const DVector<Vector<T,n> >&  PTriangle<T,n>::evaluateLocal(const Point<T,3> & p, int d)
+  const DVector<Vector<T,n> >&  PTriangle<T,n>::evaluate(const Point<T,3> & p, int d)
   {
-      return  evaluateLocal(p(0), p(1), d);
+      return  evaluate(p(0), p(1), d);
   }
 
   template <typename T, int n>

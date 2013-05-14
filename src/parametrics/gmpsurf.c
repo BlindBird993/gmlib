@@ -771,7 +771,6 @@ namespace GMlib {
     T du = (e_u-s_u)/(m1-1);
     T dv = (e_v-s_v)/(m2-1);
 
-    _p.setDim( d1 + 1, d2 + 1 );
     a.setDim(m1, m2);
 
     for(int i=0; i<m1-1; i++) {

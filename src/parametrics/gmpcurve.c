@@ -178,8 +178,9 @@ namespace GMlib {
   DVector<Vector<T,n> >& PCurve<T,n>::evaluateGlobal( T t, int d ) {
 
     static DVector< Vector<T,n> > p;
-    p.setDim(d+1);
+
     _eval(t,d);
+    p.setDim(_p.getDim());
 
     p[0] = this->_present* static_cast< Point<T,n> >(_p[0]);
 
@@ -194,8 +195,9 @@ namespace GMlib {
   DVector<Vector<T,n> >& PCurve<T,n>::evaluateParent( T t, int d ) {
 
     static DVector< Vector<T,n> > p;
-    p.setDim(d+1);
+
     _eval(t,d);
+    p.setDim(_p.getDim());
 
     p[0] = this->_matrix * static_cast< Point<T,n> >(_p[0]);
 
@@ -481,7 +483,6 @@ namespace GMlib {
   void PCurve<T,n>::resample( DVector< DVector< Vector<T,n> > >& p, int m, int d, T start, T end ) {
 
     T du = (end-start)/(m-1);
-    p.setDim(m);
 
     for( int i = 0; i < m - 1; i++ ) {
 

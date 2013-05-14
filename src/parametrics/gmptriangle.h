@@ -53,8 +53,11 @@ namespace GMlib {
     ~PTriangle();
 
 
+    const DVector<Vector<T,n> >&      evaluate(const Point<T,3> & p, int d);
+    const DVector<Vector<T,n> >&      evaluate( T u, T v, int d);
+    const DVector<Vector<T,n> >&      evaluateGlobal(const Point<T,3> & p, int d);
     const DVector<Vector<T,n> >&      evaluateGlobal( T u, T v, int d);
-    const DVector<Vector<T,n> >&      evaluateLocal( T u, T v, int d);
+    const DVector<Vector<T,n> >&      evaluateParent(const Point<T,3> & p, int d);
     const DVector<Vector<T,n> >&      evaluateParent( T u, T v, int d);
 
     const Point<T,n>&                 operator()( T u, T v ); // w = 1-u-v
@@ -74,9 +77,6 @@ namespace GMlib {
     virtual T                         getCurvatureMean( T u, T v );
 
 
-    const DVector<Vector<T,n> >&      evaluateGlobal(const Point<T,3> & p, int d);
-    const DVector<Vector<T,n> >&      evaluateLocal(const Point<T,3> & p, int d);
-    const DVector<Vector<T,n> >&      evaluateParent(const Point<T,3> & p, int d);
 
     const Point<T,n>&                 operator()(const Point<T,3> & p);
     const Vector<T,n>&                getDerU(const Point<T,3> & p);
