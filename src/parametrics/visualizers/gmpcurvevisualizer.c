@@ -90,10 +90,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveVisualizer<T,n>::replot(
-    DVector< DVector< Vector<T, n> > >& /*p*/,
-    int /*m*/, int /*d*/, bool /*closed*/
-  ) {}
+  void PCurveVisualizer<T,n>::replot( const DVector< DVector< Vector<T, n> > >& /*p*/,
+                                      int /*m*/, int /*d*/, bool /*closed*/ ) {}
 
 
 

@@ -80,22 +80,25 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfVisualizer<T,n>::fillNMap( GL::Texture& nmap, const DMatrix<DMatrix<Vector<T,n> > >& p, bool closed_u, bool closed_v) {
+  void PSurfVisualizer<T,n>::fillNMap( GL::Texture& nmap, const DMatrix< Vector<T, 3> >& ns, bool closed_u, bool closed_v) {
 
-    int m1 = closed_u ? p.getDim1()-1 : p.getDim1();
-    int m2 = closed_v ? p.getDim2()-1 : p.getDim2();
+    int m1 = closed_u ? ns.getDim1()-1 : ns.getDim1();
+    int m2 = closed_v ? ns.getDim2()-1 : ns.getDim2();
 
     // Fill data
-    DVector< Vector<float,3> > tex_data(m1 * m2);
-    Vector<float,3> *ptr = tex_data.getPtr();
+    DVector< GL::GLNormal > tex_data(m1 * m2);
     for( int j = 0; j < m2; ++j ) {
       for( int i = 0; i < m1; ++i ) {
-        *ptr++ = (p(i)(j)(1)(0) ^ p(i)(j)(0)(1)).template toType<float>();
+
+        const int idx = j*m1+i;
+        tex_data[idx].nx = ns(i)(j)(0);
+        tex_data[idx].ny = ns(i)(j)(1);
+        tex_data[idx].nz = ns(i)(j)(2);
       }
     }
 
     // Create Normal map texture and set texture parameters
-    nmap.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
+    nmap.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, reinterpret_cast<float*>(tex_data.getPtr()) );
     nmap.setParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
     nmap.setParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
     if( closed_u )  nmap.setParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -300,8 +303,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void PSurfVisualizer<T,n>::replot(
-    DMatrix< DMatrix< Vector<T,n> > >& /*p*/,
-    DMatrix< Vector<T,3> >& /*normals*/,
+    const DMatrix< DMatrix< Vector<T,n> > >& /*p*/,
+    const DMatrix< Vector<T,3> >& /*normals*/,
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     bool /*closed_u*/, bool /*closed_v*/
   ) {}

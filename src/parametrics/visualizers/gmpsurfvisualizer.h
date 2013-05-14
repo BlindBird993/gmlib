@@ -52,17 +52,16 @@ namespace GMlib {
     PSurfVisualizer();
     virtual ~PSurfVisualizer();
 
-    virtual void  replot(
-      DMatrix< DMatrix< Vector<T, n> > >& p,
-      DMatrix< Vector<T,3> >& normals,
-      int m1, int m2, int d1, int d2,
-      bool closed_u, bool closed_v
+    virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
+                          const DMatrix< Vector<T,3> >& normals,
+                          int m1, int m2, int d1, int d2,
+                          bool closed_u, bool closed_v
     );
 
 
     static void   fillStandardVBO(GL::VertexBufferObject &vbo, const DMatrix< DMatrix< Vector<T,n> > >& p );
     static void   fillTriangleStripIBO(GL::IndexBufferObject& ibo, int m1, int m2, GLuint& no_strips, GLuint& no_strip_indices, GLsizei& strip_size );
-    static void   fillNMap( GL::Texture& nmap, const DMatrix< DMatrix< Vector<T,n> > >& p , bool closed_u, bool closed_v);
+    static void   fillNMap( GL::Texture& nmap, const DMatrix< Vector<T, 3> >& normals, bool closed_u, bool closed_v);
     static void   compTriangleStripProperties( int m1, int m2, GLuint& no_strips, GLuint& no_strip_indices, GLsizei& strip_size );
 
     static void   fillMap( GL::Texture& map, const DMatrix< DMatrix< Vector<T,n> > >& p, int d1, int d2, bool closed_u, bool closed_v );

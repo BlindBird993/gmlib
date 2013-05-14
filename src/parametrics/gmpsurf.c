@@ -274,7 +274,6 @@ namespace GMlib {
   DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( T u, T v, int d1, int d2 ) {
 
     _eval(u, v, d1, d2);
-    _evalNormal();
     return _p;
   }
 
@@ -327,9 +326,9 @@ namespace GMlib {
   DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( T u, T v, int d1, int d2 ) {
 
     static DMatrix<Vector<T,n> > p;
-    p.setDim( d1+1, d2+1 );
 
     eval(u,v,d1,d2);
+    p.setDim( _p.getDim1(), _p.getDim2() );
 
     p[0][0] = this->_present * static_cast< Point<T,n> >(_p[0][0]);
 
@@ -357,9 +356,9 @@ namespace GMlib {
   DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( T u, T v, int d1, int d2 ) {
 
     static DMatrix<Vector<T,n> > p;
-    p.setDim( d1+1, d2+1 );
 
     eval(u,v,d1,d2);
+    p.setDim( _p.getDim1(), _p.getDim2() );
 
     p[0][0] = this->_matrix * static_cast< Point<T,n> >(_p[0][0]);
 
@@ -379,11 +378,11 @@ namespace GMlib {
 
     _eval(u, v, 2, 2);
     UnitVector<T,n>   N   = _p[1][0]^_p[0][1];
-    Vector<T,n>		  du  = _p[1][0];
-    Vector<T,n>		  dv  = _p[0][1];
-    Vector<T,n>		  duu = _p[2][0];
-    Vector<T,n>		  duv = _p[1][1];
-    Vector<T,n>		  dvv = _p[0][2];
+    Vector<T,n>       du  = _p[1][0];
+    Vector<T,n>       dv  = _p[0][1];
+    Vector<T,n>       duu = _p[2][0];
+    Vector<T,n>       duv = _p[1][1];
+    Vector<T,n>       dvv = _p[0][2];
 
     T E = du  * du;
     T F = du  * dv;
@@ -402,11 +401,11 @@ namespace GMlib {
 
     _eval(u,v,2,2);
     UnitVector<T,n>   N   = _p[1][0]^_p[0][1];
-    Vector<T,n>		  du  = _p[1][0];
-    Vector<T,n>		  dv  = _p[0][1];
-    Vector<T,n>		  duu = _p[2][0];
-    Vector<T,n>		  duv = _p[1][1];
-    Vector<T,n>		  dvv = _p[0][2];
+    Vector<T,n>      du  = _p[1][0];
+    Vector<T,n>      dv  = _p[0][1];
+    Vector<T,n>      duu = _p[2][0];
+    Vector<T,n>      duv = _p[1][1];
+    Vector<T,n>      dvv = _p[0][2];
 
     T E = du  * du;
     T F = du  * dv;
@@ -822,13 +821,13 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  void PSurf<T,n>::resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,3> > &normals ) const {
+  void PSurf<T,n>::resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &p, DMatrix<Vector<T,3> > &normals ) const {
 
-    normals.setDim( sample.getDim1(), sample.getDim2() );
+    normals.setDim( p.getDim1(), p.getDim2() );
 
-    for( int i = 0; i < sample.getDim1(); i++ )
-      for( int j = 0; j < sample.getDim2(); j++ )
-        normals[i][j] = Vector<T,3>(sample(i)(j)(1)(0))^Vector<T,3>(sample(i)(j)(0)(1));
+    for( int i = 0; i < p.getDim1(); i++ )
+      for( int j = 0; j < p.getDim2(); j++ )
+        normals[i][j] = p(i)(j)(1)(0) ^ p(i)(j)(0)(1);
   }
 
 

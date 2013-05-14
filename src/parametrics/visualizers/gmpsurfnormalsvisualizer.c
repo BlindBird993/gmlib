@@ -110,7 +110,7 @@ namespace GMlib {
    *  \param[in]  normals   Evaluated Normal data.
    */
   template <typename T, int n>
-  void PSurfNormalsVisualizer<T,n>::makePlotAll( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
+  void PSurfNormalsVisualizer<T,n>::makePlotAll( const DMatrix< DMatrix< Vector<T, 3> > >& p, const DMatrix< Vector<T, 3> >& normals ) {
 
     int no_normals = p.getDim1() * p.getDim2();
     _no_elements = no_normals * 2;
@@ -124,15 +124,15 @@ namespace GMlib {
       for( int i = 0; i < p.getDim1(); i++ ) {
         for( int j = 0; j < p.getDim2(); j++ ) {
 
-          (*ptr).x = p[i][j][0][0][0];
-          (*ptr).y = p[i][j][0][0][1];
-          (*ptr).z = p[i][j][0][0][2];
+          (*ptr).x = p(i)(j)(0)(0)(0);
+          (*ptr).y = p(i)(j)(0)(0)(1);
+          (*ptr).z = p(i)(j)(0)(0)(2);
           ptr++;
 
-          const Vector<T,3> N = normals[i][j].getNormalized() * _size;
-          (*ptr).x = p[i][j][0][0][0] + N(0);
-          (*ptr).y = p[i][j][0][0][1] + N(1);
-          (*ptr).z = p[i][j][0][0][2] + N(2);
+          const Vector<T,3> N = normals(i)(j).getNormalized() * _size;
+          (*ptr).x = p(i)(j)(0)(0)(0) + N(0);
+          (*ptr).y = p(i)(j)(0)(0)(1) + N(1);
+          (*ptr).z = p(i)(j)(0)(0)(2) + N(2);
           ptr++;
         }
       }
@@ -150,7 +150,7 @@ namespace GMlib {
    *  \param[in]  normals   Evaluated Normal data.
    */
   template <typename T, int n>
-  void PSurfNormalsVisualizer<T,n>::makePlotInterior( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
+  void PSurfNormalsVisualizer<T,n>::makePlotInterior( const DMatrix< DMatrix< Vector<T, 3> > >& p, const DMatrix< Vector<T, 3> >& normals ) {
 
     int no_normals = ( p.getDim1() - 2 ) * ( p.getDim2() - 2 );
     _no_elements = no_normals * 2;
@@ -164,15 +164,15 @@ namespace GMlib {
       for( int i = 1; i < p.getDim1()-1; i++ ) {
         for( int j = 1; j < p.getDim2()-1; j++ ) {
 
-          (*ptr).x = p[i][j][0][0][0];
-          (*ptr).y = p[i][j][0][0][1];
-          (*ptr).z = p[i][j][0][0][2];
+          (*ptr).x = p(i)(j)(0)(0)(0);
+          (*ptr).y = p(i)(j)(0)(0)(1);
+          (*ptr).z = p(i)(j)(0)(0)(2);
           ptr++;
 
-          const Vector<T,3> N = normals[i][j].getNormalized() * _size;
-          (*ptr).x = p[i][j][0][0][0] + N(0);
-          (*ptr).y = p[i][j][0][0][1] + N(1);
-          (*ptr).z = p[i][j][0][0][2] + N(2);
+          const Vector<T,3> N = normals(i)(j).getNormalized() * _size;
+          (*ptr).x = p(i)(j)(0)(0)(0) + N(0);
+          (*ptr).y = p(i)(j)(0)(0)(1) + N(1);
+          (*ptr).z = p(i)(j)(0)(0)(2) + N(2);
           ptr++;
         }
       }
@@ -190,7 +190,7 @@ namespace GMlib {
    *  \param[in]  normals   Evaluated Normal data.
    */
   template <typename T, int n>
-  void PSurfNormalsVisualizer<T,n>::makePlotBoundary( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals ) {
+  void PSurfNormalsVisualizer<T,n>::makePlotBoundary( const DMatrix< DMatrix< Vector<T, 3> > >& p, const DMatrix< Vector<T, 3> >& normals ) {
 
     int no_normals = ( p.getDim1() + p.getDim2() ) * 2 - 4;
     _no_elements = no_normals * 2;
@@ -206,29 +206,29 @@ namespace GMlib {
         // j = 0
         j = 0;
 
-        (*ptr).x = p[i][j][0][0][0];
-        (*ptr).y = p[i][j][0][0][1];
-        (*ptr).z = p[i][j][0][0][2];
+        (*ptr).x = p(i)(j)(0)(0)(0);
+        (*ptr).y = p(i)(j)(0)(0)(1);
+        (*ptr).z = p(i)(j)(0)(0)(2);
         ptr++;
 
-        const Vector<T,3> N1 = normals[i][j].getNormalized() * _size;
-        (*ptr).x = p[i][j][0][0][0] + N1(0);
-        (*ptr).y = p[i][j][0][0][1] + N1(1);
-        (*ptr).z = p[i][j][0][0][2] + N1(2);
+        const Vector<T,3> N1 = normals(i)(j).getNormalized() * _size;
+        (*ptr).x = p(i)(j)(0)(0)(0) + N1(0);
+        (*ptr).y = p(i)(j)(0)(0)(1) + N1(1);
+        (*ptr).z = p(i)(j)(0)(0)(2) + N1(2);
         ptr++;
 
         // j = p.getDim2() -1
         j = p.getDim2() - 1;
 
-        (*ptr).x = p[i][j][0][0][0];
-        (*ptr).y = p[i][j][0][0][1];
-        (*ptr).z = p[i][j][0][0][2];
+        (*ptr).x = p(i)(j)(0)(0)(0);
+        (*ptr).y = p(i)(j)(0)(0)(1);
+        (*ptr).z = p(i)(j)(0)(0)(2);
         ptr++;
 
-        const Vector<T,3> N2 = normals[i][j].getNormalized() * _size;
-        (*ptr).x = p[i][j][0][0][0] + N2(0);
-        (*ptr).y = p[i][j][0][0][1] + N2(1);
-        (*ptr).z = p[i][j][0][0][2] + N2(2);
+        const Vector<T,3> N2 = normals(i)(j).getNormalized() * _size;
+        (*ptr).x = p(i)(j)(0)(0)(0) + N2(0);
+        (*ptr).y = p(i)(j)(0)(0)(1) + N2(1);
+        (*ptr).z = p(i)(j)(0)(0)(2) + N2(2);
         ptr++;
       }
 
@@ -237,28 +237,28 @@ namespace GMlib {
         // i = 0
         i = 0;
 
-        (*ptr).x = p[i][j][0][0][0];
-        (*ptr).y = p[i][j][0][0][1];
-        (*ptr).z = p[i][j][0][0][2];
+        (*ptr).x = p(i)(j)(0)(0)(0);
+        (*ptr).y = p(i)(j)(0)(0)(1);
+        (*ptr).z = p(i)(j)(0)(0)(2);
         ptr++;
 
-        const Vector<T,3> N1 = normals[i][j].getNormalized() * _size;
-        (*ptr).x = p[i][j][0][0][0] + N1(0);
-        (*ptr).y = p[i][j][0][0][1] + N1(1);
-        (*ptr).z = p[i][j][0][0][2] + N1(2);
+        const Vector<T,3> N1 = normals(i)(j).getNormalized() * _size;
+        (*ptr).x = p(i)(j)(0)(0)(0) + N1(0);
+        (*ptr).y = p(i)(j)(0)(0)(1) + N1(1);
+        (*ptr).z = p(i)(j)(0)(0)(2) + N1(2);
         ptr++;
 
         // j = p.getDim1() -1
         i = p.getDim1() - 1;
-        (*ptr).x = p[i][j][0][0][0];
-        (*ptr).y = p[i][j][0][0][1];
-        (*ptr).z = p[i][j][0][0][2];
+        (*ptr).x = p(i)(j)(0)(0)(0);
+        (*ptr).y = p(i)(j)(0)(0)(1);
+        (*ptr).z = p(i)(j)(0)(0)(2);
         ptr++;
 
-        const Vector<T,3> N2 = normals[i][j].getNormalized() * _size;
-        (*ptr).x = p[i][j][0][0][0] + N2(0);
-        (*ptr).y = p[i][j][0][0][1] + N2(1);
-        (*ptr).z = p[i][j][0][0][2] + N2(2);
+        const Vector<T,3> N2 = normals(i)(j).getNormalized() * _size;
+        (*ptr).x = p(i)(j)(0)(0)(0) + N2(0);
+        (*ptr).y = p(i)(j)(0)(0)(1) + N2(1);
+        (*ptr).z = p(i)(j)(0)(0)(2) + N2(2);
         ptr++;
       }
     }
@@ -269,8 +269,8 @@ namespace GMlib {
 
   template <typename T, int n>
   void PSurfNormalsVisualizer<T,n>::replot(
-    DMatrix< DMatrix< Vector<T, n> > >& p,
-    DMatrix< Vector<T, n> >& normals,
+    const DMatrix< DMatrix< Vector<T, n> > >& p,
+    const DMatrix< Vector<T, n> >& normals,
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     bool /*closed_u*/, bool /*closed_v*/
   ) {

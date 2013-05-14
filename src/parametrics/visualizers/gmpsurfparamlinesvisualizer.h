@@ -42,11 +42,10 @@ namespace GMlib {
 
     void          render( const DisplayObject* obj, const Camera* cam ) const;
 
-    virtual void  replot(
-      DMatrix< DMatrix< Vector<T, n> > >& p,
-      DMatrix< Vector<T, 3> >& normals,
-      int m1, int m2, int d1, int d2,
-      bool closed_u, bool closed_v
+    virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
+                          const DMatrix< Vector<T, 3> >& normals,
+                          int m1, int m2, int d1, int d2,
+                          bool closed_u, bool closed_v
     );
 
   private:

@@ -44,10 +44,8 @@ namespace GMlib {
     void          render(const DisplayObject* obj, const Camera *cam) const;
     void          renderGeometry(const GL::AttributeLocation& attrib_loc) const;
 
-    virtual void  replot(
-      DVector< DVector< Vector<T, n> > >& p,
-      int m, int d, bool closed
-    );
+    virtual void  replot( const DVector< DVector< Vector<T, n> > >& p,
+                          int m, int d, bool closed );
 
   protected:
     GL::VertexBufferObject    _vbo;

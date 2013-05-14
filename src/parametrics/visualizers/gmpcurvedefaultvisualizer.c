@@ -64,10 +64,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::replot(
-    DVector< DVector< Vector<T, n> > >& p,
-    int /*m*/, int /*d*/, bool /*closed*/
-  ) {
+  void PCurveDefaultVisualizer<T,n>::replot( const DVector< DVector< Vector<T, n> > >& p,
+                                             int /*m*/, int /*d*/, bool /*closed*/ ) {
 
     PCurveVisualizer<T,n>::fillStandardVBO( _vbo, p, _no_vertices );
   }

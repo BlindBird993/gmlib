@@ -51,10 +51,8 @@ namespace GMlib {
     PCurveVisualizer();
     virtual ~PCurveVisualizer();
 
-    virtual void  replot(
-      DVector< DVector< Vector<T, n> > >& p,
-      int m, int d, bool closed
-    );
+    virtual void  replot( const DVector< DVector< Vector<T, n> > >& p,
+                          int m, int d, bool closed );
 
     static void   fillStandardVBO( GL::VertexBufferObject& vbo,
                                    const DVector< DVector< Vector<T, n> > >& p,

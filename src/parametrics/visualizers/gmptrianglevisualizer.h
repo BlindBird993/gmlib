@@ -66,9 +66,7 @@ namespace GMlib {
     PTriangleVisualizer();
     virtual ~PTriangleVisualizer();
 
-    virtual void    replot(
-      const DVector< DVector< Vector<T,n> > >& p,int m
-    );
+    virtual void    replot( const DVector< DVector< Vector<T,n> > >& p,int m );
 
     static void     fillStandardVBO( GL::VertexBufferObject vbo, const DVector< DVector< Vector<T,n> > >& p );
     static void     fillTriangleIBO( GL::IndexBufferObject ibo, int m );

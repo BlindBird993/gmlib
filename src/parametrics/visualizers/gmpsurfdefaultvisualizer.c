@@ -114,15 +114,15 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void PSurfDefaultVisualizer<T,n>::replot(
-    DMatrix< DMatrix< Vector<T, n> > >& p,
-    DMatrix< Vector<T, 3> >& /*normals*/,
+    const DMatrix< DMatrix< Vector<T, n> > >& p,
+    const DMatrix< Vector<T, 3> >& normals,
     int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
     bool closed_u, bool closed_v
   ) {
 
     PSurfVisualizer<T,n>::fillStandardVBO( _vbo, p );
     PSurfVisualizer<T,n>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2(), _no_strips, _no_strip_indices, _strip_size );
-    PSurfVisualizer<T,n>::fillNMap( _nmap, p, closed_u, closed_v );
+    PSurfVisualizer<T,n>::fillNMap( _nmap, normals, closed_u, closed_v );
   }
 
   template <typename T, int n>

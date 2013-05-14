@@ -55,18 +55,18 @@ namespace GMlib {
     virtual ~PSurfNormalsVisualizer();
 
     void                              render( const DisplayObject* obj, const Camera* cam ) const;
+    void                              replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
+                                              const DMatrix< Vector<T, n> >& normals,
+                                              int m1, int m2, int d1, int d2,
+                                              bool closed_u, bool closed_v );
 
     const Color&                      getColor() const;
-    GM_SURF_NORMALSVISUALIZER_MODE    getMode() const;
-    double                            getSize() const;
-    void                              replot(
-      DMatrix< DMatrix< Vector<T, n> > >& p,
-      DMatrix< Vector<T, n> >& normals,
-      int m1, int m2, int d1, int d2,
-      bool closed_u, bool closed_v
-    );
     void                              setColor( const Color& color );
+
+    GM_SURF_NORMALSVISUALIZER_MODE    getMode() const;
     void                              setMode( GM_SURF_NORMALSVISUALIZER_MODE mode );
+
+    double                            getSize() const;
     void                              setSize( double size = 1.0 );
 
   protected:
@@ -78,9 +78,9 @@ namespace GMlib {
 
     GM_SURF_NORMALSVISUALIZER_MODE    _mode;
 
-    void                              makePlotAll( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals );
-    void                              makePlotInterior( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals );
-    void                              makePlotBoundary( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals );
+    void                              makePlotAll( const DMatrix< DMatrix< Vector<T, 3> > >& p, const DMatrix< Vector<T, 3> >& normals );
+    void                              makePlotInterior( const DMatrix< DMatrix< Vector<T, 3> > >& p, const DMatrix< Vector<T, 3> >& normals );
+    void                              makePlotBoundary( const DMatrix< DMatrix< Vector<T, 3> > >& p, const DMatrix< Vector<T, 3> >& normals );
 
 
   };
