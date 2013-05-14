@@ -141,7 +141,9 @@ const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	complex* vec = (complex*)(&b(0));
 	for(int i=0;i<m.getDim1();i++)
 	{
-		r[i] = *reinterpret_cast<std::complex<float>*>(&cdotu(m.getDim2(), (complex*)(&m(i)(0)), 1, vec, 1));
+        static complex tmp;
+        tmp = cdotu(m.getDim2(), (complex*)(&m(i)(0)), 1, vec, 1);
+        r[i] = *reinterpret_cast<std::complex<float>*>(&tmp);
 	}
 	return r;
 }
@@ -157,7 +159,9 @@ const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	doublecomplex* vec = (doublecomplex*)(&b(0));
 	for(int i=0;i<m.getDim1();i++)
 	{
-		r[i] = *reinterpret_cast<std::complex<double>*>(&zdotu(m.getDim2(), (doublecomplex*)(&m(i)(0)), 1, vec, 1));
+        static doublecomplex tmp;
+        tmp = zdotu(m.getDim2(), (doublecomplex*)(&m(i)(0)), 1, vec, 1);
+        r[i] = *reinterpret_cast<std::complex<double>*>(&tmp);
 	}
 	return r;
 }
