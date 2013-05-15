@@ -37,8 +37,10 @@ namespace GMlib {
 
   template <typename T, int n>
   class PSurfParamLinesVisualizer : public PSurfVisualizer<T,n> {
+    GM_VISUALIZER(PSurfParamLinesVisualizer)
   public:
     PSurfParamLinesVisualizer();
+    PSurfParamLinesVisualizer( const PSurfParamLinesVisualizer<T,n>& copy );
 
     void          render( const DisplayObject* obj, const Camera* cam ) const;
 
@@ -56,12 +58,11 @@ namespace GMlib {
     GL::Texture                 _ptex_u, _ptex_v;
     GL::Texture                 _ptex;
 
-    Material                    _mat;
-    Material                    _mat_line;
-
     GLuint                      _no_strips;
     GLuint                      _no_strip_indices;
     GLsizei                     _strip_size;
+
+    Material                    _mat;
 
     void                        draw() const;
     void                        generatePTex( int m1, int m2, int s1, int s2, bool closed_u, bool closed_v );

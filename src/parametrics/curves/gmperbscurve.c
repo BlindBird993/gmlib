@@ -28,6 +28,9 @@
  */
 
 
+#include "gmperbscurve.h"
+
+
 #include "gmparc.h"
 #include "gmpbeziercurve.h"
 #include "gmpsubcurve.h"
@@ -147,29 +150,28 @@ namespace GMlib {
     if( bezier )
       bezier->updateCoeffs( _c[i]->getPos() - _c[i]->evaluate(_t[i],0)[0]);
 
-    PCurve<T,3>::replot(0);
+    replot();
   }
 
 
   template <typename T>
   void PERBSCurve<T>::eval( T t, int d, bool l )
   {
+
+    int k;
     if( _resamp_mode == GM_RESAMPLE_PREEVAL ){
-      int it = findIndex(t);
-      compEval(t, d, _tk[it], _B[it]);
-    } else {
-      int k;
-      for( k = 1; k < _t.getDim()-2; k++ ) if( t < _t[k+1] ) break;
-      DVector<T> B;
-      getB( B, k, t, d );
-      compEval(t, d, k, B);
+
+      // Find knot
+      k = findIndex(t);
     }
-  }
+    else {
 
+      // Find knot
+      for( k = 1; k < _t.getDim()-2; ++k ) if( t < _t[k+1] ) break;
 
-  template <typename T>
-  inline
-  void PERBSCurve<T>::compEval( T t, int d, int k, const DVector<T>& B ) {
+      // If right-evaluation, find first knot
+      if(!l) while( std::abs( _t[k] - _t[k-1] ) < 1e-5 ) --k;
+    }
 
     // Evaluating first Local Curve @ (t-_t[k-1])/(_t[k+1]-_t[k-1])
     DVector< Vector<T,3> > c0 = _c[k-1]->evaluateParent(
@@ -178,9 +180,26 @@ namespace GMlib {
     // If t == _t[k], the sample is at the knot, set the values to the values of the first local curve.
     if( std::abs(t - _t[k]) < 1e-5 ) { this->_p = c0; return; }
 
+
     // Evaluating second Local Curve @ (t-_t[k])/(_t[k+2]-_t[k)
     DVector< Vector<T,3> > c1 = _c[k]->evaluateParent(
                                 _c[k]->getLocalMapping(t,_t[k],_t[k+2]), d);
+
+
+    // Blend c0 and c1
+    if( _resamp_mode == GM_RESAMPLE_PREEVAL )
+      compBlend( d, _B[k], c0, c1 );
+    else {
+
+      DVector<T> B;
+      getB(B, k, t, d );
+      compBlend( d, B, c0, c1 );
+    }
+  }
+
+  template <typename T>
+  void PERBSCurve<T>::compBlend(int d, const DVector<T>& B, DVector<Vector<T,3> >& c0, DVector<Vector<T,3> >& c1) {
+
     c0 -= c1;
 
     DVector<T> a(d+1);
@@ -213,8 +232,7 @@ namespace GMlib {
     B.setDim(d+1);
     _evaluator->set( _t[k], _t[k+1] - _t[k] );
     B[0] = 1 - (*_evaluator)(t);
-    switch(d)
-    {
+    switch(d) {
       case 3: B[3] = T(0);
       case 2: B[2] = - _evaluator->getDer2();
       case 1: B[1] = - _evaluator->getDer1();
@@ -232,7 +250,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  DVector< PCurve<T,3>* >& PERBSCurve<T>::getLocalPatches() {
+  DVector< PCurve<T,3>* >& PERBSCurve<T>::getLocalCurves() {
 
     return _c;
   }
@@ -240,7 +258,15 @@ namespace GMlib {
 
   template <typename T>
   inline
-  int PERBSCurve<T>::getNoLocalPatches() const {
+  const DVector< PCurve<T,3>* >& PERBSCurve<T>::getLocalCurves() const {
+
+    return _c;
+  }
+
+
+  template <typename T>
+  inline
+  int PERBSCurve<T>::getNoLocalCurves() const {
 
     return _c.getDim();
   }
@@ -282,6 +308,10 @@ namespace GMlib {
   template <typename T>
   void PERBSCurve<T>::init()
   {
+
+    _no_sam           = 20;
+    _no_der           = 1;
+
     _evaluator = new ERBSEvaluator<long double>();
 
     _resamp_mode = GM_RESAMPLE_PREEVAL;
@@ -418,6 +448,137 @@ namespace GMlib {
       _t[0]   = _t[1];
       _t[n+1] = _t[n];
     }
+  }
+
+  template <typename T>
+  inline
+  void PERBSCurve<T>::splitKnot(int tk) {
+
+    // Return if knot does not exist
+    if( tk >= _c.getDim() )
+      return;
+
+    // expand knot vector
+    _t.insert( tk+1, _t(tk+1) );
+
+    // expand local curves
+    PCurve<T,3> *split_curve = static_cast<PCurve<T,3>*>(_c(tk)->makeCopy());
+    _c.insert( tk, split_curve );
+    insertLocal( split_curve );
+
+    /*!
+     *  Scale domain of splited curves
+     *
+     *  \todo Does this scaling handle multiple knot splits to the "same" knot ?
+     */
+    split_curve->setDomain( T(0), T(0.5) );
+    _c(tk)->setDomain( T(0.5), T(1) );
+  }
+
+  template <typename T>
+  void PERBSCurve<T>::insertVisualizer(Visualizer* visualizer)  {
+
+    PCurveVisualizer<T,3> *visu = dynamic_cast<PCurveVisualizer<T,3>*>( visualizer );
+    if( !visu ) {
+
+      PCurve<T,3>::insertVisualizer( visualizer );
+      return;
+    }
+
+    if( _pv.exist( visu ) )
+      return;
+
+    _pv += visu;
+  }
+
+  template <typename T>
+  void PERBSCurve<T>::removeVisualizer(Visualizer* visualizer) {
+
+    PCurveVisualizer<T,3> *visu = dynamic_cast<PCurveVisualizer<T,3>*>( visualizer );
+    if( !visu ) {
+
+      PCurve<T,3>::removeVisualizer( visualizer );
+      return;
+    }
+
+    if( !_pv.exist( visu ) )
+      return;
+
+    _pv.remove(visu);
+  }
+
+  template <typename T>
+  void PERBSCurve<T>::replot(int m, int d)  {
+
+
+
+    // Correct sample domain
+    if( m < 2 )       m = _no_sam;
+    else        _no_sam = m;
+
+    // Correct derivatives
+    if( d < 1 )       d = _no_der;
+    else        _no_der = d;
+
+
+    // pre-sampel / pre evaluate data for a given parametric curve, if wanted/needed
+    preSample( m, d, getStartP(), getEndP() );
+
+    // Predict number of "visualizer"-segments
+    DVector< Vector<float,2> > ps(0);
+    float prev_ppos = _t[1];
+    for( int i = 2; i < _t.getDim()-2; ++i ) {
+      if( std::abs( _t[i] - _t[i-1] ) <  1e-5 ) {
+
+        ps.append( Vector<float,2>( prev_ppos, _t[i-1]) );
+        prev_ppos = _t[i-1];
+      }
+    }
+    ps.append( Vector<float,2>(prev_ppos,_t[_t.getDim()-2]) );
+
+    // Clean up
+    for( int i = 0; i < _pvi.getDim(); ++i )
+      for( int j = 0; j < _pvi[i].visus.getSize(); ++j )
+        PCurve<T,3>::removeVisualizer( _pvi[i].visus[j] );
+
+    if( _pvi.getDim() != ps.getDim() )
+      _pvi.resetDim( ps.getDim() );
+
+    // Insert new visualizers and replot
+    Sphere<T,3>  s;
+    DVector< DVector< Vector<T,3> > > p;
+    for( int i = 0; i < _pvi.getDim(); ++i ) {
+
+      // Update sub-visualizer set
+      _pvi[i].updateVisualizerSet(_pv);
+      _pvi[i].segment = ps[i];
+
+      // Get visualizer and domain of i-th sub-visualizer set
+      const Array< PCurveVisualizer<T,3>* > &sub_visus  = _pvi[i].visus;
+      const Vector<float,2>                 &segment     = _pvi[i].segment;
+
+      for( int j = 0; j < sub_visus.getSize(); ++j )
+        PCurve<T,3>::insertVisualizer( sub_visus(j) );
+
+      // Resample i-th segment
+      this->resample( p, m, d, segment(0), segment(1) );
+
+      // Replot visualizers of i-th segment
+      for( int j = 0; j < sub_visus.getSize(); ++j )
+        sub_visus(j)->replot( p, m, d, (_pvi.getDim() == 1) && isClosed() );
+
+      // Surrounding sphere
+      if( i == 0 )
+        s.resetPos( p(0)(0) );
+      else
+        s += p(0)(0);
+      s += p(p.getDim() - 1)(0);
+      for( int j = p.getDim() - 2; j > 0; j-- )
+        s += p(j)(0);
+    }
+
+    // Set surrounding sphere
+    Parametrics<T,1,3>::setSurroundingSphere( s.template toType<float>() );
   }
 
 

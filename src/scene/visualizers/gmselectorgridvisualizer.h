@@ -42,6 +42,7 @@ namespace GMlib {
 
   template <typename T>
   class SelectorGridVisualizer : public Visualizer {
+    GM_VISUALIZER(SelectorGridVisualizer)
   public:
     SelectorGridVisualizer();
 

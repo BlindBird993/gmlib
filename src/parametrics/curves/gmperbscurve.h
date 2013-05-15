@@ -40,6 +40,29 @@ namespace GMlib {
 
 
   template <typename T>
+  class PCurveVisualizerSet {
+  public:
+    PCurveVisualizerSet() {}
+    PCurveVisualizerSet( const Array<PCurveVisualizer<T,3>*>& skel ) { updateVisualizerSet(skel); }
+
+    void    updateVisualizerSet( const Array<PCurveVisualizer<T,3>*>& skel ) {
+
+      // Delete visualizers
+      for( int i = 0; i < visus.getSize(); ++i )
+        delete visus[i];
+      visus.clear();
+
+      // Create new ones
+      for( int i = 0; i < skel.getSize(); ++i )
+        visus += static_cast<PCurveVisualizer<T,3>*>(skel(i)->makeCopy());
+    }
+
+    Array< PCurveVisualizer<T,3>* >    visus;
+    Vector<float,2>                    segment;
+  };
+
+
+  template <typename T>
   class PERBSCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PERBSCurve)
   public:
@@ -55,19 +78,30 @@ namespace GMlib {
     PERBSCurve( const PERBSCurve<T>& copy );
     virtual ~PERBSCurve();
 
-    void                            edit( SceneObject *obj );
-    DVector< PCurve<T,3>* >&        getLocalPatches();
-    int                             getNoLocalPatches() const;
     void                            setResampleMode( GM_RESAMPLE_MODE mode );
 
+    // Local curves
+    DVector< PCurve<T,3>* >&        getLocalCurves();
+    const DVector< PCurve<T,3>* >&  getLocalCurves() const;
+    int                             getNoLocalCurves() const;
     virtual void                    hideLocalCurves();
     virtual void                    showLocalCurves();
     virtual void                    toggleLocalCurves();
     bool                            isLocalCurvesVisible() const;
 
-    // virual functions from PSurf
+    // Knot insertion
+    void                            splitKnot( int tk );
+
+
+    // virtual functions from DO/PCurve
+    void                            insertVisualizer( Visualizer* visualizer );
+    void                            removeVisualizer(Visualizer *visualizer);
+
+    // virtual functions from PCurve
+    void                            edit( SceneObject *obj );
     bool                            isClosed() const;
     void                            preSample( int m, int d, T start, T end );
+    void                            replot(int m = 0, int d = 0);
 
   protected:
     bool                            _closed;
@@ -92,8 +126,15 @@ namespace GMlib {
     void                            getB( DVector<T>& B, int tk, T t, int d );
 
   private:
+    Array<PCurveVisualizer<T,3>*>   _pv;
+    DVector<PCurveVisualizerSet<T> > _pvi;
+
+    int                             _no_sam;
+    int                             _no_der;
+
     // Local help functions
-    void                            compEval( T t, int d, int k, const DVector<T>& B );
+    void                            compBlend( int d, const DVector<T>& B,
+                                               DVector< Vector<T,3> >& c0, DVector< Vector<T,3> >& c1);
     void                            generateKnotVector( PCurve<T,3>* g, int n );
     virtual void                    init();
     void                            insertLocal( PCurve<T,3> *patch );

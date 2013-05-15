@@ -502,6 +502,8 @@ namespace GMlib {
   inline
   void PCurve<T,n>::resample( DVector< DVector< Vector<T,n> > >& p, int m, int d, T start, T end ) {
 
+    p.setDim(m);
+
     T du = (end-start)/(m-1);
     p.setDim(m);
 
@@ -510,7 +512,7 @@ namespace GMlib {
       eval( start + i * du, d, true);
       p[i] = _p;
     }
-    eval( end, d, true );
+    eval( end, d, false );
     p[m-1] = _p;
 
 

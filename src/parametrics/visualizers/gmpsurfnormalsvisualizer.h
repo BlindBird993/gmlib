@@ -50,9 +50,10 @@ namespace GMlib {
 
   template <typename T, int n>
   class PSurfNormalsVisualizer : public PSurfVisualizer<T,n> {
+    GM_VISUALIZER(PSurfNormalsVisualizer)
   public:
     PSurfNormalsVisualizer();
-    virtual ~PSurfNormalsVisualizer();
+    PSurfNormalsVisualizer( const PSurfNormalsVisualizer<T,n>& copy );
 
     void                              render( const DisplayObject* obj, const Camera* cam ) const;
     void                              replot( const DMatrix< DMatrix< Vector<T, n> > >& p,

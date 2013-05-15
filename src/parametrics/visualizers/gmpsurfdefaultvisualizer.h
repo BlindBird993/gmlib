@@ -45,8 +45,10 @@ namespace GMlib {
 
   template <typename T, int n>
   class PSurfDefaultVisualizer : public PSurfVisualizer<T,n> {
+    GM_VISUALIZER(PSurfDefaultVisualizer)
   public:
     PSurfDefaultVisualizer();
+    PSurfDefaultVisualizer( const PSurfDefaultVisualizer<T,n>& copy );
 
     void          render( const DisplayObject* obj, const Camera* cam ) const;
     void          renderGeometry( const GL::AttributeLocation& vert_loc ) const;

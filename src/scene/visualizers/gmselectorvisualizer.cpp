@@ -53,8 +53,6 @@ namespace GMlib {
     makeGeometry( r, m1, m2 );
   }
 
-  SelectorVisualizer::~SelectorVisualizer() {}
-
   void SelectorVisualizer::render(const DisplayObject* obj, const Camera *cam) const {
 
     const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);

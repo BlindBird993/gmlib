@@ -161,7 +161,7 @@ namespace GMlib {
     if(i>0)
     {
       int k, m  = _n + i;
-      T* tmp = (m>4 ? new DVector<T>[m] : _init);
+      DVector<T>* tmp = (m>4 ? new DVector<T>[m] : _init);
       if(v_end)
       {
         if(m>4) for (k=0; k<_n; k++)

@@ -28,6 +28,9 @@
  */
 
 
+#include "gmperbssurf.h"
+
+
 namespace GMlib {
 
   /*! PERBSSurf<T>::PERBSSurf()
@@ -475,7 +478,7 @@ namespace GMlib {
     if( bezier )
       bezier->updateCoeffs( _c[i][j]->getPos() - _c[i][j]->evaluate( 0.5, 0.5, 0, 0 )[0][0] );
 
-    PSurf<T,3>::replot(0,0);
+    replot();
   }
 
 
@@ -490,19 +493,25 @@ namespace GMlib {
       return;
     }
 
+//    std::cout << "ERBSSurf eval (" << u << "," << v << ") ";
 
     // Find Knot Indices u_k and v_k
     int uk, vk;
-    for( uk = 1; uk < _u.getDim()-2; uk++ ) if( u < _u[uk+1] ) break;
-    for( vk = 1; vk < _v.getDim()-2; vk++ ) if( v < _v[vk+1] ) break;
+    for( uk = 1; uk < _u.getDim()-2; ++uk ) if( u < _u[uk+1] ) break;
+    for( vk = 1; vk < _v.getDim()-2; ++vk ) if( v < _v[vk+1] ) break;
+
+    // If right-evaluation, find first knot
+    if(!lu) while( std::abs( _u[uk] - _u[uk-1] ) < 1e-5 ) --uk;
+    if(!lv) while( std::abs( _v[vk] - _v[vk-1] ) < 1e-5 ) --vk;
 
 
     // Get result of inner loop for first patch in v
     DMatrix< Vector<T,3> > s0 = getC( u, v, uk, vk, d1, d2 );
 
     // If placed on a knot, return only first patch result
-    if( std::fabs(v - _v[vk]) < 1e-5 ) {
+    if( std::abs(v - _v[vk]) < 1e-5 ) {
       this->_p = s0;
+//      std::cout << "_p[0][0]: " << this->_p[0][0] << "  (knot)" << std::endl;
       return;
     }
     // Blend Patches
@@ -531,13 +540,14 @@ namespace GMlib {
       s1.transpose();
 
       this->_p = s1;
+//      std::cout << "_p[0][0]: " << this->_p[0][0] << std::endl;
     }
   }
 
 
   template <typename T>
   inline
-  void PERBSSurf<T>::evalPre( T u, T v, int /*d1*/, int /*d2*/, bool /*lu*/, bool /*lv*/ ) {
+  void PERBSSurf<T>::evalPre( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     // Find the u/v index for the preevaluated data.
     int iu, iv;
@@ -552,10 +562,10 @@ namespace GMlib {
 
 
     // Get result of inner loop for first patch in v
-    DMatrix< Vector<T,3> > s0 = getCPre( u, v, uk, vk, 2, 2, iu, iv );
+    DMatrix< Vector<T,3> > s0 = getCPre( u, v, uk, vk, d1, d2, iu, iv );
 
     // If placed on a knot return only first patch result
-    if( std::fabs(v - _v[vk]) < 1e-5 ) {
+    if( std::abs(v - _v[vk]) < 1e-5 ) {
       this->_p = s0;
       return;
     }
@@ -563,7 +573,7 @@ namespace GMlib {
     else {
 
       // Get result of inner loop for second patch in v
-      DMatrix< Vector<T,3> > s1 = getCPre( u, v, uk, vk+1, 2, 2, iu, iv );
+      DMatrix< Vector<T,3> > s1 = getCPre( u, v, uk, vk+1, d1, d2, iu, iv );
 
       // Evaluate ERBS-basis in v direction
       const DVector<T> &B = _Bv[iu][iv];
@@ -733,7 +743,7 @@ namespace GMlib {
     DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lm(0), lm(1), du, dv );
 
     // If on a interpolation point return only first patch evaluation
-    if( std::fabs(u - _u[uk]) < 1e-5 )
+    if( std::abs(u - _u[uk]) < 1e-5 )
       return c0;
 
 
@@ -789,7 +799,7 @@ namespace GMlib {
     DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lm(0), lm(1), du, dv );
 
     // If on a interpolation point return only first patch evaluation
-    if( std::fabs(u - _u[uk]) < 1e-5 )
+    if( std::abs(u - _u[uk]) < 1e-5 )
       return c0;
 
     // Select next local patch in u direction
@@ -937,6 +947,11 @@ namespace GMlib {
   inline
   void PERBSSurf<T>::init() {
 
+    _no_sam_u                       = 20;
+    _no_sam_v                       = 20;
+    _no_der_u                       = 1;
+    _no_der_v                       = 1;
+
     _evaluator = ERBSEvaluator<long double>::getInstance();
     _resamp_mode = GM_RESAMPLE_PREEVAL;
     _pre_eval = true;
@@ -1069,11 +1084,11 @@ namespace GMlib {
         _vk[i][j] = vk;
 
         // Evaluate ERBS basis in u direction
-        if( !(std::fabs(u - _u[uk]) < 1e-5) )
+        if( !(std::abs(u - _u[uk]) < 1e-5) )
           getB( _Bu[i][j], _u, uk, u, d1 );
 
         // Evaluate ERBS basis in v direction
-        if( !(std::fabs(v - _v[vk]) < 1e-5) )
+        if( !(std::abs(v - _v[vk]) < 1e-5) )
           getB( _Bv[i][j], _v, vk, v, d2 );
       }
     }
@@ -1117,6 +1132,363 @@ namespace GMlib {
     for( int i = 0; i < _c.getDim1(); i++ )
       for( int j = 0; j < _c.getDim2(); j++ )
         _c[i][i]->toggleVisible();
+  }
+
+  template <typename T>
+  void PERBSSurf<T>::insertVisualizer(Visualizer* visualizer) {
+
+
+    PSurfVisualizer<T,3> *visu = dynamic_cast<PSurfVisualizer<T,3>*>( visualizer );
+    if( !visu ) {
+
+      PSurf<T,3>::insertVisualizer( visualizer );
+      return;
+    }
+
+    if( _pv.exist( visu ) )
+      return;
+
+    _pv += visu;
+  }
+
+  template <typename T>
+  void PERBSSurf<T>::removeVisualizer(Visualizer* visualizer) {
+
+    PSurfVisualizer<T,3> *visu = dynamic_cast<PSurfVisualizer<T,3>*>( visualizer );
+    if( !visu ) {
+
+      PSurf<T,3>::removeVisualizer( visualizer );
+      return;
+    }
+
+    if( !_pv.exist(visu) )
+      return;
+
+    _pv.remove(visu);
+  }
+
+  template <typename T>
+  void PERBSSurf<T>::replot(int m1, int m2, int d1, int d2) {
+
+
+
+    // Correct sample domain
+    if( m1 < 2 )
+      m1 = _no_sam_u;
+    else
+      _no_sam_u = m1;
+
+    if( m2 < 2 )
+      m2 = _no_sam_v;
+    else
+      _no_sam_v = m2;
+
+    // Correct derivatives
+    if( d1 < 1 )
+      d1 = _no_der_u;
+    else
+      _no_der_u = d1;
+
+    if( d2 < 1 )
+      d2 = _no_der_v;
+    else
+      _no_der_v = d2;
+
+
+
+    // pre-sampel / pre evaluate data for a given parametric surface, if wanted/needed
+    preSample(
+      m1, m2, d1, d2,
+      getStartPU(),
+      getStartPV(),
+      getEndPU(),
+      getEndPV()
+    );
+
+
+    // Predict number of "visualizer"-segments u/v
+    // u
+    DVector< Vector<float,2> > u_ps(0);
+    float u_pos = _u[1];
+    for( int i = 2; i < _u.getDim()-2; ++i ) {
+      if( std::abs( _u[i] - _u[i-1] ) <  1e-5 ) {
+
+        u_ps.append( Vector<float,2>( u_pos, _u[i-1]) );
+        u_pos = _u[i-1];
+      }
+    }
+    u_ps.append( Vector<float,2>(u_pos,_u[_u.getDim()-2]) );
+
+    // v
+    DVector< Vector<float,2> > v_ps(0);
+    float v_pos = _v[1];
+    for( int i = 2; i < _v.getDim()-2; ++i ) {
+      if( std::abs( _v[i] - _v[i-1] ) <  1e-5 ) {
+
+        v_ps.append( Vector<float,2>( v_pos, _v[i-1]) );
+        v_pos = _v[i-1];
+      }
+    }
+    v_ps.append( Vector<float,2>(v_pos,_v[_v.getDim()-2]) );
+
+
+    // Clean up "visualizers"
+    for( int i = 0; i < _pvi.getDim1(); ++i )
+    for( int j = 0; j < _pvi.getDim2(); ++j )
+      for( int k = 0; k < _pvi[i][j].visus.getSize(); ++k )
+        PSurf<T,3>::removeVisualizer( _pvi[i][j].visus[k] );
+
+    if( _pvi.getDim1() != u_ps.getDim() || _pvi.getDim2() != v_ps.getDim() )
+      _pvi.resetDim( u_ps.getDim(), v_ps.getDim() );
+
+
+    // Insert new visualizers and replot
+    Sphere<T,3>  s;
+    DMatrix< DMatrix< Vector<T,3> > > p;
+    DMatrix< Vector<T,3> > normals;
+    for( int i = 0; i < _pvi.getDim1(); ++i ) {
+      for( int j = 0; j < _pvi.getDim2(); ++j ) {
+
+        // Update sub-visualizer set
+        _pvi[i][j].updateVisualizerSet(_pv);
+        _pvi[i][j].seg_u = u_ps[i];
+        _pvi[i][j].seg_v = v_ps[j];
+
+
+        // Get visualizer and domain of (i,j)-th sub-visualizer set
+        const Array< PSurfVisualizer<T,3>* >  &sub_visus  = _pvi[i][j].visus;
+        const Vector<float,2>                 &seg_u      = _pvi[i][j].seg_u;
+        const Vector<float,2>                 &seg_v      = _pvi[i][j].seg_v;
+
+        // Insert visualizers
+        for( int k = 0; k < sub_visus.getSize(); ++k )
+          PSurf<T,3>::insertVisualizer( sub_visus(k) );
+
+        // Resample (i,j)-th segment
+        this->resample( p, m1, m2, d1, d2,
+                  seg_u(0), seg_v(0),
+                  seg_u(1), seg_v(1) );
+
+        // Resample normals for (i,j)-th segment
+        this->resampleNormals( p, normals );
+
+        // Replot visualizers of (i,j)-th segment
+        for( int k = 0; k < sub_visus.getSize(); ++k )
+          sub_visus(k)->replot( p, normals, m1, m2, d1, d2,
+                                (_pvi.getDim1() == 1) && isClosedU(),
+                                (_pvi.getDim2() == 1) && isClosedV() );
+
+        // Surrounding sphere
+        if( i == 0 && j == 0 )
+          s.resetPos( p(0)(0)(0)(0) );
+        else
+          s += p(0)(0)(0)(0);
+
+        s += Point<T,3>( p( p.getDim1()-1 )( p.getDim2()-1 )(0)(0) );
+        s += Point<T,3>( p( p.getDim1()/2 )( p.getDim2()/2 )(0)(0) );
+        s += Point<T,3>( p( p.getDim1()-1 )( 0             )(0)(0) );
+        s += Point<T,3>( p( 0             )( p.getDim2()-1 )(0)(0) );
+        s += Point<T,3>( p( p.getDim1()-1 )( p.getDim2()/2 )(0)(0) );
+        s += Point<T,3>( p( p.getDim1()/2 )( p.getDim2()-1 )(0)(0) );
+        s += Point<T,3>( p( 0             )( p.getDim2()/2 )(0)(0) );
+        s += Point<T,3>( p( p.getDim1()/2 )( 0             )(0)(0) );
+      }
+    }
+
+
+    // Set surrounding sphere
+    Parametrics<T,2,3>::setSurroundingSphere( s.template toType<float>() );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    // Correct sample domain
+//    if( m1 < 2 )
+//      m1 = _no_sam_u;
+//    else
+//      _no_sam_u = m1;
+
+//    if( m2 < 2 )
+//      m2 = _no_sam_v;
+//    else
+//      _no_sam_v = m2;
+
+//    // Correct derivatives
+//    if( d1 < 1 )
+//      d1 = _no_der_u;
+//    else
+//      _no_der_u = d1;
+
+//    if( d2 < 1 )
+//      d2 = _no_der_v;
+//    else
+//      _no_der_v = d2;
+
+
+//    // pre-sampel / pre evaluate data for a given parametric surface, if wanted/needed
+//    preSample(
+//      m1, m2, d1, d2,
+//      getStartPU(),
+//      getStartPV(),
+//      getEndPU(),
+//      getEndPV()
+//    );
+
+
+//    // Sample Positions and related Derivatives
+//    DMatrix< DMatrix< Vector<T,n> > > p;
+//    resample(
+//      p, m1, m2, d1, d2,
+//      getStartPU(),
+//      getStartPV(),
+//      getEndPU(),
+//      getEndPV()
+//    );
+
+//    // Sample Normals
+//    DMatrix< Vector<T,n> > normals;
+//    resampleNormals( p, normals );
+
+//    // Set The Surrounding Sphere
+//    setSurroundingSphere( p );
+
+//    // Replot Visaulizers
+//    for( int i = 0; i < this->_psurf_visualizers.getSize(); i++ )
+    //      this->_psurf_visualizers[i]->replot( p, normals, m1, m2, d1, d2, isClosedU(), isClosedV() );
+  }
+
+  template <typename T>
+  void PERBSSurf<T>::splitKnot(int uk, int vk)  {
+
+    if( uk > _c.getDim1() || uk < 0 || vk > _c.getDim2() || vk < 0 )
+      return;
+
+    //// expand knot vectors
+    _u.insert( uk+1, _u(uk+1) );
+    _v.insert( vk+1, _v(vk+1) );
+
+    //// expand local patches
+//    std::cout << " _c: " << _c << std::endl;
+
+
+
+    DMatrix< PSurf<T,3>* > c( _c.getDim1()+1, _c.getDim2()+1, static_cast<PSurf<T,3>*>(0x0) );
+//    std::cout << " c after initializtion: " << c << std::endl;
+
+    // lower quadrant
+    for( int i = 0; i < uk; ++i )
+      for( int j = 0; j < vk; ++j )
+        c[i][j] = _c[i][j];
+
+    // u
+    for( int i = uk+1; i < c.getDim1(); ++i )
+      for( int j = 0; j < vk; ++j )
+        c[i][j] = _c[i-1][j];
+
+    // v
+    for( int i = 0; i < uk; ++i )
+      for( int j = vk+1; j < c.getDim2(); ++j )
+        c[i][j] = _c[i][j-1];
+
+    for( int i = uk+1; i < c.getDim1(); ++i )
+      for( int j = vk+1; j < c.getDim2(); ++j )
+        c[i][j] = _c[i-1][j-1];
+
+//    std::cout << " c after locals move: " << c << std::endl;
+
+    // u lower
+    PSurf<T,3> *op, *np;
+    for( int j = 0; j < vk; ++j ) {
+      op = c[uk+1][j];
+      np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+      c[uk][j] = np;
+      insertPatch( np );
+
+      np->setDomainU( T(0), T(0.5) );
+      op->setDomainU( T(0.5), T(1) );
+    }
+
+    // u upper
+    for( int j = vk+2; j < c.getDim2(); ++j ) {
+      op = c[uk+1][j];
+      np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+      c[uk][j] = np;
+      insertPatch( np );
+
+      np->setDomainU( T(0), T(0.5) );
+      op->setDomainU( T(0.5), T(1) );
+    }
+
+    // v lower
+    for( int i = 0; i < uk; ++i ) {
+      op = c[i][vk+1];
+      np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+      c[i][vk] = np;
+      insertPatch( np );
+
+      np->setDomainV( T(0), T(0.5) );
+      op->setDomainV( T(0.5), T(1) );
+    }
+
+    // v upper
+    for( int i = uk+2; i < c.getDim1(); ++i ) {
+      op = c[i][vk+1];
+      np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+      c[i][vk] = np;
+      insertPatch( np );
+
+      np->setDomainV( T(0), T(0.5) );
+      op->setDomainV( T(0.5), T(1) );
+    }
+
+    // Center block
+    op = c[uk+1][vk+1];
+
+    np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+    c[uk][vk] = np;
+    insertPatch( np );
+    np->setDomainU( T(0), T(0.5) );
+    np->setDomainV( T(0), T(0.5) );
+
+    np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+    c[uk+1][vk] = np;
+    insertPatch( np );
+    np->setDomainU( T(0.5), T(1) );
+    np->setDomainV( T(0), T(0.5) );
+
+    np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+    c[uk][vk+1] = np;
+    insertPatch( np );
+    np->setDomainU( T(0), T(0.5) );
+    np->setDomainV( T(0.5), T(1) );
+
+
+    op->setDomainU( T(0.5), T(1) );
+    op->setDomainV( T(0.5), T(1) );
+
+
+    /*!
+     *  Scale domain of splited patches
+     *
+     *  \todo Does this scaling handle multiple knot splits to the "same" knot ?
+     */
+
+
+//    std::cout << " c after locals insert: " << c << std::endl;
+
+
+    _c = c;
   }
 
 

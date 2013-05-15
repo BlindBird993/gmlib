@@ -39,6 +39,17 @@
 #include <string>
 
 
+// Visualizer macros
+#define GM_DECLARE_VISUALIZER_MAKECOPY( CNAME ) \
+  Visualizer* makeCopy() const { \
+    return new CNAME(*this); \
+  }
+
+#define GM_VISUALIZER( CNAME ) \
+  public: \
+    GM_DECLARE_VISUALIZER_MAKECOPY( CNAME ) \
+  private:
+
 
 
 namespace GMlib {
@@ -55,7 +66,8 @@ namespace GMlib {
 
     Visualizer();
     Visualizer( const Visualizer& v );
-    virtual ~Visualizer();
+
+    virtual Visualizer*       makeCopy() const = 0;
 
     virtual void              render( const DisplayObject* obj, const Camera* cam ) const;
     virtual void              renderGeometry( const GL::AttributeLocation& vertice_loc ) const;

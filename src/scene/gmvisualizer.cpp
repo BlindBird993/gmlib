@@ -45,8 +45,6 @@ namespace GMlib {
     : _display_mode(copy._display_mode),
       _render_prog(copy._render_prog), _select_prog(copy._select_prog) {}
 
-  Visualizer::~Visualizer() {}
-
 
   void Visualizer::render( const DisplayObject* /*obj*/, const Camera* /*cam*/ ) const {}
 

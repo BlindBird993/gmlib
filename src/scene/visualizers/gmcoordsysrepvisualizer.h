@@ -33,6 +33,7 @@ namespace GMlib {
   class VisualizerStdRep;
 
   class CoordSysRepVisualizer : public Visualizer {
+    GM_VISUALIZER(CoordSysRepVisualizer)
   public:
     CoordSysRepVisualizer();
 

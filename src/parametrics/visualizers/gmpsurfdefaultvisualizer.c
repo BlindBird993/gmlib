@@ -55,6 +55,15 @@ namespace GMlib {
   }
 
   template <typename T, int n>
+  PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer(const PSurfDefaultVisualizer<T,n>& copy)
+    : PSurfVisualizer<T,n>(copy),
+      _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(),
+      _no_strips(0), _no_strip_indices(0), _strip_size(0) {
+
+    this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
+  }
+
+  template <typename T, int n>
   inline
   void PSurfDefaultVisualizer<T,n>::render( const DisplayObject* obj, const Camera* cam ) const {
 

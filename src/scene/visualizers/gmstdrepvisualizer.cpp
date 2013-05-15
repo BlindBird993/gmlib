@@ -48,8 +48,6 @@ namespace GMlib {
     setRenderProgram( GL::GLProgram( "color" ) );
   }
 
-  VisualizerStdRep::~VisualizerStdRep() {}
-
   void VisualizerStdRep::render( const DisplayObject* obj, const Camera* cam) const {
 
     render( obj->getModelViewMatrix(cam),

@@ -50,7 +50,7 @@ namespace GMlib {
   class PSurfVisualizer : public Visualizer {
   public:
     PSurfVisualizer();
-    virtual ~PSurfVisualizer();
+    PSurfVisualizer( const PSurfVisualizer<T,n>& copy );
 
     virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                           const DMatrix< Vector<T,3> >& normals,

@@ -28,6 +28,9 @@
  */
 
 
+#include "gmdvector.h"
+
+
 // STL includes
 #include <algorithm>
 
@@ -233,7 +236,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  DVector<T>& DVector<T>::getReversed() const {
+  const DVector<T>& DVector<T>::getReversed() const {
     static DVector<T> ret;
     ret.setDim(_n);
     for(int i=0; i<_n; i++)
@@ -249,7 +252,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  DVector<T>& DVector<T>::getSubVector(int start, int end) const {
+  const DVector<T>& DVector<T>::getSubVector(int start, int end) const {
     static DVector<T> ret;
     if(start < 0)	start = 0;
     if(end > _n)		end = _n;
@@ -273,7 +276,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  T& DVector<T>::getSum() const {
+  const T& DVector<T>::getSum() const {
     static T ret;
     ret = T(0);
     for(int i=0; i<_n; i++) ret += _p[i];
@@ -288,7 +291,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  T& DVector<T>::getSum(int start, int end) const {
+  const T& DVector<T>::getSum(int start, int end) const {
     static T ret;
     if(start < 0)	start = 0;
     if(end   > _n)	end = _n;
@@ -473,7 +476,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  Array<T>&	DVector<T>::toArray() const {
+  const Array<T>&	DVector<T>::toArray() const {
     static Array<T> a;
     a.setSize( getDim() );
     for(int i=0; i<_n; i++) a[i] = (*this)(i);
@@ -665,6 +668,26 @@ namespace GMlib {
   inline
   DVector<T>& DVector<T>::operator=(T p[]) {
     _cpy(p); return *this;
+  }
+
+  /*! void DVector<T>::insert(int index, const GMlib::T& val)
+   *
+   *  Insert a new element before the given index.
+   *
+   *  \param[in] index The index which the new element is inserted before
+   *  \param[in] val The value given to the element
+   */
+  template <typename T>
+  void DVector<T>::insert(int index, const T& val)  {
+
+//    std::cout << "  DVector::insert: index = " << index << ", val = " << val << std::endl;
+    // Increase dim and "move"
+    increaseDim(1);
+    for( int i = _n-1; i > index; -- i ) _p[i] = _p[i-1];
+
+    // Set new value
+    _p[index] = val;
+
   }
 
 }

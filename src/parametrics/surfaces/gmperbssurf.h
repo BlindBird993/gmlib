@@ -39,6 +39,32 @@
 namespace GMlib {
 
 
+
+  template <typename T>
+  class PSurfVisualizerSet {
+  public:
+    PSurfVisualizerSet() {}
+    PSurfVisualizerSet( const Array<PSurfVisualizer<T,3>*>& skel ) { updateVisualizerSet(skel); }
+
+    void    updateVisualizerSet( const Array<PSurfVisualizer<T,3>*>& skel ) {
+
+      // Delete visualizers
+      for( int i = 0; i < visus.getSize(); ++i )
+        delete visus[i];
+      visus.clear();
+
+      // Create new ones
+      for( int i = 0; i < skel.getSize(); ++i )
+        visus += static_cast<PSurfVisualizer<T,3>*>(skel(i)->makeCopy());
+    }
+
+    Array< PSurfVisualizer<T,3>* >    visus;
+    Vector<T,2>                       seg_u;
+    Vector<T,2>                       seg_v;
+  };
+
+
+
   template <typename T>
   class PERBSSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PERBSSurf)
@@ -53,10 +79,6 @@ namespace GMlib {
     PERBSSurf( const PERBSSurf<T>& copy );
     virtual ~PERBSSurf();
 
-    void                                edit( SceneObject *obj );
-    bool                                isClosedU() const;
-    bool                                isClosedV() const;
-    void                                preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
 
     void                                generateKnotVector( PSurf<T,3>* g );
     void                                generateKnotVector( PSurf<T,3>* g, T u_s, T u_e, T v_s, T v_e );
@@ -64,6 +86,7 @@ namespace GMlib {
     DVector<T>&                         getKnotsV();
     void                                setResampleMode( GM_RESAMPLE_MODE mode );
 
+    // Local patches
     DMatrix<PSurf<T,3>* >&              getLocalPatches();
     int                                 getNoLocalPatchesU() const;
     int                                 getNoLocalPatchesV() const;
@@ -72,6 +95,19 @@ namespace GMlib {
     virtual void                        showLocalPatches();
     virtual void                        toggleLocalPatches();
 
+    // Knot insertion
+    void                                splitKnot( int uk, int vk );
+
+    // virtual functions from DO/PSurf
+    void                                insertVisualizer( Visualizer* visualizer );
+    void                                removeVisualizer( Visualizer* visualizer );
+
+    // virtual functions from PSurf
+    void                                edit( SceneObject *obj );
+    bool                                isClosedU() const;
+    bool                                isClosedV() const;
+    void                                preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
+    void                                replot(int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0);
 
   protected:
     bool                                _closed_u;
@@ -93,7 +129,7 @@ namespace GMlib {
     GM_RESAMPLE_MODE                    _resamp_mode;
     bool                                _pre_eval;
 
-    DMatrix< PSurf<T,3>* >                _c;
+    DMatrix< PSurf<T,3>* >              _c;
 
     void	                              eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
     void                                evalPre( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
@@ -109,6 +145,16 @@ namespace GMlib {
     virtual void                        init();
     void                                insertPatch( PSurf<T,3> *patch );
     void                                padKnotVector( DVector<T>& kv, bool closed );
+
+  private:
+    int                                 _no_sam_u;    // Number of samples u for single sampling
+    int                                 _no_sam_v;    // Number of samples v for single sampling
+
+    int                                 _no_der_u;    // Number of derivatives u
+    int                                 _no_der_v;    // Number of derivatives u
+
+    Array<PSurfVisualizer<T,3>*>        _pv;
+    DMatrix<PSurfVisualizerSet<T> >     _pvi;
 
   }; // END class PERBSSurf
 

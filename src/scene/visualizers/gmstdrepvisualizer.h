@@ -43,9 +43,9 @@ namespace GMlib {
   class Camera;
 
   class VisualizerStdRep : public Visualizer {
+    GM_VISUALIZER(VisualizerStdRep)
   public:
     VisualizerStdRep();
-    ~VisualizerStdRep();
 
     void              render( const DisplayObject* obj, const Camera* cam ) const;
     void              renderGeometry( const GL::AttributeLocation& vert_loc ) const;

@@ -764,36 +764,36 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  void PSurf<T,n>::resample( DMatrix< DMatrix < Vector<T,n> > >& a,
+  void PSurf<T,n>::resample( DMatrix< DMatrix < Vector<T,n> > >& p,
                            int m1, int m2, int d1, int d2,
                            T s_u, T s_v, T e_u, T e_v ) {
 
     T du = (e_u-s_u)/(m1-1);
     T dv = (e_v-s_v)/(m2-1);
 
-    a.setDim(m1, m2);
+    p.setDim(m1, m2);
 
     for(int i=0; i<m1-1; i++) {
 
       T u = s_u + i*du;
       for(int j=0;j<m2-1;j++) {
 
-        eval(u, s_v + j*dv, d1, d2 );
-        a[i][j] = _p;
+        eval(u, s_v + j*dv, d1, d2, true, true );
+        p[i][j] = _p;
       }
 
-      eval(u, e_v, d1, d2, false, true);
-      a[i][m2-1] = _p;
+      eval(u, e_v, d1, d2, true, false);
+      p[i][m2-1] = _p;
     }
 
     for(int j=0;j<m2-1;j++) {
 
-      eval(e_u, s_v + j*dv, d1, d2, true, false);
-      a[m1-1][j] = _p;
+      eval(e_u, s_v + j*dv, d1, d2, false, true);
+      p[m1-1][j] = _p;
     }
 
-    eval(e_u, e_v, d1, d2, true, true);
-    a[m1-1][m2-1] = _p;
+    eval(e_u, e_v, d1, d2, false, false);
+    p[m1-1][m2-1] = _p;
 
     switch( this->_dm ) {
       case GM_DERIVATION_EXPLICIT:
@@ -804,7 +804,7 @@ namespace GMlib {
 
       case GM_DERIVATION_DD:
       default:
-        _evalDerDD( a, d1, d2, du, dv );
+        _evalDerDD( p, d1, d2, du, dv );
         break;
     }
   }

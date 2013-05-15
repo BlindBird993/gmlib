@@ -31,7 +31,13 @@
 namespace GMlib {
 
   template <typename T, int n>
-  PCurveDefaultVisualizer<T,n>::PCurveDefaultVisualizer() : _vbo(), _no_vertices(0), _line_width(3.0f) {}
+  PCurveDefaultVisualizer<T,n>::PCurveDefaultVisualizer()
+    : _vbo(), _no_vertices(0), _line_width(3.0f) {}
+
+  template <typename T, int n>
+  PCurveDefaultVisualizer<T,n>::PCurveDefaultVisualizer(const PCurveDefaultVisualizer<T,n>& copy)
+    : PCurveVisualizer<T,n>(copy),
+      _vbo(), _no_vertices(0), _line_width(3.0f) {}
 
   template <typename T, int n>
   inline

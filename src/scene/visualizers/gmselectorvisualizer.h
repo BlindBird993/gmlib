@@ -40,10 +40,10 @@ namespace GMlib {
   class Camera;
 
   class SelectorVisualizer: public Visualizer {
+    GM_VISUALIZER(SelectorVisualizer)
   public:
     SelectorVisualizer( float radius = 0.27, Material mat = GMmaterial::Jade );
     SelectorVisualizer( int m1, int m2, float radius = 0.27, Material mat = GMmaterial::Jade );
-    ~SelectorVisualizer();
 
     void                          render( const DisplayObject* obj, const Camera* cam ) const;
     void                          renderGeometry(const GL::AttributeLocation &attrib_loc) const;

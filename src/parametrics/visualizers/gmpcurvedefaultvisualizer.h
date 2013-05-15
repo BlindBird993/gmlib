@@ -38,8 +38,10 @@ namespace GMlib {
 
   template <typename T, int n>
   class PCurveDefaultVisualizer : public PCurveVisualizer<T,n> {
+    GM_VISUALIZER(PCurveDefaultVisualizer)
   public:
     PCurveDefaultVisualizer();
+    PCurveDefaultVisualizer( const PCurveDefaultVisualizer<T,n>& copy );
 
     void          render(const DisplayObject* obj, const Camera *cam) const;
     void          renderGeometry(const GL::AttributeLocation& attrib_loc) const;

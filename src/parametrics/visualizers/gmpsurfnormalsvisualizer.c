@@ -28,6 +28,8 @@
  */
 
 
+#include "gmpsurfnormalsvisualizer.h"
+
 #include <opengl/gmopengl.h>
 #include <opengl/glsl/gmglprogram.h>
 #include <opengl/glsl/gmglshadermanager.h>
@@ -36,18 +38,21 @@
 namespace GMlib {
 
   template <typename T, int n>
-  PSurfNormalsVisualizer<T,n>::PSurfNormalsVisualizer() {
+  PSurfNormalsVisualizer<T,n>::PSurfNormalsVisualizer()
+    : _vbo(), _no_elements(0),
+      _color( GMcolor::Black ), _size(1.0), _mode(GM_SURF_NORMALSVISUALIZER_ALL) {
 
     this->setRenderProgram( GL::GLProgram("color") );
-
-    _color = GMcolor::Black;
-    _size = 1.0;
-
-    _no_elements = 0;
   }
 
   template <typename T, int n>
-  PSurfNormalsVisualizer<T,n>::~PSurfNormalsVisualizer() {}
+  PSurfNormalsVisualizer<T,n>::PSurfNormalsVisualizer(const PSurfNormalsVisualizer<T,n>& copy)
+    : PSurfVisualizer<T,n>(copy),
+      _vbo(), _no_elements(0),
+      _color(copy._color), _size(copy._size), _mode(copy._mode) {
+
+    this->setRenderProgram( GL::GLProgram("color") );
+  }
 
   template <typename T, int n>
   inline
