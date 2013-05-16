@@ -22,3 +22,7 @@
 
 
 addBlasHeaders(DMatrix "gmappmlmatmult.h")
+
+addHeaders(gmAppmlContext)
+
+addSources(gmappmlcontext.cpp)

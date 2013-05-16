@@ -28,8 +28,9 @@
  */
 
 #include "gmappmlmatmult.h"
+#include "gmappmlcontext.h"
+
 #include <clAmdBlas.h>
-#include <cstdio>
 
 namespace GMlib
 {
@@ -43,81 +44,32 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 	static Array<float> work;
 	work.setSize(m.getDim1() * b.getDim2());
 
-	cl_int err;
-    cl_platform_id platform = 0;
-    cl_device_id device = 0;
-    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
-    cl_context ctx = 0;
-    cl_command_queue queue = 0;
-    cl_event event = NULL;
-    int ret = 0;
-
-    /* Setup OpenCL environment. */
-    err = clGetPlatformIDs(1, &platform, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetPlatformIDs() failed with %d\n", err );
-        return r;
-    }
-
-    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetDeviceIDs() failed with %d\n", err );
-        return r;
-    }
-
-    props[1] = (cl_context_properties)platform;
-    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateContext() failed with %d\n", err );
-        return r;
-    }
-
-    queue = clCreateCommandQueue(ctx, device, 0, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateCommandQueue() failed with %d\n", err );
-        clReleaseContext(ctx);
-        return r;
-    }
-
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
-    if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
-        clReleaseCommandQueue(queue);
-        clReleaseContext(ctx);
-        return r;
-    }
-
-	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(float), NULL, &err);
-	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(float), NULL, &err);
-	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, work.getSize() * sizeof(float), NULL, &err);
+	cl_mem d_A = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(float), NULL, &AppmlContext::getErr());
+	cl_mem d_B = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(float), NULL, &AppmlContext::getErr());
+	cl_mem d_C = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_WRITE, work.getSize() * sizeof(float), NULL, &AppmlContext::getErr());
 	
 	for(int i=0; i<m.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(float), m(i).getDim()*sizeof(float), &m(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_A, CL_TRUE, i*m.getDim2()*sizeof(float), m(i).getDim()*sizeof(float), &m(i)(0), 0, NULL, NULL);
 	}
 	for(int i=0; i<b.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, i*b.getDim2()*sizeof(float), b(i).getDim()*sizeof(float), &b(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_B, CL_TRUE, i*b.getDim2()*sizeof(float), b(i).getDim()*sizeof(float), &b(i)(0), 0, NULL, NULL);
 	}
 	
-	err = clAmdBlasSgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), 1.0f,
-		d_A, m.getDim2(), d_B, b.getDim2(), 0.0f, d_C, m.getDim2(), 1, &queue, 0, NULL, &event);
+	AppmlContext::getErr() = clAmdBlasSgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), 1.0f,
+		d_A, m.getDim2(), d_B, b.getDim2(), 0.0f, d_C, m.getDim2(), 1, &AppmlContext::getQueue(), 0, NULL, &AppmlContext::getEvent());
 
-	if(err == CL_SUCCESS)
+	if(AppmlContext::getErr() == CL_SUCCESS)
 	{
-		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, work.getSize()*sizeof(float), work.getPtr(), 0, NULL, NULL);
+		AppmlContext::getErr() = clWaitForEvents(1, &AppmlContext::getEvent());
+		AppmlContext::getErr() = clEnqueueReadBuffer(AppmlContext::getQueue(), d_C, CL_TRUE, 0, work.getSize()*sizeof(float), work.getPtr(), 0, NULL, NULL);
 	}
 
 	clReleaseMemObject(d_C);
 	clReleaseMemObject(d_B);
 	clReleaseMemObject(d_A);
 
-	clAmdBlasTeardown();
-
-	clReleaseCommandQueue(queue);
-	clReleaseContext(ctx);
 
 	for(int i=0; i<r.getDim1(); i++)
 		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(float));
@@ -134,81 +86,31 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	static Array<double> work;
 	work.setSize(m.getDim1() * b.getDim2());
 
-	cl_int err;
-    cl_platform_id platform = 0;
-    cl_device_id device = 0;
-    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
-    cl_context ctx = 0;
-    cl_command_queue queue = 0;
-    cl_event event = NULL;
-    int ret = 0;
-
-    /* Setup OpenCL environment. */
-    err = clGetPlatformIDs(1, &platform, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetPlatformIDs() failed with %d\n", err );
-        return r;
-    }
-
-    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetDeviceIDs() failed with %d\n", err );
-        return r;
-    }
-
-    props[1] = (cl_context_properties)platform;
-    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateContext() failed with %d\n", err );
-        return r;
-    }
-
-    queue = clCreateCommandQueue(ctx, device, 0, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateCommandQueue() failed with %d\n", err );
-        clReleaseContext(ctx);
-        return r;
-    }
-
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
-    if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
-        clReleaseCommandQueue(queue);
-        clReleaseContext(ctx);
-        return r;
-    }
-
-	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(double), NULL, &err);
-	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(double), NULL, &err);
-	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, work.getSize() * sizeof(double), NULL, &err);
+	cl_mem d_A = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(double), NULL, &AppmlContext::getErr());
+	cl_mem d_B = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(double), NULL, &AppmlContext::getErr());
+	cl_mem d_C = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_WRITE, work.getSize() * sizeof(double), NULL, &AppmlContext::getErr());
 	
 	for(int i=0; i<m.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(double), m(i).getDim()*sizeof(double), &m(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_A, CL_TRUE, i*m.getDim2()*sizeof(double), m(i).getDim()*sizeof(double), &m(i)(0), 0, NULL, NULL);
 	}
 	for(int i=0; i<b.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, i*b.getDim2()*sizeof(double), b(i).getDim()*sizeof(double), &b(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_B, CL_TRUE, i*b.getDim2()*sizeof(double), b(i).getDim()*sizeof(double), &b(i)(0), 0, NULL, NULL);
 	}
 	
-	err = clAmdBlasDgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), 1.0,
-		d_A, m.getDim2(), d_B, b.getDim2(), 0.0, d_C, m.getDim2(), 1, &queue, 0, NULL, &event);
+	AppmlContext::getErr() = clAmdBlasDgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), 1.0,
+		d_A, m.getDim2(), d_B, b.getDim2(), 0.0, d_C, m.getDim2(), 1, &AppmlContext::getQueue(), 0, NULL, &AppmlContext::getEvent());
 
-	if(err == CL_SUCCESS)
+	if(AppmlContext::getErr() == CL_SUCCESS)
 	{
-		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, work.getSize()*sizeof(float), work.getPtr(), 0, NULL, NULL);
+		AppmlContext::getErr() = clWaitForEvents(1, &AppmlContext::getEvent());
+		AppmlContext::getErr() = clEnqueueReadBuffer(AppmlContext::getQueue(), d_C, CL_TRUE, 0, work.getSize()*sizeof(float), work.getPtr(), 0, NULL, NULL);
 	}
 
 	clReleaseMemObject(d_C);
 	clReleaseMemObject(d_B);
 	clReleaseMemObject(d_A);
-
-	clAmdBlasTeardown();
-
-	clReleaseCommandQueue(queue);
-	clReleaseContext(ctx);
 	
 	for(int i=0; i<r.getDim1(); i++)
 		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(double));
@@ -225,84 +127,34 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	r.setDim(m.getDim1(), b.getDim2());
 	std::complex<float>* work = new std::complex<float>[work_size];
 
-	cl_int err;
-    cl_platform_id platform = 0;
-    cl_device_id device = 0;
-    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
-    cl_context ctx = 0;
-    cl_command_queue queue = 0;
-    cl_event event = NULL;
-    int ret = 0;
-
-    /* Setup OpenCL environment. */
-    err = clGetPlatformIDs(1, &platform, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetPlatformIDs() failed with %d\n", err );
-        return r;
-    }
-
-    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetDeviceIDs() failed with %d\n", err );
-        return r;
-    }
-
-    props[1] = (cl_context_properties)platform;
-    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateContext() failed with %d\n", err );
-        return r;
-    }
-
-    queue = clCreateCommandQueue(ctx, device, 0, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateCommandQueue() failed with %d\n", err );
-        clReleaseContext(ctx);
-        return r;
-    }
-
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
-    if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
-        clReleaseCommandQueue(queue);
-        clReleaseContext(ctx);
-        return r;
-    }
-
-	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<float>), NULL, &err);
-	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(std::complex<float>), NULL, &err);
-	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, work_size * sizeof(std::complex<float>), NULL, &err);
+	cl_mem d_A = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<float>), NULL, &AppmlContext::getErr());
+	cl_mem d_B = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(std::complex<float>), NULL, &AppmlContext::getErr());
+	cl_mem d_C = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_WRITE, work_size * sizeof(std::complex<float>), NULL, &AppmlContext::getErr());
 	
 	for(int i=0; i<m.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<float>), m(i).getDim()*sizeof(std::complex<float>), &m(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<float>), m(i).getDim()*sizeof(std::complex<float>), &m(i)(0), 0, NULL, NULL);
 	}
 	for(int i=0; i<b.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, i*b.getDim2()*sizeof(std::complex<float>), b(i).getDim()*sizeof(std::complex<float>), &b(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_B, CL_TRUE, i*b.getDim2()*sizeof(std::complex<float>), b(i).getDim()*sizeof(std::complex<float>), &b(i)(0), 0, NULL, NULL);
 	}
 	
 	static const FloatComplex alpha = floatComplex(1.0f, 0.0f);
 	static const FloatComplex beta = floatComplex(0.0f, 0.0f);
 
-	err = clAmdBlasCgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), alpha,
-		d_A, m.getDim2(), d_B, b.getDim2(), beta, d_C, m.getDim2(), 1, &queue, 0, NULL, &event);
+	AppmlContext::getErr() = clAmdBlasCgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), alpha,
+		d_A, m.getDim2(), d_B, b.getDim2(), beta, d_C, m.getDim2(), 1, &AppmlContext::getQueue(), 0, NULL, &AppmlContext::getEvent());
 
-	if(err == CL_SUCCESS)
+	if(AppmlContext::getErr() == CL_SUCCESS)
 	{
-		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, work_size*sizeof(std::complex<float>), work, 0, NULL, NULL);
+		AppmlContext::getErr() = clWaitForEvents(1, &AppmlContext::getEvent());
+		AppmlContext::getErr() = clEnqueueReadBuffer(AppmlContext::getQueue(), d_C, CL_TRUE, 0, work_size*sizeof(std::complex<float>), work, 0, NULL, NULL);
 	}
 
 	clReleaseMemObject(d_C);
 	clReleaseMemObject(d_B);
 	clReleaseMemObject(d_A);
-
-	clAmdBlasTeardown();
-
-	clReleaseCommandQueue(queue);
-	clReleaseContext(ctx);
 
 	for(int i=0; i<r.getDim1(); i++)
 		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(std::complex<float>));
@@ -321,85 +173,35 @@ const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	r.setDim(m.getDim1(), b.getDim2());
 	std::complex<double>* work = new std::complex<double>[work_size];
 
-	cl_int err;
-    cl_platform_id platform = 0;
-    cl_device_id device = 0;
-    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
-    cl_context ctx = 0;
-    cl_command_queue queue = 0;
-    cl_event event = NULL;
-    int ret = 0;
-
-    /* Setup OpenCL environment. */
-    err = clGetPlatformIDs(1, &platform, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetPlatformIDs() failed with %d\n", err );
-        return r;
-    }
-
-    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetDeviceIDs() failed with %d\n", err );
-        return r;
-    }
-
-    props[1] = (cl_context_properties)platform;
-    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateContext() failed with %d\n", err );
-        return r;
-    }
-
-    queue = clCreateCommandQueue(ctx, device, 0, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateCommandQueue() failed with %d\n", err );
-        clReleaseContext(ctx);
-        return r;
-    }
-
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
-    if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
-        clReleaseCommandQueue(queue);
-        clReleaseContext(ctx);
-        return r;
-    }
-
-	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<double>), NULL, &err);
-	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(std::complex<double>), NULL, &err);
-	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, work_size * sizeof(std::complex<double>), NULL, &err);
+	cl_mem d_A = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<double>), NULL, &AppmlContext::getErr());
+	cl_mem d_B = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, b.getDim1() * b.getDim2() * sizeof(std::complex<double>), NULL, &AppmlContext::getErr());
+	cl_mem d_C = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_WRITE, work_size * sizeof(std::complex<double>), NULL, &AppmlContext::getErr());
 	
 	for(int i=0; i<m.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<double>), m(i).getDim()*sizeof(std::complex<double>), &m(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<double>), m(i).getDim()*sizeof(std::complex<double>), &m(i)(0), 0, NULL, NULL);
 	}
 	for(int i=0; i<b.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, i*b.getDim2()*sizeof(std::complex<double>), b(i).getDim()*sizeof(std::complex<double>), &b(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_B, CL_TRUE, i*b.getDim2()*sizeof(std::complex<double>), b(i).getDim()*sizeof(std::complex<double>), &b(i)(0), 0, NULL, NULL);
 	}
 	
 	static const DoubleComplex alpha = doubleComplex(1.0, 0.0);
 	static const DoubleComplex beta = doubleComplex(0.0, 0.0);
 
-	err = clAmdBlasZgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), alpha,
-		d_A, m.getDim2(), d_B, b.getDim2(), beta, d_C, m.getDim2(), 1, &queue, 0, NULL, &event);
+	AppmlContext::getErr() = clAmdBlasZgemm(clAmdBlasRowMajor, clAmdBlasNoTrans, clAmdBlasNoTrans, m.getDim1(), b.getDim2(), m.getDim2(), alpha,
+		d_A, m.getDim2(), d_B, b.getDim2(), beta, d_C, m.getDim2(), 1, &AppmlContext::getQueue(), 0, NULL, &AppmlContext::getEvent());
 
-	if(err == CL_SUCCESS)
+	if(AppmlContext::getErr() == CL_SUCCESS)
 	{
-		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, work_size*sizeof(std::complex<double>), work, 0, NULL, NULL);
+		AppmlContext::getErr() = clWaitForEvents(1, &AppmlContext::getEvent());
+		AppmlContext::getErr() = clEnqueueReadBuffer(AppmlContext::getQueue(), d_C, CL_TRUE, 0, work_size*sizeof(std::complex<double>), work, 0, NULL, NULL);
 	}
 
 	clReleaseMemObject(d_C);
 	clReleaseMemObject(d_B);
 	clReleaseMemObject(d_A);
 
-	clAmdBlasTeardown();
-
-	clReleaseCommandQueue(queue);
-	clReleaseContext(ctx);
-	
 	for(int i=0; i<r.getDim1(); i++)
 		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(std::complex<double>));
 
@@ -414,80 +216,30 @@ const DVector<float>&  operator*(const DMatrix<float>& m, const DVector<float>& 
 	static DVector<float> r;
 	r.setDim(m.getDim1());
 
-	cl_int err;
-    cl_platform_id platform = 0;
-    cl_device_id device = 0;
-    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
-    cl_context ctx = 0;
-    cl_command_queue queue = 0;
-    cl_event event = NULL;
-    int ret = 0;
-
-    /* Setup OpenCL environment. */
-    err = clGetPlatformIDs(1, &platform, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetPlatformIDs() failed with %d\n", err );
-        return r;
-    }
-
-    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetDeviceIDs() failed with %d\n", err );
-        return r;
-    }
-
-    props[1] = (cl_context_properties)platform;
-    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateContext() failed with %d\n", err );
-        return r;
-    }
-
-    queue = clCreateCommandQueue(ctx, device, 0, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateCommandQueue() failed with %d\n", err );
-        clReleaseContext(ctx);
-        return r;
-    }
-
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
-    if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
-        clReleaseCommandQueue(queue);
-        clReleaseContext(ctx);
-        return r;
-    }
-
-	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(float), NULL, &err);
-	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim() * sizeof(float), NULL, &err);
-	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, r.getDim() * sizeof(float), NULL, &err);
+	cl_mem d_A = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(float), NULL, &AppmlContext::getErr());
+	cl_mem d_B = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, b.getDim() * sizeof(float), NULL, &AppmlContext::getErr());
+	cl_mem d_C = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_WRITE, r.getDim() * sizeof(float), NULL, &AppmlContext::getErr());
 
 	for(int i=0; i<m.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(float), m(i).getDim()*sizeof(float), &m(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_A, CL_TRUE, i*m.getDim2()*sizeof(float), m(i).getDim()*sizeof(float), &m(i)(0), 0, NULL, NULL);
 	}
 
-	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, b.getDim()*sizeof(float), &b(0), 0, NULL, NULL);
+	AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_B, CL_TRUE, 0, b.getDim()*sizeof(float), &b(0), 0, NULL, NULL);
 
-	err = clAmdBlasSgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), 1.0f, d_A, m.getDim1(), d_B, 0,
-		1, 0.0f, d_C, 0, 1, 1, &queue, 0, NULL, &event);
+	AppmlContext::getErr() = clAmdBlasSgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), 1.0f, d_A, m.getDim1(), d_B, 0,
+		1, 0.0f, d_C, 0, 1, 1, &AppmlContext::getQueue(), 0, NULL, &AppmlContext::getEvent());
 
-	if(err == CL_SUCCESS)
+	if(AppmlContext::getErr() == CL_SUCCESS)
 	{
-		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, r.getDim()*sizeof(float), &r[0], 0, NULL, NULL);
+		AppmlContext::getErr() = clWaitForEvents(1, &AppmlContext::getEvent());
+		AppmlContext::getErr() = clEnqueueReadBuffer(AppmlContext::getQueue(), d_C, CL_TRUE, 0, r.getDim()*sizeof(float), &r[0], 0, NULL, NULL);
 	}
 	
 	clReleaseMemObject(d_C);
 	clReleaseMemObject(d_B);
 	clReleaseMemObject(d_A);
 
-	clAmdBlasTeardown();
-
-	clReleaseCommandQueue(queue);
-	clReleaseContext(ctx);
-			
 	return r;
 }
 
@@ -497,79 +249,29 @@ const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double
 	static DVector<double> r;
 	r.setDim(m.getDim1());
 
-	cl_int err;
-    cl_platform_id platform = 0;
-    cl_device_id device = 0;
-    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
-    cl_context ctx = 0;
-    cl_command_queue queue = 0;
-    cl_event event = NULL;
-    int ret = 0;
-
-    /* Setup OpenCL environment. */
-    err = clGetPlatformIDs(1, &platform, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetPlatformIDs() failed with %d\n", err );
-        return r;
-    }
-
-    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetDeviceIDs() failed with %d\n", err );
-        return r;
-    }
-
-    props[1] = (cl_context_properties)platform;
-    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateContext() failed with %d\n", err );
-        return r;
-    }
-
-    queue = clCreateCommandQueue(ctx, device, 0, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateCommandQueue() failed with %d\n", err );
-        clReleaseContext(ctx);
-        return r;
-    }
-
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
-    if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
-        clReleaseCommandQueue(queue);
-        clReleaseContext(ctx);
-        return r;
-    }
-
-	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(double), NULL, &err);
-	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim() * sizeof(double), NULL, &err);
-	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, r.getDim() * sizeof(double), NULL, &err);
+	cl_mem d_A = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(double), NULL, &AppmlContext::getErr());
+	cl_mem d_B = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, b.getDim() * sizeof(double), NULL, &AppmlContext::getErr());
+	cl_mem d_C = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_WRITE, r.getDim() * sizeof(double), NULL, &AppmlContext::getErr());
 
 	for(int i=0; i<m.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(double), m(i).getDim()*sizeof(double), &m(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_A, CL_TRUE, i*m.getDim2()*sizeof(double), m(i).getDim()*sizeof(double), &m(i)(0), 0, NULL, NULL);
 	}
 
-	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, b.getDim()*sizeof(double), &b(0), 0, NULL, NULL);
+	AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_B, CL_TRUE, 0, b.getDim()*sizeof(double), &b(0), 0, NULL, NULL);
 
-	err = clAmdBlasDgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), 1.0, d_A, m.getDim1(), d_B, 0,
-		1, 0.0, d_C, 0, 1, 1, &queue, 0, NULL, &event);
+	AppmlContext::getErr() = clAmdBlasDgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), 1.0, d_A, m.getDim1(), d_B, 0,
+		1, 0.0, d_C, 0, 1, 1, &AppmlContext::getQueue(), 0, NULL, &AppmlContext::getEvent());
 
-	if(err == CL_SUCCESS)
+	if(AppmlContext::getErr() == CL_SUCCESS)
 	{
-		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, r.getDim()*sizeof(double), &r[0], 0, NULL, NULL);
+		AppmlContext::getErr() = clWaitForEvents(1, &AppmlContext::getEvent());
+		AppmlContext::getErr() = clEnqueueReadBuffer(AppmlContext::getQueue(), d_C, CL_TRUE, 0, r.getDim()*sizeof(double), &r[0], 0, NULL, NULL);
 	}
 	
 	clReleaseMemObject(d_C);
 	clReleaseMemObject(d_B);
 	clReleaseMemObject(d_A);
-
-	clAmdBlasTeardown();
-
-	clReleaseCommandQueue(queue);
-	clReleaseContext(ctx);
 
 	return r;
 }
@@ -580,83 +282,33 @@ const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	static DVector<std::complex<float> > r;
 	r.setDim(m.getDim1());
 
-	cl_int err;
-    cl_platform_id platform = 0;
-    cl_device_id device = 0;
-    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
-    cl_context ctx = 0;
-    cl_command_queue queue = 0;
-    cl_event event = NULL;
-    int ret = 0;
-
-    /* Setup OpenCL environment. */
-    err = clGetPlatformIDs(1, &platform, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetPlatformIDs() failed with %d\n", err );
-        return r;
-    }
-
-    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetDeviceIDs() failed with %d\n", err );
-        return r;
-    }
-
-    props[1] = (cl_context_properties)platform;
-    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateContext() failed with %d\n", err );
-        return r;
-    }
-
-    queue = clCreateCommandQueue(ctx, device, 0, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateCommandQueue() failed with %d\n", err );
-        clReleaseContext(ctx);
-        return r;
-    }
-
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
-    if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
-        clReleaseCommandQueue(queue);
-        clReleaseContext(ctx);
-        return r;
-    }
-
-	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<float>), NULL, &err);
-	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim() * sizeof(std::complex<float>), NULL, &err);
-	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, r.getDim() * sizeof(std::complex<float>), NULL, &err);
+	cl_mem d_A = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<float>), NULL, &AppmlContext::getErr());
+	cl_mem d_B = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, b.getDim() * sizeof(std::complex<float>), NULL, &AppmlContext::getErr());
+	cl_mem d_C = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_WRITE, r.getDim() * sizeof(std::complex<float>), NULL, &AppmlContext::getErr());
 
 	for(int i=0; i<m.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<float>), m(i).getDim()*sizeof(std::complex<float>), &m(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<float>), m(i).getDim()*sizeof(std::complex<float>), &m(i)(0), 0, NULL, NULL);
 	}
 
-	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, b.getDim()*sizeof(std::complex<float>), &b(0), 0, NULL, NULL);
+	AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_B, CL_TRUE, 0, b.getDim()*sizeof(std::complex<float>), &b(0), 0, NULL, NULL);
 
 	static const FloatComplex alpha = floatComplex(1.0f, 0.0f);
 	static const FloatComplex beta = floatComplex(0.0f, 0.0f);
 
-	err = clAmdBlasCgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), alpha, d_A, m.getDim1(), d_B, 0,
-		1, beta, d_C, 0, 1, 1, &queue, 0, NULL, &event);
+	AppmlContext::getErr() = clAmdBlasCgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), alpha, d_A, m.getDim1(), d_B, 0,
+		1, beta, d_C, 0, 1, 1, &AppmlContext::getQueue(), 0, NULL, &AppmlContext::getEvent());
 
-	if(err == CL_SUCCESS)
+	if(AppmlContext::getErr() == CL_SUCCESS)
 	{
-		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, r.getDim()*sizeof(std::complex<float>), &r[0], 0, NULL, NULL);
+		AppmlContext::getErr() = clWaitForEvents(1, &AppmlContext::getEvent());
+		AppmlContext::getErr() = clEnqueueReadBuffer(AppmlContext::getQueue(), d_C, CL_TRUE, 0, r.getDim()*sizeof(std::complex<float>), &r[0], 0, NULL, NULL);
 	}
 	
 	clReleaseMemObject(d_C);
 	clReleaseMemObject(d_B);
 	clReleaseMemObject(d_A);
 
-	clAmdBlasTeardown();
-
-	clReleaseCommandQueue(queue);
-	clReleaseContext(ctx);
-			
 	return r;
 }
 
@@ -666,83 +318,33 @@ const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	static DVector<std::complex<double> > r;
 	r.setDim(m.getDim1());
 
-	cl_int err;
-    cl_platform_id platform = 0;
-    cl_device_id device = 0;
-    cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
-    cl_context ctx = 0;
-    cl_command_queue queue = 0;
-    cl_event event = NULL;
-    int ret = 0;
-
-    /* Setup OpenCL environment. */
-    err = clGetPlatformIDs(1, &platform, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetPlatformIDs() failed with %d\n", err );
-        return r;
-    }
-
-    err = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
-    if (err != CL_SUCCESS) {
-        printf( "clGetDeviceIDs() failed with %d\n", err );
-        return r;
-    }
-
-    props[1] = (cl_context_properties)platform;
-    ctx = clCreateContext(props, 1, &device, NULL, NULL, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateContext() failed with %d\n", err );
-        return r;
-    }
-
-    queue = clCreateCommandQueue(ctx, device, 0, &err);
-    if (err != CL_SUCCESS) {
-        printf( "clCreateCommandQueue() failed with %d\n", err );
-        clReleaseContext(ctx);
-        return r;
-    }
-
-    /* Setup clAmdBlas. */
-    err = clAmdBlasSetup();
-    if (err != CL_SUCCESS) {
-        printf("clAmdBlasSetup() failed with %d\n", err);
-        clReleaseCommandQueue(queue);
-        clReleaseContext(ctx);
-        return r;
-    }
-
-	cl_mem d_A = clCreateBuffer(ctx, CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<double>), NULL, &err);
-	cl_mem d_B = clCreateBuffer(ctx, CL_MEM_READ_ONLY, b.getDim() * sizeof(std::complex<double>), NULL, &err);
-	cl_mem d_C = clCreateBuffer(ctx, CL_MEM_READ_WRITE, r.getDim() * sizeof(std::complex<double>), NULL, &err);
+	cl_mem d_A = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, m.getDim1() * m.getDim2() * sizeof(std::complex<double>), NULL, &AppmlContext::getErr());
+	cl_mem d_B = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_ONLY, b.getDim() * sizeof(std::complex<double>), NULL, &AppmlContext::getErr());
+	cl_mem d_C = clCreateBuffer(AppmlContext::getContext(), CL_MEM_READ_WRITE, r.getDim() * sizeof(std::complex<double>), NULL, &AppmlContext::getErr());
 
 	for(int i=0; i<m.getDim1(); i++)
 	{
-		err = clEnqueueWriteBuffer(queue, d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<double>), m(i).getDim()*sizeof(std::complex<double>), &m(i)(0), 0, NULL, NULL);
+		AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_A, CL_TRUE, i*m.getDim2()*sizeof(std::complex<double>), m(i).getDim()*sizeof(std::complex<double>), &m(i)(0), 0, NULL, NULL);
 	}
 
-	err = clEnqueueWriteBuffer(queue, d_B, CL_TRUE, 0, b.getDim()*sizeof(std::complex<double>), &b(0), 0, NULL, NULL);
+	AppmlContext::getErr() = clEnqueueWriteBuffer(AppmlContext::getQueue(), d_B, CL_TRUE, 0, b.getDim()*sizeof(std::complex<double>), &b(0), 0, NULL, NULL);
 
 	static const DoubleComplex alpha = doubleComplex(1.0, 0.0);
 	static const DoubleComplex beta = doubleComplex(0.0, 0.0);
 
-	err = clAmdBlasZgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), alpha, d_A, m.getDim1(), d_B, 0,
-		1, beta, d_C, 0, 1, 1, &queue, 0, NULL, &event);
+	AppmlContext::getErr() = clAmdBlasZgemv(clAmdBlasRowMajor, clAmdBlasNoTrans, m.getDim2(), b.getDim(), alpha, d_A, m.getDim1(), d_B, 0,
+		1, beta, d_C, 0, 1, 1, &AppmlContext::getQueue(), 0, NULL, &AppmlContext::getEvent());
 
-	if(err == CL_SUCCESS)
+	if(AppmlContext::getErr() == CL_SUCCESS)
 	{
-		err = clWaitForEvents(1, &event);
-		err = clEnqueueReadBuffer(queue, d_C, CL_TRUE, 0, r.getDim()*sizeof(std::complex<double>), &r[0], 0, NULL, NULL);
+		AppmlContext::getErr() = clWaitForEvents(1, &AppmlContext::getEvent());
+		AppmlContext::getErr() = clEnqueueReadBuffer(AppmlContext::getQueue(), d_C, CL_TRUE, 0, r.getDim()*sizeof(std::complex<double>), &r[0], 0, NULL, NULL);
 	}
 	
 	clReleaseMemObject(d_C);
 	clReleaseMemObject(d_B);
 	clReleaseMemObject(d_A);
 
-	clAmdBlasTeardown();
-
-	clReleaseCommandQueue(queue);
-	clReleaseContext(ctx);
-			
 	return r;
 }
 
