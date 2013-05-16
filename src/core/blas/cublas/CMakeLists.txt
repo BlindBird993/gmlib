@@ -22,3 +22,7 @@
 
 
 addBlasHeaders(DMatrix "gmcublasmatmult.h")
+
+addHeaders(gmCublasContext)
+
+addSources(gmcublascontext.cpp)
