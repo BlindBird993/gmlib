@@ -29,7 +29,7 @@
 
 #include "gmappmlcontext.h"
 
-#include <iostream>
+#include <cstdio>
 
 namespace GMlib
 {
