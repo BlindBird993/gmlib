@@ -503,6 +503,7 @@ namespace GMlib {
   void PCurve<T,n>::resample( DVector< DVector< Vector<T,n> > >& p, int m, int d, T start, T end ) {
 
     T du = (end-start)/(m-1);
+    p.setDim(m);
 
     for( int i = 0; i < m - 1; i++ ) {
 
