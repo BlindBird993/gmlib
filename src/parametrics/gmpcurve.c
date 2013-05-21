@@ -207,6 +207,26 @@ namespace GMlib {
     return p;
   }
 
+  /*!
+   * Using a 2nd degree taylor expansion
+   * <c-p + dt*c' + .5dt^2*c'' , c' + dt*c''> = 0
+   */
+  template<typename T, int n>
+  bool PCurve<T,n>::getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps, int max_iterations) {
+
+    DVector<Vector<T,n> > c;
+    for (int i=0; i < max_iterations; i++) {
+      c = evaluate(t, 2);
+      T dt = -( (c[0] - q) * c[1]) / ( (c[0] - q) * c[2] + c[1] * c[1] );
+
+      p = c[0];
+      t += dt;
+
+      if (std::abs(dt) <= eps) return true;
+    }
+
+    return false;
+  }
 
   template <typename T, int n>
   inline

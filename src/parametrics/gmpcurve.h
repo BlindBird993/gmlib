@@ -59,6 +59,7 @@ namespace GMlib {
     DVector<Vector<T,n> >&    evaluate( T t, int d );
     DVector<Vector<T,n> >&    evaluateGlobal( T t, int d );
     DVector<Vector<T,n> >&    evaluateParent( T t, int d );
+    bool                      getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps = 10e-6, int max_iterations = 20);
     T                         getCurvature( T t );
     T                         getCurveLength( T a = 0, T b = -1 );
     int                       getDerivatives() const;
