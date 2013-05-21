@@ -21,24 +21,10 @@
 # ###############################################################################
 
 addHeaders(
-  gmParametrics
-  gmPCurve
-  gmPSurf
-  gmPTriangle
+  gmPUtils
 )
 
 addTemplateSources(
-  gmparametrics.c
-  gmpcurve.c
-  gmpsurf.c
-  gmptriangle.c
+  gmputils.c
 )
 
-addSubDirectory(curves)
-addSubDirectory(evaluators)
-addSubDirectory(surfaces)
-addSubDirectory(triangles)
-addSubDirectory(utils)
-addSubDirectory(visualizers)
-
-addTestDir(test)
