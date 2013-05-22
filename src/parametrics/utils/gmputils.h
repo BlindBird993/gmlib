@@ -54,19 +54,19 @@ namespace GMlib {
     T getLInf(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, int samples=1000);
 
     template <typename T, int n>
-    T _getDiffCp(PCurve<T, n>& f, PCurve<T, n>& g, T t);
+    T getDiffCp(PCurve<T, n>& f, PCurve<T, n>& g, T t);
 
     template <typename T, int n>
-    T _getDiffSqr(PCurve<T, n>& f, PCurve<T, n>& g, T t);
+    T getDiffSqr(PCurve<T, n>& f, PCurve<T, n>& g, T t);
 
     template <typename T, int n>
-    T _getIntegralClosestPointSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps);
+    T getIntegralClosestPointSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps);
 
     template <typename T, int n>
-    T _getIntegralDerivativeLength(PCurve<T, n>& f, T a, T b, double eps);
+    T getIntegralDerivativeLength(PCurve<T, n>& f, T a, T b, double eps);
 
     template <typename T, int n>
-    T _getIntegralDiffSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps);
+    T getIntegralDiffSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps);
 
 
   } // END namespace GMPutils

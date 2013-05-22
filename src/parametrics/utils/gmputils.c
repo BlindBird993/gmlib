@@ -18,7 +18,7 @@ void GMlib::GMPutils::printErrors(PCurve<T, n>& f, PCurve<T, n>& g) {
 
 template <typename T, int n>
 T GMlib::GMPutils::getG2(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps) {
- return std::sqrt( _getIntegralClosestPointSqr(f, g, a, b, eps) / _getIntegralDerivativeLength(f, a, b, eps) );
+ return std::sqrt( getIntegralClosestPointSqr(f, g, a, b, eps) / getIntegralDerivativeLength(f, a, b, eps) );
 }
 
 template <typename T, int n>
@@ -41,7 +41,7 @@ T GMlib::GMPutils::getGInf(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, int sampl
 */
 template <typename T, int n>
 T GMlib::GMPutils::getL2(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps) {
- return std::sqrt( (T(1) / (b - a)) * _getIntegralDiffSqr(f, g, a, b, eps) );
+ return std::sqrt( (T(1) / (b - a)) * getIntegralDiffSqr(f, g, a, b, eps) );
 }
 
 /*!
@@ -60,7 +60,7 @@ T GMlib::GMPutils::getLInf(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, int sampl
 }
 
 template <typename T, int n>
-T GMlib::GMPutils::_getDiffCp(PCurve<T,n>& f, PCurve<T,n>& g, T t) {
+T GMlib::GMPutils::getDiffCp(PCurve<T,n>& f, PCurve<T,n>& g, T t) {
  DVector<Vector<T,n> > f_val = f.evaluateParent(t, 0);
  Point<T, n> g_p;
  bool ok = g.getClosestPoint(f_val[0], t, g_p);
@@ -70,7 +70,7 @@ T GMlib::GMPutils::_getDiffCp(PCurve<T,n>& f, PCurve<T,n>& g, T t) {
 }
 
 template <typename T, int n>
-T GMlib::GMPutils::_getDiffSqr(PCurve<T,n>& f, PCurve<T,n>& g, T t) {
+T GMlib::GMPutils::getDiffSqr(PCurve<T,n>& f, PCurve<T,n>& g, T t) {
  DVector<Vector<T,n> > f_val = f.evaluateParent(t, 0);
  DVector<Vector<T,n> > g_val = g.evaluateParent(t, 0);
  Vector<T,n>           x     = f_val[0] - g_val[0];
@@ -79,12 +79,12 @@ T GMlib::GMPutils::_getDiffSqr(PCurve<T,n>& f, PCurve<T,n>& g, T t) {
 
 
 template <typename T, int n>
-T GMlib::GMPutils::_getIntegralClosestPointSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps) {
+T GMlib::GMPutils::getIntegralClosestPointSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps) {
 
  T t = b - a;
  T sum =
-     (_getDiffCp(f, g, a) * f.evaluateGlobal(a, 1)[1].getLength() +
-      _getDiffCp(f, g, b) * f.evaluateGlobal(b, 1)[1].getLength()
+     (getDiffCp(f, g, a) * f.evaluateGlobal(a, 1)[1].getLength() +
+      getDiffCp(f, g, b) * f.evaluateGlobal(b, 1)[1].getLength()
      ) / T(2);
 
  T mat[16][16];
@@ -97,7 +97,7 @@ T GMlib::GMPutils::_getIntegralClosestPointSqr(PCurve<T, n>& f, PCurve<T, n>& g,
    k = 1 << i;
    t /= 2.0;
    for( j = 1; j < k; j += 2 )
-     s += _getDiffCp(f, g, a + t*j) * f.evaluateGlobal(a + t*j, 1)[1].getLength();
+     s += getDiffCp(f, g, a + t*j) * f.evaluateGlobal(a + t*j, 1)[1].getLength();
    mat[0][i] = t * (sum += s);
    for (j=1; j<=i; j++) {
      b = 1 << (j << 1);
@@ -110,7 +110,7 @@ T GMlib::GMPutils::_getIntegralClosestPointSqr(PCurve<T, n>& f, PCurve<T, n>& g,
 }
 
 template <typename T, int n>
-T GMlib::GMPutils::_getIntegralDerivativeLength(PCurve<T, n>& f, T a, T b, double eps) {
+T GMlib::GMPutils::getIntegralDerivativeLength(PCurve<T, n>& f, T a, T b, double eps) {
 
  T t = b - a;
  T sum =
@@ -142,10 +142,10 @@ T GMlib::GMPutils::_getIntegralDerivativeLength(PCurve<T, n>& f, T a, T b, doubl
 }
 
 template <typename T, int n>
-T GMlib::GMPutils::_getIntegralDiffSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps) {
+T GMlib::GMPutils::getIntegralDiffSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps) {
 
  T t = b - a;
- T sum = (_getDiffSqr(f, g, a)+_getDiffSqr(f, g, b))/T(2);
+ T sum = (getDiffSqr(f, g, a)+getDiffSqr(f, g, b))/T(2);
 
  T mat[16][16];
  mat[0][0] = sum * t;
@@ -157,7 +157,7 @@ T GMlib::GMPutils::_getIntegralDiffSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T 
    k = 1 << i;
    t /= 2.0;
    for( j = 1; j < k; j += 2 )
-     s += _getDiffSqr(f, g, a + t*j);
+     s += getDiffSqr(f, g, a + t*j);
    mat[0][i] = t * (sum += s);
    for (j=1; j<=i; j++) {
      b = 1 << (j << 1);
