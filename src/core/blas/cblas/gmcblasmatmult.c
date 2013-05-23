@@ -180,7 +180,7 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	const int n_ = b.getDim2();
 	const int k_ = m.getDim2();
 
-	cblas_cgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, m_, n_, k_, &alpha, cA, m_, cB, k_, &beta, work, m_);
+	cblas_cgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, m_, n_, k_, &alpha, cA, k_, cB, n_, &beta, work, k_);
 	
 	for(int i=0; i<r.getDim1(); i++)
 		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(std::complex<float>));
@@ -215,7 +215,7 @@ const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	const int n_ = b.getDim2();
 	const int k_ = m.getDim2();
 
-	cblas_zgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, m_, n_, k_, &alpha, cA, m_, cB, k_, &beta, work, m_);
+	cblas_zgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, m_, n_, k_, &alpha, cA, k_, cB, n_, &beta, work, k_);
 	
 	for(int i=0; i<r.getDim1(); i++)
 		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(std::complex<double>));
