@@ -21,6 +21,6 @@
 # ###############################################################################
 
 
-addBlasHeaders(DMatrix "gmmklmatmult.h" "gmmklmatinv.h")
+addBlasHeaders(DMatrix "gmmklmatinv.h")
 
 addSources(gmmklmatinv.cpp)

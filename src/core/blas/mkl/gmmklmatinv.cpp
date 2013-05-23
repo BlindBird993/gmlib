@@ -29,7 +29,7 @@
  
 #include "gmmklmatinv.h"
  
-#include <mkl.h>
+#include <mkl_lapack.h>
 
 
 namespace GMlib
