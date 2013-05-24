@@ -59,6 +59,9 @@ private:
 	cl_command_queue queue;
 	cl_event event;
 	int ret;
+	
+    AppmlContext(AppmlContext const&);		// Don't Implement
+    void operator=(AppmlContext const&);	// Don't implement
 };
 
 }

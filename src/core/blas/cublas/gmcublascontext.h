@@ -50,6 +50,9 @@ private:
 	int devID;
 	cudaDeviceProp deviceProp;
 	cublasHandle_t handle;
+
+    CublasContext(CublasContext const&);	// Don't Implement
+    void operator=(CublasContext const&);	// Don't implement
 };
 
 }
