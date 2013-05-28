@@ -60,34 +60,19 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 	const float alpha = 1.0f;
 	const float beta = 0.0f;
 
-	cublasSgemm(CublasContext::getHandle(), CUBLAS_OP_T, CUBLAS_OP_T, m.getDim1(), b.getDim2(), m.getDim2(), &alpha, d_A, m.getDim2(), d_B, b.getDim2(), &beta, d_C, m.getDim1());
-
-#if CUDART_VERSION>=5000
-	float* d_D;
-	cudaMalloc((void**)&d_D, sizeof(float) * m.getDim1() * b.getDim2());
-	cublasSgeam(CublasContext::getHandle(), CUBLAS_OP_T, CUBLAS_OP_N, r.getDim2(), r.getDim1(), &alpha, d_C, r.getDim1(), &beta, d_C, r.getDim2(), d_D, r.getDim2());
-#endif
+	cublasSgemm(CublasContext::getHandle(), CUBLAS_OP_N, CUBLAS_OP_N, b.getDim2(), m.getDim1(), m.getDim2(), &alpha, d_B, b.getDim2(), d_A, m.getDim2(), &beta, d_C, b.getDim1());
 
 	cudaEvent_t stop;
 	cudaEventCreate(&stop);
 	cudaEventRecord(stop, NULL);
 	cudaEventSynchronize(stop);
-
-#if CUDART_VERSION>=5000
-	for(int i=0; i<r.getDim1(); i++)
-	{
-		cudaMemcpy(&r[i][0], &d_D[i*r.getDim2()], sizeof(float)*r.getDim2(), cudaMemcpyDeviceToHost);
-	}
-	cudaFree(d_D);
-#else
+	
 	static Array<float> work;
 	work.setSize(m.getDim1() * b.getDim2());
 	cudaMemcpy(work.getPtr(), d_C, sizeof(float)*work.getSize(), cudaMemcpyDeviceToHost);
-
+	
 	for(int i=0; i<r.getDim1(); i++)
-		for(int j=0; j<r.getDim2(); j++)
-			r[i][j] = work[i+j*r.getDim1()];
-#endif
+		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(float));
 
 	cudaFree(d_A);
 	cudaFree(d_B);
@@ -122,34 +107,19 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	const double alpha = 1.0;
 	const double beta = 0.0;
 
-	cublasDgemm(CublasContext::getHandle(), CUBLAS_OP_T, CUBLAS_OP_T, m.getDim1(), b.getDim2(), m.getDim2(), &alpha, d_A, m.getDim2(), d_B, b.getDim2(), &beta, d_C, m.getDim1());
-
-#if CUDART_VERSION>=5000
-	double* d_D;
-	cudaMalloc((void**)&d_D, sizeof(double) * m.getDim1() * b.getDim2());
-	cublasDgeam(CublasContext::getHandle(), CUBLAS_OP_T, CUBLAS_OP_N, r.getDim2(), r.getDim1(), &alpha, d_C, r.getDim1(), &beta, d_C, r.getDim2(), d_D, r.getDim2());
-#endif
+	cublasDgemm(CublasContext::getHandle(), CUBLAS_OP_N, CUBLAS_OP_N, b.getDim2(), m.getDim1(), m.getDim2(), &alpha, d_B, b.getDim2(), d_A, m.getDim2(), &beta, d_C, b.getDim1());
 
 	cudaEvent_t stop;
 	cudaEventCreate(&stop);
 	cudaEventRecord(stop, NULL);
 	cudaEventSynchronize(stop);
 
-#if CUDART_VERSION>=5000
-	for(int i=0; i<r.getDim1(); i++)
-	{
-		cudaMemcpy(&r[i][0], &d_D[i*r.getDim2()], sizeof(double)*r.getDim2(), cudaMemcpyDeviceToHost);
-	}
-	cudaFree(d_D);
-#else
 	static Array<double> work;
 	work.setSize(m.getDim1() * b.getDim2());
 	cudaMemcpy(work.getPtr(), d_C, sizeof(double)*work.getSize(), cudaMemcpyDeviceToHost);
 
 	for(int i=0; i<r.getDim1(); i++)
-		for(int j=0; j<r.getDim2(); j++)
-			r[i][j] = work[i+j*r.getDim1()];
-#endif
+		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(double));
 
 	cudaFree(d_A);
 	cudaFree(d_B);
@@ -186,34 +156,19 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	static const cuComplex alpha = make_cuFloatComplex(1.0f, 0.0f);
 	static const cuComplex beta = make_cuFloatComplex(0.0f, 0.0f);
 
-	cublasCgemm(CublasContext::getHandle(), CUBLAS_OP_T, CUBLAS_OP_T, m.getDim1(), b.getDim2(), m.getDim2(), &alpha, d_A, m.getDim2(), d_B, b.getDim2(), &beta, d_C, m.getDim1());
+	cublasCgemm(CublasContext::getHandle(), CUBLAS_OP_N, CUBLAS_OP_N, b.getDim2(), m.getDim1(), m.getDim2(), &alpha, d_B, b.getDim2(), d_A, m.getDim2(), &beta, d_C, b.getDim1());
 	
-#if CUDART_VERSION>=5000
-	cuComplex* d_D;
-	cudaMalloc((void**)&d_D, sizeof(std::complex<float>) * m.getDim1() * b.getDim2());
-	cublasCgeam(CublasContext::getHandle(), CUBLAS_OP_T, CUBLAS_OP_N, r.getDim2(), r.getDim1(), &alpha, d_C, r.getDim1(), &beta, d_C, r.getDim2(), d_D, r.getDim2());
-#endif
-
 	cudaEvent_t stop;
 	cudaEventCreate(&stop);
 	cudaEventRecord(stop, NULL);
 	cudaEventSynchronize(stop);
 	
-#if CUDART_VERSION>=5000
-	for(int i=0; i<r.getDim1(); i++)
-	{
-		cudaMemcpy(&r[i][0], &d_D[i*r.getDim2()], sizeof(std::complex<float>)*r.getDim2(), cudaMemcpyDeviceToHost);
-	}
-	cudaFree(d_D);
-#else
 	std::complex<float>* work = new std::complex<float>[work_size];
 	cudaMemcpy(work, d_C, sizeof(std::complex<float>)*work_size, cudaMemcpyDeviceToHost);
 
 	for(int i=0; i<r.getDim1(); i++)
-		for(int j=0; j<r.getDim2(); j++)
-			r[i][j] = work[i+j*r.getDim1()];
+		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(std::complex<float>));
 	delete[] work;
-#endif
 			
 	cudaFree(d_A);
 	cudaFree(d_B);
@@ -250,34 +205,19 @@ const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	static const cuDoubleComplex alpha = make_cuDoubleComplex(1.0, 0.0);
 	static const cuDoubleComplex beta = make_cuDoubleComplex(0.0, 0.0);
 
-	cublasZgemm(CublasContext::getHandle(), CUBLAS_OP_T, CUBLAS_OP_T, m.getDim1(), b.getDim2(), m.getDim2(), &alpha, d_A, m.getDim2(), d_B, b.getDim2(), &beta, d_C, m.getDim1());
+	cublasZgemm(CublasContext::getHandle(), CUBLAS_OP_N, CUBLAS_OP_N, b.getDim2(), m.getDim1(), m.getDim2(), &alpha, d_B, b.getDim2(), d_A, m.getDim2(), &beta, d_C, b.getDim1());
 	
-#if CUDART_VERSION>=5000
-	cuDoubleComplex* d_D;
-	cudaMalloc((void**)&d_D, sizeof(std::complex<double>) * m.getDim1() * b.getDim2());
-	cublasZgeam(CublasContext::getHandle(), CUBLAS_OP_T, CUBLAS_OP_N, r.getDim2(), r.getDim1(), &alpha, d_C, r.getDim1(), &beta, d_C, r.getDim2(), d_D, r.getDim2());
-#endif
-
 	cudaEvent_t stop;
 	cudaEventCreate(&stop);
 	cudaEventRecord(stop, NULL);
 	cudaEventSynchronize(stop);
 	
-#if CUDART_VERSION>=5000
-	for(int i=0; i<r.getDim1(); i++)
-	{
-		cudaMemcpy(&r[i][0], &d_D[i*r.getDim2()], sizeof(std::complex<double>)*r.getDim2(), cudaMemcpyDeviceToHost);
-	}
-	cudaFree(d_D);
-#else
 	std::complex<double>* work = new std::complex<double>[work_size];
 	cudaMemcpy(work, d_C, sizeof(std::complex<double>)*work_size, cudaMemcpyDeviceToHost);
 
 	for(int i=0; i<r.getDim1(); i++)
-		for(int j=0; j<r.getDim2(); j++)
-			r[i][j] = work[i+j*r.getDim1()];
+		memcpy(&r[i][0], &work[i*r.getDim2()], r.getDim2()*sizeof(std::complex<double>));
 	delete[] work;
-#endif
 			
 	cudaFree(d_A);
 	cudaFree(d_B);
