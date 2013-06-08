@@ -39,10 +39,9 @@ namespace GMlib
 	DMatrix<float>& DMatrix<float>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
 		{
-			std::vector<float> stl(getDim1() * getDim2());
+			float* work = new float[getDim1() * getDim2()];
 			for(int i=0; i<getDim1(); i++)
-				for(int j=0; j<getDim2(); j++)
-					stl[i*getDim2()+j] = (*this)[i][j];
+				memcpy(&work[i*getDim2()], &(*this)[i][0], getDim2()*sizeof(float));
 
 #ifdef VIENNACL_WITH_OPENCL
 			viennacl::ocl::set_context_device_type(0, viennacl::ocl::gpu_tag());
@@ -60,7 +59,7 @@ namespace GMlib
 			viennacl::ocl::current_context().switch_device(devices[0]);
 #endif
 
-			viennacl::fast_copy(&stl[0], &stl[0] + stl.size(), vcl);
+			viennacl::fast_copy(work, work + getDim1() * getDim2(), vcl);
 
 			viennacl::linalg::lu_factorize(vcl);
 			viennacl::backend::finish();
@@ -70,11 +69,12 @@ namespace GMlib
 			viennacl::linalg::lu_substitute(vcl, inverse);
 			viennacl::backend::finish();
 
-			viennacl::fast_copy(inverse, &stl[0]);
+			viennacl::fast_copy(inverse, work);
 
 			for(int i=0; i<getDim1(); i++)
-				for(int j=0; j<getDim2(); j++)
-					(*this)[i][j]=(float) stl[i*getDim2()+j];
+				memcpy(&(*this)[i][0], &work[i*getDim2()], getDim2()*sizeof(float));
+
+			delete[] work;
 		}
 		return (*this);
 	}
@@ -83,10 +83,9 @@ namespace GMlib
 	DMatrix<double>& DMatrix<double>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
 		{
-			std::vector<double> stl(getDim1() * getDim2());
+			double* work = new double[getDim1() * getDim2()];
 			for(int i=0; i<getDim1(); i++)
-				for(int j=0; j<getDim2(); j++)
-					stl[i*getDim2()+j] = (*this)[i][j];
+				memcpy(&work[i*getDim2()], &(*this)[i][0], getDim2()*sizeof(double));
 
 #ifdef VIENNACL_WITH_OPENCL
 			viennacl::ocl::set_context_device_type(0, viennacl::ocl::gpu_tag());
@@ -104,7 +103,7 @@ namespace GMlib
 			viennacl::ocl::current_context().switch_device(devices[0]);
 #endif
 
-			viennacl::fast_copy(&stl[0], &stl[0] + stl.size(), vcl);
+			viennacl::fast_copy(work, work + getDim1() * getDim2(), vcl);
 
 			viennacl::linalg::lu_factorize(vcl);
 			viennacl::backend::finish();
@@ -114,11 +113,12 @@ namespace GMlib
 			viennacl::linalg::lu_substitute(vcl, inverse);
 			viennacl::backend::finish();
 
-			viennacl::fast_copy(inverse, &stl[0]);
+			viennacl::fast_copy(inverse, work);
 
 			for(int i=0; i<getDim1(); i++)
-				for(int j=0; j<getDim2(); j++)
-					(*this)[i][j]=(double) stl[i*getDim2()+j];
+				memcpy(&(*this)[i][0], &work[i*getDim2()], getDim2()*sizeof(double));
+
+			delete[] work;
 		}
 		return (*this);
 	}
