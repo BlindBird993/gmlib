@@ -32,6 +32,12 @@
 namespace GMlib
 {
 
+/*!	const DMatrix<float>&	operator*(const DMatrix<float>& m, const DMatrix<float>& b)
+ *	\brief Multiply two matrices
+ *
+ *	Generic CBLAS implementation of the multiplication of two matrices
+ *	of data type float.
+ */
 inline
 const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& b)
 {
@@ -62,6 +68,12 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 	return r;
 }
 
+/*!	const DMatrix<double>&	operator*(const DMatrix<double>& m, const DMatrix<double>& b)
+ *	\brief Multiply two matrices
+ *
+ *	Generic CBLAS implementation of the multiplication of two matrices
+ *	of data type double.
+ */
 inline
 const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double>& b)
 {
@@ -92,6 +104,12 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	return r;
 }
 
+/*!	const DVector<float>&	operator*(const DMatrix<float>& m, const DVector<float>& b)
+ *	\brief Multiply a matrix with a vector
+ *
+ *	Generic CBLAS implementation of the multiplication of a matrix
+ *	with a vector of data type float.
+ */
 inline
 const DVector<float>&  operator*(const DMatrix<float>& m, const DVector<float>& b) {
 	static DVector<float> r;
@@ -108,6 +126,12 @@ const DVector<float>&  operator*(const DMatrix<float>& m, const DVector<float>& 
 	return r;
 }
 
+/*!	const DVector<double>&	operator*(const DMatrix<double>& m, const DVector<double>& b)
+ *	\brief Multiply a matrix with a vector
+ *
+ *	Generic CBLAS implementation of the multiplication of a matrix
+ *	with a vector of data type double.
+ */
 inline
 const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double>& b) {
 	static DVector<double> r;
@@ -124,6 +148,12 @@ const DVector<double>&  operator*(const DMatrix<double>& m, const DVector<double
 	return r;
 }
 
+/*!	const DVector<std::complex<float> >&	operator*(const DMatrix<std::complex<float> >& m, const DVector<std::complex<float> >& b)
+ *	\brief Multiply a matrix with a vector
+ *
+ *	Generic CBLAS implementation of the multiplication of a matrix
+ *	with a vector of data type std::complex<float>.
+ */
 inline
 const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DVector<std::complex<float> >& b) {
 	static DVector<std::complex<float> > r;
@@ -140,6 +170,12 @@ const DVector<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	return r;
 }
 
+/*!	const DVector<std::complex<double> >&	operator*(const DMatrix<std::complex<double> >& m, const DVector<std::complex<double> >& b)
+ *	\brief Multiply a matrix with a vector
+ *
+ *	Generic CBLAS implementation of the multiplication of a matrix
+ *	with a vector of data type std::complex<double>.
+ */
 inline
 const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DVector<std::complex<double> >& b) {
 	static DVector<std::complex<double> > r;
@@ -156,6 +192,12 @@ const DVector<std::complex<double> >&  operator*(const DMatrix<std::complex<doub
 	return r;
 }
 
+/*!	const DMatrix<std::complex<float> >&	operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
+ *	\brief Multiply two matrices
+ *
+ *	Generic CBLAS implementation of the multiplication of two matrices
+ *	of data type std::complex<float>.
+ */
 inline
 const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
 {
@@ -191,6 +233,12 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	return r;
 }
 
+/*!	const DMatrix<std::complex<double> >&	operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
+ *	\brief Multiply two matrices
+ *
+ *	Generic CBLAS implementation of the multiplication of two matrices
+ *	of data type std::complex<double>.
+ */
 inline
 const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
 {

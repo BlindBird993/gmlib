@@ -34,6 +34,13 @@
 
 namespace GMlib
 {
+
+	/*!	DMatrix<float>&	DMatrix<float>::invert()
+	 *	\brief Invert the matrix
+	 *
+	 *	MKL-acceleration of matrix inversion
+	 *	specific to data type float.
+	 */
 	template<>
 	DMatrix<float>& DMatrix<float>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
@@ -41,7 +48,7 @@ namespace GMlib
 			int nk=getDim1();
 			Array<float> aa;
 			aa.setSize(nk*nk);
-			for(int i=0; i<nk; i++)	// daft cast
+			for(int i=0; i<nk; i++)
 				for(int j=0; j<nk; j++) aa[i+nk*j] = (float) (*this)[i][j];
 
 			Array<float> work; work.setSize(nk*32);	// temporary work array
@@ -55,13 +62,18 @@ namespace GMlib
 			sgetrf(&mmm, &nnn, aa.ptr(), &lda, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
 			sgetri(&mmm, aa.ptr(), &lda, ipiv.ptr(), work.ptr(), &wsize, &info); // a should now contain the inverse
 
-			// if(info==0)
 			for(int i=0; i<nk; i++)
 				for(int j=0; j<nk; j++) (*this)[i][j]=(float) aa[i+j*nk];
 		}
 		return (*this);
 	}
 
+	/*!	DMatrix<double>&	DMatrix<double>::invert()
+	 *	\brief Invert the matrix
+	 *
+	 *	MKL-acceleration of matrix inversion
+	 *	specific to data type double.
+	 */
 	template<>
 	DMatrix<double>& DMatrix<double>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
@@ -69,7 +81,7 @@ namespace GMlib
 			int nk=getDim1();
 			Array<double> aa;
 			aa.setSize(nk*nk);
-			for(int i=0; i<nk; i++)	// daft cast
+			for(int i=0; i<nk; i++)
 				for(int j=0; j<nk; j++) aa[i+nk*j] = (double) (*this)[i][j];
 
 			Array<double> work; work.setSize(nk*32);	// temporary work array
@@ -83,7 +95,6 @@ namespace GMlib
 			dgetrf(&mmm, &nnn, aa.ptr(), &lda, ipiv.ptr(), &info);				 // using Lapack LU-fact a is overwritten by LU
 			dgetri(&mmm, aa.ptr(), &lda, ipiv.ptr(), work.ptr(), &wsize, &info); // a should now contain the inverse
 
-			// if(info==0)
 			for(int i=0; i<nk; i++)
 				for(int j=0; j<nk; j++) (*this)[i][j]=(double) aa[i+j*nk];
 		}

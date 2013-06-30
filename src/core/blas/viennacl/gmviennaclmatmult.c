@@ -34,6 +34,12 @@
 namespace GMlib
 {
 
+/*!	const DMatrix<float>&	operator*(const DMatrix<float>& m, const DMatrix<float>& b)
+ *	\brief Multiply two matrices
+ *
+ *	ViennaCL-specific implementation of the multiplication of two matrices
+ *	of data type float.
+ */
 inline
 const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& b)
 {
@@ -85,6 +91,12 @@ const DMatrix<float>&  operator*(const DMatrix<float>& m, const DMatrix<float>& 
 	return r;
 }
 
+/*!	const DMatrix<double>&	operator*(const DMatrix<double>& m, const DMatrix<double>& b)
+ *	\brief Multiply two matrices
+ *
+ *	ViennaCL-specific implementation of the multiplication of two matrices
+ *	of data type double.
+ */
 inline
 const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double>& b)
 {
@@ -136,6 +148,12 @@ const DMatrix<double>&  operator*(const DMatrix<double>& m, const DMatrix<double
 	return r;
 }
 
+/*!	const DMatrix<std::complex<float> >&	operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
+ *	\brief Multiply two matrices
+ *
+ *	ViennaCL-specific implementation of the multiplication of two matrices
+ *	of data type std::complex<float>.
+ */
 inline
 const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float> >& m, const DMatrix<std::complex<float> >& b)
 {
@@ -229,6 +247,12 @@ const DMatrix<std::complex<float> >&  operator*(const DMatrix<std::complex<float
 	return r;
 }
 
+/*!	const DMatrix<std::complex<double> >&	operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
+ *	\brief Multiply two matrices
+ *
+ *	ViennaCL-specific implementation of the multiplication of two matrices
+ *	of data type std::complex<double>.
+ */
 inline
 const DMatrix<std::complex<double> >&  operator*(const DMatrix<std::complex<double> >& m, const DMatrix<std::complex<double> >& b)
 {

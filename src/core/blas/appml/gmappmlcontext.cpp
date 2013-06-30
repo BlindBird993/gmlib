@@ -34,6 +34,11 @@
 namespace GMlib
 {
 
+/*!	AppmlContext&	AppmlContext::getInstance()
+ *	\brief Get the singleton instance of this class
+ *
+ *	Creates and retains the singleton instance of this class.
+ */
 inline
 AppmlContext& AppmlContext::getInstance()
 {
@@ -41,6 +46,12 @@ AppmlContext& AppmlContext::getInstance()
 	return instance;
 }
 
+/*!	AppmlContext::AppmlContext()
+ *	\brief Set up the OpenCL environment
+ *
+ *	Constructor for the singleton,
+ *	sets up the OpenCL environment used by APPML.
+ */
 AppmlContext::AppmlContext()
 {
 	platform = 0;
@@ -90,6 +101,12 @@ AppmlContext::AppmlContext()
 	}
 }
 
+/*!	AppmlContext::~AppmlContext()
+ *	\brief Tears down OpenCL environment
+ *
+ *	Destructor for the singleton,
+ *	tears down the OpenCL environment used by APPML.
+ */
 AppmlContext::~AppmlContext()
 {
 	clAmdBlasTeardown();
@@ -98,21 +115,41 @@ AppmlContext::~AppmlContext()
 	clReleaseContext(ctx);
 }
 
+/*!	const cl_context& AppmlContext::getContext()
+ *	\brief Get the OpenCL context
+ *
+ *	Gets the OpenCL context of the singleton.
+ */
 const cl_context& AppmlContext::getContext()
 {
 	return AppmlContext::getInstance().ctx;
 }
 
+/*!	cl_int& AppmlContext::getErr()
+ *	\brief Get the OpenCL error
+ *
+ *	Gets the OpenCL error of the singleton.
+ */
 cl_int& AppmlContext::getErr()
 {
 	return AppmlContext::getInstance().err;
 }
 
+/*!	cl_command_queue& AppmlContext::getQueue()
+ *	\brief Get the OpenCL queue
+ *
+ *	Gets the OpenCL commend queue of the singleton.
+ */
 cl_command_queue& AppmlContext::getQueue()
 {
 	return AppmlContext::getInstance().queue;
 }
 
+/*!	cl_event& AppmlContext::getEvent()
+ *	\brief Get the OpenCL event
+ *
+ *	Gets the OpenCL event of the singleton.
+ */
 cl_event& AppmlContext::getEvent()
 {
 	return AppmlContext::getInstance().event;

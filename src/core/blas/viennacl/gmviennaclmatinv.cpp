@@ -35,6 +35,13 @@
 
 namespace GMlib
 {
+
+	/*!	DMatrix<float>&	DMatrix<float>::invert()
+	 *	\brief Invert the matrix
+	 *
+	 *	ViennaCL-acceleration of matrix inversion
+	 *	specific to data type float.
+	 */
 	template<>
 	DMatrix<float>& DMatrix<float>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)
@@ -79,6 +86,12 @@ namespace GMlib
 		return (*this);
 	}
 
+	/*!	DMatrix<double>&	DMatrix<double>::invert()
+	 *	\brief Invert the matrix
+	 *
+	 *	ViennaCL-acceleration of matrix inversion
+	 *	specific to data type double.
+	 */
 	template<>
 	DMatrix<double>& DMatrix<double>::invert() {
 		if(getDim1()==getDim2() && getDim1()>1)

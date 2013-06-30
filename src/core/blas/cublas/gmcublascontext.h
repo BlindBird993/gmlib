@@ -36,6 +36,11 @@
 namespace GMlib
 {
 
+/*!	\class CublasContext gmcublascontext.h gmCublasContext
+ *	\brief Helper class for managing CuBLAS context
+ *
+ *	Singleton that maintains the context used by CuBLAS.
+ */
 class CublasContext
 {
 public:

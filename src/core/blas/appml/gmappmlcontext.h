@@ -36,6 +36,11 @@
 namespace GMlib
 {
 
+/*!	\class AppmlContext gmappmlcontext.h gmAppmlContext
+ *	\brief Helper class for managing APPML OpenCL context
+ *
+ *	Singleton that holds the OpenCL context used by APPML.
+ */
 class AppmlContext
 {
 public:
