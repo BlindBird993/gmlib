@@ -784,6 +784,24 @@ namespace GMlib {
     }
   }
 
+
+  template <class T, int n, int m>
+  template <typename G>
+  Matrix<T,n,m>::operator Matrix<G,n,m>& () const {
+    static Matrix<G,n,m> v;
+    GM_Static1_<G,T,n*m>::eq( v.getPtr(), getPtr() );
+    return v;
+  }
+
+  template <class T, int n, int m>
+  template <typename G>
+  Matrix<G,n,m>& Matrix<T,n,m>::toType() const {
+    static Matrix<G,n,m> mat;
+    mat = *this;
+    return mat;
+  }
+
+
   /*! SqMatrix<T, n>::nSqMatrix(): Matrix<T,n,n>()
    *  \brief The default constructor
    *

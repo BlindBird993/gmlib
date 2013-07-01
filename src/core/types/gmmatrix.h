@@ -119,12 +119,10 @@ namespace GMlib {
 
     // Casting
     template <typename G>
-    operator Matrix<G,n,m>& () const {
+    operator Matrix<G,n,m>& () const;
 
-      static Matrix<G,n,m> v;
-      GM_Static1_<G,T,n*m>::eq( v.getPtr(), getPtr() );
-      return v;
-    }
+    template <typename G>
+    Matrix<G,n,m>&          toType() const;
 
     // Dummy for Array - should maby use determinant
     bool                operator < ( const Matrix<T,n,m>& ) const;
