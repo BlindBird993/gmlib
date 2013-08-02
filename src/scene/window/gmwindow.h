@@ -135,6 +135,7 @@ namespace GMlib {
     virtual void            message( Point<float,3>& p);
 
     void                    display();
+    void                    renderTo();
 
   public:
     virtual void            init();
@@ -356,6 +357,18 @@ namespace GMlib {
 
     RenderManager *rm = getRenderManager();
     rm->render( _view_set_stack.back().getCameras() );
+  }
+
+  /*! void GMWindow::display(void)
+   *	\brief	Pending Documentation
+   *
+   *	Pending Documentation
+   */
+  inline
+  void GMWindow::renderTo() {
+
+    RenderManager *rm = getRenderManager();
+    rm->renderTo();
   }
 
 

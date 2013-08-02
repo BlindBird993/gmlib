@@ -43,8 +43,19 @@ namespace GMlib {
 
 
   DisplayRenderer::DisplayRenderer(Scene *scene)
-    : MultiObjectRenderer(scene), _fbo("DefaultRenderBufferObject"), _rbo_color(GL_TEXTURE_2D), _rbo_depth(),
-      _fbo_select("DefaultRenderSelectBufferObject"), _rbo_select(GL_TEXTURE_2D) {
+    : MultiObjectRenderer(scene),
+      _fbo("DefaultRenderBufferObject"), _rbo_color("rbo_color",GL_TEXTURE_2D), _rbo_depth(),
+      _fbo_select("DefaultRenderSelectBufferObject"), _rbo_select(GL_TEXTURE_2D),
+      _w(0), _h(0)
+  {
+
+
+
+
+
+
+
+
 
     // Color rbo texture parameters
     _rbo_color.setParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -67,14 +78,53 @@ namespace GMlib {
     _fbo_select.attachRenderbuffer( _rbo_select_depth, GL_DEPTH_ATTACHMENT );
     _fbo_select.attachTexture2D( _rbo_select, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
 
-    // Bind depth buffer ot depthbuffer framebuffer
+    // Bind depth buffer to depthbuffer framebuffer
     _fbo_select_depth.attachRenderbuffer( _rbo_select_depth, GL_DEPTH_ATTACHMENT );
 
 
     _coord_sys_visu = new CoordSysRepVisualizer;
+
+
+    glGenBuffers( 1, &_vbo_quad );
+    glGenBuffers( 1, &_vbo_quad_tex );
+
+    // Gen quad data (vertex)
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad );
+
+    DVector< Point<float,3> > data(4);
+//    data[0] = Point<float,3>( 0.25f, 0.25f, 0.0f );
+//    data[1] = Point<float,3>( 0.25f, 0.75f, 0.0f );
+//    data[2] = Point<float,3>( 0.75f, 0.75f, 0.0f );
+//    data[3] = Point<float,3>( 0.75f, 0.25f, 0.0f );
+    data[0] = Point<float,3>( 0.0f, 0.0f, 0.0f );
+    data[1] = Point<float,3>( 0.0f, 1.0f, 0.0f );
+    data[2] = Point<float,3>( 1.0f, 1.0f, 0.0f );
+    data[3] = Point<float,3>( 1.0f, 0.0f, 0.0f );
+
+    glBufferData( GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), data.getPtr(), GL_STATIC_DRAW );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+    // Gen quad data (tex)
+    glBindBuffer( GL_ARRAY_BUFFER, _vbo_quad_tex );
+
+    DVector< Point<float,2> > data_tex(4);
+    data_tex[0] = Point<float,2>( 0.0f, 0.0f );
+    data_tex[1] = Point<float,2>( 0.0f, 1.0f );
+    data_tex[2] = Point<float,2>( 1.0f, 1.0f );
+    data_tex[3] = Point<float,2>( 1.0f, 0.0f );
+  //  data_tex[0] = Point<float,2>( 0.25f, 0.25f );
+  //  data_tex[1] = Point<float,2>( 0.25f, 0.75f );
+  //  data_tex[2] = Point<float,2>( 0.75f, 0.75f );
+  //  data_tex[3] = Point<float,2>( 0.75f, 0.25f );
+
+    glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
+    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
   void DisplayRenderer::resize(int w, int h) {
+
+    _w = w;
+    _h = h;
 
     Renderer::resize(w,h);
 
