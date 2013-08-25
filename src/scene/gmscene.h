@@ -89,6 +89,7 @@ namespace GMlib{
     Array<Light*>&              getLights();
     int                         getSize();
     void                        prepare();
+    void                        simulate();
 
     virtual void                insert(SceneObject* obj);
     void                        remove(SceneObject* obj);
@@ -123,8 +124,6 @@ namespace GMlib{
 
   protected:
     Array<SceneObject*>         _sel_objs;
-
-    void                        simulate();
 
     virtual void                updateMaxObjects( int no_objects );
 

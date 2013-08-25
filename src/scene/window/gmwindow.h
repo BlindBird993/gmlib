@@ -107,6 +107,10 @@ namespace GMlib {
     GMWindow&               operator=(const GMWindow& gw);
 
 
+    void                    render();
+    void                    renderTo();
+    void                    reshape(int w, int h);
+
 
   protected:
     RenderManager         *_rm;
@@ -134,15 +138,10 @@ namespace GMlib {
     virtual void            message( SceneObject* d);
     virtual void            message( Point<float,3>& p);
 
-    void                    display();
-    void                    renderTo();
-
   public:
     virtual void            init();
 
   protected:
-    void                    reshape(int w, int h);
-
     void                    updateMaxObjects(int no_objects);
 
   private:
@@ -330,7 +329,7 @@ namespace GMlib {
    *	Pending Documentation
    */
   inline
-  void GMWindow::display() {
+  void GMWindow::render() {
 
     if( _active_cam > -1 )
       _cameras[_active_cam]->move(_move);
