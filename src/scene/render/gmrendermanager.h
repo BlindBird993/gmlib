@@ -54,6 +54,7 @@ namespace GMlib {
   class Renderer;
   class DisplayRenderer;
   class SelectRenderer;
+  class RenderTarget;
 
 
   class RenderManager {
@@ -66,7 +67,6 @@ namespace GMlib {
 
     /* Rendering */
     void            render(const Array<Camera *> &cameras );
-    void            renderTo();
 
     /* Selecting */
     DisplayObject*  findObject( int x, int y );
@@ -79,6 +79,8 @@ namespace GMlib {
     const Color&    getSelectColor() const;
     void            setSelectColor( const Color& c );
 
+    /* Render target */
+    void            setRenderTarget( RenderTarget* rt );
 
   private:
     GMWindow                  *_window;

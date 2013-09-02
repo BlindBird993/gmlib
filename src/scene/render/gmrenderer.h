@@ -41,6 +41,7 @@ namespace GMlib {
   class Scene;
   class DisplayObject;
   class Camera;
+  class RenderTarget;
 
   class Renderer {
   public:

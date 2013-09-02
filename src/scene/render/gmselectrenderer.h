@@ -65,7 +65,6 @@ namespace GMlib {
     void                        select(DisplayObject* obj, const Camera* cam, int what) const;
 
   private:
-
     GL::FramebufferObject       _fbo;
     GL::RenderbufferObject      _rbo_color;
     GL::RenderbufferObject      _rbo_depth;

@@ -300,6 +300,11 @@ namespace GMlib {
     getRenderManager()->setSelectColor(color);
   }
 
+  void GMWindow::setRenderTarget(RenderTarget *rt) {
+
+    _rm->setRenderTarget( rt );
+  }
+
 
   /*! bool GMWindow::toggleStereo()
    *	\brief Pending Documentation

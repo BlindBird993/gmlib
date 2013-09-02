@@ -22,19 +22,11 @@
 
 
 addHeaders(
-  gmDisplayRenderer
-  gmRenderer
-  gmRenderManager
-  gmRenderTarget
-  gmSelectRenderer
+  gmNativeRenderTarget
+  gmRenderTexture
 )
 
 addSources(
-  gmdisplayrenderer.cpp
-  gmrenderer.cpp
-  gmrendermanager.cpp
-  gmselectrenderer.cpp
+  gmrendertexture.cpp
 )
 
-
-addSubDirectory(rendertargets)           # <rendertargets> sub-module

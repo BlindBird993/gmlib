@@ -40,6 +40,7 @@
 #include "../visualizers/gmcoordsysrepvisualizer.h"
 #include "../window/gmviewset.h"
 #include "../window/gmwindow.h"
+#include "gmrendertarget.h"
 
 // gmlib
 #include <opengl/gmframebufferobject.h>
@@ -61,6 +62,9 @@ namespace GMlib {
     virtual void            render(Array<DisplayObject*>& objs, const Array<Camera*>& cameras ) const;
 
     void                    render( GMWindow *window );
+    void                    renderToTarget( GMWindow *window );
+
+    void                    setRenderTarget( RenderTarget* rt );
 
     /* virtual from Renderer */
     void                    resize(int w, int h);
@@ -93,6 +97,7 @@ namespace GMlib {
 
 
     CoordSysRepVisualizer   *_coord_sys_visu;
+    RenderTarget            *_rt;
 
   }; // END class DisplayRenderer
 
@@ -222,6 +227,13 @@ namespace GMlib {
 
 
     glViewport( 0, 0, _w, _h );
+
+
+
+
+
+
+
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glDisable(GL_DEPTH_TEST);
 
@@ -288,6 +300,14 @@ namespace GMlib {
     }
 
     glEnable(GL_DEPTH_TEST);
+  }
+
+  inline
+  void DisplayRenderer::renderToTarget(GMWindow* window) {
+
+    _rt->bind();
+    render( window );
+    _rt->unbind();
   }
 
   inline

@@ -49,7 +49,15 @@
 // stl
 #include <iostream>
 
+
+
 namespace GMlib {
+
+
+  // local
+  class RenderTarget;
+
+
 
 
   /* \class GMWindow gmWindow.h <gmWindow>
@@ -67,38 +75,41 @@ namespace GMlib {
 
     void                    addToViewSet( int cam_idx, int split_cam_idx, bool split_vertically=true, double d=0.5 );
     void                    addViewSet( int cam_idx );
-    virtual void            clearScene();
-    Camera*                 findCamera( int x, int y );
-    Camera*                 findCamera( const Vector<int,2>& pos );
-    int                     getCameraIndex( Camera* cam ) const;
-    const Color&            getClearColor() const;
-    const Color&            getSelectColor() const;
-    int                     getViewportHeight() const;
-    int                     getViewportWidth() const;
     int                     getViewSetStackSize() const;
-    void                    insertCamera(Camera* cam, bool insert_in_scene = false);
-
-    void                    insertLight(Light* light, bool insert_in_scene = false);
-    void                    insertSun();
-    bool                    isRunning() const;
-    bool                    isStereoEnabled() const;
-    void                    moveBorder(int x, int y);
     void                    popView(int cam_idx);
     void                    popViewSet();
     void                    prepareViewSets();
 
+    Camera*                 findCamera( int x, int y );
+    Camera*                 findCamera( const Vector<int,2>& pos );
+    int                     getCameraIndex( Camera* cam ) const;
+    void                    insertCamera(Camera* cam, bool insert_in_scene = false);
     bool                    removeCamera(Camera * cam);
-    bool                    removeLight(Light* light);
-    void                    removeSun();
-    void                    reset();
 
-    void                    scaleDayLight(double d);
+    const Color&            getClearColor() const;
     void                    setClearColor( const Color& color );
+    const Color&            getSelectColor() const;
     void                    setSelectColor( const Color& color );
+
+    int                     getViewportHeight() const;
+    int                     getViewportWidth() const;
+
+    void                    insertLight(Light* light, bool insert_in_scene = false);
+    bool                    removeLight(Light* light);
+    void                    insertSun();
+    void                    removeSun();
+    void                    scaleDayLight(double d);
     void                    setSunDirection(Angle d);
 
+    void                    moveBorder(int x, int y);
 
+    virtual void            clearScene();
+    void                    reset();
+
+    bool                    isRunning() const;
     virtual bool            toggleRun();
+
+    bool                    isStereoEnabled() const;
     bool                    toggleStereo();
 
     RenderManager*           getRenderManager() const;
@@ -108,8 +119,9 @@ namespace GMlib {
 
 
     void                    render();
-    void                    renderTo();
     void                    reshape(int w, int h);
+
+    void                    setRenderTarget( RenderTarget* rt );
 
 
   protected:
@@ -356,18 +368,6 @@ namespace GMlib {
 
     RenderManager *rm = getRenderManager();
     rm->render( _view_set_stack.back().getCameras() );
-  }
-
-  /*! void GMWindow::display(void)
-   *	\brief	Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  void GMWindow::renderTo() {
-
-    RenderManager *rm = getRenderManager();
-    rm->renderTo();
   }
 
 

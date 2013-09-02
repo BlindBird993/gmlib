@@ -96,11 +96,9 @@ namespace GMlib {
 
     // Render
     _disp->render( _objs, cameras );
-  }
 
-  void RenderManager::renderTo() {
-
-    _disp->render( _window );
+    // Render to render target
+    _disp->renderToTarget( _window );
   }
 
   void RenderManager::select(Camera *cam, int type_id) {
@@ -116,6 +114,11 @@ namespace GMlib {
   void RenderManager::setSelectColor(const Color &c) {
 
     _select_color = c;
+  }
+
+  void RenderManager::setRenderTarget(RenderTarget* rt) {
+
+    _disp->setRenderTarget( rt );
   }
 
   void RenderManager::updateMaxObjects(int no_objs) {

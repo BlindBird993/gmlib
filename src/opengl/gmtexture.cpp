@@ -50,8 +50,10 @@ namespace GL {
 
   Texture::Texture(const std::string name, GLenum target) : _name(name), _target(target) {
 
-    _valid = OGL::createBo( _name, _target );
-    _id = OGL::getBoId( _name );
+    _valid = OGL::createTex( _name, _target );
+
+    _target = OGL::getTexTarget( _name );
+    _id     = OGL::getTexId( _name );
 
     _ids[_id] = 1;
   }

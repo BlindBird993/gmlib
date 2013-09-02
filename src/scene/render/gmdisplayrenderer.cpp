@@ -31,6 +31,7 @@
 
 // local
 #include "../camera/gmcamera.h"
+#include "rendertargets/gmnativerendertarget.h"
 
 //stl
 #include <cassert>
@@ -119,6 +120,8 @@ namespace GMlib {
 
     glBufferData( GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), data_tex.getPtr(), GL_STATIC_DRAW );
     glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+
+    _rt = new NativeRenderTarget;
   }
 
   void DisplayRenderer::resize(int w, int h) {
@@ -133,6 +136,15 @@ namespace GMlib {
 
     _rbo_select_depth.createStorage( GL_DEPTH_COMPONENT32, w, h );
     _rbo_select.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+
+    _rt->resize( Vector<float,2>(_w,_h) );
+  }
+
+  void DisplayRenderer::setRenderTarget(RenderTarget *rt) {
+
+    assert( rt );
+    delete _rt;
+    _rt = rt;
   }
 
 
