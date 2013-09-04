@@ -48,7 +48,7 @@ namespace GMlib {
     VisualizerStdRep();
 
     void              render( const DisplayObject* obj, const Camera* cam ) const;
-    void              renderGeometry( const GL::AttributeLocation& vert_loc ) const;
+    void              renderGeometry( const GL::GLProgram &prog, const DisplayObject* obj, const Camera* cam ) const;
 
 
     void              render( const HqMatrix<float,3>& mvmat,

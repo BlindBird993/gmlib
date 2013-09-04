@@ -232,10 +232,13 @@ namespace GMlib {
 
   }
 
-  void SelectorVisualizer::renderGeometry(const GL::AttributeLocation &vert_loc) const {
+  void SelectorVisualizer::renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const {
+
+    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
+    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid *>(0x0) );
+    _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid *>(0x0) );
 
     // Draw top and bottom caps
     for( int i = 0; i < 2; i++ )
@@ -245,7 +248,7 @@ namespace GMlib {
     for( int i = 0; i < _mid_strips; i++ )
       glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
 
-    _vbo.disable( vert_loc );
+    _vbo.disable( vertice_loc );
     _vbo.unbind();
   }
 

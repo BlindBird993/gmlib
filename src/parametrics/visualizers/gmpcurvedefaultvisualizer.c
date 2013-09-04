@@ -78,12 +78,15 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::renderGeometry(const GL::AttributeLocation& vert_loc) const {
+  void PCurveDefaultVisualizer<T,n>::renderGeometry( const GL::GLProgram &prog, const DisplayObject* obj, const Camera* cam ) const {
+
+    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
+    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
-    _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
+    _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
     glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
-    _vbo.disable( vert_loc );
+    _vbo.disable( vertice_loc );
     _vbo.unbind();
   }
 

@@ -91,8 +91,9 @@ namespace GMlib {
     GLuint                    _vbo_quad_tex;
 
     void                    render(const DisplayObject *obj, const Camera *cam) const;
-    void                    renderCoordSys(const Camera *cam ) const;
     void                    renderGeometry(const DisplayObject *obj, const Camera *cam) const;
+    void                    renderCoordSys(const Camera *cam ) const;
+//    void                    renderGeometry(const DisplayObject *obj, const Camera *cam) const;
 
 
 
@@ -145,38 +146,36 @@ namespace GMlib {
   }
 
   inline
-  void DisplayRenderer::renderCoordSys(const Camera *cam) const {
+  void DisplayRenderer::renderGeometry( const DisplayObject* obj, const Camera* cam ) const {
 
-    _coord_sys_visu->render(cam,cam);
+    if( obj != cam && obj->isSelected()  ) {
+
+      const GL::GLProgram prog("render_select");
+      prog.bind(); {
+
+        prog.setUniform( "u_color", Color( obj->getVirtualName()) );
+
+        if(obj->isCollapsed()) {
+
+          VisualizerStdRep::getInstance()->renderGeometry(prog,obj,cam);
+        }
+        else {
+
+          const Array<Visualizer*>& visus = obj->getVisualizers();
+          for( int i = 0; i < visus.getSize(); ++i )
+            visus(i)->renderGeometry(prog,obj,cam);
+
+          obj->localSelect(cam);
+        }
+
+      } prog.unbind();
+    }
   }
 
   inline
-  void DisplayRenderer::renderGeometry(const DisplayObject *obj, const Camera *cam) const {
+  void DisplayRenderer::renderCoordSys(const Camera *cam) const {
 
-    if( obj != cam && obj->isSelected() ) {
-
-      const GL::GLProgram render_select_prog("render_select");
-      render_select_prog.bind();
-      render_select_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
-      render_select_prog.setUniform( "u_color", Color( obj->getVirtualName()) );
-
-      GL::AttributeLocation vert_loc = render_select_prog.getAttributeLocation( "in_vertex" );
-
-      if( obj->isCollapsed() ) {
-
-        VisualizerStdRep::getInstance()->renderGeometry(vert_loc);
-      }
-      else {
-
-        const Array<Visualizer*>& visus = obj->getVisualizers();
-        for( int i = 0; i < visus.getSize(); ++i )
-          visus(i)->renderGeometry(vert_loc);
-
-        obj->localSelect(vert_loc);
-      }
-
-      render_select_prog.unbind();
-    }
+    _coord_sys_visu->render(cam,cam);
   }
 
   inline

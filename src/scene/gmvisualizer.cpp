@@ -33,77 +33,75 @@
 
 #include "gmdisplayobject.h"
 
+// gmlib
+#include <core/gmglobal.h>
+
+using namespace GMlib;
+
+Visualizer::Visualizer()
+  : _display_mode(DISPLAY_MODE_SHADED),
+    _render_prog("phong") {}
+
+Visualizer::Visualizer( const Visualizer& copy )
+  : _display_mode(copy._display_mode),
+    _render_prog(copy._render_prog) {}
 
 
-namespace GMlib {
+void Visualizer::render( const DisplayObject* obj, const Camera* cam ) const {
+  GM_UNUSED(obj)
+  GM_UNUSED(cam)
+}
 
-  Visualizer::Visualizer()
-    : _display_mode(DISPLAY_MODE_SHADED),
-      _render_prog("phong"), _select_prog("select") {}
+Visualizer::DISPLAY_MODE Visualizer::getDisplayMode() const {
 
-  Visualizer::Visualizer( const Visualizer& copy )
-    : _display_mode(copy._display_mode),
-      _render_prog(copy._render_prog), _select_prog(copy._select_prog) {}
+  return _display_mode;
+}
 
+const GL::GLProgram &Visualizer::getRenderProgram() const {
 
-  void Visualizer::render( const DisplayObject* /*obj*/, const Camera* /*cam*/ ) const {}
+  return _render_prog;
+}
 
-  Visualizer::DISPLAY_MODE Visualizer::getDisplayMode() const {
+void Visualizer::glSetDisplayMode() const {
 
-    return _display_mode;
-  }
+  if( this->_display_mode == Visualizer::DISPLAY_MODE_SHADED )
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+  else if( this->_display_mode == Visualizer::DISPLAY_MODE_WIREFRAME )
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+}
 
-  const GL::GLProgram &Visualizer::getRenderProgram() const {
+void Visualizer::renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const {
+  GM_UNUSED(prog)
+  GM_UNUSED(obj)
+  GM_UNUSED(cam)
+}
 
-    return _render_prog;
-  }
+void Visualizer::setDisplayMode( Visualizer::DISPLAY_MODE display_mode) {
 
-  const GL::GLProgram& Visualizer::getSelectProgram() const {
+  _display_mode = display_mode;
+}
 
-    return _select_prog;
-  }
+void Visualizer::setRenderProgram(const GL::GLProgram &prog) {
 
-  void Visualizer::glSetDisplayMode() const {
+  _render_prog = prog;
+}
 
-    if( this->_display_mode == Visualizer::DISPLAY_MODE_SHADED )
-      glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    else if( this->_display_mode == Visualizer::DISPLAY_MODE_WIREFRAME )
-      glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-  }
+void Visualizer::simulate( double dt ) {
+  GM_UNUSED(dt)
+}
 
-  void Visualizer::renderGeometry(const GL::AttributeLocation& /*vertice_loc*/) const {}
+void Visualizer::toggleDisplayMode() {
 
-  void Visualizer::setDisplayMode( Visualizer::DISPLAY_MODE display_mode) {
+  if( _display_mode == Visualizer::DISPLAY_MODE_SHADED )
+    _display_mode = Visualizer::DISPLAY_MODE_WIREFRAME;
+  else
+    _display_mode = Visualizer::DISPLAY_MODE_SHADED;
+}
 
-    _display_mode = display_mode;
-  }
+bool Visualizer::operator == ( const Visualizer* v ) const {
 
-  void Visualizer::setRenderProgram(const GL::GLProgram &prog) {
+  if( this == v )
+    return true;
 
-    _render_prog = prog;
-  }
-
-  void Visualizer::setSelectProgram(const GL::GLProgram &prog)
-  {
-    _select_prog = prog;
-  }
-
-  void Visualizer::simulate( double /*dt*/ ) {}
-
-  void Visualizer::toggleDisplayMode() {
-
-    if( _display_mode == Visualizer::DISPLAY_MODE_SHADED )
-      _display_mode = Visualizer::DISPLAY_MODE_WIREFRAME;
-    else
-      _display_mode = Visualizer::DISPLAY_MODE_SHADED;
-  }
-
-  bool Visualizer::operator == ( const Visualizer* v ) const {
-
-    if( this == v )
-      return true;
-
-    return false;
-  }
-
-} // END namespace GMlib
+  return false;
+}

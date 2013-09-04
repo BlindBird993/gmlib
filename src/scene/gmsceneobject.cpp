@@ -36,6 +36,7 @@
 #include "light/gmlight.h"
 
 // gmlib
+#include <core/gmglobal.h>
 #include <core/types/gmpoint.h>
 
 // stl
@@ -349,7 +350,9 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localSelect(const GL::AttributeLocation& /*loc*/ ) const {}
+  void SceneObject::localSelect(const Camera* cam) const {
+    GM_UNUSED(cam)
+  }
 
 
   /*! void localSimulate(double dt)

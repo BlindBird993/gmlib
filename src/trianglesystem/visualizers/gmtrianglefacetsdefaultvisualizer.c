@@ -109,7 +109,10 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleFacetsDefaultVisualizer<T>::renderGeometry(const GL::AttributeLocation &vertice_loc) const {
+  void TriangleFacetsDefaultVisualizer<T>::renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const {
+
+    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
+    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
 
     _vbo.bind();
     _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );

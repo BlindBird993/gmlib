@@ -249,12 +249,12 @@ namespace GMlib{
 
     // deprecated
     virtual void                        localDisplay( const Camera* cam ) const;  //! Lingering function convenient for Rapid Prototyping
-                                                                            //! (may be removed without further notice!!!)
-                                                                            //! \deprecated
+                                                                                  //! (may be removed without further notice!!!)
+                                                                                  //! \deprecated
 
-    virtual void                        localSelect( const GL::AttributeLocation& loc ) const;   //! Lingering function convenient for Rapid Prototyping
-                                                                                        //! (may be removed without further notice!!!)
-                                                                                        //! \deprecated
+    virtual void                        localSelect( const Camera* cam) const;    //! Lingering function convenient for Rapid Prototyping
+                                                                                  //! (may be removed without further notice!!!)
+                                                                                  //! \deprecated
 
   protected:
     friend class Scene;

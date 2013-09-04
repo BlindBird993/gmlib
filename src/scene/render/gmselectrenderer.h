@@ -82,30 +82,25 @@ namespace GMlib {
 
     if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
 
-      const GL::GLProgram select_prog("select");
+      const GL::GLProgram prog("select");
+      prog.bind(); {
 
-      select_prog.bind(); {
+        prog.setUniform( "u_color", Color( obj->getVirtualName()) );
 
-        select_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
-        select_prog.setUniform( "u_color", Color(obj->getVirtualName()) );
-        GL::AttributeLocation vert_loc = select_prog.getAttributeLocation( "in_vertex" );
+        if(obj->isCollapsed()) {
 
-
-        if( obj->isCollapsed() ) {
-
-          VisualizerStdRep *std_rep_visu = VisualizerStdRep::getInstance();
-          std_rep_visu->renderGeometry( vert_loc );
+          VisualizerStdRep::getInstance()->renderGeometry(prog,obj,cam);
         }
         else {
 
           const Array<Visualizer*>& visus = obj->getVisualizers();
           for( int i = 0; i < visus.getSize(); ++i )
-            visus(i)->renderGeometry( vert_loc );
+            visus(i)->renderGeometry(prog,obj,cam);
+
+          obj->localSelect(cam);
         }
 
-        obj->localSelect(vert_loc);
-
-      } select_prog.unbind();
+      } prog.unbind();
     }
   }
 

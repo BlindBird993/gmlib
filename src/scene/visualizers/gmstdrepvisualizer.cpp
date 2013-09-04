@@ -62,14 +62,17 @@ namespace GMlib {
     return _s_instance;
   }
 
-  void VisualizerStdRep::renderGeometry(const GL::AttributeLocation& vert_loc) const {
+  void VisualizerStdRep::renderGeometry( const GL::GLProgram &prog, const DisplayObject* obj, const Camera* cam ) const {
+
+    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
+    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
 
     _bo_cube.bind();
-    _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+    _bo_cube.enableVertexArrayPointer( vertice_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
     _bo_cube_indices.bind();
       glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
     _bo_cube_indices.unbind();
-    _bo_cube.disableVertexArrayPointer( vert_loc );
+    _bo_cube.disableVertexArrayPointer( vertice_loc );
     _bo_cube.unbind();
   }
 

@@ -47,7 +47,7 @@ namespace GMlib {
     PTriangleDefaultVisualizer();
 
     void            render(const DisplayObject *obj, const Camera *cam) const;
-    void            renderGeometry(const GL::AttributeLocation &vertice_loc) const;
+    void            renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const;
 
     virtual void    replot(const DVector< DVector< Vector<T,3> > >& p,int m);
 

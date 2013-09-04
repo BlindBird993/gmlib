@@ -70,13 +70,10 @@ namespace GMlib {
     virtual Visualizer*       makeCopy() const = 0;
 
     virtual void              render( const DisplayObject* obj, const Camera* cam ) const;
-    virtual void              renderGeometry( const GL::AttributeLocation& vertice_loc ) const;
+    virtual void              renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const;
 
     const GL::GLProgram&      getRenderProgram() const;
     void                      setRenderProgram( const GL::GLProgram& prog );
-
-    const GL::GLProgram&      getSelectProgram() const;
-    void                      setSelectProgram( const GL::GLProgram& prog );
 
     DISPLAY_MODE              getDisplayMode() const;
     void                      setDisplayMode( DISPLAY_MODE display_mode );
@@ -93,7 +90,6 @@ namespace GMlib {
     DISPLAY_MODE              _display_mode;
 
     GL::GLProgram             _render_prog;
-    GL::GLProgram             _select_prog;
   };
 
 
