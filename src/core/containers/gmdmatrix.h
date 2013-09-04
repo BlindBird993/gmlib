@@ -57,7 +57,7 @@ namespace GMlib{
     void                resetDim(int i, int j);
     void                setDim(int i, int j);
     void                setIdentity();
-    DVector<T>          toDVector();
+    DVector<T>          toDVector() const;
     DMatrix<T>&         transpose();
 
     DMatrix<T>&         operator = (const DMatrix<T>& v);
