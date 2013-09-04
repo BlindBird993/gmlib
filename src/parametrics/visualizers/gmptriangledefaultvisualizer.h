@@ -43,6 +43,7 @@ namespace GMlib {
 
   template <typename T, int n>
   class PTriangleDefaultVisualizer : public PTriangleVisualizer<T,n> {
+    GM_VISUALIZER(PTriangleDefaultVisualizer)
   public:
     PTriangleDefaultVisualizer();
 
