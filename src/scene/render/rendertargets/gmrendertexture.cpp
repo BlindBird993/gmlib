@@ -13,6 +13,11 @@ RenderTexture::RenderTexture(const std::string& name)
   init();
 }
 
+const GL::FramebufferObject&RenderTexture::getFbo() const {
+
+  return _fbo;
+}
+
 void RenderTexture::init() {
 
   _tex_rb_color.setParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);

@@ -66,6 +66,17 @@ namespace GL {
       OGL::deleteFbo( _id );
   }
 
+  FramebufferObject::FramebufferObject(GLuint id) {
+
+    _name = "";
+
+    _id = id;
+    _valid = true;
+
+    _ids[_id] = 1;
+
+  }
+
   void FramebufferObject::attachRenderbuffer(const RenderbufferObject &rbo, GLenum attachment) {
 
     GLint id = safeBind();
@@ -94,6 +105,19 @@ namespace GL {
     GLint id = safeBind();
     GL_CHECK(glFramebufferTexture3D( target, attachment, textarget, tex.getId(), level, layer ));
     safeUnbind(id);
+  }
+
+  void FramebufferObject::blitTo(GLuint dest_id, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) const {
+
+    FramebufferObject dest_fbo(dest_id);
+
+    bindRead();
+    dest_fbo.bindDraw();
+
+    GL_CHECK(::glBlitFramebuffer( srcX0,srcY0,srcX1,srcY1,dstX0,dstY0,dstX1,dstY1,mask,filter ));
+
+    unbindRead();
+    dest_fbo.unbindDraw();
   }
 
   GLuint FramebufferObject::getId() const {

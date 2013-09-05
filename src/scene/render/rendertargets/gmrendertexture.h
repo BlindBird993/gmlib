@@ -11,6 +11,8 @@ public:
   explicit RenderTexture ();
   explicit RenderTexture ( const std::string& name );
 
+  const GL::FramebufferObject&    getFbo() const;
+
 private:
 
   GL::FramebufferObject     _fbo;

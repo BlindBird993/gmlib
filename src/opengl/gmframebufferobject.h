@@ -49,6 +49,12 @@ namespace GL {
     void                    bind() const;
     void                    unbind() const;
 
+    void                    bindRead() const;
+    void                    unbindRead() const;
+
+    void                    bindDraw() const;
+    void                    unbindDraw() const;
+
     void                    clear(GLbitfield mask) const;
     void                    clearColorBuffer(const Color& c) const;
 
@@ -57,6 +63,11 @@ namespace GL {
     void                    attachTexture1D(const Texture& tex, GLenum target, GLenum attachment, GLenum textarget = GL_TEXTURE_1D, GLint level = 0);
     void                    attachTexture2D(const Texture& tex, GLenum target, GLenum attachment, GLenum textarget = GL_TEXTURE_2D, GLint level = 0);
     void                    attachTexture3D(const Texture& tex, GLenum target, GLenum attachment, GLenum textarget = GL_TEXTURE_3D, GLint level = 0, GLint layer = 0 );
+
+    void                    blitTo( GLuint dest_id,
+                                    GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
+                                    GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                                    GLbitfield mask, GLenum filter ) const;
 
   protected:
     bool                    _valid;
@@ -68,7 +79,11 @@ namespace GL {
 
 
   private:
+    explicit FramebufferObject( GLuint id );
     static GLuintCMap       _ids;
+
+    void                    bind( GLenum target ) const;
+    void                    unbind( GLenum target ) const;
 
     GLint                   safeBind() const;
     void                    safeUnbind(GLint id) const;
@@ -76,17 +91,52 @@ namespace GL {
 
   }; // END class FramebufferObject
 
+  inline
+  void FramebufferObject::bind( GLenum target ) const {
+
+    GL_CHECK(glBindFramebuffer( target, _id ));
+  }
+
+  inline
+  void FramebufferObject::unbind( GLenum target ) const {
+
+    GL_CHECK(glBindFramebuffer( target, 0x0 ));
+  }
 
   inline
   void FramebufferObject::bind() const {
 
-    GL_CHECK(glBindFramebuffer( GL_FRAMEBUFFER, _id ));
+    bind( GL_FRAMEBUFFER );
   }
 
   inline
   void FramebufferObject::unbind() const {
 
-    GL_CHECK(glBindFramebuffer( GL_FRAMEBUFFER, 0x0 ));
+    unbind( GL_FRAMEBUFFER );
+  }
+
+  inline
+  void FramebufferObject::bindRead() const {
+
+    bind( GL_READ_FRAMEBUFFER );
+  }
+
+  inline
+  void FramebufferObject::unbindRead() const {
+
+    unbind( GL_READ_FRAMEBUFFER );
+  }
+
+  inline
+  void FramebufferObject::bindDraw() const {
+
+    bind( GL_DRAW_FRAMEBUFFER );
+  }
+
+  inline
+  void FramebufferObject::unbindDraw() const {
+
+    unbind( GL_DRAW_FRAMEBUFFER );
   }
 
   inline

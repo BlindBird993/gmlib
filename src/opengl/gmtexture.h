@@ -54,6 +54,7 @@ namespace GL {
     void                    texImage2D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data );
     void                    texImage3D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data );
 
+    void                    getTexImage( GLint level, GLenum format, GLenum type, GLvoid* pixels );
 
     void                    setParameterf(GLenum pname, GLfloat param );
     void                    setParameteri(GLenum pname, GLint param );

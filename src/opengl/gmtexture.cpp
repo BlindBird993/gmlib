@@ -117,6 +117,13 @@ namespace GL {
     safeUnbind(id);
   }
 
+  void Texture::getTexImage(GLint level, GLenum format, GLenum type, GLvoid* pixels) {
+
+    GLint id = safeBind();
+    GL_CHECK(::glGetTexImage( _target, level, format, type, pixels ));
+    safeUnbind(id);
+  }
+
   GLint Texture::safeBind() const {
 
     GLint id;
