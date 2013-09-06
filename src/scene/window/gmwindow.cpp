@@ -146,9 +146,6 @@ namespace GMlib {
       _sel_objs[i]->setSelected( false );
     _sel_objs.clear();
 
-    //_rotation_object  = 0x0;
-    //_locked_object    = 0x0
-
     Array<SceneObject*> rmobjs;
     for( int i = 0; i < getSize(); i++ )
       rmobjs += operator[](i);
@@ -166,6 +163,32 @@ namespace GMlib {
         remove( rmobjs[i] );
 
       delete rmobjs[i];
+    }
+
+    if( _running )
+      Scene::start();
+  }
+
+  void GMWindow::clearViewSetConfiguration() {
+
+    if( _running )
+      Scene::stop();
+
+    for(int i = 0; i < _sel_objs.getSize(); i++)
+      _sel_objs[i]->setSelected( false );
+    _sel_objs.clear();
+
+    Array<SceneObject*> rmobjs;
+    for( int i = 0; i < getSize(); i++ )
+      rmobjs += operator[](i);
+
+    for( int i = 0; i < rmobjs.getSize(); i++ ) {
+
+      Camera* cam   = dynamic_cast<Camera*>( rmobjs[i] );
+      if( cam ) {
+        removeCamera( cam );
+        delete rmobjs[i];
+      }
     }
 
     if( _running )

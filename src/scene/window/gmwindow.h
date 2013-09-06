@@ -104,6 +104,7 @@ namespace GMlib {
     void                    moveBorder(int x, int y);
 
     virtual void            clearScene();
+    void                    clearViewSetConfiguration();
     void                    reset();
 
     bool                    isRunning() const;
