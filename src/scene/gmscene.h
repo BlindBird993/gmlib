@@ -113,6 +113,9 @@ namespace GMlib{
 
     void                        setEventManager( EventManager* mgr );
 
+    void                        enabledFixedDt();
+    void                        disableFixedDt();
+    void                        setFixedDt( double dt );
 
     virtual RenderManager*      getRenderManager() const;
     void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, const Camera* cam) const;
@@ -138,6 +141,8 @@ namespace GMlib{
     bool                        _timer_active;
     double                      _timer_time_elapsed;
     double                      _timer_time_scale;
+    double                      _timer_fixed_dt;
+    bool                        _timer_fixed_dt_enabled;
 
     EventManager*               _event_manager;
 

@@ -54,6 +54,8 @@ namespace GMlib {
     _timer_active   = true;
     _timer_time_scale    = 1;
     _timer_time_elapsed  = 0;
+    _timer_fixed_dt_enabled = false;
+    _timer_fixed_dt = 0.25;
     _matrix_stack    += HqMatrix<float,3>();
   }
 
@@ -72,6 +74,8 @@ namespace GMlib {
     _timer_active = true;
     _timer_time_scale = 1;
     _timer_time_elapsed  = 0;
+    _timer_fixed_dt_enabled = false;
+    _timer_fixed_dt = 0.25;
     _matrix_stack += HqMatrix<float,3>();
   }
 
@@ -89,6 +93,8 @@ namespace GMlib {
     _timer_active   = true;
     _timer_time_scale    = 1;
     _timer_time_elapsed  = 0;
+    _timer_fixed_dt_enabled = false;
+    _timer_fixed_dt = 0.25;
   }
 
 
@@ -262,6 +268,21 @@ namespace GMlib {
     _event_manager = mgr;
   }
 
+  void Scene::enabledFixedDt() {
+
+    _timer_fixed_dt_enabled = true;
+  }
+
+  void Scene::disableFixedDt() {
+
+    _timer_fixed_dt_enabled = false;
+  }
+
+  void Scene::setFixedDt(double dt) {
+
+    _timer_fixed_dt = dt;
+  }
+
   void Scene::removeSelections() {
 
     // make a copy of the array instead of a reference as
@@ -284,7 +305,9 @@ namespace GMlib {
 
     if( _timer_time_elapsed == 0 )	prepare();
 
-    double dt = _timer_time_scale * _timer.getSec(true);
+    double dt;
+    if( _timer_fixed_dt_enabled ) dt = _timer_fixed_dt;
+    else                          dt = _timer_time_scale * _timer.getSec(true);
 
     if(dt) {
 
