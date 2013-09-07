@@ -305,9 +305,10 @@ namespace GMlib {
 
     if( _timer_time_elapsed == 0 )	prepare();
 
-    double dt;
+    double dt, timer_dt;
+    timer_dt = _timer.getSec(true);
     if( _timer_fixed_dt_enabled ) dt = _timer_fixed_dt;
-    else                          dt = _timer_time_scale * _timer.getSec(true);
+    else                          dt = _timer_time_scale * timer_dt;
 
     if(dt) {
 
