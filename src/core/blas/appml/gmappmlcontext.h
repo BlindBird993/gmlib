@@ -36,37 +36,37 @@
 namespace GMlib
 {
 
-/*!	\class AppmlContext gmappmlcontext.h gmAppmlContext
- *	\brief Helper class for managing APPML OpenCL context
+/*!  \class AppmlContext gmappmlcontext.h gmAppmlContext
+ *  \brief Helper class for managing APPML OpenCL context
  *
- *	Singleton that holds the OpenCL context used by APPML.
+ *  Singleton that holds the OpenCL context used by APPML.
  */
 class AppmlContext
 {
 public:
-	static const cl_context& getContext();
-	static cl_int& getErr();
-	static cl_command_queue& getQueue();
-	static cl_event& getEvent();
+  static const cl_context& getContext();
+  static cl_int& getErr();
+  static cl_command_queue& getQueue();
+  static cl_event& getEvent();
 
 private:
-	AppmlContext();
-	~AppmlContext();
+  AppmlContext();
+  ~AppmlContext();
 
-	inline
-	static AppmlContext& getInstance();
+  inline
+  static AppmlContext& getInstance();
 
-	cl_int err;
-	cl_platform_id platform;
-	cl_device_id device;
-	cl_context_properties props[3];
-	cl_context ctx;
-	cl_command_queue queue;
-	cl_event event;
-	int ret;
-	
-    AppmlContext(AppmlContext const&);		// Don't Implement
-    void operator=(AppmlContext const&);	// Don't implement
+  cl_int err;
+  cl_platform_id platform;
+  cl_device_id device;
+  cl_context_properties props[3];
+  cl_context ctx;
+  cl_command_queue queue;
+  cl_event event;
+  int ret;
+
+    AppmlContext(AppmlContext const&);    // Don't Implement
+    void operator=(AppmlContext const&);  // Don't implement
 };
 
 }

@@ -35,12 +35,12 @@
 
 namespace GMlib
 {
-	template<>
-	DMatrix<float>& DMatrix<float>::invert();
+  template<>
+  DMatrix<float>& DMatrix<float>::invert();
 
-	template<>
-	DMatrix<double>& DMatrix<double>::invert();
-	
+  template<>
+  DMatrix<double>& DMatrix<double>::invert();
+
 } // namespace GMlib
 
 

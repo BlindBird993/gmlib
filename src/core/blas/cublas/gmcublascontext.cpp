@@ -34,51 +34,51 @@
 namespace GMlib
 {
 
-/*!	CublasContext& CublasContext::getInstance()
- *	\brief Get the singleton instance of this class
+/*!  CublasContext& CublasContext::getInstance()
+ *  \brief Get the singleton instance of this class
  *
- *	Creates and retains the singleton instance of this class.
+ *  Creates and retains the singleton instance of this class.
  */
 inline
 CublasContext& CublasContext::getInstance()
 {
-	static CublasContext instance;
-	return instance;
+  static CublasContext instance;
+  return instance;
 }
 
-/*!	CublasContext::CublasContext()
- *	\brief Set up the CuBLAS environment
+/*!  CublasContext::CublasContext()
+ *  \brief Set up the CuBLAS environment
  *
- *	Constructor for the singleton,
- *	sets up the CuBLAS environment to be used.
+ *  Constructor for the singleton,
+ *  sets up the CuBLAS environment to be used.
  */
 CublasContext::CublasContext()
 {
-	cudaGetDevice(&devID);
-	cudaGetDeviceProperties(&deviceProp, devID);
-	cublasCreate(&handle);
+  cudaGetDevice(&devID);
+  cudaGetDeviceProperties(&deviceProp, devID);
+  cublasCreate(&handle);
 }
 
-/*!	CublasContext::~CublasContext()
- *	\brief Tears down CuBLAS environment
+/*!  CublasContext::~CublasContext()
+ *  \brief Tears down CuBLAS environment
  *
- *	Destructor for the singleton,
- *	tears down the CuBLAS environment.
+ *  Destructor for the singleton,
+ *  tears down the CuBLAS environment.
  */
 CublasContext::~CublasContext()
 {
-	cublasDestroy(handle);
-	cudaDeviceReset();
+  cublasDestroy(handle);
+  cudaDeviceReset();
 }
 
-/*!	const cublasHandle_t CublasContext::getHandle()
- *	\brief Gets the CuBLAS handle
+/*!  const cublasHandle_t CublasContext::getHandle()
+ *  \brief Gets the CuBLAS handle
  *
- *	Returns the handle to use with CuBLAS.
+ *  Returns the handle to use with CuBLAS.
  */
 const cublasHandle_t CublasContext::getHandle()
 {
-	return getInstance().handle;
+  return getInstance().handle;
 }
 
 }

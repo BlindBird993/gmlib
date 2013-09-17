@@ -36,28 +36,28 @@
 namespace GMlib
 {
 
-/*!	\class CublasContext gmcublascontext.h gmCublasContext
- *	\brief Helper class for managing CuBLAS context
+/*!  \class CublasContext gmcublascontext.h gmCublasContext
+ *  \brief Helper class for managing CuBLAS context
  *
- *	Singleton that maintains the context used by CuBLAS.
+ *  Singleton that maintains the context used by CuBLAS.
  */
 class CublasContext
 {
 public:
-	static const cublasHandle_t getHandle();
+  static const cublasHandle_t getHandle();
 
 private:
-	CublasContext();
-	~CublasContext();
+  CublasContext();
+  ~CublasContext();
 
-	inline
-	static CublasContext& getInstance();
-	int devID;
-	cudaDeviceProp deviceProp;
-	cublasHandle_t handle;
+  inline
+  static CublasContext& getInstance();
+  int devID;
+  cudaDeviceProp deviceProp;
+  cublasHandle_t handle;
 
-    CublasContext(CublasContext const&);	// Don't Implement
-    void operator=(CublasContext const&);	// Don't implement
+    CublasContext(CublasContext const&);  // Don't Implement
+    void operator=(CublasContext const&);  // Don't implement
 };
 
 }

@@ -26,68 +26,68 @@
  *
  *  Implementation of ACML-specific matrix inversion operators.
  */
- 
+
 #include "gmacmlmatinv.h"
- 
+
 #include <acml.h>
 
 
 namespace GMlib
 {
 
-	/*!	DMatrix<float>&	DMatrix<float>::invert()
-	 *	\brief Invert the matrix
-	 *
-	 *	ACML-acceleration of matrix inversion
-	 *	specific to data type float.
-	 */
-	template<>
-	DMatrix<float>& DMatrix<float>::invert() {
-		if(getDim1()==getDim2() && getDim1()>1)
-		{
-			int nk=getDim1();
-			Array<float> aa;
-			aa.setSize(nk*nk);
-			for(int i=0; i<nk; i++)
-				for(int j=0; j<nk; j++) aa[i+nk*j] = (float) (*this)[i][j];
+  /*!  DMatrix<float>&  DMatrix<float>::invert()
+   *  \brief Invert the matrix
+   *
+   *  ACML-acceleration of matrix inversion
+   *  specific to data type float.
+   */
+  template<>
+  DMatrix<float>& DMatrix<float>::invert() {
+    if(getDim1()==getDim2() && getDim1()>1)
+    {
+      int nk=getDim1();
+      Array<float> aa;
+      aa.setSize(nk*nk);
+      for(int i=0; i<nk; i++)
+        for(int j=0; j<nk; j++) aa[i+nk*j] = (float) (*this)[i][j];
 
-			Array<int> ipiv; ipiv.setSize(nk);		// pivot table (result), size max(1,mmm,nnn)
-			int info=0;								// error message, i=info>0 means that a[i][i]=0 ): singular,
+      Array<int> ipiv; ipiv.setSize(nk);    // pivot table (result), size max(1,mmm,nnn)
+      int info=0;                // error message, i=info>0 means that a[i][i]=0 ): singular,
 
-			sgetrf(nk, nk, aa.ptr(), nk, ipiv.ptr(), &info);
-			sgetri(nk, aa.getPtr(), nk, ipiv.getPtr(), &info);
+      sgetrf(nk, nk, aa.ptr(), nk, ipiv.ptr(), &info);
+      sgetri(nk, aa.getPtr(), nk, ipiv.getPtr(), &info);
 
-			for(int i=0; i<nk; i++)
-				for(int j=0; j<nk; j++) (*this)[i][j]=(float) aa[i+j*nk];
-		}
-		return (*this);
-	}
+      for(int i=0; i<nk; i++)
+        for(int j=0; j<nk; j++) (*this)[i][j]=(float) aa[i+j*nk];
+    }
+    return (*this);
+  }
 
-	/*!	DMatrix<double>&	DMatrix<double>::invert()
-	 *	\brief Invert the matrix
-	 *
-	 *	ACML-acceleration of matrix inversion
-	 *	specific to data type double.
-	 */
-	template<>
-	DMatrix<double>& DMatrix<double>::invert() {
-		if(getDim1()==getDim2() && getDim1()>1)
-		{
-			int nk=getDim1();
-			Array<double> aa;
-			aa.setSize(nk*nk);
-			for(int i=0; i<nk; i++)
-				for(int j=0; j<nk; j++) aa[i+nk*j] = (double) (*this)[i][j];
+  /*!  DMatrix<double>&  DMatrix<double>::invert()
+   *  \brief Invert the matrix
+   *
+   *  ACML-acceleration of matrix inversion
+   *  specific to data type double.
+   */
+  template<>
+  DMatrix<double>& DMatrix<double>::invert() {
+    if(getDim1()==getDim2() && getDim1()>1)
+    {
+      int nk=getDim1();
+      Array<double> aa;
+      aa.setSize(nk*nk);
+      for(int i=0; i<nk; i++)
+        for(int j=0; j<nk; j++) aa[i+nk*j] = (double) (*this)[i][j];
 
-			Array<int> ipiv; ipiv.setSize(nk);		// pivot table (result), size max(1,mmm,nnn)
-			int info=0;								// error message, i=info>0 means that a[i][i]=0 ): singular,
-			
-			dgetrf(nk, nk, aa.ptr(), nk, ipiv.ptr(), &info);
-			dgetri(nk, aa.getPtr(), nk, ipiv.getPtr(), &info);
+      Array<int> ipiv; ipiv.setSize(nk);    // pivot table (result), size max(1,mmm,nnn)
+      int info=0;                // error message, i=info>0 means that a[i][i]=0 ): singular,
 
-			for(int i=0; i<nk; i++)
-				for(int j=0; j<nk; j++) (*this)[i][j]=(double) aa[i+j*nk];
-		}
-		return (*this);
-	}
+      dgetrf(nk, nk, aa.ptr(), nk, ipiv.ptr(), &info);
+      dgetri(nk, aa.getPtr(), nk, ipiv.getPtr(), &info);
+
+      for(int i=0; i<nk; i++)
+        for(int j=0; j<nk; j++) (*this)[i][j]=(double) aa[i+j*nk];
+    }
+    return (*this);
+  }
 } // namespace GMlib
