@@ -307,9 +307,9 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  Sphere<float,3> SceneObject::getSurroundingSphereClean() const {
+  const Sphere<float,3>& SceneObject::getSurroundingSphereClean() const {
 
-    Sphere<float,3> sp;
+    static Sphere<float,3> sp;
 
     for(int i=0; i< _children.getSize(); i++)
       sp += _children(i)->getSurroundingSphereClean();

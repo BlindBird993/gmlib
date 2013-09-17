@@ -216,8 +216,8 @@ namespace GMlib{
     void                                setMatrix( const HqMatrix<float,3>& mat );
 
     // surrounding sphere
-    Sphere<float,3>                     getSurroundingSphere() const;
-    Sphere<float,3>                     getSurroundingSphereClean() const;
+    const Sphere<float,3>&              getSurroundingSphere() const;
+    const Sphere<float,3>&              getSurroundingSphereClean() const;
 
     // editing/interaction
     virtual void                        edit(int selector_id);
@@ -496,7 +496,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  Sphere<float,3> SceneObject::getSurroundingSphere() const  {
+  const Sphere<float,3>& SceneObject::getSurroundingSphere() const  {
 
     return  _global_total_sphere;
   }
