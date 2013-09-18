@@ -31,45 +31,48 @@ namespace GL {
 
   GLuintCMap Texture::_ids;
 
-  Texture::Texture(GLenum target) :  _valid(true), _name(""), _target(target) {
+  Texture::Texture() : _valid(false) {}
+
+  Texture::Texture(GLenum target) :  _valid(true), _managed(false), _target(target) {
 
     _id = OGL::createTex();
 
     _ids[_id] = 1;
   }
 
-  Texture::Texture(const std::string name) : _name(name) {
+  Texture::Texture(const std::string name) : _managed(true), _name(name) {
 
     _valid = OGL::createTex( _name, GL_TEXTURE_2D );
 
     _target = OGL::getTexTarget( _name );
     _id     = OGL::getTexId( _name );
-
-    _ids[_id] = 1;
   }
 
-  Texture::Texture(const std::string name, GLenum target) : _name(name), _target(target) {
+  Texture::Texture(const std::string name, GLenum target) : _managed(true), _name(name), _target(target) {
 
     _valid = OGL::createTex( _name, _target );
 
     _target = OGL::getTexTarget( _name );
     _id     = OGL::getTexId( _name );
-
-    _ids[_id] = 1;
   }
 
   Texture::Texture(const Texture &copy) {
 
-    _name   = copy._name;
-    _id     = copy._id;
-    _target = copy._target;
+    _managed  = copy._managed;
+    _valid    = copy._valid;
 
-    _valid  = copy._valid;
+    _name     = copy._name;
+    _id       = copy._id;
+    _target   = copy._target;
 
-    _ids[_id]++;
+    if( !_managed )
+      _ids[_id]++;
   }
 
   Texture::~Texture() {
+
+    if( _managed )
+      return;
 
     _ids[_id]--;
     if( _ids.count(_id) <= 0 )
@@ -94,6 +97,11 @@ namespace GL {
   bool Texture::isValid() const {
 
     return _valid;
+  }
+
+  bool Texture::isManaged() const {
+
+    return _managed;
   }
 
   void Texture::texImage1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data) {

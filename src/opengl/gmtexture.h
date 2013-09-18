@@ -34,7 +34,8 @@ namespace GL {
 
   class Texture {
   public:
-    explicit Texture( GLenum target = GL_TEXTURE_2D );
+    explicit Texture();
+    explicit Texture( GLenum target );
     explicit Texture( const std::string name );
     explicit Texture( const std::string name, GLenum target );
     Texture( const Texture& copy );
@@ -48,6 +49,7 @@ namespace GL {
     GLenum                  getTarget() const;
     void                    setTarget( GLenum target = GL_TEXTURE_2D ) const;
 
+    bool                    isManaged() const;
     bool                    isValid() const;
 
     void                    texImage1D( GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data );
@@ -63,7 +65,8 @@ namespace GL {
 
 
   protected:
-    bool                    _valid;
+    bool                    _valid;   //! Holds whether the texture is valid
+    bool                    _managed; //! Holds whether the texture is managed by the backend or not
 
     /* variables "managed" by the backend */
     mutable std::string     _name;
@@ -96,13 +99,15 @@ namespace GL {
   inline
   Texture& Texture::operator = ( const Texture& copy ) {
 
+    _managed  = copy._managed;
+    _valid    = copy._valid;
+
     _name     = copy._name;
     _id       = copy._id;
     _target   = copy._target;
 
-    _valid    = copy._valid;
-
-    _ids[_id]++;
+    if( !_managed )
+      _ids[_id]++;
 
     return (*this);
   }
