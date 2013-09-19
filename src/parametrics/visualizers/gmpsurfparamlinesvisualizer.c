@@ -42,7 +42,7 @@ namespace GMlib {
 
 template <typename T, int n>
 PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer()
-  : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(),
+  : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(GL_TEXTURE_2D),
     _ptex_u(GL_TEXTURE_2D), _ptex_v(GL_TEXTURE_2D),
     _no_strips(0), _no_strip_indices(0), _strip_size(0),
     _mat(GMmaterial::BlackRubber) {
@@ -52,7 +52,7 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer()
 
 template <typename T, int n>
 PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer(const PSurfParamLinesVisualizer<T,n>& copy)
-  : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(),
+  : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(GL_TEXTURE_2D),
     _ptex_u(GL_TEXTURE_2D), _ptex_v(GL_TEXTURE_2D),
     _no_strips(0), _no_strip_indices(0), _strip_size(0),
     _mat(copy._mat) {

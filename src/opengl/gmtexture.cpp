@@ -33,7 +33,7 @@ namespace GL {
 
   Texture::Texture() : _valid(false) {}
 
-  Texture::Texture(GLenum target) :  _valid(true), _managed(false), _target(target) {
+  Texture::Texture(GLenum target,bool generate) :  _valid(generate), _managed(false), _target(target) {
 
     _id = OGL::createTex();
 

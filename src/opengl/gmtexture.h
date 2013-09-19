@@ -35,7 +35,7 @@ namespace GL {
   class Texture {
   public:
     explicit Texture();
-    explicit Texture( GLenum target );
+    explicit Texture( GLenum target, bool generate = true );
     explicit Texture( const std::string name );
     explicit Texture( const std::string name, GLenum target );
     Texture( const Texture& copy );
@@ -98,6 +98,9 @@ namespace GL {
 
   inline
   Texture& Texture::operator = ( const Texture& copy ) {
+
+    if( _valid && !_managed )
+      _ids[_id]--;
 
     _managed  = copy._managed;
     _valid    = copy._valid;

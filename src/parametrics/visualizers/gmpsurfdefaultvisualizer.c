@@ -48,7 +48,7 @@ namespace GMlib {
 
   template <typename T, int n>
   PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer()
-    : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(),
+    : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap( GL_TEXTURE_2D ),
       _no_strips(0), _no_strip_indices(0), _strip_size(0) {
 
     this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
@@ -57,7 +57,7 @@ namespace GMlib {
   template <typename T, int n>
   PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer(const PSurfDefaultVisualizer<T,n>& copy)
     : PSurfVisualizer<T,n>(copy),
-      _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(),
+      _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(GL_TEXTURE_2D),
       _no_strips(0), _no_strip_indices(0), _strip_size(0) {
 
     this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );

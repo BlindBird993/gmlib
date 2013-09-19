@@ -56,7 +56,6 @@ namespace GMlib {
     GL::UniformBufferObject     _lights_ubo;
     GL::Texture                 _nmap;
     GL::Texture                 _ptex_u, _ptex_v;
-    GL::Texture                 _ptex;
 
     GLuint                      _no_strips;
     GLuint                      _no_strip_indices;
