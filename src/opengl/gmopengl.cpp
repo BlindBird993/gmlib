@@ -153,10 +153,10 @@ namespace GL {
     _clearLog();
 
     if( _nameEmpty( name, "RBO" ) )
-      return false;
+      return 0;
 
     if( !_rboExists(name, true) )
-      return false;
+      return 0;
 
     GL_CHECK(glDeleteRenderbuffers( 1, &(_rbos[name].id) ));
 
@@ -295,10 +295,10 @@ namespace GL {
     _clearLog();
 
     if( _nameEmpty(name, "TEX") )
-      return -1;
+      return 0;
 
     if( !_texExists(name, true) )
-      return -1;
+      return 0;
 
     return _texs[name].id;
   }
@@ -532,10 +532,10 @@ namespace GL {
     _clearLog();
 
     if( _nameEmpty(name, "FBO") )
-      return false;
+      return 0;
 
     if( !_fboExists(name, true) )
-      return false;
+      return 0;
 
     return _fbos[name].id;
   }
@@ -555,10 +555,10 @@ namespace GL {
     _clearLog();
 
     if( _nameEmpty(name, "BO") )
-      return -1;
+      return 0;
 
     if( !_boExists(name, true) )
-      return -1;
+      return 0;
 
     return _bos[name].id;
   }
