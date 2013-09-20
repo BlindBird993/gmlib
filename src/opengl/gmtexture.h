@@ -25,36 +25,32 @@
 #define __gm_OPENGL_TEXTURE_H__
 
 
-#include "gmopengl.h"
+#include "gmobject.h"
 
 
 namespace GMlib {
 
 namespace GL {
 
-  class Texture {
+  class Texture : public Object {
+    GM_GLOBJECT
   public:
     explicit Texture();
     explicit Texture( GLenum target, bool generate = true );
     explicit Texture( const std::string name );
     explicit Texture( const std::string name, GLenum target );
     Texture( const Texture& copy );
-    virtual ~Texture();
+    ~Texture();
 
-    void                    bind() const;
-    void                    unbind() const;
-
-    std::string             getName() const;
-    GLuint                  getId() const;
     GLenum                  getTarget() const;
-    void                    setTarget( GLenum target = GL_TEXTURE_2D ) const;
 
-    bool                    isManaged() const;
-    bool                    isValid() const;
+    void                    texImage1D( GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *data );
+    void                    texImage2D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data );
+    void                    texImage3D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *data );
 
-    void                    texImage1D( GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data );
-    void                    texImage2D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data );
-    void                    texImage3D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data );
+    void                    texSubImage1D( GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid* data );
+    void                    texSubImage2D( GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* data );
+    void                    texSubImage3D( GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid* data );
 
     void                    getTexImage( GLint level, GLenum format, GLenum type, GLvoid* pixels );
 
@@ -64,53 +60,31 @@ namespace GL {
     Texture&                operator = ( const Texture& tex );
 
 
-  protected:
-    bool                    _valid;   //! Holds whether the texture is valid
-    bool                    _managed; //! Holds whether the texture is managed by the backend or not
-
+  private:
     /* variables "managed" by the backend */
-    mutable std::string     _name;
-    mutable GLuint          _id;
     mutable GLenum          _target;
 
-  private:
-    static GLuintCMap       _ids;
+    /* pure-virtual functions from Object */
+    virtual GLuint          getCurrentBoundId() const;
+    virtual void            doBind( GLuint id ) const;
+    virtual void            doUnbind( GLuint id ) const;
 
-    /* safe-bind */
-    GLint                   safeBind() const;
-    void                    safeUnbind( GLint id ) const;
+    virtual GLuint          doCreate() const;
+    virtual void            doDestroy( GLuint ) const;
+
+    virtual GLuint          doCreateManaged() const;
+
 
   }; // END class Texture
 
-
-
   inline
-  void Texture::bind() const {
-
-    GL_CHECK(glBindTexture( _target, _id ));
-  }
-
-  inline
-  void Texture::unbind() const {
-
-    GL_CHECK(glBindTexture( _target, 0x0 ));
-  }
+  GLenum Texture::getTarget() const { return _target; }
 
   inline
   Texture& Texture::operator = ( const Texture& copy ) {
 
-    if( _valid && !_managed )
-      _ids[_id]--;
-
-    _managed  = copy._managed;
-    _valid    = copy._valid;
-
-    _name     = copy._name;
-    _id       = copy._id;
-    _target   = copy._target;
-
-    if( !_managed )
-      _ids[_id]++;
+    Object::operator = ( copy );
+    if( isValid() ) _target = copy._target;
 
     return (*this);
   }

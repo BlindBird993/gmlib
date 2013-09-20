@@ -31,97 +31,114 @@ namespace GL {
 
   GLuintCMap Texture::_ids;
 
-  Texture::Texture() : _valid(false) {}
 
-  Texture::Texture(GLenum target,bool generate) :  _valid(generate), _managed(false), _target(target) {
 
-    _id = OGL::createTex();
 
-    _ids[_id] = 1;
+  Texture::Texture() : Object() {}
+
+  Texture::Texture(GLenum target,bool generate) :  Object(), _target(target) {
+
+    if( generate ) create();
   }
 
-  Texture::Texture(const std::string name) : _managed(true), _name(name) {
+  Texture::Texture(const std::string name) : Object(name) {
 
-    _valid = OGL::createTex( _name, GL_TEXTURE_2D );
-
-    _target = OGL::getTexTarget( _name );
-    _id     = OGL::getTexId( _name );
+    createManaged();
+    _target = OGL::getTexTarget(getName());
   }
 
-  Texture::Texture(const std::string name, GLenum target) : _managed(true), _name(name), _target(target) {
+  Texture::Texture(const std::string name, GLenum target) : Object(name), _target(target) {
 
-    _valid = OGL::createTex( _name, _target );
-
-    _target = OGL::getTexTarget( _name );
-    _id     = OGL::getTexId( _name );
+    createManaged();
   }
 
   Texture::Texture(const Texture &copy) {
 
-    _managed  = copy._managed;
-    _valid    = copy._valid;
-
-    _name     = copy._name;
-    _id       = copy._id;
+    makeCopy( copy );
     _target   = copy._target;
-
-    if( !_managed )
-      _ids[_id]++;
   }
 
   Texture::~Texture() {
 
-    if( _managed )
-      return;
-
-    _ids[_id]--;
-    if( _ids.count(_id) <= 0 )
-      OGL::deleteTex(_id);
+    destroy();
   }
 
-  GLuint Texture::getId() const {
 
-    return _id;
+
+
+
+  GLuint Texture::doCreate() const {
+
+    return OGL::createTex();
   }
 
-  std::string Texture::getName() const {
+  GLuint Texture::doCreateManaged() const {
 
-    return _name;
+    OGL::createTex( getName(), _target );
+    return OGL::getTexId(getName());
   }
 
-  GLenum Texture::getTarget() const {
+  void Texture::doDestroy( GLuint id ) const {
 
-    return _target;
+    OGL::deleteTex(id);
   }
 
-  bool Texture::isValid() const {
+  GLuint Texture::getCurrentBoundId() const {
 
-    return _valid;
+    GLint id;
+    GL_CHECK(::glGetIntegerv( _target, &id ));
+    return id;
   }
 
-  bool Texture::isManaged() const {
+  void Texture::doBind(GLuint id) const {
 
-    return _managed;
+    GL_CHECK(::glBindTexture( _target, id ));
   }
 
-  void Texture::texImage1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid *data) {
+  void Texture::doUnbind(GLuint id) const {
+
+    GL_CHECK(::glBindTexture( _target, id ));
+  }
+
+  void Texture::texImage1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *data) {
 
     GLint id = safeBind();
-    GL_CHECK(glTexImage1D( _target, level, internal_format, width, border, format, type, data ));
+    GL_CHECK(::glTexImage1D( _target, level, internal_format, width, border, format, type, data ));
     safeUnbind(id);
   }
 
-  void Texture::texImage2D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid *data) {
+  void Texture::texImage2D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data) {
 
     GLint id = safeBind();
-    GL_CHECK(glTexImage2D( _target, level, internal_format, width, height, border, format, type, data ));
+    GL_CHECK(::glTexImage2D( _target, level, internal_format, width, height, border, format, type, data ));
     safeUnbind(id);
   }
 
-  void Texture::texImage3D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid *data) {
+  void Texture::texImage3D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *data) {
 
     GLint id = safeBind();
-    GL_CHECK(glTexImage3D( _target, level, internal_format, width, height, depth, border, format, type, data ));
+    GL_CHECK(::glTexImage3D( _target, level, internal_format, width, height, depth, border, format, type, data ));
+    safeUnbind(id);
+  }
+
+  void Texture::texSubImage1D(GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid* data) {
+
+    GLint id = safeBind();
+    GL_CHECK(::glTexSubImage1D(_target, level, xoffset, width, format, type, data));
+    safeUnbind(id);
+  }
+
+  void Texture::texSubImage2D(GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* data) {
+
+    GLint id = safeBind();
+    GL_CHECK(::glTexSubImage2D(_target, level, xoffset, yoffset, width, height, format, type, data));
+    safeUnbind(id);
+  }
+
+  void Texture::texSubImage3D(GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid* data) {
+
+    GLint id = safeBind();
+    GL_CHECK(::glTexSubImage3D(_target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, data));
     safeUnbind(id);
   }
 
@@ -132,38 +149,18 @@ namespace GL {
     safeUnbind(id);
   }
 
-  GLint Texture::safeBind() const {
-
-    GLint id;
-    GL_CHECK(glGetIntegerv( _target, &id ));
-    bind();
-
-    return id;
-  }
-
-  void Texture::safeUnbind( GLint id ) const {
-
-    GL_CHECK(glBindTexture( _target, id ));
-  }
-
   void Texture::setParameterf(GLenum pname, GLfloat param) {
 
     GLint id = safeBind();
-    GL_CHECK(glTexParameterf( _target, pname, param ));
+    GL_CHECK(::glTexParameterf( _target, pname, param ));
     safeUnbind(id);
   }
 
   void Texture::setParameteri( GLenum pname, GLint param) {
 
     GLint id = safeBind();
-    GL_CHECK(glTexParameteri( _target, pname, param ));
+    GL_CHECK(::glTexParameteri( _target, pname, param ));
     safeUnbind(id);
-  }
-
-  void Texture::setTarget(GLenum target) const {
-
-    _target = target;
-    OGL::setTexTarget( _name, _target );
   }
 
 

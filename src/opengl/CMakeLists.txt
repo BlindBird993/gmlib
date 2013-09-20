@@ -23,6 +23,7 @@
 addHeaders(
   gmBufferObject
   gmFramebufferObject
+  gmObject
   gmOpenGL
   gmRenderbufferObject
   gmTexture
@@ -31,6 +32,7 @@ addHeaders(
 addSources(
   gmbufferobject.cpp
   gmframebufferobject.cpp
+  gmobject.cpp
   gmopengl.cpp
   gmrenderbufferobject.cpp
   gmtexture.cpp
