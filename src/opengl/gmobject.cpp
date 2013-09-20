@@ -34,6 +34,8 @@ Object::Object(const std::string& name) : _managed(true), _valid(false), _name(n
 
 Object::Object(const Object& copy) { GM_UNUSED(copy) }
 
+Object::Object(GLuint id) : _managed(false), _valid(false), _id(id) {}
+
 void Object::makeCopy(const Object &copy) {
 
   if( _valid && !_managed )

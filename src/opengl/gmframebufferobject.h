@@ -25,7 +25,7 @@
 #define __gmFRAMEBUFFEROBJECT_H__
 
 
-#include "gmopengl.h"
+#include "gmobject.h"
 #include "gmrenderbufferobject.h"
 #include "gmtexture.h"
 
@@ -34,20 +34,13 @@ namespace GMlib {
 
 namespace GL {
 
-  class FramebufferObject {
+  class FramebufferObject : public Object {
+    GM_GLOBJECT
   public:
-    explicit FramebufferObject();
+    explicit FramebufferObject( bool generate = true );
     explicit FramebufferObject( const std::string name );
     FramebufferObject( const FramebufferObject& copy );
     ~FramebufferObject();
-
-    GLuint                  getId() const;
-    std::string             getName() const;
-
-    bool                    isValid() const;
-
-    void                    bind() const;
-    void                    unbind() const;
 
     void                    bindRead() const;
     void                    unbindRead() const;
@@ -69,74 +62,52 @@ namespace GL {
                                     GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
                                     GLbitfield mask, GLenum filter ) const;
 
-  protected:
-    bool                    _valid;
-
-    /* variables "managed" by the backend */
-    mutable std::string     _name;
-    mutable GLuint          _id;
-
 
 
   private:
     explicit FramebufferObject( GLuint id );
-    static GLuintCMap       _ids;
 
-    void                    bind( GLenum target ) const;
-    void                    unbind( GLenum target ) const;
+    /* pure virtual functions */
+    virtual GLuint          getCurrentBoundId() const;
+    virtual void            doBind( GLuint id ) const;
 
-    GLint                   safeBind() const;
-    void                    safeUnbind(GLint id) const;
+    virtual GLuint          doCreate() const;
+    virtual GLuint          doCreateManaged() const;
+    virtual void            doDestroy() const;
+
+    void                    privateBind( GLenum target, GLuint id ) const;
 
 
   }; // END class FramebufferObject
 
   inline
-  void FramebufferObject::bind( GLenum target ) const {
+  void FramebufferObject::privateBind( GLenum target, GLuint id ) const {
 
-    GL_CHECK(glBindFramebuffer( target, _id ));
-  }
-
-  inline
-  void FramebufferObject::unbind( GLenum target ) const {
-
-    GL_CHECK(glBindFramebuffer( target, 0x0 ));
-  }
-
-  inline
-  void FramebufferObject::bind() const {
-
-    bind( GL_FRAMEBUFFER );
-  }
-
-  inline
-  void FramebufferObject::unbind() const {
-
-    unbind( GL_FRAMEBUFFER );
+    GL_CHECK(glBindFramebuffer( target, id ));
   }
 
   inline
   void FramebufferObject::bindRead() const {
 
-    bind( GL_READ_FRAMEBUFFER );
+    privateBind( GL_READ_FRAMEBUFFER, getId() );
   }
 
   inline
   void FramebufferObject::unbindRead() const {
 
-    unbind( GL_READ_FRAMEBUFFER );
+    privateBind( GL_READ_FRAMEBUFFER, 0 );
   }
 
   inline
   void FramebufferObject::bindDraw() const {
 
-    bind( GL_DRAW_FRAMEBUFFER );
+    privateBind( GL_DRAW_FRAMEBUFFER, getId() );
   }
 
   inline
   void FramebufferObject::unbindDraw() const {
 
-    unbind( GL_DRAW_FRAMEBUFFER );
+    privateBind( GL_DRAW_FRAMEBUFFER, 0 );
   }
 
   inline

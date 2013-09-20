@@ -54,7 +54,11 @@ namespace GL {
     explicit Object();
     explicit Object( const std::string& name );
     Object( const Object& copy );
+  protected:
+    explicit Object( GLuint id );
 
+
+  public:
     bool                    bind() const;
     bool                    unbind() const;
 
