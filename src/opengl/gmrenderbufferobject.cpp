@@ -24,82 +24,70 @@
 
 #include "gmrenderbufferobject.h"
 
-
-namespace GMlib {
-
-namespace GL {
-
-  GLuintCMap RenderbufferObject::_ids;
-
-  RenderbufferObject::RenderbufferObject() : _name("") {
-
-    _id = OGL::createRbo();
-    _valid = true;
-
-    _ids[_id] = 1;
-  }
-
-  RenderbufferObject::RenderbufferObject(const std::string name) : _name(name) {
-
-    _valid = OGL::createRbo( name );
-    _id = OGL::getRboId( name );
-
-    _ids[_id] = 1;
-  }
-
-  RenderbufferObject::RenderbufferObject(const RenderbufferObject &copy) {
-
-    _name = copy._name;
-    _id = copy._id;
-
-    _ids[_id]++;
-  }
-
-  RenderbufferObject::~RenderbufferObject() {
-
-    _ids[_id]--;
-    if( _ids.count(_id) <= 0 )
-      OGL::deleteRbo( _id );
-  }
+using namespace GMlib::GL;
 
 
-  void RenderbufferObject::createStorage(GLenum internal_format, GLsizei width, GLsizei height) const {
-
-    GLuint id = safeBind();
-    GL_CHECK(glRenderbufferStorage( GL_RENDERBUFFER, internal_format, width, height ));
-    safeUnbind(id);
-  }
-
-  GLuint RenderbufferObject::getId() const {
-
-    return _id;
-  }
-
-  std::string RenderbufferObject::getName() const {
-
-    return _name;
-  }
-
-  bool RenderbufferObject::isValid() const {
-
-    return _valid;
-  }
-
-  GLint RenderbufferObject::safeBind() const {
-
-    GLint id;
-    GL_CHECK(glGetIntegerv( GL_RENDERBUFFER_BINDING, &id ));
-    bind();
-
-    return id;
-  }
-
-  void RenderbufferObject::safeUnbind( GLint id ) const {
-
-    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, id ));
-  }
+GM_GLOBJECT_CPP(RenderbufferObject)
 
 
-} // END namespace GL
 
-} // END namespace GMlib
+
+RenderbufferObject::RenderbufferObject( bool generate ) : Object() {
+
+  if( generate ) create();
+}
+
+RenderbufferObject::RenderbufferObject(const std::string name) : Object(name) {
+
+  createManaged();
+}
+
+RenderbufferObject::RenderbufferObject(const RenderbufferObject &copy) {
+
+  makeCopy(copy);
+}
+
+RenderbufferObject::~RenderbufferObject() {
+
+  destroy();
+}
+
+
+
+
+
+
+void RenderbufferObject::createStorage(GLenum internal_format, GLsizei width, GLsizei height) const {
+
+  GLuint id = safeBind();
+  GL_CHECK(::glRenderbufferStorage( GL_RENDERBUFFER, internal_format, width, height ));
+  safeUnbind(id);
+}
+
+GLuint RenderbufferObject::getCurrentBoundId() const {
+
+  GLint id;
+  GL_CHECK(glGetIntegerv( GL_RENDERBUFFER_BINDING, &id ));
+  return id;
+}
+
+void RenderbufferObject::doBind(GLuint id) const {
+
+  GL_CHECK(::glBindRenderbuffer( GL_RENDERBUFFER, id ));
+}
+
+GLuint RenderbufferObject::doCreate() const {
+
+  return OGL::createRbo();
+}
+
+GLuint RenderbufferObject::doCreateManaged() const {
+
+  OGL::createRbo(getName());
+  return OGL::getRboId(getName());
+}
+
+void RenderbufferObject::doDestroy() const {
+
+  OGL::deleteRbo(getId());
+}

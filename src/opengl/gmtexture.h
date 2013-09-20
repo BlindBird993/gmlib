@@ -67,10 +67,9 @@ namespace GL {
     /* pure-virtual functions from Object */
     virtual GLuint          getCurrentBoundId() const;
     virtual void            doBind( GLuint id ) const;
-    virtual void            doUnbind( GLuint id ) const;
 
     virtual GLuint          doCreate() const;
-    virtual void            doDestroy( GLuint ) const;
+    virtual void            doDestroy() const;
 
     virtual GLuint          doCreateManaged() const;
 

@@ -43,6 +43,8 @@ namespace GL {
     static GLuintCMap&      staticIdMap() { return _ids; } \
   private:
 
+#define GM_GLOBJECT_CPP( CNAME ) \
+  GLuintCMap CNAME::_ids;
 
 
 
@@ -86,12 +88,11 @@ namespace GL {
     /* pure virtual functions */
     virtual GLuint          getCurrentBoundId() const = 0;
     virtual void            doBind( GLuint id ) const = 0;
-    virtual void            doUnbind( GLuint id ) const = 0;
     virtual GLuintCMap&     getStaticIdMap() = 0;
 
     virtual GLuint          doCreate() const = 0;
     virtual GLuint          doCreateManaged() const = 0;
-    virtual void            doDestroy( GLuint id ) const = 0;
+    virtual void            doDestroy() const = 0;
   }; // END class Object
 
 
@@ -120,7 +121,7 @@ namespace GL {
   bool Object::bind() const { doBind(_id); }
 
   inline
-  bool Object::unbind() const { doUnbind(0); }
+  bool Object::unbind() const { doBind(0); }
 
 
 

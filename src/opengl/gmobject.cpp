@@ -71,7 +71,7 @@ void Object::destroy() {
 
   getStaticIdMap()[_id]--;
   if( getStaticIdMap().count(_id) <= 0 )
-    doDestroy(_id);
+    doDestroy();
 }
 
 GLuint Object::getId() const {

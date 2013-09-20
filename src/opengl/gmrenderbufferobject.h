@@ -25,62 +25,34 @@
 #define __gmRENDERBUFFEROBJECT_H__
 
 
-#include "gmopengl.h"
-#include "gmtexture.h"
+#include "gmobject.h"
 
 
 namespace GMlib {
 
 namespace GL {
 
-  class RenderbufferObject {
+  class RenderbufferObject : public Object {
+    GM_GLOBJECT
   public:
-    explicit RenderbufferObject();
+    explicit RenderbufferObject( bool generate = true );
     explicit RenderbufferObject( const std::string name );
     RenderbufferObject( const RenderbufferObject& copy );
     ~RenderbufferObject();
 
-    GLuint                  getId() const;
-    std::string             getName() const;
-
-    bool                    isValid() const;
-
-    void                    bind() const;
-    void                    unbind() const;
-
     void                    createStorage( GLenum internal_format, GLsizei width, GLsizei height ) const;
 
-  protected:
-    bool                    _valid;
-
-    /* variables "managed" by the backend */
-    mutable std::string     _name;
-    mutable GLuint          _id;
-
-
-
   private:
-    static GLuintCMap       _ids;
+    /* pure-virtual functions from Object */
+    virtual GLuint          getCurrentBoundId() const;
+    virtual void            doBind( GLuint id ) const;
 
-    /* safe-bind */
-    GLint                   safeBind() const;
-    void                    safeUnbind(GLint id) const;
+    virtual GLuint          doCreate() const;
+    virtual void            doDestroy() const;
 
+    virtual GLuint          doCreateManaged() const;
 
   }; // END class RenderbufferObject
-
-
-  inline
-  void RenderbufferObject::bind() const {
-
-    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, _id ));
-  }
-
-  inline
-  void RenderbufferObject::unbind() const {
-
-    GL_CHECK(glBindRenderbuffer( GL_RENDERBUFFER, 0x0 ));
-  }
 
 
 } // END namespace GL
