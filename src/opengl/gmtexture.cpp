@@ -49,6 +49,7 @@ Texture::Texture(const std::string name) : Object(name) {
 Texture::Texture(const std::string name, GLenum target) : Object(name), _target(target) {
 
   createManaged();
+  _target = OGL::getTexTarget(getName());
 }
 
 Texture::Texture(const Texture &copy) {

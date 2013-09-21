@@ -85,7 +85,7 @@ namespace GL {
     Object::operator = ( copy );
     if( isValid() ) _target = copy._target;
 
-    return (*this);
+    return *this;
   }
 
 
