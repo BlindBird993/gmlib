@@ -25,14 +25,15 @@
 #define __gmBUFFEROBJECT_H__
 
 
-#include "gmopengl.h"
+#include "gmobject.h"
 
 
 namespace GMlib {
 
 namespace GL {
 
-  class BufferObject {
+  class BufferObject : public Object {
+    GM_GLOBJECT
   public:
     explicit BufferObject( GLenum target = GL_ARRAY_BUFFER, GLenum binding = GL_ARRAY_BUFFER_BINDING );
     explicit BufferObject( const std::string name );
@@ -40,19 +41,11 @@ namespace GL {
     BufferObject( const BufferObject& copy );
     virtual ~BufferObject();
 
-    void                    bind() const;
-    void                    unbind() const;
-
-    std::string             getName() const;
-    GLuint                  getId() const;
-
     GLenum                  getBinding() const;
-    void                    setBinding( GLenum binding = GL_ARRAY_BUFFER_BINDING ) const;
+//    void                    setBinding( GLenum binding = GL_ARRAY_BUFFER_BINDING ) const;
 
     GLenum                  getTarget() const;
-    void                    setTarget( GLenum target = GL_ARRAY_BUFFER ) const;
-
-    bool                    isValid() const;
+//    void                    setTarget( GLenum target = GL_ARRAY_BUFFER ) const;
 
     void                    createBufferData( GLsizeiptr size, const GLvoid* data, GLenum usage ) const;
     void                    disableVertexArrayPointer( const GL::AttributeLocation& vert_loc ) const;
@@ -64,31 +57,25 @@ namespace GL {
 
     BufferObject&           operator = ( const BufferObject& obj );
 
-  protected:
-    bool                    _valid;
-
+  private:
     /* variables "managed" by the backend */
-    mutable std::string     _name;
-    mutable GLuint          _id;
     mutable GLenum          _target;
     mutable GLenum          _binding;
 
-  private:
-    static GLuintCMap       _ids;
+    /* pure-virtual functions from Object */
+    virtual GLuint          getCurrentBoundId() const;
+    virtual void            doBind( GLuint id ) const;
 
-    /* safe-bind */
-    virtual GLint           safeBind() const;
-    void                    safeUnbind( GLint id ) const;
+    virtual GLuint          doCreate() const;
+    virtual void            doDestroy() const;
+
+    virtual GLuint          doCreateManaged() const;
 
   }; // END class BufferObject
 
 
 
-  inline
-  void BufferObject::bind() const {
 
-    GL_CHECK(glBindBuffer( _target, _id ));
-  }
 
   template <typename T>
   inline
@@ -97,26 +84,19 @@ namespace GL {
     GLint id = safeBind();
     void *ptr;
     GL_CHECK(ptr = glMapBuffer( _target, access ));
-    return static_cast<T*>(ptr);
     safeUnbind(id);
-  }
 
-  inline
-  void BufferObject::unbind() const {
-
-    GL_CHECK(glBindBuffer( _target, 0x0 ));
+    return static_cast<T*>(ptr);
   }
 
   inline
   BufferObject& BufferObject::operator = ( const BufferObject& copy ) {
 
-    _name     = copy._name;
-    _id       = copy._id;
-    _target   = copy._target;
-
-    _valid    = copy._valid;
-
-    _ids[_id]++;
+    Object::operator = (copy);
+    if( isValid() ) {
+      _target = copy._target;
+      _binding = copy._binding;
+    }
 
     return *this;
   }
