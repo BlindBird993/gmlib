@@ -31,7 +31,7 @@
 #ifndef __gmMATERIAL_H__
 #define __gmMATERIAL_H__
 
-#include "gmtexture.h"
+
 
 // gmlib
 #include <core/utils/gmstring.h>
@@ -54,20 +54,18 @@ namespace GMlib {
    *
    *  containing:
    *    ambient, diffuce and specular colors,
-   *		shininess (0-100) and
+   *    shininess (0-100) and
    *    texture ID and
-   *		source and destination blending factors
+   *    source and destination blending factors
    */
   class Material {
   public:
     Material(
-      const Color& amb 	= Color( 0.7f, 0.0f, 0.0f, 1.0f ),
-      const Color& dif 	= Color( 0.7f, 0.0f, 0.0f, 1.0f ),
-      const Color& spc 	= Color( 0.7f, 0.0f, 0.0f, 1.0f ),
-      float shininess 		= 0.0f,
-      const Texture& texture = Texture()
+      const Color& amb   = Color( 0.7f, 0.0f, 0.0f, 1.0f ),
+      const Color& dif   = Color( 0.7f, 0.0f, 0.0f, 1.0f ),
+      const Color& spc   = Color( 0.7f, 0.0f, 0.0f, 1.0f ),
+      float shininess     = 0.0f
     );
-    Material( const Texture& tex, const Material& mat = Material() );
     Material( const Material& copy );
     virtual ~Material();
 
@@ -75,16 +73,11 @@ namespace GMlib {
     const Color&    getDif() const;
     const Color&    getSpc() const;
     float           getShininess() const;
-    int             getTextureID() const;
-    virtual void    glSet() const;
-    void            glSetInverse() const;
-    virtual void    glUnSet() const;
     bool            isTransparent() const;
-    void            set( const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture );
+    void            set( const Color& amb, const Color& dif, const Color& spc, float shininess/*, const Texture& texture */);
     void            set( const Color& amb, const Color& dif, const Color& spc );
     void            set( const GLenum sfactor, const GLenum dfactor );
     void            set( float shininess );
-    void            set( const Texture& texture );
     void            setAmb( const Color& amb );
     void            setDif( const Color& dif );
     void            setDoubleSided( bool s );
@@ -98,7 +91,6 @@ namespace GMlib {
 
 
   protected:
-    Texture         _texture;
     Color           _amb;
     Color           _dif;
     Color           _spc;
@@ -106,7 +98,6 @@ namespace GMlib {
 
 
   private:
-
     GLenum          _source_blend_factor;
     GLenum          _destination_blend_factor;
     GLenum          _sided;
@@ -126,17 +117,6 @@ namespace GMlib {
           << m._spc       << GMseparator::Element
           << m._shininess << GMseparator::Element;
 
-//      if(m._texture.isValid()) {
-//
-//        char *tx=Texture::findFileName(m._texname);
-//        out << tx << GMseparator::Group;
-//      }
-//      else
-//      {
-//        char* no = "no-texture";
-//        out << no << GMseparator::Group;
-//      }
-
       return out;
     }
 
@@ -153,13 +133,8 @@ namespace GMlib {
           >> m._shininess >> es
           >> fn           >> gs;
 
-//      if( !( fn[0] == 'n' && fn[1] == 'o' && fn[2] == '-' ) )
-//      {
-//        Texture tx(true);
-//        m.set(tx.LoadGL(fn));
-//      }
       m.set( GL_ONE, GL_ONE );
-  //		delete fn;
+      delete fn;
       return in;
     }
 
@@ -211,38 +186,37 @@ namespace GMlib {
    *
    *  containing:
    *    A name and
-   *	  is a Materia
+   *    is a Materia
    */
   class MaterialObject: public Material {
   public:
     MaterialObject(
-			const Material& mat = GMmaterial::Snow,
+      const Material& mat = GMmaterial::Snow,
       const char* name = "Snow"
-		);
+    );
 
     MaterialObject(
-			const Material& mat,
+      const Material& mat,
       std::string name
-		);
+    );
 
-    MaterialObject(	const MaterialObject& m);
+    MaterialObject(  const MaterialObject& m);
 
-    void 							deleteTexture();
-    const Material&		getMaterial() const;
-    const String&			getName() const;
-    const char*				getNameC() const;
-    bool 							is(const char* name) const;
-    bool 							is(const std::string& name) const;
-    bool 							is(const Material& m) const;
-    void 							setMaterial(const Material& m);
-    void 							setName(const std::string& name);
-    void 							setName(const char* name);
+    const Material&    getMaterial() const;
+    const String&      getName() const;
+    const char*        getNameC() const;
+    bool               is(const char* name) const;
+    bool               is(const std::string& name) const;
+    bool               is(const Material& m) const;
+    void               setMaterial(const Material& m);
+    void               setName(const std::string& name);
+    void               setName(const char* name);
 
-    MaterialObject&		operator=(const MaterialObject& m);
+    MaterialObject&    operator=(const MaterialObject& m);
 
 
-	private:
-    String		_name;			// Size of name is max 16 letters
+  private:
+    String    _name;      // Size of name is max 16 letters
 
   }; // END MaterialObject class
 
@@ -264,9 +238,9 @@ namespace GMlib {
     MaterialObjectList(bool init=true);
     MaterialObjectList(char* file_name);
 
-    void	initPreDef();
-    bool	readFromFile(char* file_name);
-    bool	storeToFile(char* file_name);
+    void  initPreDef();
+    bool  readFromFile(char* file_name);
+    bool  storeToFile(char* file_name);
 
   }; // END class MaterialObjectList
 
@@ -281,38 +255,28 @@ namespace GMlib {
 
 
 
-  /*! Material::Material(	const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture )
-   *	\brief Pending Documentation
+  /*! Material::Material(  const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture )
+   *  \brief Pending Documentation
    *
-   *	Default/Standar constructor
+   *  Default/Standar constructor
    */
   inline
-  Material::Material(	const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture )	{
+  Material::Material(  const Color& amb, const Color& dif, const Color& spc, float shininess )  {
 
-    set( amb, dif, spc, shininess, texture );
+    set( amb, dif, spc, shininess );
     set(GL_ONE,GL_ONE);
     _sided = GL_FRONT_AND_BACK;
   }
 
 
-  inline
-  Material::Material( const Texture& tex, const Material& mat ) {
-
-    *this = mat;
-
-    set( tex );
-  }
-
-
   /*! Material::Material( const Material&  m )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Copy constructor
+   *  Copy constructor
    */
   inline
   Material::Material( const Material&  copy ) {
 
-    _texture = copy._texture;
     _amb = copy._amb;
     _dif = copy._dif;
     _spc = copy._spc;
@@ -360,51 +324,35 @@ namespace GMlib {
   }
 
 
-  /*! int Material::getTextureID()
-   *	\brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  int  Material::getTextureID() const {
-
-    return _texture.getTextureId();
-  }
-
-
   /*! bool Material::isTransparent()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
   bool Material::isTransparent() const {
 
-    if( _texture.isValid() )
-      return ( !((_source_blend_factor==GL_ONE) && (_destination_blend_factor==GL_ONE)) );
-    else
       return ( (_amb.getAlpha() < 1.0) && (_dif.getAlpha() < 1.0) && (_spc.getAlpha() < 1.0) );
   }
 
 
   /*! void Material::set( const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::set( const Color& amb, const Color& dif, const Color& spc, float shininess, const Texture& texture ) {
+  void Material::set( const Color& amb, const Color& dif, const Color& spc, float shininess ) {
 
     _amb = amb;
     _dif = dif;
     _spc = spc;
     _shininess = shininess;
-    _texture = texture;
   }
 
 
   /*! void Material::set(const Color& amb, const Color& dif, const Color& spc )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
@@ -418,36 +366,36 @@ namespace GMlib {
 
 
   /*! void Material::setAmb(const Color& amb)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::setAmb(const Color& amb)	{
+  void Material::setAmb(const Color& amb)  {
 
     _amb = amb;
   }
 
 
-  /*!void Material::setDif(const Color& dif)
-   *	\brief Pending Documentation
+  /*! void Material::setDif(const Color& dif)
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::setDif(const Color& dif)	{
+  void Material::setDif(const Color& dif)  {
 
     _dif = dif;
   }
 
 
   /*! void Material::setDoubleSided(bool s)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::setDoubleSided(bool s)	{
+  void Material::setDoubleSided(bool s)  {
 
     if(s) _sided = GL_FRONT_AND_BACK;
     else _sided = GL_FRONT;
@@ -455,7 +403,7 @@ namespace GMlib {
 
 
   /*! void Material::setSided(GLenum s)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
@@ -467,19 +415,19 @@ namespace GMlib {
 
 
   /*! void Material::setSpc(const Color& spc)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
   inline
-  void Material::setSpc(const Color& spc)	{
+  void Material::setSpc(const Color& spc)  {
 
     _spc=spc;
   }
 
 
   /*! void Material::setTransparancy(double t)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
@@ -493,10 +441,10 @@ namespace GMlib {
 
 
   /*! Material& Material::operator=(const Material& m)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
-   *	Makes a copy
+   *  Makes a copy
    */
   inline
   Material& Material::operator=(const Material& m) {
@@ -507,7 +455,7 @@ namespace GMlib {
 
 
   /*! bool Material::operator==(const Material& m) const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
@@ -515,85 +463,73 @@ namespace GMlib {
   bool Material::operator==(const Material& m) const {
 
     return _amb == m._amb && _dif == m._dif && _spc == m._spc &&
-      _shininess == m._shininess && _texture == m._texture;
+      _shininess == m._shininess/* && _texture == m._texture*/;
   }
 
-  /*! MaterialObject::MaterialObject(	const Material& mat, const char* name )
-   *	\brief Pending Documentation
+  /*! MaterialObject::MaterialObject(  const Material& mat, const char* name )
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  MaterialObject::MaterialObject(	const Material& mat, const char* name ) : Material(mat)	{
+  MaterialObject::MaterialObject(  const Material& mat, const char* name ) : Material(mat)  {
 
     _name = name;
   }
 
 
-  /*! MaterialObject::MaterialObject(	const Material& mat, string name )
-   *	\brief Pending Documentation
+  /*! MaterialObject::MaterialObject(  const Material& mat, string name )
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  MaterialObject::MaterialObject(	const Material& mat, std::string name ) : Material(mat)	{
+  MaterialObject::MaterialObject(  const Material& mat, std::string name ) : Material(mat)  {
 
     _name = name;
   }
 
 
-  /*! MaterialObject::MaterialObject(	const MaterialObject& m)
-   *	\brief Pending Documentation
+  /*! MaterialObject::MaterialObject(  const MaterialObject& m)
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  MaterialObject::MaterialObject(	const MaterialObject& m) : Material(m) {
+  MaterialObject::MaterialObject(  const MaterialObject& m) : Material(m) {
 
     _name = m._name;
   }
 
 
-  /*! void MaterialObject::deleteTexture()
-   *	\brief Pending Documentation
+  /*! const Material&    MaterialObject::getMaterial() const
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  void MaterialObject::deleteTexture() {
-
-    this->_texture = Texture();
-  }
-
-
-  /*! const Material&		MaterialObject::getMaterial() const
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  inline
-  const Material&		MaterialObject::getMaterial() const {
+  const Material&    MaterialObject::getMaterial() const {
 
     return *this;
   }
 
 
-  /*! const GM_String&	MaterialObject::getName() const
-   *	\brief Pending Documentation
+  /*! const GM_String&  MaterialObject::getName() const
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  const String&	MaterialObject::getName() const {
+  const String&  MaterialObject::getName() const {
 
     return _name;
   }
 
 
   /*! const char* MaterialObject::getNameC() const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   const char* MaterialObject::getNameC() const {
@@ -603,9 +539,9 @@ namespace GMlib {
 
 
   /*! bool MaterialObject::is(const char* name) const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool MaterialObject::is(const char* name) const {
@@ -615,9 +551,9 @@ namespace GMlib {
 
 
   /*! bool MaterialObject::is(const string& name) const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool MaterialObject::is(const std::string& name) const {
@@ -627,9 +563,9 @@ namespace GMlib {
 
 
   /*! bool MaterialObject::is(const Material& m) const
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool MaterialObject::is(const Material& m) const {
@@ -639,20 +575,20 @@ namespace GMlib {
 
 
   /*! void MaterialObject::setMaterial(const Material& m)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  void MaterialObject::setMaterial(const Material& m)	{
+  void MaterialObject::setMaterial(const Material& m)  {
 
     Material::operator = ( m );
   }
 
   /*! void MaterialObject::setName(const string& name)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void MaterialObject::setName(const std::string& name) {
@@ -661,9 +597,9 @@ namespace GMlib {
   }
 
   /*! void MaterialObject::setName(const char* name)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void MaterialObject::setName(const char* name) {
@@ -673,9 +609,9 @@ namespace GMlib {
 
 
   /*! MaterialObject& MaterialObject::operator=(const MaterialObject& m)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   MaterialObject& MaterialObject::operator=(const MaterialObject& m) {
@@ -688,9 +624,9 @@ namespace GMlib {
   }
 
   /*! MaterialObjectList::MaterialObjectList(bool init)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   MaterialObjectList::MaterialObjectList(bool init) {
@@ -701,9 +637,9 @@ namespace GMlib {
 
 
   /*! MaterialObjectList::MaterialObjectList(char* file_name)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   MaterialObjectList::MaterialObjectList( char* file_name ) {
