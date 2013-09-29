@@ -70,13 +70,13 @@ void PSurfVisualizer<T,n>::fillMap(GL::Texture& map, const DMatrix<DMatrix<Vecto
 
   // Create Normal map texture and set texture parameters
   map.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
-  map.setParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-  map.setParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  if( closed_u )  map.setParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
-  else            map.setParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  map.texParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  map.texParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  if( closed_u )  map.texParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
+  else            map.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
-  if( closed_v )  map.setParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
-  else            map.setParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  if( closed_v )  map.texParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
+  else            map.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 template <typename T, int n>
@@ -100,13 +100,13 @@ void PSurfVisualizer<T,n>::fillNMap( GL::Texture& nmap, const DMatrix< Vector<T,
 
   // Create Normal map texture and set texture parameters
   nmap.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, reinterpret_cast<float*>(tex_data.getPtr()) );
-  nmap.setParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-  nmap.setParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  if( closed_u )  nmap.setParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
-  else            nmap.setParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  nmap.texParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  nmap.texParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  if( closed_u )  nmap.texParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
+  else            nmap.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
-  if( closed_v )  nmap.setParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
-  else            nmap.setParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  if( closed_v )  nmap.texParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
+  else            nmap.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 template <typename T, int n>
@@ -134,7 +134,7 @@ void PSurfVisualizer<T,n>::fillStandardVBO(GL::VertexBufferObject &vbo,
 
   GLsizeiptr no_vertices = p.getDim1() * p.getDim2() * sizeof(GL::GLVertexTex2D);
 
-  vbo.createBufferData( no_vertices, 0x0, GL_STATIC_DRAW );
+  vbo.bufferData( no_vertices, 0x0, GL_STATIC_DRAW );
   GL::GLVertexTex2D *ptr = vbo.mapBuffer<GL::GLVertexTex2D>();
   for( int i = 0; i < p.getDim1(); i++ ) {
     for( int j = 0; j < p.getDim2(); j++ ) {
@@ -175,7 +175,7 @@ void PSurfVisualizer<T,n>::fillTriangleStripIBO(GL::IndexBufferObject& ibo, int 
     }
   }
 
-  ibo.createBufferData( no_indices * sizeof(GLuint), indices.getPtr(), GL_STATIC_DRAW );
+  ibo.bufferData( no_indices * sizeof(GLuint), indices.getPtr(), GL_STATIC_DRAW );
 
   compTriangleStripProperties( m1, m2, no_strips, no_strip_indices, strip_size );
 }

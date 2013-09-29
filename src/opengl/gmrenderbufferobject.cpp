@@ -46,7 +46,7 @@ RenderbufferObject::~RenderbufferObject() { destroy(); }
 
 
 
-void RenderbufferObject::createStorage(GLenum internal_format, GLsizei width, GLsizei height) const {
+void RenderbufferObject::renderbufferStorage(GLenum internal_format, GLsizei width, GLsizei height) const {
 
   GLuint id = safeBind();
   GL_CHECK(::glRenderbufferStorage( GL_RENDERBUFFER, internal_format, width, height ));
@@ -69,13 +69,10 @@ GLuint RenderbufferObject::doGenerate() const {
 
   GLuint id;
   GL_CHECK(::glGenRenderbuffers( 1, &id ));
-
-  std::cout << "  - Generating RBO: " << id << std::endl;
   return id;
 }
 
 void RenderbufferObject::doDelete(GLuint id) const {
 
-  std::cout << "  - Deleting RBO: " << id << std::endl;
-//  GL_CHECK(::glDeleteRenderbuffers( 1, &id ));
+  GL_CHECK(::glDeleteRenderbuffers( 1, &id ));
 }

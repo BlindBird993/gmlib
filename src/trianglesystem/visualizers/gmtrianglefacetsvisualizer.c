@@ -58,7 +58,7 @@ namespace GMlib {
     }
 
     vbo.bind();
-    vbo.createBufferData( no_vertices * sizeof(GL::GLVertexNormal), vertices.getPtr(), GL_STATIC_DRAW );
+    vbo.bufferData( no_vertices * sizeof(GL::GLVertexNormal), vertices.getPtr(), GL_STATIC_DRAW );
     vbo.unbind();
 
 //    std::cout << "TriangleFacetsVisualizer: No. Vertices: " << no_vertices << std::endl;
@@ -82,7 +82,7 @@ namespace GMlib {
             *iptr++ = k;
     }
 
-    ibo.createBufferData( no_indices * sizeof(GLuint), indices.getPtr(), GL_STATIC_DRAW );
+    ibo.bufferData( no_indices * sizeof(GLuint), indices.getPtr(), GL_STATIC_DRAW );
 
 //    std::cout << "TriangleFacetsVisualizer: No. Indices: " << no_indices << std::endl;
   }

@@ -47,7 +47,7 @@ namespace GL {
     GLenum                  getBinding() const;
     GLenum                  getTarget() const;
 
-    void                    createBufferData( GLsizeiptr size, const GLvoid* data, GLenum usage ) const;
+    void                    bufferData( GLsizeiptr size, const GLvoid* data, GLenum usage ) const;
     void                    bufferSubData( GLintptr offset, GLsizeiptr size, const GLvoid* data ) const;
     void                    disableVertexArrayPointer( const GL::AttributeLocation& vert_loc ) const;
     void                    enableVertexArrayPointer( const GL::AttributeLocation& vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const;

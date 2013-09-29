@@ -52,7 +52,7 @@ namespace GMlib {
     void          setBeta( T beta );
     void          setGamma( T gamma );
     void          setLambda( T lambda );
-    void          setParameters( T alpha = T(1), T beta = T(1), T gamma = T(1), T lambda = T(0.5) );
+    void          texParameters( T alpha = T(1), T beta = T(1), T gamma = T(1), T lambda = T(0.5) );
 
     static ERBSEvaluator<T>*    getInstance();
 

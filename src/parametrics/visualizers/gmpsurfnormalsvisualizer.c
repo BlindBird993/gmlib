@@ -121,7 +121,7 @@ namespace GMlib {
     _no_elements = no_normals * 2;
 
     _vbo.bind();
-    _vbo.createBufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
+    _vbo.bufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
     GL::GLVertex *ptr = _vbo.mapBuffer<GL::GLVertex>();
     if( ptr ) {
@@ -161,7 +161,7 @@ namespace GMlib {
     _no_elements = no_normals * 2;
 
     _vbo.bind();
-    _vbo.createBufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
+    _vbo.bufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
     GL::GLVertex *ptr = _vbo.mapBuffer<GL::GLVertex>();
     if( ptr ) {
@@ -201,7 +201,7 @@ namespace GMlib {
     _no_elements = no_normals * 2;
 
     _vbo.bind();
-    _vbo.createBufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
+    _vbo.bufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
     GL::GLVertex *ptr = _vbo.mapBuffer<GL::GLVertex>();
     if( ptr ) {

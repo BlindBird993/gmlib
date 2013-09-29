@@ -65,7 +65,7 @@ namespace GMlib {
     }
 
     vbo.bind();
-    vbo.createBufferData( no_dp * sizeof( GL::GLVertexNormal ), dp.getPtr(), GL_STATIC_DRAW );
+    vbo.bufferData( no_dp * sizeof( GL::GLVertexNormal ), dp.getPtr(), GL_STATIC_DRAW );
     vbo.unbind();
   }
 
@@ -98,7 +98,7 @@ namespace GMlib {
     }
 
     ibo.bind();
-    ibo.createBufferData( sizeof(GLuint)*no_indices, indices.getPtr(), GL_STATIC_DRAW );
+    ibo.bufferData( sizeof(GLuint)*no_indices, indices.getPtr(), GL_STATIC_DRAW );
     ibo.unbind();
   }
 

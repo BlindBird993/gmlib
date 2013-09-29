@@ -99,8 +99,8 @@ namespace GMlib {
 
     Renderer::resize(w,h);
 
-    _rbo_color.createStorage( GL_RGB, w, h );
-    _rbo_depth.createStorage( GL_DEPTH_COMPONENT32, w, h );
+    _rbo_color.renderbufferStorage( GL_RGB, w, h );
+    _rbo_depth.renderbufferStorage( GL_DEPTH_COMPONENT32, w, h );
   }
 
 

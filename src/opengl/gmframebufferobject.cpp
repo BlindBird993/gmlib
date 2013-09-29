@@ -58,15 +58,12 @@ GLuint FramebufferObject::doGenerate() const {
 
   GLuint id;
   GL_CHECK(::glGenFramebuffers( 1, &id ));
-
-  std::cout << "  - Generating FBO: " << id << std::endl;
   return id;
 }
 
 void FramebufferObject::doDelete(GLuint id) const {
 
-  std::cout << "  - Deleting FBO: " << id << std::endl;
-//  GL_CHECK(::glDeleteFramebuffers( 1, &id ));
+  GL_CHECK(::glDeleteFramebuffers( 1, &id ));
 }
 
 

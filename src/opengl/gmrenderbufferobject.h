@@ -41,7 +41,7 @@ namespace GL {
     RenderbufferObject( const RenderbufferObject& copy );
     ~RenderbufferObject();
 
-    void                    createStorage( GLenum internal_format, GLsizei width, GLsizei height ) const;
+    void                    renderbufferStorage( GLenum internal_format, GLsizei width, GLsizei height ) const;
 
   private:
     /* pure-virtual functions from Object */

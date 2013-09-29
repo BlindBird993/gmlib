@@ -346,6 +346,18 @@ namespace GMlib {
 
   void GMWindow::updateLightUBO() {
 
+    /*
+     *  Light types of "sun", "point" and "spot" is supported.
+     *  It is assumed that the lights is grouped and sorted in that order
+     *  and that the "number of info" is recorded in the header block:
+     *  <ul>
+     *    <li>Total number of lights.</li>
+     *    <li>Number of suns.</li>
+     *    <li>Number of point lights.</li>
+     *    <li>Number of spot lights.</li>
+     *  </ul>
+     */
+
     GL::GLVector<4,GLuint> header;
     std::vector<unsigned int> light_ids;
     std::vector<GL::GLLight> lights;
@@ -471,7 +483,7 @@ namespace GMlib {
 
 //    GL::OGL::resetLightBuffer( header, light_ids, lights );
 
-    _lights_ubo.createBufferData( sizeof(GL::GLVector<4,GLuint>) + lights.size() * sizeof(GL::GLLight),
+    _lights_ubo.bufferData( sizeof(GL::GLVector<4,GLuint>) + lights.size() * sizeof(GL::GLLight),
                                   0x0, GL_DYNAMIC_DRAW );
     _lights_ubo.bufferSubData( 0, sizeof(GL::GLVector<4,GLuint>), &header );
     _lights_ubo.bufferSubData( sizeof(GL::GLVector<4,GLuint>), sizeof(GL::GLLight) * lights.size(), &lights[0] );
@@ -535,9 +547,9 @@ namespace GMlib {
 
     };
 
-    _std_rep_cube.createBufferData( 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
-    _std_rep_cube_indices.createBufferData( 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
-    _std_rep_frame_indices.createBufferData( 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
+    _std_rep_cube.bufferData( 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
+    _std_rep_cube_indices.bufferData( 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
+    _std_rep_frame_indices.bufferData( 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
   }
 
   SceneObject *GMWindow::findSelectObject(Camera *cam, const Vector<int,2> &pos, int type_id) const {
@@ -591,7 +603,6 @@ namespace GMlib {
 //    cout << "GMWindow::init()" << endl;
 
     initStdGeometry();
-
 
     if(_sun)
       _sun->scaleDayLight(1.0);

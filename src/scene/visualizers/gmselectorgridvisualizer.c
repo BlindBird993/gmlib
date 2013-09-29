@@ -49,7 +49,7 @@ namespace GMlib {
     }
 
     const GLsizeiptr data_size = _c.getDim() * sizeof(GL::GLVertex);
-    _vbo.createBufferData( data_size, dp.getPtr(), GL_DYNAMIC_DRAW );
+    _vbo.bufferData( data_size, dp.getPtr(), GL_DYNAMIC_DRAW );
   }
 
   template <typename T>
@@ -120,7 +120,7 @@ namespace GMlib {
       indices[i+1] = j + 1;
     }
 
-    _ibo.createBufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
+    _ibo.bufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
   }
 
 
@@ -141,7 +141,7 @@ namespace GMlib {
       }
     }
 
-    _ibo.createBufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
+    _ibo.bufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
   }
 
 
@@ -182,7 +182,7 @@ namespace GMlib {
       }
     }
 
-    _ibo.createBufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
+    _ibo.bufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
   }
 
   template <typename T>

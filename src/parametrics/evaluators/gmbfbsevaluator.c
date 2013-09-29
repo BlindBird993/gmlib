@@ -34,7 +34,7 @@ namespace GMlib {
   template <typename T>
   BFBSEvaluator<T>::BFBSEvaluator( int m, int ik, int ikp1 ) {
 
-    setParameters( ik, ikp1 );
+    texParameters( ik, ikp1 );
 
     this->init( m );
     this->set( 0, 1 );
@@ -89,7 +89,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  void BFBSEvaluator<T>::setParameters( int ik, int ikp1 ) {
+  void BFBSEvaluator<T>::texParameters( int ik, int ikp1 ) {
 
     _ik = ik;
     _ikp1 = ikp1;

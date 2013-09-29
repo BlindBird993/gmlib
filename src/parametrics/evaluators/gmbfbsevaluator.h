@@ -45,7 +45,7 @@ namespace GMlib {
 
     void      setIk( int ik );
     void      setIkp1( int ikp1 );
-    void      setParameters( int ik, int ikp1 );
+    void      texParameters( int ik, int ikp1 );
 
 
   protected:

@@ -96,48 +96,77 @@ namespace GL {
 
 
   protected:
+
+    /**! \class GLObjectDataPrivate
+     * Internal data class
+     */
     class GLObjectDataPrivate {
     public:
       GLObjectDataPrivate() {}
 
-      void                add( GLuint id, const T& info ) {
-        _counters[id] = 1;
-        _info[id] = info;
-      }
+      void                add( GLuint id, const T& info );
+      unsigned int        count( GLuint id ) const;
 
-      unsigned int        count( GLuint id ) const {
+      const std::string&  getName( GLuint id ) const;
+      GLuint              getId( const std::string& name ) const;
+      const T&            getInfo( GLuint id ) const;
 
-        return _counters.count(id) ? _counters.find(id)->second : 0;
-
-      }
-      const std::string&  getName( GLuint id ) const { return static_cast<GLObjectInfo>(_info[id]).name; }
-      GLuint              getId( const std::string& name ) const {
-
-        if( name.length() <= 0 ) return 0;
-
-        typename std::map<GLuint,T>::const_iterator itr;
-        for( itr = _info.begin(); itr != _info.end(); ++itr ) {
-
-          if( static_cast<GLObjectInfo>(itr->second).name == name )
-            return itr->first;
-        }
-
-        return 0;
-      }
-      const T&            getInfo( GLuint id ) const { return _info[id]; }
-
-      void                inc( GLuint id ) { _counters[id]++; }
-      void                dec( GLuint id ) { _counters[id]--; }
+      void                inc( GLuint id );
+      void                dec( GLuint id );
 
     private:
-      std::map<GLuint, unsigned int>  _counters;
-      mutable std::map<GLuint,T>              _info;
-    };
+      std::map<GLuint, unsigned int>      _counters;
+      mutable std::map<GLuint,T>          _info;
 
+    }; // END class GLObject::GLObjectDataPrivate
+
+  private:
     static GLObjectDataPrivate          _objs;
 
   }; // END class GLObject
 
+
+
+
+  template <typename T>
+  void GLObject<T>::GLObjectDataPrivate::add(GLuint id, const T &info) {
+    _counters[id] = 1;
+    _info[id] = info;
+  }
+
+  template <typename T>
+  unsigned int GLObject<T>::GLObjectDataPrivate::count(GLuint id) const {
+    return _counters.count(id) ? _counters.find(id)->second : 0;
+  }
+
+  template <typename T>
+  void GLObject<T>::GLObjectDataPrivate::dec( GLuint id ) { _counters[id]--; }
+
+  template <typename T>
+  GLuint GLObject<T>::GLObjectDataPrivate::getId( const std::string& name ) const {
+
+    if( name.length() <= 0 ) return 0;
+
+    typename std::map<GLuint,T>::const_iterator itr;
+    for( itr = _info.begin(); itr != _info.end(); ++itr ) {
+
+      if( static_cast<GLObjectInfo>(itr->second).name == name )
+        return itr->first;
+    }
+
+    return 0;
+  }
+
+  template <typename T>
+  const T& GLObject<T>::GLObjectDataPrivate::getInfo( GLuint id ) const { return _info[id]; }
+
+  template <typename T>
+  const std::string& GLObject<T>::GLObjectDataPrivate::getName( GLuint id ) const {
+    return static_cast<GLObjectInfo>(_info[id]).name;
+  }
+
+  template <typename T>
+  void GLObject<T>::GLObjectDataPrivate::inc( GLuint id ) { _counters[id]++; }
 
 
 
@@ -152,7 +181,7 @@ namespace GL {
   GLObject<T>::GLObject(const std::string& name) : GMutils::DerivedFrom<T,GLObjectInfo>() {
 
     _id = _objs.getId(name);
-    std::cout << "Using existing GLObject: " << name << " (" << _id << ")" << std::endl;
+
     if( _id )
       _objs.inc(_id);
   }
@@ -191,11 +220,9 @@ namespace GL {
   template <typename T>
   void GLObject<T>::create(const T &info) {
 
-    std::cout << "Creating GLObject: " << std::endl;
-    GLuint existing_id = _objs.getId(info.name);
+    const GLuint existing_id = _objs.getId(info.name);
     if( existing_id ) {
 
-      std::cout << "  Named object exists, using existing: '" << info.name << "' (" << existing_id << ")" << std::endl;
       _id = existing_id;
       _objs.inc(_id);
       return;
@@ -204,20 +231,12 @@ namespace GL {
 
     _id = doGenerate();
     _objs.add(_id, info);
-
-    std::cout << "  Adding created object: '" << info.name << "' (" << _id << ")" << std::endl;
   }
 
   template <typename T>
   void GLObject<T>::destroy() {
 
-    std::cout << "Destroying GLObject: " << std::endl;
-
-    if( !isValid() ) {
-
-      std::cout << "  Not valid" << std::endl;
-      return;
-    }
+    if( !isValid() ) return;
 
     _objs.dec(_id);
     if(_objs.count(_id) <= 0)

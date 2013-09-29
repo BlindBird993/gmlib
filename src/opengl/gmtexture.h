@@ -47,6 +47,7 @@ namespace GL {
 
     GLenum                  getTarget() const;
 
+    /* OpenGL API */
     void                    texImage1D( GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *data );
     void                    texImage2D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data );
     void                    texImage3D( GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *data );
@@ -57,8 +58,8 @@ namespace GL {
 
     void                    getTexImage( GLint level, GLenum format, GLenum type, GLvoid* pixels );
 
-    void                    setParameterf(GLenum pname, GLfloat param );
-    void                    setParameteri(GLenum pname, GLint param );
+    void                    texParameterf(GLenum pname, GLfloat param );
+    void                    texParameteri(GLenum pname, GLint param );
 
 
   private:

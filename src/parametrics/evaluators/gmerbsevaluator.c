@@ -39,7 +39,7 @@ namespace GMlib {
   template <typename T>
   ERBSEvaluator<T>::ERBSEvaluator( int m, T alpha, T beta, T gamma, T lambda ) {
 
-    setParameters( alpha, beta, gamma, lambda );
+    texParameters( alpha, beta, gamma, lambda );
 
     this->init( m );
     this->set( 0, 1 );
@@ -158,7 +158,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void ERBSEvaluator<T>::setParameters( T alpha, T beta, T gamma, T lambda ) {
+  void ERBSEvaluator<T>::texParameters( T alpha, T beta, T gamma, T lambda ) {
 
     _alpha  = alpha;
     _beta   = beta;

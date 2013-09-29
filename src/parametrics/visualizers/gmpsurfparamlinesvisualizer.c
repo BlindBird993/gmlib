@@ -173,21 +173,21 @@ void PSurfParamLinesVisualizer<T,n>::generatePTex(int m1, int m2, int s1, int s2
 
   // Create U line tex
   _ptex_u.texImage2D( 0, GL_R8, tex_data_u.getDim(), 1, 0, GL_RED, GL_FLOAT, tex_data_u.getPtr() );
-  _ptex_u.setParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-  _ptex_u.setParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  if( closed_u )  _ptex_u.setParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  else            _ptex_u.setParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  if( closed_v )  _ptex_v.setParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  else            _ptex_v.setParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  _ptex_u.texParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  _ptex_u.texParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  if( closed_u )  _ptex_u.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  else            _ptex_u.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  if( closed_v )  _ptex_v.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  else            _ptex_v.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
   // Create V line tex
   _ptex_v.texImage2D( 0, GL_R8, 1, tex_data_v.getDim(), 0, GL_RED, GL_FLOAT, tex_data_v.getPtr() );
-  _ptex_v.setParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-  _ptex_v.setParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  if( closed_u )  _ptex_u.setParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  else            _ptex_u.setParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  if( closed_v )  _ptex_v.setParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  else            _ptex_v.setParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  _ptex_v.texParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  _ptex_v.texParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  if( closed_u )  _ptex_u.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  else            _ptex_u.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  if( closed_v )  _ptex_v.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  else            _ptex_v.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 } // END namespace GMlib

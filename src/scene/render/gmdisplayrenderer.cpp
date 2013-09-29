@@ -59,16 +59,16 @@ namespace GMlib {
 
 
     // Color rbo texture parameters
-    _rbo_color.setParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    _rbo_color.setParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    _rbo_color.setParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    _rbo_color.setParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    _rbo_color.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    _rbo_color.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    _rbo_color.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    _rbo_color.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     // Select rbo texture parameters
-    _rbo_select.setParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    _rbo_select.setParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    _rbo_select.setParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    _rbo_select.setParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    _rbo_select.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    _rbo_select.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    _rbo_select.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    _rbo_select.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 
     // Bind renderbuffers to framebuffer.
@@ -131,10 +131,10 @@ namespace GMlib {
 
     Renderer::resize(w,h);
 
-    _rbo_depth.createStorage( GL_DEPTH_COMPONENT32, w, h );
+    _rbo_depth.renderbufferStorage( GL_DEPTH_COMPONENT32, w, h );
     _rbo_color.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
 
-    _rbo_select_depth.createStorage( GL_DEPTH_COMPONENT32, w, h );
+    _rbo_select_depth.renderbufferStorage( GL_DEPTH_COMPONENT32, w, h );
     _rbo_select.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
 
     _rt->resize( Vector<float,2>(_w,_h) );

@@ -228,7 +228,7 @@ namespace GMlib {
       }
     }
 
-    _vbo.createBufferData( v.getDim() * sizeof(GL::GLVertexNormal), v.getPtr(), GL_STATIC_DRAW );
+    _vbo.bufferData( v.getDim() * sizeof(GL::GLVertexNormal), v.getPtr(), GL_STATIC_DRAW );
 
   }
 

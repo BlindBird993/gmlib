@@ -171,7 +171,7 @@ namespace GMlib {
     }
 
     _vbo.bind();
-    _vbo.createBufferData(_no_borders * sizeof(GLBorder), data.getPtr(), GL_STATIC_DRAW);
+    _vbo.bufferData(_no_borders * sizeof(GLBorder), data.getPtr(), GL_STATIC_DRAW);
     _vbo.unbind();
   }
 

@@ -52,7 +52,7 @@ namespace GMlib {
     no_vertices = p.getDim();
     GLsizeiptr buffer_size = no_vertices * sizeof(GL::GLVertex);
 
-    vbo.createBufferData( buffer_size, 0x0, GL_STATIC_DRAW );
+    vbo.bufferData( buffer_size, 0x0, GL_STATIC_DRAW );
 
     GL::GLVertex *ptr = vbo.mapBuffer<GL::GLVertex>();
     if( ptr ) {

@@ -58,14 +58,12 @@ GLuint Texture::doGenerate() const {
   GLuint id;
   GL_CHECK(::glGenTextures( 1, &id) );
 
-  std::cout << "  - Generating Texture: " << id << std::endl;
   return id;
 }
 
 void Texture::doDelete(GLuint id) const {
 
-  std::cout << "  - Deleting Texture: " << id << std::endl;
-//  GL_CHECK(::glDeleteTextures( 1, &id ));
+  GL_CHECK(::glDeleteTextures( 1, &id ));
 }
 
 GLuint Texture::getCurrentBoundId() const {
@@ -129,14 +127,14 @@ void Texture::getTexImage(GLint level, GLenum format, GLenum type, GLvoid* pixel
   safeUnbind(id);
 }
 
-void Texture::setParameterf(GLenum pname, GLfloat param) {
+void Texture::texParameterf(GLenum pname, GLfloat param) {
 
   GLint id = safeBind();
   GL_CHECK(::glTexParameterf( getTarget(), pname, param ));
   safeUnbind(id);
 }
 
-void Texture::setParameteri( GLenum pname, GLint param) {
+void Texture::texParameteri( GLenum pname, GLint param) {
 
   GLint id = safeBind();
   GL_CHECK(::glTexParameteri( getTarget(), pname, param ));

@@ -58,7 +58,7 @@ BufferObject::~BufferObject() { destroy(); }
 
 
 
-void BufferObject::createBufferData(GLsizeiptr size, const GLvoid *data, GLenum usage) const {
+void BufferObject::bufferData(GLsizeiptr size, const GLvoid *data, GLenum usage) const {
 
   GLint id = safeBind();
   GL_CHECK(::glBufferData( getTarget(), size, data, usage ));
@@ -87,15 +87,12 @@ GLuint BufferObject::doGenerate() const {
 
   GLuint id;
   GL_CHECK(::glGenBuffers( 1, &id ));
-
-  std::cout << "  - Generating BO: " << id << std::endl;
   return id;
 }
 
 void BufferObject::doDelete(GLuint id) const {
 
-  std::cout << "  - Deleting BO: " << id << std::endl;
-//  GL_CHECK(::glDeleteBuffers( 1, &id ));
+  GL_CHECK(::glDeleteBuffers( 1, &id ));
 }
 
 void BufferObject::enableVertexArrayPointer( const GL::AttributeLocation& vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const {
