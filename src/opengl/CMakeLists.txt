@@ -24,6 +24,7 @@ addHeaders(
   gmBufferObject
   gmFramebufferObject
   gmObject
+  gmGLObject
   gmOpenGL
   gmRenderbufferObject
   gmTexture

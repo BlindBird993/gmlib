@@ -26,22 +26,26 @@
 
 using namespace GMlib::GL;
 
-GM_GLOBJECT_CPP(FramebufferObject)
 
 
+FramebufferObject::FramebufferObject(bool generate) : GLObject<FBOInfo>() {
 
-FramebufferObject::FramebufferObject(bool generate) : Object() { if( generate ) create(); }
+  if( !generate ) return;
 
-FramebufferObject::FramebufferObject(const std::string name) : Object(name) { createManaged(); }
+  FBOInfo info;
+  create(info);
+}
 
-FramebufferObject::FramebufferObject(const FramebufferObject &copy) { makeCopy(copy); }
+FramebufferObject::FramebufferObject(const std::string name) : GLObject<FBOInfo>(name) {}
 
 FramebufferObject::~FramebufferObject() { destroy(); }
+
+FramebufferObject::FramebufferObject(GLuint id) : GLObject<FBOInfo>(id) {}
 
 GLuint FramebufferObject::getCurrentBoundId() const{
 
   GLint id;
-  GL_CHECK(glGetIntegerv( GL_FRAMEBUFFER_BINDING, &id ));
+  GL_CHECK(::glGetIntegerv( GL_FRAMEBUFFER_BINDING, &id ));
   return id;
 }
 
@@ -50,23 +54,20 @@ void FramebufferObject::doBind(GLuint id) const {
   privateBind( GL_FRAMEBUFFER, id );
 }
 
-GLuint FramebufferObject::doCreate() const {
+GLuint FramebufferObject::doGenerate() const {
 
-  return OGL::createFbo();
+  GLuint id;
+  GL_CHECK(::glGenFramebuffers( 1, &id ));
+
+  std::cout << "  - Generating FBO: " << id << std::endl;
+  return id;
 }
 
-GLuint FramebufferObject::doCreateManaged() const {
+void FramebufferObject::doDelete(GLuint id) const {
 
-  OGL::createFbo();
-  return OGL::getFboId(getName());
+  std::cout << "  - Deleting FBO: " << id << std::endl;
+//  GL_CHECK(::glDeleteFramebuffers( 1, &id ));
 }
-
-void FramebufferObject::doDestroy() const {
-
-  OGL::deleteFbo(getId());
-}
-
-FramebufferObject::FramebufferObject(GLuint id) : Object(id) {}
 
 
 

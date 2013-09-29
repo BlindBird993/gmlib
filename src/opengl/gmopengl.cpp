@@ -595,7 +595,7 @@ namespace GL {
 
     GLShaderManager::init();
     createStandardRepBOs();
-    createLightBuffer();
+//    createLightBuffer();
   }
 
   bool OGL::unbindFbo(const std::string &name) {

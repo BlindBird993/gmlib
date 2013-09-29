@@ -27,30 +27,19 @@
 using namespace GMlib::GL;
 
 
-GM_GLOBJECT_CPP(RenderbufferObject)
 
 
+RenderbufferObject::RenderbufferObject( bool generate ) : GLObject<RBOInfo>() {
 
+  if( !generate ) return;
 
-RenderbufferObject::RenderbufferObject( bool generate ) : Object() {
-
-  if( generate ) create();
+  RBOInfo info;
+  create(info);
 }
 
-RenderbufferObject::RenderbufferObject(const std::string name) : Object(name) {
+RenderbufferObject::RenderbufferObject(const std::string name) : GLObject<RBOInfo>(name) {}
 
-  createManaged();
-}
-
-RenderbufferObject::RenderbufferObject(const RenderbufferObject &copy) {
-
-  makeCopy(copy);
-}
-
-RenderbufferObject::~RenderbufferObject() {
-
-  destroy();
-}
+RenderbufferObject::~RenderbufferObject() { destroy(); }
 
 
 
@@ -67,7 +56,7 @@ void RenderbufferObject::createStorage(GLenum internal_format, GLsizei width, GL
 GLuint RenderbufferObject::getCurrentBoundId() const {
 
   GLint id;
-  GL_CHECK(glGetIntegerv( GL_RENDERBUFFER_BINDING, &id ));
+  GL_CHECK(::glGetIntegerv( GL_RENDERBUFFER_BINDING, &id ));
   return id;
 }
 
@@ -76,18 +65,17 @@ void RenderbufferObject::doBind(GLuint id) const {
   GL_CHECK(::glBindRenderbuffer( GL_RENDERBUFFER, id ));
 }
 
-GLuint RenderbufferObject::doCreate() const {
+GLuint RenderbufferObject::doGenerate() const {
 
-  return OGL::createRbo();
+  GLuint id;
+  GL_CHECK(::glGenRenderbuffers( 1, &id ));
+
+  std::cout << "  - Generating RBO: " << id << std::endl;
+  return id;
 }
 
-GLuint RenderbufferObject::doCreateManaged() const {
+void RenderbufferObject::doDelete(GLuint id) const {
 
-  OGL::createRbo(getName());
-  return OGL::getRboId(getName());
-}
-
-void RenderbufferObject::doDestroy() const {
-
-  OGL::deleteRbo(getId());
+  std::cout << "  - Deleting RBO: " << id << std::endl;
+//  GL_CHECK(::glDeleteRenderbuffers( 1, &id ));
 }

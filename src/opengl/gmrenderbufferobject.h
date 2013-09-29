@@ -25,15 +25,16 @@
 #define __gmRENDERBUFFEROBJECT_H__
 
 
-#include "gmobject.h"
+#include "gmglobject.h"
 
 
 namespace GMlib {
 
 namespace GL {
 
-  class RenderbufferObject : public Object {
-    GM_GLOBJECT
+  struct RBOInfo : public GLObjectInfo {};
+
+  class RenderbufferObject : public GLObject<RBOInfo> {
   public:
     explicit RenderbufferObject( bool generate = true );
     explicit RenderbufferObject( const std::string name );
@@ -47,10 +48,8 @@ namespace GL {
     virtual GLuint          getCurrentBoundId() const;
     virtual void            doBind( GLuint id ) const;
 
-    virtual GLuint          doCreate() const;
-    virtual void            doDestroy() const;
-
-    virtual GLuint          doCreateManaged() const;
+    virtual GLuint          doGenerate() const;
+    virtual void            doDelete(GLuint id) const;
 
   }; // END class RenderbufferObject
 

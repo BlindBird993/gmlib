@@ -25,29 +25,30 @@
 #define __gmBUFFEROBJECT_H__
 
 
-#include "gmobject.h"
+#include "gmglobject.h"
 
 
 namespace GMlib {
 
 namespace GL {
 
-  class BufferObject : public Object {
-    GM_GLOBJECT
+  struct BOInfo : GLObjectInfo {
+    GLenum    target;
+    GLenum    binding;
+  };
+
+  class BufferObject : public GLObject<BOInfo> {
   public:
-    explicit BufferObject( GLenum target = GL_ARRAY_BUFFER, GLenum binding = GL_ARRAY_BUFFER_BINDING );
+    explicit BufferObject( GLenum target, GLenum binding );
     explicit BufferObject( const std::string name );
     explicit BufferObject(const std::string name, GLenum target , GLenum binding);
-    BufferObject( const BufferObject& copy );
     virtual ~BufferObject();
 
     GLenum                  getBinding() const;
-//    void                    setBinding( GLenum binding = GL_ARRAY_BUFFER_BINDING ) const;
-
     GLenum                  getTarget() const;
-//    void                    setTarget( GLenum target = GL_ARRAY_BUFFER ) const;
 
     void                    createBufferData( GLsizeiptr size, const GLvoid* data, GLenum usage ) const;
+    void                    bufferSubData( GLintptr offset, GLsizeiptr size, const GLvoid* data ) const;
     void                    disableVertexArrayPointer( const GL::AttributeLocation& vert_loc ) const;
     void                    enableVertexArrayPointer( const GL::AttributeLocation& vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const;
 
@@ -55,24 +56,23 @@ namespace GL {
     T*                      mapBuffer( GLenum access = GL_WRITE_ONLY ) const;
     void                    unmapBuffer() const;
 
-    BufferObject&           operator = ( const BufferObject& obj );
-
   private:
-    /* variables "managed" by the backend */
-    mutable GLenum          _target;
-    mutable GLenum          _binding;
-
     /* pure-virtual functions from Object */
     virtual GLuint          getCurrentBoundId() const;
     virtual void            doBind( GLuint id ) const;
-
-    virtual GLuint          doCreate() const;
-    virtual void            doDestroy() const;
-
-    virtual GLuint          doCreateManaged() const;
+    virtual GLuint          doGenerate() const;
+    virtual void            doDelete(GLuint id) const;
 
   }; // END class BufferObject
 
+
+
+
+  inline
+  GLenum BufferObject::getBinding() const { return getInfo().binding; }
+
+  inline
+  GLenum BufferObject::getTarget() const { return getInfo().target; }
 
 
 
@@ -83,23 +83,14 @@ namespace GL {
 
     GLint id = safeBind();
     void *ptr;
-    GL_CHECK(ptr = glMapBuffer( _target, access ));
+    GL_CHECK(ptr = ::glMapBuffer( getTarget(), access ));
     safeUnbind(id);
 
     return static_cast<T*>(ptr);
   }
 
-  inline
-  BufferObject& BufferObject::operator = ( const BufferObject& copy ) {
 
-    Object::operator = (copy);
-    if( isValid() ) {
-      _target = copy._target;
-      _binding = copy._binding;
-    }
 
-    return *this;
-  }
 
 
 } // END namespace GL

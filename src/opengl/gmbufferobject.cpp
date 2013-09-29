@@ -26,37 +26,26 @@
 
 using namespace GMlib::GL;
 
-GM_GLOBJECT_CPP(BufferObject)
 
 
 
+BufferObject::BufferObject(GLenum target , GLenum binding) : GLObject<BOInfo>() {
 
-
-
-
-BufferObject::BufferObject(GLenum target , GLenum binding)
-  :  Object(), _target(target), _binding(binding) {
-
-  create();
+  BOInfo info;
+  info.target   = target;
+  info.binding  = binding;
+  create(info);
 }
 
-BufferObject::BufferObject( const std::string name ) : Object(name), _binding(GL_ARRAY_BUFFER_BINDING) {
+BufferObject::BufferObject( const std::string name ) : GLObject<BOInfo>(name) {}
 
-  createManaged();
-  _target = OGL::getBoTarget(getName());
-}
+BufferObject::BufferObject( const std::string name, GLenum target, GLenum binding ) : GLObject<BOInfo>() {
 
-BufferObject::BufferObject( const std::string name, GLenum target, GLenum binding ) : Object(name), _target(target), _binding(binding) {
-
-  createManaged();
-  _target = OGL::getBoTarget(getName());
-}
-
-BufferObject::BufferObject( const BufferObject& copy ) {
-
-  makeCopy(copy);
-  _target   = copy._target;
-  _binding  = copy._binding;
+  BOInfo info;
+  info.name = name;
+  info.target   = target;
+  info.binding  = binding;
+  create(info);
 }
 
 BufferObject::~BufferObject() { destroy(); }
@@ -72,7 +61,14 @@ BufferObject::~BufferObject() { destroy(); }
 void BufferObject::createBufferData(GLsizeiptr size, const GLvoid *data, GLenum usage) const {
 
   GLint id = safeBind();
-  GL_CHECK(::glBufferData( _target, size, data, usage ));
+  GL_CHECK(::glBufferData( getTarget(), size, data, usage ));
+  safeUnbind(id);
+}
+
+void BufferObject::bufferSubData(GLintptr offset, GLsizeiptr size, const GLvoid* data) const {
+
+  GLint id = safeBind();
+  GL_CHECK(::glBufferSubData( getTarget(), offset, size, data ));
   safeUnbind(id);
 }
 
@@ -83,23 +79,23 @@ void BufferObject::disableVertexArrayPointer( const GL::AttributeLocation& vert_
 
 void BufferObject::doBind(GLuint id) const {
 
-  GL_CHECK(::glBindBuffer( _target, id ));
+  GLenum target = getTarget();
+  GL_CHECK(::glBindBuffer( target, id ));
 }
 
-GLuint BufferObject::doCreate() const {
+GLuint BufferObject::doGenerate() const {
 
-  return OGL::createBo();
+  GLuint id;
+  GL_CHECK(::glGenBuffers( 1, &id ));
+
+  std::cout << "  - Generating BO: " << id << std::endl;
+  return id;
 }
 
-GLuint BufferObject::doCreateManaged() const {
+void BufferObject::doDelete(GLuint id) const {
 
-  OGL::createBo( getName(), _target );
-  return OGL::getBoId(getName());
-}
-
-void BufferObject::doDestroy() const {
-
-  OGL::deleteBo(getId());
+  std::cout << "  - Deleting BO: " << id << std::endl;
+//  GL_CHECK(::glDeleteBuffers( 1, &id ));
 }
 
 void BufferObject::enableVertexArrayPointer( const GL::AttributeLocation& vert_loc, int size, GLenum type, bool normalized, GLsizei stride, const void* offset ) const {
@@ -111,34 +107,13 @@ void BufferObject::enableVertexArrayPointer( const GL::AttributeLocation& vert_l
 GLuint BufferObject::getCurrentBoundId() const {
 
   GLint id;
-  GL_CHECK(::glGetIntegerv( _binding, &id ));
+  GL_CHECK(::glGetIntegerv( getBinding(), &id ));
   return id;
 }
-
-GLenum BufferObject::getBinding() const {
-
-  return _binding;
-}
-
-GLenum BufferObject::getTarget() const {
-
-  return _target;
-}
-
-//void BufferObject::setBinding(GLenum binding) const {
-
-//  _binding = binding;
-//}
-
-//void BufferObject::setTarget( GLenum target ) const {
-
-//  _target = target;
-//  OGL::setBoTarget( _name, _target );
-//}
 
 void BufferObject::unmapBuffer() const {
 
   GLint id = safeBind();
-  GL_CHECK(::glUnmapBuffer( _target ));
+  GL_CHECK(::glUnmapBuffer( getTarget() ));
   safeUnbind(id);
 }

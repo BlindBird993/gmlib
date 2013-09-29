@@ -25,7 +25,7 @@
 #define __gmFRAMEBUFFEROBJECT_H__
 
 
-#include "gmobject.h"
+#include "gmglobject.h"
 #include "gmrenderbufferobject.h"
 #include "gmtexture.h"
 
@@ -34,8 +34,9 @@ namespace GMlib {
 
 namespace GL {
 
-  class FramebufferObject : public Object {
-    GM_GLOBJECT
+  struct FBOInfo : GLObjectInfo {};
+
+  class FramebufferObject : public GLObject<FBOInfo> {
   public:
     explicit FramebufferObject( bool generate = true );
     explicit FramebufferObject( const std::string name );
@@ -70,10 +71,8 @@ namespace GL {
     /* pure virtual functions */
     virtual GLuint          getCurrentBoundId() const;
     virtual void            doBind( GLuint id ) const;
-
-    virtual GLuint          doCreate() const;
-    virtual GLuint          doCreateManaged() const;
-    virtual void            doDestroy() const;
+    virtual GLuint          doGenerate() const;
+    virtual void            doDelete(GLuint id) const;
 
     void                    privateBind( GLenum target, GLuint id ) const;
 
@@ -123,7 +122,7 @@ namespace GL {
 
     static float cc[4];
     GL_CHECK(::glGetFloatv( GL_COLOR_CLEAR_VALUE, cc ));
-    GL_CHECK(glClearColor( c ));
+    glClearColor( c );
 
     GLint id = safeBind();
     GL_CHECK(::glClear( GL_COLOR_BUFFER_BIT ));

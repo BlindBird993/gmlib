@@ -23,7 +23,7 @@
 
 
 /*! \file gmwindow.cpp
- *	\brief Pending Description
+ *  \brief Pending Description
  */
 
 
@@ -43,18 +43,22 @@ namespace GMlib {
 
 
   /*! GMWindow::GMWindow()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
-  GMWindow::GMWindow(bool init_default_cam) {
+  GMWindow::GMWindow(bool init_default_cam)
+    : _lights_ubo("lights_ubo"),
+      _std_rep_cube("std_rep_cube"),
+      _std_rep_cube_indices("std_rep_cube_indices"),
+      _std_rep_frame_indices("std_rep_frame_indices") {
 
-    _stereo	= false;
-    _running = false;
-    _isbig	 = false;
-    _target  = NULL;
-    _sun	 = NULL;
-    _move	 = 0.0;
+    _stereo     = false;
+    _running    = false;
+    _isbig      = false;
+    _target     = NULL;
+    _sun        = NULL;
+    _move       = 0.0;
     _active_cam = 0;
     stop();
 
@@ -74,9 +78,9 @@ namespace GMlib {
 
 
   /*! GMWindow::GMWindow(const GMWindow&)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   GMWindow::GMWindow( const GMWindow& gw ) : Scene() {
 
@@ -85,9 +89,9 @@ namespace GMlib {
 
 
   /*! GMWindow::~GMWindow()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   GMWindow::~GMWindow() {
 
@@ -120,9 +124,9 @@ namespace GMlib {
 
 
   /*! void GMWindow::setViewSet(int new_c, int old_c, bool split_vertically, double d)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void GMWindow::addToViewSet(int cam_idx, int split_cam_idx, bool split_vertically, double d) {
 
@@ -206,22 +210,22 @@ namespace GMlib {
   }
 
   /*! void GMWindow::insertCamera(Camera* cam, bool insert_in_scene)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void GMWindow::insertCamera(Camera* cam, bool insert_in_scene) {
 
     cam->setScene(this);
     _cameras += cam;
-    if(insert_in_scene)	insert(cam);
+    if(insert_in_scene)  insert(cam);
   }
 
 
   /*! void GMWindow::insertLight(Light* light, bool insert_in_scene)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void GMWindow::insertLight(Light* light, bool insert_in_scene) {
 
@@ -237,9 +241,9 @@ namespace GMlib {
 
 
   /*! void GMWindow::popViewSet(int i)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void GMWindow::popView(int cam_idx) {
 
@@ -255,9 +259,9 @@ namespace GMlib {
 
 
   /*! bool GMWindow::removeCamera(Camera *)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   bool GMWindow::removeCamera(Camera * cam) {
 
@@ -279,9 +283,9 @@ namespace GMlib {
 
 
   /*! bool GMWindow::removeLight(Light* light)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   bool GMWindow::removeLight(Light* light) {
 
@@ -304,9 +308,9 @@ namespace GMlib {
 
 
   /*! void GMWindow::scaleDayLight(double)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void GMWindow::scaleDayLight(double d) {
 
@@ -330,9 +334,9 @@ namespace GMlib {
 
 
   /*! bool GMWindow::toggleStereo()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   bool GMWindow::toggleStereo() {
 
@@ -465,7 +469,12 @@ namespace GMlib {
 //    std::reverse( lights.begin(), lights.end() );
 //    std::reverse( light_ids.begin(), light_ids.end() );
 
-    GL::OGL::resetLightBuffer( header, light_ids, lights );
+//    GL::OGL::resetLightBuffer( header, light_ids, lights );
+
+    _lights_ubo.createBufferData( sizeof(GL::GLVector<4,GLuint>) + lights.size() * sizeof(GL::GLLight),
+                                  0x0, GL_DYNAMIC_DRAW );
+    _lights_ubo.bufferSubData( 0, sizeof(GL::GLVector<4,GLuint>), &header );
+    _lights_ubo.bufferSubData( sizeof(GL::GLVector<4,GLuint>), sizeof(GL::GLLight) * lights.size(), &lights[0] );
 
     std::cout << "Updating light UBO!" << std::endl;
     std::cout << "  - Sun(s):             " << header.p[0] << std::endl;
@@ -474,6 +483,61 @@ namespace GMlib {
     std::cout << "  --------------------" << std::endl;
     std::cout << "  - Total nr of Lights: "<< header.p[3] << std::endl;
 
+  }
+
+  void GMWindow::initStdGeometry() {
+
+    float ir = 0.07;
+
+    // Vertices
+    GLfloat cube[] = {
+
+    /* 0 */     -ir,    -ir,    -ir,      // Back/Left/Down
+    /* 1 */      ir,    -ir,    -ir,
+    /* 2 */      ir,     ir,    -ir,
+    /* 3 */     -ir,     ir,    -ir,
+    /* 4 */     -ir,    -ir,     ir,      // Front/Left/Down
+    /* 5 */      ir,    -ir,     ir,
+    /* 6 */      ir,     ir,     ir,
+    /* 7 */     -ir,     ir,     ir
+    };
+
+    // Indice Coords
+    GLushort cube_indices[] = {
+
+      4,  5,  6,  7,    // Front
+      1,  2,  6,  5,    // Right
+      0,  1,  5,  4,    // Bottom
+      0,  3,  2,  1,    // Back
+      0,  4,  7,  3,    // Left
+      2,  3,  7,  6     // Top
+    };
+
+    // Frame indice coords
+    GLushort frame_indices [] = {
+
+      0,  1,    // x-axis
+      0,  3,    // y-axis
+      0,  4,    // z-axis
+
+      // Remaining frame
+      2,  3,
+      2,  1,
+      2,  6,
+
+      7,  6,
+      7,  4,
+      7,  3,
+
+      5,  4,
+      5,  6,
+      5,  1
+
+    };
+
+    _std_rep_cube.createBufferData( 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
+    _std_rep_cube_indices.createBufferData( 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
+    _std_rep_frame_indices.createBufferData( 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
   }
 
   SceneObject *GMWindow::findSelectObject(Camera *cam, const Vector<int,2> &pos, int type_id) const {
@@ -490,24 +554,24 @@ namespace GMlib {
 
 
   /*! GMWindow& GMWindow::operator=(const GMWindow& gw)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   GMWindow& GMWindow::operator=(const GMWindow& gw) {
 
     Scene::operator=(gw);
-    _cameras	= gw._cameras;
-    _lights	= gw._lights;
-    _sun	= gw._sun;
+    _cameras  = gw._cameras;
+    _lights  = gw._lights;
+    _sun  = gw._sun;
     for(int i=0; i<_cameras.getSize(); i++)
       _cameras[i]->setScene(this);
 
-    _stereo	= false;
+    _stereo  = false;
     _running = false;
-    _isbig	 = false;
+    _isbig   = false;
     _sel_objs.clear();
-    _view_set_stack = gw._view_set_stack;				// Active camera set
+    _view_set_stack = gw._view_set_stack;        // Active camera set
     reshape(_w,_h);
     return *this;
   }
@@ -518,24 +582,27 @@ namespace GMlib {
   #define GL_MULTISAMPLE  0x809D
   #endif
   /*! void GMWindow::init()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void GMWindow::init() {
 
 //    cout << "GMWindow::init()" << endl;
+
+    initStdGeometry();
+
 
     if(_sun)
       _sun->scaleDayLight(1.0);
     insertCamera(new Camera(Point<float,3>(10,10,5),Point<float,3>(-10,-10,-5),Vector<float,3>(0,0,-1)));
     _view_set_stack += ViewSet(_cameras[0]);
     _view_set_stack.back().prepare(_w,_h);
-    int numberoflights;
-    glGetIntegerv(GL_MAX_LIGHTS,&numberoflights);
-    char s[32];
-    std::sprintf( s, "Max number of lights %d\n", numberoflights );
-    message(s);
+//    int numberoflights;
+//    glGetIntegerv(GL_MAX_LIGHTS,&numberoflights);
+//    char s[32];
+//    std::sprintf( s, "Max number of lights %d\n", numberoflights );
+//    message(s);
     //char *extensions = NULL;
       //extensions = (char *)glGetString(GL_EXTENSIONS);
       //_message(extensions);
@@ -543,9 +610,9 @@ namespace GMlib {
 
 
   /*! bool GMWindow::toggleRun()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   bool GMWindow::toggleRun() {
 

@@ -46,6 +46,11 @@
 #include "..//light/gmspotlight.h"
 #include "..//light/gmpointlight.h"
 
+// gmlib
+#include <opengl/bufferobjects/gmuniformbufferobject.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmindexbufferobject.h>
+
 // stl
 #include <iostream>
 
@@ -113,7 +118,7 @@ namespace GMlib {
     bool                    isStereoEnabled() const;
     bool                    toggleStereo();
 
-    RenderManager*           getRenderManager() const;
+    RenderManager*          getRenderManager() const;
 
 
     GMWindow&               operator=(const GMWindow& gw);
@@ -126,24 +131,24 @@ namespace GMlib {
 
 
   protected:
-    RenderManager         *_rm;
+    RenderManager*          _rm;
 
     // Cameras light and sun
-    Array<Camera*>	        _cameras;
-    Array<Light*>	          _lights;
-    Sun*			              _sun;
+    Array<Camera*>          _cameras;
+    Array<Light*>           _lights;
+    Sun*                    _sun;
 
     // Viewport size
-    int				              _w;
-    int                     _h;					// GMWindow size in viewport coordinates.
+    int                     _w;
+    int                     _h;          // GMWindow size in viewport coordinates.
 
 
     Array<ViewSet>          _view_set_stack;  /// Active camera set
 
     // index of active camera, old/previous x and y mouse positions
-    int				              _active_cam;
+    int                     _active_cam;
 
-    double					        _move;
+    double                  _move;
 
 
     bool                    find(int x, int y, int& index);
@@ -158,15 +163,22 @@ namespace GMlib {
     void                    updateMaxObjects(int no_objects);
 
   private:
-    bool			              _stereo;
+    bool                    _stereo;
 
-    SceneObject*	          _target;		/// NB!!!! take a look at this variable not used proper today.....
-    bool			              _running;		/// Used to stor the state of simulation while mouse/keboard temporary turn off simulation
-    bool			              _isbig;			/// State of one window functionality have been used (see _mouseDoubleClick on right knob)
+    SceneObject*            _target;    /// NB!!!! take a look at this variable not used proper today.....
+    bool                    _running;    /// Used to stor the state of simulation while mouse/keboard temporary turn off simulation
+    bool                    _isbig;      /// State of one window functionality have been used (see _mouseDoubleClick on right knob)
 
 
 
-    void            updateLightUBO();
+    GL::UniformBufferObject   _lights_ubo;
+    void                    updateLightUBO();
+
+
+    GL::VertexBufferObject  _std_rep_cube;
+    GL::IndexBufferObject   _std_rep_cube_indices;
+    GL::IndexBufferObject   _std_rep_frame_indices;
+    void                    initStdGeometry();
 
   public:
 
@@ -257,9 +269,9 @@ namespace GMlib {
 
 
   /*! void GMWindow::insertSun()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::insertSun() {
@@ -277,9 +289,9 @@ namespace GMlib {
 
 
   /*! bool GMWindow::isStereoEnabled()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool GMWindow::isStereoEnabled() const {
@@ -295,9 +307,9 @@ namespace GMlib {
   }
 
   /*! void GMWindow::removeSun()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::removeSun() {
@@ -313,9 +325,9 @@ namespace GMlib {
 
 
   /*! void GMWindow::reset()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::reset() {
@@ -325,9 +337,9 @@ namespace GMlib {
 
 
   /*! void GMWindow::setSunDirection(Angle d)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::setSunDirection(Angle d) {
@@ -337,9 +349,9 @@ namespace GMlib {
   }
 
   /*! void GMWindow::display(void)
-   *	\brief	Pending Documentation
+   *  \brief  Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::render() {
@@ -373,9 +385,9 @@ namespace GMlib {
 
 
   /*! void GMWindow::reshape(int w, int h)
-   *	\brief	Pending Documentation
+   *  \brief  Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::reshape(int w, int h) {
@@ -394,41 +406,41 @@ namespace GMlib {
 
 
   /*! void GMWindow::message( const std::string& str)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::message( const std::string& /* str */ ) {}
 
 
   /*! void GMWindow::message( SceneObject* d)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::message( SceneObject* /* obj */ ) {}
 
 
   /*! void GMWindow::message( Point<float,3>& p)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::message( Point<float,3>& /* p */ ) {}
 
 
   /*! bool GMWindow::find(int x, int y, int& index)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool GMWindow::find(int x, int y, int& index) {
 
-    if(x<0 || x>_w || y<0 || y>_h)		// Outside window
+    if(x<0 || x>_w || y<0 || y>_h)    // Outside window
     {
       index = 0;
       _view_set_stack.back().reset();
@@ -436,12 +448,12 @@ namespace GMlib {
     }
 
     Camera* cam;
-    if(_view_set_stack.back().find(x,y,cam))		// Camera found
+    if(_view_set_stack.back().find(x,y,cam))    // Camera found
     {
       index = _cameras.index(cam);
       return true;
     }
-    else								// border found
+    else                // border found
     {
       index = -1;
       return false;
@@ -450,9 +462,9 @@ namespace GMlib {
 
 
   /*! void GMWindow::moveBorder(int x, int y)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void GMWindow::moveBorder(int x, int y) {

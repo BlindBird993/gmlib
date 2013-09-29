@@ -25,21 +25,24 @@
 #define __gm_OPENGL_TEXTURE_H__
 
 
-#include "gmobject.h"
+#include "gmglobject.h"
 
 
 namespace GMlib {
 
 namespace GL {
 
-  class Texture : public Object {
-    GM_GLOBJECT
+  struct TextureInfo : GLObjectInfo {
+    GLenum    target;
+  };
+
+
+  class Texture : public GLObject<TextureInfo> {
   public:
     explicit Texture();
-    explicit Texture( GLenum target, bool generate = true );
+    explicit Texture( GLenum target );
     explicit Texture( const std::string name );
     explicit Texture( const std::string name, GLenum target );
-    Texture( const Texture& copy );
     ~Texture();
 
     GLenum                  getTarget() const;
@@ -57,36 +60,21 @@ namespace GL {
     void                    setParameterf(GLenum pname, GLfloat param );
     void                    setParameteri(GLenum pname, GLint param );
 
-    Texture&                operator = ( const Texture& tex );
-
 
   private:
-    /* variables "managed" by the backend */
-    mutable GLenum          _target;
 
     /* pure-virtual functions from Object */
     virtual GLuint          getCurrentBoundId() const;
     virtual void            doBind( GLuint id ) const;
 
-    virtual GLuint          doCreate() const;
-    virtual void            doDestroy() const;
-
-    virtual GLuint          doCreateManaged() const;
+    virtual GLuint          doGenerate() const;
+    virtual void            doDelete(GLuint id) const;
 
 
   }; // END class Texture
 
   inline
-  GLenum Texture::getTarget() const { return _target; }
-
-  inline
-  Texture& Texture::operator = ( const Texture& copy ) {
-
-    Object::operator = ( copy );
-    if( isValid() ) _target = copy._target;
-
-    return *this;
-  }
+  GLenum Texture::getTarget() const { return getInfo().target; }
 
 
 } // END namespace GL

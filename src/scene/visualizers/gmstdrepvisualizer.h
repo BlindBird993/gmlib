@@ -35,7 +35,8 @@
 
 // gmlib
 #include <core/utils/gmcolor.h>
-#include <opengl/gmbufferobject.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmindexbufferobject.h>
 
 
 namespace GMlib {
@@ -60,9 +61,9 @@ namespace GMlib {
   private:
 
     // Cube buffer objects
-    GL::BufferObject    _bo_cube;
-    GL::BufferObject    _bo_cube_indices;
-    GL::BufferObject    _bo_cube_frame_indices;
+    GL::VertexBufferObject   _bo_cube;
+    GL::IndexBufferObject    _bo_cube_indices;
+    GL::IndexBufferObject    _bo_cube_frame_indices;
 
     static VisualizerStdRep*    _s_instance;
 
