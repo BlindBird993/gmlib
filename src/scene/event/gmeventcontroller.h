@@ -56,11 +56,13 @@ namespace GMlib {
 
     bool getEvents(Array<Event*>& events, double dt);
     bool handleEvent(Array<Event*>& events, Event* event);
+    void finalize();
 
   private:
     virtual bool detectEvents(Array<Event*>& events, double dt) = 0;
     virtual bool detectEvents(Array<Event*>& events, Event* event) = 0;
     virtual bool doUpdate(Event* event);
+    virtual void doFinalize();
   };
 
 }

@@ -30,8 +30,22 @@ EventController::handleEvent(Array<Event*>& events, Event* event) {
   return did_update;
 }
 
+/*!
+ * \brief EventController::finalize
+ *
+ *  Finalizes the simulation frame.
+ *  Is run once after all events of a frame has been handled
+ */
+void EventController::finalize() {
+
+  doFinalize();
+}
+
 bool
 EventController::doUpdate(Event* event) {
   //- Default does nothing
   return false;
 }
+
+void
+EventController::doFinalize() {}

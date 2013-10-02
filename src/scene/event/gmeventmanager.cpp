@@ -27,7 +27,7 @@ EventManager::~EventManager() {
  *      b. Controllers may add new events due to the handling
  *      c. Sort events
  *      d. Remove duplicates
- *
+ *    5. Call finalize to handle the "rest" of the simulation step
  */
 bool
 EventManager::processEvents(double dt) {
@@ -50,6 +50,11 @@ EventManager::processEvents(double dt) {
     sortEvents();
     removeDuplicateEvents();
   }
+
+  for (int i=0; i < _event_controllers.size(); i++) {
+    _event_controllers[i]->finalize();
+  }
+
 
   return any_handled;
 }
