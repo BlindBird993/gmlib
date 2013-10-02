@@ -23,3 +23,4 @@
 
 
 addTest(gmarray_tests)
+addTest(dvectorn_tests)

@@ -262,21 +262,21 @@ namespace GMlib {
   }
 
   template <typename T, int n, class K>
-  void DVectorN<T,n,K>::setDim( const Vector<int,n>& i ) {
+  void DVectorN<T,n,K>::setDim( const Vector<int,n>& dims ) {
 
-    if( i(n-1) != _n ) {
+    if( dims(0) != _n ) {
 
-      if(this->_pt) delete []this->_pt;
+      if( this->_pt ) delete []this->_pt;
 
-      _n  = i(n-1);
+      _n = dims(0);
 
-      if(_n > 0 ) this->_pt = new DVectorN<T,n-1>[_n];
-      else        this->_pt = 0x0;
+      if(_n>0) this->_pt = new DVectorN<T,n-1>[_n];
+      else     this->_pt = 0x0;
     }
 
-    Vector<int,n-1> ii;
-    for( int j = (n-2);  j >= 0; j-- ) ii[j] = i(j);
-    for( int j = (_n-1); j >= 0; j-- ) this->_pt[j].setDim(ii);
+    Vector<int,n-1> sub_dims;
+    for( int i = 0; i < n-1; ++i ) sub_dims[i] = dims(i+1);
+    for( int i = 0; i < _n; ++i )  this->_pt[i].setDim(sub_dims);
   }
 
   template <typename T, int n, class K>
