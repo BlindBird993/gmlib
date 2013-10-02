@@ -62,6 +62,8 @@ namespace GMlib {
   inline
   void PCylinder<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
+    this->_p.setDim( d1+1, d2+1 );
+
     this->_p[0][0][0] =		_rx * sin( v );
     this->_p[0][0][1] =		_ry * cos( v );
     this->_p[0][0][2] =		_h * u;

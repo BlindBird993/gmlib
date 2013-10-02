@@ -70,6 +70,8 @@ namespace GMlib {
   template <typename T>
   void PPlane<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
+    this->_p.setDim( d1+1, d2+1 );
+
     this->_p[0][0] = _pt + u*_u + v*_v ;
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {

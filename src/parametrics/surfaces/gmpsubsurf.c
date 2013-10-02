@@ -108,10 +108,11 @@ namespace GMlib {
   //******************************
 
   template <typename T>
-  void PSubSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/)
-  {
-    DMatrix< Vector<T,3> > p = _s->evaluateParent(S(u,v), d1+1);
+  void PSubSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/) {
+
     this->_p.setDim(3,3);
+
+    DMatrix< Vector<T,3> > p = _s->evaluateParent(S(u,v), d1+1);
     this->_p[0][0] = p[0][0] - _trans;
 
     if(d1 || d2)
