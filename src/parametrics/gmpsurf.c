@@ -33,6 +33,7 @@
 
 
 // stl
+#include <cmath>
 #include <sstream>
 #include <iomanip>
 
