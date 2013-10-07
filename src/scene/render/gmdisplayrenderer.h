@@ -91,7 +91,7 @@ namespace GMlib {
     GLuint                    _vbo_quad_tex;
 
     void                    render(const DisplayObject *obj, const Camera *cam) const;
-    void                    renderGeometry(const DisplayObject *obj, const Camera *cam) const;
+    void                    renderSelectedGeometry(const DisplayObject *obj, const Camera *cam) const;
     void                    renderCoordSys(const Camera *cam ) const;
 //    void                    renderGeometry(const DisplayObject *obj, const Camera *cam) const;
 
@@ -146,7 +146,7 @@ namespace GMlib {
   }
 
   inline
-  void DisplayRenderer::renderGeometry( const DisplayObject* obj, const Camera* cam ) const {
+  void DisplayRenderer::renderSelectedGeometry( const DisplayObject* obj, const Camera* cam ) const {
 
     if( obj != cam && obj->isSelected()  ) {
 
@@ -344,7 +344,7 @@ namespace GMlib {
         ::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
         for( int j = 0; j < objs.getSize(); ++j )
-          renderGeometry( objs[j], cam);
+          renderSelectedGeometry( objs[j], cam);
 
       } _fbo_select_depth.unbind();
 
@@ -361,7 +361,7 @@ namespace GMlib {
         ::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
         for( int j = 0; j < objs.getSize(); ++j )
-          renderGeometry( objs[j], cam );
+          renderSelectedGeometry( objs[j], cam );
 
         ::glDepthFunc( depth_func );
         ::glDepthMask( depth_mask );
