@@ -50,12 +50,10 @@ namespace GMlib {
 
     Color c;
     _fbo.bind();
-    glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
+    GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
     _fbo.unbind();
 
     DisplayObject *obj = dynamic_cast<DisplayObject*>(_scene->find(c.get()));
-//    if( obj )
-//      obj->setSelected(true);
 
     return obj;
   }
@@ -68,7 +66,7 @@ namespace GMlib {
 
     Color* pixels = new Color[dx*dy];
     _fbo.bind();
-    glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
+    GL_CHECK(::glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels));
     _fbo.unbind();
 
     int ct = 0;
@@ -78,7 +76,7 @@ namespace GMlib {
         c = pixels[ct++];
         DisplayObject *tmp = dynamic_cast<DisplayObject*>(_scene->find(c.get()));
         if(tmp)
-          if(!tmp->isSelected()) { sel.insertAlways(tmp); /*tmp->setSelected(true);*/ }
+          if(!tmp->isSelected()) { sel.insertAlways(tmp); }
       }
     }
     delete [] pixels;

@@ -118,10 +118,10 @@ namespace GMlib {
 
     // Render selection
     GLboolean depth_test_state;
-    glGetBooleanv( GL_DEPTH_TEST, &depth_test_state );
-    glEnable( GL_DEPTH_TEST );
+    GL_CHECK(::glGetBooleanv( GL_DEPTH_TEST, &depth_test_state ));
+    GL_CHECK(::glEnable( GL_DEPTH_TEST ));
 
-    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+    GL_CHECK(::glPolygonMode(GL_FRONT_AND_BACK,GL_FILL));
 
     _fbo.bind(); {
 
@@ -131,8 +131,7 @@ namespace GMlib {
     }  _fbo.unbind();
 
     if( !depth_test_state )
-      glDisable( GL_DEPTH_TEST );
-
+      GL_CHECK(::glDisable( GL_DEPTH_TEST ));
   }
 
 
