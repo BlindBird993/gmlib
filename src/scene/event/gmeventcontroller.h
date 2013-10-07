@@ -38,13 +38,11 @@ namespace GMlib {
    *  Provides an interface to detect and control Events that can happen
    *  to SceneObjects during a time step dt.
    *
-   *  Inherited classes need to implement functions which detects:
+   *  Inherited classes need to implement functions which detects
    *    1. Events within a given dt (first pass)
    *    2. Any events following after handling of a specific event
    *       within that dt (second pass)
-   *    NB! Use insertAlways on the provided Array<Event>&
-   *        for performance reasons. (See EventManager::processEvents().
-   *        It removes duplicates after insert).
+   *    NB! When storing events in Array, use insertAlways for performance reasons.
    *
    *  Optionally, inherited classes can store customized information
    *  and perform updates based on events.
@@ -54,15 +52,58 @@ namespace GMlib {
   public:
     EventController();
 
-    bool getEvents(Array<Event*>& events, double dt);
-    bool handleEvent(Array<Event*>& events, Event* event);
-    void finalize();
+    double  getFirstEventX() const;
+
+    bool    detectEvents( double dt );
+    void    handleFirstEvent();
+    void    finalize();
 
   private:
-    virtual bool detectEvents(Array<Event*>& events, double dt) = 0;
-    virtual bool detectEvents(Array<Event*>& events, Event* event) = 0;
-    virtual bool doUpdate(Event* event);
-    virtual void doFinalize();
+    /*!
+     *  \brief void clear()
+     *
+     *  Clears remaining events before event detection is initialized.
+     */
+    virtual void    clear() = 0;
+
+    /*!
+     *  \brief bool detect( double dt )
+     *  \return Whether any events where detected.
+     *
+     *  Detects events within a given dt.
+     *  This is the first pass of event detection.
+     *  It is also where the controller gets <i>dt</i>.
+     */
+    virtual bool    detect( double dt ) = 0;
+
+    /*!
+     *  \brief void handleFirst()
+     *
+     *  This function is to handle the first event in the controller
+     *  and only the first event, then pop it.
+     *  Depending on the type and purpose of the controller this function might
+     *  invalidate, detect new or remove events as a direct cause of handlig the first event.
+     *  It should also sort the remaining events.
+     */
+    virtual void    handleFirst() = 0;
+
+    /*!
+     *  \brief void doFinalize()
+     *
+     *  This function is called after all events have been handled.
+     */
+    virtual void    doFinalize() {}
+
+    /*!
+     *  \brief double getFirstX() const
+     *  \return The X of the first event.
+     *
+     *  Returns the X (time of the events relative to the dt)
+     *  of the first event in the controller.
+     *  If the controller has no events it should return 0.0,
+     *  as an event is only valid on (0.0, x]
+     */
+    virtual double  getFirstX() const = 0;
   };
 
 }

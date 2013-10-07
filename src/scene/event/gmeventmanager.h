@@ -43,16 +43,12 @@ namespace GMlib {
     EventManager();
     ~EventManager();
 
-    bool processEvents(double dt);
-    bool registerController(EventController* controller);
+    void    processEvents(double dt);
+    bool    registerController(EventController* controller);
 
   private:
-    void   clearEvents();
-    Event* firstEvent();
-    void   removeDuplicateEvents();
-    void   sortEvents();
+    bool    handleFirstEvent();
 
-    Array<Event*>           _events;
     Array<EventController*> _event_controllers;
   };
 
