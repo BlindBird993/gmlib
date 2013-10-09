@@ -187,7 +187,11 @@ namespace GL {
   }
 
   template <typename T>
-  GLObject<T>::GLObject(const GLObject& other) : GMutils::DerivedFrom<T,GLObjectInfo>() { copy(other); }
+  GLObject<T>::GLObject(const GLObject& other)
+    : GMutils::DerivedFrom<T,GLObjectInfo>() {
+
+    copy(other);
+  }
 
   template <typename T>
   GLObject<T>::GLObject(GLuint id) : _id( _objs.count(id) ? id : 0 ) {
@@ -259,7 +263,7 @@ namespace GL {
   template <typename T>
   bool GLObject<T>::isValid() const {
 
-    return _id ? _objs.count(_id) : false;
+    return _id;
   }
 
   template <typename T>
