@@ -4,6 +4,10 @@
 
 #include "../gmrendertarget.h"
 
+// gmlib
+#include <opengl/gmframebufferobject.h>
+#include <opengl/gmtexture.h>
+
 namespace GMlib {
 
 class RenderTexture : public RenderTarget {

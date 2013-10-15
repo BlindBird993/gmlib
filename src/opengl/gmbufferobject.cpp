@@ -27,6 +27,8 @@
 using namespace GMlib::GL;
 
 
+template <>
+typename GLObject<BOInfo>::GLObjectDataPrivate GLObject<BOInfo>::_objs = GLObject<BOInfo>::GLObjectDataPrivate();
 
 
 BufferObject::BufferObject(GLenum target , GLenum binding) : GLObject<BOInfo>() {

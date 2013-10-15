@@ -46,6 +46,7 @@ Visualizer::Visualizer( const Visualizer& copy )
   : _display_mode(copy._display_mode),
     _render_prog(copy._render_prog) {}
 
+Visualizer::~Visualizer() {}
 
 void Visualizer::render( const DisplayObject* obj, const Camera* cam ) const {
   GM_UNUSED(obj)

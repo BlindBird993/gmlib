@@ -27,6 +27,9 @@
 using namespace GMlib::GL;
 
 
+template <>
+typename GLObject<FBOInfo>::GLObjectDataPrivate GLObject<FBOInfo>::_objs = GLObject<FBOInfo>::GLObjectDataPrivate();
+
 
 FramebufferObject::FramebufferObject(bool generate) : GLObject<FBOInfo>() {
 
@@ -36,7 +39,14 @@ FramebufferObject::FramebufferObject(bool generate) : GLObject<FBOInfo>() {
   create(info);
 }
 
-FramebufferObject::FramebufferObject(const std::string name) : GLObject<FBOInfo>(name) {}
+FramebufferObject::FramebufferObject(const std::string name, bool generate)
+  : GLObject<FBOInfo>(name) {
+
+  if( !generate ) return;
+
+  FBOInfo info;
+  create(info);
+}
 
 FramebufferObject::~FramebufferObject() { destroy(); }
 

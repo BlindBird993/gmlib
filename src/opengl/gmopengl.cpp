@@ -31,6 +31,7 @@
 #include "gmopengl.h"
 
 #include "glsl/gmglshadermanager.h"
+#include "gmtexture.h"
 
 // stl
 #include <cassert>
@@ -59,6 +60,7 @@ namespace GL {
     std::cout << std::flush;
 
     GLShaderManager::init();
+
   }
 
 } // END namespace GL

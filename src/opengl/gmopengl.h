@@ -178,7 +178,7 @@ namespace GL {
     explicit GLuintType( GLuint uint_data ) : data(uint_data) {}
 
     const GLuint& operator() () const { return data; }
-    const GLuintType& operator = ( const GLuint& data_in ) { data = data_in; }
+    const GLuintType& operator = ( const GLuint& data_in ) { data = data_in; return *this; }
 
     GLuint data;
   };

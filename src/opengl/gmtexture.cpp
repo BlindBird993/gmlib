@@ -27,6 +27,8 @@
 using namespace GMlib::GL;
 
 
+template <>
+typename GLObject<TextureInfo>::GLObjectDataPrivate GLObject<TextureInfo>::_objs = GLObject<TextureInfo>::GLObjectDataPrivate();
 
 Texture::Texture() : GLObject<TextureInfo>() {}
 
@@ -56,8 +58,7 @@ Texture::~Texture() { destroy(); }
 GLuint Texture::doGenerate() const {
 
   GLuint id;
-  GL_CHECK(::glGenTextures( 1, &id) );
-
+  GL_CHECK(::glGenTextures( 1, &id));
   return id;
 }
 

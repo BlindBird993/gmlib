@@ -27,6 +27,9 @@
 using namespace GMlib::GL;
 
 
+template <>
+typename GLObject<RBOInfo>::GLObjectDataPrivate GLObject<RBOInfo>::_objs = GLObject<RBOInfo>::GLObjectDataPrivate();
+
 
 
 RenderbufferObject::RenderbufferObject( bool generate ) : GLObject<RBOInfo>() {
@@ -37,7 +40,14 @@ RenderbufferObject::RenderbufferObject( bool generate ) : GLObject<RBOInfo>() {
   create(info);
 }
 
-RenderbufferObject::RenderbufferObject(const std::string name) : GLObject<RBOInfo>(name) {}
+RenderbufferObject::RenderbufferObject(const std::string name, bool generate)
+  : GLObject<RBOInfo>(name) {
+
+  if( !generate ) return;
+
+  RBOInfo info;
+  create(info);
+}
 
 RenderbufferObject::~RenderbufferObject() { destroy(); }
 

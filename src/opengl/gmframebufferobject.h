@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gmFRAMEBUFFEROBJECT_H__
-#define __gmFRAMEBUFFEROBJECT_H__
+#ifndef __gm_OPENGL_FRAMEBUFFEROBJECT_H__
+#define __gm_OPENGL_FRAMEBUFFEROBJECT_H__
 
 
 #include "gmglobject.h"
@@ -39,8 +39,7 @@ namespace GL {
   class FramebufferObject : public GLObject<FBOInfo> {
   public:
     explicit FramebufferObject( bool generate = true );
-    explicit FramebufferObject( const std::string name );
-    FramebufferObject( const FramebufferObject& copy );
+    explicit FramebufferObject( const std::string name, bool generate = false );
     ~FramebufferObject();
 
     void                    bindRead() const;
@@ -82,7 +81,7 @@ namespace GL {
   inline
   void FramebufferObject::privateBind( GLenum target, GLuint id ) const {
 
-    GL_CHECK(glBindFramebuffer( target, id ));
+    GL_CHECK(::glBindFramebuffer( target, id ));
   }
 
   inline
@@ -137,4 +136,4 @@ namespace GL {
 } // END namespace GMlib
 
 
-#endif // __gmFRAMEBUFFEROBJECT_H__
+#endif // __gm_OPENGL_FRAMEBUFFEROBJECT_H__

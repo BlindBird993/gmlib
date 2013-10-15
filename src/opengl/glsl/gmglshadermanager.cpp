@@ -1141,18 +1141,18 @@ namespace GL {
 
     _info_log.clear();
     if( program )
-      GL_CHECK(glGetProgramiv( id, GL_INFO_LOG_LENGTH, &len ));
+      GL_CHECK(::glGetProgramiv( id, GL_INFO_LOG_LENGTH, &len ));
     else
-      GL_CHECK(glGetShaderiv( id, GL_INFO_LOG_LENGTH, &len ));
+      GL_CHECK(::glGetShaderiv( id, GL_INFO_LOG_LENGTH, &len ));
 
     if( len > 0 ) {
 
       len = len+1;
       log = new char[len];
       if( program )
-        GL_CHECK(glGetProgramInfoLog( id, len, &written, log ));
+        GL_CHECK(::glGetProgramInfoLog( id, len, &written, log ));
       else
-        GL_CHECK(glGetShaderInfoLog( id, len, &written, log ));
+        GL_CHECK(::glGetShaderInfoLog( id, len, &written, log ));
 
       _info_log.append( log, len );
       delete log;
@@ -1176,7 +1176,7 @@ namespace GL {
     }
 
     _program_shader[prog_name].insert( shader_name );
-    GL_CHECK(glAttachShader( _programs[prog_name].id, _shaders[shader_name].id ));
+    GL_CHECK(::glAttachShader( _programs[prog_name].id, _shaders[shader_name].id ));
     return true;
   }
 
@@ -1188,18 +1188,18 @@ namespace GL {
 
       std::set< std::string >::iterator itr2;
       for( itr2 = (*itr).second.begin(); itr2 != (*itr).second.end(); itr2++ )
-        GL_CHECK(glDetachShader( _programs[(*itr).first].id, _shaders[(*itr2)].id ));
+        GL_CHECK(::glDetachShader( _programs[(*itr).first].id, _shaders[(*itr2)].id ));
     }
 
     // Delete shaders
     std::map< std::string, ShaderInfo>::iterator itr3;
     for( itr3 = _shaders.begin(); itr3 != _shaders.end(); itr3++ )
-      GL_CHECK(glDeleteShader( (*itr3).second.id ));
+      GL_CHECK(::glDeleteShader( (*itr3).second.id ));
 
     // Delete programs
     std::map< std::string, ProgramInfo>::iterator itr4;
     for( itr4 = _programs.begin(); itr4 != _programs.end(); itr4++ )
-      GL_CHECK(glDeleteProgram( (*itr4).second.id ));
+      GL_CHECK(::glDeleteProgram( (*itr4).second.id ));
   }
 
   bool GLShaderManager::compileShader( const std::string &name ) {
@@ -1212,10 +1212,10 @@ namespace GL {
     if( !_shaderExists( name, true ) )
       return false;
 
-    GL_CHECK(glCompileShader( _shaders[name].id ));
+    GL_CHECK(::glCompileShader( _shaders[name].id ));
 
     int param;
-    GL_CHECK(glGetShaderiv( _shaders[name].id, GL_COMPILE_STATUS, &param ));
+    GL_CHECK(::glGetShaderiv( _shaders[name].id, GL_COMPILE_STATUS, &param ));
 
     _updateInfoLog( false, _shaders[name].id );
 
@@ -1233,7 +1233,7 @@ namespace GL {
       return false;
 
     ProgramInfo prog;
-    GL_CHECK(prog.id = glCreateProgram());
+    GL_CHECK(prog.id = ::glCreateProgram());
 
     _programs[name] = prog;
 
@@ -1257,7 +1257,7 @@ namespace GL {
     }
 
     ShaderInfo shader;
-    GL_CHECK(shader.id = glCreateShader( type ));
+    GL_CHECK(shader.id = ::glCreateShader( type ));
     shader.type = type;
 
     _shaders[name] = shader;
@@ -1278,9 +1278,9 @@ namespace GL {
     std::set< std::string > shaders = _program_shader[name];
     std::set< std::string >::iterator itr;
     for( itr = shaders.begin(); itr != shaders.end(); itr++ )
-      GL_CHECK(glDetachShader( _programs[name].id, _shaders[(*itr)].id ));
+      GL_CHECK(::glDetachShader( _programs[name].id, _shaders[(*itr)].id ));
 
-    GL_CHECK(glDeleteProgram( _programs[name].id ));
+    GL_CHECK(::glDeleteProgram( _programs[name].id ));
 
     _program_shader.erase( name );
     _programs.erase( name );
@@ -1303,12 +1303,12 @@ namespace GL {
 
       if( (*itr).second.find( name ) != (*itr).second.end() ) {
 
-        GL_CHECK(glDetachShader( _programs[(*itr).first].id, _shaders[name].id ));
+        GL_CHECK(::glDetachShader( _programs[(*itr).first].id, _shaders[name].id ));
         (*itr).second.erase( name );
       }
     }
 
-    GL_CHECK(glDeleteShader( _shaders[name].id ));
+    GL_CHECK(::glDeleteShader( _shaders[name].id ));
 
     _shaders.erase( name );
 
@@ -1419,12 +1419,12 @@ namespace GL {
       return std::string();
 
     int param;
-    GL_CHECK(glGetShaderiv( _shaders[name].id, GL_SHADER_SOURCE_LENGTH, &param ));
+    GL_CHECK(::glGetShaderiv( _shaders[name].id, GL_SHADER_SOURCE_LENGTH, &param ));
 
     param++;
     int read;
     DVector<char> buff(param);
-    GL_CHECK(glGetShaderSource( _shaders[name].id, param, &read, buff.getPtr() ));
+    GL_CHECK(::glGetShaderSource( _shaders[name].id, param, &read, buff.getPtr() ));
 
     return std::string( buff.getPtr() );
   }
@@ -1485,7 +1485,7 @@ namespace GL {
       return false;
 
     int linked;
-    GL_CHECK(glGetProgramiv( _programs[name].id, GL_LINK_STATUS, &linked ));
+    GL_CHECK(::glGetProgramiv( _programs[name].id, GL_LINK_STATUS, &linked ));
 
     return linked == GL_TRUE;
   }
@@ -1501,7 +1501,7 @@ namespace GL {
       return false;
 
     int compiled;
-    GL_CHECK(glGetShaderiv( _shaders[name].id, GL_COMPILE_STATUS, &compiled ));
+    GL_CHECK(::glGetShaderiv( _shaders[name].id, GL_COMPILE_STATUS, &compiled ));
 
     return compiled == GL_TRUE;
   }
@@ -1517,11 +1517,11 @@ namespace GL {
       return false;
 
     // Link program
-    GL_CHECK(glLinkProgram( _programs[name].id ));
+    GL_CHECK(::glLinkProgram( _programs[name].id ));
 
     // get link status
     int param;
-    GL_CHECK(glGetProgramiv( _programs[name].id, GL_LINK_STATUS, &param ));
+    GL_CHECK(::glGetProgramiv( _programs[name].id, GL_LINK_STATUS, &param ));
 
     _updateInfoLog( true, _programs[name].id );
 
@@ -1551,7 +1551,7 @@ namespace GL {
     }
 
     _program_shader[prog_name].erase( shader_name );
-    GL_CHECK(glDetachShader( _programs[prog_name].id, _shaders[shader_name].id ));
+    GL_CHECK(::glDetachShader( _programs[prog_name].id, _shaders[shader_name].id ));
     return true;
   }
 
@@ -1567,7 +1567,7 @@ namespace GL {
     }
 
     const char* src = source.c_str();
-    GL_CHECK(glShaderSource( _shaders[name].id, 1, &src, 0x0 ));
+    GL_CHECK(::glShaderSource( _shaders[name].id, 1, &src, 0x0 ));
 
     return true;
   }

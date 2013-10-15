@@ -2,7 +2,7 @@
 using namespace GMlib;
 
 RenderTexture::RenderTexture()
-  : _tex_rb_color(GL_TEXTURE_2D) {
+  : _fbo(), _tex_rb_color(GL_TEXTURE_2D) {
 
   init();
 }

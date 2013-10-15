@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gmRENDERBUFFEROBJECT_H__
-#define __gmRENDERBUFFEROBJECT_H__
+#ifndef __gm_OPENGL_RENDERBUFFEROBJECT_H__
+#define __gm_OPENGL_RENDERBUFFEROBJECT_H__
 
 
 #include "gmglobject.h"
@@ -37,8 +37,7 @@ namespace GL {
   class RenderbufferObject : public GLObject<RBOInfo> {
   public:
     explicit RenderbufferObject( bool generate = true );
-    explicit RenderbufferObject( const std::string name );
-    RenderbufferObject( const RenderbufferObject& copy );
+    explicit RenderbufferObject( const std::string name, bool generate = false );
     ~RenderbufferObject();
 
     void                    renderbufferStorage( GLenum internal_format, GLsizei width, GLsizei height ) const;
@@ -59,4 +58,4 @@ namespace GL {
 } // END namespace GMlib
 
 
-#endif // __gmRENDERBUFFEROBJECT_H__
+#endif // __gm_OPENGL_RENDERBUFFEROBJECT_H__

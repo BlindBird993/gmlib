@@ -59,18 +59,17 @@ namespace GL {
     explicit GLObject();
     explicit GLObject( const std::string& name );
     GLObject( const GLObject& copy );
-    virtual ~GLObject() {}
+    virtual ~GLObject();
 
   protected:
     explicit GLObject( GLuint id );
 
-
   public:
-    bool                    bind() const;
-    bool                    unbind() const;
+    void                    bind() const;
+    void                    unbind() const;
 
     GLuint                  getId() const;
-    const T&                getInfo() const;
+    T                       getInfo() const;
 
     bool                    isValid() const;
 
@@ -109,19 +108,19 @@ namespace GL {
 
       const std::string&  getName( GLuint id ) const;
       GLuint              getId( const std::string& name ) const;
-      const T&            getInfo( GLuint id ) const;
+      T                   getInfo( GLuint id ) const;
 
       void                inc( GLuint id );
       void                dec( GLuint id );
 
     private:
-      std::map<GLuint, unsigned int>      _counters;
-      mutable std::map<GLuint,T>          _info;
+      mutable std::map<GLuint, unsigned int>      _counters;
+      mutable std::map<GLuint,T>                  _info;
 
     }; // END class GLObject::GLObjectDataPrivate
 
-  private:
-    static GLObjectDataPrivate          _objs;
+  protected:
+    static GLObjectDataPrivate            _objs;
 
   }; // END class GLObject
 
@@ -136,11 +135,16 @@ namespace GL {
 
   template <typename T>
   unsigned int GLObject<T>::GLObjectDataPrivate::count(GLuint id) const {
-    return _counters.count(id) ? _counters.find(id)->second : 0;
+    return _counters.count(id) ? _counters[id] : 0;
   }
 
   template <typename T>
-  void GLObject<T>::GLObjectDataPrivate::dec( GLuint id ) { _counters[id]--; }
+  void GLObject<T>::GLObjectDataPrivate::dec( GLuint id ) {
+
+    _counters[id]--;
+//    if(_counters.count(id) == 1) _counters.erase(id);
+//    else                         _counters[id]--;
+  }
 
   template <typename T>
   GLuint GLObject<T>::GLObjectDataPrivate::getId( const std::string& name ) const {
@@ -158,7 +162,11 @@ namespace GL {
   }
 
   template <typename T>
-  const T& GLObject<T>::GLObjectDataPrivate::getInfo( GLuint id ) const { return _info[id]; }
+  T GLObject<T>::GLObjectDataPrivate::getInfo( GLuint id ) const {
+
+    //return _info[id];
+    return _info.find(id)->second;
+  }
 
   template <typename T>
   const std::string& GLObject<T>::GLObjectDataPrivate::getName( GLuint id ) const {
@@ -192,6 +200,9 @@ namespace GL {
 
     copy(other);
   }
+
+  template <typename T>
+  GLObject<T>::~GLObject() {}
 
   template <typename T>
   GLObject<T>::GLObject(GLuint id) : _id( _objs.count(id) ? id : 0 ) {
@@ -232,7 +243,6 @@ namespace GL {
       return;
     }
 
-
     _id = doGenerate();
     _objs.add(_id, info);
   }
@@ -254,7 +264,7 @@ namespace GL {
   }
 
   template <typename T>
-  const T& GLObject<T>::getInfo() const {
+  T GLObject<T>::getInfo() const {
 
     static T invalid;
     return isValid() ? _objs.getInfo(_id) : invalid;
@@ -298,15 +308,11 @@ namespace GL {
 
   template <typename T>
   inline
-  bool GLObject<T>::bind() const { doBind(getId()); }
+  void GLObject<T>::bind() const { doBind(getId()); }
 
   template <typename T>
   inline
-  bool GLObject<T>::unbind() const { doBind(0); }
-
-
-  template <typename T>
-  typename GLObject<T>::GLObjectDataPrivate GLObject<T>::_objs;
+  void GLObject<T>::unbind() const { doBind(0); }
 
 } // END namespace GL
 

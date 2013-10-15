@@ -38,7 +38,6 @@
 //gmlib
 #include <core/containers/gmarray.h>
 #include <opengl/gmopengl.h>
-#include <opengl/gmframebufferobject.h>
 #include <opengl/gmtexture.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 
@@ -94,9 +93,6 @@ namespace GMlib {
     int                       _w, _h;
     Color                     _clear_color;
     Color                     _select_color;
-
-    GLuint                    _vbo_quad;
-    GLuint                    _vbo_quad_tex;
 
   }; // END class RenderManager
 

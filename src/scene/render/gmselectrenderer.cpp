@@ -40,7 +40,10 @@
 namespace GMlib {
 
 
-  SelectRenderer::SelectRenderer(Scene *scene) : MultiObjectRenderer( scene ) {
+  SelectRenderer::SelectRenderer(Scene *scene)
+    : MultiObjectRenderer( scene ),
+      _fbo()
+  {
 
     _fbo.attachRenderbuffer( _rbo_color, GL_COLOR_ATTACHMENT0 );
     _fbo.attachRenderbuffer( _rbo_depth, GL_DEPTH_ATTACHMENT );

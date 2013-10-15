@@ -42,7 +42,7 @@ namespace GL {
     explicit BufferObject( GLenum target, GLenum binding );
     explicit BufferObject( const std::string name );
     explicit BufferObject(const std::string name, GLenum target , GLenum binding);
-    virtual ~BufferObject();
+    ~BufferObject();
 
     GLenum                  getBinding() const;
     GLenum                  getTarget() const;

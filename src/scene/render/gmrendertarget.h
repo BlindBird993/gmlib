@@ -4,8 +4,6 @@
 
 // gmlib
 #include <core/types/gmpoint.h>
-#include <opengl/gmframebufferobject.h>
-#include <opengl/gmtexture.h>
 
 
 namespace GMlib {
@@ -13,6 +11,7 @@ namespace GMlib {
 class RenderTarget {
 public:
   RenderTarget() : _size() {}
+  virtual ~RenderTarget() {}
 
   void                      clear() const;
   void                      bind() const;

@@ -66,6 +66,7 @@ namespace GMlib {
 
     Visualizer();
     Visualizer( const Visualizer& v );
+    virtual ~Visualizer();
 
     virtual Visualizer*       makeCopy() const = 0;
 
