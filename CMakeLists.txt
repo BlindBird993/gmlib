@@ -120,10 +120,6 @@ if( GLEW_FOUND )
   addCustomConfigLine( "set(GLEW_INCLUDE_DIRS${GLEW_INCLUDE_DIRS_CONC})" )
   addCustomConfigLine( "set(GLEW_LIBRARIES${GLEW_LIBRARIES_CONC})" )
   include_directories(${GLEW_INCLUDE_DIRS})
-
-  if(WIN32)
-    add_definitions(-DGLEW_STATIC)
-  endif(WIN32)
 endif( GLEW_FOUND )
 
 # Find OpenCL
