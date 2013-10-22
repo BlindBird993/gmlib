@@ -49,20 +49,19 @@ namespace GMlib {
 
 
 
+
+
     // Create buffers
-    _fbo.create("dr_fbo");
-    _rbo_color.create("rbo_color",GL_TEXTURE_2D);
-    _rbo_depth.create("rbo_depth");
+    _fbo.create();
+
+    _rbo_color.create(GL_TEXTURE_2D);
+    _rbo_depth.create( GL_TEXTURE_2D);
 
     _fbo_select.create();
-    _rbo_select.create(GL_TEXTURE_2D);
-    _rbo_select_depth.create();
-
     _fbo_select_depth.create();
 
-
-    _quad_vbo.create();
-
+    _rbo_select.create(GL_TEXTURE_2D);
+    _rbo_select_depth.create(GL_TEXTURE_2D);
 
     // Color rbo texture
     _rbo_color.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -70,23 +69,35 @@ namespace GMlib {
     _rbo_color.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     _rbo_color.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+    // Depth rbo texture
+    _rbo_depth.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    _rbo_depth.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    _rbo_depth.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    _rbo_depth.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
     // Select rbo texture
     _rbo_select.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     _rbo_select.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     _rbo_select.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     _rbo_select.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+    // Select depth rbo texture
+    _rbo_select_depth.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    _rbo_select_depth.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    _rbo_select_depth.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    _rbo_select_depth.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 
     // Bind renderbuffers to framebuffer.
-    _fbo.attachRenderbuffer( _rbo_depth, GL_DEPTH_ATTACHMENT );
     _fbo.attachTexture2D( _rbo_color,  GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
+    _fbo.attachTexture2D( _rbo_depth, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT );
 
     // Bind select renderbuffer to select framebuffer
-    _fbo_select.attachRenderbuffer( _rbo_select_depth, GL_DEPTH_ATTACHMENT );
     _fbo_select.attachTexture2D( _rbo_select, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
+    _fbo_select.attachTexture2D( _rbo_select_depth, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT );
 
     // Bind depth buffer to depthbuffer framebuffer
-    _fbo_select_depth.attachRenderbuffer( _rbo_select_depth, GL_DEPTH_ATTACHMENT );
+    _fbo_select_depth.attachTexture2D( _rbo_select_depth, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT );
 
 
     _coord_sys_visu = new CoordSysRepVisualizer;
@@ -94,6 +105,7 @@ namespace GMlib {
 
 
     // Render quad
+
     DVector< GL::GLVertexTex2D > data(4);
     data[0].x = 0.0f; data[0].y = 0.0f; data[0].z = 0.0f;
     data[0].s = 0.0f; data[0].t = 0.0f;
@@ -107,6 +119,7 @@ namespace GMlib {
     data[3].x = 1.0f; data[3].y = 0.0f; data[3].z = 0.0f;
     data[3].s = 1.0f; data[3].t = 0.0f;
 
+    _quad_vbo.create();
     _quad_vbo.bufferData( 4 * sizeof(GL::GLVertexTex2D),
                           data.getPtr(), GL_STATIC_DRAW );
 
@@ -160,11 +173,11 @@ namespace GMlib {
 
     Renderer::resize(w,h);
 
-    _rbo_depth.renderbufferStorage( GL_DEPTH_COMPONENT32, w, h );
     _rbo_color.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
 
-    _rbo_select_depth.renderbufferStorage( GL_DEPTH_COMPONENT32, w, h );
     _rbo_select.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_select_depth.texImage2D( 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
 
     _rt->resize( Vector<float,2>(_w,_h) );
   }

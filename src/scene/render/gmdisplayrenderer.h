@@ -76,14 +76,14 @@ namespace GMlib {
     /* Object rendering */
     GL::FramebufferObject   _fbo;
     GL::Texture             _rbo_color;
-    GL::RenderbufferObject  _rbo_depth;
+    GL::Texture             _rbo_depth;
 
     /* Selection rendering */
     GL::FramebufferObject   _fbo_select;
     GL::Texture             _rbo_select;
 
     GL::FramebufferObject   _fbo_select_depth;
-    GL::RenderbufferObject  _rbo_select_depth;
+    GL::Texture             _rbo_select_depth;
 
 
     HqMatrix<float,3>       _ortho_mat;
