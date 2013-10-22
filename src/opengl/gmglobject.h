@@ -44,8 +44,6 @@ namespace Private {
 
 
 
-
-
   struct GLObjectInfo {
     std::string     name;
     GLuint          id;
@@ -108,11 +106,13 @@ namespace Private {
 
     GLObject&               operator = ( const GLObject& obj );
 
-    void                    acquire( const std::string&name );
+    bool                    acquire( const std::string&name );
+    bool                    acquire( const GLuint id );
 
   protected:
     void                    createObject( const T& info );
     void                    destroyObject();
+    InfoIter                getInfoIter();
 
     /* safe-bind */
     GLuint                  safeBind() const;
@@ -142,9 +142,9 @@ namespace Private {
     InfoIter                add( const T& info );
     void                    decrement( InfoIter itr );
     bool                    exists( const std::string& name ) const;
+    bool                    exists( GLuint id ) const;
     InfoIter                get( const std::string& name ) const;
-
-    const std::string&      getName( GLuint id ) const;
+    InfoIter                get( GLuint id ) const;
 
   }; // END class GLObject
 
@@ -174,7 +174,7 @@ namespace Private {
 
     // clean up this
     if( isValid() )
-      this->decrement( _info_iter );
+      decrement( _info_iter );
 
     // check and assign other
     _is_valid = other.isValid();
@@ -190,7 +190,7 @@ namespace Private {
   void GLObject<T>::createObject(const T &new_info) {
 
     // if exists; fetch existing
-    if( new_info.name.length() > 0 && this->exists(new_info.name) ) {
+    if( new_info.name.length() > 0 && exists(new_info.name) ) {
 
       _is_valid = false;
     }
@@ -201,7 +201,7 @@ namespace Private {
       info.id = doGenerate();
       assert( info.id != 0 );
 
-      _info_iter = this->add(info);
+      _info_iter = add(info);
       _is_valid = true;
     }
 
@@ -223,11 +223,17 @@ namespace Private {
   template <typename T>
   GLuint GLObject<T>::getId() const {
 
-    return this->getInfoIter()->id;
+    return getInfoIter()->id;
   }
 
   template <typename T>
   typename GLObject<T>::InfoIterC GLObject<T>::getInfoIter() const {
+
+    return _info_iter;
+  }
+
+  template <typename T>
+  typename GLObject<T>::InfoIter GLObject<T>::getInfoIter() {
 
     return _info_iter;
   }
@@ -266,27 +272,54 @@ namespace Private {
 
   template <typename T>
   inline
-  void GLObject<T>::acquire(const std::string& name) {
+  bool GLObject<T>::acquire(const std::string& name) {
 
     if( isValid() && getInfoIter()->name == name )
-      return;
-    else if( name.length() > 0 && this->exists(name) ) {
+      return true;
+
+    if( name.length() > 0 && exists(name) ) {
 
       // clean up this
       if( isValid() )
-        this->decrement( _info_iter );
+        decrement( _info_iter );
 
       // get new
-      _info_iter = this->get(name);
+      _info_iter = get(name);
       _info_iter->increment();
+      _is_valid = true;
     }
     // Else mark as invalid (should not happen)
     else {
-
       _is_valid = false;
     }
 
-    assert(_is_valid);
+    return _is_valid;
+  }
+
+  template <typename T>
+  inline
+  bool GLObject<T>::acquire(const GLuint id) {
+
+    if( isValid() && getInfoIter()->id == id )
+      return true;
+
+    if( id != 0 && exists(id) ) {
+
+      // clean up this
+      if( isValid() )
+        decrement( _info_iter );
+
+      // get new
+      _info_iter = get(id);
+      _info_iter->increment();
+      _is_valid = true;
+    }
+    // Else mark as invalid (should not happen)
+    else {
+      _is_valid = false;
+    }
+
+    return _is_valid;
   }
 
   template <typename T>
@@ -321,21 +354,24 @@ namespace Private {
   }
 
   template <typename T>
-  typename GLObject<T>::InfoIter GLObject<T>::get(const std::string& name) const {
+  bool GLObject<T>::exists(GLuint id) const {
 
     typename std::list<T>::iterator itr =
         std::find_if( _data.begin(), _data.end(),
-                      std::bind2nd( InfoHasName<T>(), name) );
-    return itr != _data.end() ? itr : InfoIter(0x0);
+                      std::bind2nd( InfoHasId<T>(), id ) );
+    return itr != _data.end();
   }
 
   template <typename T>
-  const std::string& GLObject<T>::getName( GLuint id ) const {
+  typename GLObject<T>::InfoIter GLObject<T>::get(const std::string& name) const {
 
-    typename std::list<T>::const_iterator itr =
-        std::find_if( _data.begin(), _data.end(),
-                      std::bind2nd( InfoHasId<T>(), id) );
-    return itr != _data.end() ? (*itr).name : "";
+    return std::find_if( _data.begin(), _data.end(), std::bind2nd( InfoHasName<T>(), name) );
+  }
+
+  template <typename T>
+  typename GLObject<T>::InfoIter GLObject<T>::get(GLuint id) const {
+
+    return std::find_if( _data.begin(), _data.end(), std::bind2nd( InfoHasId<T>(), id) );
   }
 
 } // END namespace Private

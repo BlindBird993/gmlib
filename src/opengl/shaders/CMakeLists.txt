@@ -1,4 +1,4 @@
-# ###############################################################################
+###############################################################################
 # #
 # # Copyright (C) 1994 Narvik University College
 # # Contact: GMlib Online Portal at http://episteme.hin.no
@@ -20,33 +20,22 @@
 # #
 # ###############################################################################
 
+
 addHeaders(
-  gmBufferObject
-  gmFramebufferObject
-  gmGLObject
-  gmOpenGL
-  gmProgram
-  gmRenderbufferObject
-  gmShader
-  gmTexture
+  gmComputeShader
+  gmFragmentShader
+  gmGeometryShader
+  gmTessControlShader
+  gmTessEvaluationShader
+  gmVertexShader
 )
 
 addSources(
-  gmbufferobject.cpp
-  gmframebufferobject.cpp
-  gmopengl.cpp
-  gmprogram.cpp
-  gmrenderbufferobject.cpp
-  gmshader.cpp
-  gmtexture.cpp
+  gmcomputeshader.cpp
+  gmfragmentshader.cpp
+  gmgeometryshader.cpp
+  gmtesscontrolshader.cpp
+  gmtessevaluationshader.cpp
+  gmvertexshader.cpp
 )
 
-addSubDirectory(bufferobjects)          # <bufferobjects> sub-module
-addSubDirectory(glsl)                   # <glsl> sub-module
-addSubDirectory(shaders)                # <shaders> sub-module
-addSubDirectory(utils)                  # <utils> sub-module
-
-moduleLinkLibrary( ${GLEW_LIBRARY} )
-moduleLinkLibrary( ${OPENGL_LIBRARIES} )
-
-addTestDir(test)
