@@ -32,13 +32,18 @@ namespace GMlib {
 
 namespace GL {
 
-  struct RBOInfo : public GLObjectInfo {};
+  namespace Private {
+    struct RBOInfo : public GLObjectInfo {};
+  }
 
-  class RenderbufferObject : public GLObject<RBOInfo> {
+
+  class RenderbufferObject : public Private::GLObject<Private::RBOInfo> {
   public:
-    explicit RenderbufferObject( bool generate = true );
-    explicit RenderbufferObject( const std::string name, bool generate = false );
+    explicit RenderbufferObject();
     ~RenderbufferObject();
+
+    void                    create();
+    void                    create( const std::string& name );
 
     void                    renderbufferStorage( GLenum internal_format, GLsizei width, GLsizei height ) const;
 

@@ -22,7 +22,7 @@ private:
   GL::FramebufferObject     _fbo;
   GL::Texture               _tex_rb_color;
 
-  void      init();
+  void      init( const std::string& name = std::string());
 
   // Virtual from RenderTarget
   void      doClear() const;

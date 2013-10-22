@@ -23,7 +23,7 @@
 
 
 /*! \file gmviewset.cpp
- *	\brief Pending Description
+ *  \brief Pending Description
  */
 
 
@@ -32,21 +32,23 @@
 namespace GMlib {
 
   /*! ViewSet::ViewSet(Camera* cam)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
-  ViewSet::ViewSet(Camera* cam) : _vbo(), _root(cam) {
+  ViewSet::ViewSet(Camera* cam) : _root(cam) {
 
-    if(cam)	_cameras += cam;
+    _vbo.create();
+
+    if(cam) _cameras += cam;
     _border_color = GMcolor::White;
   }
 
 
   /*! ViewSet::ViewSet(const ViewSet& viewset)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   ViewSet::ViewSet(const ViewSet& viewset) : _vbo() {
 
@@ -66,19 +68,19 @@ namespace GMlib {
 
 
   /*! ViewSet::~ViewSet()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   ViewSet::~ViewSet() {
 
-    for(int i=0; i<_borders.getSize(); i++)	delete _borders[i];
+    for(int i=0; i<_borders.getSize(); i++)  delete _borders[i];
   }
 
   /*! ViewSet& ViewSet::operator=(const ViewSet& viewset)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   ViewSet& ViewSet::operator=(const ViewSet& viewset) {
 
@@ -101,9 +103,9 @@ namespace GMlib {
 
 
 //  /*! void ViewSet::_drawCamera(bool stereo)
-//   *	\brief Pending Documentation
+//   *  \brief Pending Documentation
 //   *
-//   *	Pending Documentation
+//   *  Pending Documentation
 //   */
 //  void ViewSet::drawCamera() {
 
@@ -114,14 +116,14 @@ namespace GMlib {
 
 
   /*! bool ViewSet::_find(int x, int y, Camera*& cam)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    *
-   *	\param[in] x
-   *	\param[in] y
-   *	\param[out] cam
-   *	\return Status result of the search.
+   *  \param[in] x
+   *  \param[in] y
+   *  \param[out] cam
+   *  \return Status result of the search.
    */
   bool ViewSet::find(int x, int y, Camera*& cam) {
 
@@ -137,9 +139,9 @@ namespace GMlib {
 
 
   /*! int ViewSet::getSize()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   int ViewSet::getSize() {
 
@@ -176,9 +178,9 @@ namespace GMlib {
   }
 
   /*! void ViewSet::_reset()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void ViewSet::reset() {
 
@@ -187,9 +189,9 @@ namespace GMlib {
 
 
   /*! void ViewSet::_setBorderColor(const Color& bc)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void ViewSet::setBorderColor(const Color& bc) {
 
@@ -198,9 +200,9 @@ namespace GMlib {
 
 
   /*! Camera* ViewSet::operator[](int i)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   Camera* ViewSet::operator[](int i) {
 

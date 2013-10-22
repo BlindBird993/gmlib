@@ -28,21 +28,53 @@
 #include "gmopengl.h"
 
 // gmlib
-#include <core/gmglobal.h>
 #include <core/utils/gmutils.h>
 
 // stl
-#include <map>
+#include <functional>
+#include <list>
+#include <cassert>
 
 
 namespace GMlib {
 
 namespace GL {
 
+namespace Private {
+
+
+
+
 
   struct GLObjectInfo {
-    std::string   name;
+    std::string     name;
+    GLuint          id;
+    unsigned int    counter;
+
+    GLObjectInfo() {
+
+      id      = 0;
+      counter = 1;
+    }
+
+    void            increment() { ++counter; }
+    void            decrement() { --counter; }
   };
+
+
+
+  template <typename T>
+  struct InfoHasName : std::binary_function<T,std::string,bool> {
+    bool operator () ( const T& info, const std::string& name) const { return info.name == name; }
+  };
+
+  template <typename T>
+  struct InfoHasId : std::binary_function<T,GLuint,bool> {
+    bool operator() ( const T& info, GLuint id ) const { return info.id == id; }
+  };
+
+
+
 
 
 
@@ -56,35 +88,40 @@ namespace GL {
   template <typename T>
   class GLObject : GMutils::DerivedFrom<T,GLObjectInfo> {
   public:
+    typedef typename std::list<T>::const_iterator InfoIterC;
+    typedef typename std::list<T>::iterator       InfoIter;
+
+  public:
+
     explicit GLObject();
-    explicit GLObject( const std::string& name );
     GLObject( const GLObject& copy );
     virtual ~GLObject();
-
-  protected:
-    explicit GLObject( GLuint id );
 
   public:
     void                    bind() const;
     void                    unbind() const;
 
     GLuint                  getId() const;
-    T                       getInfo() const;
+    InfoIterC               getInfoIter() const;
 
     bool                    isValid() const;
 
     GLObject&               operator = ( const GLObject& obj );
 
+    void                    acquire( const std::string&name );
+
   protected:
-    void                    create( const T& info );
-    void                    destroy();
+    void                    createObject( const T& info );
+    void                    destroyObject();
 
     /* safe-bind */
     GLuint                  safeBind() const;
     void                    safeUnbind( GLuint id ) const;
 
   private:
-    GLuint                  _id;
+    InfoIter                _info_iter;
+    bool                    _is_valid;
+
     bool                    copy( const GLObject<T>& other );
 
     /* pure virtual functions */
@@ -94,88 +131,23 @@ namespace GL {
     virtual void            doDelete( GLuint id ) const = 0;
 
 
-  protected:
+  // Backend
+  private:
+    static std::list<T>     _data;      // List as internal data structure as it's
+                                        // iterators is not invalidated on insert/remove
 
-    /**! \class GLObjectDataPrivate
-     * Internal data class
-     */
-    class GLObjectDataPrivate {
-    public:
-      GLObjectDataPrivate() {}
+    InfoIter                add( const T& info );
+    void                    decrement( InfoIter itr );
+    bool                    exists( const std::string& name ) const;
+    InfoIter                get( const std::string& name ) const;
 
-      void                add( GLuint id, const T& info );
-      unsigned int        count( GLuint id ) const;
-
-      const std::string&  getName( GLuint id ) const;
-      GLuint              getId( const std::string& name ) const;
-      T                   getInfo( GLuint id ) const;
-
-      void                inc( GLuint id );
-      void                dec( GLuint id );
-
-    private:
-      mutable std::map<GLuint, unsigned int>      _counters;
-      mutable std::map<GLuint,T>                  _info;
-
-    }; // END class GLObject::GLObjectDataPrivate
-
-  protected:
-    static GLObjectDataPrivate            _objs;
+    const std::string&      getName( GLuint id ) const;
 
   }; // END class GLObject
 
 
 
 
-  template <typename T>
-  void GLObject<T>::GLObjectDataPrivate::add(GLuint id, const T &info) {
-    _counters[id] = 1;
-    _info[id] = info;
-  }
-
-  template <typename T>
-  unsigned int GLObject<T>::GLObjectDataPrivate::count(GLuint id) const {
-    return _counters.count(id) ? _counters[id] : 0;
-  }
-
-  template <typename T>
-  void GLObject<T>::GLObjectDataPrivate::dec( GLuint id ) {
-
-    _counters[id]--;
-//    if(_counters.count(id) == 1) _counters.erase(id);
-//    else                         _counters[id]--;
-  }
-
-  template <typename T>
-  GLuint GLObject<T>::GLObjectDataPrivate::getId( const std::string& name ) const {
-
-    if( name.length() <= 0 ) return 0;
-
-    typename std::map<GLuint,T>::const_iterator itr;
-    for( itr = _info.begin(); itr != _info.end(); ++itr ) {
-
-      if( static_cast<GLObjectInfo>(itr->second).name == name )
-        return itr->first;
-    }
-
-    return 0;
-  }
-
-  template <typename T>
-  T GLObject<T>::GLObjectDataPrivate::getInfo( GLuint id ) const {
-
-    //return _info[id];
-    return _info.find(id)->second;
-  }
-
-  template <typename T>
-  const std::string& GLObject<T>::GLObjectDataPrivate::getName( GLuint id ) const {
-    return static_cast<GLObjectInfo>(_info[id]).name;
-  }
-
-  template <typename T>
-  void GLObject<T>::GLObjectDataPrivate::inc( GLuint id ) { _counters[id]++; }
-
 
 
 
@@ -183,20 +155,10 @@ namespace GL {
 
 
   template <typename T>
-  GLObject<T>::GLObject() : GMutils::DerivedFrom<T,GLObjectInfo>(), _id(0) {}
+  GLObject<T>::GLObject() : _is_valid(0) {}
 
   template <typename T>
-  GLObject<T>::GLObject(const std::string& name) : GMutils::DerivedFrom<T,GLObjectInfo>() {
-
-    _id = _objs.getId(name);
-
-    if( _id )
-      _objs.inc(_id);
-  }
-
-  template <typename T>
-  GLObject<T>::GLObject(const GLObject& other)
-    : GMutils::DerivedFrom<T,GLObjectInfo>() {
+  GLObject<T>::GLObject(const GLObject& other) {
 
     copy(other);
   }
@@ -205,75 +167,72 @@ namespace GL {
   GLObject<T>::~GLObject() {}
 
   template <typename T>
-  GLObject<T>::GLObject(GLuint id) : _id( _objs.count(id) ? id : 0 ) {
-
-    if(_id)
-      _objs.inc(_id);
-  }
-
-  template <typename T>
   bool GLObject<T>::copy(const GLObject<T>& other) {
 
     // clean up this
     if( isValid() )
-      _objs.dec(getId());
+      this->decrement( _info_iter );
 
     // check and assign other
-    if( !other.isValid() ) {
-      _id = 0;
-      return false;
-    }
-    else {
+    _is_valid = other.isValid();
+    if( !_is_valid ) return false;
 
-      _id   = other._id;
-      _objs.inc(getId());
-    }
-
+    // copy
+    _info_iter = other._info_iter;
+    _info_iter->increment();
     return true;
   }
 
   template <typename T>
-  void GLObject<T>::create(const T &info) {
+  void GLObject<T>::createObject(const T &new_info) {
 
-    const GLuint existing_id = _objs.getId(info.name);
-    if( existing_id ) {
+    // if exists; fetch existing
+    if( new_info.name.length() > 0 && this->exists(new_info.name) ) {
 
-      _id = existing_id;
-      _objs.inc(_id);
-      return;
+      _is_valid = false;
+    }
+    // else; generate and add new
+    else {
+
+      T info = new_info;
+      info.id = doGenerate();
+      assert( info.id != 0 );
+
+      _info_iter = this->add(info);
+      _is_valid = true;
     }
 
-    _id = doGenerate();
-    _objs.add(_id, info);
+    // Check wether valid. Should allways be valid
+    assert(_is_valid);
   }
 
   template <typename T>
-  void GLObject<T>::destroy() {
+  void GLObject<T>::destroyObject() {
 
     if( !isValid() ) return;
 
-    _objs.dec(_id);
-    if(_objs.count(_id) <= 0)
-      doDelete(_id);
+    if( getInfoIter()->counter == 1 )
+      doDelete( getInfoIter()->id );
+
+    this->decrement( _info_iter );
   }
 
   template <typename T>
   GLuint GLObject<T>::getId() const {
 
-    return _id;
+    return this->getInfoIter()->id;
   }
 
   template <typename T>
-  T GLObject<T>::getInfo() const {
+  typename GLObject<T>::InfoIterC GLObject<T>::getInfoIter() const {
 
-    static T invalid;
-    return isValid() ? _objs.getInfo(_id) : invalid;
+    return _info_iter;
   }
 
   template <typename T>
   bool GLObject<T>::isValid() const {
 
-    return _id;
+    return _is_valid;
   }
 
   template <typename T>
@@ -294,10 +253,6 @@ namespace GL {
     doBind(id);
   }
 
-
-
-
-
   template <typename T>
   inline
   GLObject<T>& GLObject<T>::operator = (const GLObject<T>& other) {
@@ -308,11 +263,75 @@ namespace GL {
 
   template <typename T>
   inline
+  void GLObject<T>::acquire(const std::string& name) {
+
+    if( name.length() > 0 && this->exists(name) ) {
+
+      // clean up this
+      if( isValid() )
+        this->decrement( _info_iter );
+
+      // get new
+      _info_iter = this->get(name);
+      _info_iter->increment();
+    }
+    // Else mark as invalid (should not happen)
+    else {
+
+      _is_valid = false;
+    }
+
+    assert(_is_valid);
+  }
+
+  template <typename T>
+  inline
   void GLObject<T>::bind() const { doBind(getId()); }
 
   template <typename T>
   inline
   void GLObject<T>::unbind() const { doBind(0); }
+
+  template <typename T>
+  typename GLObject<T>::InfoIter GLObject<T>::add(const T &info) {
+
+    return _data.insert( _data.end(), info );
+  }
+
+  template <typename T>
+  void GLObject<T>::decrement(InfoIter itr) {
+
+    itr->decrement();
+  }
+
+  template <typename T>
+  bool GLObject<T>::exists(const std::string& name) const {
+
+    typename std::list<T>::iterator itr =
+        std::find_if( _data.begin(), _data.end(),
+                      std::bind2nd( InfoHasName<T>(), name ) );
+    return itr != _data.end();
+  }
+
+  template <typename T>
+  typename GLObject<T>::InfoIter GLObject<T>::get(const std::string& name) const {
+
+    typename std::list<T>::iterator itr =
+        std::find_if( _data.begin(), _data.end(),
+                      std::bind2nd( InfoHasName<T>(), name) );
+    return itr != _data.end() ? itr : InfoIter(0x0);
+  }
+
+  template <typename T>
+  const std::string& GLObject<T>::getName( GLuint id ) const {
+
+    typename std::list<T>::const_iterator itr =
+        std::find_if( _data.begin(), _data.end(),
+                      std::bind2nd( InfoHasId<T>(), id) );
+    return itr != _data.end() ? (*itr).name : "";
+  }
+
+} // END namespace Private
 
 } // END namespace GL
 

@@ -28,29 +28,29 @@ using namespace GMlib::GL;
 
 
 template <>
-typename GLObject<BOInfo>::GLObjectDataPrivate GLObject<BOInfo>::_objs = GLObject<BOInfo>::GLObjectDataPrivate();
+typename std::list<Private::BOInfo> Private::GLObject<Private::BOInfo>::_data = std::list<Private::BOInfo>();
 
 
-BufferObject::BufferObject(GLenum target , GLenum binding) : GLObject<BOInfo>() {
+BufferObject::BufferObject() {}
 
-  BOInfo info;
-  info.target   = target;
-  info.binding  = binding;
-  create(info);
+BufferObject::~BufferObject() { destroyObject(); }
+
+void BufferObject::create(GLenum target, GLenum binding) {
+
+  Private::BOInfo info;
+  info.target  = target;
+  info.binding = binding;
+  createObject(info);
 }
 
-BufferObject::BufferObject( const std::string name ) : GLObject<BOInfo>(name) {}
+void BufferObject::create(const std::string& name, GLenum target, GLenum binding) {
 
-BufferObject::BufferObject( const std::string name, GLenum target, GLenum binding ) : GLObject<BOInfo>() {
-
-  BOInfo info;
-  info.name = name;
-  info.target   = target;
-  info.binding  = binding;
-  create(info);
+  Private::BOInfo info;
+  info.name    = name;
+  info.target  = target;
+  info.binding = binding;
+  createObject(info);
 }
-
-BufferObject::~BufferObject() { destroy(); }
 
 
 

@@ -34,7 +34,12 @@ namespace GMlib {
 
   template <typename T, int n>
   PTriangleDefaultVisualizer<T,n>::PTriangleDefaultVisualizer()
-    : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _no_elements(0) {}
+    : _no_elements(0) {
+
+    _vbo.create();
+    _ibo.create();
+    _lights_ubo.acquire("lights_ubo");
+  }
 
   template <typename T, int n>
   inline

@@ -32,17 +32,18 @@ namespace GMlib {
 
 namespace GL {
 
-  struct BOInfo : GLObjectInfo {
-    GLenum    target;
-    GLenum    binding;
-  };
+  namespace Private {
+    struct BOInfo : GLObjectInfo {
+      GLenum    target;
+      GLenum    binding;
+    };
+  }
 
-  class BufferObject : public GLObject<BOInfo> {
+  class BufferObject : public Private::GLObject<Private::BOInfo> {
   public:
-    explicit BufferObject( GLenum target, GLenum binding );
-    explicit BufferObject( const std::string name );
-    explicit BufferObject(const std::string name, GLenum target , GLenum binding);
+    explicit BufferObject();
     ~BufferObject();
+
 
     GLenum                  getBinding() const;
     GLenum                  getTarget() const;
@@ -55,6 +56,10 @@ namespace GL {
     template <typename T>
     T*                      mapBuffer( GLenum access = GL_WRITE_ONLY ) const;
     void                    unmapBuffer() const;
+
+  protected:
+    void                    create( GLenum target, GLenum binding );
+    void                    create( const std::string& name, GLenum target, GLenum binding );
 
   private:
     /* pure-virtual functions from Object */
@@ -69,10 +74,10 @@ namespace GL {
 
 
   inline
-  GLenum BufferObject::getBinding() const { return getInfo().binding; }
+  GLenum BufferObject::getBinding() const { return getInfoIter()->binding; }
 
   inline
-  GLenum BufferObject::getTarget() const { return getInfo().target; }
+  GLenum BufferObject::getTarget() const { return getInfoIter()->target; }
 
 
 

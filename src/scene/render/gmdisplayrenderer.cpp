@@ -44,27 +44,33 @@ namespace GMlib {
 
 
   DisplayRenderer::DisplayRenderer(Scene *scene)
-    : MultiObjectRenderer(scene),
-      _fbo(), _rbo_color("rbo_color",GL_TEXTURE_2D), _rbo_depth(),
-      _fbo_select(), _rbo_select(GL_TEXTURE_2D),
-      _w(0), _h(0)
+    : MultiObjectRenderer(scene), _w(0), _h(0)
   {
 
 
 
+    // Create buffers
+    _fbo.create("dr_fbo");
+    _rbo_color.create("rbo_color",GL_TEXTURE_2D);
+    _rbo_depth.create("rbo_depth");
+
+    _fbo_select.create();
+    _rbo_select.create(GL_TEXTURE_2D);
+    _rbo_select_depth.create();
+
+    _fbo_select_depth.create();
 
 
+    _quad_vbo.create();
 
 
-
-
-    // Color rbo texture parameters
+    // Color rbo texture
     _rbo_color.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     _rbo_color.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     _rbo_color.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     _rbo_color.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    // Select rbo texture parameters
+    // Select rbo texture
     _rbo_select.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     _rbo_select.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     _rbo_select.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

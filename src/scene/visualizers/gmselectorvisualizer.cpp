@@ -36,9 +36,12 @@ namespace GMlib {
 
 
   SelectorVisualizer::SelectorVisualizer( float r, Material mat )
-    : _vbo(), _ibo(), _lights_ubo("lights_ubo"),
-      _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
+    : _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
       _mat(mat) {
+
+    _vbo.create();
+    _ibo.create();
+    _lights_ubo.acquire( "lights_ubo" );
 
     setRenderProgram( GL::GLProgram( "phong" ) );
     makeGeometry( r, 10, 10 );

@@ -42,9 +42,11 @@ namespace GL {
   class IndexBufferObject : public BufferObject {
   public:
     explicit IndexBufferObject();
-    explicit IndexBufferObject( const std::string& name );
 
-    void      drawElements( GLenum mode, GLsizei count, GLenum type, const GLvoid* indices ) const;
+    void    create();
+    void    create( const std::string& name );
+
+    void    drawElements( GLenum mode, GLsizei count, GLenum type, const GLvoid* indices ) const;
 
   }; // END class IndexBufferObject
 

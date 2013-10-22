@@ -39,8 +39,10 @@ namespace GMlib {
 
   template <typename T, int n>
   PSurfNormalsVisualizer<T,n>::PSurfNormalsVisualizer()
-    : _vbo(), _no_elements(0),
-      _color( GMcolor::Black ), _size(1.0), _mode(GM_SURF_NORMALSVISUALIZER_ALL) {
+    : _no_elements(0),_color( GMcolor::Black ),
+      _size(1.0), _mode(GM_SURF_NORMALSVISUALIZER_ALL) {
+
+    _vbo.create();
 
     this->setRenderProgram( GL::GLProgram("color") );
   }

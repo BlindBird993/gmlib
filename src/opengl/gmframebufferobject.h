@@ -34,13 +34,17 @@ namespace GMlib {
 
 namespace GL {
 
-  struct FBOInfo : GLObjectInfo {};
+  namespace Private {
+    struct FBOInfo : GLObjectInfo {};
+  }
 
-  class FramebufferObject : public GLObject<FBOInfo> {
+  class FramebufferObject : public Private::GLObject<Private::FBOInfo> {
   public:
-    explicit FramebufferObject( bool generate = true );
-    explicit FramebufferObject( const std::string name, bool generate = false );
+    explicit FramebufferObject();
     ~FramebufferObject();
+
+    void                    create();
+    void                    create( const std::string& name );
 
     void                    bindRead() const;
     void                    unbindRead() const;
@@ -57,15 +61,15 @@ namespace GL {
     void                    attachTexture2D(const Texture& tex, GLenum target, GLenum attachment, GLenum textarget = GL_TEXTURE_2D, GLint level = 0);
     void                    attachTexture3D(const Texture& tex, GLenum target, GLenum attachment, GLenum textarget = GL_TEXTURE_3D, GLint level = 0, GLint layer = 0 );
 
-    void                    blitTo( GLuint dest_id,
+    void                    blitTo( const FramebufferObject& dest_fbo,
                                     GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
                                     GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
                                     GLbitfield mask, GLenum filter ) const;
 
-
-
-  private:
-    explicit FramebufferObject( GLuint id );
+    void                    blitTo( GLuint dest_id,
+                                    GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
+                                    GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                                    GLbitfield mask, GLenum filter ) const;
 
     /* pure virtual functions */
     virtual GLuint          getCurrentBoundId() const;

@@ -1,16 +1,14 @@
 #include "gmrendertexture.h"
 using namespace GMlib;
 
-RenderTexture::RenderTexture()
-  : _fbo(), _tex_rb_color(GL_TEXTURE_2D) {
+RenderTexture::RenderTexture() {
 
   init();
 }
 
-RenderTexture::RenderTexture(const std::string& name)
-  : _tex_rb_color( name, GL_TEXTURE_2D ) {
+RenderTexture::RenderTexture(const std::string& name) {
 
-  init();
+  init(name);
 }
 
 const GL::FramebufferObject&RenderTexture::getFbo() const {
@@ -18,8 +16,12 @@ const GL::FramebufferObject&RenderTexture::getFbo() const {
   return _fbo;
 }
 
-void RenderTexture::init() {
+void RenderTexture::init(const std::string &name) {
 
+  _fbo.create();
+
+  if(name.length()) _tex_rb_color.create(name,GL_TEXTURE_2D);
+  else              _tex_rb_color.create(GL_TEXTURE_2D);
   _tex_rb_color.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   _tex_rb_color.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   _tex_rb_color.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

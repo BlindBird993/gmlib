@@ -41,9 +41,11 @@ namespace GMlib {
 
 
 
-  VisualizerStdRep::VisualizerStdRep() :
-    _bo_cube( "std_rep_cube" ), _bo_cube_indices( "std_rep_cube_indices" ),
-    _bo_cube_frame_indices( "std_rep_frame_indices" ) {
+  VisualizerStdRep::VisualizerStdRep() {
+
+    _bo_cube.acquire("std_rep_cube");
+    _bo_cube_indices.acquire("std_rep_cube_indices");
+    _bo_cube_frame_indices.acquire("std_rep_frame_indices");
 
     setRenderProgram( GL::GLProgram( "color" ) );
   }

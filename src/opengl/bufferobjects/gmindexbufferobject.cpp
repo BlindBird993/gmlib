@@ -30,12 +30,15 @@ namespace GMlib {
 namespace GL {
 
 
-  IndexBufferObject::IndexBufferObject()
-    : BufferObject( GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING ) {}
+  IndexBufferObject::IndexBufferObject() {}
 
-  IndexBufferObject::IndexBufferObject(const std::string &name)
-    : BufferObject( std::string("ibo_") + name, GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING ) {}
+  void IndexBufferObject::create() {
+    BufferObject::create(GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING );
+  }
 
+  void IndexBufferObject::create(const std::string &name) {
+    BufferObject::create( name, GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING );
+  }
 
 } // END namespace GL
 

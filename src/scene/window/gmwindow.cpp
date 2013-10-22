@@ -47,11 +47,15 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  GMWindow::GMWindow(bool init_default_cam)
-    : _lights_ubo("lights_ubo"),
-      _std_rep_cube("std_rep_cube"),
-      _std_rep_cube_indices("std_rep_cube_indices"),
-      _std_rep_frame_indices("std_rep_frame_indices") {
+  GMWindow::GMWindow(bool init_default_cam) {
+
+    // create buffers
+    _lights_ubo.create("lights_ubo");
+    _std_rep_cube.create("std_rep_cube");
+    _std_rep_cube_indices.create("std_rep_cube_indices");
+    _std_rep_frame_indices.create("std_rep_frame_indices");
+
+
 
     _stereo     = false;
     _running    = false;
@@ -499,6 +503,7 @@ namespace GMlib {
 
   void GMWindow::initStdGeometry() {
 
+    // std radius of inscribed circle
     float ir = 0.07;
 
     // Vertices

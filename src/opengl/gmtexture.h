@@ -32,18 +32,18 @@ namespace GMlib {
 
 namespace GL {
 
-  struct TextureInfo : GLObjectInfo {
-    GLenum    target;
-  };
+  namespace Private {
+    struct TextureInfo : GLObjectInfo { GLenum target; };
+  }
 
 
-  class Texture : public GLObject<TextureInfo> {
+  class Texture : public Private::GLObject<Private::TextureInfo> {
   public:
     explicit Texture();
-    explicit Texture( GLenum target );
-    explicit Texture( const std::string name );
-    explicit Texture( const std::string name, GLenum target );
     ~Texture();
+
+    void                    create( GLenum target );
+    void                    create( const std::string& name, GLenum target );
 
     GLenum                  getTarget() const;
 
@@ -75,7 +75,7 @@ namespace GL {
   }; // END class Texture
 
   inline
-  GLenum Texture::getTarget() const { return getInfo().target; }
+  GLenum Texture::getTarget() const { return getInfoIter()->target; }
 
 
 } // END namespace GL

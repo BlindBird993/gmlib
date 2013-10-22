@@ -28,29 +28,27 @@ using namespace GMlib::GL;
 
 
 template <>
-typename GLObject<FBOInfo>::GLObjectDataPrivate GLObject<FBOInfo>::_objs = GLObject<FBOInfo>::GLObjectDataPrivate();
+std::list<Private::FBOInfo> Private::GLObject<Private::FBOInfo>::_data = std::list<Private::FBOInfo>();
 
 
-FramebufferObject::FramebufferObject(bool generate) : GLObject<FBOInfo>() {
+FramebufferObject::FramebufferObject() {}
 
-  if( !generate ) return;
 
-  FBOInfo info;
-  create(info);
+
+FramebufferObject::~FramebufferObject() { destroyObject(); }
+
+void FramebufferObject::create() {
+
+  Private::FBOInfo info;
+  createObject(info);
 }
 
-FramebufferObject::FramebufferObject(const std::string name, bool generate)
-  : GLObject<FBOInfo>(name) {
+void FramebufferObject::create(const std::string& name) {
 
-  if( !generate ) return;
-
-  FBOInfo info;
-  create(info);
+  Private::FBOInfo info;
+  info.name = name;
+  createObject(info);
 }
-
-FramebufferObject::~FramebufferObject() { destroy(); }
-
-FramebufferObject::FramebufferObject(GLuint id) : GLObject<FBOInfo>(id) {}
 
 GLuint FramebufferObject::getCurrentBoundId() const{
 
@@ -108,13 +106,20 @@ void FramebufferObject::attachTexture3D(const Texture &tex, GLenum target, GLenu
   safeUnbind(id);
 }
 
-void FramebufferObject::blitTo(GLuint dest_id, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) const {
-
-  FramebufferObject dest_fbo(dest_id);
+void FramebufferObject::blitTo(const FramebufferObject& dest_fbo, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) const {
 
   bindRead();
   dest_fbo.bindDraw();
   GL_CHECK(::glBlitFramebuffer( srcX0,srcY0,srcX1,srcY1,dstX0,dstY0,dstX1,dstY1,mask,filter ));
-  unbindRead();
   dest_fbo.unbindDraw();
+  unbindRead();
+}
+
+void FramebufferObject::blitTo(GLuint dest_id, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) const {
+
+  bindRead();
+  GL_CHECK(::glBindFramebuffer( GL_DRAW_FRAMEBUFFER, dest_id ));
+  GL_CHECK(::glBlitFramebuffer( srcX0,srcY0,srcX1,srcY1,dstX0,dstY0,dstX1,dstY1,mask,filter ));
+  GL_CHECK(::glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0x0 ));
+  unbindRead();
 }

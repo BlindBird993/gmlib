@@ -28,28 +28,25 @@ using namespace GMlib::GL;
 
 
 template <>
-typename GLObject<RBOInfo>::GLObjectDataPrivate GLObject<RBOInfo>::_objs = GLObject<RBOInfo>::GLObjectDataPrivate();
+typename std::list<Private::RBOInfo> Private::GLObject<Private::RBOInfo>::_data = std::list<Private::RBOInfo>();
 
 
+RenderbufferObject::RenderbufferObject() {}
 
-RenderbufferObject::RenderbufferObject( bool generate ) : GLObject<RBOInfo>() {
+RenderbufferObject::~RenderbufferObject() { destroyObject(); }
 
-  if( !generate ) return;
+void RenderbufferObject::create() {
 
-  RBOInfo info;
-  create(info);
+  Private::RBOInfo info;
+  createObject(info);
 }
 
-RenderbufferObject::RenderbufferObject(const std::string name, bool generate)
-  : GLObject<RBOInfo>(name) {
+void RenderbufferObject::create(const std::string& name) {
 
-  if( !generate ) return;
-
-  RBOInfo info;
-  create(info);
+  Private::RBOInfo info;
+  info.name = name;
+  createObject(info);
 }
-
-RenderbufferObject::~RenderbufferObject() { destroy(); }
 
 
 

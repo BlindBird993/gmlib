@@ -36,8 +36,10 @@ namespace GL {
 
   class TextureBufferObject : public BufferObject {
   public:
-    TextureBufferObject();
-    TextureBufferObject( const std::string& name );
+    explicit TextureBufferObject();
+
+    void create();
+    void create( const std::string& name );
 
   }; // END class TextureBufferObject
 

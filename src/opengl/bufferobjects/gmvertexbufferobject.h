@@ -35,7 +35,9 @@ namespace GL {
   class VertexBufferObject : public BufferObject {
   public:
     explicit VertexBufferObject();
-    explicit VertexBufferObject( const std::string& name );
+
+    void    create();
+    void    create( const std::string& name );
 
     void    enable(const GL::AttributeLocation& location, GLint size, GLenum type, bool normalize, GLsizei stride, const GLvoid* offset ) const;
     void    disable(const GL::AttributeLocation& location) const;

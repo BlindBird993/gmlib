@@ -24,36 +24,32 @@
 
 #include "gmtexture.h"
 
-using namespace GMlib::GL;
+namespace GMlib {
+namespace GL {
 
 
 template <>
-typename GLObject<TextureInfo>::GLObjectDataPrivate GLObject<TextureInfo>::_objs = GLObject<TextureInfo>::GLObjectDataPrivate();
+typename std::list<Private::TextureInfo> Private::GLObject<Private::TextureInfo>::_data = std::list<Private::TextureInfo>();
 
-Texture::Texture() : GLObject<TextureInfo>() {}
 
-Texture::Texture(GLenum target) :  GLObject<TextureInfo>() {
+Texture::Texture() {}
 
-  TextureInfo info;
+Texture::~Texture() { destroyObject(); }
+
+void Texture::create(GLenum target) {
+
+  Private::TextureInfo info;
   info.target = target;
-  create(info);
+  this->createObject(info);
 }
 
-Texture::Texture(const std::string name) : GLObject<TextureInfo>(name) {}
+void Texture::create(const std::string& name, GLenum target) {
 
-Texture::Texture(const std::string name, GLenum target) : GLObject<TextureInfo>() {
-
-  TextureInfo info;
+  Private::TextureInfo info;
   info.name = name;
   info.target = target;
-  create(info);
+  this->createObject(info);
 }
-
-Texture::~Texture() { destroy(); }
-
-
-
-
 
 GLuint Texture::doGenerate() const {
 
@@ -142,3 +138,6 @@ void Texture::texParameteri( GLenum pname, GLint param) {
   safeUnbind(id);
 }
 
+
+}
+}

@@ -48,17 +48,24 @@ namespace GMlib {
 
   template <typename T, int n>
   PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer()
-    : _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap( GL_TEXTURE_2D ),
-      _no_strips(0), _no_strip_indices(0), _strip_size(0) {
+    : _no_strips(0), _no_strip_indices(0), _strip_size(0) {
+
+    _vbo.create();
+    _ibo.create();
+    _lights_ubo.acquire("lights_ubo");
+    _nmap.create(GL_TEXTURE_2D);
 
     this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
   }
 
   template <typename T, int n>
   PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer(const PSurfDefaultVisualizer<T,n>& copy)
-    : PSurfVisualizer<T,n>(copy),
-      _vbo(), _ibo(), _lights_ubo("lights_ubo"), _nmap(GL_TEXTURE_2D),
-      _no_strips(0), _no_strip_indices(0), _strip_size(0) {
+    : PSurfVisualizer<T,n>(copy), _no_strips(0), _no_strip_indices(0), _strip_size(0) {
+
+    _vbo.create();
+    _ibo.create();
+    _lights_ubo.acquire("lights_ubo");
+    _nmap.create(GL_TEXTURE_2D);
 
     this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
   }
