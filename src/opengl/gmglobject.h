@@ -132,6 +132,9 @@ namespace Private {
 
 
   // Backend
+  public:
+    static const std::list<T>&     getData() { return _data; }
+
   private:
     static std::list<T>     _data;      // List as internal data structure as it's
                                         // iterators is not invalidated on insert/remove
@@ -211,10 +214,10 @@ namespace Private {
 
     if( !isValid() ) return;
 
-    if( getInfoIter()->counter == 1 )
-      doDelete( getInfoIter()->id );
+    if( _info_iter->counter == 1 )
+      doDelete( _info_iter->id );
 
-    this->decrement( _info_iter );
+    decrement(_info_iter);
   }
 
   template <typename T>
@@ -265,7 +268,9 @@ namespace Private {
   inline
   void GLObject<T>::acquire(const std::string& name) {
 
-    if( name.length() > 0 && this->exists(name) ) {
+    if( isValid() && getInfoIter()->name == name )
+      return;
+    else if( name.length() > 0 && this->exists(name) ) {
 
       // clean up this
       if( isValid() )
@@ -302,6 +307,8 @@ namespace Private {
   void GLObject<T>::decrement(InfoIter itr) {
 
     itr->decrement();
+    if( itr->counter == 0 )
+      _data.erase(itr);
   }
 
   template <typename T>
