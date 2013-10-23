@@ -25,6 +25,7 @@ addHeaders(
   gmFramebufferObject
   gmGLObject
   gmOpenGL
+  gmOpenGLManager
   gmProgram
   gmRenderbufferObject
   gmShader
@@ -34,7 +35,7 @@ addHeaders(
 addSources(
   gmbufferobject.cpp
   gmframebufferobject.cpp
-  gmopengl.cpp
+  gmopenglmanager.cpp
   gmprogram.cpp
   gmrenderbufferobject.cpp
   gmshader.cpp

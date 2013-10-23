@@ -53,14 +53,14 @@ namespace GL {
     GLenum                  getType() const;
 
   private:
+    mutable GLenum          _create_type;
+    void                    updateCompilerLog();
+
     /* pure-virtual functions from Object */
     virtual GLuint          getCurrentBoundId() const;
     virtual void            doBind( GLuint id ) const;
-
     virtual GLuint          doGenerate() const;
     virtual void            doDelete(GLuint id) const;
-
-    void                    updateCompilerLog();
 
   }; // END class Shader
 

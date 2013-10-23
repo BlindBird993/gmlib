@@ -79,18 +79,17 @@ namespace GL {
 
 
   private:
-    /* pure-virtual functions from Object */
-    virtual GLuint            getCurrentBoundId() const;
-    virtual void              doBind( GLuint id ) const;
-
-    virtual GLuint            doGenerate() const;
-    virtual void              doDelete(GLuint id) const;
-
-
     void                      updateLinkerLog();
     std::vector<GLuint>       getAttachedShaders() const;
     void                      attachShaderInternal( GLuint id ) const;
     void                      detachShaderInternal( GLuint id ) const;
+
+    /* pure-virtual functions from Object */
+    virtual GLuint            getCurrentBoundId() const;
+    virtual void              doBind( GLuint id ) const;
+    virtual GLuint            doGenerate() const;
+    virtual void              doDelete(GLuint id) const;
+
 
   }; // END class Program
 

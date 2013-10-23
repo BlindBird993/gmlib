@@ -40,8 +40,9 @@ Shader::~Shader() { destroyObject(); }
 
 void Shader::create(GLenum type) {
 
+
   Private::ShaderInfo info;
-  info.type = type;
+  info.type = _create_type = type;
   createObject(info);
 }
 
@@ -84,7 +85,7 @@ void Shader::doBind(GLuint id) const {}
 GLuint Shader::doGenerate() const {
 
   GLuint id;
-  GL_CHECK(id = ::glCreateShader( getType() ));
+  GL_CHECK(id = ::glCreateShader( _create_type ));
   return id;
 }
 

@@ -31,6 +31,7 @@
 
 // gmlib
 #include <core/containers/gmdvector.h>
+#include <opengl/gmopenglmanager.h>
 
 // stl
 #include <cstdio>
@@ -50,10 +51,10 @@ namespace GMlib {
   GMWindow::GMWindow(bool init_default_cam) {
 
     // create buffers
-    _lights_ubo.create("lights_ubo");
-    _std_rep_cube.create("std_rep_cube");
-    _std_rep_cube_indices.create("std_rep_cube_indices");
-    _std_rep_frame_indices.create("std_rep_frame_indices");
+    _lights_ubo.acquire("lights_ubo");
+    _std_rep_cube.acquire("std_rep_cube");
+    _std_rep_cube_indices.acquire("std_rep_cube_indices");
+    _std_rep_frame_indices.acquire("std_rep_frame_indices");
 
 
 
@@ -114,7 +115,7 @@ namespace GMlib {
       delete light;
     }
 
-    GL::OGL::cleanUp();
+    GL::OpenGLManager::cleanUp();
   }
 
 
