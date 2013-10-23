@@ -24,6 +24,8 @@
 
 #include "gmprogram.h"
 
+#include <functional>
+
 using namespace GMlib::GL;
 
 
@@ -90,8 +92,11 @@ GLuint Program::doGenerate() const {
 
 void Program::doDelete(GLuint id) const {
 
-  //! \todo must also detach shaders from program
+  // Detach shaders
+  std::vector<GLuint> as = getAttachedShaders();
+  std::for_each( as.begin(), as.end(), std::bind1st( std::mem_fun(&Program::detachShaderInternal), this ) );
 
+  // delete
   GL_CHECK(::glDeleteProgram( id ));
 }
 
@@ -118,7 +123,37 @@ void Program::updateLinkerLog() {
     itr->linker_log.append( log, len );
     delete log;
   }
+}
 
+std::vector<GLuint> Program::getAttachedShaders() const {
+
+  GLint no_as;
+  GL_CHECK(::glGetProgramiv( getId(), GL_ATTACHED_SHADERS, &no_as ));
+
+  std::vector<GLuint> shader_ids(no_as);
+  GL_CHECK(::glGetAttachedShaders( getId(), no_as, 0x0, &shader_ids[0] ) );
+
+  return shader_ids;
+}
+
+void Program::attachShader(const Shader& shader) const {
+
+  attachShaderInternal( shader.getId() );
+}
+
+void Program::detachShader(const Shader& shader) const {
+
+  detachShaderInternal( shader.getId() );
+}
+
+void Program::attachShaderInternal(GLuint id) const {
+
+  GL_CHECK(::glAttachShader( getId(), id ));
+}
+
+void Program::detachShaderInternal(GLuint id) const {
+
+  GL_CHECK(::glDetachShader( getId(), id ));
 }
 
 void Program::disableAttributeArray( const std::string& name ) const {
@@ -212,14 +247,4 @@ void Program::setUniformBlockBinding(const std::string &name, const UniformBuffe
 
   GL_CHECK(::glBindBufferBase( GL_UNIFORM_BUFFER, binding_point, ubo.getId() ));
   GL_CHECK(::glUniformBlockBinding( getId(), getUniformBlockIndex( name)(), binding_point ));
-}
-
-void Program::attachShader(const Shader& shader) const {
-
-  GL_CHECK(::glAttachShader( getId(), shader.getId() ));
-}
-
-void Program::detachShader(const Shader& shader) const {
-
-  GL_CHECK(::glDetachShader( getId(), shader.getId() ));
 }

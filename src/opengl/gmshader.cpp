@@ -24,6 +24,8 @@
 
 #include "gmshader.h"
 
+#include "gmprogram.h"
+
 using namespace GMlib::GL;
 
 
@@ -88,8 +90,24 @@ GLuint Shader::doGenerate() const {
 
 void Shader::doDelete(GLuint id) const {
 
-  //! \todo must also detach shader from programs
+  // Detach shader from all programs it is attached to
+  const std::list<GMlib::GL::Private::ProgramInfo> &programs = GMlib::GL::Program::getData();
+  std::list<GMlib::GL::Private::ProgramInfo>::const_iterator p_itr;
+  for( p_itr = programs.begin(); p_itr != programs.end(); ++p_itr ) {
 
+    GLint no_as;
+    GL_CHECK(::glGetProgramiv( p_itr->id, GL_ATTACHED_SHADERS, &no_as ));
+
+    std::vector<GLuint> shader_ids(no_as);
+    GL_CHECK(::glGetAttachedShaders( p_itr->id, no_as, 0x0, &shader_ids[0] ) );
+
+    std::vector<GLuint>::const_iterator s_itr =
+        std::find( shader_ids.begin(), shader_ids.end(), getId() );
+    if( s_itr != shader_ids.end() )
+      GL_CHECK(::glDetachShader( p_itr->id, *s_itr ));
+  }
+
+  // delete shader
   GL_CHECK(::glDeleteShader( getId() ));
 }
 
