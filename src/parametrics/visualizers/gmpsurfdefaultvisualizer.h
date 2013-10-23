@@ -38,6 +38,7 @@
 #include <opengl/bufferobjects/gmindexbufferobject.h>
 #include <opengl/bufferobjects/gmuniformbufferobject.h>
 #include <opengl/gmtexture.h>
+#include <opengl/gmprogram.h>
 
 
 
@@ -51,7 +52,7 @@ namespace GMlib {
     PSurfDefaultVisualizer( const PSurfDefaultVisualizer<T,n>& copy );
 
     void          render( const DisplayObject* obj, const Camera* cam ) const;
-    void          renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const;
+    void          renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
 
     virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                           const DMatrix< Vector<T, 3> >& normals,
@@ -60,6 +61,7 @@ namespace GMlib {
     );
 
   private:
+    GL::Program                 _prog;
     GL::VertexBufferObject      _vbo;
     GL::IndexBufferObject       _ibo;
     GL::UniformBufferObject     _lights_ubo;

@@ -33,8 +33,6 @@
 
 // gmlib
 #include <opengl/gmopengl.h>
-#include <opengl/glsl/gmglprogram.h>
-#include <opengl/glsl/gmglshadermanager.h>
 #include <scene/gmscene.h>
 #include <scene/camera/gmcamera.h>
 #include <scene/light/gmlight.h>
@@ -50,24 +48,24 @@ namespace GMlib {
   PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer()
     : _no_strips(0), _no_strip_indices(0), _strip_size(0) {
 
+    _prog.acquire("psurf_phong_nmap");
+
     _vbo.create();
     _ibo.create();
     _lights_ubo.acquire("lights_ubo");
     _nmap.create(GL_TEXTURE_2D);
-
-    this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
   }
 
   template <typename T, int n>
   PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer(const PSurfDefaultVisualizer<T,n>& copy)
     : PSurfVisualizer<T,n>(copy), _no_strips(0), _no_strip_indices(0), _strip_size(0) {
 
+    _prog.acquire("psurf_phong_nmap");
+
     _vbo.create();
     _ibo.create();
     _lights_ubo.acquire("lights_ubo");
     _nmap.create(GL_TEXTURE_2D);
-
-    this->setRenderProgram( GL::GLProgram("psurf_phong_nmap") );
   }
 
   template <typename T, int n>
@@ -79,29 +77,28 @@ namespace GMlib {
 
     this->glSetDisplayMode();
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.bind(); {
+    _prog.bind(); {
 
       // Model view and projection matrices
-      prog.setUniform( "u_mvmat", mvmat );
-      prog.setUniform( "u_mvpmat", pmat * mvmat );
+      _prog.setUniform( "u_mvmat", mvmat );
+      _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+      _prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
 
       // Material
       const Material &m = obj->getMaterial();
-      prog.setUniform( "u_mat_amb", m.getAmb() );
-      prog.setUniform( "u_mat_dif", m.getDif() );
-      prog.setUniform( "u_mat_spc", m.getSpc() );
-      prog.setUniform( "u_mat_shi", m.getShininess() );
+      _prog.setUniform( "u_mat_amb", m.getAmb() );
+      _prog.setUniform( "u_mat_dif", m.getDif() );
+      _prog.setUniform( "u_mat_spc", m.getSpc() );
+      _prog.setUniform( "u_mat_shi", m.getShininess() );
 
       // Normal map
-      prog.setUniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
+      _prog.setUniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
 
       // Get vertex and texture attrib locations
-      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
-      GL::AttributeLocation tex_loc = prog.getAttributeLocation( "in_tex" );
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation tex_loc = _prog.getAttributeLocation( "in_tex" );
 
       // Bind and draw
       _vbo.bind();
@@ -114,7 +111,7 @@ namespace GMlib {
       _vbo.disable( tex_loc );
       _vbo.unbind();
 
-    } prog.unbind();
+    } _prog.unbind();
   }
 
   template <typename T, int n>
@@ -143,7 +140,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const {
+  void PSurfDefaultVisualizer<T,n>::renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const {
 
     prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
     GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );

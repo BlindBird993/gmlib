@@ -41,7 +41,7 @@
 // gmlib
 #include <opengl/gmframebufferobject.h>
 #include <opengl/gmrenderbufferobject.h>
-#include <opengl/glsl/gmglprogram.h>
+#include <opengl/gmprogram.h>
 
 
 namespace GMlib {
@@ -65,6 +65,7 @@ namespace GMlib {
     void                        select(DisplayObject* obj, const Camera* cam, int what) const;
 
   private:
+    GL::Program                 _prog;
     GL::FramebufferObject       _fbo;
     GL::RenderbufferObject      _rbo_color;
     GL::RenderbufferObject      _rbo_depth;
@@ -82,25 +83,24 @@ namespace GMlib {
 
     if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
 
-      const GL::GLProgram prog("select");
-      prog.bind(); {
+      _prog.bind(); {
 
-        prog.setUniform( "u_color", Color( obj->getVirtualName()) );
+        _prog.setUniform( "u_color", Color( obj->getVirtualName()) );
 
         if(obj->isCollapsed()) {
 
-          VisualizerStdRep::getInstance()->renderGeometry(prog,obj,cam);
+          VisualizerStdRep::getInstance()->renderGeometry(_prog,obj,cam);
         }
         else {
 
           const Array<Visualizer*>& visus = obj->getVisualizers();
           for( int i = 0; i < visus.getSize(); ++i )
-            visus(i)->renderGeometry(prog,obj,cam);
+            visus(i)->renderGeometry(_prog,obj,cam);
 
           obj->localSelect(cam);
         }
 
-      } prog.unbind();
+      } _prog.unbind();
     }
   }
 

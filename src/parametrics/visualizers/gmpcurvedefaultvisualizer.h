@@ -33,6 +33,9 @@
 
 #include "gmpcurvevisualizer.h"
 
+// gmlib
+#include <opengl/gmprogram.h>
+
 
 namespace GMlib {
 
@@ -44,12 +47,13 @@ namespace GMlib {
     PCurveDefaultVisualizer( const PCurveDefaultVisualizer<T,n>& copy );
 
     void          render(const DisplayObject* obj, const Camera *cam) const;
-    void          renderGeometry( const GL::GLProgram &prog, const DisplayObject* obj, const Camera* cam ) const;
+    void          renderGeometry( const GL::Program &prog, const DisplayObject* obj, const Camera* cam ) const;
 
     virtual void  replot( const DVector< DVector< Vector<T, n> > >& p,
                           int m, int d, bool closed );
 
   protected:
+    GL::Program               _prog;
     GL::VertexBufferObject    _vbo;
     unsigned int              _no_vertices;
     GLfloat                   _line_width;

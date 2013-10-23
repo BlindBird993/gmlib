@@ -41,7 +41,7 @@
 #include "gmsceneobject.h"
 
 // gmlib
-#include <opengl/glsl/gmglprogram.h>
+#include <opengl/gmprogram.h>
 
 // stl
 #include <string>

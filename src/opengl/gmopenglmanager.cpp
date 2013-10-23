@@ -22,9 +22,6 @@
 
 #include "gmopenglmanager.h"
 
-// local
-#include "glsl/gmglshadermanager.h"
-
 // stl
 #include <cassert>
 
@@ -33,12 +30,13 @@ namespace GMlib {
 namespace GL {
 
 
-  void OpenGLManager::cleanUp() {
+  bool OpenGLManager::_initialized = false;
 
-    GLShaderManager::cleanUp();
-  }
 
   void OpenGLManager::init() {
+
+    assert(!_initialized);
+    _initialized = true;
 
     // Init GLEW
     glewExperimental = true;
@@ -48,8 +46,6 @@ namespace GL {
     else
       std::cout << "GLEW Init FAILED!!" << std::endl;
     std::cout << std::flush;
-
-    GLShaderManager::init();
 
     initSystemWideBuffers();
     initSystemWideShadersAndPrograms();
@@ -226,15 +222,15 @@ namespace GL {
         );
 
 
-    _vs_default.create();
+    _vs_default.create("default_vs");
     _vs_default.setSource(vs_src);
     assert(_vs_default.compile());
 
-    _fs_default.create();
+    _fs_default.create("default_fs");
     _fs_default.setSource(fs_src);
     assert(_fs_default.compile()) ;
 
-    _prog_default.create();
+    _prog_default.create("default");
     _prog_default.attachShader(_vs_default);
     _prog_default.attachShader(_fs_default);
     assert(_prog_default.link());
@@ -322,15 +318,15 @@ namespace GL {
     );
 
 
-    _vs_phong.create();
+    _vs_phong.create("phong_vs");
     _vs_phong.setSource(vs_str);
     assert(_vs_phong.compile());
 
-    _fs_phong.create();
+    _fs_phong.create("phong_fs");
     _fs_phong.setSource(fs_str);
     assert( _fs_phong.compile() );
 
-    _prog_phong.create();
+    _prog_phong.create("phong");
     _prog_phong.attachShader( _vs_phong );
     _prog_phong.attachShader( _fs_phong );
     assert( _prog_phong.link() );
@@ -374,15 +370,15 @@ namespace GL {
           );
 
 
-    _vs_color.create();
+    _vs_color.create("color_vs");
     _vs_color.setSource(vs_src);
     assert(_vs_color.compile());
 
-    _fs_color.create();
+    _fs_color.create("color_fs");
     _fs_color.setSource(fs_src);
     assert(_fs_color.compile()) ;
 
-    _prog_color.create();
+    _prog_color.create("color");
     _prog_color.attachShader(_vs_color);
     _prog_color.attachShader(_fs_color);
     assert(_prog_color.link());
@@ -426,15 +422,15 @@ namespace GL {
           "} \n"
           );
 
-    _vs_select.create();
+    _vs_select.create("select_vs");
     _vs_select.setSource(vs_src);
     assert(_vs_select.compile());
 
-    _fs_select.create();
+    _fs_select.create("select_fs");
     _fs_select.setSource(fs_src);
     assert(_fs_select.compile()) ;
 
-    _prog_select.create();
+    _prog_select.create("select");
     _prog_select.attachShader(_vs_select);
     _prog_select.attachShader(_fs_select);
     assert(_prog_select.link());
@@ -539,15 +535,15 @@ namespace GL {
           );
 
 
-    _vs_render.create();
+    _vs_render.create("render_vs");
     _vs_render.setSource(vs_src);
     assert(_vs_render.compile());
 
-    _fs_render.create();
+    _fs_render.create("render_fs");
     _fs_render.setSource(fs_src);
     assert(_fs_render.compile()) ;
 
-    _prog_render.create();
+    _prog_render.create("render");
     _prog_render.attachShader(_vs_render);
     _prog_render.attachShader(_fs_render);
     assert(_prog_render.link());
@@ -587,15 +583,15 @@ namespace GL {
           "} \n"
           );
 
-    _vs_render_select.create();
+    _vs_render_select.create("render_select_vs");
     _vs_render_select.setSource(vs_src);
     assert(_vs_render_select.compile());
 
-    _fs_render_select.create();
+    _fs_render_select.create("render_select_fs");
     _fs_render_select.setSource(fs_src);
     assert(_fs_render_select.compile()) ;
 
-    _prog_render_select.create();
+    _prog_render_select.create("render_select");
     _prog_render_select.attachShader(_vs_render_select);
     _prog_render_select.attachShader(_fs_render_select);
     assert(_prog_render_select.link());
@@ -642,15 +638,15 @@ namespace GL {
           "}\n"
           );
 
-    _vs_pcurve_contours.create();
+    _vs_pcurve_contours.create("pcurve_contours_vs");
     _vs_pcurve_contours.setSource(vs_src);
     assert(_vs_pcurve_contours.compile());
 
-    _fs_pcurve_contours.create();
+    _fs_pcurve_contours.create("pcurve_contours_fs");
     _fs_pcurve_contours.setSource(fs_src);
     assert(_fs_pcurve_contours.compile()) ;
 
-    _prog_pcurve_contours.create();
+    _prog_pcurve_contours.create("pcurve_contours");
     _prog_pcurve_contours.attachShader(_vs_pcurve_contours);
     _prog_pcurve_contours.attachShader(_fs_pcurve_contours);
     assert(_prog_pcurve_contours.link());
@@ -730,15 +726,15 @@ namespace GL {
       "}\n"
     );
 
-    _vs_psurf_phong_nmap.create();
+    _vs_psurf_phong_nmap.create("psurf_phong_nmap_vs");
     _vs_psurf_phong_nmap.setSource(vs_src);
     assert(_vs_psurf_phong_nmap.compile());
 
-    _fs_psurf_phong_nmap.create();
+    _fs_psurf_phong_nmap.create("psurf_phong_nmap_fs");
     _fs_psurf_phong_nmap.setSource(fs_src);
     assert(_fs_psurf_phong_nmap.compile()) ;
 
-    _prog_psurf_phong_nmap.create();
+    _prog_psurf_phong_nmap.create("psurf_phong_nmap");
     _prog_psurf_phong_nmap.attachShader(_vs_psurf_phong_nmap);
     _prog_psurf_phong_nmap.attachShader(_fs_psurf_phong_nmap);
     assert(_prog_psurf_phong_nmap.link());
@@ -836,15 +832,15 @@ namespace GL {
       "}\n"
     );
 
-    _vs_psurf_phong_nmap_ptex.create();
+    _vs_psurf_phong_nmap_ptex.create("psurf_phong_nmap_ptex_vs");
     _vs_psurf_phong_nmap_ptex.setSource(vs_src);
     assert(_vs_psurf_phong_nmap_ptex.compile());
 
-    _fs_psurf_phong_nmap_ptex.create();
+    _fs_psurf_phong_nmap_ptex.create("psurf_phong_nmap_ptex_fs");
     _fs_psurf_phong_nmap_ptex.setSource(fs_src);
     assert(_fs_psurf_phong_nmap_ptex.compile()) ;
 
-    _prog_psurf_phong_nmap_ptex.create();
+    _prog_psurf_phong_nmap_ptex.create("psurf_phong_nmap_ptex");
     _prog_psurf_phong_nmap_ptex.attachShader(_vs_psurf_phong_nmap_ptex);
     _prog_psurf_phong_nmap_ptex.attachShader(_fs_psurf_phong_nmap_ptex);
     assert(_prog_psurf_phong_nmap_ptex.link());
@@ -926,15 +922,15 @@ namespace GL {
       "}\n"
     );
 
-    _vs_psurf_contours.create();
+    _vs_psurf_contours.create("psurf_contours_vs");
     _vs_psurf_contours.setSource(vs_src);
     assert(_vs_psurf_contours.compile());
 
-    _fs_psurf_contours.create();
+    _fs_psurf_contours.create("psurf_contours_fs");
     _fs_psurf_contours.setSource(fs_src);
     assert(_fs_psurf_contours.compile()) ;
 
-    _prog_psurf_contours.create();
+    _prog_psurf_contours.create("psurf_contours");
     _prog_psurf_contours.attachShader(_vs_psurf_contours);
     _prog_psurf_contours.attachShader(_fs_psurf_contours);
     assert(_prog_psurf_contours.link());

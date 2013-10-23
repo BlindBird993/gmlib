@@ -33,6 +33,7 @@
 #include <core/utils/gmcolor.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 #include <opengl/bufferobjects/gmindexbufferobject.h>
+#include <opengl/gmprogram.h>
 
 
 namespace GMlib {
@@ -46,12 +47,14 @@ namespace GMlib {
     SelectorVisualizer( int m1, int m2, float radius = 0.27, Material mat = GMmaterial::Jade );
 
     void                          render( const DisplayObject* obj, const Camera* cam ) const;
-    void                          renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const;
+    void                          renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
 
     static SelectorVisualizer*    getInstance();
 
   private:
     void                          makeGeometry( float radius, int m1, int m2 );
+
+    GL::Program                   _prog;
 
     // Cube buffer objects
     GL::VertexBufferObject        _vbo;

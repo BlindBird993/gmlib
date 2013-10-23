@@ -27,8 +27,6 @@
 
 // gmlib
 #include <opengl/gmopengl.h>
-#include <opengl/glsl/gmglprogram.h>
-#include <opengl/glsl/gmglshadermanager.h>
 #include <scene/gmscene.h>
 #include <scene/camera/gmcamera.h>
 #include <scene/light/gmlight.h>
@@ -45,14 +43,14 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer()
   : _no_strips(0), _no_strip_indices(0), _strip_size(0),
     _mat(GMmaterial::BlackRubber) {
 
+  _prog.acquire("psurf_phong_nmap_ptex");
+
   _vbo.create();
   _ibo.create();
   _lights_ubo.acquire("lights_ubo");
   _nmap.create(GL_TEXTURE_2D);
   _ptex_u.create(GL_TEXTURE_2D);
   _ptex_v.create(GL_TEXTURE_2D);
-
-  this->setRenderProgram( GL::GLProgram("psurf_phong_nmap_ptex") );
 }
 
 template <typename T, int n>
@@ -60,14 +58,14 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer(const PSurfParamLinesV
   : _no_strips(0), _no_strip_indices(0), _strip_size(0),
     _mat(copy._mat) {
 
+  _prog.acquire("psurf_phong_nmap_ptex");
+
   _vbo.create();
   _ibo.create();
   _lights_ubo.acquire("lights_ubo");
   _nmap.create(GL_TEXTURE_2D);
   _ptex_u.create(GL_TEXTURE_2D);
   _ptex_v.create(GL_TEXTURE_2D);
-
-  this->setRenderProgram( GL::GLProgram("psurf_phong_nmap_ptex") );
 }
 
 template <typename T, int n>
@@ -78,36 +76,35 @@ void PSurfParamLinesVisualizer<T,n>::render( const DisplayObject* obj, const Cam
 
   this->glSetDisplayMode();
 
-  const GL::GLProgram &prog = this->getRenderProgram();
-  prog.bind(); {
+  _prog.bind(); {
 
     // Model view and projection matrices
-    prog.setUniform( "u_mvmat", mvmat );
-    prog.setUniform( "u_mvpmat", pmat * mvmat );
+    _prog.setUniform( "u_mvmat", mvmat );
+    _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
     // Lights
-    prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+    _prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
 
     // Base material
-    prog.setUniform( "u_mat_amb", obj->getMaterial().getAmb() );
-    prog.setUniform( "u_mat_dif", obj->getMaterial().getDif() );
-    prog.setUniform( "u_mat_spc", obj->getMaterial().getSpc() );
-    prog.setUniform( "u_mat_shi", obj->getMaterial().getShininess() );
+    _prog.setUniform( "u_mat_amb", obj->getMaterial().getAmb() );
+    _prog.setUniform( "u_mat_dif", obj->getMaterial().getDif() );
+    _prog.setUniform( "u_mat_spc", obj->getMaterial().getSpc() );
+    _prog.setUniform( "u_mat_shi", obj->getMaterial().getShininess() );
 
     // Line Material
-    prog.setUniform( "u_mat_line_amb", _mat.getAmb() );
-    prog.setUniform( "u_mat_line_dif", _mat.getDif() );
-    prog.setUniform( "u_mat_line_spc", _mat.getSpc() );
-    prog.setUniform( "u_mat_line_shi", _mat.getShininess() );
+    _prog.setUniform( "u_mat_line_amb", _mat.getAmb() );
+    _prog.setUniform( "u_mat_line_dif", _mat.getDif() );
+    _prog.setUniform( "u_mat_line_spc", _mat.getSpc() );
+    _prog.setUniform( "u_mat_line_shi", _mat.getShininess() );
 
     // Normal map
-    prog.setUniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
-    prog.setUniform( "u_ptex_u", _ptex_u, (GLenum)GL_TEXTURE1, 1 );
-    prog.setUniform( "u_ptex_v", _ptex_v, (GLenum)GL_TEXTURE2, 2 );
+    _prog.setUniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
+    _prog.setUniform( "u_ptex_u", _ptex_u, (GLenum)GL_TEXTURE1, 1 );
+    _prog.setUniform( "u_ptex_v", _ptex_v, (GLenum)GL_TEXTURE2, 2 );
 
     // Get vertex and texture attrib locations
-    GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
-    GL::AttributeLocation tex_loc = prog.getAttributeLocation( "in_tex" );
+    GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
+    GL::AttributeLocation tex_loc = _prog.getAttributeLocation( "in_tex" );
 
     // Bind and draw
     _vbo.bind();
@@ -120,7 +117,7 @@ void PSurfParamLinesVisualizer<T,n>::render( const DisplayObject* obj, const Cam
     _vbo.disable( tex_loc );
     _vbo.unbind();
 
-  } prog.unbind();
+  } _prog.unbind();
 }
 
 template <typename T, int n>

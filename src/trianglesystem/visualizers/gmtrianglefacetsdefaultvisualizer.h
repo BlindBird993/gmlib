@@ -36,6 +36,7 @@
 // gmlib
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 #include <opengl/bufferobjects/gmindexbufferobject.h>
+#include <opengl/gmprogram.h>
 
 
 namespace GMlib {
@@ -51,11 +52,13 @@ namespace GMlib {
 
     /* virtual from TriangleFacetsVisualizer */
     void          render(const DisplayObject *obj, const Camera *cam) const;
-    void          renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const;
+    void          renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
 
     void          replot(TriangleFacets<T> *tf);
 
   private:
+    GL::Program                   _prog;
+
     GL::VertexBufferObject        _vbo;
     GL::IndexBufferObject         _ibo;
     GL::UniformBufferObject       _lights_ubo;

@@ -25,6 +25,8 @@
 /*! \file gmselectorgridvisualizer.c
  */
 
+#include "gmselectorgridvisualizer.h"
+
 #include "../selector/gmselector.h"
 
 namespace GMlib {
@@ -33,7 +35,7 @@ namespace GMlib {
   template <typename T>
   SelectorGridVisualizer<T>::SelectorGridVisualizer() : _vbo(), _ibo(), _no_indices(0) {
 
-    setRenderProgram( GL::GLProgram("color") );
+    _prog.acquire("color");
   }
 
 
@@ -58,15 +60,14 @@ namespace GMlib {
 
     const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.bind(); {
+    _prog.bind(); {
 
-      prog.setUniform( "u_mvpmat", mvpmat );
+      _prog.setUniform( "u_mvpmat", mvpmat );
 
-      prog.setUniform( "u_color", GMcolor::LightGreen );
-      prog.setUniform( "u_selected", false );
+      _prog.setUniform( "u_color", GMcolor::LightGreen );
+      _prog.setUniform( "u_selected", false );
 
-      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
       _vbo.bind();
       _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
@@ -78,7 +79,7 @@ namespace GMlib {
       _vbo.disable( vert_loc );
       _vbo.unbind();
 
-    } prog.unbind();
+    } _prog.unbind();
   }
 
   template <typename T>

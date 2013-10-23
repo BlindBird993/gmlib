@@ -28,12 +28,15 @@
  */
 
 
+#include "gmpcurvedefaultvisualizer.h"
+
 namespace GMlib {
 
   template <typename T, int n>
   PCurveDefaultVisualizer<T,n>::PCurveDefaultVisualizer()
     : _no_vertices(0), _line_width(3.0f) {
 
+    _prog.acquire("color");
     _vbo.create();
   }
 
@@ -51,15 +54,14 @@ namespace GMlib {
     // GL States
     glLineWidth( _line_width );
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.bind(); {
+    _prog.bind(); {
 
       // Model view and projection matrices
-      prog.setUniform( "u_mvpmat", mvpmat );
-      prog.setUniform( "u_color", obj->getColor() );
+      _prog.setUniform( "u_mvpmat", mvpmat );
+      _prog.setUniform( "u_color", obj->getColor() );
 
       // Vertex attribute location
-      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
       // Bind and draw
       _vbo.bind();
@@ -68,7 +70,7 @@ namespace GMlib {
       _vbo.disable( vert_loc );
       _vbo.unbind();
 
-    } prog.unbind();
+    } _prog.unbind();
   }
 
   template <typename T, int n>
@@ -81,7 +83,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::renderGeometry( const GL::GLProgram &prog, const DisplayObject* obj, const Camera* cam ) const {
+  void PCurveDefaultVisualizer<T,n>::renderGeometry( const GL::Program &prog, const DisplayObject* obj, const Camera* cam ) const {
 
     prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
     GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );

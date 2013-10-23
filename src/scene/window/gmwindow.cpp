@@ -114,8 +114,6 @@ namespace GMlib {
       removeLight(light);
       delete light;
     }
-
-    GL::OpenGLManager::cleanUp();
   }
 
 

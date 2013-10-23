@@ -38,6 +38,8 @@
 #include <core/containers/gmdvector.h>
 #include <core/containers/gmdmatrix.h>
 #include <core/utils/gmcolor.h>
+#include <opengl/gmprogram.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
 
 
 namespace GMlib {
@@ -71,6 +73,8 @@ namespace GMlib {
     void                              setSize( double size = 1.0 );
 
   protected:
+    GL::Program                       _prog;
+
     GL::VertexBufferObject            _vbo;
     int                               _no_elements;
 

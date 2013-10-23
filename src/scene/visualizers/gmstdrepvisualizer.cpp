@@ -43,11 +43,11 @@ namespace GMlib {
 
   VisualizerStdRep::VisualizerStdRep() {
 
+    assert(_prog.acquire("color"));
+
     _bo_cube.acquire("std_rep_cube");
     _bo_cube_indices.acquire("std_rep_cube_indices");
     _bo_cube_frame_indices.acquire("std_rep_frame_indices");
-
-    setRenderProgram( GL::GLProgram( "color" ) );
   }
 
   void VisualizerStdRep::render( const DisplayObject* obj, const Camera* cam) const {
@@ -64,7 +64,7 @@ namespace GMlib {
     return _s_instance;
   }
 
-  void VisualizerStdRep::renderGeometry( const GL::GLProgram &prog, const DisplayObject* obj, const Camera* cam ) const {
+  void VisualizerStdRep::renderGeometry( const GL::Program &prog, const DisplayObject* obj, const Camera* cam ) const {
 
     prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
     GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
@@ -83,14 +83,12 @@ namespace GMlib {
 
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 
+    _prog.bind();
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.bind();
+    _prog.setUniform( "u_mvmat", mvmat );
+    _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
-    prog.setUniform( "u_mvmat", mvmat );
-    prog.setUniform( "u_mvpmat", pmat * mvmat );
-
-    GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
+    GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
     Color blend_color = GMcolor::LightGrey;
     blend_color.setAlpha( 0.5 );
@@ -103,17 +101,17 @@ namespace GMlib {
       const GLsizei frame_stride = 2 * sizeof(GLushort);
 
       glLineWidth( 2.0f );
-      prog.setUniform( "u_color", GMcolor::Red );
+      _prog.setUniform( "u_color", GMcolor::Red );
       glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(0x0) );
 
-      prog.setUniform( "u_color", GMcolor::Green );
+      _prog.setUniform( "u_color", GMcolor::Green );
       glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(frame_stride) );
 
-      prog.setUniform( "u_color", GMcolor::Blue );
+      _prog.setUniform( "u_color", GMcolor::Blue );
       glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(2*frame_stride) );
 
       glLineWidth( 1.0f );
-      prog.setUniform( "u_color", GMcolor::LightGrey );
+      _prog.setUniform( "u_color", GMcolor::LightGrey );
       glDrawElements( GL_LINES, 18, GL_UNSIGNED_SHORT, (const GLvoid*)(3*frame_stride) );
 
     } _bo_cube_frame_indices.unbind();
@@ -123,7 +121,7 @@ namespace GMlib {
     ::glEnable( GL_BLEND ); {
 
       glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-      prog.setUniform( "u_color", blend_color );
+      _prog.setUniform( "u_color", blend_color );
       _bo_cube_indices.bind();
         glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
       _bo_cube_indices.unbind();

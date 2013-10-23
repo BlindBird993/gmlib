@@ -39,20 +39,24 @@ namespace GMlib {
     : _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
       _mat(mat) {
 
+    _prog.acquire("phong");
+
     _vbo.create();
     _ibo.create();
     _lights_ubo.acquire( "lights_ubo" );
 
-    setRenderProgram( GL::GLProgram( "phong" ) );
     makeGeometry( r, 10, 10 );
   }
 
   SelectorVisualizer::SelectorVisualizer(int m1, int m2, float r, Material mat)
-    : _vbo(), _ibo(),
-      _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
+    : _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
       _mat(mat) {
 
-    setRenderProgram( GL::GLProgram( "phong" ) );
+    _prog.acquire("phong");
+
+    _vbo.create();
+    _ibo.create();
+
     makeGeometry( r, m1, m2 );
   }
 
@@ -61,25 +65,24 @@ namespace GMlib {
     const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
     const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.bind(); {
+    _prog.bind(); {
 
       // Model view and projection matrices
-      prog.setUniform( "u_mvmat", mvmat );
-      prog.setUniform( "u_mvpmat", pmat * mvmat );
+      _prog.setUniform( "u_mvmat", mvmat );
+      _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+      _prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
 
       // Material data
-      prog.setUniform( "u_mat_amb", _mat.getAmb() );
-      prog.setUniform( "u_mat_dif", _mat.getDif() );
-      prog.setUniform( "u_mat_spc", _mat.getSpc() );
-      prog.setUniform( "u_mat_shi", _mat.getShininess() );
+      _prog.setUniform( "u_mat_amb", _mat.getAmb() );
+      _prog.setUniform( "u_mat_dif", _mat.getDif() );
+      _prog.setUniform( "u_mat_spc", _mat.getSpc() );
+      _prog.setUniform( "u_mat_shi", _mat.getShininess() );
 
       // Shader attribute locations
-      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
-      GL::AttributeLocation normal_loc = prog.getAttributeLocation( "in_normal" );
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation normal_loc = _prog.getAttributeLocation( "in_normal" );
 
       // Bind and draw
       _vbo.bind();
@@ -98,7 +101,7 @@ namespace GMlib {
       _vbo.disable( vert_loc );
       _vbo.unbind();
 
-    } prog.unbind();
+    } _prog.unbind();
   }
 
   SelectorVisualizer *SelectorVisualizer::getInstance() {
@@ -235,7 +238,7 @@ namespace GMlib {
 
   }
 
-  void SelectorVisualizer::renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const {
+  void SelectorVisualizer::renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const {
 
     prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
     GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );

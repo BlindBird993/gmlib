@@ -36,6 +36,7 @@
 #include <core/containers/gmarray.h>
 #include <core/types/gmpoint.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <opengl/gmprogram.h>
 
 namespace GMlib {
 
@@ -83,7 +84,7 @@ namespace GMlib {
     friend class GMWindow;
 
     int                               _vp_w; // ViewPort size ( Width )
-    int                               _vp_h;	// Viewport size ( height )
+    int                               _vp_h;  // Viewport size ( height )
     Array<Camera*>                    _cameras;
     Array<ViewBorder*>                _borders;
     View                              _root;
@@ -99,12 +100,12 @@ namespace GMlib {
     Camera*                           operator[](int i);
 
   private:
-    bool 					find(int x, int y, Camera*& cam);
-    bool 					insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically=true, double d=0.5);
-    void 					moveBorder(int x, int y);
-    void 					removeCamera(int i);
-    void 					reset();
-    void 					setBorderColor(const Color& bc);
+    bool           find(int x, int y, Camera*& cam);
+    bool           insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically=true, double d=0.5);
+    void           moveBorder(int x, int y);
+    void           removeCamera(int i);
+    void           reset();
+    void           setBorderColor(const Color& bc);
 
   }; // END class ViewSet
 
@@ -145,9 +146,9 @@ namespace GMlib {
 
 
   /*! Point<int,2> ViewSet::getViewPortSize()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   Point<int,2> ViewSet::getViewPortSize() {
@@ -162,11 +163,11 @@ namespace GMlib {
   }
 
   /*! bool ViewSet::operator<(const ViewSet& viewset) const
-   *	\brief DUMMY!!
+   *  \brief DUMMY!!
    *
-   *	Pending Documentation
+   *  Pending Documentation
    *
-   *	\todo Remove if not needed!
+   *  \todo Remove if not needed!
    */
   inline
   bool ViewSet::operator < ( const ViewSet& /* viewset */ ) const {
@@ -176,9 +177,9 @@ namespace GMlib {
 
 
   /*! void ViewSet::_drawBorder()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewSet::drawBorder() {
@@ -186,7 +187,8 @@ namespace GMlib {
     if( _no_borders > 0 ) {
 
 
-      GL::GLProgram prog( "color" );
+      GL::Program prog;
+      prog.acquire("color");
 
       prog.setUniform( "u_color", _border_color );
 
@@ -207,9 +209,9 @@ namespace GMlib {
 
 
   /*! bool ViewSet::_insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_verticaly, double d)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool ViewSet::insertCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d) {
@@ -234,9 +236,9 @@ namespace GMlib {
 
 
   /*! void ViewSet::_moveBorder(int x, int y)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewSet::moveBorder(int x, int y) {
@@ -249,9 +251,9 @@ namespace GMlib {
 
 
   /*! void ViewSet::_prepare(int w, int h)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewSet::prepare(int w, int h) {
@@ -264,9 +266,9 @@ namespace GMlib {
 
 
   /*! void ViewSet::removeCamera(Camera* cam)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewSet::removeCamera(Camera* cam) {
@@ -282,9 +284,9 @@ namespace GMlib {
 
 
   /*! void ViewSet::_removeCamera(int i)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewSet::removeCamera(int i) {

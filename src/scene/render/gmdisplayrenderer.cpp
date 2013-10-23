@@ -48,7 +48,10 @@ namespace GMlib {
   {
 
 
-
+    // Acquire programs
+    _render_prog.acquire("render");
+    _render_select_prog.acquire("render_select");
+    _border_prog.acquire("color");
 
 
     // Create buffers

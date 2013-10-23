@@ -34,6 +34,10 @@
 
 // gmlib
 #include <core/containers/gmdmatrix.h>
+#include <opengl/gmprogram.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmindexbufferobject.h>
+
 
 namespace GMlib {
 
@@ -53,6 +57,8 @@ namespace GMlib {
     void                          update();
 
   protected:
+    GL::Program                   _prog;
+
     GL::VertexBufferObject        _vbo;
     GL::IndexBufferObject         _ibo;
     int                           _no_indices;

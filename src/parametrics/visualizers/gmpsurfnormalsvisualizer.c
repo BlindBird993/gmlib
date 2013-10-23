@@ -31,8 +31,6 @@
 #include "gmpsurfnormalsvisualizer.h"
 
 #include <opengl/gmopengl.h>
-#include <opengl/glsl/gmglprogram.h>
-#include <opengl/glsl/gmglshadermanager.h>
 
 
 namespace GMlib {
@@ -42,9 +40,8 @@ namespace GMlib {
     : _no_elements(0),_color( GMcolor::Black ),
       _size(1.0), _mode(GM_SURF_NORMALSVISUALIZER_ALL) {
 
+    _prog.acquire("color");
     _vbo.create();
-
-    this->setRenderProgram( GL::GLProgram("color") );
   }
 
   template <typename T, int n>
@@ -53,7 +50,7 @@ namespace GMlib {
       _vbo(), _no_elements(0),
       _color(copy._color), _size(copy._size), _mode(copy._mode) {
 
-    this->setRenderProgram( GL::GLProgram("color") );
+    _prog.acquire("color");
   }
 
   template <typename T, int n>
@@ -62,13 +59,12 @@ namespace GMlib {
 
     const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.bind(); {
+    _prog.bind(); {
 
-      prog.setUniform( "u_mvpmat", mvpmat );
-      prog.setUniform( "u_color", _color );
+      _prog.setUniform( "u_mvpmat", mvpmat );
+      _prog.setUniform( "u_color", _color );
 
-      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
       _vbo.bind();
       _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
@@ -79,7 +75,7 @@ namespace GMlib {
       _vbo.disable( vert_loc );
       _vbo.unbind();
 
-    } prog.unbind();
+    } _prog.unbind();
   }
 
   template <typename T, int n>

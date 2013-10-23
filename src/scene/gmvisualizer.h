@@ -33,7 +33,7 @@
 
 // gmlib
 #include <core/utils/gmcolor.h>
-#include <opengl/glsl/gmglprogram.h>
+#include <opengl/gmprogram.h>
 
 // stl
 #include <string>
@@ -71,10 +71,7 @@ namespace GMlib {
     virtual Visualizer*       makeCopy() const = 0;
 
     virtual void              render( const DisplayObject* obj, const Camera* cam ) const;
-    virtual void              renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const;
-
-    const GL::GLProgram&      getRenderProgram() const;
-    void                      setRenderProgram( const GL::GLProgram& prog );
+    virtual void              renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
 
     DISPLAY_MODE              getDisplayMode() const;
     void                      setDisplayMode( DISPLAY_MODE display_mode );
@@ -89,8 +86,6 @@ namespace GMlib {
 
   private:
     DISPLAY_MODE              _display_mode;
-
-    GL::GLProgram             _render_prog;
   };
 
 

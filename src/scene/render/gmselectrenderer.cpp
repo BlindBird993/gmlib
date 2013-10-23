@@ -44,6 +44,8 @@ namespace GMlib {
     : MultiObjectRenderer( scene )
   {
 
+    _prog.acquire("select");
+
     _fbo.create();
     _rbo_color.create();
     _rbo_depth.create();

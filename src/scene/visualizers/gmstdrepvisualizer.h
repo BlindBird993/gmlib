@@ -37,6 +37,7 @@
 #include <core/utils/gmcolor.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 #include <opengl/bufferobjects/gmindexbufferobject.h>
+#include <opengl/gmprogram.h>
 
 
 namespace GMlib {
@@ -49,7 +50,7 @@ namespace GMlib {
     VisualizerStdRep();
 
     void              render( const DisplayObject* obj, const Camera* cam ) const;
-    void              renderGeometry( const GL::GLProgram &prog, const DisplayObject* obj, const Camera* cam ) const;
+    void              renderGeometry( const GL::Program &prog, const DisplayObject* obj, const Camera* cam ) const;
 
 
     void              render( const HqMatrix<float,3>& mvmat,
@@ -59,13 +60,14 @@ namespace GMlib {
 
 
   private:
+    GL::Program               _prog;
 
     // Cube buffer objects
-    GL::VertexBufferObject   _bo_cube;
-    GL::IndexBufferObject    _bo_cube_indices;
-    GL::IndexBufferObject    _bo_cube_frame_indices;
+    GL::VertexBufferObject    _bo_cube;
+    GL::IndexBufferObject     _bo_cube_indices;
+    GL::IndexBufferObject     _bo_cube_frame_indices;
 
-    static VisualizerStdRep*    _s_instance;
+    static VisualizerStdRep*  _s_instance;
 
   }; // END class VisualizerStdRep
 

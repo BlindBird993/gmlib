@@ -35,7 +35,7 @@
 #include <core/types/gmpoint.h>
 #include <core/containers/gmarray.h>
 #include <opengl/gmopengl.h>
-#include <opengl/glsl/gmglprogram.h>
+#include <opengl/gmprogram.h>
 
 
 namespace GMlib {
@@ -53,8 +53,8 @@ namespace GMlib {
     Sphere3D( const Sphere3D& copy );
     ~Sphere3D();
 
-    void        displayColored(const GL::GLProgram& color_prog, bool selected = false );
-    void        displayShaded(const GL::GLProgram& shade_prog, bool selected = false );
+    void        displayColored(const GL::Program& color_prog, bool selected = false );
+    void        displayShaded(const GL::Program& shade_prog, bool selected = false );
     void        replot(int m1, int m2);
     void        select();
 
@@ -125,7 +125,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Sphere3D::displayColored(const GL::GLProgram& prog, bool selected ) {
+  void Sphere3D::displayColored(const GL::Program& prog, bool selected ) {
 
     prog.setUniform( "u_selected", selected );
     prog.setUniform( "u_color", GMlib::GMcolor::Blue );
@@ -153,7 +153,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Sphere3D::displayShaded(const GL::GLProgram& prog, bool selected ) {
+  void Sphere3D::displayShaded(const GL::Program& prog, bool selected ) {
 
     prog.setUniform( "u_selected", selected );
     prog.setUniform( "u_color", GMlib::GMcolor::Blue );
@@ -189,21 +189,21 @@ namespace GMlib {
   inline
   void Sphere3D::select() {
 
-    GL::AttributeLocation vert_loc = GL::GLProgram( "select" ).getAttributeLocation( "in_vertex" );
+//    GL::AttributeLocation vert_loc = GL::Program( "select" ).getAttributeLocation( "in_vertex" );
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc(), 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc() );
+//    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
+//    glVertexAttribPointer( vert_loc(), 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+//    glEnableVertexAttribArray( vert_loc() );
 
-    // Draw top and bottom caps
-    for( int i = 0; i < 2; i++ )
-      glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
+//    // Draw top and bottom caps
+//    for( int i = 0; i < 2; i++ )
+//      glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
 
-    // Draw body strips
-    for( int i = 0; i < _mid_strips; i++ )
-      glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
+//    // Draw body strips
+//    for( int i = 0; i < _mid_strips; i++ )
+//      glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
 
-    glDisableVertexAttribArray( vert_loc() );
+//    glDisableVertexAttribArray( vert_loc() );
   }
 
   /*! void Sphere3D::replot(int m1, int m2)

@@ -36,8 +36,6 @@
 #include <scene/light/gmlight.h>
 #include <scene/utils/gmmaterial.h>
 #include <opengl/gmopengl.h>
-#include <opengl/glsl/gmglprogram.h>
-#include <opengl/glsl/gmglshadermanager.h>
 
 // stl
 #include <set>

@@ -37,6 +37,7 @@
 // gmlib
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 #include <opengl/bufferobjects/gmindexbufferobject.h>
+#include <opengl/gmprogram.h>
 
 
 namespace GMlib {
@@ -48,11 +49,13 @@ namespace GMlib {
     PTriangleDefaultVisualizer();
 
     void            render(const DisplayObject *obj, const Camera *cam) const;
-    void            renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const;
+    void            renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
 
     virtual void    replot(const DVector< DVector< Vector<T,3> > >& p,int m);
 
   private:
+    GL::Program               _prog;
+
     GL::VertexBufferObject    _vbo;
     GL::IndexBufferObject     _ibo;
     GL::UniformBufferObject   _lights_ubo;

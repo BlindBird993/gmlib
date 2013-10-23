@@ -28,6 +28,7 @@
  *  Implementation of the PTriangleDefaultVisualizer template class.
  */
 
+#include "gmptriangledefaultvisualizer.h"
 
 namespace GMlib {
 
@@ -35,6 +36,8 @@ namespace GMlib {
   template <typename T, int n>
   PTriangleDefaultVisualizer<T,n>::PTriangleDefaultVisualizer()
     : _no_elements(0) {
+
+    _prog.acquire("phong");
 
     _vbo.create();
     _ibo.create();
@@ -50,25 +53,24 @@ namespace GMlib {
 
     this->glSetDisplayMode();
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.bind(); {
+    _prog.bind(); {
 
       // Model view and projection matrices
-      prog.setUniform( "u_mvmat", mvmat );
-      prog.setUniform( "u_mvpmat", pmat * mvmat );
+      _prog.setUniform( "u_mvmat", mvmat );
+      _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+      _prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
 
       // Get Material Data
       const Material &m = obj->getMaterial();
-      prog.setUniform( "u_mat_amb", m.getAmb() );
-      prog.setUniform( "u_mat_dif", m.getDif() );
-      prog.setUniform( "u_mat_spc", m.getSpc() );
-      prog.setUniform( "u_mat_shin", m.getShininess() );
+      _prog.setUniform( "u_mat_amb", m.getAmb() );
+      _prog.setUniform( "u_mat_dif", m.getDif() );
+      _prog.setUniform( "u_mat_spc", m.getSpc() );
+      _prog.setUniform( "u_mat_shin", m.getShininess() );
 
-      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
-      GL::AttributeLocation normal_loc = prog.getAttributeLocation( "in_normal" );
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation normal_loc = _prog.getAttributeLocation( "in_normal" );
 
       _vbo.bind();
       _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE,  sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
@@ -80,7 +82,7 @@ namespace GMlib {
       _vbo.disable( normal_loc );
       _vbo.unbind();
 
-    } prog.unbind();
+    } _prog.unbind();
   }
 
   template <typename T, int n>
@@ -98,7 +100,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PTriangleDefaultVisualizer<T,n>::renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const {
+  void PTriangleDefaultVisualizer<T,n>::renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const {
 
     prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
     GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );

@@ -38,13 +38,9 @@
 
 using namespace GMlib;
 
-Visualizer::Visualizer()
-  : _display_mode(DISPLAY_MODE_SHADED),
-    _render_prog("phong") {}
+Visualizer::Visualizer() : _display_mode(DISPLAY_MODE_SHADED) {}
 
-Visualizer::Visualizer( const Visualizer& copy )
-  : _display_mode(copy._display_mode),
-    _render_prog(copy._render_prog) {}
+Visualizer::Visualizer( const Visualizer& copy ) : _display_mode(copy._display_mode) {}
 
 Visualizer::~Visualizer() {}
 
@@ -58,11 +54,6 @@ Visualizer::DISPLAY_MODE Visualizer::getDisplayMode() const {
   return _display_mode;
 }
 
-const GL::GLProgram &Visualizer::getRenderProgram() const {
-
-  return _render_prog;
-}
-
 void Visualizer::glSetDisplayMode() const {
 
   if( this->_display_mode == Visualizer::DISPLAY_MODE_SHADED )
@@ -71,7 +62,7 @@ void Visualizer::glSetDisplayMode() const {
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 }
 
-void Visualizer::renderGeometry( const GL::GLProgram& prog, const DisplayObject* obj, const Camera* cam ) const {
+void Visualizer::renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const {
   GM_UNUSED(prog)
   GM_UNUSED(obj)
   GM_UNUSED(cam)
@@ -80,11 +71,6 @@ void Visualizer::renderGeometry( const GL::GLProgram& prog, const DisplayObject*
 void Visualizer::setDisplayMode( Visualizer::DISPLAY_MODE display_mode) {
 
   _display_mode = display_mode;
-}
-
-void Visualizer::setRenderProgram(const GL::GLProgram &prog) {
-
-  _render_prog = prog;
 }
 
 void Visualizer::simulate( double dt ) {

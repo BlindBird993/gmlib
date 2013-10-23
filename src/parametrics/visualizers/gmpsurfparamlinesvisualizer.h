@@ -51,6 +51,8 @@ namespace GMlib {
     );
 
   private:
+    GL::Program                 _prog;
+
     GL::VertexBufferObject      _vbo;
     GL::IndexBufferObject       _ibo;
     GL::UniformBufferObject     _lights_ubo;

@@ -43,7 +43,6 @@ addSources(
 )
 
 addSubDirectory(bufferobjects)          # <bufferobjects> sub-module
-addSubDirectory(glsl)                   # <glsl> sub-module
 addSubDirectory(shaders)                # <shaders> sub-module
 addSubDirectory(utils)                  # <utils> sub-module
 

@@ -74,18 +74,23 @@ namespace GMlib {
 
   private:
     /* Object rendering */
+    GL::Program             _render_prog;
     GL::FramebufferObject   _fbo;
     GL::Texture             _rbo_color;
     GL::Texture             _rbo_depth;
 
     /* Selection rendering */
+    GL::Program             _render_select_prog;
     GL::FramebufferObject   _fbo_select;
     GL::Texture             _rbo_select;
 
     GL::FramebufferObject   _fbo_select_depth;
     GL::Texture             _rbo_select_depth;
 
+    /* Border rendering */
+    GL::Program             _border_prog;
 
+    /* other suff */
     HqMatrix<float,3>       _ortho_mat;
     int                     _w, _h;
 
@@ -151,25 +156,24 @@ namespace GMlib {
 
     if( obj != cam && obj->isSelected()  ) {
 
-      const GL::GLProgram prog("render_select");
-      prog.bind(); {
+      _render_select_prog.bind(); {
 
-        prog.setUniform( "u_color", Color( obj->getVirtualName()) );
+        _render_select_prog.setUniform( "u_color", Color( obj->getVirtualName()) );
 
         if(obj->isCollapsed()) {
 
-          VisualizerStdRep::getInstance()->renderGeometry(prog,obj,cam);
+          VisualizerStdRep::getInstance()->renderGeometry(_render_select_prog,obj,cam);
         }
         else {
 
           const Array<Visualizer*>& visus = obj->getVisualizers();
           for( int i = 0; i < visus.getSize(); ++i )
-            visus(i)->renderGeometry(prog,obj,cam);
+            visus(i)->renderGeometry(_render_select_prog,obj,cam);
 
           obj->localSelect(cam);
         }
 
-      } prog.unbind();
+      } _render_select_prog.unbind();
     }
   }
 
@@ -208,20 +212,18 @@ namespace GMlib {
 
     // Draw scene composition
     {
-      GL::GLProgram prog( "render" );
+      _render_prog.bind();
 
-      prog.bind();
+      _render_prog.setUniform( "u_mvpmat", _ortho_mat );
+      _render_prog.setUniform( "u_tex", getRenderTexture(), (GLenum)GL_TEXTURE0, 0 );
+      _render_prog.setUniform( "u_tex_selected", getSelectTexture(), (GLenum)GL_TEXTURE1, 1 );
+      _render_prog.setUniform( "u_buf_w", float(_w) );
+      _render_prog.setUniform( "u_buf_h", float(_h) );
+  //    _render_prog.setUniform( "u_select_color", _select_color );
+      _render_prog.setUniform( "u_select_color", GMlib::GMcolor::Beige );
 
-      prog.setUniform( "u_mvpmat", _ortho_mat );
-      prog.setUniform( "u_tex", getRenderTexture(), (GLenum)GL_TEXTURE0, 0 );
-      prog.setUniform( "u_tex_selected", getSelectTexture(), (GLenum)GL_TEXTURE1, 1 );
-      prog.setUniform( "u_buf_w", float(_w) );
-      prog.setUniform( "u_buf_h", float(_h) );
-  //    prog.setUniform( "u_select_color", _select_color );
-      prog.setUniform( "u_select_color", GMlib::GMcolor::Beige );
-
-      GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
-      GL::AttributeLocation tex_coord_loc = prog.getAttributeLocation( "in_tex_coord" );
+      GL::AttributeLocation vert_loc = _render_prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation tex_coord_loc = _render_prog.getAttributeLocation( "in_tex_coord" );
 
       _quad_vbo.bind();
 
@@ -236,20 +238,19 @@ namespace GMlib {
       _quad_vbo.unbind();
 
 
-      prog.unbind();
+      _render_prog.unbind();
     }
 
     // Draw border
     {
       const ViewSet &top_view_set = window->getTopViewSet();
-      GL::GLProgram color_prog( "color" );
-      color_prog.bind();
+      _border_prog.bind();
 
-      color_prog.setUniform( "u_mvpmat", _ortho_mat );
-      color_prog.setUniform( "u_selected", false );
-      color_prog.setUniform( "u_color", top_view_set.getBorderColor() );
+      _border_prog.setUniform( "u_mvpmat", _ortho_mat );
+      _border_prog.setUniform( "u_selected", false );
+      _border_prog.setUniform( "u_color", top_view_set.getBorderColor() );
 
-      const GL::AttributeLocation vert_loc = color_prog.getAttributeLocation( "in_vertex" );
+      const GL::AttributeLocation vert_loc = _border_prog.getAttributeLocation( "in_vertex" );
       const GL::VertexBufferObject &border_vbo = top_view_set.getBorderVBO();
 
       border_vbo.bind();
@@ -261,7 +262,7 @@ namespace GMlib {
       border_vbo.disable(vert_loc);
       border_vbo.unbind();
 
-      color_prog.unbind();
+      _border_prog.unbind();
     }
 
     GL_CHECK(::glEnable(GL_DEPTH_TEST));

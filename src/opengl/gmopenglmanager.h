@@ -46,10 +46,10 @@ namespace GL {
 
     // Global
   public:
-    static void                 cleanUp();
     static void                 init();
 
-
+  private:
+    static bool                 _initialized;
 
     // System wide buffers
 

@@ -50,7 +50,7 @@ void Shader::create(const std::string &name, GLenum type) {
 
   Private::ShaderInfo info;
   info.name = name;
-  info.type = type;
+  info.type = _create_type = type;
   createObject(info);
 }
 

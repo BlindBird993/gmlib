@@ -39,7 +39,6 @@
 #include <core/containers/gmarrayt.h>
 #include <core/containers/gmarraylx.h>
 #include <core/containers/gmdmatrix.h>
-#include <opengl/glsl/gmglprogram.h>
 #include <scene/gmdisplayobject.h>
 
 
@@ -145,8 +144,6 @@ namespace GMlib {
     int	                              _dlist_name;
     GLuint                            _vbo;
     GLuint                            _ibo;
-    GL::GLProgram                     _dprog;
-    GL::GLProgram                     _sprog;
 
     Array< TriangleFacetsVisualizer<T>* >   _tf_visualizers;
     TriangleFacetsDefaultVisualizer<T>     *_default_visualizer;
@@ -255,15 +252,15 @@ namespace GMlib {
   template <typename T>
   class TSVEdge {
   public:
-	  TSVEdge();
-	  TSVEdge(const Point<T,2> &p, const Point<T,2> &q);
-	  
+    TSVEdge();
+    TSVEdge(const Point<T,2> &p, const Point<T,2> &q);
 
-	  bool operator==(const TSVEdge<T> &e) const;
-	  bool operator<(const TSVEdge<T> &e) const;
-	  Point<T,2> const &operator() (int i) const;
+
+    bool operator==(const TSVEdge<T> &e) const;
+    bool operator<(const TSVEdge<T> &e) const;
+    Point<T,2> const &operator() (int i) const;
   private:
-	  Point<T,2> _pnts[2];
+    Point<T,2> _pnts[2];
   };
 
 

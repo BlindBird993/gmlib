@@ -27,19 +27,15 @@
  *  Implementation of the PCurveVisualizer template class.
  */
 
+#include "gmpcurvevisualizer.h"
 
 // gmlib
 #include <opengl/gmopengl.h>
-#include <opengl/glsl/gmglprogram.h>
-#include <opengl/glsl/gmglshadermanager.h>
 
 namespace GMlib {
 
   template <typename T, int n>
-  PCurveVisualizer<T,n>::PCurveVisualizer() {
-
-    setRenderProgram( GL::GLProgram("color") );
-  }
+  PCurveVisualizer<T,n>::PCurveVisualizer() {}
 
   template <typename T, int n>
   PCurveVisualizer<T,n>::~PCurveVisualizer() {}

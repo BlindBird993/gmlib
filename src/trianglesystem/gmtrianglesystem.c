@@ -41,8 +41,7 @@ namespace GMlib {
   template <typename T>
   inline
   TriangleFacets<T>::TriangleFacets( int d )
-    : ArrayLX<TSVertex<T> >( d > 0 ? d+3 : 0 ), _edges(), _triangles(),
-    _dprog("default"), _sprog("select")
+    : ArrayLX<TSVertex<T> >( d > 0 ? d+3 : 0 ), _edges(), _triangles()
   {
 
     //setStreamMode();
@@ -58,8 +57,7 @@ namespace GMlib {
   template <typename T>
   inline
   TriangleFacets<T>::TriangleFacets( const ArrayLX<TSVertex<T> >& v)
-    : ArrayLX<TSVertex<T> >(v.size()+3), _edges(),_triangles(),
-    _dprog("default"), _sprog("select")
+    : ArrayLX<TSVertex<T> >(v.size()+3), _edges(),_triangles()
   {
     this->setSize(v.size());
     for(int i=0; i<v.size(); i++) (*this)[i] = v(i);
@@ -422,18 +420,18 @@ namespace GMlib {
     _triangles.clear();
     _edges.clear();
 
-	_vorpnts.clear();
-	_voredges.clear();
+  _vorpnts.clear();
+  _voredges.clear();
 
     ((ArrayLX< TSVertex<T> >*)this)->clear();
 
     if (d >= 0)
       _d = d;
 
-	if (_dlist_name) {
-		glDeleteLists(_dlist_name,1);
-		_dlist_name = 0;
-	}
+  if (_dlist_name) {
+    glDeleteLists(_dlist_name,1);
+    _dlist_name = 0;
+  }
   }
 
 
