@@ -47,11 +47,25 @@ namespace GMlib {
     _prog.acquire("select");
 
     _fbo.create();
-    _rbo_color.create();
-    _rbo_depth.create();
+    _rbo_color.create(GL_TEXTURE_2D);
+    _rbo_depth.create(GL_TEXTURE_2D);
 
-    _fbo.attachRenderbuffer( _rbo_color, GL_COLOR_ATTACHMENT0 );
-    _fbo.attachRenderbuffer( _rbo_depth, GL_DEPTH_ATTACHMENT );
+
+    // Color rbo texture
+    _rbo_color.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    _rbo_color.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    _rbo_color.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    _rbo_color.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    // Depth rbo texture
+    _rbo_depth.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    _rbo_depth.texParameteri( GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    _rbo_depth.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    _rbo_depth.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+
+    _fbo.attachTexture2D( _rbo_color,  GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
+    _fbo.attachTexture2D( _rbo_depth, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT );
   }
 
   DisplayObject *SelectRenderer::findObject(int x, int y) const {
@@ -105,8 +119,8 @@ namespace GMlib {
 
     Renderer::resize(w,h);
 
-    _rbo_color.renderbufferStorage( GL_RGB, w, h );
-    _rbo_depth.renderbufferStorage( GL_DEPTH_COMPONENT32, w, h );
+    _rbo_color.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
   }
 
 

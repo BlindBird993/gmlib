@@ -40,7 +40,7 @@
 
 // gmlib
 #include <opengl/gmframebufferobject.h>
-#include <opengl/gmrenderbufferobject.h>
+#include <opengl/gmtexture.h>
 #include <opengl/gmprogram.h>
 
 
@@ -67,8 +67,8 @@ namespace GMlib {
   private:
     GL::Program                 _prog;
     GL::FramebufferObject       _fbo;
-    GL::RenderbufferObject      _rbo_color;
-    GL::RenderbufferObject      _rbo_depth;
+    GL::Texture                 _rbo_color;
+    GL::Texture                 _rbo_depth;
   };
 
 
