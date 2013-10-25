@@ -68,6 +68,8 @@ namespace GMlib {
     void                        draw() const;
     void                        generatePTex( int m1, int m2, int s1, int s2, bool closed_u, bool closed_v );
 
+    void                        initShaderProgram();
+
   }; // END class PSurfParamLinesVisualizer
 
 } // END namespace GMlib

@@ -66,9 +66,13 @@ namespace GMlib {
 
   private:
     GL::Program                 _prog;
+
     GL::FramebufferObject       _fbo;
     GL::Texture                 _rbo_color;
     GL::Texture                 _rbo_depth;
+
+
+    void                        initSelectProgram();
   };
 
 

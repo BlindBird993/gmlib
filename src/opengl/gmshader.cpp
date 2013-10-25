@@ -36,7 +36,7 @@ typename std::list<Private::ShaderInfo> Private::GLObject<Private::ShaderInfo>::
 
 Shader::Shader() {}
 
-Shader::~Shader() { destroyObject(); }
+Shader::~Shader() { decrement(); }
 
 void Shader::create(GLenum type) {
 

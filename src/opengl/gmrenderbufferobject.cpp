@@ -33,7 +33,7 @@ typename std::list<Private::RBOInfo> Private::GLObject<Private::RBOInfo>::_data 
 
 RenderbufferObject::RenderbufferObject() {}
 
-RenderbufferObject::~RenderbufferObject() { destroyObject(); }
+RenderbufferObject::~RenderbufferObject() { decrement(); }
 
 void RenderbufferObject::create() {
 

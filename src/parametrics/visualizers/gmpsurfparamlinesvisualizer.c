@@ -43,7 +43,7 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer()
   : _no_strips(0), _no_strip_indices(0), _strip_size(0),
     _mat(GMmaterial::BlackRubber) {
 
-  _prog.acquire("psurf_phong_nmap_ptex");
+  initShaderProgram();
 
   _vbo.create();
   _ibo.create();
@@ -58,7 +58,7 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer(const PSurfParamLinesV
   : _no_strips(0), _no_strip_indices(0), _strip_size(0),
     _mat(copy._mat) {
 
-  _prog.acquire("psurf_phong_nmap_ptex");
+  initShaderProgram();
 
   _vbo.create();
   _ibo.create();
@@ -195,6 +195,116 @@ void PSurfParamLinesVisualizer<T,n>::generatePTex(int m1, int m2, int s1, int s2
   else            _ptex_u.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   if( closed_v )  _ptex_v.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   else            _ptex_v.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+}
+
+template <typename T, int n>
+void PSurfParamLinesVisualizer<T,n>::initShaderProgram() {
+
+  const std::string prog_name    = "psurf_paramlines_prog";
+  if( _prog.acquire(prog_name) ) return;
+
+
+  std::string vs_src;
+  vs_src.append( GL::OpenGLManager::glslDefHeader150Source() );
+  vs_src.append(
+    "uniform mat4 u_mvmat, u_mvpmat;\n"
+    "\n"
+    "in vec4 in_vertex;\n"
+    "in vec2 in_tex;\n"
+    "\n"
+    "out vec4 gl_Position;\n"
+    "\n"
+    "smooth out vec3 ex_pos;\n"
+    "smooth out vec2 ex_tex;\n"
+    "\n"
+    "void main() {\n"
+    "\n"
+    "  vec4 v_pos = u_mvmat * in_vertex;\n"
+    "  ex_pos = v_pos.xyz * v_pos.w;\n"
+    "\n"
+    "  ex_tex = in_tex;\n"
+    "\n"
+    "  gl_Position = u_mvpmat * in_vertex;\n"
+    "}\n"
+  );
+
+  std::string fs_src;
+  fs_src.append( GL::OpenGLManager::glslDefHeader150Source() );
+  fs_src.append( GL::OpenGLManager::glslStructMaterialSource() );
+  fs_src.append( GL::OpenGLManager::glslUniformLightsSource() );
+  fs_src.append( GL::OpenGLManager::glslFnSunlightSource() );
+  fs_src.append( GL::OpenGLManager::glslFnPointlightSource() );
+  fs_src.append( GL::OpenGLManager::glslFnSpotlightSource() );
+  fs_src.append( GL::OpenGLManager::glslFnComputeLightingSource() );
+  fs_src.append(
+    "uniform sampler2D u_nmap;\n"
+    "uniform sampler2D u_ptex_u;\n"
+    "uniform sampler2D u_ptex_v;\n"
+    "uniform mat4      u_mvmat;\n"
+    "\n"
+    "uniform vec4      u_mat_amb;\n"
+    "uniform vec4      u_mat_dif;\n"
+    "uniform vec4      u_mat_spc;\n"
+    "uniform float     u_mat_shi;\n"
+    "\n"
+    "uniform vec4      u_mat_line_amb;\n"
+    "uniform vec4      u_mat_line_dif;\n"
+    "uniform vec4      u_mat_line_spc;\n"
+    "uniform float     u_mat_line_shi;\n"
+    "\n"
+    "smooth in vec3    ex_pos;\n"
+    "smooth in vec2    ex_tex;\n"
+    "\n"
+    "out vec4 gl_FragColor;\n"
+    "\n"
+    "void main() {\n"
+    "\n"
+    "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
+    "  vec3 nmap_normal = texture( u_nmap, ex_tex.st).xyz;\n"
+    "  vec3 normal = normalize( nmat * nmap_normal );\n"
+    "\n"
+    "  float pf_u = texture( u_ptex_u, ex_tex.st ).r;\n"
+    "  float pf_v = texture( u_ptex_v, ex_tex.st ).r;\n"
+    "\n"
+    "  Material mat;\n"
+    "\n"
+    "  if( max(pf_u,pf_v) < 0.5 ) {\n"
+    "    mat.ambient   = u_mat_amb;\n"
+    "    mat.diffuse   = u_mat_dif;\n"
+    "    mat.specular  = u_mat_spc;\n"
+    "    mat.shininess = u_mat_shi;\n"
+    "  }\n"
+    "  else {\n"
+    "    mat.ambient   = u_mat_line_amb;\n"
+    "    mat.diffuse   = u_mat_line_dif;\n"
+    "    mat.specular  = u_mat_line_spc;\n"
+    "    mat.shininess = u_mat_line_shi;\n"
+    "  }\n"
+    "\n"
+    "  vec4 light_color = vec4(0.0);\n"
+    "\n"
+    "  gl_FragColor = computeLighting( mat, normal, ex_pos );\n"
+    "\n"
+    "}\n"
+  );
+
+  GL::VertexShader vshader;
+  vshader.create("psurf_paramlines_vs");
+  vshader.setPersistent(true);
+  vshader.setSource(vs_src);
+  assert(vshader.compile());
+
+  GL::FragmentShader fshader;
+  fshader.create("psurf_paramlines_fs");
+  fshader.setPersistent(true);
+  fshader.setSource(fs_src);
+  assert(fshader.compile()) ;
+
+  _prog.create(prog_name);
+  _prog.setPersistent(true);
+  _prog.attachShader(vshader);
+  _prog.attachShader(fshader);
+  assert(_prog.link());
 }
 
 } // END namespace GMlib

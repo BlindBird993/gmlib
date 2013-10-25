@@ -33,7 +33,7 @@ typename std::list<Private::BOInfo> Private::GLObject<Private::BOInfo>::_data = 
 
 BufferObject::BufferObject() {}
 
-BufferObject::~BufferObject() { destroyObject(); }
+BufferObject::~BufferObject() { decrement(); }
 
 void BufferObject::create(GLenum target, GLenum binding) {
 

@@ -35,7 +35,7 @@ FramebufferObject::FramebufferObject() {}
 
 
 
-FramebufferObject::~FramebufferObject() { destroyObject(); }
+FramebufferObject::~FramebufferObject() { decrement(); }
 
 void FramebufferObject::create() {
 

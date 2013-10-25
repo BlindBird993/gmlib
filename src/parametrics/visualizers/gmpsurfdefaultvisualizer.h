@@ -39,6 +39,8 @@
 #include <opengl/bufferobjects/gmuniformbufferobject.h>
 #include <opengl/gmtexture.h>
 #include <opengl/gmprogram.h>
+#include <opengl/shaders/gmvertexshader.h>
+#include <opengl/shaders/gmfragmentshader.h>
 
 
 
@@ -62,6 +64,7 @@ namespace GMlib {
 
   private:
     GL::Program                 _prog;
+
     GL::VertexBufferObject      _vbo;
     GL::IndexBufferObject       _ibo;
     GL::UniformBufferObject     _lights_ubo;
@@ -72,6 +75,8 @@ namespace GMlib {
     GLsizei                     _strip_size;
 
     void                        draw() const;
+
+    void                        initShaderProgram();
 
   }; // END class PSurfDefaultVisualizer
 

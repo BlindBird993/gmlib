@@ -34,7 +34,7 @@ typename std::list<Private::TextureInfo> Private::GLObject<Private::TextureInfo>
 
 Texture::Texture() {}
 
-Texture::~Texture() { destroyObject(); }
+Texture::~Texture() { decrement(); }
 
 void Texture::create(GLenum target) {
 

@@ -44,102 +44,51 @@ namespace GL {
 
   class OpenGLManager {
 
-    // Global
   public:
+
+    // init functions
     static void                 init();
+    static void                 cleanUp();
+
+    // GLSL snipet functions
+    static std::string            glslDefHeader150Source();
+    static std::string            glslStructMaterialSource();
+    static std::string            glslStructLightSource();
+    static std::string            glslUniformLightsSource();
+    static std::string            glslFnSunlightSource();
+    static std::string            glslFnPointlightSource();
+    static std::string            glslFnSpotlightSource();
+    static std::string            glslFnComputeLightingSource();
 
   private:
     static bool                 _initialized;
 
     // System wide buffers
-
-    static VertexBufferObject     _std_rep_cube;
-    static IndexBufferObject      _std_rep_cube_indices;
-    static IndexBufferObject      _std_rep_frame_indices;
-    static UniformBufferObject    _lights_ubo;
-
     static void                   initSystemWideBuffers();
 
 
     // Programs and shaders
-  public:
 
     static void                   initSystemWideShadersAndPrograms();
 
-
-    // "Default" program
-    static Program                _prog_default;
-    static VertexShader           _vs_default;
-    static FragmentShader         _fs_default;
-    static void                   initDefaultProg();
-
-
-    // "Phong" program
-    static Program                _prog_phong;
-    static VertexShader           _vs_phong;
-    static FragmentShader         _fs_phong;
+    // System wide programs/shaders
     static void                   initPhongProg();
-
-    // "Color" program
-    static Program                _prog_color;
-    static VertexShader           _vs_color;
-    static FragmentShader         _fs_color;
     static void                   initColorProg();
 
-    // "Select" program
-    static Program                _prog_select;
-    static VertexShader           _vs_select;
-    static FragmentShader         _fs_select;
-    static void                   initSelectProg();
-
-    // "Render" program
-    static Program                _prog_render;
-    static VertexShader           _vs_render;
-    static FragmentShader         _fs_render;
-    static void                   initRenderProg();
-
-    // "Render select" program
-    static Program                _prog_render_select;
-    static VertexShader           _vs_render_select;
-    static FragmentShader         _fs_render_select;
-    static void                   initRenderSelectProg();
-
-    // "PCurve: Contours" program
-    static Program                _prog_pcurve_contours;
-    static VertexShader           _vs_pcurve_contours;
-    static FragmentShader         _fs_pcurve_contours;
-    static void                   initPCurveContoursProg();
+//    // "PCurve: Contours" program
+//    static Program                _prog_pcurve_contours;
+//    static VertexShader           _vs_pcurve_contours;
+//    static FragmentShader         _fs_pcurve_contours;
+//    static void                   initPCurveContoursProg();
 
 
-    // "PSurf: Phong NMap" program
-    static Program                _prog_psurf_phong_nmap;
-    static VertexShader           _vs_psurf_phong_nmap;
-    static FragmentShader         _fs_psurf_phong_nmap;
-    static void                   initPSurfPhongNMapProg();
+//    // "PSurf: Contours" program
+//    static Program                _prog_psurf_contours;
+//    static VertexShader           _vs_psurf_contours;
+//    static FragmentShader         _fs_psurf_contours;
+//    static void                   initPSurfContours();
 
-
-    // "PSurf: Phong NMap PTex" program
-    static Program                _prog_psurf_phong_nmap_ptex;
-    static VertexShader           _vs_psurf_phong_nmap_ptex;
-    static FragmentShader         _fs_psurf_phong_nmap_ptex;
-    static void                   initPSurfPhongNMapPTexProg();
-
-
-    // "PSurf: Contours" program
-    static Program                _prog_psurf_contours;
-    static VertexShader           _vs_psurf_contours;
-    static FragmentShader         _fs_psurf_contours;
-    static void                   initPSurfContours();
-
-  private:
-    static std::string            glslFnComputeLighting();
-    static std::string            glslDefHeader150();
-    static std::string            glslStructMaterial();
-    static std::string            glslStructLight();
-    static std::string            glslUniformLights();
-    static std::string            glslFnSunlight();
-    static std::string            glslFnPointlight();
-    static std::string            glslFnSpotlight();
+  public:
 
 
 

@@ -37,7 +37,7 @@ typename std::list<Private::ProgramInfo> Private::GLObject<Private::ProgramInfo>
 
 Program::Program() {}
 
-Program::~Program() { destroyObject(); }
+Program::~Program() { decrement(); }
 
 void Program::create() {
 

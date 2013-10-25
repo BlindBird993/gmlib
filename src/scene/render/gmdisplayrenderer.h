@@ -106,6 +106,9 @@ namespace GMlib {
     CoordSysRepVisualizer   *_coord_sys_visu;
     RenderTarget            *_rt;
 
+    void                    initRenderProgram();
+    void                    initRenderSelectProgram();
+
   }; // END class DisplayRenderer
 
 

@@ -33,6 +33,11 @@
 #include "../gmscene.h"
 #include "../camera/gmcamera.h"
 
+// gmlib
+#include <opengl/shaders/gmvertexshader.h>
+#include <opengl/shaders/gmfragmentshader.h>
+#include <opengl/gmprogram.h>
+
 // stl
 #include <cassert>
 
@@ -44,7 +49,7 @@ namespace GMlib {
     : MultiObjectRenderer( scene )
   {
 
-    _prog.acquire("select");
+    initSelectProgram();
 
     _fbo.create();
     _rbo_color.create(GL_TEXTURE_2D);
@@ -104,6 +109,60 @@ namespace GMlib {
     delete [] pixels;
 
     return sel;
+  }
+
+  void SelectRenderer::initSelectProgram() {
+
+    const std::string prog_name    = "select_prog";
+    if( _prog.acquire(prog_name) ) return;
+
+    std::string vs_src(
+          "#version 150 compatibility \n"
+          "uniform mat4 u_mvpmat; \n"
+          "uniform vec4 u_color; \n"
+          "\n"
+          "in vec4 in_vertex; \n"
+          "\n"
+          "out vec4 ex_color; \n"
+          "out vec4 gl_Position; \n"
+          "\n"
+          "void main() \n"
+          "{ \n"
+          "  gl_Position = u_mvpmat * in_vertex; \n"
+          "  ex_color = u_color; \n"
+          "}\n"
+          );
+
+    std::string fs_src(
+          "#version 150 compatibility \n"
+          "\n"
+          "in vec4 ex_color; \n"
+          "\n"
+          "out vec4 gl_FragColor; \n"
+          "\n"
+          "void main() \n"
+          "{ \n"
+          "  gl_FragColor = ex_color; \n"
+          "} \n"
+          );
+
+    GL::VertexShader vshader;
+    vshader.create("select_vs");
+    vshader.setPersistent(true);
+    vshader.setSource(vs_src);
+    assert(vshader.compile());
+
+    GL::FragmentShader fshader;
+    fshader.create("select_fs");
+    fshader.setPersistent(true);
+    fshader.setSource(fs_src);
+    assert(fshader.compile()) ;
+
+    _prog.create(prog_name);
+    _prog.setPersistent(true);
+    _prog.attachShader(vshader);
+    _prog.attachShader(fshader);
+    assert(_prog.link());
   }
 
   void SelectRenderer::prepare(Array<DisplayObject *> &objs, const Camera *cam) const{

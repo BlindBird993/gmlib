@@ -48,11 +48,13 @@ namespace Private {
     std::string     name;
     GLuint          id;
     unsigned int    counter;
+    bool            persistent;
 
     GLObjectInfo() {
 
-      id      = 0;
-      counter = 1;
+      id         = 0;
+      counter    = 1;
+      persistent = false;
     }
 
     void            increment() { ++counter; }
@@ -102,6 +104,9 @@ namespace Private {
     GLuint                  getId() const;
     InfoIterC               getInfoIter() const;
 
+    bool                    isPersistent() const;
+    void                    setPersistent( bool persistent );
+
     bool                    isValid() const;
 
     GLObject&               operator = ( const GLObject& obj );
@@ -111,7 +116,7 @@ namespace Private {
 
   protected:
     void                    createObject( const T& info );
-    void                    destroyObject();
+    void                    decrement();
     InfoIter                getInfoIter();
 
     /* safe-bind */
@@ -189,6 +194,8 @@ namespace Private {
   template <typename T>
   void GLObject<T>::createObject(const T &new_info) {
 
+    assert(!_is_valid);
+
     // if exists; fetch existing
     if( new_info.name.length() > 0 && exists(new_info.name) ) {
 
@@ -210,12 +217,9 @@ namespace Private {
   }
 
   template <typename T>
-  void GLObject<T>::destroyObject() {
+  void GLObject<T>::decrement() {
 
     if( !isValid() ) return;
-
-    if( _info_iter->counter == 1 )
-      doDelete( _info_iter->id );
 
     decrement(_info_iter);
   }
@@ -230,6 +234,18 @@ namespace Private {
   typename GLObject<T>::InfoIterC GLObject<T>::getInfoIter() const {
 
     return _info_iter;
+  }
+
+  template <typename T>
+  bool GLObject<T>::isPersistent() const {
+
+    return _info_iter->persistent;
+  }
+
+  template <typename T>
+  void GLObject<T>::setPersistent( bool persistent ) {
+
+    _info_iter->persistent = persistent;
   }
 
   template <typename T>
@@ -340,8 +356,10 @@ namespace Private {
   void GLObject<T>::decrement(InfoIter itr) {
 
     itr->decrement();
-    if( itr->counter == 0 )
+    if( itr->counter == 0 && !itr->persistent) {
       _data.erase(itr);
+      doDelete( _info_iter->id );
+    }
   }
 
   template <typename T>
