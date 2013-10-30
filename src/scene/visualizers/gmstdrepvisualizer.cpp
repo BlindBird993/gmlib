@@ -45,9 +45,9 @@ namespace GMlib {
 
     assert(_prog.acquire("color"));
 
-    _bo_cube.acquire("std_rep_cube");
-    _bo_cube_indices.acquire("std_rep_cube_indices");
-    _bo_cube_frame_indices.acquire("std_rep_frame_indices");
+    assert(_bo_cube.acquire("std_rep_cube"));
+    assert(_bo_cube_indices.acquire("std_rep_cube_indices"));
+    assert(_bo_cube_frame_indices.acquire("std_rep_frame_indices"));
   }
 
   void VisualizerStdRep::render( const DisplayObject* obj, const Camera* cam) const {

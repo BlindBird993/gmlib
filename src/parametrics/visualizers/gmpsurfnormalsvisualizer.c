@@ -47,10 +47,11 @@ namespace GMlib {
   template <typename T, int n>
   PSurfNormalsVisualizer<T,n>::PSurfNormalsVisualizer(const PSurfNormalsVisualizer<T,n>& copy)
     : PSurfVisualizer<T,n>(copy),
-      _vbo(), _no_elements(0),
+      _no_elements(0),
       _color(copy._color), _size(copy._size), _mode(copy._mode) {
 
     _prog.acquire("color");
+    _vbo.create();
   }
 
   template <typename T, int n>

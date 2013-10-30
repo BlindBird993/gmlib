@@ -33,9 +33,11 @@ namespace GMlib {
 
 
   template <typename T>
-  SelectorGridVisualizer<T>::SelectorGridVisualizer() : _vbo(), _ibo(), _no_indices(0) {
+  SelectorGridVisualizer<T>::SelectorGridVisualizer() : _no_indices(0) {
 
     _prog.acquire("color");
+    _vbo.create();
+    _ibo.create();
   }
 
 
