@@ -81,20 +81,10 @@ if( GMLIB_STREAM )
   addDefinitions( GM_STREAM )
 endif()
 
-# Enable/disable debugging
-if(GMLIB_DEBUG)
-
-  # add GM_OPENGL_DEBUG definition
-  if(GMLIB_OGL_DEBUG)
-    addDefinitions( GM_GL_DEBUG )
-  endif(GMLIB_OGL_DEBUG)
-
-else(GMLIB_DEBUG)
-
-  # disable STL assertions
-  addDefinitions( NDEBUG )
-
-endif(GMLIB_DEBUG)
+# add GM_OPENGL_DEBUG definition
+if(GMLIB_OGL_DEBUG)
+  addDefinitions( GM_GL_DEBUG )
+endif(GMLIB_OGL_DEBUG)
 
 ###########
 # CXX Flags
