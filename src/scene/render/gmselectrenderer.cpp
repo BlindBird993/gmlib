@@ -146,30 +146,35 @@ namespace GMlib {
           "} \n"
           );
 
+    bool compile_ok, link_ok;
+
     GL::VertexShader vshader;
     vshader.create("select_vs");
     vshader.setPersistent(true);
     vshader.setSource(vs_src);
-    assert(vshader.compile());
+    compile_ok = vshader.compile();
+    assert(compile_ok);
 
     GL::FragmentShader fshader;
     fshader.create("select_fs");
     fshader.setPersistent(true);
     fshader.setSource(fs_src);
-    assert(fshader.compile()) ;
+    compile_ok = fshader.compile();
+    assert(compile_ok);
 
     _prog.create(prog_name);
     _prog.setPersistent(true);
     _prog.attachShader(vshader);
     _prog.attachShader(fshader);
-    assert(_prog.link());
+    link_ok = _prog.link();
+    assert(link_ok);
   }
 
   void SelectRenderer::prepare(Array<DisplayObject *> &objs, const Camera *cam) const{
 
-    cam->applyViewport();
-
     assert( _scene );
+
+    cam->applyViewport();
     objs.resetSize();
     _scene->getDisplayableObjects(objs, cam);
   }

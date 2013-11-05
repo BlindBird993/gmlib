@@ -270,23 +270,28 @@ namespace GMlib {
           "}\n"
           );
 
+    bool compile_ok, link_ok;
+
     GL::VertexShader vshader;
     vshader.create("render_vs");
     vshader.setPersistent(true);
     vshader.setSource(vs_src);
-    assert(vshader.compile());
+    compile_ok = vshader.compile();
+    assert(compile_ok);
 
     GL::FragmentShader fshader;
     fshader.create("render_fs");
     fshader.setPersistent(true);
     fshader.setSource(fs_src);
-    assert(fshader.compile()) ;
+    compile_ok = fshader.compile();
+    assert(compile_ok);
 
     _render_prog.create(prog_name);
     _render_prog.setPersistent(true);
     _render_prog.attachShader(vshader);
     _render_prog.attachShader(fshader);
-    assert(_render_prog.link());
+    link_ok = _render_prog.link();
+    assert(link_ok);
   }
 
   void DisplayRenderer::initRenderSelectProgram() {
@@ -321,23 +326,29 @@ namespace GMlib {
           "} \n"
           );
 
+    bool compile_ok, link_ok;
+
     GL::VertexShader vshader;
     vshader.create("render_select_vs");
     vshader.setPersistent(true);
     vshader.setSource(vs_src);
-    assert(vshader.compile());
+    compile_ok = vshader.compile();
+    assert(compile_ok);
 
     GL::FragmentShader fshader;
     fshader.create("render_select_fs");
     fshader.setPersistent(true);
     fshader.setSource(fs_src);
-    assert(fshader.compile()) ;
+    compile_ok = fshader.compile();
+    assert(compile_ok);
 
     _render_select_prog.create(prog_name);
     _render_select_prog.setPersistent(true);
     _render_select_prog.attachShader(vshader);
     _render_select_prog.attachShader(fshader);
-    assert(_render_select_prog.link());
+    link_ok = _render_select_prog.link();
+    assert(link_ok);
+
   }
 
   void DisplayRenderer::resize(int w, int h) {
@@ -359,6 +370,7 @@ namespace GMlib {
   void DisplayRenderer::setRenderTarget(RenderTarget *rt) {
 
     assert( rt );
+
     delete _rt;
     _rt = rt;
   }

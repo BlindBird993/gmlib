@@ -97,11 +97,12 @@ namespace GMlib {
 
   void MultiObjectRenderer::prepare(Array<DisplayObject *> &objs, Camera *cam) const {
 
+    assert( _scene );
+
     // Compute frustum/frustum-matrix, set glViewport
     cam->setupDisplay();
 
     // Get displayable objects
-    assert( _scene );
     objs.resetSize();
     _scene->getDisplayableObjects( objs, cam );
   }

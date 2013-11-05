@@ -180,25 +180,29 @@ namespace GL {
       "}\n"
     );
 
+    bool compile_ok, link_ok;
 
     VertexShader vshader;
     vshader.create("phong_vs");
     vshader.setPersistent(true);
     vshader.setSource(vs_str);
-    assert(vshader.compile());
+    compile_ok = vshader.compile();
+    assert(compile_ok);
 
     FragmentShader fshader;
     fshader.create("phong_fs");
     fshader.setPersistent(true);
     fshader.setSource(fs_str);
-    assert( fshader.compile() );
+    compile_ok = fshader.compile();
+    assert(compile_ok);
 
     Program phong_prog;
     phong_prog.create("phong");
     phong_prog.setPersistent(true);
     phong_prog.attachShader( vshader );
     phong_prog.attachShader( fshader );
-    assert( phong_prog.link() );
+    link_ok = phong_prog.link();
+    assert(link_ok);
   }
 
 
@@ -238,25 +242,29 @@ namespace GL {
           "}\n"
           );
 
+    bool compile_ok, link_ok;
 
     VertexShader _vs_color;
     _vs_color.create("color_vs");
     _vs_color.setPersistent(true);
     _vs_color.setSource(vs_src);
-    assert(_vs_color.compile());
+    compile_ok = _vs_color.compile();
+    assert(compile_ok);
 
     FragmentShader _fs_color;
     _fs_color.create("color_fs");
     _fs_color.setPersistent(true);
     _fs_color.setSource(fs_src);
-    assert(_fs_color.compile()) ;
+    compile_ok = _fs_color.compile();
+    assert(compile_ok);
 
     Program _prog_color;
     _prog_color.create("color");
     _prog_color.setPersistent(true);
     _prog_color.attachShader(_vs_color);
     _prog_color.attachShader(_fs_color);
-    assert(_prog_color.link());
+    link_ok = _prog_color.link();
+    assert(link_ok);
   }
 
 
@@ -301,18 +309,23 @@ namespace GL {
 //          "}\n"
 //          );
 
+//  bool compile_ok, link_ok;
+
 //    _vs_pcurve_contours.create("pcurve_contours_vs");
 //    _vs_pcurve_contours.setSource(vs_src);
-//    assert(_vs_pcurve_contours.compile());
+//    compile_ok = _vs_pcurve_contours.compile();
+//  assert(compile_ok);
 
 //    _fs_pcurve_contours.create("pcurve_contours_fs");
 //    _fs_pcurve_contours.setSource(fs_src);
-//    assert(_fs_pcurve_contours.compile()) ;
+//    compile_ok = _fs_pcurve_contours.compile();
+//  assert(compile_ok);
 
 //    _prog_pcurve_contours.create("pcurve_contours");
 //    _prog_pcurve_contours.attachShader(_vs_pcurve_contours);
 //    _prog_pcurve_contours.attachShader(_fs_pcurve_contours);
-//    assert(_prog_pcurve_contours.link());
+//    link_ok = _prog_pcurve_contours.link();
+//  assert(link_ok);
 //  }
 
 
@@ -391,18 +404,23 @@ namespace GL {
 //      "}\n"
 //    );
 
+//  bool compile_ok, link_ok;
+
 //    _vs_psurf_contours.create("psurf_contours_vs");
 //    _vs_psurf_contours.setSource(vs_src);
-//    assert(_vs_psurf_contours.compile());
+//    compile_ok = _vs_psurf_contours.compile();
+//  assert(compile_ok);
 
 //    _fs_psurf_contours.create("psurf_contours_fs");
 //    _fs_psurf_contours.setSource(fs_src);
-//    assert(_fs_psurf_contours.compile()) ;
+//    compile_ok = _fs_psurf_contours.compile();
+//  assert(compile_ok);
 
 //    _prog_psurf_contours.create("psurf_contours");
 //    _prog_psurf_contours.attachShader(_vs_psurf_contours);
 //    _prog_psurf_contours.attachShader(_fs_psurf_contours);
-//    assert(_prog_psurf_contours.link());
+//    link_ok = _prog_psurf_contours.link();
+//  assert(link_ok);
 //  }
 
 

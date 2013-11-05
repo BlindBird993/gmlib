@@ -288,23 +288,28 @@ void PSurfParamLinesVisualizer<T,n>::initShaderProgram() {
     "}\n"
   );
 
+  bool compile_ok, link_ok;
+
   GL::VertexShader vshader;
   vshader.create("psurf_paramlines_vs");
   vshader.setPersistent(true);
   vshader.setSource(vs_src);
-  assert(vshader.compile());
+  compile_ok = vshader.compile();
+  assert(compile_ok);
 
   GL::FragmentShader fshader;
   fshader.create("psurf_paramlines_fs");
   fshader.setPersistent(true);
   fshader.setSource(fs_src);
-  assert(fshader.compile()) ;
+  compile_ok = fshader.compile();
+  assert(compile_ok);
 
   _prog.create(prog_name);
   _prog.setPersistent(true);
   _prog.attachShader(vshader);
   _prog.attachShader(fshader);
-  assert(_prog.link());
+  link_ok = _prog.link();
+  assert(link_ok);
 }
 
 } // END namespace GMlib

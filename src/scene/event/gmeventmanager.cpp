@@ -1,6 +1,6 @@
 #include "gmeventmanager.h"
 
-#include <assert.h>
+#include <cassert>
 
 #include "gmevent.h"
 #include "gmeventcontroller.h"
