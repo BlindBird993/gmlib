@@ -212,7 +212,7 @@ namespace GMlib {
       "void main() {\n"
       "\n"
       "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
-      "  vec3 nmap_normal = texture( u_nmap, ex_tex.st).xyz;\n"
+      "  vec3 nmap_normal = texture( u_nmap, ex_tex.ts).xyz;\n"
       "  vec3 normal = normalize( nmat * nmap_normal );\n"
       "\n"
       "  Material mat;\n"

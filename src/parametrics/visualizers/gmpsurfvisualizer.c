@@ -40,6 +40,7 @@
 // stl
 #include <set>
 #include <string>
+#include <cstring>
 
 namespace GMlib {
 
@@ -84,20 +85,22 @@ void PSurfVisualizer<T,n>::fillNMap( GL::Texture& nmap, const DMatrix< Vector<T,
   int m1 = closed_u ? ns.getDim1()-1 : ns.getDim1();
   int m2 = closed_v ? ns.getDim2()-1 : ns.getDim2();
 
+
   // Fill data
-  DVector< GL::GLNormal > tex_data(m1 * m2);
-  for( int j = 0; j < m2; ++j ) {
-    for( int i = 0; i < m1; ++i ) {
+//  DVector< GL::GLNormal > tex_data(m1 * m2);
+//  for( int i = 0; i < m1; ++i )
+//    std::memcpy( &(tex_data[i*m2]), ns(i).getPtr(), m2*3*sizeof(float) );
 
-      const int idx = j*m1+i;
-      tex_data[idx].nx = ns(i)(j)(0);
-      tex_data[idx].ny = ns(i)(j)(1);
-      tex_data[idx].nz = ns(i)(j)(2);
-    }
-  }
+//  // Create Normal map texture and set texture parameters
+//  nmap.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, reinterpret_cast<float*>(tex_data.getPtr()) );
 
-  // Create Normal map texture and set texture parameters
-  nmap.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, reinterpret_cast<float*>(tex_data.getPtr()) );
+
+  // Quicker upload method (coords must be picked as swizzled "ts" and not "st" in the shader
+  nmap.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, 0x0 ); // this can be optimized by remembereing the "current" nmap dimensions
+  for( int i = 0; i < m1; ++i )
+    nmap.texSubImage2D( 0, 0, i, m2, 1, GL_RGB, GL_FLOAT, reinterpret_cast<float*>(ns(i).getPtr()) );
+
+  // set texture parameters for the nmap
   nmap.texParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
   nmap.texParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
   if( closed_u )  nmap.texParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
