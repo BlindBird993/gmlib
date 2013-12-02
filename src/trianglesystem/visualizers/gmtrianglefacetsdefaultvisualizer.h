@@ -46,6 +46,7 @@ namespace GMlib {
 
   template <typename T>
   class TriangleFacetsDefaultVisualizer : public TriangleFacetsVisualizer<T> {
+    GM_VISUALIZER(TriangleFacetsDefaultVisualizer)
   public:
     TriangleFacetsDefaultVisualizer();
     ~TriangleFacetsDefaultVisualizer();

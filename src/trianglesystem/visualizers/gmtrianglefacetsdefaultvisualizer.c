@@ -38,9 +38,12 @@ namespace GMlib {
 
   template <typename T>
   TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() :
-    _lights_ubo("lights_ubo"), _no_elements(0) {
+    _prog(), _vbo(), _ibo(), _lights_ubo(), _no_elements(0) {
 
     _prog.acquire("phong");
+    _vbo.create();
+    _ibo.create();
+    _lights_ubo.acquire("lights_ubo");
   }
 
   template <typename T>

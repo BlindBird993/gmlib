@@ -29,7 +29,7 @@
 
 
 // gmlib
-#include <opengl/glsl/gmglprogram.h>
+//#include <opengl/glsl/gmglprogram.h>
 
 
 
@@ -57,7 +57,7 @@ namespace GMlib {
 
 //    Array< Light* > lights = this->_obj->getScene()->getLights();
 //    std::cout << "No. Lights: " << lights.getSize() << std::endl;
-
+/*
     const GL::GLProgram &prog = this->getRenderProgram();
 
     prog.setUniform( "u_color", this->_obj->getColor() );
@@ -76,7 +76,7 @@ namespace GMlib {
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
     GLuint normal_loc = prog.getAttributeLocation( "in_normal" );
-
+*/
 
 //    const GLsizei v_size = sizeof(GLVertex);
 //    glBindBuffer( GL_ARRAY_BUFFER, _vbo );
