@@ -21,52 +21,58 @@
 **********************************************************************************/
 
 
-
-/*! \file gmpsurftexvisualizer.h
- *
- *  Texture PSurf Visualizer
- */
-
-
-#ifndef __gmPSURFTEXVISUALIZER_H__
-#define __gmPSURFTEXVISUALIZER_H__
+#ifndef __GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H__
+#define __GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H__
 
 #include "gmpsurfvisualizer.h"
 
 // gmlib
-#include <opengl/gmvertexbufferobject.h>
-#include <opengl/gmindexbufferobject.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <opengl/bufferobjects/gmindexbufferobject.h>
+#include <opengl/bufferobjects/gmuniformbufferobject.h>
+#include <opengl/gmtexture.h>
+#include <opengl/gmprogram.h>
+#include <opengl/shaders/gmvertexshader.h>
+#include <opengl/shaders/gmfragmentshader.h>
 
 
 
 namespace GMlib {
 
-  template <typename T>
-  class PSurfTexVisualizer : public PSurfVisualizer<T> {
+  template <typename T, int n>
+  class PSurfTexVisualizer : public PSurfVisualizer<T,n> {
+    GM_VISUALIZER(PSurfTexVisualizer)
   public:
     PSurfTexVisualizer();
-    virtual ~PSurfTexVisualizer();
-    void          display();
-    std::string   getIdentity() const;
-    virtual void  replot(
-      DMatrix< DMatrix< Vector<T, 3> > >& p,
-      DMatrix< Vector<T, 3> >& normals,
-      int m1, int m2, int d1, int d2
+    PSurfTexVisualizer( const PSurfTexVisualizer<T,n>& copy );
+
+    void          setTexture( const GL::Texture& tex );
+
+    void          render( const DisplayObject* obj, const Camera* cam ) const;
+    void          renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
+
+    virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
+                          const DMatrix< Vector<T, 3> >& normals,
+                          int m1, int m2, int d1, int d2,
+                          bool closed_u, bool closed_v
     );
-    void          select();
 
-    void          setTex( GLuint tex ) {
+  private:
+    GL::Program                 _prog;
 
-      _tex = tex;
-    }
+    GL::VertexBufferObject      _vbo;
+    GL::IndexBufferObject       _ibo;
+    GL::UniformBufferObject     _lights_ubo;
+    GL::Texture                 _nmap;
+    GL::Texture                 _tex;
 
-  protected:
-    VertexBufferObject        _vbo;
-    TriangleStripIBO          _ibo;
-    GLuint                    _nmap;
-    GLuint                    _tex;
+    GLuint                      _no_strips;
+    GLuint                      _no_strip_indices;
+    GLsizei                     _strip_size;
 
-    unsigned int              _no_vertices;
+    void                        draw() const;
+
+    void                        initShaderProgram();
 
   }; // END class PSurfTexVisualizer
 
@@ -76,4 +82,4 @@ namespace GMlib {
 #include "gmpsurftexvisualizer.c"
 
 
-#endif // __gmPSURFTEXVISUALIZER_H__
+#endif // __GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H__
