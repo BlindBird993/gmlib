@@ -78,6 +78,11 @@ GLenum Shader::getType() const {
   return getInfoIter()->type;
 }
 
+std::string Shader::getCompilerLog() const {
+
+  return getInfoIter()->compiler_log;
+}
+
 GLuint Shader::getCurrentBoundId() const { return 0; }
 
 void Shader::doBind(GLuint id) const {}

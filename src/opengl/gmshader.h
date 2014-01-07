@@ -51,6 +51,7 @@ namespace GL {
     void                    setSource( const std::string& source ) const;
 
     GLenum                  getType() const;
+    std::string             getCompilerLog() const;
 
   private:
     mutable GLenum          _create_type;
