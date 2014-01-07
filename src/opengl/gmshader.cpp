@@ -66,6 +66,21 @@ bool Shader::compile() {
   return param == GL_TRUE;
 }
 
+std::string Shader::getSource() const {
+
+  const GLuint id = getId();
+
+  int length;
+  GL_CHECK(::glGetShaderiv( id, GL_SHADER_SOURCE_LENGTH, &length ));
+  length++;
+
+  int read;
+  DVector<char> buff(length);
+  GL_CHECK(::glGetShaderSource( id, length, &read, buff.getPtr() ));
+
+  return std::string( buff.getPtr() );
+}
+
 void Shader::setSource(const std::string& source) const {
 
   //! \todo check whether this is necessary

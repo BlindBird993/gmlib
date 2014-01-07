@@ -48,6 +48,7 @@ namespace GL {
     void                    create( const std::string& name, GLenum type );
 
     bool                    compile();
+    std::string             getSource() const;
     void                    setSource( const std::string& source ) const;
 
     GLenum                  getType() const;
