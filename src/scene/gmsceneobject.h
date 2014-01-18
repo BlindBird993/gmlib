@@ -61,12 +61,12 @@
 
 // makeCopy
 #define GM_DECLARE_SO_MAKECOPY( CNAME ) \
-  SceneObject* makeCopy() { \
+  GMlib::SceneObject* makeCopy() { \
     return new CNAME(*this); \
   }
 
 #define GM_DECLARE_SO_MAKECOPY_NULL() \
-  SceneObject* makeCopy() { \
+  GMlib::SceneObject* makeCopy() { \
     return 0x0; \
   }
 

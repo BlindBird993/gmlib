@@ -41,7 +41,7 @@
 
 // Visualizer macros
 #define GM_DECLARE_VISUALIZER_MAKECOPY( CNAME ) \
-  Visualizer* makeCopy() const { \
+  GMlib::Visualizer* makeCopy() const { \
     return new CNAME(*this); \
   }
 
