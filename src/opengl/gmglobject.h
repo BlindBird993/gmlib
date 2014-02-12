@@ -166,7 +166,7 @@ namespace Private {
   GLObject<T>::GLObject() : _is_valid(0) {}
 
   template <typename T>
-  GLObject<T>::GLObject(const GLObject& other) {
+  GLObject<T>::GLObject(const GLObject& other) : _is_valid(false) {
 
     copy(other);
   }
