@@ -236,7 +236,7 @@ namespace GMlib {
   APoint<T,m> operator*(const APoint<T,n>& p, const Matrix<T,n,m>& b) {
 
     APoint<T,m> r;
-    GM_Static_P2_<T,n,m,n>::vm_x(r.getPtr(),&p,b.getPtr());
+    GM_Static_P2_<T,n,m,n>::vm_x(r.getPtr(),const_cast<APoint<T,n>*>(&p), b.getPtr());
     return r;
   }
 
