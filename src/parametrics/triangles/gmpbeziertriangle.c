@@ -185,7 +185,7 @@ namespace GMlib {
 
     if( _c_moved ) {
 
-      HqMatrix<T,3> invmat = this->_matrix;
+      HqMatrix<T,3> invmat = this->_matrix.template toType<T>();
       invmat.invertOrthoNormal();
 
       Vector<T,3> diff = invmat * d;

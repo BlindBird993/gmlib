@@ -324,13 +324,13 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>&	Matrix<T,n,m>::operator=(const Vector<Vector<T,m>,n>& mat)	{
+  const Matrix<T,n,m>&	Matrix<T,n,m>::operator=(const Vector<Vector<T,m>,n>& mat)	{
 
     cpy(mat);   return(*this);
   }
 
 
-  /*! Matrix<T,n,m>&	Matrix<T,n,m>::setTranspose(const Vector<Vector<T,m>,n>& m)
+  /*! Matrix<T,n,m>&	Matrix<T,n,m>::setTransposed(const Vector<Vector<T,m>,n>& m)
    *  \brief Set this matrix equal the transposed of matrix m
    *
    *  Set this matrix equal the transposed of matrix m
@@ -339,7 +339,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>&	Matrix<T,n,m>::setTranspose(const Vector<Vector<T,m>,n>& mat) {
+  const Matrix<T,n,m>&	Matrix<T,n,m>::setTransposed(const Vector<Vector<T,m>,n>& mat) {
 
     cpy_t(mat); return(*this);
   }
@@ -480,7 +480,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator+=(const Matrix<T,n,m>& mat) {
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator+=(const Matrix<T,n,m>& mat) {
 
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +=(mat));
   }
@@ -499,7 +499,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator-=(const Matrix<T,n,m>& mat) {
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator-=(const Matrix<T,n,m>& mat) {
 
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -=(mat));
   }
@@ -515,7 +515,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator+(const Matrix<T,n,m>& mat) const	{
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator+(const Matrix<T,n,m>& mat) const	{
 
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +(mat));
   }
@@ -531,7 +531,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator-(const Matrix<T,n,m>& mat) const	{
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator-(const Matrix<T,n,m>& mat) const	{
 
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -(mat));
   }
@@ -547,7 +547,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator-() const	{
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator-() const	{
 
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -());
   }
@@ -563,7 +563,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  APoint<T,n>&  Matrix<T,n,m>::operator*(const APoint<T,m>& v) const {
+  const APoint<T,n>&  Matrix<T,n,m>::operator*(const APoint<T,m>& v) const {
 
     GM_Static_P_<T,n,m>::mv_x(_c.getPtr(),getPtrP(),v); return _c;
   }
@@ -579,7 +579,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator*=(const double d) {
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator*=(const double d) {
 
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *=(d));
   }
@@ -593,9 +593,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator*(const double d) const	{
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator*(const double d) const	{
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *(d));
+    return reinterpret_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *(d));
   }
 
 
@@ -609,7 +609,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator/=(double d) {
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator/=(double d) {
 
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /=(d));
   }
@@ -624,7 +624,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& Matrix<T,n,m>::operator/(double d) const {
+  const Matrix<T,n,m>& Matrix<T,n,m>::operator/(double d) const {
 
     return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /(d));
   }
@@ -787,7 +787,7 @@ namespace GMlib {
 
   template <class T, int n, int m>
   template <typename G>
-  Matrix<T,n,m>::operator Matrix<G,n,m>& () const {
+  Matrix<T,n,m>::operator const Matrix<G,n,m>& () const {
     static Matrix<G,n,m> v;
     GM_Static1_<G,T,n*m>::eq( v.getPtr(), getPtr() );
     return v;
@@ -795,7 +795,7 @@ namespace GMlib {
 
   template <class T, int n, int m>
   template <typename G>
-  Matrix<G,n,m>& Matrix<T,n,m>::toType() const {
+  const Matrix<G,n,m>& Matrix<T,n,m>::toType() const {
     static Matrix<G,n,m> mat;
     mat = *this;
     return mat;

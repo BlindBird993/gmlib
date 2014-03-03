@@ -77,52 +77,52 @@ namespace GMlib {
     Matrix( const Vector<Vector<T,n>,m>& v, bool trans );
     Matrix( const T* v, bool trans );
 
-    APoint<T,n> const&  getCol(int i) const;
-    Matrix<T,n,n>       getMultTrans();
-    T*                  getPtr() const;
-    APoint<T,m>*        getPtrP() const;
-    APoint<T,m> const&  getRow(int j) const;
-    Matrix<T,m,m>       getTransMult();
-    Matrix<T,m,n>       getTransposed() const;
+    APoint<T,n> const&        getCol(int i) const;
+    Matrix<T,n,n>             getMultTrans();
+    T*                        getPtr() const;
+    APoint<T,m>*              getPtrP() const;
+    APoint<T,m> const&        getRow(int j) const;
+    Matrix<T,m,m>             getTransMult();
+    Matrix<T,m,n>             getTransposed() const;
 
-    void                initCol(int i, int j);
-    void                initRow(int i, int j);
+    void                      initCol(int i, int j);
+    void                      initRow(int i, int j);
 
-    void                reset();
-    void                setCol(const APoint<T,n>& c, int i);
-    void                setRow(const APoint<T,m>& r, int j);
-    Matrix<T,n,m>&      setTranspose(const Vector<Vector<T,m>,n>& mat);
-    void                scale(const APoint<T,n>& s);
-    void                swap(int i,int j);
-    void                swap(int i,int j,int a,int b);
+    void                      reset();
+    void                      setCol(const APoint<T,n>& c, int i);
+    void                      setRow(const APoint<T,m>& r, int j);
+    const Matrix<T,n,m>&      setTransposed(const Vector<Vector<T,m>,n>& mat);
+    void                      scale(const APoint<T,n>& s);
+    void                      swap(int i,int j);
+    void                      swap(int i,int j,int a,int b);
 
-    Matrix<T,n,m>&      operator=(const Vector<Vector<T,m>,n>& mat);
+    const Matrix<T,n,m>&      operator=(const Vector<Vector<T,m>,n>& mat);
 
     // ***** Additions and substractions. ******
-    Matrix<T,n,m>&      operator+=(const Matrix<T,n,m>& mat);
-    Matrix<T,n,m>&      operator-=(const Matrix<T,n,m>& mat);
-    Matrix<T,n,m>&      operator+(const Matrix<T,n,m>& mat) const;
-    Matrix<T,n,m>&      operator-(const Matrix<T,n,m>& mat) const;
-    Matrix<T,n,m>&      operator-() const;
+    const Matrix<T,n,m>&      operator+=(const Matrix<T,n,m>& mat);
+    const Matrix<T,n,m>&      operator-=(const Matrix<T,n,m>& mat);
+    const Matrix<T,n,m>&      operator+(const Matrix<T,n,m>& mat) const;
+    const Matrix<T,n,m>&      operator-(const Matrix<T,n,m>& mat) const;
+    const Matrix<T,n,m>&      operator-() const;
 
     // ******* Multiplication vector ******
-    APoint<T,n>&        operator*(const APoint<T,m>& v) const;
+    const APoint<T,n>&        operator*(const APoint<T,m>& v) const;
 
 
     //***** Scaling. *****
-    Matrix<T,n,m>&      operator*=(const double d);
-    Matrix<T,n,m>&      operator*(const double d) const;
+    const Matrix<T,n,m>&      operator*=(const double d);
+    const Matrix<T,n,m>&      operator*(const double d) const;
 
     //***** Invers scaling. *****
-    Matrix<T,n,m>&      operator/=(double d);
-    Matrix<T,n,m>&      operator/(double d) const;
+    const Matrix<T,n,m>&      operator/=(double d);
+    const Matrix<T,n,m>&      operator/(double d) const;
 
     // Casting
     template <typename G>
-    operator Matrix<G,n,m>& () const;
+    operator const Matrix<G,n,m>& () const;
 
     template <typename G>
-    Matrix<G,n,m>&          toType() const;
+    const Matrix<G,n,m>&          toType() const;
 
     // Dummy for Array - should maby use determinant
     bool                operator < ( const Matrix<T,n,m>& ) const;
@@ -160,7 +160,7 @@ namespace GMlib {
 
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>& operator*(double d, const Matrix<T,n,m>& p) {
+  const Matrix<T,n,m>& operator*(double d, const Matrix<T,n,m>& p) {
 
     return p*d;
   }
@@ -331,7 +331,7 @@ namespace GMlib {
 
     // Casting
     template <typename G>
-    operator SqMatrix<G,n>& () const {
+    operator const SqMatrix<G,n>& () const {
 
       static SqMatrix<G,n> v;
       GM_Static1_<G,T,n*n>::eq( v.getPtr(), this->getPtr() );
@@ -400,7 +400,7 @@ namespace GMlib {
 
     // Casting
     template <typename G>
-    operator HqMatrix<G,n>& () const {
+    operator const HqMatrix<G,n>& () const {
 
       static HqMatrix<G,n> v;
       GM_Static1_<G,T,(n+1)*(n+1)>::eq( v.getPtr(), this->getPtr() );

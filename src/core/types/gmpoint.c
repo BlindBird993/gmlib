@@ -242,7 +242,15 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator = ( const T t ) {
+  const APoint<T, n>& APoint<T, n>::operator = ( const T t ) {
+    _cpy(t);
+    return *this;
+  }
+
+
+  template <typename T, int n>
+  inline
+  const APoint<T, n>& APoint<T, n>::operator = ( const T *t ) {
     _cpy(t);
     return (*this);
   }
@@ -250,15 +258,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator = ( const T *t ) {
-    _cpy(t);
-    return (*this);
-  }
-
-
-  template <typename T, int n>
-  inline
-  APoint<T, n>& APoint<T, n>::operator = ( const APoint<T, n>& p) {
+  const APoint<T, n>& APoint<T, n>::operator = ( const APoint<T, n>& p) {
     _cpy(p);
     return (*this);
   }
@@ -266,7 +266,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator += ( const APoint<T, n>& p ) {
+  const APoint<T, n>& APoint<T, n>::operator += ( const APoint<T, n>& p ) {
     GM_Static_<T, n>::peq( getPtr(), p.getPtr() );
     return *this;
   }
@@ -274,7 +274,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator -= ( const APoint<T, n>& p ) {
+  const APoint<T, n>& APoint<T, n>::operator -= ( const APoint<T, n>& p ) {
     GM_Static_<T, n>::meq( getPtr(), p.getPtr() );
     return *this;
   }
@@ -282,7 +282,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator - () const {
+  const APoint<T, n>& APoint<T, n>::operator - () const {
     static APoint<T, n> r;
     GM_Static_<T, n>::eqm( r.getPtr(), getPtr());
     return r;
@@ -291,7 +291,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator + ( const APoint<T, n> &p ) const {
+  const APoint<T, n>& APoint<T, n>::operator + ( const APoint<T, n> &p ) const {
     static APoint<T, n> r;
     GM_Static_<T, n>::eq_p( r.getPtr(), getPtr(), p.getPtr());
     return r;
@@ -300,7 +300,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator - ( const APoint<T, n> &p ) const {
+  const APoint<T, n>& APoint<T, n>::operator - ( const APoint<T, n> &p ) const {
     static APoint<T, n> r;
     GM_Static_<T, n>::eq_m( r.getPtr(), getPtr(), p.getPtr() );
     return r;
@@ -328,7 +328,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator *= ( double d ) {
+  const APoint<T, n>& APoint<T, n>::operator *= ( double d ) {
     GM_Static_<T, n>::sc( getPtr(), d );
     return *this;
   }
@@ -336,23 +336,23 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n> APoint<T, n>::operator * ( double d ) const {
-  //  static APoint<T, n> r;
-    APoint<T, n> r;
+  const APoint<T, n>& APoint<T, n>::operator * ( double d ) const {
+    static APoint<T, n> r;
+//    APoint<T, n> r;
     GM_Static_<T, n>::sc_r( r.getPtr(), getPtr(), d);
     return r;
   }
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator %= ( const APoint<T, n> &p ) {
+  const APoint<T, n>& APoint<T, n>::operator %= ( const APoint<T, n> &p ) {
     GM_Static_<T, n>::xeq( getPtr(), p.getPtr());
     return *this;
   }
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator % ( const APoint<T, n> &p ) const {
+  const APoint<T, n>& APoint<T, n>::operator % ( const APoint<T, n> &p ) const {
     static APoint<T, n> r;
     GM_Static_<T, n>::eq_x( r.getPtr(), getPtr(), p.getPtr());
     return r;
@@ -360,16 +360,19 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  APoint<T, n>& APoint<T, n>::operator /= ( double d ) {
+  const APoint<T, n>& APoint<T, n>::operator /= ( double d ) {
     d = 1/d;
-    return (*this)*=d;
+    *this *= d;
+    return *this;
   }
 
   template <typename T, int n>
   inline
-  APoint<T, n> APoint<T, n>::operator /  ( double d ) const {
+  const APoint<T, n>& APoint<T, n>::operator /  ( double d ) const {
+    static APoint<T,n> r;
     d = 1/d;
-    return (*this)*d;
+    r = (*this) * d;
+    return r;
   }
 
 
@@ -426,7 +429,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  APoint<T, n>::operator APoint<G,m>& () const {
+  APoint<T, n>::operator const APoint<G,m>& () const {
     static APoint<G,m> v;
     GM_Static1_<G,T,(n<m?n:m)>::eq( v.getPtr(), getPtr());
     return v;
@@ -446,7 +449,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  APoint<G,m>& APoint<T, n>::to() const {
+  const APoint<G,m>& APoint<T, n>::to() const {
     static APoint<G,m> v;
     v = *this;
     return v;
@@ -466,7 +469,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G>
   inline
-  APoint<G,n>& APoint<T, n>::toType() const {
+  const APoint<G,n>& APoint<T, n>::toType() const {
     return to<G,n>();
   }
 
@@ -822,7 +825,7 @@ namespace GMlib {
    */
 
 #define V_getnormalize(n) inline\
-  APoint<T,n>& Vector<T,n>::normalize() {\
+  const APoint<T,n>& Vector<T,n>::normalize() {\
   (*this)/=APoint<T,n>::getLength();\
   return *this;\
   }
@@ -1098,7 +1101,7 @@ namespace GMlib {
 
 
 #define UV_eq0(n) inline\
-  APoint<T, n>& UnitVector<T, n>::operator = ( const T t ) {\
+  const APoint<T, n>& UnitVector<T, n>::operator = ( const T t ) {\
     _cpy(t);\
     return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
@@ -1114,7 +1117,7 @@ namespace GMlib {
 
 
 #define UV_eq1(n) inline\
-  APoint<T, n>& UnitVector<T, n>::operator = ( const T t[n] ) {\
+  const APoint<T, n>& UnitVector<T, n>::operator = ( const T t[n] ) {\
     _cpy(t);\
     return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
@@ -1130,7 +1133,7 @@ namespace GMlib {
 
 
 #define UV_eq2(n) inline\
-  APoint<T, n>& UnitVector<T, n>::operator = ( const APoint<T, n> &p ) {\
+  const APoint<T, n>& UnitVector<T, n>::operator = ( const APoint<T, n> &p ) {\
     this->_cpy(p);\
     return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
@@ -1146,7 +1149,7 @@ namespace GMlib {
 
 
 #define UV_eq3(n) inline\
-  APoint<T, n>& UnitVector<T, n>::operator = ( const UnitVector<T, n>& uv )	{\
+  const APoint<T, n>& UnitVector<T, n>::operator = ( const UnitVector<T, n>& uv )	{\
     this->_cpy(uv);\
     return *this;\
   }
@@ -1177,7 +1180,7 @@ namespace GMlib {
 
 
 #define UV_pe(n) inline\
-  APoint<T,n>& UnitVector<T, n>::operator += ( const APoint<T, n> &p ) {\
+  const APoint<T,n>& UnitVector<T, n>::operator += ( const APoint<T, n> &p ) {\
     APoint<T,n>::operator += (p);\
     return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
@@ -1193,7 +1196,7 @@ namespace GMlib {
 
 
 #define UV_me(n) inline\
-  APoint<T,n>& UnitVector<T, n>::operator -= ( const APoint<T, n> &p ) {\
+  const APoint<T,n>& UnitVector<T, n>::operator -= ( const APoint<T, n> &p ) {\
     APoint<T,n>::operator-=(p);\
     return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
@@ -1209,7 +1212,7 @@ namespace GMlib {
 
 
 #define UV_pre(n) inline\
-  APoint<T,n>& UnitVector<T, n>::operator %= ( const APoint<T, n> &p ) {\
+  const APoint<T,n>& UnitVector<T, n>::operator %= ( const APoint<T, n> &p ) {\
     APoint<T,n>::operator%=(p); return APoint<T,n>::operator/=( APoint<T,n>::getLength() );\
   }
 
@@ -1224,7 +1227,7 @@ namespace GMlib {
 
 
 #define UV_ge(n) inline\
-  APoint<T,n>& UnitVector<T, n>::operator *= ( const double d ) {\
+  const APoint<T,n>& UnitVector<T, n>::operator *= ( const double d ) {\
     return *this;\
   }
 
@@ -1239,7 +1242,7 @@ namespace GMlib {
 
 
 #define UV_de(n) inline\
-  APoint<T,n>& UnitVector<T, n>::operator /= ( double d ) {\
+  const APoint<T,n>& UnitVector<T, n>::operator /= ( double d ) {\
     return *this;\
   }
 
@@ -1288,28 +1291,28 @@ namespace GMlib {
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator =  ( const T t ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator =  ( const T t ) {
     _cpy(t);
     return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
   }
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator =  ( const T t[3] ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator =  ( const T t[3] ) {
     _cpy(t);
     return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
   }
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator =  ( const APoint<T,3> &p ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator =  ( const APoint<T,3> &p ) {
     _cpy(p);
     return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
   }
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator =  ( const UnitQuaternion<T>& uv ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator =  ( const UnitQuaternion<T>& uv ) {
     _cpy(uv);
     return *this;
   }
@@ -1322,34 +1325,34 @@ namespace GMlib {
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator += ( const APoint<T,4> &p ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator += ( const APoint<T,4> &p ) {
     _cpy(p);
     return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
   }
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator -= ( const APoint<T,4> &p ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator -= ( const APoint<T,4> &p ) {
     _cpy(p);
     return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
   }
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator %= ( const APoint<T,4> &p ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator %= ( const APoint<T,4> &p ) {
     _cpy(p);
     return APoint<T,4>::operator/=( APoint<T,4>::getLength() );
   }
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator *= ( const double d ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator *= ( const double d ) {
     return *this;
   }
 
   template <typename T>
   inline
-  APoint<T,4>& UnitQuaternion<T>::operator /= ( double d ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator /= ( double d ) {
     return *this;
   }
 
@@ -1411,21 +1414,21 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Arrow<T, n>& Arrow<T, n>::operator = ( const Arrow<T, n> &a ) {
+  const Arrow<T, n>& Arrow<T, n>::operator = ( const Arrow<T, n> &a ) {
     memcpy( APoint<T, n>::getPtr(), a.getPtr(), sizeof( Arrow<T, n> ) );
     return *this;
   } // setPos(v.pos()); setDir(v.dir()); return *this;}
 
   template <typename T, int n>
   inline
-  Arrow<T, n>& Arrow<T, n>::operator += ( const Point<T, n> &p ) {
+  const Arrow<T, n>& Arrow<T, n>::operator += ( const Point<T, n> &p ) {
     APoint<T, n>::operator += (p);
     return *this;
   }
 
   template <typename T, int n>
   inline
-  Arrow<T, n>& Arrow<T, n>::operator -= ( const Point<T, n> &p ) {
+  const Arrow<T, n>& Arrow<T, n>::operator -= ( const Point<T, n> &p ) {
     APoint<T,n>::operator-=(p);
     return *this;
   }
@@ -1448,14 +1451,14 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Arrow<T, n>& Arrow<T, n>::operator += ( const Vector<T, n> &v ) {
+  const Arrow<T, n>& Arrow<T, n>::operator += ( const Vector<T, n> &v ) {
     _dir += v;
     return (*this);
   }
 
   template <typename T, int n>
   inline
-  Arrow<T, n>& Arrow<T, n>::operator -= ( const Vector<T, n> &v ) {
+  const Arrow<T, n>& Arrow<T, n>::operator -= ( const Vector<T, n> &v ) {
     _dir -= v;
     return (*this);
   }
@@ -1585,7 +1588,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>& ScalarPoint<T, n>::operator += ( const APoint<T, n>& p ) {
+  const ScalarPoint<T, n>& ScalarPoint<T, n>::operator += ( const APoint<T, n>& p ) {
     _pos += p;
     return *this;
   }
@@ -1600,7 +1603,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>& ScalarPoint<T, n>::operator += ( T p ) {
+  const ScalarPoint<T, n>& ScalarPoint<T, n>::operator += ( T p ) {
     _value += p;
     return *this;
   }
@@ -1615,7 +1618,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>& ScalarPoint<T, n>::operator += ( const ScalarPoint<T, n>& p ) {
+  const ScalarPoint<T, n>& ScalarPoint<T, n>::operator += ( const ScalarPoint<T, n>& p ) {
     _pos += p._pos;
     _pos /= 2.0;
     _value += p._value;
@@ -1633,7 +1636,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>& ScalarPoint<T, n>::operator *= ( double d ) {
+  const ScalarPoint<T, n>& ScalarPoint<T, n>::operator *= ( double d ) {
     _value *= d;
     return *this;
   }
@@ -1648,7 +1651,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>& ScalarPoint<T, n>::operator /= ( double d ) {
+  const ScalarPoint<T, n>& ScalarPoint<T, n>::operator /= ( double d ) {
     _value /= d;
     return *this;
   }
@@ -1663,7 +1666,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  ScalarPoint<T, n>& ScalarPoint<T, n>::operator %= ( const APoint<T, n>& p ) {
+  const ScalarPoint<T, n>& ScalarPoint<T, n>::operator %= ( const APoint<T, n>& p ) {
     _pos %= p;
     return *this;
   }
@@ -1679,7 +1682,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  ScalarPoint<T,n>::operator ScalarPoint<G,m>& () const {
+  ScalarPoint<T,n>::operator const ScalarPoint<G,m>& () const {
     static ScalarPoint<G,m> v;
     v.resetPos(this->_pos);
     v.resetValue(this->_value);
@@ -1689,7 +1692,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  ScalarPoint<G,m>& ScalarPoint<T, n>::to() const {
+  const ScalarPoint<G,m>& ScalarPoint<T, n>::to() const {
     static ScalarPoint<G,m> v;
     v = *this;
     return v;
@@ -1698,7 +1701,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G>
   inline
-  ScalarPoint<G,n>& ScalarPoint<T, n>::toType() const {
+  const ScalarPoint<G,n>& ScalarPoint<T, n>::toType() const {
     return to<G,n>();
   }
 
@@ -1778,7 +1781,7 @@ namespace GMlib {
   }
 
   template <typename T, int n>
-  Sphere<T, n>& Sphere<T, n>::operator += ( const APoint<T, n>& p ) {
+  const Sphere<T, n>& Sphere<T, n>::operator += ( const APoint<T, n>& p ) {
     if(_valid)
     {
       Vector<T,n> v = p - this->_pos;
@@ -1811,7 +1814,7 @@ namespace GMlib {
   }
 
   template <typename T, int n>
-  Sphere<T, n>& Sphere<T, n>::operator += ( const Sphere<T, n>& p ) {
+  const Sphere<T, n>& Sphere<T, n>::operator += ( const Sphere<T, n>& p ) {
 
     if(p._valid)
     {
@@ -1857,7 +1860,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  Sphere<T,n>::operator Sphere<G,m>& () const {
+  Sphere<T,n>::operator const Sphere<G,m>& () const {
     static Sphere<G,m> v = ScalarPoint<T,n>::operator ScalarPoint<G,m>& ();
     // _valid is set by Sphere
     return v;
@@ -2026,7 +2029,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Box<T,n>&	Box<T, n>::operator += ( const APoint<T, n>& p ) {
+  const Box<T,n>&	Box<T, n>::operator += ( const APoint<T, n>& p ) {
     insert(p);
     return *this;
   }
@@ -2041,7 +2044,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Box<T,n>&	Box<T, n>::operator += ( const Box<T, n>& b ) {
+  const Box<T,n>&	Box<T, n>::operator += ( const Box<T, n>& b ) {
     insert(b);
     return *this;
   }

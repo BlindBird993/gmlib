@@ -647,7 +647,7 @@ namespace GMlib {
     T du, dv, det;
 
     /*! \todo fix matrix */
-    HqMatrix<T,n> invmat = this->_present;
+    HqMatrix<T,n> invmat = this->_present.template toType<T>();
     invmat.invertOrthoNormal();
     Point<T,n> p = invmat * q;  // Egentlig _present
 
