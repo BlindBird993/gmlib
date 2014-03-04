@@ -482,7 +482,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator+=(const Matrix<T,n,m>& mat) {
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +=(mat));
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +=(mat));
   }
 
 
@@ -501,7 +501,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator-=(const Matrix<T,n,m>& mat) {
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -=(mat));
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -=(mat));
   }
 
 
@@ -517,7 +517,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator+(const Matrix<T,n,m>& mat) const	{
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +(mat));
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +(mat));
   }
 
 
@@ -533,7 +533,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator-(const Matrix<T,n,m>& mat) const	{
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -(mat));
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -(mat));
   }
 
 
@@ -549,7 +549,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator-() const	{
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -());
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -());
   }
 
 

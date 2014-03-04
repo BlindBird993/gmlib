@@ -23,4 +23,5 @@
 
 
 addTest(gmmatrix_tests)
+addTest(gmmatrix_arithmetics)
 addTest(gmpoint_tests)

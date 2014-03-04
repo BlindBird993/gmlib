@@ -122,10 +122,10 @@ namespace GMlib {
     operator const Matrix<G,n,m>& () const;
 
     template <typename G>
-    const Matrix<G,n,m>&          toType() const;
+    const Matrix<G,n,m>&      toType() const;
 
     // Dummy for Array - should maby use determinant
-    bool                operator < ( const Matrix<T,n,m>& ) const;
+    bool                      operator < ( const Matrix<T,n,m>& ) const;
 
   protected:
 
