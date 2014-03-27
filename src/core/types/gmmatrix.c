@@ -581,7 +581,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator*=(const double d) {
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *=(d));
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *=(d));
   }
 
 
@@ -595,7 +595,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator*(const double d) const	{
 
-    return reinterpret_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *(d));
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *(d));
   }
 
 
@@ -611,7 +611,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator/=(double d) {
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /=(d));
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /=(d));
   }
 
 
@@ -626,7 +626,7 @@ namespace GMlib {
   inline
   const Matrix<T,n,m>& Matrix<T,n,m>::operator/(double d) const {
 
-    return reinterpret_cast<Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /(d));
+    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /(d));
   }
 
 
@@ -1568,8 +1568,8 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
   inline
   Matrix<T,n+1,n+1>	HqMatrix_<T, n>::operator*(const HqMatrix_<T,n>& v)	const {
 
-    return (*reinterpret_cast<Matrix<T,n+1,n+1>const*>(this)) *
-      (reinterpret_cast<const Matrix<T,n+1,n+1>&>(v));
+    return (*static_cast<Matrix<T,n+1,n+1>const*>(this)) *
+      (static_cast<const Matrix<T,n+1,n+1>&>(v));
   }
 
 
