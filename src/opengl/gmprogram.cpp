@@ -210,7 +210,15 @@ void Program::setUniform(const std::string& name, const Color &c) const {
       ));
 }
 
-void Program::setUniform(const std::string& name, const HqMatrix<float, 3> &matrix, int count, bool transpose) const {
+void Program::setUniform(const std::string& name, const Matrix<float,3,3>& matrix, int count, bool transpose ) const {
+
+  GL_CHECK(::glUniformMatrix3fv(
+      getUniformLocation( name )(),
+      count, transpose, matrix.getPtr()
+      ));
+}
+
+void Program::setUniform(const std::string& name, const Matrix<float,4,4>& matrix, int count, bool transpose ) const {
 
   GL_CHECK(::glUniformMatrix4fv(
       getUniformLocation( name )(),
@@ -218,11 +226,19 @@ void Program::setUniform(const std::string& name, const HqMatrix<float, 3> &matr
       ));
 }
 
-void Program::setUniform(const std::string &name, const Point<float, 3> &p) const {
+void Program::setUniform(const std::string &name, const APoint<float, 3> &p) const {
 
   GL_CHECK(::glUniform3fv(
       getUniformLocation(name)(),
-      3 * sizeof(float), p.getPtr()
+      sizeof(APoint<float,3>), p.getPtr()
+      ));
+}
+
+void Program::setUniform(const std::string &name, const APoint<float, 4> &p) const {
+
+  GL_CHECK(::glUniform4fv(
+      getUniformLocation(name)(),
+      sizeof(APoint<float,4>), p.getPtr()
       ));
 }
 

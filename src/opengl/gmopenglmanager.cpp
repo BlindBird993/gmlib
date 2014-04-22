@@ -109,76 +109,66 @@ namespace GL {
 
     ///////////////
     // Phong shader
-    std::string vs_str;
-    vs_str.append( glslDefHeader150Source() );
-    vs_str.append(
-      "uniform mat4 u_mvmat, u_mvpmat;\n"
-      "\n"
-      "in vec4 in_vertex;\n"
-      "in vec4 in_normal;\n"
-      "in vec2 in_tex;\n"
-      "\n"
-      "out vec4 gl_Position;\n"
-      "\n"
-      "smooth out vec3 ex_pos;\n"
-      "smooth out vec3 ex_normal;\n"
-      "smooth out vec2 ex_tex;\n"
-      "\n"
-      "void main() {\n"
-      "\n"
-      "  // Transform the normal to view space\n"
-      "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
-      "  ex_normal = nmat * vec3(in_normal);\n"
-      "\n"
-      "  // Transform position into view space;\n"
-      "  vec4 v_pos = u_mvmat * in_vertex;\n"
-      "  ex_pos = v_pos.xyz * v_pos.w;\n"
-      "\n"
-      "  // Pass through the tex coord\n"
-      "  ex_tex = in_tex;\n"
-      "\n"
-      "  // Compute vertex position\n"
-      "  gl_Position = u_mvpmat * in_vertex;\n"
-      "}\n"
-    );
+    std::string vs_str =
+        glslDefHeader150Source() +
 
-    std::string fs_str;
-    fs_str.append( glslDefHeader150Source() );
-    fs_str.append( glslStructMaterialSource() );
-    fs_str.append( glslUniformLightsSource() );
-    fs_str.append( glslFnSunlightSource() );
-    fs_str.append( glslFnPointlightSource() );
-    fs_str.append( glslFnSpotlightSource() );
-    fs_str.append( glslFnComputeLightingSource() );
-    fs_str.append(
-      "uniform mat4      u_mvmat;\n"
-      "\n"
-      "uniform vec4      u_mat_amb;\n"
-      "uniform vec4      u_mat_dif;\n"
-      "uniform vec4      u_mat_spc;\n"
-      "uniform float     u_mat_shi;\n"
-      "\n"
-      "smooth in vec3    ex_pos;\n"
-      "smooth in vec3    ex_normal;\n"
-      "smooth in vec2    ex_tex;\n"
-      "\n"
-      "out vec4 gl_FragColor;\n"
-      "\n"
-      "void main() {\n"
-      "\n"
-      "  vec3 normal = normalize( ex_normal );\n"
-      "\n"
-      "  Material mat;\n"
-      "  mat.ambient   = u_mat_amb;\n"
-      "  mat.diffuse   = u_mat_dif;\n"
-      "  mat.specular  = u_mat_spc;\n"
-      "  mat.shininess = u_mat_shi;\n"
-      "\n"
-      "  vec4 light_color = vec4(0.0);\n"
-      "\n"
-      "  gl_FragColor = computeLighting( mat, normal, ex_pos );\n"
-      "}\n"
-    );
+        "uniform mat4 u_mvmat, u_mvpmat;\n"
+        "\n"
+        "in vec4 in_vertex;\n"
+        "in vec4 in_normal;\n"
+        "in vec2 in_tex;\n"
+        "\n"
+        "out vec4 gl_Position;\n"
+        "\n"
+        "smooth out vec3 ex_pos;\n"
+        "smooth out vec3 ex_normal;\n"
+        "\n"
+        "void main() {\n"
+        "\n"
+        "  // Transform the normal to view space\n"
+        "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
+        "  ex_normal = nmat * vec3(in_normal);\n"
+        "\n"
+        "  // Transform position into view space;\n"
+        "  vec4 v_pos = u_mvmat * in_vertex;\n"
+        "  ex_pos = v_pos.xyz * v_pos.w;\n"
+        "\n"
+        "  // Compute vertex position\n"
+        "  gl_Position = u_mvpmat * in_vertex;\n"
+        "}\n"
+        ;
+
+    std::string fs_str =
+        glslDefHeader150Source() +
+        glslFnComputeLightingSource() +
+
+        "uniform mat4      u_mvmat;\n"
+        "\n"
+        "uniform vec4      u_mat_amb;\n"
+        "uniform vec4      u_mat_dif;\n"
+        "uniform vec4      u_mat_spc;\n"
+        "uniform float     u_mat_shi;\n"
+        "\n"
+        "smooth in vec3    ex_pos;\n"
+        "smooth in vec3    ex_normal;\n"
+        "\n"
+        "out vec4 gl_FragColor;\n"
+        "\n"
+        "void main() {\n"
+        "\n"
+        "  vec3 normal = normalize( ex_normal );\n"
+        "\n"
+        "  Material mat;\n"
+        "  mat.ambient   = u_mat_amb;\n"
+        "  mat.diffuse   = u_mat_dif;\n"
+        "  mat.specular  = u_mat_spc;\n"
+        "  mat.shininess = u_mat_shi;\n"
+        "\n"
+        "  vec4 light_color = vec4(0.0);\n"
+        "\n"
+        "  gl_FragColor = computeLighting( mat, ex_pos, normal );\n"
+        "}\n"
+        ;
 
     bool compile_ok, link_ok;
 
@@ -194,6 +184,10 @@ namespace GL {
     fshader.setPersistent(true);
     fshader.setSource(fs_str);
     compile_ok = fshader.compile();
+    if( !compile_ok ) {
+      std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
+      std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
+    }
     assert(compile_ok);
 
     Program phong_prog;
@@ -213,7 +207,7 @@ namespace GL {
 
   void OpenGLManager::initColorProg() {
 
-    std::string vs_src(
+    std::string vs_src =
           "#version 150 core\n"
           "\n"
           "uniform mat4 u_mvpmat;\n"
@@ -226,10 +220,10 @@ namespace GL {
           "\n"
           "  gl_Position = u_mvpmat * in_vertex;\n"
           "}\n"
-          );
+          ;
 
 
-    std::string fs_src (
+    std::string fs_src =
           "#version 150 core\n"
           "\n"
           "uniform vec4 u_color;\n"
@@ -240,7 +234,7 @@ namespace GL {
           "\n"
           "  gl_FragColor = u_color;\n"
           "}\n"
-          );
+          ;
 
     bool compile_ok, link_ok;
 
@@ -444,12 +438,14 @@ namespace GL {
   std::string OpenGLManager::glslStructMaterialSource() {
 
     return
+        "\n"
         "struct Material {\n"
         "  vec4  ambient;\n"
         "  vec4  diffuse;\n"
         "  vec4  specular;\n"
         "  float shininess;\n"
         "};\n"
+        "\n"
         "\n"
         ;
   }
@@ -477,31 +473,27 @@ namespace GL {
 
   std::string OpenGLManager::glslUniformLightsSource() {
 
-    std::string uniform_lights;
-    uniform_lights.append( glslStructLightSource() );
-    uniform_lights.append(
-       "uniform Lights {\n"
-       "  uvec4 info;\n"
-       "  Light light[200];\n"
-       "} u_lights;\n"
-       "\n"
-     );
+    return
+        glslStructLightSource() +
 
-    return uniform_lights;
+        "uniform Lights {\n"
+        "  uvec4 info;\n"
+        "  Light light[200];\n"
+        "} u_lights;\n"
+        "\n"
+        "\n"
+        ;
   }
 
   std::string OpenGLManager::glslFnSunlightSource() {
 
     return
         "vec4\n"
-        "sunLight( Light light, Material mat, vec3 n, vec3 cam_pos ) {\n"
+        "sunLight( Light light, Material mat, vec3 pos, vec3 normal ) {\n"
         "\n"
-        "  vec3 L = normalize( light.direction ).xyz;\n"
-        "  float sun_att, sun_fact;\n"
-        "  sun_fact = abs( dot(L,n) );\n"
-        "  sun_fact = clamp( sun_fact, 0.0, 1.0 );\n"
-        "\n"
-        "  return light.ambient * sun_fact;\n"
+        "  vec4 eyeCoords = vec4( pos, 1.0 ); \n"
+        "  vec3 s = normalize( vec3( light.position - eyeCoords ) ); \n"
+        "  return mat.diffuse * light.ambient * max( dot( s, normal ), 0.0 ); \n"
         "}\n"
         "\n"
         ;
@@ -511,31 +503,24 @@ namespace GL {
 
     return
         "vec4\n"
-        "pointLight( Light light, Material mat, vec3 n, vec3 pos ) {\n"
+        "pointLight( Light light, Material mat, vec3 pos, vec3 normal ) {\n"
         "\n"
-        "  vec3  L = vec3(light.position) - pos;\n"
-        "  float dL = length( L );\n"
-        "  L = normalize( L );\n"
-        "  vec3  e = normalize( -pos );\n"
-        "  vec3  s = normalize( L + e );\n"
+        "  vec4 eyeCoords = vec4(pos,1.0); \n"
         "\n"
-        "  float attenuation =  1.0 / ( light.att[0] +\n"
-        "                               light.att[1] * dL +\n"
-        "                               light.att[2] * dL * dL );\n"
-        "  // calculate ambient term\n"
-        "  vec4 amb =  light.ambient * mat.ambient;\n"
+        "  vec3 s = normalize( vec3( light.position - eyeCoords ) ); \n"
+        "  vec3 v = normalize( -eyeCoords.xyz ); \n"
+        "  vec3 r = reflect( -s, normal ); \n"
         "\n"
-        "  // calculate diffuse term\n"
-        "  vec4 diff = light.diffuse * mat.diffuse * max( abs( dot(L,n) ), 0.0);\n"
-        "  diff = clamp( diff, 0.0, 1.0 );\n"
+        "  vec3 ambient = vec3(light.ambient * mat.ambient); \n"
+        "  float sDotN = max( dot(s,normal), 0.0 ); \n"
         "\n"
-        "  // calculate specular term\n"
-        "  vec4 spec = light.specular * mat.specular * \n"
-        "              pow( max( dot(s,n), 0.0), 0.3 * mat.shininess );\n"
-        "  spec = clamp( spec, 0.0, 1.0 );\n"
+        "  vec3 diffuse = vec3(light.diffuse * mat.diffuse * sDotN); \n"
         "\n"
-        "  // return color\n"
-        "  return (amb + diff + spec) * attenuation;\n"
+        "  vec3 spec = vec3(0.0); \n"
+        "  if( sDotN > 0.0 ) \n"
+        "    spec = vec3(light.specular * mat.specular * pow( max( dot(r,v), 0.0 ), mat.shininess )); \n"
+        "\n"
+        "  return vec4(ambient + diffuse + spec, 1.0); \n"
         "}\n"
         "\n"
         ;
@@ -545,68 +530,68 @@ namespace GL {
 
     return
         "vec4\n"
-        "spotLight( Light light, Material mat, vec3 n, vec3 cam_pos ) {\n"
+        "spotLight( Light light, Material mat, vec3 pos, vec3 normal ) {\n"
         "\n"
-        "  vec3  L = vec3(light.position) - cam_pos;\n"
-        "  float dL = length( L );\n"
-        "  L = normalize( L );\n"
-        "  vec3  e = normalize( -cam_pos );\n"
-        "  vec3  s = normalize( L + e );\n"
+        "  vec4 eyeCoords = vec4(pos,1.0); \n"
         "\n"
-        "  // Attenuation\n"
-        "  float attenuation =  1.0 / ( light.att[0] +\n"
-        "                               light.att[1] * dL +\n"
-        "                               light.att[2] * dL * dL );\n"
+        "  vec3 s = normalize( vec3( light.position - eyeCoords ) ); \n"
+        "  vec3 v = normalize( -eyeCoords.xyz ); \n"
+        "  vec3 r = reflect( -s, normal ); \n"
+        "\n"
+        "  vec3 ambient = vec3(light.ambient * mat.ambient); \n"
+        "  float sDotN = max( dot(s,normal), 0.0 ); \n"
+        "\n"
+        "  vec3 diffuse = vec3(light.diffuse * mat.diffuse * sDotN); \n"
+        "\n"
+        "  vec3 spec = vec3(0.0); \n"
+        "  if( sDotN > 0.0 ) \n"
+        "    spec = vec3(light.specular * mat.specular * pow( max( dot(r,v), 0.0 ), mat.shininess )); \n"
+        "\n"
+        "  // Attenuation \n"
+        "  float attenuation = 0.0; \n"
         "\n"
         "  // Spot attenuation\n"
-        "  float spot_att = abs( dot(-L, normalize(light.direction)) );\n"
-        "  if( spot_att < light.spot_cut )\n"
-        "    spot_att = 0.0;\n"
-        "  else\n"
-        "    spot_att = pow( spot_att, light.spot_exp );\n"
-        "  attenuation *= spot_att;\n"
-        "\n"
-        "  // calculate ambient term\n"
-        "  vec4 amb =  light.ambient * mat.ambient;\n"
-        "\n"
-        "  // calculate diffuse term\n"
-        "  vec4 diff = light.diffuse * mat.diffuse * max( abs( dot(L,n) ), 0.0);\n"
-        "  diff = clamp( diff, 0.0, 1.0 );\n"
-        "\n"
-        "  // calculate specular term\n"
-        "  vec4 spec = light.specular * mat.specular * \n"
-        "              pow( max( dot(s,n), 0.0), 0.3 * mat.shininess );\n"
-        "  spec = clamp( spec, 0.0, 1.0 );\n"
-        "\n"
-        "  // return color\n"
-        "  return (amb + diff + spec) * attenuation;\n"
+        "  float sDotLdir = dot(-s, normalize(light.direction)); \n"
+        "  if( sDotLdir > cos( light.spot_cut ) ) \n"
+        "    attenuation += pow( sDotLdir, light.spot_exp ); \n"
+        "    "
+        "  return vec4( (ambient + diffuse + spec) * attenuation, 1.0); \n"
         "}\n"
         "\n"
         ;
-
   }
 
   std::string OpenGLManager::glslFnComputeLightingSource() {
 
     return
+        glslStructMaterialSource() +
+        glslUniformLightsSource() +
+        glslFnSunlightSource() +
+        glslFnPointlightSource() +
+        glslFnSpotlightSource() +
+
         "vec4\n"
-        "computeLighting(Material mat, vec3 normal, vec3 cam_pos) {\n"
+        "computeLighting(Material mat, vec3 pos, vec3 normal ) {\n"
         "\n"
         "  vec4 color = vec4(0.0);\n"
         "\n"
         "  // Compute sun contribution\n"
         "  for( uint i = uint(0); i < u_lights.info[0]; ++i )\n"
-        "    color += sunLight( u_lights.light[i], mat, normal, cam_pos );\n"
+        "    color += sunLight( u_lights.light[i], mat, pos, normal );\n"
         "\n"
         "  // Compute point light contribution\n"
         "  for( uint i = u_lights.info[0]; i < u_lights.info[1]; ++i )\n"
-        "    color += pointLight( u_lights.light[i], mat, normal, cam_pos );\n"
+        "    color += pointLight( u_lights.light[i], mat, pos, normal );\n"
         "\n"
         "  // Compute spot light contribution\n"
         "  for( uint i = u_lights.info[1]; i < u_lights.info[2]; ++i )\n"
-        "    color += spotLight(  u_lights.light[i], mat, normal, cam_pos );\n"
+        "    color += spotLight( u_lights.light[i], mat, pos, normal );\n"
+//        "    color += spotLight(  u_lights.light[i], mat, pos, normal );\n"
         "\n"
-        "  return color;\n"
+//        "  if( gl_FrontFacing )\n"
+        "    return color;\n"
+//        "  else\n"
+//        "    return vec4(0.0);\n"
         "}\n"
         "\n"
         ;
