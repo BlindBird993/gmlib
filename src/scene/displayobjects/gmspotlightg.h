@@ -34,6 +34,7 @@
 
 
 #include "../light/gmspotlight.h"
+#include "gmsphere3d.h"
 
 // stl
 #include <string>
@@ -65,14 +66,14 @@ namespace GMlib {
     void            setCutOff(const Angle& cut_off);
 
   protected:
-    void            localDisplay();
-    void            localSelect();
+    // inherited from SceneObject
+    void            localDisplay(const Camera* cam) const;
+    void            localSelect(const GL::Program &prog, const Camera *cam) const;
 
   private:
-    unsigned int    _dlist;
+    Sphere3D        _sphere;
 
-    void            _init();
-    void            _makeDisplayList();
+    void            init();
 
 
   }; // END class SpotLightG

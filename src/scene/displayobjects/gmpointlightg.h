@@ -34,6 +34,7 @@
 
 
 #include "../light/gmpointlight.h"
+#include "gmsphere3d.h"
 
 // stl
 #include <string>
@@ -46,25 +47,25 @@ namespace GMlib{
     GM_SCENEOBJECT(PointLightG)
   public:
     PointLightG();
-		PointLightG(	const Point<float,3>& pos);
-		PointLightG(
+  PointLightG( const Point<float,3>& pos);
+  PointLightG(
       const Color& amb,
-			const Color& dif,
-			const Color& spe,
-			const Point<float,3>& pos
-		);
-		PointLightG( const PointLight& copy );
-		PointLightG( const PointLightG& copy );
+   const Color& dif,
+   const Color& spe,
+   const Point<float,3>& pos
+  );
+  PointLightG( const PointLight& copy );
+  PointLightG( const PointLightG& copy );
 
   protected:
-    void            localDisplay();
-    void            localSelect();
+    // inherited from SceneObject
+    void            localDisplay(const Camera* cam) const;
+    void            localSelect(const GL::Program &prog, const Camera *cam) const;
 
   private:
-    unsigned int    _dlist;
+    Sphere3D        _sphere;
 
-    void            _init();
-    void            _makeDisplayList();
+    void            init();
 
   }; // END class PointLightG
 

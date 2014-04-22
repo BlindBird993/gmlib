@@ -31,6 +31,7 @@
 
 // gmlib
 #include "gmsphere3d.h"
+#include "../camera/gmcamera.h"
 
 
 namespace GMlib {
@@ -38,13 +39,13 @@ namespace GMlib {
 
   PointLightG::PointLightG() {
 
-    _init();
+    init();
   }
 
 
   PointLightG::PointLightG( const Point<float,3>& pos) : PointLight( pos ) {
 
-    _init();
+    init();
   }
 
 
@@ -55,58 +56,41 @@ namespace GMlib {
     const Point<float,3>& pos
   ) : PointLight( amb, dif, spe, pos ) {
 
-    _init();
+    init();
   }
 
 
   PointLightG::PointLightG( const PointLight& copy ) : PointLight( copy ) {
 
-    _init();
+    init();
   }
 
 
   PointLightG::PointLightG( const PointLightG& copy ) : PointLight( copy ) {
 
-    _dlist = copy._dlist;
     setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
   }
 
 
-  void PointLightG::_init() {
+  void PointLightG::init() {
 
-    _dlist = 0;
     setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
-
-    _makeDisplayList();
   }
 
 
-  void PointLightG::_makeDisplayList() {
 
-//    Sphere3D sp(1.0,12,8);
-//    _dlist = glGenLists(1);
-//    glNewList(_dlist, GL_COMPILE);
-//      sp.display();
-//    glEndList();
+
+  void PointLightG::localDisplay(const Camera* cam) const {
+
+//    _sphere.render( getModelViewMatrix(cam), getProjectionMatrix(cam), Material(getAmbient(),getDiffuse(),getSpecular()));
+    _sphere.render( getModelViewProjectionMatrix(cam), getAmbient() );
   }
 
 
-  void PointLightG::localDisplay() {
+  void PointLightG::localSelect(const GL::Program& prog, const Camera* cam) const {
 
-//    glPushAttrib( GL_LIGHTING_BIT ); {
-
-//      glDisable( GL_LIGHTING );
-
-//      glColor(getAmbient());
-//      glCallList( _dlist );
-
-//    } glPopAttrib();
-  }
-
-
-  void PointLightG::localSelect() {
-
-    glCallList( _dlist );
+    prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam) );
+    _sphere.select(prog);
   }
 
 } // END namespace GMlib

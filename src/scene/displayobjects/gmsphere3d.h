@@ -31,11 +31,14 @@
 #define __gmSPHERE3D_H__
 
 
+#include "../utils/gmmaterial.h"
+
 // gmlib
 #include <core/types/gmpoint.h>
 #include <core/containers/gmarray.h>
 #include <opengl/gmopengl.h>
 #include <opengl/gmprogram.h>
+#include <opengl/bufferobjects/gmvertexbufferobject.h>
 
 
 namespace GMlib {
@@ -51,22 +54,31 @@ namespace GMlib {
     Sphere3D(float r=1.0, int m1=7, int m2=5);
     Sphere3D(const Sphere<float,3>& s, int m1=7, int m2=5);
     Sphere3D( const Sphere3D& copy );
-    ~Sphere3D();
 
-    void        displayColored(const GL::Program& color_prog, bool selected = false );
-    void        displayShaded(const GL::Program& shade_prog, bool selected = false );
+    void        render( const HqMatrix<float,3>& modelview_projection,
+                        const Color& color ) const;
+    void        render( const HqMatrix<float,3>& modelview,
+                        const HqMatrix<float,3>& projection,
+                        const Material& material ) const;
+
+    void        select(const GL::Program& prog) const;
+
     void        replot(int m1, int m2);
-    void        select();
 
   private:
-    int         _top_bot_verts;
-    int         _mid_strips;
-    int         _mid_strips_verts;
-    GLuint      _vbo_v;
-    GLuint      _vbo_n;
+    int                       _top_bot_verts;
+    int                       _mid_strips;
+    int                       _mid_strips_verts;
+    
+    GL::Program               _color_prog;
+    GL::Program               _shade_prog;
+    GL::Program               _select_prog;
+    GL::VertexBufferObject    _vbo_v;
+    GL::VertexBufferObject    _vbo_n;
+    GL::UniformBufferObject   _lights_ubo;
 
-    int         _m1;
-    int         _m2;
+    int                       _m1;
+    int                       _m2;
 
   }; // END class Sphere3D
 
@@ -85,8 +97,11 @@ namespace GMlib {
   inline
   Sphere3D::Sphere3D(float r, int m1, int m2) : Sphere<float,3>(Point<float,3>(float(0)),r) {
 
-    glGenBuffers( 1, &_vbo_v );
-    glGenBuffers( 1, &_vbo_n );
+    _shade_prog.acquire("phong");
+    _color_prog.acquire("color");
+    _lights_ubo.acquire("lights_ubo");
+    _vbo_v.create();
+    _vbo_n.create();
     replot(m1,m2);
   }
 
@@ -99,24 +114,58 @@ namespace GMlib {
   inline
   Sphere3D::Sphere3D(const Sphere<float,3>& s, int m1, int m2) : Sphere<float,3>(s) {
 
-    glGenBuffers( 1, &_vbo_v );
-    glGenBuffers( 1, &_vbo_n );
+    _shade_prog.acquire("phong");
+    _color_prog.acquire("color");
+    _lights_ubo.acquire("lights_ubo");
+    _vbo_v.create();
+    _vbo_n.create();
     replot(m1,m2);
   }
 
   inline
   Sphere3D::Sphere3D( const Sphere3D& copy ): Sphere<float,3>( copy ) {
 
-    glGenBuffers( 1, &_vbo_v );
-    glGenBuffers( 1, &_vbo_n );
+    _shade_prog.acquire("phong");
+    _color_prog.acquire("color");
+    _lights_ubo.acquire("lights_ubo");
+    _vbo_v.create();
+    _vbo_n.create();
     replot(copy._m1,copy._m2);
   }
 
-  inline
-  Sphere3D::~Sphere3D() {
 
-    glDeleteBuffers( 1, &_vbo_v );
-    glDeleteBuffers( 1, &_vbo_n );
+  /*! void Sphere3D::display()
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  inline
+  void Sphere3D::render( const HqMatrix<float,3>& modelview_projection, const Color& color ) const {
+
+    _color_prog.bind(); {
+
+      // Model view and projection matrices
+      _color_prog.setUniform( "u_mvpmat", modelview_projection );
+      _color_prog.setUniform( "u_color",  color );
+
+      GL::AttributeLocation vert_loc = _color_prog.getAttributeLocation( "in_vertex" );
+
+      _vbo_v.bind();
+      _vbo_v.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
+
+      // Draw top and bottom caps
+      for( int i = 0; i < 2; i++ )
+        glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
+
+      // Draw body strips
+      for( int i = 0; i < _mid_strips; i++ )
+        glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
+ 
+      _vbo_v.disable(vert_loc);
+      _vbo_v.unbind();
+
+    } _color_prog.unbind();
+    
   }
 
   /*! void Sphere3D::display()
@@ -125,17 +174,61 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Sphere3D::displayColored(const GL::Program& prog, bool selected ) {
+  void Sphere3D::render( const HqMatrix<float,3>& modelview, const HqMatrix<float,3>& projection, const Material& material  ) const {
 
-    prog.setUniform( "u_selected", selected );
-    prog.setUniform( "u_color", GMlib::GMcolor::Blue );
+    _shade_prog.bind(); {
+
+      // Model view and projection matrices
+      _shade_prog.setUniform( "u_mvmat",  modelview );
+      _shade_prog.setUniform( "u_mvpmat", modelview * projection );
+
+      // Lights
+      _shade_prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+
+      // Get Material Data
+      _shade_prog.setUniform( "u_mat_amb",  material.getAmb() );
+      _shade_prog.setUniform( "u_mat_dif",  material.getDif() );
+      _shade_prog.setUniform( "u_mat_spc",  material.getSpc() );
+      _shade_prog.setUniform( "u_mat_shin", material.getShininess() );
+
+      GL::AttributeLocation vert_loc = _shade_prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation normal_loc = _shade_prog.getAttributeLocation( "in_normal" );
+
+      _vbo_v.bind();
+      _vbo_v.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
+
+      _vbo_n.bind();
+      _vbo_n.enable( normal_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
+
+      // Draw top and bottom caps
+      for( int i = 0; i < 2; i++ )
+        glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
+
+      // Draw body strips
+      for( int i = 0; i < _mid_strips; i++ )
+        glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
+ 
+      _vbo_v.bind();
+      _vbo_v.disable(vert_loc);
+      _vbo_n.bind();
+      _vbo_n.disable(normal_loc);
+      _vbo_n.unbind();
+
+    } _shade_prog.unbind();
+  }
+
+  inline
+  void Sphere3D::select( const GL::Program& prog ) const {
+
+
+    // Model view and projection matrices
 
     GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc(), 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc() );
+    _vbo_v.bind();
+    _vbo_v.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
 
+//    std::cout << "Selthe Sphere3D in color mode; top/bot verts: " << _top_bot_verts << "; mid strips: " << _mid_strips << std::endl;
     // Draw top and bottom caps
     for( int i = 0; i < 2; i++ )
       glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
@@ -144,66 +237,9 @@ namespace GMlib {
     for( int i = 0; i < _mid_strips; i++ )
       glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
 
-    glDisableVertexAttribArray( vert_loc() );
-  }
+    _vbo_v.disable(vert_loc);
+    _vbo_v.unbind();
 
-  /*! void Sphere3D::display()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Sphere3D::displayShaded(const GL::Program& prog, bool selected ) {
-
-    prog.setUniform( "u_selected", selected );
-    prog.setUniform( "u_color", GMlib::GMcolor::Blue );
-
-    GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
-    GL::AttributeLocation normal_loc = prog.getAttributeLocation( "in_normal" );
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc(), 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc() );
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_n );
-    glVertexAttribPointer( normal_loc(), 3, GL_FLOAT, GL_TRUE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( normal_loc() );
-
-    // Draw top and bottom caps
-    for( int i = 0; i < 2; i++ )
-      glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
-
-    // Draw body strips
-    for( int i = 0; i < _mid_strips; i++ )
-      glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
-
-    glDisableVertexAttribArray( normal_loc() );
-    glDisableVertexAttribArray( vert_loc() );
-  }
-
-  /*! void Sphere3D::display()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Sphere3D::select() {
-
-//    GL::AttributeLocation vert_loc = GL::Program( "select" ).getAttributeLocation( "in_vertex" );
-
-//    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-//    glVertexAttribPointer( vert_loc(), 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-//    glEnableVertexAttribArray( vert_loc() );
-
-//    // Draw top and bottom caps
-//    for( int i = 0; i < 2; i++ )
-//      glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
-
-//    // Draw body strips
-//    for( int i = 0; i < _mid_strips; i++ )
-//      glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
-
-//    glDisableVertexAttribArray( vert_loc() );
   }
 
   /*! void Sphere3D::replot(int m1, int m2)
@@ -235,13 +271,10 @@ namespace GMlib {
     // Map buffers and allocate data on the GPU
     const unsigned int verts = _top_bot_verts * 2 + _mid_strips * _mid_strips_verts;
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glBufferData( GL_ARRAY_BUFFER, verts * 3 * sizeof(float), 0x0, GL_STATIC_DRAW );
-    float *ptr_v = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_n );
-    glBufferData( GL_ARRAY_BUFFER, verts * 3 * sizeof(float), 0x0, GL_STATIC_DRAW );
-    float *ptr_n = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    _vbo_v.bufferData( verts * 3 * sizeof(float), 0x0, GL_STATIC_DRAW );
+    _vbo_n.bufferData( verts * 3 * sizeof(float), 0x0, GL_STATIC_DRAW );
+    float *ptr_v = _vbo_v.mapBuffer<float>();
+    float *ptr_n = _vbo_n.mapBuffer<float>();
 
 
     // Compute stride in the spheres u and v parametric direction.
@@ -349,9 +382,8 @@ namespace GMlib {
 
 
     // Unmap GPU buffers
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glUnmapBuffer( GL_ARRAY_BUFFER );
+    _vbo_v.unmapBuffer();
+    _vbo_n.unmapBuffer();
   }
 
 

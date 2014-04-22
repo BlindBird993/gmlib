@@ -35,7 +35,7 @@ namespace GMlib {
 
   SpotLightG::SpotLightG() {
 
-    _init();
+    init();
   }
 
 
@@ -45,7 +45,7 @@ namespace GMlib {
     Angle cut_off
   ) : SpotLight( pos, dir, cut_off ) {
 
-    _init();
+    init();
   }
 
 
@@ -58,131 +58,138 @@ namespace GMlib {
     Angle cut_off
   ) : SpotLight( amb, dif, spe, pos, dir, cut_off ) {
 
-    _init();
+    init();
   }
 
 
   SpotLightG::SpotLightG( const SpotLight& copy ) : SpotLight( copy ) {
 
-    _init();
+    init();
   }
 
 
   SpotLightG::SpotLightG( const SpotLightG& copy) : SpotLight( copy ) {
 
-    _dlist = copy._dlist;
     setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
   }
 
 
-  void SpotLightG::_init() {
+  void SpotLightG::init() {
 
-    _dlist = 0;
     setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
-
-    _makeDisplayList();
   }
 
 
-  void SpotLightG::_makeDisplayList() {
-
-
-//    int i;
-//    double k = 3.3;
-//    double b = k/sqrt(1+pow(tan(_cutoff.getRad()),2));
-//    double a = sqrt(k*k-b*b);
-//    if(_cutoff.getDeg()>90) b = -b;
-
-//    Vector<float,3> d = _dir;
-//    Vector<float,3> n = d^d.getLinIndVec();
-//    d.setLength(b);
-//    n.setLength(a);
-//    UnitVector<float,3> n2 = -d;
-//    if(_cutoff.getDeg()!=90) n2 = Vector<float,3>((b/a)*n-(a/b)*d);
-//    GLMatrix m1(Angle(30),_pos,_dir);
-//    GLMatrix m2(Angle(-30),_pos,_dir);
-
-//    Array<Point<float,3> > p1;
-//    p1 += _pos;
-//    p1 += _pos+d+n;
-//    for(i=1; i<12; i++) p1 += m1*p1.back();
-
-//    Vector<float,3> bb=0.6*d;
-//    if(b<0.0) bb.setLength(0.0);
-//    Array<Point<float,3> > p2;
-//    p2 += _pos+bb+0.1*_dir;
-//    p2 += _pos+0.6*d+0.6*n;
-//    for(i=1; i<12; i++) p2 += m2*p2.back();
-
-//    Array<Vector<float,3> > v1;
-//    v1 += UnitVector<float,3>(-d);
-//    v1 += n2;
-//    for(i=1; i<12; i++) v1 += m1*v1.back();
-
-//    Array<Vector<float,3> > v2;
-//    v2 += UnitVector<float,3>(d);
-//    v2 += UnitVector<float,3>(d+n);
-//    for(i=1; i<12; i++) v2 += m2*v2.back();
-
-
-
-//    if( _dlist )
-//      glDeleteLists( _dlist, 2 );
-
-//    _dlist = glGenLists( 2 );
-
-//    glNewList(_dlist, GL_COMPILE); // The Light Box
-//      glBegin(GL_TRIANGLE_FAN);
-//        for(i=0; i<p1.size(); i++) { glNormal(v1[i]); glPoint(p1[i]); }
-//        glNormal(v1[1]); glPoint(p1[1]);
-//      glEnd();
-//    glEndList();
-
-
-//    glNewList( _dlist+1, GL_COMPILE );  // The Light
-//      glBegin(GL_TRIANGLE_FAN);
-//        for(i=0; i<p2.size(); i++) { glNormal(v2[i]); glPoint(p2[i]); }
-//        glNormal(v2[1]); glPoint(p2[1]);
-//      glEnd();
-//    glEndList();
-
-  }
 
 
   void SpotLightG::setCutOff(const Angle& cut_off) {
 
     SpotLight::setCutOff( cut_off );
-    _makeDisplayList();
+  }
+
+  void SpotLightG::localDisplay(const Camera* cam) const {
+
+
+//    std::cout << "Rendering spotlight!" << std::endl;
+    _sphere.render( getModelViewProjectionMatrix(cam), GMcolor::Green );
   }
 
 
-  void SpotLightG::localDisplay() {
+  void SpotLightG::localSelect(const GL::Program& prog, const Camera* cam) const {
 
-//    // Draw Casing
-//    glPushAttrib( GL_POINT_BIT | GL_LIGHTING_BIT ); {
-
-//      GMmaterial::Bronze.glSet();
-//      glCallList( _dlist );
-
-//    } glPopAttrib();
-
-
-//    // Draw Light
-//    glPushAttrib( GL_LIGHTING_BIT ); {
-
-//      glDisable( GL_LIGHTING );
-
-//      glColor(getAmbient());
-//      glCallList( _dlist+1 );
-
-//    } glPopAttrib();
+    prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam) );
+    _sphere.select(prog);
   }
 
+//  void SpotLightG::localDisplay() {
 
-  void SpotLightG::localSelect() {
+////    // Draw Casing
+////    glPushAttrib( GL_POINT_BIT | GL_LIGHTING_BIT ); {
 
-    glCallList( _dlist );
-  }
+////      GMmaterial::Bronze.glSet();
+////      glCallList( _dlist );
+
+////    } glPopAttrib();
+
+
+////    // Draw Light
+////    glPushAttrib( GL_LIGHTING_BIT ); {
+
+////      glDisable( GL_LIGHTING );
+
+////      glColor(getAmbient());
+////      glCallList( _dlist+1 );
+
+////    } glPopAttrib();
+//  }
+
+//  void SpotLightG::_makeDisplayList() {
+
+////    int i;
+////    double k = 3.3;
+////    double b = k/sqrt(1+pow(tan(_cutoff.getRad()),2));
+////    double a = sqrt(k*k-b*b);
+////    if(_cutoff.getDeg()>90) b = -b;
+
+////    Vector<float,3> d = _dir;
+////    Vector<float,3> n = d^d.getLinIndVec();
+////    d.setLength(b);
+////    n.setLength(a);
+////    UnitVector<float,3> n2 = -d;
+////    if(_cutoff.getDeg()!=90) n2 = Vector<float,3>((b/a)*n-(a/b)*d);
+////    GLMatrix m1(Angle(30),_pos,_dir);
+////    GLMatrix m2(Angle(-30),_pos,_dir);
+
+////    Array<Point<float,3> > p1;
+////    p1 += _pos;
+////    p1 += _pos+d+n;
+////    for(i=1; i<12; i++) p1 += m1*p1.back();
+
+////    Vector<float,3> bb=0.6*d;
+////    if(b<0.0) bb.setLength(0.0);
+////    Array<Point<float,3> > p2;
+////    p2 += _pos+bb+0.1*_dir;
+////    p2 += _pos+0.6*d+0.6*n;
+////    for(i=1; i<12; i++) p2 += m2*p2.back();
+
+////    Array<Vector<float,3> > v1;
+////    v1 += UnitVector<float,3>(-d);
+////    v1 += n2;
+////    for(i=1; i<12; i++) v1 += m1*v1.back();
+
+////    Array<Vector<float,3> > v2;
+////    v2 += UnitVector<float,3>(d);
+////    v2 += UnitVector<float,3>(d+n);
+////    for(i=1; i<12; i++) v2 += m2*v2.back();
+
+
+
+////    if( _dlist )
+////      glDeleteLists( _dlist, 2 );
+
+////    _dlist = glGenLists( 2 );
+
+////    glNewList(_dlist, GL_COMPILE); // The Light Box
+////      glBegin(GL_TRIANGLE_FAN);
+////        for(i=0; i<p1.size(); i++) { glNormal(v1[i]); glPoint(p1[i]); }
+////        glNormal(v1[1]); glPoint(p1[1]);
+////      glEnd();
+////    glEndList();
+
+
+////    glNewList( _dlist+1, GL_COMPILE );  // The Light
+////      glBegin(GL_TRIANGLE_FAN);
+////        for(i=0; i<p2.size(); i++) { glNormal(v2[i]); glPoint(p2[i]); }
+////        glNormal(v2[1]); glPoint(p2[1]);
+////      glEnd();
+////    glEndList();
+
+//  }
+
+//  void SpotLightG::localSelect() {
+
+//    glCallList( _dlist );
+//  }
 
 } // END namespace GMlib
 
