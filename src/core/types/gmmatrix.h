@@ -376,15 +376,17 @@ namespace GMlib {
 
     //HqMatrix<T,n> const&    getInverse2() const; // NOT IMPLEMENTED
 
-    void                   invertOrthoNormal();        // overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
-    void                   rotateXY(Angle a, int x=0, int y=1);
-    void                   rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
-    void                   rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
-    void                   rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
-    void                   rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
-    Matrix<T,n+1,n+1>&     setTranspose(const Matrix<T,n+1,n+1>& v);
-    void                   translate(const Vector<T,n> d);
-    void                   translateGlobal(const Vector<T,n> d);
+    void                    invertOrthoNormal();        // overloaded and use only for orthonormal (n-1 x n-1) sub-matrices (rotation matrices)
+    void                    rotateXY(Angle a, int x=0, int y=1);
+    void                    rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
+    void                    rotate(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
+    void                    rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v);
+    void                    rotateGlobal(Angle a, const Vector<T,n>& u, const Vector<T,n>& v, const APoint<T,n>& p);
+    Matrix<T,n+1,n+1>&      setTranspose(const Matrix<T,n+1,n+1>& v);
+    void                    translate(const Vector<T,n> d);
+    void                    translateGlobal(const Vector<T,n> d);
+
+    const Matrix<T,n,n>&    getRotationMatrix() const;
 
 
     Matrix<T,n+1,n+1>&     operator=(const Matrix<T,n+1,n+1>& v);

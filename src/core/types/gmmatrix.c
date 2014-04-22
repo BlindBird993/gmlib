@@ -1418,6 +1418,15 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
     this->reverseMult( m );
   }
 
+  template <typename T, int n>
+  inline
+  const Matrix<T,n,n>& HqMatrix_<T,n>::getRotationMatrix() const {
+
+    static Matrix<T,n,n> rot;
+    for( int i = 0; i < 3; ++i )
+      rot[i] = (*this)(i);
+    return rot;
+  }
 
   /*! void HqMatrix_<T, n>::invert2()
    *  \brief Invert
@@ -1853,6 +1862,7 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
     HqMatrix<T,3> x(q);
     this->reverseMult(x);
   }
+
 
 
 } // END namespace GMlib
