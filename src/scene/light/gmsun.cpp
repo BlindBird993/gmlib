@@ -38,20 +38,12 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  Sun::Sun( const Vector<float,3>& dir ) {
+  Sun::Sun( const Vector<float,3>& dir ) : _dir(dir) {
 
-    _dir = dir;
     _type_id  = GM_SO_TYPE_LIGHT;
     setDayLight();
   }
 
-
-  /*! Sun::~Sun()
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  Sun::~Sun() {}
 
   Color Sun::getGlobalAmbient() const {
 
@@ -72,21 +64,6 @@ namespace GMlib {
   void Sun::setDayLight( const Color& amb ) {
 
     Light::setColor( amb );
-  }
-
-
-
-  /*! void Sun::lighting()
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void Sun::lighting() {
-
-//    glPushMatrix();
-//      glMultMatrix(_present);
-//      glLightSun(_dir);
-//    glPopMatrix();
   }
 
 }

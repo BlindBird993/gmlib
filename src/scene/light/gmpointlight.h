@@ -45,39 +45,38 @@ namespace GMlib{
   /*! \class PointLight gmpointlight.h <gmPointLight>
    * \brief Pending Documentatioo
    *
-   *	Pending Documentatioo
+   *  Pending Documentatioo
    */
   class PointLight : public Light, public DisplayObject {
     GM_SCENEOBJECT(PointLight)
   public:
     PointLight();
-    PointLight(	const Point<float,3>& pos);
+    PointLight(  const Point<float,3>& pos);
     PointLight(
       const Color& amb,
       const Color& dif,
       const Color& spe,
       const Point<float,3>& pos
     );
-    PointLight(	const PointLight& pl);
+    PointLight(  const PointLight& pl);
     virtual ~PointLight();
 
-    virtual void 			culling( const Frustum& frustum );
-    const Point<float,3>&    getAttenuation() const;
-    void 							setAttenuation(float constant, float linear, float quadratic);
-    void 							setAttenuation(const float att[]);
+    virtual void              culling( const Frustum& frustum );
+    const Point<float,3>&     getAttenuation() const;
+    void                      setAttenuation(float constant, float linear, float quadratic);
+    void                      setAttenuation(const float att[]);
+
 
   protected:
-    void 							calculateRadius(float constant, float linear, float quadratic);
-    void 							lighting();
+    void                      calculateRadius(float constant, float linear, float quadratic);
 
-    Point<float,3>		_pos;
-    Point<float,3>		_attenuation;
-
+    Point<float,3>            _pos;
+    Point<float,3>            _attenuation;
 
   private:
-    Sphere<float,3>   _light_sphere;
+    Sphere<float,3>           _light_sphere;
 
-  };	// END class PointLight
+  };  // END class PointLight
 
 
 
@@ -97,6 +96,6 @@ namespace GMlib{
   }
 
 
-}	// END namespace GMlib
+}  // END namespace GMlib
 
 #endif // __gmPOINTLIGHT_H__

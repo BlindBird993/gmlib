@@ -32,6 +32,7 @@
 
 // GMlib includes
 #include "gmpointlight.h"
+#include "../gmscene.h"
 
 
 namespace GMlib {
@@ -170,20 +171,4 @@ namespace GMlib {
     }
     _light_sphere.resetValue(solution);
   }
-
-
-  /*! void PointLight::lighting()
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void PointLight::lighting() {
-
-//    glPushMatrix();
-//    // _present.inverse2().mult();
-//    glMultMatrix(_present);
-//    glLightPos(_pos);
-//    glPopMatrix();
-  }
-
 }

@@ -29,9 +29,7 @@
 
 
 #include "gmspotlight.h"
-
-// system
-#include <float.h>
+#include "../gmscene.h"
 
 
 namespace GMlib {
@@ -41,9 +39,9 @@ namespace GMlib {
 
 
   /*! SpotLight::SpotLight(): PointLight()
-   *	\brief Pending Documentation
+   * \brief Pending Documentation
    *
-   *	Pending Documentation
+   * Pending Documentation
    */
   SpotLight::SpotLight() {
 
@@ -52,9 +50,9 @@ namespace GMlib {
 
 
   /*! SpotLight::SpotLight( const Point<float,3>& pos, const Vector<float,3>& dir, Angle cut_off = 90 )
-   *	\brief Pending Documentation
+   * \brief Pending Documentation
    *
-   *	Pending Documentation
+   * Pending Documentation
    */
   SpotLight::SpotLight(
     const Point<float,3>& pos,
@@ -69,9 +67,9 @@ namespace GMlib {
 
 
   /*! SpotLight::SpotLight( const Color& amb, const Color& dif, const Color& spe, const Point<float,3>& pos, const Vector<float,3>& dir, Angle cut_off = 90 )
-   *	\brief Pending Documentation
+   * \brief Pending Documentation
    *
-   *	Pending Documentation
+   * Pending Documentation
    */
   SpotLight::SpotLight(
     const Color& amb,
@@ -80,7 +78,7 @@ namespace GMlib {
     const Point<float,3>& pos,
     const Vector<float,3>& dir,
     Angle cut_off
-  )	:	PointLight(amb,dif,spe,pos) {
+  ) : PointLight(amb,dif,spe,pos) {
 
     _dir = Vector<float,3>(0,0,1);
     setCutOff(cut_off);
@@ -88,12 +86,12 @@ namespace GMlib {
   }
 
 
-  /*! SpotLight::SpotLight(	const SpotLight& pl)
-   *	\brief Pending Documentation
+  /*! SpotLight::SpotLight( const SpotLight& pl)
+   * \brief Pending Documentation
    *
-   *	Pending Documentation
+   * Pending Documentation
    */
-  SpotLight::SpotLight(	const SpotLight& copy ) : PointLight( copy ) {
+  SpotLight::SpotLight( const SpotLight& copy ) : PointLight( copy ) {
 
     _dir = copy._dir;
     setCutOff(copy._cutoff);
@@ -102,9 +100,9 @@ namespace GMlib {
 
 
   /*! SpotLight::~SpotLight()
-   *	\brief Pending Documentation
+   * \brief Pending Documentation
    *
-   *	Pending Documentation
+   * Pending Documentation
    */
   SpotLight::~SpotLight() {}
 
@@ -121,40 +119,18 @@ namespace GMlib {
   }
 
 
-  /*! void SpotLight::lighting()
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void SpotLight::lighting() {
-
-//    glPushMatrix();
-//      glMultMatrix(_present);
-//      glLightPos(_pos);
-//      glLightDir(_dir);
-//    glPopMatrix();
-  }
-
-
   /*! void SpotLight::setCuttoff(const Angle cut_off)
-   *	\brief Pending Documentation
+   * \brief Pending Documentation
    *
-   *	Pending Documentation
+   * Pending Documentation
    */
   void SpotLight::setCutOff( const Angle& cut_off ) {
 
     _cutoff = cut_off;
   }
 
-
-  /*! void SpotLight::setExponent(double exp)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
   void SpotLight::setExponent(double exp) {
 
     _exp = exp;
   }
-
 }

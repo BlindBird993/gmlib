@@ -52,18 +52,12 @@ namespace GMlib{
     GM_SCENEOBJECT(Sun)
 
   public:
-    Sun(const Vector<float,3>& dir = Vector<float,3>(1,1,1));
-    virtual ~Sun();
+    Sun(const Vector<float,3>& dir = Vector<float,3>(-1,-1,-1));
 
     Color                   getGlobalAmbient() const;
     const Vector<float,3>&  getDir() const;
     void                    scaleDayLight( double d );
-    void                    setDayLight( const Color& amb = Color( 0.1f, 0.1f, 0.1f ) );
-
-
-  protected:
-    void                    lighting();
-
+    void                    setDayLight( const Color& amb = Color( 1.0f, 1.0f, 1.0f ) );
 
   private:
     Vector<float,3>         _dir;

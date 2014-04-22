@@ -42,7 +42,7 @@ namespace GMlib{
   /*! \class SpotLight gmspotlight.h <gmSpotLight>
    * \brief Pending Documentatioo
    *
-   *	Pending Documentatioo
+   *  Pending Documentatioo
    */
 
   class SpotLight : public PointLight {
@@ -62,26 +62,24 @@ namespace GMlib{
 
     virtual ~SpotLight();
 
-    const Angle&         getCutOff() const;
-    double               getExponent() const;
+    const Angle&          getCutOff() const;
+    double                getExponent() const;
 
-    virtual void         setCutOff( const Angle& cut_off);
-    void                 setExponent(double exp);
-
+    virtual void          setCutOff( const Angle& cut_off);
+    void                  setExponent(double exp);
 
   protected:
-    Vector<float,3>	     _dir;
-    Angle				 _cutoff;
-    double				 _exp;
+    Vector<float,3>       _dir;
+    Angle                 _cutoff;
+    double                _exp;
 
-    void lighting();
 
-  };	// END class SpotLight
-
+  };  // END class SpotLight
 
 
 
-}	// END namespace GMlib
+
+}  // END namespace GMlib
 
 
 #endif // __gmSPOTLIGHT_H__
