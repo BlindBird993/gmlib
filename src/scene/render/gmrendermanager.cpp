@@ -95,7 +95,7 @@ namespace GMlib {
       cameras(i)->updateCameraOrientation();
 
     // Render
-    _disp->render( _objs, cameras );
+    _disp->render( _window, _objs, cameras );
 
     // Render to render target
     _disp->renderToTarget( _window );

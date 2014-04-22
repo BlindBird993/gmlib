@@ -163,9 +163,11 @@ namespace GMlib {
       Light* light  = dynamic_cast<Light*>( rmobjs[i] );
 
       if( cam )
-        removeCamera( cam );
+        continue;
+//        removeCamera( cam );
       else if( light )
-        removeLight( light );
+        continue;
+//        removeLight( light );
       else
         remove( rmobjs[i] );
 
@@ -238,8 +240,6 @@ namespace GMlib {
 
     if(insert_in_scene && obj)
       insert(obj);
-
-    updateLightUBO();
   }
 
 
@@ -302,8 +302,6 @@ namespace GMlib {
 
       _lights.removeIndex(i);
 
-      updateLightUBO();
-
       return true;
     }
     return false;
@@ -347,7 +345,9 @@ namespace GMlib {
     return _stereo;
   }
 
-  void GMWindow::updateLightUBO() {
+  void GMWindow::updateLightUBO( const Camera* cam ) {
+
+    const HqMatrix<float,3> cammat = cam->DisplayObject::getMatrix() * cam->getMatrixToSceneInverse();
 
     /*
      *  Light types of "sun", "point" and "spot" is supported.
@@ -391,7 +391,7 @@ namespace GMlib {
     header.p[2] = header.p[1] + spot_lights.size();
     header.p[3] = header.p[2];
 
-    if( header.p[0] <= 0 )
+    if( header.p[3] <= 0 )
       return;
 
     // Add data to header array
@@ -404,9 +404,16 @@ namespace GMlib {
       sun.amb.p[2] = _sun->getGlobalAmbient().getBlueC();
       sun.amb.p[3] = _sun->getGlobalAmbient().getAlphaC();
 
-      sun.dir.p[0] = _sun->getDir()(0);
-      sun.dir.p[1] = _sun->getDir()(1);
-      sun.dir.p[2] = _sun->getDir()(2);
+      // using local matrix as it is not inserted in the scene but is said to live in the global space
+      Vector<float,3> sun_dir = cammat * _sun->getMatrix() * _sun->getDir();
+      sun.dir.p[0] = sun_dir(0);
+      sun.dir.p[1] = sun_dir(1);
+      sun.dir.p[2] = sun_dir(2);
+
+//      std::cout << "Sun light info: " << std::endl;
+//      std::cout << "  amb: " << _sun->getGlobalAmbient() << std::endl;
+//      std::cout << "  dir: " << _sun->getDir() << std::endl;
+//      std::cout << std::endl;
 
       lights.push_back(sun);
       light_ids.push_back(_sun->getLightName());
@@ -432,10 +439,12 @@ namespace GMlib {
       pl.spc.p[2] = light->getSpecular().getBlueC();
       pl.spc.p[3] = light->getSpecular().getAlphaC();
 
-      pl.pos.p[0] = light->getPos()(0);
-      pl.pos.p[1] = light->getPos()(1);
-      pl.pos.p[2] = light->getPos()(2);
+      Point<float,3> pos = cammat * light->getPos();
+      pl.pos.p[0] = pos(0);
+      pl.pos.p[1] = pos(1);
+      pl.pos.p[2] = pos(2);
       pl.pos.p[3] = 1.0f;
+//      std::cout << "Point light pos: " << pos << std::endl;
 
       pl.att.p[0] = light->getAttenuation()(0);
       pl.att.p[1] = light->getAttenuation()(1);
@@ -465,14 +474,17 @@ namespace GMlib {
       sl.spc.p[2] = light->getSpecular().getBlueC();
       sl.spc.p[3] = light->getSpecular().getAlphaC();
 
-      sl.pos.p[0] = light->getPos()(0);
-      sl.pos.p[1] = light->getPos()(1);
-      sl.pos.p[2] = light->getPos()(2);
+      Point<float,3> pos = cammat * light->getPos();
+      sl.pos.p[0] = pos(0);
+      sl.pos.p[1] = pos(1);
+      sl.pos.p[2] = pos(2);
       sl.pos.p[3] = 1.0f;
+//      std::cout << "Point light pos: " << pos << std::endl;
 
-      sl.dir.p[0] = light->getDir()(0);
-      sl.dir.p[1] = light->getDir()(1);
-      sl.dir.p[2] = light->getDir()(2);
+      Vector<float,3> dir = cammat * light->getDir();
+      sl.dir.p[0] = dir(0);
+      sl.dir.p[1] = dir(1);
+      sl.dir.p[2] = dir(2);
 
       sl.spot_cut = light->getCutOff().getDeg();
       sl.spot_exp = light->getExponent();
@@ -491,14 +503,15 @@ namespace GMlib {
     _lights_ubo.bufferSubData( 0, sizeof(GL::GLVector<4,GLuint>), &header );
     _lights_ubo.bufferSubData( sizeof(GL::GLVector<4,GLuint>), sizeof(GL::GLLight) * lights.size(), &lights[0] );
 
-    std::cout << "Updating light UBO!" << std::endl;
-    std::cout << "  - Sun(s):             " << header.p[0] << std::endl;
-    std::cout << "  - Point Light(s):     " << header.p[1] - header.p[0] << std::endl;
-    std::cout << "  - Spot Light(s):      " << header.p[2] - header.p[1] << std::endl;
-    std::cout << "  --------------------" << std::endl;
-    std::cout << "  - Total nr of Lights: "<< header.p[3] << std::endl;
+//    std::cout << "Updating light UBO!" << std::endl;
+//    std::cout << "  - Sun(s):             " << header.p[0] << std::endl;
+//    std::cout << "  - Point Light(s):     " << header.p[1] - header.p[0] << std::endl;
+//    std::cout << "  - Spot Light(s):      " << header.p[2] - header.p[1] << std::endl;
+//    std::cout << "  --------------------" << std::endl;
+//    std::cout << "  - Total nr of Lights: "<< header.p[3] << std::endl;
 
   }
+
 
   void GMWindow::initStdGeometry() {
 

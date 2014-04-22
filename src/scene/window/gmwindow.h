@@ -159,6 +159,8 @@ namespace GMlib {
   public:
     virtual void            init();
 
+    void                    updateLightUBO( const Camera* cam );
+
   protected:
     void                    updateMaxObjects(int no_objects);
 
@@ -172,7 +174,6 @@ namespace GMlib {
 
 
     GL::UniformBufferObject   _lights_ubo;
-    void                    updateLightUBO();
 
 
     GL::VertexBufferObject  _std_rep_cube;
@@ -277,7 +278,6 @@ namespace GMlib {
   void GMWindow::insertSun() {
 
     _sun = new Sun();
-    updateLightUBO();
   }
 
 
@@ -318,8 +318,6 @@ namespace GMlib {
 
       delete _sun;
       _sun = NULL;
-
-      updateLightUBO();
     }
   }
 

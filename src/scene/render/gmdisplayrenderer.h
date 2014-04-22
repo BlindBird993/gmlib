@@ -59,7 +59,7 @@ namespace GMlib {
     const GL::Texture&      getRenderTexture() const;
     const GL::Texture&      getSelectTexture() const;
 
-    virtual void            render(Array<DisplayObject*>& objs, const Array<Camera*>& cameras ) const;
+    virtual void            render( GMWindow* window, Array<DisplayObject*>& objs, const Array<Camera*>& cameras ) const;
 
     void                    render( GMWindow *window );
     void                    renderToTarget( GMWindow *window );
@@ -173,7 +173,7 @@ namespace GMlib {
           for( int i = 0; i < visus.getSize(); ++i )
             visus(i)->renderGeometry(_render_select_prog,obj,cam);
 
-          obj->localSelect(cam);
+          obj->localSelect(_render_select_prog,cam);
         }
 
       } _render_select_prog.unbind();
@@ -280,7 +280,7 @@ namespace GMlib {
   }
 
   inline
-  void DisplayRenderer::render(Array<DisplayObject*>& objs, const Array<Camera *> &cameras) const {
+  void DisplayRenderer::render( GMWindow * window, Array<DisplayObject*>& objs, const Array<Camera *> &cameras) const {
 
     // Clear render buffers
     _fbo.clear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -294,6 +294,7 @@ namespace GMlib {
       Camera *cam = cameras(i);
       cam->markAsActive();
 
+      window->updateLightUBO(cam);
       prepare( objs, cam );
 
       // Object rendering

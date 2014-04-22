@@ -101,7 +101,7 @@ namespace GMlib {
           for( int i = 0; i < visus.getSize(); ++i )
             visus(i)->renderGeometry(_prog,obj,cam);
 
-          obj->localSelect(cam);
+          obj->localSelect(_prog,cam);
         }
 
       } _prog.unbind();
