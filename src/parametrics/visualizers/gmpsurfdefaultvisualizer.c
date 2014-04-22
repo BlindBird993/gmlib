@@ -75,6 +75,11 @@ namespace GMlib {
 
     const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
     const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
+//    const SqMatrix<float,3> &nmat = obj->getNormalMatrix(cam);
+
+    SqMatrix<float,3>        nmat = mvmat.getRotationMatrix();
+    nmat.invertOrthoNormal();
+    nmat.transpose();
 
     this->glSetDisplayMode();
 
@@ -83,6 +88,7 @@ namespace GMlib {
       // Model view and projection matrices
       _prog.setUniform( "u_mvmat", mvmat );
       _prog.setUniform( "u_mvpmat", pmat * mvmat );
+      _prog.setUniform( "u_nmat", nmat );
 
       // Lights
       _prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
@@ -163,70 +169,65 @@ namespace GMlib {
 
 
 
-    std::string vs_src;
-    vs_src.append( GL::OpenGLManager::glslDefHeader150Source() );
-    vs_src.append(
-      "uniform mat4 u_mvmat, u_mvpmat;\n"
-      "\n"
-      "in vec4 in_vertex;\n"
-      "in vec2 in_tex;\n"
-      "\n"
-      "out vec4 gl_Position;\n"
-      "\n"
-      "smooth out vec3 ex_pos;\n"
-      "smooth out vec2 ex_tex;\n"
-      "\n"
-      "void main() {\n"
-      "\n"
-      "  vec4 v_pos = u_mvmat * in_vertex;\n"
-      "  ex_pos = v_pos.xyz * v_pos.w;\n"
-      "\n"
-      "  ex_tex = in_tex;\n"
-      "\n"
-      "  gl_Position = u_mvpmat * in_vertex;\n"
-      "}\n"
-    );
+    std::string vs_src =
+        GL::OpenGLManager::glslDefHeader150Source() +
 
-    std::string fs_src;
-    fs_src.append( GL::OpenGLManager::glslDefHeader150Source() );
-    fs_src.append( GL::OpenGLManager::glslStructMaterialSource() );
-    fs_src.append( GL::OpenGLManager::glslUniformLightsSource() );
-    fs_src.append( GL::OpenGLManager::glslFnSunlightSource() );
-    fs_src.append( GL::OpenGLManager::glslFnPointlightSource() );
-    fs_src.append( GL::OpenGLManager::glslFnSpotlightSource() );
-    fs_src.append( GL::OpenGLManager::glslFnComputeLightingSource() );
-    fs_src.append(
-      "uniform sampler2D u_nmap;\n"
-      "uniform mat4      u_mvmat;\n"
-      "\n"
-      "uniform vec4      u_mat_amb;\n"
-      "uniform vec4      u_mat_dif;\n"
-      "uniform vec4      u_mat_spc;\n"
-      "uniform float     u_mat_shi;\n"
-      "\n"
-      "smooth in vec3    ex_pos;\n"
-      "smooth in vec2    ex_tex;\n"
-      "\n"
-      "out vec4 gl_FragColor;\n"
-      "\n"
-      "void main() {\n"
-      "\n"
-      "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
-      "  vec3 nmap_normal = texture( u_nmap, ex_tex.ts).xyz;\n"
-      "  vec3 normal = normalize( nmat * nmap_normal );\n"
-      "\n"
-      "  Material mat;\n"
-      "  mat.ambient   = u_mat_amb;\n"
-      "  mat.diffuse   = u_mat_dif;\n"
-      "  mat.specular  = u_mat_spc;\n"
-      "  mat.shininess = u_mat_shi;\n"
-      "\n"
-      "  vec4 light_color = vec4(0.0);\n"
-      "\n"
-      "  gl_FragColor = computeLighting( mat, normal, ex_pos );\n"
-      "\n"
-      "}\n"
-    );
+        "uniform mat4 u_mvmat, u_mvpmat;\n"
+        "\n"
+        "in vec4 in_vertex;\n"
+        "in vec2 in_tex;\n"
+        "\n"
+        "out vec4 gl_Position;\n"
+        "\n"
+        "smooth out vec3 ex_pos;\n"
+        "smooth out vec2 ex_tex;\n"
+        "\n"
+        "void main() {\n"
+        "\n"
+        "  vec4 v_pos = u_mvmat * in_vertex;\n"
+        "  ex_pos = v_pos.xyz * v_pos.w;\n"
+        "\n"
+        "  ex_tex = in_tex;\n"
+        "\n"
+        "  gl_Position = u_mvpmat * in_vertex;\n"
+        "}\n"
+        ;
+
+    std::string fs_src =
+        GL::OpenGLManager::glslDefHeader150Source() +
+        GL::OpenGLManager::glslFnComputeLightingSource() +
+
+        "uniform sampler2D u_nmap;\n"
+        "uniform mat4      u_mvmat;\n"
+        "uniform mat3      u_nmat;\n"
+        "\n"
+        "uniform vec4      u_mat_amb;\n"
+        "uniform vec4      u_mat_dif;\n"
+        "uniform vec4      u_mat_spc;\n"
+        "uniform float     u_mat_shi;\n"
+        "\n"
+        "smooth in vec3    ex_pos;\n"
+        "smooth in vec2    ex_tex;\n"
+        "\n"
+        "out vec4 gl_FragColor;\n"
+        "\n"
+        "void main() {\n"
+        "\n"
+        "  vec3 nmap_normal = texture( u_nmap, ex_tex.ts).xyz;\n"
+        "  vec3 normal = normalize( u_nmat * nmap_normal );\n"
+        "\n"
+        "  Material mat;\n"
+        "  mat.ambient   = u_mat_amb;\n"
+        "  mat.diffuse   = u_mat_dif;\n"
+        "  mat.specular  = u_mat_spc;\n"
+        "  mat.shininess = u_mat_shi;\n"
+        "\n"
+        "  vec4 light_color = vec4(0.0);\n"
+        "\n"
+        "  gl_FragColor = computeLighting( mat, ex_pos, normal );\n"
+        "\n"
+        "}\n"
+        ;
 
     bool compile_ok, link_ok;
 
@@ -242,6 +243,10 @@ namespace GMlib {
     fshader.setPersistent(true);
     fshader.setSource(fs_src);
     compile_ok = fshader.compile();
+    if( !compile_ok ) {
+      std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
+      std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
+    }
     assert(compile_ok);
 
     _prog.create(prog_name);

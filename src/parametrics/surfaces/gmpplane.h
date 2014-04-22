@@ -50,6 +50,7 @@ namespace GMlib {
     bool                      isClosedU() const;
     bool                      isClosedV() const;
 
+    void                      setP( const Point<T,3>& p );
     void                      setU( const Vector<T,3>& u );
     void                      setV( const Vector<T,3>& v );
 

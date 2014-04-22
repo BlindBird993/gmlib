@@ -192,6 +192,12 @@ namespace GMlib {
     return false;
   }
 
+  template <typename T>
+  inline
+  void PPlane<T>::setP( const Point<T,3>& p ) {
+
+    _pt = p;
+  }
 
   template <typename T>
   inline
