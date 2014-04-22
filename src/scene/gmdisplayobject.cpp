@@ -149,6 +149,15 @@ namespace GMlib {
     return cam->getProjectionMatrix();
   }
 
+  const SqMatrix<float,3>& DisplayObject::getNormalMatrix( const Camera* cam ) const {
+
+    static SqMatrix<float,3> nmat;
+    nmat = getModelViewMatrix(cam).getRotationMatrix();
+    nmat.invertOrthoNormal();
+    nmat.transpose();
+    return nmat;
+  }
+
   Array<Visualizer*>& DisplayObject::getVisualizers() {
 
     return _visualizers;
