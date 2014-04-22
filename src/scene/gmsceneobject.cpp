@@ -64,7 +64,8 @@ namespace GMlib {
     Angle a
   ) :_scale(scale) {
 
-    _parent = 0;
+    _scene = 0x0;
+    _parent = 0x0;
     _matrix.translate(trans_vector);
 
     Vector<float,3> ra = rot_axel;
@@ -95,7 +96,8 @@ namespace GMlib {
 
     _copy_of          = &copy;
 
-    _parent           = 0;
+    _scene            = 0x0;
+    _parent           = 0x0;
     _matrix	          = copy._matrix;
     _sphere	          = copy._sphere;
     _scale            = copy._scale;
@@ -350,7 +352,8 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localSelect(const Camera* cam) const {
+  void SceneObject::localSelect( const GL::Program& prog, const Camera* cam) const {
+    GM_UNUSED(prog)
     GM_UNUSED(cam)
   }
 

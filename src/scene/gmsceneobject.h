@@ -42,6 +42,9 @@
 #include "event/gmsceneobjectattribute.h"
 #include "utils/gmmaterial.h"
 
+// gmlib
+#include <opengl/gmprogram.h>
+
 // stl
 #include <string>
 
@@ -252,7 +255,7 @@ namespace GMlib{
                                                                                   //! (may be removed without further notice!!!)
                                                                                   //! \deprecated
 
-    virtual void                        localSelect( const Camera* cam) const;    //! Lingering function convenient for Rapid Prototyping
+    virtual void                        localSelect( const GL::Program& prog, const Camera* cam) const;    //! Lingering function convenient for Rapid Prototyping
                                                                                   //! (may be removed without further notice!!!)
                                                                                   //! \deprecated
 
