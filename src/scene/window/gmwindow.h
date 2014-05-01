@@ -101,8 +101,10 @@ namespace GMlib {
 
     void                    insertLight(Light* light, bool insert_in_scene = false);
     bool                    removeLight(Light* light);
+    const Array<Light*>&    getInsertedLights() const;
     void                    insertSun();
     void                    removeSun();
+    const Sun*              getSun() const;
     void                    scaleDayLight(double d);
     void                    setSunDirection(Angle d);
 
@@ -159,7 +161,6 @@ namespace GMlib {
   public:
     virtual void            init();
 
-    void                    updateLightUBO( const Camera* cam );
 
   protected:
     void                    updateMaxObjects(int no_objects);
@@ -170,10 +171,6 @@ namespace GMlib {
     SceneObject*            _target;    /// NB!!!! take a look at this variable not used proper today.....
     bool                    _running;    /// Used to stor the state of simulation while mouse/keboard temporary turn off simulation
     bool                    _isbig;      /// State of one window functionality have been used (see _mouseDoubleClick on right knob)
-
-
-
-    GL::UniformBufferObject   _lights_ubo;
 
 
     GL::VertexBufferObject  _std_rep_cube;
@@ -319,6 +316,12 @@ namespace GMlib {
       delete _sun;
       _sun = NULL;
     }
+  }
+
+  inline
+  const Sun* GMWindow::getSun() const {
+
+    return _sun;
   }
 
 

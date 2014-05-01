@@ -57,9 +57,9 @@ namespace GMlib {
 
     void        render( const HqMatrix<float,3>& modelview_projection,
                         const Color& color ) const;
-    void        render( const HqMatrix<float,3>& modelview,
-                        const HqMatrix<float,3>& projection,
-                        const Material& material ) const;
+//    void        render( const HqMatrix<float,3>& modelview,
+//                        const HqMatrix<float,3>& projection,
+//                        const Material& material ) const;
 
     void        select(const GL::Program& prog) const;
 
@@ -75,7 +75,6 @@ namespace GMlib {
     GL::Program               _select_prog;
     GL::VertexBufferObject    _vbo_v;
     GL::VertexBufferObject    _vbo_n;
-    GL::UniformBufferObject   _lights_ubo;
 
     int                       _m1;
     int                       _m2;
@@ -99,7 +98,6 @@ namespace GMlib {
 
     _shade_prog.acquire("phong");
     _color_prog.acquire("color");
-    _lights_ubo.acquire("lights_ubo");
     _vbo_v.create();
     _vbo_n.create();
     replot(m1,m2);
@@ -116,7 +114,6 @@ namespace GMlib {
 
     _shade_prog.acquire("phong");
     _color_prog.acquire("color");
-    _lights_ubo.acquire("lights_ubo");
     _vbo_v.create();
     _vbo_n.create();
     replot(m1,m2);
@@ -127,7 +124,6 @@ namespace GMlib {
 
     _shade_prog.acquire("phong");
     _color_prog.acquire("color");
-    _lights_ubo.acquire("lights_ubo");
     _vbo_v.create();
     _vbo_n.create();
     replot(copy._m1,copy._m2);
@@ -168,54 +164,54 @@ namespace GMlib {
     
   }
 
-  /*! void Sphere3D::display()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Sphere3D::render( const HqMatrix<float,3>& modelview, const HqMatrix<float,3>& projection, const Material& material  ) const {
+//  /*! void Sphere3D::display()
+//   *  \brief Pending Documentation
+//   *
+//   *  Pending Documentation
+//   */
+//  inline
+//  void Sphere3D::render( const HqMatrix<float,3>& modelview, const HqMatrix<float,3>& projection, const Material& material  ) const {
 
-    _shade_prog.bind(); {
+//    _shade_prog.bind(); {
 
-      // Model view and projection matrices
-      _shade_prog.setUniform( "u_mvmat",  modelview );
-      _shade_prog.setUniform( "u_mvpmat", modelview * projection );
+//      // Model view and projection matrices
+//      _shade_prog.setUniform( "u_mvmat",  modelview );
+//      _shade_prog.setUniform( "u_mvpmat", modelview * projection );
 
-      // Lights
-      _shade_prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+//      // Lights
+//      _shade_prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
 
-      // Get Material Data
-      _shade_prog.setUniform( "u_mat_amb",  material.getAmb() );
-      _shade_prog.setUniform( "u_mat_dif",  material.getDif() );
-      _shade_prog.setUniform( "u_mat_spc",  material.getSpc() );
-      _shade_prog.setUniform( "u_mat_shin", material.getShininess() );
+//      // Get Material Data
+//      _shade_prog.setUniform( "u_mat_amb",  material.getAmb() );
+//      _shade_prog.setUniform( "u_mat_dif",  material.getDif() );
+//      _shade_prog.setUniform( "u_mat_spc",  material.getSpc() );
+//      _shade_prog.setUniform( "u_mat_shin", material.getShininess() );
 
-      GL::AttributeLocation vert_loc = _shade_prog.getAttributeLocation( "in_vertex" );
-      GL::AttributeLocation normal_loc = _shade_prog.getAttributeLocation( "in_normal" );
+//      GL::AttributeLocation vert_loc = _shade_prog.getAttributeLocation( "in_vertex" );
+//      GL::AttributeLocation normal_loc = _shade_prog.getAttributeLocation( "in_normal" );
 
-      _vbo_v.bind();
-      _vbo_v.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
+//      _vbo_v.bind();
+//      _vbo_v.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
 
-      _vbo_n.bind();
-      _vbo_n.enable( normal_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
+//      _vbo_n.bind();
+//      _vbo_n.enable( normal_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
 
-      // Draw top and bottom caps
-      for( int i = 0; i < 2; i++ )
-        glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
+//      // Draw top and bottom caps
+//      for( int i = 0; i < 2; i++ )
+//        glDrawArrays( GL_TRIANGLE_FAN, i * _top_bot_verts, _top_bot_verts );
 
-      // Draw body strips
-      for( int i = 0; i < _mid_strips; i++ )
-        glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
- 
-      _vbo_v.bind();
-      _vbo_v.disable(vert_loc);
-      _vbo_n.bind();
-      _vbo_n.disable(normal_loc);
-      _vbo_n.unbind();
+//      // Draw body strips
+//      for( int i = 0; i < _mid_strips; i++ )
+//        glDrawArrays( GL_TRIANGLE_STRIP, _top_bot_verts*2 + i*_mid_strips_verts, _mid_strips_verts );
 
-    } _shade_prog.unbind();
-  }
+//      _vbo_v.bind();
+//      _vbo_v.disable(vert_loc);
+//      _vbo_n.bind();
+//      _vbo_n.disable(normal_loc);
+//      _vbo_n.unbind();
+
+//    } _shade_prog.unbind();
+//  }
 
   inline
   void Sphere3D::select( const GL::Program& prog ) const {

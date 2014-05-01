@@ -35,7 +35,6 @@
 // GMlib
 #include <core/containers/gmarray.h>
 
-
 namespace GMlib {
 
   class Scene;

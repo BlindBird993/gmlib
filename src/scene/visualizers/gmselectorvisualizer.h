@@ -59,7 +59,6 @@ namespace GMlib {
     // Cube buffer objects
     GL::VertexBufferObject        _vbo;
     GL::IndexBufferObject         _ibo;
-    GL::UniformBufferObject       _lights_ubo;
 
     int                           _top_bot_verts;
     int                           _mid_strips;

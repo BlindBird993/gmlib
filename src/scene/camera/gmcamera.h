@@ -46,6 +46,11 @@
 namespace GMlib {
 
 
+
+  class GMWindow;
+
+
+
   /*!  \class Camera gmcamera.h <gmCamera>
    *  \brief  The Camera class
    *
@@ -183,6 +188,11 @@ namespace GMlib {
     float                       _angle_tan;
 
     bool                        _culling;
+
+    GL::UniformBufferObject           _light_ubo;
+    void                              updateLightUBO( const GMWindow* lights );
+    const GL::UniformBufferObject&    getLightUBO() const;
+
 
   public:
     void    markAsActive()    { _active = true; }

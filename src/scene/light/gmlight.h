@@ -71,7 +71,7 @@ namespace GMlib{
 
     Color                         getAmbient() const;
     Color                         getDiffuse() const;
-    unsigned int                  getLightName();
+    unsigned int                  getLightName() const;
     Color                         getSpecular() const;
 
   protected:
@@ -209,7 +209,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  unsigned int Light::getLightName() {
+  unsigned int Light::getLightName() const {
 
     return _light_name;
   }

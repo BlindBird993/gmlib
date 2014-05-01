@@ -53,7 +53,6 @@ namespace GMlib {
 
     _vbo.create();
     _ibo.create();
-    _lights_ubo.acquire("lights_ubo");
     _nmap.create(GL_TEXTURE_2D);
   }
 
@@ -65,7 +64,6 @@ namespace GMlib {
 
     _vbo.create();
     _ibo.create();
-    _lights_ubo.acquire("lights_ubo");
     _nmap.create(GL_TEXTURE_2D);
   }
 
@@ -91,7 +89,7 @@ namespace GMlib {
       _prog.setUniform( "u_nmat", nmat );
 
       // Lights
-      _prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+      _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
 
       // Material
       const Material &m = obj->getMaterial();

@@ -62,7 +62,6 @@ namespace GMlib {
 
     GL::VertexBufferObject      _vbo;
     GL::IndexBufferObject       _ibo;
-    GL::UniformBufferObject     _lights_ubo;
     GL::Texture                 _nmap;
     GL::Texture                 _tex;
 

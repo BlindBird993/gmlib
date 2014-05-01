@@ -79,10 +79,6 @@ namespace GL {
     IndexBufferObject std_rep_frame_indices;
     std_rep_frame_indices.create("std_rep_frame_indices");
     std_rep_frame_indices.setPersistent(true);
-
-    UniformBufferObject lights_ubo;
-    lights_ubo.create("lights_ubo");
-    lights_ubo.setPersistent(true);
   }
 
 

@@ -294,7 +294,7 @@ namespace GMlib {
       Camera *cam = cameras(i);
       cam->markAsActive();
 
-      window->updateLightUBO(cam);
+      cam->updateLightUBO( window );
       prepare( objs, cam );
 
       // Object rendering

@@ -47,7 +47,6 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer()
 
   _vbo.create();
   _ibo.create();
-  _lights_ubo.acquire("lights_ubo");
   _nmap.create(GL_TEXTURE_2D);
   _ptex_u.create(GL_TEXTURE_2D);
   _ptex_v.create(GL_TEXTURE_2D);
@@ -62,7 +61,6 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer(const PSurfParamLinesV
 
   _vbo.create();
   _ibo.create();
-  _lights_ubo.acquire("lights_ubo");
   _nmap.create(GL_TEXTURE_2D);
   _ptex_u.create(GL_TEXTURE_2D);
   _ptex_v.create(GL_TEXTURE_2D);
@@ -83,7 +81,7 @@ void PSurfParamLinesVisualizer<T,n>::render( const DisplayObject* obj, const Cam
     _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
     // Lights
-    _prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+    _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
 
     // Base material
     _prog.setUniform( "u_mat_amb", obj->getMaterial().getAmb() );

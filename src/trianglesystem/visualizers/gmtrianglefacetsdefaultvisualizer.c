@@ -32,6 +32,7 @@
 
 // gmlib
 #include <opengl/gmopengl.h>
+#include <scene/camera/gmcamera.h>
 
 
 namespace GMlib {
@@ -43,7 +44,6 @@ namespace GMlib {
     _prog.acquire("phong");
     _vbo.create();
     _ibo.create();
-    _lights_ubo.acquire("lights_ubo");
   }
 
   template <typename T>
@@ -65,7 +65,7 @@ namespace GMlib {
       _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      _prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+      _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
 
       // Get Material Data
       const Material &m = obj->getMaterial();
