@@ -69,8 +69,8 @@ namespace GL {
     void                      setUniform( const std::string& name, float f ) const;
     void                      setUniform( const std::string& name, int i ) const;
     void                      setUniform( const std::string& name, const Color& c ) const;
-    void                      setUniform( const std::string& name, const Matrix<float,3,3>& matrix, int count = 1, bool transpose = true ) const;
-    void                      setUniform( const std::string& name, const Matrix<float,4,4>& matrix, int count = 1, bool transpose = true ) const;
+    void                      setUniform( const std::string& name, const Matrix<float,3,3>& matrix, bool transpose = true ) const;
+    void                      setUniform( const std::string& name, const Matrix<float,4,4>& matrix, bool transpose = true ) const;
     void                      setUniform( const std::string& name, const APoint<float,3>& p ) const;
     void                      setUniform( const std::string& name, const APoint<float,4>& p ) const;
     void                      setUniform( const std::string& name, const Texture&, GLenum tex_unit, GLuint tex_nr ) const;

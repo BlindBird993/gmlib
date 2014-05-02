@@ -210,36 +210,30 @@ void Program::setUniform(const std::string& name, const Color &c) const {
       ));
 }
 
-void Program::setUniform(const std::string& name, const Matrix<float,3,3>& matrix, int count, bool transpose ) const {
+void Program::setUniform(const std::string& name, const Matrix<float,3,3>& matrix, bool transpose ) const {
 
   GL_CHECK(::glUniformMatrix3fv(
       getUniformLocation( name )(),
-      count, transpose, matrix.getPtr()
+      1, transpose, matrix.getPtr()
       ));
 }
 
-void Program::setUniform(const std::string& name, const Matrix<float,4,4>& matrix, int count, bool transpose ) const {
+void Program::setUniform(const std::string& name, const Matrix<float,4,4>& matrix, bool transpose ) const {
 
   GL_CHECK(::glUniformMatrix4fv(
       getUniformLocation( name )(),
-      count, transpose, matrix.getPtr()
+      1, transpose, matrix.getPtr()
       ));
 }
 
 void Program::setUniform(const std::string &name, const APoint<float, 3> &p) const {
 
-  GL_CHECK(::glUniform3fv(
-      getUniformLocation(name)(),
-      sizeof(APoint<float,3>), p.getPtr()
-      ));
+  GL_CHECK(::glUniform3fv( getUniformLocation(name)(), 1, p.getPtr() ));
 }
 
 void Program::setUniform(const std::string &name, const APoint<float, 4> &p) const {
 
-  GL_CHECK(::glUniform4fv(
-      getUniformLocation(name)(),
-      sizeof(APoint<float,4>), p.getPtr()
-      ));
+  GL_CHECK(::glUniform4fv( getUniformLocation(name)(), 1, p.getPtr() ));
 }
 
 void Program::setUniform(const std::string &name, const Texture& tex, GLenum tex_unit, GLuint tex_nr ) const {
