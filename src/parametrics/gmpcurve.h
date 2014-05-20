@@ -124,7 +124,6 @@ namespace GMlib {
 
   private:
     void                      _eval( T t, int d );
-    void                      _evalDerDD( DVector< DVector< Vector<T,n> > > & p, int d, T du ) const;
     T                         _integral(T a, T b, double eps);
 
   }; // END class PCurve

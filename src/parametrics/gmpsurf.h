@@ -199,7 +199,6 @@ namespace GMlib {
 
   private:
     void                          _eval( T u, T v, int d1, int d2 );
-    void                          _evalDerDD( DMatrix< DMatrix< Vector<T,n> > >& a, int d1, int d2, T du, T dv ) const;
     void                          _evalNormal();
 //    void                          _setSam( int m1, int m2 );
     int                           _sum( int i, int j );

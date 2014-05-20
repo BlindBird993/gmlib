@@ -23,6 +23,7 @@
 
 addHeaders(
   gmColor
+  gmDividedDifferences
   gmRandom
   gmSortObject
   gmStream
@@ -32,6 +33,7 @@ addHeaders(
 )
 
 addTemplateSources(
+  gmdivideddifferences.c
   gmrandom.c
   gmsortobject.c
   gmstring.c

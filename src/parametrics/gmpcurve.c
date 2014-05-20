@@ -30,6 +30,7 @@
 
 // gmlib
 #include "visualizers/gmpcurvedefaultvisualizer.h"
+#include <core/utils/gmdivideddifferences.h>
 
 // stl
 #include <cmath>
@@ -93,34 +94,6 @@ namespace GMlib {
 
     _t = t; _d = d;
     eval( shift(t), d );
-  }
-
-
-  template <typename T, int n>
-  inline
-  void PCurve<T,n>::_evalDerDD( DVector< DVector< Vector<T, n> > > & p, int d, T du ) const
-  {
-    T du2 = 2*du;
-    int k = p.getDim()-1;
-
-    for(int j = 1; j <= d; j++)
-    {
-      int j1 = j-1;
-
-      for(int i = 1; i < k; i++) // ordinary divided differences
-        p[i][j] = (p[i+1][j1] - p[i-1][j1])/du2;
-
-      if(isClosed()) // biting its own tail
-      {
-        p[0][j] = (p[1][j1] - p[k][j1]  )/du2;
-        p[k][j] = (p[0][j1] - p[k-1][j1])/du2;
-      }
-      else // second degree endpoints divided differences
-      {
-        p[0][j] = ( 4*p[1][j1]   - 3*p[0][j1] - p[2][j1]  )/du2;
-        p[k][j] = (-4*p[k-1][j1] + 3*p[k][j1] + p[k-2][j1])/du2;
-      }
-    }
   }
 
   template <typename T, int n>
@@ -525,7 +498,7 @@ namespace GMlib {
 
       case GM_DERIVATION_DD:
       default:
-        _evalDerDD( p, d, du );
+        DD::compute1D(p, du, isClosed(), d );
         break;
     };
   }

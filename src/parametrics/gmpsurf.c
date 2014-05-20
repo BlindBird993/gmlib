@@ -31,6 +31,8 @@
 // gmlib
 #include "visualizers/gmpsurfdefaultvisualizer.h"
 
+#include <core/utils/gmdivideddifferences.h>
+
 
 // stl
 #include <cmath>
@@ -113,121 +115,6 @@ namespace GMlib {
       eval( shiftU(u), shiftV(v), d1, d2 );
     }
   }
-
-
-  template <typename T, int n>
-  inline
-  void PSurf<T,n>::_evalDerDD( DMatrix<DMatrix <Vector<T,n> > >& a, int d1, int d2, T du, T dv) const {
-
-    T one_over_du;
-    T one_over_dv;
-
-
-
-    // Handle all singular patial derivatives in v direction;
-    // the case of v == 0
-    for( int u = 1, v = 0; u <= d1; u++ ) {
-
-      one_over_du = T(1) / ( pow( T(2) * du, T(u) ) );
-  //    T one_over_du = T(1);
-
-      // Handle all partial derivatives in v direction.
-      for( int i = 1; i < a.getDim1() - 1; i++ ) {
-        for( int j = 0; j < a.getDim2(); j++ ) {
-
-          // Iterate throug each component of the "point"
-          for( int k = 0; k < 3; k++ )
-            a[i][j][u][v][k] = a[i+1][j][u-1][v][k] - a[i-1][j][u-1][v][k];
-
-          a[i][j][u][v] *= one_over_du;
-        }
-      }
-
-
-
-
-      if( isClosedU() ) {
-
-        // Handle the edges, for partial derivatives of the dataset; i1 = 0, i2 = a.getDim1()-1
-        for( int i1 = 0, i2 = a.getDim1() - 1, j = 0; j < a.getDim2(); j++ ) {
-
-          // Iterate throug each component of the "point"
-          for( int k = 0; k < 3; k++ ) {
-
-            a[i1][j][u][v][k] = a[i2][j][u][v][k] = ( a[i1+1][j][u-1][v][k] - a[i2-1][j][u-1][v][k]   );
-          }
-          a[i1][j][u][v] = a[i2][j][u][v] *= one_over_du;
-        }
-      }
-      else {
-        // Handle the edges, for partial derivatives of the dataset; i1 = 0, i2 = a.getDim1()-1
-        for( int i1 = 0, i2 = a.getDim1() - 1, j = 0; j < a.getDim2(); j++ ) {
-
-          // Iterate throug each component of the "point"
-          for( int k = 0; k < 3; k++ ) {
-
-            a[i1][j][u][v][k] = a[i1+1][j][u-1][v][k] - ( a[i1][j][u-1][v][k] + ( a[i1][j][u-1][v][k] - a[i1+1][j][u-1][v][k] ) );
-            a[i2][j][u][v][k] = ( a[i2][j][u-1][v][k] + ( a[i2][j][u-1][v][k] - a[i2-1][j][u-1][v][k] ) ) - a[i2][j][u-1][v][k];
-          }
-          a[i1][j][u][v] *= one_over_du;
-          a[i2][j][u][v] *= one_over_du;
-        }
-      }
-    }
-
-
-
-
-    for( int u = 0; u <= d1; u++ ) {
-      for( int v = 1; v <= d2; v++ ) {
-
-        one_over_dv = T(1) / ( pow( T(2) * dv, T(v) ) );
-  //      T one_over_dv = T(1);
-
-        // Handle all partial derivatives in v direction.
-        for( int i = 0; i < a.getDim1(); i++ ) {
-          for( int j = 1; j < a.getDim2() - 1; j++ ) {
-
-            // Iterate throug each component of the "point"
-            for( int k = 0; k < 3; k++ )
-              a[i][j][u][v][k] = a[i][j+1][u][v-1][k] - a[i][j-1][u][v-1][k];
-
-            a[i][j][u][v] *= one_over_dv;
-          }
-        }
-
-        if( isClosedV() ) {
-
-          // Handle the edges, for partial derivatives of the dataset; j1 = 0, j2 = a.getDim2()-1
-          for( int i = 0, j1 = 0, j2 = a.getDim2() - 1; i < a.getDim1(); i++ ) {
-
-            // Iterate throug each component of the "point"
-            for( int k = 0; k < 3; k++ ) {
-
-              a[i][j1][u][v][k] = a[i][j2][u][v][k] = ( a[i][j1+1][u][v-1][k] - a[i][j2-1][u][v-1][k] );
-            }
-            a[i][j1][u][v] = a[i][j2][u][v] *= one_over_dv;
-          }
-        }
-        else {
-
-          // Handle the edges, for partial derivatives of the dataset; j1 = 0, j2 = a.getDim2()-1
-          for( int i = 0, j1 = 0, j2 = a.getDim2() - 1; i < a.getDim1(); i++ ) {
-
-            // Iterate throug each component of the "point"
-            for( int k = 0; k < 3; k++ ) {
-
-              a[i][j1][u][v][k] = a[i][j1+1][u][v-1][k] - ( a[i][j1][u][v-1][k] + ( a[i][j1][u][v-1][k] - a[i][j1+1][u][v-1][k] )   );
-              a[i][j2][u][v][k] = ( a[i][j2][u][v-1][k] + ( a[i][j2][u][v-1][k] - a[i][j2-1][u][v-1][k] )  ) - a[i][j2-1][u][v-1][k];
-            }
-            a[i][j1][u][v] *= one_over_dv;
-            a[i][j2][u][v] *= one_over_dv;
-          }
-        }
-      }
-    }
-  }
-
 
   template <typename T, int n>
   inline
@@ -805,7 +692,7 @@ namespace GMlib {
 
       case GM_DERIVATION_DD:
       default:
-        _evalDerDD( p, d1, d2, du, dv );
+        DD::compute2D(p,du,dv,isClosedU(),isClosedV(),d1,d2);
         break;
     }
   }
