@@ -28,12 +28,16 @@
  */
 
 
+// include for syntax highlighting
+#include "gmpsurfderivativesvisualizer.h"
+
 namespace GMlib {
 
-  template <typename T>
-  PSurfDerivativesVisualizer<T>::PSurfDerivativesVisualizer() {
+  template <typename T, int n>
+  PSurfDerivativesVisualizer<T,n>::PSurfDerivativesVisualizer() {
 
-    this->setRenderProgram( GL::GLProgram( "color" ) );
+    _prog.acquire("color");
+    _vbo.create();
 
     _color = GMcolor::Green;
     _u = 1;
@@ -42,95 +46,97 @@ namespace GMlib {
     _size = 1.0;
 
     _no_elements = 0;
-
-    glGenBuffers( 1, &_vbo_v );
   }
 
-  template <typename T>
-  PSurfDerivativesVisualizer<T>::~PSurfDerivativesVisualizer() {
+  template <typename T, int n>
+  PSurfDerivativesVisualizer<T,n>::~PSurfDerivativesVisualizer() {}
 
-    glDeleteBuffers( 1, &_vbo_v );
-  }
-
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfDerivativesVisualizer<T>::display() {
+  void PSurfDerivativesVisualizer<T,n>::render(const DisplayObject *obj, const Camera *cam) const {
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.setUniform( "u_color", _color );
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+    _prog.bind(); {
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc );
+      _prog.setUniform( "u_mvpmat", mvpmat );
+      _prog.setUniform( "u_color", _color );
 
-    // Draw
-    glDrawArrays( GL_LINES, 0, _no_elements );
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
-    glDisableVertexAttribArray( vert_loc );
+      // Bind & draw
+      _vbo.bind();
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, static_cast<const GLvoid*>(0x0) );
 
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+      GL_CHECK(glDrawArrays( GL_LINES, 0, _no_elements ));
+
+      _vbo.disable( vert_loc );
+      _vbo.unbind();
+
+    } _prog.unbind();
 
   }
 
-  template <typename T>
-  const Color& PSurfDerivativesVisualizer<T>::getColor() const {
+  template <typename T, int n>
+  const Color& PSurfDerivativesVisualizer<T,n>::getColor() const {
 
     return _color;
   }
 
-  template <typename T>
-  int PSurfDerivativesVisualizer<T>::getDerivativeU() const {
+  template <typename T, int n>
+  int PSurfDerivativesVisualizer<T,n>::getDerivativeU() const {
 
     return _u;
   }
 
-  template <typename T>
-  int PSurfDerivativesVisualizer<T>::getDerivativeV() const {
+  template <typename T, int n>
+  int PSurfDerivativesVisualizer<T,n>::getDerivativeV() const {
 
     return _v;
   }
 
-  template <typename T>
-  GM_SURF_DERIVATIVESVISUALIZER_SIZE PSurfDerivativesVisualizer<T>::getMode() const {
+  template <typename T, int n>
+  GM_SURF_DERIVATIVESVISUALIZER_SIZE PSurfDerivativesVisualizer<T,n>::getMode() const {
 
     return _mode;
   }
 
-  template <typename T>
-  double PSurfDerivativesVisualizer<T>::getSize() const {
+  template <typename T, int n>
+  double PSurfDerivativesVisualizer<T,n>::getSize() const {
 
     return _size;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfDerivativesVisualizer<T>::replot(
-    DMatrix< DMatrix< Vector<T, 3> > >& p,
-    DMatrix< Vector<T, 3> >& /*normals*/,
-    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
-    bool /*closed_u*/, bool /*closed_v*/
+  void PSurfDerivativesVisualizer<T,n>::replot(
+      const DMatrix< DMatrix< Vector<T, n> > >& p,
+      const DMatrix< Vector<T,3> >& normals,
+      int m1, int m2, int d1, int d2,
+      bool closed_u, bool closed_v
   ) {
+    GM_UNUSED(normals)
+    GM_UNUSED(m1) GM_UNUSED(m2)
+    GM_UNUSED(d1) GM_UNUSED(d2)
+    GM_UNUSED(closed_u) GM_UNUSED(closed_v)
+
 
     int der_u = 0;
     int der_v = 0;
 
-    if( (_u >= 0) || (_u <= p[0][0].getDim1()-1) )
+    if( (_u >= 0) || (_u <= p(0)(0).getDim1()-1) )
       der_u = _u;
 
-    if( (_v >= 0) || (_v <= p[0][0].getDim2()-1) )
+    if( (_v >= 0) || (_v <= p(0)(0).getDim2()-1) )
       der_v = _v;
 
 
     int no_derivatives = p.getDim1() * p.getDim2();
     _no_elements = no_derivatives * 2;
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v);
-    glBufferData( GL_ARRAY_BUFFER, no_derivatives * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+    _vbo.bufferData(no_derivatives * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW);
 
-
-    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    float *ptr = _vbo.mapBuffer<float>();
     if( ptr ) {
 
       switch( _mode ) {
@@ -139,12 +145,13 @@ namespace GMlib {
           for( int i = 0; i < p.getDim1(); i++ )
             for( int j = 0; j < p.getDim2(); j++ ) {
 
+              const Point<T,3> &pos = p(i)(j)(0)(0);
               for( int k = 0; k < 3; k++ )
-                *(ptr++) = p[i][j][0][0][k];
+                *(ptr++) = pos(k);
 
-              const Vector<T,3> v = p[i][j][der_u][der_v] * _size;
+              const Vector<T,3> &v = p(i)(j)(der_u)(der_v) * _size;
               for( int k = 0; k < 3; k++ )
-                *(ptr++) = p[i][j][0][0][k] + v(k);
+                *(ptr++) = pos(k) + v(k);
             }
         }
         break;
@@ -154,12 +161,13 @@ namespace GMlib {
           for( int i = 0; i < p.getDim1(); i++ )
             for( int j = 0; j < p.getDim2(); j++ ) {
 
+              const Point<T,3> &pos = p(i)(j)(0)(0);
               for( int k = 0; k < 3; k++ )
-                *(ptr++) = p[i][j][0][0][k];
+                *(ptr++) = pos(k);
 
-              const Vector<T,3> v = p[i][j][der_u][der_v].getNormalized() * _size;
+              const Vector<T,3> &v = p(i)(j)(der_u)(der_v).getNormalized() * _size;
               for( int k = 0; k < 3; k++ )
-                *(ptr++) = p[i][j][0][0][k] + v(k);
+                *(ptr++) = pos(k) + v(k);
             }
         }
         break;
@@ -169,30 +177,30 @@ namespace GMlib {
           for( int i = 0; i < p.getDim1(); i++ )
             for( int j = 0; j < p.getDim2(); j++ ) {
 
+              const Point<T,3> &pos = p(i)(j)(0)(0);
               for( int k = 0; k < 3; k++ )
-                *(ptr++) = p[i][j][0][0][k];
+                *(ptr++) = pos(k);
 
-              const UnitVector<T,3> uv = p[i][j][der_u][der_v];
+              const UnitVector<T,3> &uv = p(i)(j)(der_u)(der_v);
               for( int k = 0; k < 3; k++ )
-                *(ptr++) = p[i][j][0][0][k] + uv(k);
+                *(ptr++) = pos(k) + uv(k);
             }
         }
         break;
       }
     }
 
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.unmapBuffer();
   }
 
-  template <typename T>
-  void PSurfDerivativesVisualizer<T>::setColor( const Color& color ) {
+  template <typename T, int n>
+  void PSurfDerivativesVisualizer<T,n>::setColor( const Color& color ) {
 
     _color = color;
   }
 
-  template <typename T>
-  void PSurfDerivativesVisualizer<T>::setDerivatives( int u, int v ) {
+  template <typename T, int n>
+  void PSurfDerivativesVisualizer<T,n>::setDerivatives( int u, int v ) {
 
     if( u < 1 && v < 1 )
       return;
@@ -204,14 +212,14 @@ namespace GMlib {
     _v = v;
   }
 
-  template <typename T>
-  void PSurfDerivativesVisualizer<T>::setMode( GM_SURF_DERIVATIVESVISUALIZER_SIZE mode ) {
+  template <typename T, int n>
+  void PSurfDerivativesVisualizer<T,n>::setMode( GM_SURF_DERIVATIVESVISUALIZER_SIZE mode ) {
 
     _mode = mode;
   }
 
-  template <typename T>
-  void PSurfDerivativesVisualizer<T>::setSize( double size ) {
+  template <typename T, int n>
+  void PSurfDerivativesVisualizer<T,n>::setSize( double size ) {
 
     _size = size;
   }

@@ -23,12 +23,12 @@
 addHeaders(
 #  gmPCurveContoursVisualizer
   gmPCurveDefaultVisualizer
-#  gmPCurveDerivativesVisualizer
+  gmPCurveDerivativesVisualizer
 #  gmPCurvePointsVisualizer
   gmPCurveVisualizer
 #  gmPSurfContoursVisualizer
   gmPSurfDefaultVisualizer
-#  gmPSurfDerivativesVisualizer
+  gmPSurfDerivativesVisualizer
   gmPSurfNormalsVisualizer
 #  gmPSurfPointsVisualizer
   gmPSurfParamLinesVisualizer
@@ -43,13 +43,13 @@ addHeaders(
 addTemplateSources(
 #  gmpcurvecontoursvisualizer.c
   gmpcurvedefaultvisualizer.c
-#  gmpcurvederivativesvisualizer.c
+  gmpcurvederivativesvisualizer.c
 #  gmpcurvepointsvisualizer.c
   gmpcurvevisualizer.c
 #  gmpsurfcontoursvisualizer.c
   gmpsurfdefaultvisualizer.c
-#  gmpsurfderivativesvisualizer.c
-#  gmpsurfnormalsvisualizer.c
+  gmpsurfderivativesvisualizer.c
+  gmpsurfnormalsvisualizer.c
 #  gmpsurfpointsvisualizer.c
   gmpsurfparamlinesvisualizer.c
   gmpsurftexvisualizer.c

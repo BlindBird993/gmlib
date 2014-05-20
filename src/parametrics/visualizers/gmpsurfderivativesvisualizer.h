@@ -54,13 +54,14 @@ namespace GMlib {
     GM_SURF_DERIVATIVESVISUALIZER_ABSOLUTE
   };
 
-  template <typename T>
-  class PSurfDerivativesVisualizer : public PSurfVisualizer<T> {
+  template <typename T, int n>
+  class PSurfDerivativesVisualizer : public PSurfVisualizer<T,n> {
+    GM_VISUALIZER(PSurfDerivativesVisualizer)
   public:
     PSurfDerivativesVisualizer();
     virtual ~PSurfDerivativesVisualizer();
 
-    void            display();
+    void            render(const DisplayObject *obj, const Camera *cam) const;
     const Color&    getColor() const;
     int             getDerivativeU() const;
     int             getDerivativeV() const;
@@ -68,22 +69,21 @@ namespace GMlib {
                     getMode() const;
     double          getSize() const;
 
-    void            replot(
-      DMatrix< DMatrix< Vector<T, 3> > >& p,
-      DMatrix< Vector<T, 3> >& normals,
-      int m1, int m2, int d1, int d2,
-      bool closed_u, bool closed_v
-    );
+    void            replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
+                            const DMatrix< Vector<T,3> >& normals,
+                            int m1, int m2, int d1, int d2,
+                            bool closed_u, bool closed_v );
     void            setColor( const Color& color );
     void            setDerivatives( int u = 0, int v = 0 );
     void            setMode( GM_SURF_DERIVATIVESVISUALIZER_SIZE mode );
     void            setSize( double size = 1.0 );
 
   protected:
-    Color           _color;
+    Color                   _color;
 
-    GLuint          _vbo_v;
-    int             _no_elements;
+    GL::Program             _prog;
+    GL::VertexBufferObject  _vbo;
+    int                     _no_elements;
 
     GM_SURF_DERIVATIVESVISUALIZER_SIZE
                     _mode;

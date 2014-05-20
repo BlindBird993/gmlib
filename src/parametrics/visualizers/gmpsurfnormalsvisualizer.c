@@ -68,10 +68,10 @@ namespace GMlib {
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
       _vbo.bind();
-      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, static_cast<const GLvoid*>(0x0) );
 
       // Draw
-      glDrawArrays( GL_LINES, 0, _no_elements );
+      GL_CHECK(glDrawArrays( GL_LINES, 0, _no_elements ));
 
       _vbo.disable( vert_loc );
       _vbo.unbind();
@@ -128,15 +128,16 @@ namespace GMlib {
       for( int i = 0; i < p.getDim1(); i++ ) {
         for( int j = 0; j < p.getDim2(); j++ ) {
 
-          (*ptr).x = p(i)(j)(0)(0)(0);
-          (*ptr).y = p(i)(j)(0)(0)(1);
-          (*ptr).z = p(i)(j)(0)(0)(2);
+          const Point<T,3> &pos = p(i)(j)(0)(0);
+          (*ptr).x = pos(0);
+          (*ptr).y = pos(1);
+          (*ptr).z = pos(2);
           ptr++;
 
           const Vector<T,3> N = normals(i)(j).getNormalized() * _size;
-          (*ptr).x = p(i)(j)(0)(0)(0) + N(0);
-          (*ptr).y = p(i)(j)(0)(0)(1) + N(1);
-          (*ptr).z = p(i)(j)(0)(0)(2) + N(2);
+          (*ptr).x = pos(0) + N(0);
+          (*ptr).y = pos(1) + N(1);
+          (*ptr).z = pos(2) + N(2);
           ptr++;
         }
       }
@@ -159,7 +160,6 @@ namespace GMlib {
     int no_normals = ( p.getDim1() - 2 ) * ( p.getDim2() - 2 );
     _no_elements = no_normals * 2;
 
-    _vbo.bind();
     _vbo.bufferData( no_normals * 2 * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
     GL::GLVertex *ptr = _vbo.mapBuffer<GL::GLVertex>();
@@ -168,22 +168,22 @@ namespace GMlib {
       for( int i = 1; i < p.getDim1()-1; i++ ) {
         for( int j = 1; j < p.getDim2()-1; j++ ) {
 
-          (*ptr).x = p(i)(j)(0)(0)(0);
-          (*ptr).y = p(i)(j)(0)(0)(1);
-          (*ptr).z = p(i)(j)(0)(0)(2);
+          const Point<T,3> &pos = p(i)(j)(0)(0);
+          (*ptr).x = pos(0);
+          (*ptr).y = pos(1);
+          (*ptr).z = pos(2);
           ptr++;
 
           const Vector<T,3> N = normals(i)(j).getNormalized() * _size;
-          (*ptr).x = p(i)(j)(0)(0)(0) + N(0);
-          (*ptr).y = p(i)(j)(0)(0)(1) + N(1);
-          (*ptr).z = p(i)(j)(0)(0)(2) + N(2);
+          (*ptr).x = pos(0) + N(0);
+          (*ptr).y = pos(1) + N(1);
+          (*ptr).z = pos(2) + N(2);
           ptr++;
         }
       }
     }
 
     _vbo.unmapBuffer();
-    _vbo.unbind();
   }
 
   /*! void PSurfNormalsVisualizer<T,n>::makePlotBoundary( DMatrix< DMatrix< Vector<T, 3> > >& p, DMatrix< Vector<T, 3> >& normals )
@@ -210,29 +210,31 @@ namespace GMlib {
         // j = 0
         j = 0;
 
-        (*ptr).x = p(i)(j)(0)(0)(0);
-        (*ptr).y = p(i)(j)(0)(0)(1);
-        (*ptr).z = p(i)(j)(0)(0)(2);
+        const Point<T,3> &pos = p(i)(j)(0)(0);
+        (*ptr).x = pos(0);
+        (*ptr).y = pos(1);
+        (*ptr).z = pos(2);
         ptr++;
 
         const Vector<T,3> N1 = normals(i)(j).getNormalized() * _size;
-        (*ptr).x = p(i)(j)(0)(0)(0) + N1(0);
-        (*ptr).y = p(i)(j)(0)(0)(1) + N1(1);
-        (*ptr).z = p(i)(j)(0)(0)(2) + N1(2);
+        (*ptr).x = pos(0) + N1(0);
+        (*ptr).y = pos(1) + N1(1);
+        (*ptr).z = pos(2) + N1(2);
         ptr++;
 
         // j = p.getDim2() -1
         j = p.getDim2() - 1;
 
-        (*ptr).x = p(i)(j)(0)(0)(0);
-        (*ptr).y = p(i)(j)(0)(0)(1);
-        (*ptr).z = p(i)(j)(0)(0)(2);
+        const Point<T,3> &pos2 = p(i)(j)(0)(0);
+        (*ptr).x = pos2(0);
+        (*ptr).y = pos2(1);
+        (*ptr).z = pos2(2);
         ptr++;
 
         const Vector<T,3> N2 = normals(i)(j).getNormalized() * _size;
-        (*ptr).x = p(i)(j)(0)(0)(0) + N2(0);
-        (*ptr).y = p(i)(j)(0)(0)(1) + N2(1);
-        (*ptr).z = p(i)(j)(0)(0)(2) + N2(2);
+        (*ptr).x = pos2(0) + N2(0);
+        (*ptr).y = pos2(1) + N2(1);
+        (*ptr).z = pos2(2) + N2(2);
         ptr++;
       }
 
@@ -241,28 +243,31 @@ namespace GMlib {
         // i = 0
         i = 0;
 
-        (*ptr).x = p(i)(j)(0)(0)(0);
-        (*ptr).y = p(i)(j)(0)(0)(1);
-        (*ptr).z = p(i)(j)(0)(0)(2);
+        const Point<T,3> &pos = p(i)(j)(0)(0);
+        (*ptr).x = pos(0);
+        (*ptr).y = pos(1);
+        (*ptr).z = pos(2);
         ptr++;
 
         const Vector<T,3> N1 = normals(i)(j).getNormalized() * _size;
-        (*ptr).x = p(i)(j)(0)(0)(0) + N1(0);
-        (*ptr).y = p(i)(j)(0)(0)(1) + N1(1);
-        (*ptr).z = p(i)(j)(0)(0)(2) + N1(2);
+        (*ptr).x = pos(0) + N1(0);
+        (*ptr).y = pos(1) + N1(1);
+        (*ptr).z = pos(2) + N1(2);
         ptr++;
 
         // j = p.getDim1() -1
         i = p.getDim1() - 1;
-        (*ptr).x = p(i)(j)(0)(0)(0);
-        (*ptr).y = p(i)(j)(0)(0)(1);
-        (*ptr).z = p(i)(j)(0)(0)(2);
+
+        const Point<T,3> &pos2 = p(i)(j)(0)(0);
+        (*ptr).x = pos2(0);
+        (*ptr).y = pos2(1);
+        (*ptr).z = pos2(2);
         ptr++;
 
         const Vector<T,3> N2 = normals(i)(j).getNormalized() * _size;
-        (*ptr).x = p(i)(j)(0)(0)(0) + N2(0);
-        (*ptr).y = p(i)(j)(0)(0)(1) + N2(1);
-        (*ptr).z = p(i)(j)(0)(0)(2) + N2(2);
+        (*ptr).x = pos2(0) + N2(0);
+        (*ptr).y = pos2(1) + N2(1);
+        (*ptr).z = pos2(2) + N2(2);
         ptr++;
       }
     }

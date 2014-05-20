@@ -28,91 +28,92 @@
  */
 
 
+// include for syntax highlighting ^^
+#include "gmpcurvederivativesvisualizer.h"
+
+
 namespace GMlib {
 
-  template <typename T>
-  PCurveDerivativesVisualizer<T>::PCurveDerivativesVisualizer() {
+  template <typename T, int n>
+  PCurveDerivativesVisualizer<T,n>::PCurveDerivativesVisualizer() {
+
+    _prog.acquire("color");
+    _vbo.create();
 
     _color = GMcolor::Green;
     _t = 1;
     _mode = GM_PCURVE_DERIVATIVESVISUALIZER_RELATIVE;
     _size = 1.0;
-
-    glGenBuffers( 1, &_vbo_v );
   }
 
-  template <typename T>
-  PCurveDerivativesVisualizer<T>::~PCurveDerivativesVisualizer() {
+  template <typename T, int n>
+  PCurveDerivativesVisualizer<T,n>::~PCurveDerivativesVisualizer() { }
 
-    glDeleteBuffers( 1, &_vbo_v );
-  }
-
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurveDerivativesVisualizer<T>::display() {
+  void PCurveDerivativesVisualizer<T,n>::render(const DisplayObject *obj, const Camera *cam) const {
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.setUniform( "u_color", _color );
-    prog.setUniform( "u_selected", this->_obj->isSelected() );
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
+    _prog.bind(); {
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+      _prog.setUniform( "u_mvpmat", mvpmat );
+      _prog.setUniform( "u_color", _color );
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc );
+      // Vertex attribute location
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
-    // Draw
-    glDrawArrays( GL_LINES, 0, _no_elements );
+      // Bind & draw
+      _vbo.bind();
+      _vbo.enable(vert_loc, 3, GL_FLOAT, GL_FALSE, 0, static_cast<const GLvoid*>(0x0) );
+      GL_CHECK(glDrawArrays( GL_LINES, 0, _no_elements ));
+      _vbo.disable(vert_loc);
 
-    glDisableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    } _prog.unbind();
   }
 
-  template <typename T>
-  const Color& PCurveDerivativesVisualizer<T>::getColor() const {
+  template <typename T, int n>
+  const Color& PCurveDerivativesVisualizer<T,n>::getColor() const {
 
     return _color;
   }
 
-  template <typename T>
-  int PCurveDerivativesVisualizer<T>::getDerivative() const {
+  template <typename T, int n>
+  int PCurveDerivativesVisualizer<T,n>::getDerivative() const {
 
     return _t;
   }
 
-  template <typename T>
-  GM_PCURVE_DERIVATIVESVISUALIZER_SIZE PCurveDerivativesVisualizer<T>::getMode() const {
+  template <typename T, int n>
+  GM_PCURVE_DERIVATIVESVISUALIZER_SIZE PCurveDerivativesVisualizer<T,n>::getMode() const {
 
     return _mode;
   }
 
-  template <typename T>
-  double PCurveDerivativesVisualizer<T>::getSize() const {
+  template <typename T, int n>
+  double PCurveDerivativesVisualizer<T,n>::getSize() const {
 
     return _size;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurveDerivativesVisualizer<T>::replot(
-    DVector< DVector< Vector<T, 3> > >& p,
+  void PCurveDerivativesVisualizer<T,n>::replot(
+    const DVector< DVector< Vector<T, n> > >& p,
     int /*m*/, int /*d*/, bool /*closed*/
   ) {
 
     int der = 0;
-    if( (_t >= 0) || (_t <= p[0].getDim()-1) )
+    if( (_t >= 0) || (_t <= p(0).getDim()-1) )
       der = _t;
 
 
     int no_derivatives = p.getDim();
     _no_elements = no_derivatives * 2;
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glBufferData( GL_ARRAY_BUFFER, no_derivatives * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+    _vbo.bufferData(no_derivatives * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW);
 
-    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+    float *ptr = _vbo.mapBuffer<float>();
     if( ptr ) {
 
       switch( _mode ) {
@@ -120,12 +121,13 @@ namespace GMlib {
 
           for( int i = 0; i < p.getDim(); i++ ) {
 
+            const Vector<T,3> &pos =p(i)(0);
             for( int j = 0; j < 3; j++ )
-              *(ptr++) = p[i][0][j];
+              *(ptr++) = pos(j);
 
-            const Vector<T,3> v = p[i][der] * _size;
+            const Vector<T,3> v = p(i)(der) * _size;
             for( int j = 0; j < 3; j++ )
-              *(ptr++) = p[i][0][j] + v(j);
+              *(ptr++) = pos(j) + v(j);
           }
         }
         break;
@@ -134,12 +136,13 @@ namespace GMlib {
 
           for( int i = 0; i < p.getDim(); i++ ) {
 
+            const Vector<T,3> &pos =p(i)(0);
             for( int j = 0; j < 3; j++ )
-              *(ptr++) = p[i][0][j];
+              *(ptr++) = pos(j);
 
-            const Vector<T,3> v = p[i][der].getNormalized() * _size;
+            const Vector<T,3> v = p(i)(der).getNormalized() * _size;
             for( int j = 0; j < 3; j++ )
-              *(ptr++) = p[i][0][j] + v(j);
+              *(ptr++) = pos(j) + v(j);
           }
         }
         break;
@@ -149,43 +152,43 @@ namespace GMlib {
 
           for( int i = 0; i < p.getDim(); i++ ) {
 
+            const Vector<T,3> &pos =p(i)(0);
             for( int j = 0; j < 3; j++ )
-              *(ptr++) = p[i][0][j];
+              *(ptr++) = pos(j);
 
-            const UnitVector<T,3> uv = p[i][der];
+            const UnitVector<T,3> uv = p(i)(der);
             for( int j = 0; j < 3; j++ )
-              *(ptr++) = p[i][0][j] + uv(j);
+              *(ptr++) = pos(j) + uv(j);
           }
         }
         break;
       }
     }
 
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    _vbo.unmapBuffer();
   }
 
-  template <typename T>
-  void PCurveDerivativesVisualizer<T>::setColor( const Color& color ) {
+  template <typename T, int n>
+  void PCurveDerivativesVisualizer<T,n>::setColor( const Color& color ) {
 
     _color = color;
   }
 
-  template <typename T>
-  void PCurveDerivativesVisualizer<T>::setDerivative( int t ) {
+  template <typename T, int n>
+  void PCurveDerivativesVisualizer<T,n>::setDerivative( int t ) {
 
     if( _t > 0 )
       _t = t;
   }
 
-  template <typename T>
-  void PCurveDerivativesVisualizer<T>::setMode( GM_PCURVE_DERIVATIVESVISUALIZER_SIZE mode ) {
+  template <typename T, int n>
+  void PCurveDerivativesVisualizer<T,n>::setMode( GM_PCURVE_DERIVATIVESVISUALIZER_SIZE mode ) {
 
     _mode = mode;
   }
 
-  template <typename T>
-  void PCurveDerivativesVisualizer<T>::setSize( double size ) {
+  template <typename T, int n>
+  void PCurveDerivativesVisualizer<T,n>::setSize( double size ) {
 
     _size = size;
   }

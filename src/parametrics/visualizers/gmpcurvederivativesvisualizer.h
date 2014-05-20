@@ -48,13 +48,14 @@ namespace GMlib {
   };
 
 
-  template <typename T>
-  class PCurveDerivativesVisualizer : public PCurveVisualizer<T> {
+  template <typename T, int n>
+  class PCurveDerivativesVisualizer : public PCurveVisualizer<T,n> {
+    GM_VISUALIZER(PCurveDerivativesVisualizer)
   public:
     PCurveDerivativesVisualizer();
     virtual ~PCurveDerivativesVisualizer();
 
-    void            display();
+    void            render(const DisplayObject* obj, const Camera *cam) const;
     const Color&    getColor() const;
     int             getDerivative() const;
     double          getSize() const;
@@ -62,20 +63,18 @@ namespace GMlib {
     GM_PCURVE_DERIVATIVESVISUALIZER_SIZE
                     getMode() const;
 
-    void            replot(
-      DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d, bool closed
-    );
+    void            replot( const DVector< DVector< Vector<T, n> > >& p,
+                          int m, int d, bool closed );
     void            setColor( const Color& color );
     void            setDerivative( int t = 1 );
     void            setMode( GM_PCURVE_DERIVATIVESVISUALIZER_SIZE mode );
     void            setSize( double size = 1.0 );
 
   protected:
-    Color           _color;
-
-    GLuint          _vbo_v;
-    int             _no_elements;
+    Color                     _color;
+    GL::Program               _prog;
+    GL::VertexBufferObject    _vbo;
+    int                       _no_elements;
 
     GM_PCURVE_DERIVATIVESVISUALIZER_SIZE
                     _mode;
