@@ -9,15 +9,16 @@
 #include <cassert>
 
 
-template <typename T, int n>
-void GMlib::DD::compute1D( GMlib::DVector<GMlib::DVector<GMlib::Vector<T, n> > >& p, T dt, bool closed, int d, int d_start ) {
+template< typename T>
+inline
+void GMlib::DD::compute1D( T& p, double dt, bool closed, int d, int de ) {
 
-  assert( d_start > 0 );
+  assert( de >= 0 );
 
-  T dt2 = 2*dt;
+  double dt2 = 2*dt;
   int k = p.getDim()-1;
 
-  for(int j = d_start; j <= d_start+d; j++) {
+  for(int j = 1+de; j <= de+d; j++) {
 
     int j1 = j-1;
 
@@ -38,66 +39,44 @@ void GMlib::DD::compute1D( GMlib::DVector<GMlib::DVector<GMlib::Vector<T, n> > >
 }
 
 
+template <typename T>
+inline
+void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool closed_v,
+                int d1, int d2, int de1, int de2 ) {
 
-template <typename T, int n>
-void GMlib::DD::compute2D( GMlib::DMatrix< GMlib::DMatrix < GMlib::Vector<T,n> > >& a,
-                           T du, T dv, bool closed_u, bool closed_v,
-                           int d1, int d2, int d1_start, int d2_start ) {
-  GM_UNUSED(d1_start) GM_UNUSED(d2_start)
-
-
-  T one_over_du;
-  T one_over_dv;
+  assert( de1 >= 0 );
+  assert( de2 >= 0 );
 
 
+  double du2 = 2*du;
+  double dv2 = 2*dv;
+  int ku = p.getDim1()-1;
+  int kv = p.getDim2()-1;
 
-  // Handle all singular patial derivatives in v direction;
-  // the case of v == 0
-  for( int u = 1, v = 0; u <= d1; u++ ) {
 
-    one_over_du = T(1) / ( pow( T(2) * du, T(u) ) );
-//    T one_over_du = T(1);
+  // Compute U derivatives
 
-    // Handle all partial derivatives in v direction.
-    for( int i = 1; i < a.getDim1() - 1; i++ ) {
-      for( int j = 0; j < a.getDim2(); j++ ) {
+  for(int j = 1+de1; j <= de1+d1; ++j) { // der in u
 
-        // Iterate throug each component of the "point"
-        for( int k = 0; k < 3; k++ )
-          a[i][j][u][v][k] = a[i+1][j][u-1][v][k] - a[i-1][j][u-1][v][k];
+    int j1 = j-1;
 
-        a[i][j][u][v] *= one_over_du;
+    // ordinary divided differences
+    for(int k = 1; k < ku; ++k)     // data points u
+      for(int l = 0; l < kv+1; ++l) // data points v
+        p[k][l][j][0] = (p[k+1][l][j1][0] - p[k-1][l][j1][0]) / du2;
+
+    if(closed_u) { // biting its own tail
+
+      for(int l = 0; l < kv+1; ++l) { // data points u
+        p[0 ][l][j][0] = (p[1][l][j1][0] - p[ku  ][l][j1][0]) / du2;
+        p[ku][l][j][0] = (p[0][l][j1][0] - p[ku-1][l][j1][0]) / du2;
       }
     }
+    else { // second degree endpoints divided differences
 
-
-
-
-    if( closed_u ) {
-
-      // Handle the edges, for partial derivatives of the dataset; i1 = 0, i2 = a.getDim1()-1
-      for( int i1 = 0, i2 = a.getDim1() - 1, j = 0; j < a.getDim2(); j++ ) {
-
-        // Iterate throug each component of the "point"
-        for( int k = 0; k < 3; k++ ) {
-
-          a[i1][j][u][v][k] = a[i2][j][u][v][k] = ( a[i1+1][j][u-1][v][k] - a[i2-1][j][u-1][v][k]   );
-        }
-        a[i1][j][u][v] = a[i2][j][u][v] *= one_over_du;
-      }
-    }
-    else {
-      // Handle the edges, for partial derivatives of the dataset; i1 = 0, i2 = a.getDim1()-1
-      for( int i1 = 0, i2 = a.getDim1() - 1, j = 0; j < a.getDim2(); j++ ) {
-
-        // Iterate throug each component of the "point"
-        for( int k = 0; k < 3; k++ ) {
-
-          a[i1][j][u][v][k] = a[i1+1][j][u-1][v][k] - ( a[i1][j][u-1][v][k] + ( a[i1][j][u-1][v][k] - a[i1+1][j][u-1][v][k] ) );
-          a[i2][j][u][v][k] = ( a[i2][j][u-1][v][k] + ( a[i2][j][u-1][v][k] - a[i2-1][j][u-1][v][k] ) ) - a[i2][j][u-1][v][k];
-        }
-        a[i1][j][u][v] *= one_over_du;
-        a[i2][j][u][v] *= one_over_du;
+      for(int l = 0; l < kv+1; ++l) { // data points u
+        p[0 ][l][j][0] = ( 4*p[1   ][l][j1][0] - 3*p[0 ][l][j1][0] - p[2   ][l][j1][0] ) / du2;
+        p[ku][l][j][0] = (-4*p[ku-1][l][j1][0] + 3*p[ku][l][j1][0] - p[ku-2][l][j1][0] ) / du2;
       }
     }
   }
@@ -105,52 +84,36 @@ void GMlib::DD::compute2D( GMlib::DMatrix< GMlib::DMatrix < GMlib::Vector<T,n> >
 
 
 
-  for( int u = 0; u <= d1; u++ ) {
-    for( int v = 1; v <= d2; v++ ) {
 
-      one_over_dv = T(1) / ( pow( T(2) * dv, T(v) ) );
-//      T one_over_dv = T(1);
 
-      // Handle all partial derivatives in v direction.
-      for( int i = 0; i < a.getDim1(); i++ ) {
-        for( int j = 1; j < a.getDim2() - 1; j++ ) {
+  // Compute ALL V derivatives
 
-          // Iterate throug each component of the "point"
-          for( int k = 0; k < 3; k++ )
-            a[i][j][u][v][k] = a[i][j+1][u][v-1][k] - a[i][j-1][u][v-1][k];
+  for(int j = 1+de2; j <= de2+d2; ++j) { // der in u
+    for( int i = 0; i <= de1+d1; ++i ) {
 
-          a[i][j][u][v] *= one_over_dv;
-        }
-      }
+    int j1 = j-1;
 
-      if( closed_v ) {
+    // ordinary divided differences
+    for(int k = 0; k < ku+1; ++k)   // data points u
+      for(int l = 1; l < ku; ++l)   // data points v
+        p[k][l][i][j] = (p[k][l+1][i][j1] - p[k][l-1][i][j1]) / dv2;
 
-        // Handle the edges, for partial derivatives of the dataset; j1 = 0, j2 = a.getDim2()-1
-        for( int i = 0, j1 = 0, j2 = a.getDim2() - 1; i < a.getDim1(); i++ ) {
+    if(closed_v) { // biting its own tail
 
-          // Iterate throug each component of the "point"
-          for( int k = 0; k < 3; k++ ) {
-
-            a[i][j1][u][v][k] = a[i][j2][u][v][k] = ( a[i][j1+1][u][v-1][k] - a[i][j2-1][u][v-1][k] );
-          }
-          a[i][j1][u][v] = a[i][j2][u][v] *= one_over_dv;
-        }
-      }
-      else {
-
-        // Handle the edges, for partial derivatives of the dataset; j1 = 0, j2 = a.getDim2()-1
-        for( int i = 0, j1 = 0, j2 = a.getDim2() - 1; i < a.getDim1(); i++ ) {
-
-          // Iterate throug each component of the "point"
-          for( int k = 0; k < 3; k++ ) {
-
-            a[i][j1][u][v][k] = a[i][j1+1][u][v-1][k] - ( a[i][j1][u][v-1][k] + ( a[i][j1][u][v-1][k] - a[i][j1+1][u][v-1][k] )   );
-            a[i][j2][u][v][k] = ( a[i][j2][u][v-1][k] + ( a[i][j2][u][v-1][k] - a[i][j2-1][u][v-1][k] )  ) - a[i][j2-1][u][v-1][k];
-          }
-          a[i][j1][u][v] *= one_over_dv;
-          a[i][j2][u][v] *= one_over_dv;
-        }
+      for(int k = 0; k < ku+1; ++k) { // data points v
+        p[k][0 ][i][j] = (p[k][1][i][j1] - p[k][kv  ][i][j1]) / dv2;
+        p[k][kv][i][j] = (p[k][0][i][j1] - p[k][kv-1][i][j1]) / dv2;
       }
     }
+    else { // second degree endpoints divided differences
+
+      for(int k = 0; k < ku+1; ++k) { // data points v
+        p[k][0 ][i][j] = ( 4*p[k][1   ][i][j1] - 3*p[k][0 ][i][j1] - p[k][2   ][i][j1] ) / dv2;
+        p[k][kv][i][j] = (-4*p[k][kv-1][i][j1] + 3*p[k][kv][i][j1] - p[k][ku-2][i][j1] ) / dv2;
+      }
+    }
+    }
   }
+
 }
+

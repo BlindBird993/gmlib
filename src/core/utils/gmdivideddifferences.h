@@ -41,36 +41,11 @@ namespace GMlib {
 
   namespace DD {
 
-    template <typename T, int n>
-    void compute1D( DVector< DVector< Vector<T, n> > > & p, T dt, bool closed, int d, int d_start = 1 );
+    template <typename T>
+    void compute1D( T& p, double dt, bool closed, int d, int de = 0 );
 
-    template <typename T, int n>
-    void compute2D( DMatrix<DMatrix <Vector<T,n> > >& p,
-                    T du, T dv, bool closed_u, bool closed_v,
-                    int d1, int d2, int d1_start = 1, int d2_start = 1 );
-//  {
-
-
-//      assert( d1_start > 0 );
-//      assert( d2_start > 0 );
-
-//      // DEBUG START reset -- this is for debug
-//      for( int i = 0; i < p.getDim1(); ++i )
-//        for( int j = 0; j < p.getDim2(); ++j )
-//          for( int k = 0; k < p(i)(j).getDim1(); ++k )
-//            for( int l = 0; l < p(i)(j).getDim2(); ++l )
-//              if(k!=0||l!=0) p[i][j][k][l] = Vector<T,n>(T(0));
-
-//      // DEBUG END
-
-//      std::cout << "################ p[before DD]: " << p << std::endl;
-
-
-
-
-//      std::cout << "$$$$$$$$$$$$$$$$ p[after DD]: " << p << std::endl;
-
-//    }
+    template <typename T>
+    void compute2D( T& p, double du, double dv, bool closed_u, bool closed_v, int d1, int d2, int de1 = 0, int de2 = 0 );
   }
 
 } // END namespace
