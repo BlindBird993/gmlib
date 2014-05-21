@@ -26,29 +26,26 @@
 
 // GMlib
 #include "../types/gmpoint.h"
-#include "../containers/gmdvector.h"
-#include "../containers/gmdmatrix.h"
-
-
-// Numeric includes
-#include <cmath>
-
-// System includes
-#include <cstdlib>
-
 
 namespace GMlib {
 
   namespace DD {
 
     template <typename T>
-    void compute1D( T& p, double dt, bool closed, int d, int de = 0 );
+    void compute1D( T& p, double dt, bool closed, int d, int ed = 0 );
 
     template <typename T>
-    void compute2D( T& p, double du, double dv, bool closed_u, bool closed_v, int d1, int d2, int de1 = 0, int de2 = 0 );
-  }
+    void compute2D( T& p, double du, double dv, bool closed_u, bool closed_v, int d1, int d2, int ed1 = 0, int ed2 = 0 );
 
-} // END namespace
+    template <typename T, int n>
+    void compute( T& p, const Vector<int,n>& p_dims,
+                  const Vector<double,n>& dt,
+                  const Vector<bool,n>& closed,
+                  const Vector<int,n>& d, const Vector<int,n>& ed = Vector<int,n>(0) );
+
+
+  } // END namespace DD
+} // END namespace GMlib
 
 
 // Including template definition file.

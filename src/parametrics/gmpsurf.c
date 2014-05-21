@@ -692,7 +692,18 @@ namespace GMlib {
 
       case GM_DERIVATION_DD:
       default:
+      {
+        for( int i = 0; i < p.getDim1(); ++i )
+          for( int j = 0; j < p.getDim2(); ++j )
+            for( int k = 0; k < p[i][j].getDim1(); ++k )
+              for( int l = 0; l < p[i][j].getDim2(); ++l )
+                if( k != 0 || l != 0 ) {
+                  p[i][j][k][l] = Vector<T,n>(T(0));
+                }
+
+
         DD::compute2D(p,du,dv,isClosedU(),isClosedV(),d1,d2);
+      }
         break;
     }
   }
