@@ -303,22 +303,22 @@ void GMlib::DD::compute1D( T& p, double dt, bool closed, int d, int ed ) {
   double dt2 = 2*dt;
   int k = p.getDim()-1;
 
-  for(int j = 1+ed; j <= ed+d; j++) {
+  for(int i = 1+ed; i <= ed+d; i++) {
 
-    int j1 = j-1;
+    int i1 = i-1;
 
-    for(int i = 1; i < k; i++) // ordinary diviedd differences
-      p[i][j] = (p[i+1][j1] - p[i-1][j1])/dt2;
+    for(int l = 1; l < k; l++) // ordinary diviedd differences
+      p[l][i] = (p[l+1][i1] - p[l-1][i1])/dt2;
 
     if(closed) // biting its own tail
     {
-      p[0][j] = (p[1][j1] - p[k-1][j1])/dt2;
-      p[k][j] = p[0][j];
+      p[0][i] = (p[1][i1] - p[k-1][i1])/dt2;
+      p[k][i] = p[0][i];
     }
     else // second edgree endpoints diviedd differences
     {
-      p[0][j] = ( 4*p[1][j1]   - 3*p[0][j1] - p[2][j1]  )/dt2;
-      p[k][j] = (-4*p[k-1][j1] + 3*p[k][j1] + p[k-2][j1])/dt2;
+      p[0][i] = ( 4*p[1][i1]   - 3*p[0][i1] - p[2][i1]  )/dt2;
+      p[k][i] = (-4*p[k-1][i1] + 3*p[k][i1] + p[k-2][i1])/dt2;
     }
   }
 }
@@ -345,27 +345,28 @@ void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool close
 
   // Compute U derivatives
 
-  for(int j = 1+ed1; j <= ed1+d1; ++j) { // edr in u
+  for(int i = 1+ed1; i <= ed1+d1; ++i) { // edr in u
+    // j = 0
 
-    int j1 = j-1;
+    int i1 = i-1;
 
     // ordinary divided differences
     for(int k = 1; k < ku; ++k)     // data points u
       for(int l = 0; l < kv+1; ++l) // data points v
-        p[k][l][j][0] = (p[k+1][l][j1][0] - p[k-1][l][j1][0]) / du2;
+        p[k][l][i][0] = (p[k+1][l][i1][0] - p[k-1][l][i1][0]) / du2;
 
     if(closed_u) { // biting its own tail
 
       for(int l = 0; l < kv+1; ++l) { // data points u
-        p[0 ][l][j][0] = (p[1][l][j1][0] - p[ku-1][l][j1][0]) / du2;
-        p[ku][l][j][0] = p[0][l][j][0];
+        p[0 ][l][i][0] = (p[1][l][i1][0] - p[ku-1][l][i1][0]) / du2;
+        p[ku][l][i][0] = p[0][l][i][0];
       }
     }
     else { // second edgree endpoints divided differences
 
       for(int l = 0; l < kv+1; ++l) { // data points u
-        p[0 ][l][j][0] = ( 4*p[1   ][l][j1][0] - 3*p[0 ][l][j1][0] - p[2   ][l][j1][0] ) / du2;
-        p[ku][l][j][0] = (-4*p[ku-1][l][j1][0] + 3*p[ku][l][j1][0] + p[ku-2][l][j1][0] ) / du2;
+        p[0 ][l][i][0] = ( 4*p[1   ][l][i1][0] - 3*p[0 ][l][i1][0] - p[2   ][l][i1][0] ) / du2;
+        p[ku][l][i][0] = (-4*p[ku-1][l][i1][0] + 3*p[ku][l][i1][0] + p[ku-2][l][i1][0] ) / du2;
       }
     }
   }
