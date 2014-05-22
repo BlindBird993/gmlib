@@ -385,7 +385,7 @@ void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool close
 
       // ordinary divided differences
       for(int k = 0; k < ku+1; ++k)   // data points u
-        for(int l = 1; l < ku; ++l)   // data points v
+        for(int l = 1; l < kv; ++l)   // data points v
           p[k][l][i][j] = (p[k][l+1][i][j1] - p[k][l-1][i][j1]) / dv2;
 
       if(closed_v) { // biting its own tail
@@ -399,7 +399,7 @@ void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool close
 
         for(int k = 0; k < ku+1; ++k) { // data points v
           p[k][0 ][i][j] = ( 4*p[k][1   ][i][j1] - 3*p[k][0 ][i][j1] - p[k][2   ][i][j1] ) / dv2;
-          p[k][kv][i][j] = (-4*p[k][kv-1][i][j1] + 3*p[k][kv][i][j1] + p[k][ku-2][i][j1] ) / dv2;
+          p[k][kv][i][j] = (-4*p[k][kv-1][i][j1] + 3*p[k][kv][i][j1] + p[k][kv-2][i][j1] ) / dv2;
         }
       }
     }
