@@ -121,22 +121,15 @@ namespace GMlib {
     GM_UNUSED(closed_u) GM_UNUSED(closed_v)
 
 
-    int der_u = 0;
-    int der_v = 0;
-
-    if( (_u >= 0) || (_u <= p(0)(0).getDim1()-1) )
-      der_u = _u;
-
-    if( (_v >= 0) || (_v <= p(0)(0).getDim2()-1) )
-      der_v = _v;
+    assert( p(0)(0).getDim1() >= (_u+1) && p(0)(0).getDim2() >= (_v+1) );
 
 
     int no_derivatives = p.getDim1() * p.getDim2();
     _no_elements = no_derivatives * 2;
 
-    _vbo.bufferData(no_derivatives * 2 * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW);
+    _vbo.bufferData(no_derivatives * 2 * 3 * sizeof(GLfloat), 0x0, GL_DYNAMIC_DRAW);
 
-    float *ptr = _vbo.mapBuffer<float>();
+    Vector<GLfloat,3>* ptr = _vbo.mapBuffer< Vector<GLfloat,3> >();
     if( ptr ) {
 
       switch( _mode ) {
@@ -146,12 +139,10 @@ namespace GMlib {
             for( int j = 0; j < p.getDim2(); j++ ) {
 
               const Point<T,3> &pos = p(i)(j)(0)(0);
-              for( int k = 0; k < 3; k++ )
-                *(ptr++) = pos(k);
+              const Vector<T,3> &v = p(i)(j)(_u)(_v) * _size;
 
-              const Vector<T,3> &v = p(i)(j)(der_u)(der_v) * _size;
-              for( int k = 0; k < 3; k++ )
-                *(ptr++) = pos(k) + v(k);
+              *(ptr++) = pos;
+              *(ptr++) = pos + v;
             }
         }
         break;
@@ -162,12 +153,9 @@ namespace GMlib {
             for( int j = 0; j < p.getDim2(); j++ ) {
 
               const Point<T,3> &pos = p(i)(j)(0)(0);
-              for( int k = 0; k < 3; k++ )
-                *(ptr++) = pos(k);
-
-              const Vector<T,3> &v = p(i)(j)(der_u)(der_v).getNormalized() * _size;
-              for( int k = 0; k < 3; k++ )
-                *(ptr++) = pos(k) + v(k);
+              const Vector<T,3> &v = p(i)(j)(_u)(_v).getNormalized() * _size;
+              *(ptr++) = pos;
+              *(ptr++) = pos + v;
             }
         }
         break;
@@ -178,12 +166,9 @@ namespace GMlib {
             for( int j = 0; j < p.getDim2(); j++ ) {
 
               const Point<T,3> &pos = p(i)(j)(0)(0);
-              for( int k = 0; k < 3; k++ )
-                *(ptr++) = pos(k);
-
-              const UnitVector<T,3> &uv = p(i)(j)(der_u)(der_v);
-              for( int k = 0; k < 3; k++ )
-                *(ptr++) = pos(k) + uv(k);
+              const UnitVector<T,3> &v = p(i)(j)(_u)(_v);
+              *(ptr++) = pos;
+              *(ptr++) = pos + v;
             }
         }
         break;

@@ -692,9 +692,7 @@ namespace GMlib {
 
       case GM_DERIVATION_DD:
       default:
-      {
         DD::compute2D(p,du,dv,isClosedU(),isClosedV(),d1,d2);
-      }
         break;
     }
   }
