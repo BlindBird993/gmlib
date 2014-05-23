@@ -28,6 +28,9 @@
  */
 
 
+// for syntaxhighlighting
+#include "gmpplane.h"
+
 namespace GMlib {
 
 
@@ -76,56 +79,26 @@ namespace GMlib {
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d1) {
+      // 1st
+      if(d1)            this->_p[1][0] = _u; // S_u
+      if(d2)            this->_p[0][1] = _v; // S_v
+      if(d1>1 && d2>1)  this->_p[1][1] = Vector<T,3>(T(0)); // S_uv
 
-        this->_p[1][0] = _u;	// S_u
-      }
-      if(d2) {
+      // 2nd
+      if(d1>1)          this->_p[2][0] = Vector<T,3>(T(0)); // S_uu
+      if(d2>1)          this->_p[0][2] = Vector<T,3>(T(0)); // S_vv
+      if(d1>1 && d2)    this->_p[2][1] = Vector<T,3>(T(0)); // S_uuv
+      if(d1   && d2>1)  this->_p[1][2] = Vector<T,3>(T(0)); // S_uvv
+      if(d1>1 && d2>1)  this->_p[2][2] = Vector<T,3>(T(0)); // S_uuvv
 
-        this->_p[0][1] = _v;	// S_v
-      }
-      if(d1>1) {
-
-        this->_p[2][0][0] = T(0);	// S_uu
-        this->_p[2][0][1] = T(0);
-        this->_p[2][0][2] = T(0);
-      }
-      if(d1>1 && d2>1) {
-
-        this->_p[1][1][0] = T(0);	// S_uv
-        this->_p[1][1][1] = T(0);
-        this->_p[1][1][2] = T(0);
-      }
-      if(d2>1) {
-
-        this->_p[0][2][0] = T(0);	// S_vv
-        this->_p[0][2][1] = T(0);
-        this->_p[0][2][2] = T(0);
-      }
-      if(d1>2) {
-
-        this->_p[3][0][0] = T(0);	// S_uuu
-        this->_p[3][0][1] = T(0);
-        this->_p[3][0][2] = T(0);
-      }
-      if(d1>2 && d2>2) {
-
-        this->_p[1][2][0] = T(0);	// S_uuv
-        this->_p[1][2][1] = T(0);
-        this->_p[1][2][2] = T(0);
-      }
-      if(d1>2 && d2>2) {
-
-        this->_p[2][1][0] = T(0);	// S_uvv
-        this->_p[2][1][1] = T(0);
-        this->_p[2][1][2] = T(0);
-      }
-      if(d2>2) {
-
-        this->_p[0][3][0] = T(0);	// S_vvv
-        this->_p[0][3][1] = T(0);
-        this->_p[0][3][2] = T(0);
-      }
+      // 3rd
+      if(d1>2)          this->_p[3][0] = Vector<T,3>(T(0)); // S_uuu
+      if(d2>2)          this->_p[0][3] = Vector<T,3>(T(0)); // S_vvv
+      if(d1>2 && d2)    this->_p[3][1] = Vector<T,3>(T(0)); // S_uuuv
+      if(d1   && d2>2)  this->_p[1][3] = Vector<T,3>(T(0)); // S_uvvv
+      if(d1>2 && d2>1)  this->_p[3][2] = Vector<T,3>(T(0)); // S_uuuvv
+      if(d1>1 && d2>2)  this->_p[2][3] = Vector<T,3>(T(0)); // S_uuvvv
+      if(d1>2 && d2>2)  this->_p[3][3] = Vector<T,3>(T(0)); // S_uuuvvv
     }
   }
 
