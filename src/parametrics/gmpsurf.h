@@ -113,7 +113,7 @@ namespace GMlib {
     virtual Parametrics<T,2,n>*   split( T t, int uv );
 
     void                          enableDefaultVisualizer( bool enable = true );
-    const PSurfVisualizer<T,n>*   getDefaultVisualizer() const;
+    PSurfVisualizer<T,n>*         getDefaultVisualizer() const;
     void                          toggleDefaultVisualizer();
     void                          insertVisualizer( Visualizer *visualizer );
     void                          removeVisualizer( Visualizer *visualizer );
