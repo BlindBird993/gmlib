@@ -37,8 +37,25 @@ namespace GMlib {
     template <typename T>
     void compute2D( T& p, double du, double dv, bool closed_u, bool closed_v, int d1, int d2, int ed1 = 0, int ed2 = 0 );
 
+
+    /*!
+     * A method for computing N dimensional recursive divided differenses on a parametric-regularized dataset.
+     * The container must be a 2*N dimenional container where the first N dimensions represent the dimensions of the dataset,
+     * whilest the second set of N dimensions represent the derivatives.
+     * Memory must be pre-allocated.
+     * The G& operator [] ( int idx ) must exist as an access operator for each dimension.
+     * The data itself must have the H& operator * (double d).
+     * Positional data must exist as a minimum for each data point.
+     *
+     * \param[in,out] p The data set
+     * \param[in] sizes Size of each of the N basic dimensions of p
+     * \param[in] dt The delta of two adjacent datapoints in a given dimension
+     * \param[in] closed Whether the data set is ... closed in a given dimension
+     * \param[in] d The number of derivatives to compute in a given dimension
+     * \param[in] ed Number of existing derivitives in a given dimension
+     */
     template <typename T, int n>
-    void compute( T& p, const Vector<int,n>& p_dims,
+    void compute( T& p, const Vector<int,n>& sizes,
                   const Vector<double,n>& dt,
                   const Vector<bool,n>& closed,
                   const Vector<int,n>& d, const Vector<int,n>& ed = Vector<int,n>(0) );
