@@ -73,7 +73,7 @@ namespace GMlib {
           else if( ln == en )
             Static_For_Der_<ln+1,en,n>::compute(   assign[di], prev[di-1], next[di-1], dt,d,ed,di );
           else
-            for( int i = 0; i < d(ln-1); ++i )
+            for( int i = ed(ln-1); i <= ed(ln-1)+d(ln-1); ++i )
               Static_For_Der_<ln+1,en,n>::compute( assign[i],  prev[i],    next[i],    dt,d,ed,di );
         }
       };
@@ -90,7 +90,7 @@ namespace GMlib {
           else if ( n == en )
             Static_Compute_<en,n>::compute(   assign[di], prev[di-1], next[di-1], dt,di );
           else
-            for( int i = 0; i < d(n-1); ++i )
+            for( int i = ed(n-1); i <= ed(n-1)+d(n-1); ++i )
               Static_Compute_<en,n>::compute( assign[i],  prev[i],    next[i],    dt,di );
         }
       };
@@ -202,7 +202,7 @@ namespace GMlib {
           else if( ln == en )
             Static_For_Der_Boundary_Open_2nd_<ln+1,en,n>::compute(   assign[di], curr[di-1], next[di-1], next2[di-1], dt,d,ed,di,l );
           else
-            for( int i = 0; i < d(ln-1); ++i )
+            for( int i = ed(ln-1); i < ed(ln-1)+d(ln-1); ++i )
               Static_For_Der_Boundary_Open_2nd_<ln+1,en,n>::compute( assign[i],  curr[i],    next[i],    next2[i],    dt,d,ed,di,l );
 
         }
@@ -220,7 +220,7 @@ namespace GMlib {
           else if ( n == en )
             Static_Compute_Boundary_Open_2nd_<en,n>::compute(   assign[di], curr[di-1], next[di-1], next2[di-1], dt,di,l );
           else
-            for( int i = 0; i < d(n-1); ++i )
+            for( int i = ed(n-1); i < ed(n-1)+d(n-1); ++i )
               Static_Compute_Boundary_Open_2nd_<en,n>::compute( assign[i],  curr[i],    next[i],    next2[i],    dt,di,l );
 
         }
@@ -293,7 +293,7 @@ namespace GMlib {
         template <typename T>
         static void compute( T& p, const Vector<int,n>& k, const Vector<double,n>& dt, const Vector<bool,n>& closed, const Vector<int,n>& d, const Vector<int,n>& ed ) {
 
-          for( int i = 1; i <= d(ln-1); ++i ) {
+          for( int i = 1+ed(ln-1); i <= ed(ln-1)+d(ln-1); ++i ) {
             GMlib::DD::Private::Static_For_Data_<1,ln,n>::compute( p, p, p, k, dt, d, ed, i );
 
             if( closed(ln-1) )
@@ -317,7 +317,7 @@ namespace GMlib {
         static void compute( T& p, const Vector<int,n>& k, const Vector<double,n>& dt, const Vector<bool,n>& closed, const Vector<int,n>& d, const Vector<int,n>& ed ) {
 
 
-          for( int i = 1; i <= d(n-1); ++i ) {
+          for( int i = 1+ed(n-1); i <= ed(n-1)+d(n-1); ++i ) {
             GMlib::DD::Private::Static_For_Data_<1,n,n>::compute( p, p, p, k, dt, d, ed, i );
 
             if( closed(n-1) )
