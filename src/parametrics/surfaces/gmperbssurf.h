@@ -97,6 +97,11 @@ namespace GMlib {
 
     // Knot insertion
     void                                splitKnot( int uk, int vk );
+    void                                splitKnotInU( int uk ) { assert(false); }
+    void                                splitKnotInV( int vk ) { assert(false); }
+    void                                splitKnotAlong( int uk, int vk );
+    void                                splitKnotAlongU( int uk ) { assert(false); }
+    void                                splitKnotAlongV( int vk ) { assert(false); }
 
     // virtual functions from DO/PSurf
     void                                insertVisualizer( Visualizer* visualizer );
@@ -155,6 +160,9 @@ namespace GMlib {
 
     Array<PSurfVisualizer<T,3>*>        _pv;
     DMatrix<PSurfVisualizerSet<T> >     _pvi;
+
+
+    Point<T,2>                   mapToLocal( T u, T v, int uk, int vk ) const;
 
   }; // END class PERBSSurf
 

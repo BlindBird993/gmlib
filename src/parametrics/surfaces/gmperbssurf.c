@@ -486,15 +486,6 @@ namespace GMlib {
   inline
   void PERBSSurf<T>::eval( T u, T v, int d1, int d2, bool lu, bool lv ) {
 
-    // Send the control to the pre-eval evaluator
-    if( _resamp_mode == GM_RESAMPLE_PREEVAL ) {
-
-      evalPre( u, v, d1, d2, lu, lv );
-      return;
-    }
-
-//    std::cout << "ERBSSurf eval (" << u << "," << v << ") ";
-
     // Find Knot Indices u_k and v_k
     int uk, vk;
     for( uk = 1; uk < _u.getDim()-2; ++uk ) if( u < _u[uk+1] ) break;
@@ -734,10 +725,10 @@ namespace GMlib {
     // Init Indexes and get local u/v values
     const int cu = uk-1;
     const int cv = vk-1;
-    const Point<T,2>& lm =
-        _c[cu][cv]->getLocalMapping( Point<T,2>(u,v),
-                                     Point<T,2>( _u[uk-1], _v[vk-1] ),
-                                     Point<T,2>( _u[uk+1], _v[vk+1] ) );
+    const Point<T,2>& lm = mapToLocal( u, v, uk, vk );
+//        _c[cu][cv]->getLocalMapping( Point<T,2>(u,v),
+//                                     Point<T,2>( _u[uk-1], _v[vk-1] ),
+//                                     Point<T,2>( _u[uk+1], _v[vk+1] ) );
 
     // Evaluate First local patch
     DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lm(0), lm(1), du, dv );
@@ -753,10 +744,10 @@ namespace GMlib {
     // Init Indexes and get local u/v values
     const int cu2 = uk-1;
     const int cv2 = vk-1;
-    const Point<T,2>& lm2 =
-        _c[cu2][cv2]->getLocalMapping( Point<T,2>(u,v),
-                                       Point<T,2>( _u[uk-1], _v[vk-1] ),
-                                       Point<T,2>( _u[uk+1], _v[vk+1] ) );
+    const Point<T,2>& lm2 = mapToLocal( u, v, uk, vk );
+//        _c[cu2][cv2]->getLocalMapping( Point<T,2>(u,v),
+//                                       Point<T,2>( _u[uk-1], _v[vk-1] ),
+//                                       Point<T,2>( _u[uk+1], _v[vk+1] ) );
 
     // Evaluate Second local patch
     DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( lm2(0), lm2(1), du, dv );
@@ -781,6 +772,47 @@ namespace GMlib {
         c1[i] += (a[j] * B[j]) * c0[i-j];
     }
     return c1 ;
+  }
+
+  template <typename T>
+  Point<T,2> PERBSSurf<T>::mapToLocal( T u, T v, int uk, int vk ) const {
+
+    APoint<T,2> t_local;
+
+    PSurf<T,3> *c = _c(uk-1)(vk-1);
+
+    T csu = c->getParStartU();
+    T cdu = c->getParDeltaU();
+    T csv = c->getParStartV();
+    T cdv = c->getParDeltaV();
+
+
+    // U
+    if( std::abs(_u(uk) - _u(uk+1)) < 1e-5 && uk != _u.getDim()-2 && _c(uk-1)(vk-1) == _c(uk)(vk-1) ) {
+
+      cdu /= T(2);
+    }
+    else if( std::abs(_u(uk-1) - _u(uk)) < 1e-5 && uk != 1 && uk != _u.getDim()-1 && _c(uk-2)(vk-1) == _c(uk-1)(vk-1)) {
+
+      csu += cdu/2;
+      cdu /= T(2);
+    }
+
+    // V
+    if( std::abs(_v(vk) - _v(vk+1)) < 1e-5 && vk != _v.getDim()-2 && _c(uk-1)(vk-1) == _c(uk-1)(vk) ) {
+
+      cdv /= T(2);
+    }
+    else if( std::abs(_v(vk-1) - _v(vk)) < 1e-5 && vk != 1 && vk != _v.getDim()-1 && _c(uk-1)(vk-2) == _c(uk-1)(vk-1) ) {
+
+      csv += cdv/2;
+      cdv /= T(2);
+    }
+
+    t_local[0] = csu + (u - _u(uk-1)) / (_u(uk+1) - _u(uk-1)) * cdu;
+    t_local[1] = csv + (v - _v(vk-1)) / (_v(vk+1) - _v(vk-1)) * cdv;
+
+    return t_local;
   }
 
   template <typename T>
@@ -1370,6 +1402,126 @@ namespace GMlib {
 
   template <typename T>
   void PERBSSurf<T>::splitKnot(int uk, int vk)  {
+
+    if( uk > _c.getDim1() || uk < 0 || vk > _c.getDim2() || vk < 0 )
+      return;
+
+
+    // if conected double knot
+
+
+
+    //// expand knot vectors
+    _u.insert( uk+1, _u(uk+1) );
+    _v.insert( vk+1, _v(vk+1) );
+
+    //// expand local patches
+//    std::cout << " _c: " << _c << std::endl;
+
+
+
+    DMatrix< PSurf<T,3>* > c( _c.getDim1()+1, _c.getDim2()+1, static_cast<PSurf<T,3>*>(0x0) );
+//    std::cout << " c after initializtion: " << c << std::endl;
+
+    // lower quadrant
+    for( int i = 0; i < uk; ++i )
+      for( int j = 0; j < vk; ++j )
+        c[i][j] = _c[i][j];
+
+    // u
+    for( int i = uk+1; i < c.getDim1(); ++i )
+      for( int j = 0; j < vk; ++j )
+        c[i][j] = _c[i-1][j];
+
+    // v
+    for( int i = 0; i < uk; ++i )
+      for( int j = vk+1; j < c.getDim2(); ++j )
+        c[i][j] = _c[i][j-1];
+
+    for( int i = uk+1; i < c.getDim1(); ++i )
+      for( int j = vk+1; j < c.getDim2(); ++j )
+        c[i][j] = _c[i-1][j-1];
+
+//    std::cout << " c after locals move: " << c << std::endl;
+
+    // u lower
+    PSurf<T,3> *op, *np;
+    for( int j = 0; j < vk; ++j ) {
+//      op = c[uk+1][j];
+//      np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+//      c[uk][j] = np;
+      c[uk][j] = c[uk+1][j];
+//      insertPatch( np );
+    }
+
+    // u upper
+    for( int j = vk+2; j < c.getDim2(); ++j ) {
+//      op = c[uk+1][j];
+//      np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+//      c[uk][j] = np;
+      c[uk][j] = c[uk+1][j];
+//      insertPatch( np );
+    }
+
+    // v lower
+    for( int i = 0; i < uk; ++i ) {
+//      op = c[i][vk+1];
+//      np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+//      c[i][vk] = np;
+      c[i][vk] = c[i][vk+1];
+//      insertPatch( np );
+    }
+
+    // v upper
+    for( int i = uk+2; i < c.getDim1(); ++i ) {
+//      op = c[i][vk+1];
+//      np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+//      c[i][vk] = np;
+      c[i][vk] = c[i][vk+1];
+//      insertPatch( np );
+    }
+
+    // Center block
+    op = c[uk+1][vk+1];
+
+    np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+    c[uk][vk] = np;
+    insertPatch( np );
+    np->setDomainU( T(0), T(0.5) );
+    np->setDomainV( T(0), T(0.5) );
+
+    np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+    c[uk+1][vk] = np;
+    insertPatch( np );
+    np->setDomainU( T(0.5), T(1) );
+    np->setDomainV( T(0), T(0.5) );
+
+    np = static_cast<PSurf<T,3>*>( op->makeCopy() );
+    c[uk][vk+1] = np;
+    insertPatch( np );
+    np->setDomainU( T(0), T(0.5) );
+    np->setDomainV( T(0.5), T(1) );
+
+
+    op->setDomainU( T(0.5), T(1) );
+    op->setDomainV( T(0.5), T(1) );
+
+
+    /*!
+     *  Scale domain of splited patches
+     *
+     *  \todo Does this scaling handle multiple knot splits to the "same" knot ?
+     */
+
+
+//    std::cout << " c after locals insert: " << c << std::endl;
+
+
+    _c = c;
+  }
+
+  template <typename T>
+  void PERBSSurf<T>::splitKnotAlong(int uk, int vk)  {
 
     if( uk > _c.getDim1() || uk < 0 || vk > _c.getDim2() || vk < 0 )
       return;
