@@ -78,9 +78,6 @@ namespace GMlib {
     Vector<T,n>&                  getDerUU( T u, T v );
     Vector<T,n>&                  getDerVV( T u, T v );
     Vector<T,n>&                  getDerUV( T u, T v );
-    virtual const APoint<T,2>&    getLocalMapping( const APoint<T,2>& t,
-                                                   const APoint<T,2>& s,
-                                                   const APoint<T,2>& e );
     Vector<T,n>&                  getNormal();
     T                             getParDeltaU();
     T                             getParDeltaV();

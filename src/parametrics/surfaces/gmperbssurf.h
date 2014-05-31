@@ -162,7 +162,7 @@ namespace GMlib {
     DMatrix<PSurfVisualizerSet<T> >     _pvi;
 
 
-    Point<T,2>                   mapToLocal( T u, T v, int uk, int vk ) const;
+    Point<T,2>                          mapToLocal( T u, T v, int uk, int vk ) const;
 
   }; // END class PERBSSurf
 

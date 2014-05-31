@@ -391,19 +391,6 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const APoint<T,2>& PSurf<T,n>::getLocalMapping( const APoint<T,2>& t, const APoint<T,2>& s, const APoint<T,2>& e ) {
-
-    static APoint<T,2> t_local;
-
-    t_local[0] = getParStartU() + (t(0) - s(0)) / (e(0) - s(0)) * getParDeltaU();
-    t_local[1] = getParStartV() + (t(1) - s(1)) / (e(1) - s(1)) * getParDeltaV();
-
-    return t_local;
-  }
-
-
-  template <typename T, int n>
-  inline
   Vector<T,n>& PSurf<T,n>::getNormal() {
 
     return _n;
