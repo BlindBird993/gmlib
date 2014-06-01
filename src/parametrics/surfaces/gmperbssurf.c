@@ -725,18 +725,13 @@ namespace GMlib {
     // Init Indexes and get local u/v values
     const int cu = uk-1;
     const int cv = vk-1;
-    const Point<T,2>& lm = mapToLocal( u, v, uk, vk );
-//        _c[cu][cv]->getLocalMapping( Point<T,2>(u,v),
-//                                     Point<T,2>( _u[uk-1], _v[vk-1] ),
-//                                     Point<T,2>( _u[uk+1], _v[vk+1] ) );
 
     // Evaluate First local patch
-    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( lm(0), lm(1), du, dv );
+    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>( du, dv ) );
 
     // If on a interpolation point return only first patch evaluation
     if( std::abs(u - _u[uk]) < 1e-5 )
       return c0;
-
 
     // Select next local patch in u direction
     uk++;
@@ -744,13 +739,9 @@ namespace GMlib {
     // Init Indexes and get local u/v values
     const int cu2 = uk-1;
     const int cv2 = vk-1;
-    const Point<T,2>& lm2 = mapToLocal( u, v, uk, vk );
-//        _c[cu2][cv2]->getLocalMapping( Point<T,2>(u,v),
-//                                       Point<T,2>( _u[uk-1], _v[vk-1] ),
-//                                       Point<T,2>( _u[uk+1], _v[vk+1] ) );
 
     // Evaluate Second local patch
-    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( lm2(0), lm2(1), du, dv );
+    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>( du, dv) );
 
     DVector<T> a(du+1);
 
@@ -776,8 +767,6 @@ namespace GMlib {
 
   template <typename T>
   Point<T,2> PERBSSurf<T>::mapToLocal( T u, T v, int uk, int vk ) const {
-
-    APoint<T,2> t_local;
 
     PSurf<T,3> *c = _c(uk-1)(vk-1);
 
@@ -809,10 +798,8 @@ namespace GMlib {
       cdv /= T(2);
     }
 
-    t_local[0] = csu + (u - _u(uk-1)) / (_u(uk+1) - _u(uk-1)) * cdu;
-    t_local[1] = csv + (v - _v(vk-1)) / (_v(vk+1) - _v(vk-1)) * cdv;
-
-    return t_local;
+    return Point<T,2>( csu + (u - _u(uk-1)) / (_u(uk+1) - _u(uk-1)) * cdu,
+                       csv + (v - _v(vk-1)) / (_v(vk+1) - _v(vk-1)) * cdv );
   }
 
   template <typename T>
