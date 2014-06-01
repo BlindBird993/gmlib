@@ -174,16 +174,14 @@ namespace GMlib {
     }
 
     // Evaluating first Local Curve @ (t-_t[k-1])/(_t[k+1]-_t[k-1])
-    DVector< Vector<T,3> > c0 = _c[k-1]->evaluateParent(
-                                _c[k-1]->getLocalMapping(t,_t[k-1],_t[k+1]), d);
+    DVector< Vector<T,3> > c0 = _c[k-1]->evaluateParent( mapToLocal(t,k), d);
 
     // If t == _t[k], the sample is at the knot, set the values to the values of the first local curve.
     if( std::abs(t - _t[k]) < 1e-5 ) { this->_p = c0; return; }
 
 
     // Evaluating second Local Curve @ (t-_t[k])/(_t[k+2]-_t[k)
-    DVector< Vector<T,3> > c1 = _c[k]->evaluateParent(
-                                _c[k]->getLocalMapping(t,_t[k],_t[k+2]), d);
+    DVector< Vector<T,3> > c1 = _c[k]->evaluateParent( mapToLocal(t,k+1), d);
 
 
     // Blend c0 and c1
@@ -425,6 +423,23 @@ namespace GMlib {
     }
 
     return NULL;
+  }
+
+  template <typename T>
+  inline
+  T PERBSCurve<T>::mapToLocal(T t, int tk) const {
+
+//    return getParStart() + (t-s)/(e-s) * getParDelta();
+
+    PCurve<T,3> *c = _c(tk-1);
+
+    const T cs = c->getParStart();
+    const T cd = c->getParDelta();
+
+    // Fill in when support for multiple knots has been implemented and supported.
+    // See PERBSSurf
+
+    return cs + (t - _t(tk-1)) / ( _t(tk+1) - _t(tk-1) ) * cd;
   }
 
 

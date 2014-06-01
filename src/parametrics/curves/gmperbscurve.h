@@ -140,6 +140,8 @@ namespace GMlib {
     void                            insertLocal( PCurve<T,3> *patch );
     PCurve<T,3>*                    makeLocal( CURVE_TYPE type, PCurve<T,3>* g, T s, T t, T e, int d=2);
 
+    T                               mapToLocal( T t, int tk ) const;
+
   }; // END class PERBSCurve
 
 } // END namepace GMlib

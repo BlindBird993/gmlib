@@ -66,7 +66,6 @@ namespace GMlib {
     Vector<T,n>               getDer1( T t );
     Vector<T,n>               getDer2( T t );
     Vector<T,n>               getDer3( T t );
-    virtual T                 getLocalMapping( T t, T s, T e );
     T                         getParDelta();
     T                         getParEnd();
     T                         getParStart();
