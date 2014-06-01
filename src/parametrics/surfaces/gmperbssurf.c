@@ -811,7 +811,7 @@ namespace GMlib {
     const int cv = vk-1;
 
     // Evaluate First local patch
-    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( mapToLocal(u,v,uk,vk), du, dv );
+    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>(du, dv) );
 
     // If on a interpolation point return only first patch evaluation
     if( std::abs(u - _u[uk]) < 1e-5 )
@@ -825,7 +825,7 @@ namespace GMlib {
     const int cv2 = vk-1;
 
     // Evaluate Second local patch
-    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( mapToLocal(u,v,uk,vk), du, dv );
+    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>(du, dv) );
 
     DVector<T> a(du+1);
 
