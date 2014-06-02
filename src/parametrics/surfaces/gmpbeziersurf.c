@@ -57,6 +57,7 @@ namespace GMlib {
     DMatrix<T> bu, bv;
     EvaluatorStatic<T>::evaluateBhp( bu, c.getDim1()-1, ( u - s_u ) / ( e_u - s_u ), T(1)/(e_u-s_u) );
     EvaluatorStatic<T>::evaluateBhp( bv, c.getDim2()-1, ( v - s_v ) / ( e_v - s_v ), T(1)/(e_v-s_v) );
+    setScale(T(1)/(e_u-s_u),T(1)/(e_v-s_v));
     bu.invert();
     bv.invert();
     bv.transpose();
