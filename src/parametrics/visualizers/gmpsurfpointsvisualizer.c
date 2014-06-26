@@ -28,97 +28,103 @@
  */
 
 
+
+// syntax highlighting
+#include "gmpsurfpointsvisualizer.h"
+
+
 namespace GMlib {
 
-  template <typename T>
-  PSurfPointsVisualizer<T>::PSurfPointsVisualizer() {
+  template <typename T, int n>
+  PSurfPointsVisualizer<T,n>::PSurfPointsVisualizer() : _size(1.0f), _color(GMcolor::BlueViolet), _no_points(0) {
 
-    this->setRenderProgram( GL::GLProgram("color") );
-
-    _size = 1.0;
-    _color = GMcolor::BlueViolet;
-
-    _no_points = 0;
-    glGenBuffers( 1, &_vbo_v );
+    _prog.acquire("color");
+    _vbo.create();
   }
 
-  template <typename T>
-  PSurfPointsVisualizer<T>::~PSurfPointsVisualizer() {
+  template <typename T, int n>
+  PSurfPointsVisualizer<T,n>::PSurfPointsVisualizer(const PSurfPointsVisualizer<T,n>& copy)
+    : PSurfVisualizer<T,n>(copy), _size(1.0f), _color(GMcolor::BlueViolet), _no_points(0) {
 
-    glDeleteBuffers( 1, &_vbo_v );
+    _prog.acquire("color");
+    _vbo.create();
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfPointsVisualizer<T>::display() {
+  void PSurfPointsVisualizer<T,n>::render(const DisplayObject *obj, const Camera *cam) const {
 
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.setUniform( "u_color", _color );
+    _prog.bind(); {
 
+      _prog.setUniform( "u_mvpmat", mvpmat );
+      _prog.setUniform( "u_color", _color );
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc );
+      _vbo.bind();
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, static_cast<const GLvoid*>(0x0) );
 
-    // Draw
-    glDrawArrays( GL_POINTS, 0, _no_points );
+      // Draw
+      GL_CHECK(::glDrawArrays( GL_POINTS, 0, _no_points));
 
-    glDisableVertexAttribArray( vert_loc );
+      _vbo.disable( vert_loc );
+      _vbo.unbind();
 
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
+    } _prog.unbind();
 
   }
 
-  template <typename T>
-  const Color& PSurfPointsVisualizer<T>::getColor() const {
+  template <typename T, int n>
+  const Color& PSurfPointsVisualizer<T,n>::getColor() const {
 
     return _color;
   }
 
-  template <typename T>
-  float PSurfPointsVisualizer<T>::getSize() const {
+  template <typename T, int n>
+  float PSurfPointsVisualizer<T,n>::getSize() const {
 
     return _size;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PSurfPointsVisualizer<T>::replot(
-    DMatrix< DMatrix< Vector<T, 3> > >& p,
-    DMatrix< Vector<T, 3> >& /*normals*/,
-    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
-    bool /*closed_u*/, bool /*closed_v*/
-  ) {
+  void PSurfPointsVisualizer<T,n>::replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
+                                          const DMatrix< Vector<T, n> >& normals,
+                                          int m1, int m2, int d1, int d2,
+                                          bool closed_u, bool closed_v ) {
 
     _no_points = p.getDim1() * p.getDim2();
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glBufferData( GL_ARRAY_BUFFER, _no_points * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
+    _vbo.bufferData( _no_points * sizeof(GL::GLVertex), 0x0, GL_STATIC_DRAW );
 
-    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-    if( ptr ) {
 
-      for( int i = 0; i < p.getDim1(); i++ )
-        for( int j = 0; j < p.getDim2(); j++ )
-          for( int k = 0; k < 3; k++ )
-            *(ptr++) = p[i][j][0][0][k];
+    GL::GLVertex *vtx = _vbo.mapBuffer<GL::GLVertex>();
+    if( vtx ) {
+
+      for( int i = 0; i < p.getDim1(); i++ ) {
+        for( int j = 0; j < p.getDim2(); j++ ) {
+          const Point<T,3> &pos = p(i)(j)(0)(0);
+          (*vtx).x = pos(0);
+          (*vtx).y = pos(1);
+          (*vtx).z = pos(2);
+          vtx++;
+        }
+      }
+
+      _vbo.unmapBuffer();
     }
-
-    glUnmapBuffer( GL_ARRAY_BUFFER );
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
   }
 
-  template <typename T>
-  void PSurfPointsVisualizer<T>::setColor( const Color& color ) {
+  template <typename T, int n>
+  void PSurfPointsVisualizer<T,n>::setColor( const Color& color ) {
 
     _color = color;
   }
 
-  template <typename T>
-  void PSurfPointsVisualizer<T>::setSize( float size ) {
+  template <typename T, int n>
+  void PSurfPointsVisualizer<T,n>::setSize( float size ) {
 
     _size = size;
   }

@@ -33,7 +33,7 @@ namespace GMlib {
 
 
   template <typename T>
-  SelectorGridVisualizer<T>::SelectorGridVisualizer() : _no_indices(0) {
+  SelectorGridVisualizer<T>::SelectorGridVisualizer() : _no_indices(0), _line_width(1.0f) {
 
     _prog.acquire("color");
     _vbo.create();
@@ -62,6 +62,7 @@ namespace GMlib {
 
     const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
+    GL_CHECK(::glLineWidth(_line_width));
     _prog.bind(); {
 
       _prog.setUniform( "u_mvpmat", mvpmat );
@@ -88,6 +89,12 @@ namespace GMlib {
   void SelectorGridVisualizer<T>::reset() {
 
     _no_indices = 0;
+  }
+
+  template <typename T>
+  void SelectorGridVisualizer<T>::setLineWidth(float line_width) {
+
+    _line_width = line_width;
   }
 
   template <typename T>
