@@ -66,9 +66,7 @@ namespace GL {
     // System wide buffers
     static void                   initSystemWideBuffers();
 
-
     // Programs and shaders
-
     static void                   initSystemWideShadersAndPrograms();
 
     // System wide programs/shaders

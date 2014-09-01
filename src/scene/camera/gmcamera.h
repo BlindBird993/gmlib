@@ -43,11 +43,14 @@
 #include <iostream>
 
 
+
+
 namespace GMlib {
 
 
 
-  class GMWindow;
+  class Renderer;
+  class SelectRenderer;
 
 
 
@@ -100,47 +103,56 @@ namespace GMlib {
 
     virtual ~Camera();
 
-    void                        decreaseEyeDist(double delta=0.01);
-    void                        decreaseFocalDist(double delta=1);
-    virtual double              deltaTranslate(DisplayObject * obj);
-    void                        enableCulling( bool enable = true );
-//    SceneObject*                findSelectObject(int, int, int type_id=0);
+    SceneObject*                findSelectObject(int, int, int type_id=0);
 //    SceneObject*                findSelectObject( const Vector<int,2>& pos, int type_id=0);
 //    Array<SceneObject* >        findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
-    float                       getAngleTan() const;
-    double                      getDistanceToObject(int, int);
-    double                      getDistanceToObject(SceneObject* obj);
-    float                       getFarPlane() const;
-    float                       getFocalLength() const;
-    const Frustum&              getFrustum() const;
-    const HqMatrix<float,3>&    getFrustumMatrix() const;
+
     HqMatrix<float,3>&          getMatrix();
     const HqMatrix<float,3>&    getMatrix() const;
-    float                       getNearPlane() const;
     const HqMatrix<float,3>&    getProjectionMatrix() const;
-    float                       getRatio() const;
+    Arrow<int,2>                getViewport() const;
     void                        getViewport(int& w1, int& w2, int& h1, int& h2) const;
     int                         getViewportW() const;
     int                         getViewportH() const;
+
 //    virtual void                go(bool stereo=false);  // Running the Camera.
+
+    bool                        isCoordSysVisible() const;
+    void                        setCoordSysVisible(bool visible=true);
+
+
+    virtual double              deltaTranslate(DisplayObject * obj);
+    double                      getDistanceToObject(int, int);
+    double                      getDistanceToObject(SceneObject* obj);
+    virtual SceneObject*        lockTargetAtPixel(int,int);
+
+    bool                        isCulling() const;
+    void                        enableCulling( bool enable = true );
+
+    void                        decreaseEyeDist(double delta=0.01);
+    void                        decreaseFocalDist(double delta=1);
+    float                       getRatio() const;
     void                        increaseEyeDist(double delta=0.01);
     void                        increaseFocalDist(double delta=1);
-    bool                        isCoordSysVisible() const;
-    bool                        isCulling() const;
-    bool                        isFrustumVisible() const;
-    virtual SceneObject*        lockTargetAtPixel(int,int);
-    void                        reset();            // To be used when changing Camera.
-    virtual void                reshape(int w1, int h1, int w2, int h2);    // To be used when changing size of window
+    float                       getNearPlane() const;
     void                        setCuttingPlanes(float near_plane, float far_plane);
-    void                        setCoordSysVisible(bool visible=true);
     void                        setEyeDist(double eye_dist=0.08);
+    float                       getAngleTan() const;
+    float                       getFarPlane() const;
+    float                       getFocalLength() const;
     void                        setFocalDist(double focal=50.0);
+
+    const Frustum&              getFrustum() const;
     void                        setFrustumVisible(bool visible=true);
+    bool                        isFrustumVisible() const;
+
     void                        setScene(Scene& s);
     void                        setScene(Scene *s);
     virtual void                zoom(float z);
 
 
+    void                        reset();            // To be used when changing Camera.
+    virtual void                reshape(int x1, int y1, int x2, int y2);    // To be used when changing size of window
     void                        updateCameraOrientation();
 
 //  protected:
@@ -150,7 +162,6 @@ namespace GMlib {
     float                       _ratio;
 
     Frustum                     _frustum;
-    HqMatrix<float,3>           _frustum_matrix;          // Frustrum matrix
 
     void                        basisChange( const Vector<float,3>& x,
                                              const Vector<float,3>& y,
@@ -190,8 +201,16 @@ namespace GMlib {
     bool                        _culling;
 
     GL::UniformBufferObject           _light_ubo;
-    void                              updateLightUBO( const GMWindow* lights );
+    void                              updateLightUBO( const Scene* lights );
     const GL::UniformBufferObject&    getLightUBO() const;
+
+    Renderer*                   _renderer;
+    void                        render();
+    Renderer*                   getRenderer() { return _renderer; }
+
+
+    SelectRenderer*             _select_renderer;
+    SelectRenderer*             getSelectRenderer() { return _select_renderer; }
 
 
   public:
@@ -299,13 +318,6 @@ namespace GMlib {
   void Camera::setupDisplay() {
 
     setPerspective();
-    applyViewport();
-  }
-
-  inline
-  void Camera::applyViewport() const {
-
-    ::glViewport(_x,_y,_w,_h);
   }
 
 
@@ -511,12 +523,6 @@ namespace GMlib {
     return _frustum;
   }
 
-  inline
-  const HqMatrix<float,3>& Camera::getFrustumMatrix() const {
-
-    return _frustum_matrix;
-  }
-
 
   /*! float Camera::getNearPlane() const
    *  \brief Pending Documentation
@@ -533,7 +539,7 @@ namespace GMlib {
   inline
   const HqMatrix<float,3>& Camera::getProjectionMatrix() const {
 
-    return getFrustumMatrix();
+    return _frustum.getProjectionMatrix();
   }
 
 
@@ -548,7 +554,15 @@ namespace GMlib {
     return _ratio;
   }
 
+  inline
+  Arrow<int,2>
+  Camera::getViewport() const {
 
+    Arrow<int,2> vp;
+    vp.setPos( Point<int,2>(_x,_y) );
+    vp.setDir( Vector<int,2>(_w,_h) );
+    return vp;
+  }
 
   /*!
    *  \brief Pending Documentation

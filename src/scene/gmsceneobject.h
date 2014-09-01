@@ -102,7 +102,6 @@ namespace GMlib{
   class DisplayObject;
   class Camera;
   class Scene;
-  class Light;
 
 
   enum GM_SO_TYPE {
@@ -205,6 +204,7 @@ namespace GMlib{
     SceneObject*                        getParent() const;
     void                                setParent(SceneObject* obj);
 
+    const SceneObject*                 find(unsigned int name) const;
     SceneObject*                        find(unsigned int name);
 
     const APoint<float,3>&              getCenterPos() const;
@@ -296,7 +296,7 @@ namespace GMlib{
     unsigned int                        _name;        //! Unic name for this object, used for selecting
     Sphere<float,3>                     _sphere;      //! Surrounding sphere for this object
 
-    int                                 prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
+    int                                 prepare(Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
     virtual void                        prepareDisplay(const HqMatrix<float,3>& m);
 
     virtual void                        culling( Array<DisplayObject*>&, const Frustum& );

@@ -16,6 +16,11 @@ const GL::FramebufferObject&RenderTexture::getFbo() const {
   return _fbo;
 }
 
+void RenderTexture::setClearColor(const Color& c) {
+
+  _clear_color = c;
+}
+
 void RenderTexture::init(const std::string &name) {
 
   _fbo.create();
@@ -28,9 +33,13 @@ void RenderTexture::init(const std::string &name) {
   _tex_rb_color.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
   _fbo.attachTexture2D( _tex_rb_color, GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
+
+  _clear_color = Color( 127, 127, 127 );
 }
 
-void RenderTexture::doClear() const {}
+void RenderTexture::doClear() const {
+  _fbo.clearColorBuffer(_clear_color);
+}
 
 void RenderTexture::doBind() const {
 

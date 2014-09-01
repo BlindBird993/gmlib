@@ -16,11 +16,13 @@ public:
   explicit RenderTexture ( const std::string& name );
 
   const GL::FramebufferObject&    getFbo() const;
+  void                            setClearColor( const Color& c );
 
 private:
-
   GL::FramebufferObject     _fbo;
   GL::Texture               _tex_rb_color;
+
+  Color                     _clear_color;
 
   void      init( const std::string& name = std::string());
 

@@ -45,9 +45,7 @@
 namespace GMlib {
 
 
-  SelectRenderer::SelectRenderer(Scene *scene)
-    : MultiObjectRenderer( scene )
-  {
+  SelectRenderer::SelectRenderer() {
 
     initSelectProgram();
 
@@ -73,19 +71,57 @@ namespace GMlib {
     _fbo.attachTexture2D( _rbo_depth, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT );
   }
 
-  DisplayObject *SelectRenderer::findObject(int x, int y) const {
+  const DisplayObject *SelectRenderer::findObject(int x, int y) const {
 
     Color c;
     _fbo.bind();
     GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
     _fbo.unbind();
 
-    DisplayObject *obj = dynamic_cast<DisplayObject*>(_scene->find(c.get()));
+    const DisplayObject *obj = dynamic_cast<const DisplayObject*>(_current_scene->find(c.get()));
 
     return obj;
   }
 
-  Array<DisplayObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) const {
+  DisplayObject *SelectRenderer::findObject(int x, int y) {
+
+    Color c;
+    _fbo.bind();
+    GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
+    _fbo.unbind();
+
+    DisplayObject *obj = dynamic_cast<DisplayObject*>(_current_scene->find(c.get()));
+
+    return obj;
+  }
+
+  Array<const DisplayObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) const {
+
+    Array<const DisplayObject* > sel;
+    int dx=(xmax-xmin)+1;
+    int dy=(ymax-ymin)+1;
+
+    Color* pixels = new Color[dx*dy];
+    _fbo.bind();
+    GL_CHECK(::glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels));
+    _fbo.unbind();
+
+    int ct = 0;
+    Color c;
+    for(int i = ymin; i < ymax; ++i) {
+      for(int j = xmin; j < xmax; ++j) {
+        c = pixels[ct++];
+        const DisplayObject *tmp = dynamic_cast<const DisplayObject*>(_current_scene->find(c.get()));
+        if(tmp)
+          if(!tmp->isSelected()) { sel.insertAlways(tmp); }
+      }
+    }
+    delete [] pixels;
+
+    return sel;
+  }
+
+  Array<DisplayObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) {
 
     Array<DisplayObject* > sel;
     int dx=(xmax-xmin)+1;
@@ -101,7 +137,7 @@ namespace GMlib {
     for(int i = ymin; i < ymax; ++i) {
       for(int j = xmin; j < xmax; ++j) {
         c = pixels[ct++];
-        DisplayObject *tmp = dynamic_cast<DisplayObject*>(_scene->find(c.get()));
+        DisplayObject *tmp = dynamic_cast<DisplayObject*>(_current_scene->find(c.get()));
         if(tmp)
           if(!tmp->isSelected()) { sel.insertAlways(tmp); }
       }
@@ -170,21 +206,67 @@ namespace GMlib {
     assert(link_ok);
   }
 
-  void SelectRenderer::prepare(Array<DisplayObject *> &objs, const Camera *cam) const{
+  void SelectRenderer::reshape(int x, int y, int w, int h) {
 
-    assert( _scene );
-
-    cam->applyViewport();
-    objs.resetSize();
-    _scene->getDisplayableObjects(objs, cam);
-  }
-
-  void SelectRenderer::resize(int w, int h) {
-
-    Renderer::resize(w,h);
+    Renderer::reshape(x, y, w ,h);
 
     _rbo_color.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
     _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
+  }
+
+  void SelectRenderer::select(Camera* cam, int type_id) {
+
+    _what = type_id;
+    _current_scene = cam->getScene();
+
+    render(cam);
+  }
+
+  void SelectRenderer::renderObjects(Array<DisplayObject*>& objs, Camera* cam) {
+
+    // Clear buffers
+    _fbo.clear( GL_DEPTH_BUFFER_BIT );
+    _fbo.clearColorBuffer( GMcolor::Black );
+
+    // Render selection
+    GLboolean depth_test_state;
+    GL_CHECK(::glGetBooleanv( GL_DEPTH_TEST, &depth_test_state ));
+    GL_CHECK(::glEnable( GL_DEPTH_TEST ));
+
+    GL_CHECK(::glPolygonMode(GL_FRONT_AND_BACK,GL_FILL));
+
+    _fbo.bind(); {
+
+      for( int i=0; i < objs.getSize(); ++i ) {
+
+        DisplayObject *obj = objs[i];
+        if( obj != cam && ( _what == 0 || _what == obj->getTypeId() || ( _what < 0 && _what + obj->getTypeId() != 0 ) ) ) {
+
+          _prog.bind(); {
+
+            _prog.setUniform( "u_color", Color( obj->getVirtualName()) );
+
+            if(obj->isCollapsed()) {
+
+              VisualizerStdRep::getInstance()->renderGeometry(_prog,obj,cam);
+            }
+            else {
+
+              const Array<Visualizer*>& visus = obj->getVisualizers();
+              for( int i = 0; i < visus.getSize(); ++i )
+                visus(i)->renderGeometry(_prog,obj,cam);
+
+              obj->localSelect(_prog,cam);
+            }
+
+          } _prog.unbind();
+        }
+      }
+
+    }  _fbo.unbind();
+
+    if( !depth_test_state )
+      GL_CHECK(::glDisable( GL_DEPTH_TEST ));
   }
 
 

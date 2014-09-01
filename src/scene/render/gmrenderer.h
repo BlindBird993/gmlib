@@ -33,7 +33,9 @@
 
 
 // GMlib
+#include <core/types/gmpoint.h>
 #include <core/containers/gmarray.h>
+#include <core/utils/gmcolor.h>
 
 namespace GMlib {
 
@@ -44,53 +46,35 @@ namespace GMlib {
 
   class Renderer {
   public:
-    Renderer( Scene *scene );
+    Renderer();
     virtual ~Renderer();
 
+    const Color&      getClearColor() const;
+    void              setClearColor( const Color& color );
 
-    /* scene/sceneobject stuff */
-    bool              isStereoEnabled() const;
-    void              enableStereo( bool enable = true );
+    /* prepare stuff */
+    void              render(Camera* cam );
+    void              renderTo();
+    virtual void      reshape( int x, int y, int w, int h );
 
-
-
-    /* Rendring stuff */
-    int               getBufferWidth() const;
-    int               getBufferHeight() const;
-    bool              isInitialized() const;
-
-    virtual void      resize( int w, int h );
-
-  protected:
-    void              markAsInitialized();
-
-    Scene             *_scene;
+    // TEST FUNCTIONS (SHOULD BE MADE FOR LIST OF RENDER TARGETS)
+    void              setRenderTarget( RenderTarget* rt );
 
   private:
-    /* Scene and sceneobject */
-    bool              _stereo;
+    int                                     _x, _y, _w, _h;
+    Color                                   _clear_color;
+    RenderTarget*                           _rt;
+    mutable Array<DisplayObject *>          _objs;
 
-    /* Buffer */
-    bool              _initialized;
-    int               _buffer_width;
-    int               _buffer_height;
+
+    virtual void      prepare( Array<DisplayObject*>& objs, Camera* cam );
+    virtual void      renderObjects( Array<DisplayObject*>& objs, Camera* cam ) = 0;
+    virtual void      renderToTarget() = 0;
+
+    void              setupViewport( int x, int y, int w, int h );
 
 
   }; // END class Renderer
-
-
-
-  class SingleObjectRenderer : public Renderer {
-  public:
-    SingleObjectRenderer( Scene* scene );
-  }; // END class SingleObjectRenderer
-
-  class MultiObjectRenderer : public Renderer {
-  public:
-    MultiObjectRenderer( Scene* scene );
-
-    virtual void      prepare( Array<DisplayObject*>& objs, Camera* cam ) const;
-  }; // END class MultiObjectRenderer
 
 
 } // END namespace GMlib

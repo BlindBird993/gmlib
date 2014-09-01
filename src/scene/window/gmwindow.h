@@ -37,17 +37,9 @@
 #include "gmviewset.h"
 
 // local
-#include "..//camera/gmcamera.h"
-#include "..//render/gmrendermanager.h"
-
-// !! might be removed as light and is implemented with different mechanisms... !!
-#include "..//light/gmlight.h"
-#include "..//light/gmsun.h"
-#include "..//light/gmspotlight.h"
-#include "..//light/gmpointlight.h"
+#include "../camera/gmcamera.h"
 
 // gmlib
-#include <opengl/bufferobjects/gmuniformbufferobject.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
 #include <opengl/bufferobjects/gmindexbufferobject.h>
 
@@ -72,7 +64,7 @@ namespace GMlib {
    */
   class GMWindow : public Scene {
   public:
-    GMWindow( bool init_default_cam = true );
+    GMWindow();
     GMWindow(const GMWindow&);
 
     virtual ~GMWindow();
@@ -85,11 +77,13 @@ namespace GMlib {
     void                    popViewSet();
     void                    prepareViewSets();
 
+
     Camera*                 findCamera( int x, int y );
     Camera*                 findCamera( const Vector<int,2>& pos );
     int                     getCameraIndex( Camera* cam ) const;
-    void                    insertCamera(Camera* cam, bool insert_in_scene = false);
-    bool                    removeCamera(Camera * cam);
+
+    Vector<int,2>           mapToCamera( int x, int y );
+    Vector<int,2>           mapToCamera( const Vector<int,2>& pos );
 
     const Color&            getClearColor() const;
     void                    setClearColor( const Color& color );
@@ -99,29 +93,13 @@ namespace GMlib {
     int                     getViewportHeight() const;
     int                     getViewportWidth() const;
 
-    void                    insertLight(Light* light, bool insert_in_scene = false);
-    bool                    removeLight(Light* light);
-    const Array<Light*>&    getInsertedLights() const;
-    void                    insertSun();
-    void                    removeSun();
-    const Sun*              getSun() const;
-    void                    scaleDayLight(double d);
-    void                    setSunDirection(Angle d);
-
     void                    moveBorder(int x, int y);
 
-    virtual void            clearScene();
     void                    clearViewSetConfiguration();
     void                    reset();
 
-    bool                    isRunning() const;
-    virtual bool            toggleRun();
-
     bool                    isStereoEnabled() const;
     bool                    toggleStereo();
-
-    RenderManager*          getRenderManager() const;
-
 
     GMWindow&               operator=(const GMWindow& gw);
 
@@ -132,13 +110,17 @@ namespace GMlib {
     void                    setRenderTarget( RenderTarget* rt );
 
 
-  protected:
-    RenderManager*          _rm;
+    /* Virtual from Scene */
+    void                    insertCamera(Camera *cam);
 
-    // Cameras light and sun
-    Array<Camera*>          _cameras;
-    Array<Light*>           _lights;
-    Sun*                    _sun;
+
+  protected:
+    RenderTarget*           _rt;
+    Color                   _clear_color;
+    Color                   _select_color;
+
+    GL::Program             _border_prog;
+    HqMatrix<float,3>       _ortho_mat;
 
     // Viewport size
     int                     _w;
@@ -151,7 +133,6 @@ namespace GMlib {
     int                     _active_cam;
 
     double                  _move;
-
 
     bool                    find(int x, int y, int& index);
     virtual void            message( const std::string& str);
@@ -169,17 +150,13 @@ namespace GMlib {
     bool                    _stereo;
 
     SceneObject*            _target;    /// NB!!!! take a look at this variable not used proper today.....
-    bool                    _running;    /// Used to stor the state of simulation while mouse/keboard temporary turn off simulation
     bool                    _isbig;      /// State of one window functionality have been used (see _mouseDoubleClick on right knob)
-
 
     GL::VertexBufferObject  _std_rep_cube;
     GL::IndexBufferObject   _std_rep_cube_indices;
     GL::IndexBufferObject   _std_rep_frame_indices;
-    void                    initStdGeometry();
 
   public:
-
     SceneObject*            findSelectObject( Camera* cam, const Vector<int,2>& pos, int type_id ) const;
     SceneObject*            findSelectObject( Camera* cam, int x, int y, int type_id ) const;
 
@@ -233,18 +210,30 @@ namespace GMlib {
   }
 
   inline
-  const Color& GMWindow::getClearColor() const {
-
-    return getRenderManager()->getClearColor();
-  }
-
-  inline
   int GMWindow::getCameraIndex( Camera* cam ) const {
 
     if( !_cameras.exist( cam ) )
       return -1;
 
     return _cameras.index( cam );
+  }
+
+  inline
+  Vector<int,2>
+  GMWindow::mapToCamera(int x, int y) {
+
+    Camera *cam = findCamera(x,y);
+    if(!cam)
+      return Vector<int,2>(0);
+
+    return Vector<int,2>( x, y) - cam->getViewport().getPos();
+  }
+
+  inline
+  Vector<int,2>
+  GMWindow::mapToCamera(const Vector<int,2>& pos) {
+
+    return mapToCamera( pos(0), pos(1) );
   }
 
   inline
@@ -266,25 +255,6 @@ namespace GMlib {
   }
 
 
-  /*! void GMWindow::insertSun()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void GMWindow::insertSun() {
-
-    _sun = new Sun();
-  }
-
-
-  inline
-  bool GMWindow::isRunning() const {
-
-    return _running;
-  }
-
-
   /*! bool GMWindow::isStereoEnabled()
    *  \brief Pending Documentation
    *
@@ -303,27 +273,6 @@ namespace GMlib {
     _view_set_stack.back().prepareGraphics();
   }
 
-  /*! void GMWindow::removeSun()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void GMWindow::removeSun() {
-
-    if(_sun) {
-
-      delete _sun;
-      _sun = NULL;
-    }
-  }
-
-  inline
-  const Sun* GMWindow::getSun() const {
-
-    return _sun;
-  }
-
 
   /*! void GMWindow::reset()
    *  \brief Pending Documentation
@@ -336,73 +285,10 @@ namespace GMlib {
     init();
   }
 
-
-  /*! void GMWindow::setSunDirection(Angle d)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void GMWindow::setSunDirection(Angle d) {
-
-    if(_sun)
-      _sun->rotateGlobal(d, Vector<float,3>(1.0,1.0,0.0));
-  }
-
-  /*! void GMWindow::display(void)
-   *  \brief  Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void GMWindow::render() {
-
-    if( _active_cam > -1 )
-      _cameras[_active_cam]->move(_move);
-
-//    simulate();
-//    prepare();
-//    if(_stereo) {
-
-//      glDrawBuffer(GL_BACK_LEFT);
-//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//      _view_set_stack.back()._drawCamera();
-//      swapBuffers();
-//      glDrawBuffer(GL_BACK_RIGHT);
-//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//      _view_set_stack.back()._drawCamera(true);
-//    }
-//    else {
-
-//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//      GL::OGL::clearRenderBuffer();
-//      GL::OGL::bindRenderBuffer();
-//      _view_set_stack.back().drawCamera();
-//      GL::OGL::unbindRenderBuffer();
-
-    RenderManager *rm = getRenderManager();
-    rm->render( _view_set_stack.back().getCameras() );
-  }
-
-
-  /*! void GMWindow::reshape(int w, int h)
-   *  \brief  Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void GMWindow::reshape(int w, int h) {
-
-    _w = w; _h = h;
-    prepareViewSets();
-
-    getRenderManager()->resize( _w, _h );
-  }
-
   inline
   void GMWindow::updateMaxObjects(int no_objects) {
 
-    _rm->updateMaxObjects(no_objects);
+//    _rm->updateMaxObjects(no_objects);
   }
 
 

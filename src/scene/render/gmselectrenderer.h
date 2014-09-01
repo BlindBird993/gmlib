@@ -46,20 +46,21 @@
 
 namespace GMlib {
 
-  class SelectRenderer : public MultiObjectRenderer {
+  class SelectRenderer : public Renderer {
   public:
-    SelectRenderer( Scene* scene );
+    explicit SelectRenderer();
 
-    DisplayObject*              findObject( int x, int y ) const;
-    Array<DisplayObject*>       findObjects(int xmin, int ymin, int xmax, int ymax ) const;
+    const DisplayObject*        findObject(int x, int y) const;
+    DisplayObject*              findObject(int x, int y);
+    Array<const DisplayObject*> findObjects(int xmin, int ymin, int xmax, int ymax) const;
+    Array<DisplayObject*>       findObjects(int xmin, int ymin, int xmax, int ymax);
 
-    void                        select(Array<DisplayObject*>& objs, const Camera* cam, int type_id ) const;
+    void                        select( Camera* cam, int type_id);
 
     /* virtual from Renderer */
-    void                        resize(int w, int h);
+    void                        reshape(int x, int y, int w, int h);
 
-    /* virtual from MultiObjectRenderer */
-    void                        prepare(Array<DisplayObject*>& objs, const Camera* cam) const;
+    void    setRBOcolorName( const std::string& name ) { _rbo_color.setName(name); }
 
   protected:
     void                        select(DisplayObject* obj, const Camera* cam, int what) const;
@@ -71,72 +72,19 @@ namespace GMlib {
     GL::Texture                 _rbo_color;
     GL::Texture                 _rbo_depth;
 
+    mutable int                 _what;
+    mutable Scene*              _current_scene;
+
 
     void                        initSelectProgram();
+
+    /* virtual from Renderer */
+    void                        renderObjects(Array<DisplayObject *> &objs, Camera *cam);
+    void                        renderToTarget() {}
   };
 
 
 
-
-
-
-
-
-  inline
-  void SelectRenderer::select( DisplayObject* obj, const Camera* cam, int what ) const {
-
-    if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
-
-      _prog.bind(); {
-
-        _prog.setUniform( "u_color", Color( obj->getVirtualName()) );
-
-        if(obj->isCollapsed()) {
-
-          VisualizerStdRep::getInstance()->renderGeometry(_prog,obj,cam);
-        }
-        else {
-
-          const Array<Visualizer*>& visus = obj->getVisualizers();
-          for( int i = 0; i < visus.getSize(); ++i )
-            visus(i)->renderGeometry(_prog,obj,cam);
-
-          obj->localSelect(_prog,cam);
-        }
-
-      } _prog.unbind();
-    }
-  }
-
-
-  inline
-  void SelectRenderer::select(Array<DisplayObject*>& objs, const Camera *cam, int type_id) const {
-
-    // Clear buffers
-    _fbo.clear( GL_DEPTH_BUFFER_BIT );
-    _fbo.clearColorBuffer( GMcolor::Black );
-
-    // Prepare camera
-    prepare( objs, cam );
-
-
-    // Render selection
-    GLboolean depth_test_state;
-    GL_CHECK(::glGetBooleanv( GL_DEPTH_TEST, &depth_test_state ));
-    GL_CHECK(::glEnable( GL_DEPTH_TEST ));
-
-    GL_CHECK(::glPolygonMode(GL_FRONT_AND_BACK,GL_FILL));
-
-    _fbo.bind(); {
-
-      for( int i=0; i < objs.getSize(); ++i )
-        select( objs[i], cam, type_id );
-
-    }  _fbo.unbind();
-
-    if( !depth_test_state )
-      GL_CHECK(::glDisable( GL_DEPTH_TEST ));
-  }
 
 
 } // END namespace GMlib

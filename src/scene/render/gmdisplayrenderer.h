@@ -38,8 +38,8 @@
 #include "../camera/gmcamera.h"
 #include "../visualizers/gmstdrepvisualizer.h"
 #include "../visualizers/gmcoordsysrepvisualizer.h"
-#include "../window/gmviewset.h"
-#include "../window/gmwindow.h"
+//#include "../window/gmviewset.h"
+//#include "../window/gmwindow.h"
 #include "gmrendertarget.h"
 
 // gmlib
@@ -52,22 +52,16 @@
 namespace GMlib {
 
 
-  class DisplayRenderer : public MultiObjectRenderer {
+  class DisplayRenderer : public Renderer {
   public:
-    DisplayRenderer( Scene* scene );
+    explicit DisplayRenderer();
+    ~DisplayRenderer();
 
     const GL::Texture&      getRenderTexture() const;
     const GL::Texture&      getSelectTexture() const;
 
-    virtual void            render( GMWindow* window, Array<DisplayObject*>& objs, const Array<Camera*>& cameras ) const;
-
-    void                    render( GMWindow *window );
-    void                    renderToTarget( GMWindow *window );
-
-    void                    setRenderTarget( RenderTarget* rt );
-
     /* virtual from Renderer */
-    void                    resize(int w, int h);
+    void                    reshape(int x,int y, int w, int h);
 
 
 
@@ -87,11 +81,9 @@ namespace GMlib {
     GL::FramebufferObject   _fbo_select_depth;
     GL::Texture             _rbo_select_depth;
 
-    /* Border rendering */
-    GL::Program             _border_prog;
-
     /* other suff */
     HqMatrix<float,3>       _ortho_mat;
+    int                     _x, _y;
     int                     _w, _h;
 
     GL::VertexBufferObject  _quad_vbo;
@@ -99,15 +91,18 @@ namespace GMlib {
     void                    render(const DisplayObject *obj, const Camera *cam) const;
     void                    renderSelectedGeometry(const DisplayObject *obj, const Camera *cam) const;
     void                    renderCoordSys(const Camera *cam ) const;
-//    void                    renderGeometry(const DisplayObject *obj, const Camera *cam) const;
-
 
 
     CoordSysRepVisualizer   *_coord_sys_visu;
-    RenderTarget            *_rt;
 
     void                    initRenderProgram();
     void                    initRenderSelectProgram();
+
+
+    /* virtual from Renderer */
+    void                    renderObjects(Array<DisplayObject*>& objs, Camera* cam);
+    void                    renderToTarget();
+
 
   }; // END class DisplayRenderer
 
@@ -186,31 +181,16 @@ namespace GMlib {
     _coord_sys_visu->render(cam,cam);
   }
 
+
+
   inline
-  void DisplayRenderer::render( GMWindow *window ) {
+  void DisplayRenderer::renderToTarget() {
 
 
-
-
-
-
-
-
-    GL_CHECK(::glViewport( 0, 0, _w, _h ));
-
-
-
-
-
-
+//    GL_CHECK(::glViewport( _x, _y, _w, _h ));
 
     GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
     GL_CHECK(::glDisable(GL_DEPTH_TEST));
-
-
-
-
-
 
 
     // Draw scene composition
@@ -244,103 +224,65 @@ namespace GMlib {
       _render_prog.unbind();
     }
 
-    // Draw border
-    {
-      const ViewSet &top_view_set = window->getTopViewSet();
-      _border_prog.bind();
-
-      _border_prog.setUniform( "u_mvpmat", _ortho_mat );
-      _border_prog.setUniform( "u_selected", false );
-      _border_prog.setUniform( "u_color", top_view_set.getBorderColor() );
-
-      const GL::AttributeLocation vert_loc = _border_prog.getAttributeLocation( "in_vertex" );
-      const GL::VertexBufferObject &border_vbo = top_view_set.getBorderVBO();
-
-      border_vbo.bind();
-      border_vbo.enable( vert_loc, 2, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
-
-      GL_CHECK(::glPointSize( 10.0f ));
-      GL_CHECK(::glDrawArrays( GL_QUADS, 0, top_view_set.getNoBorders() * 4 ));
-
-      border_vbo.disable(vert_loc);
-      border_vbo.unbind();
-
-      _border_prog.unbind();
-    }
-
     GL_CHECK(::glEnable(GL_DEPTH_TEST));
   }
 
   inline
-  void DisplayRenderer::renderToTarget(GMWindow* window) {
-
-    _rt->bind();
-    render( window );
-    _rt->unbind();
-  }
-
-  inline
-  void DisplayRenderer::render( GMWindow * window, Array<DisplayObject*>& objs, const Array<Camera *> &cameras) const {
+  void DisplayRenderer::renderObjects(Array<DisplayObject*>& objs, Camera* cam) {
 
     // Clear render buffers
-    _fbo.clear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    _fbo.clearColorBuffer( getClearColor() );
+    _fbo.clear( GL_DEPTH_BUFFER_BIT );
 
     _fbo_select.clearColorBuffer( GMcolor::Black );
     _fbo_select_depth.clear( GL_DEPTH_BUFFER_BIT );
 
-    // Render
-    for( int i = 0; i < cameras.getSize(); ++i ) {
 
-      Camera *cam = cameras(i);
-      cam->markAsActive();
+//      cam->updateLightUBO( window );
 
-      cam->updateLightUBO( window );
-      prepare( objs, cam );
 
-      // Object rendering
-      _fbo.bind(); {
+    // Object rendering
+    _fbo.bind(); {
 
-        // Render coordinate-system visualization
-        renderCoordSys( cam );
+      // Render coordinate-system visualization
+      renderCoordSys( cam );
 
-        // Render the scene objects
-        for( int j = 0; j < objs.getSize(); ++j )
-          render( objs[j], cam);
+      // Render the scene objects
+      for( int j = 0; j < objs.getSize(); ++j )
+        render( objs[j], cam);
 
-      } _fbo.unbind();
+    } _fbo.unbind();
 
-      // Selection rendering - render to depth buffer
-      _fbo_select_depth.bind(); {
+    // Selection rendering - render to depth buffer
+    _fbo_select_depth.bind(); {
 
-        GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
+      GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
 
-        for( int j = 0; j < objs.getSize(); ++j )
-          renderSelectedGeometry( objs[j], cam);
+      for( int j = 0; j < objs.getSize(); ++j )
+        renderSelectedGeometry( objs[j], cam);
 
-      } _fbo_select_depth.unbind();
+    } _fbo_select_depth.unbind();
 
-      // Selection rendering - render
-      _fbo_select.bind(); {
+    // Selection rendering - render
+    _fbo_select.bind(); {
 
-        GLint depth_mask, depth_func;
-        GL_CHECK(::glGetIntegerv( GL_DEPTH_WRITEMASK, &depth_mask ));
-        GL_CHECK(::glGetIntegerv( GL_DEPTH_FUNC, &depth_func));
+      GLint depth_mask, depth_func;
+      GL_CHECK(::glGetIntegerv( GL_DEPTH_WRITEMASK, &depth_mask ));
+      GL_CHECK(::glGetIntegerv( GL_DEPTH_FUNC, &depth_func));
 
-        GL_CHECK(::glDepthFunc( GL_LEQUAL ));
-        GL_CHECK(::glDepthMask( GL_TRUE ));
+      GL_CHECK(::glDepthFunc( GL_LEQUAL ));
+      GL_CHECK(::glDepthMask( GL_TRUE ));
 
-        GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
+      GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
 
-        for( int j = 0; j < objs.getSize(); ++j )
-          renderSelectedGeometry( objs[j], cam );
+      for( int j = 0; j < objs.getSize(); ++j )
+        renderSelectedGeometry( objs[j], cam );
 
-        GL_CHECK(::glDepthFunc( depth_func ));
-        GL_CHECK(::glDepthMask( depth_mask ));
+      GL_CHECK(::glDepthFunc( depth_func ));
+      GL_CHECK(::glDepthMask( depth_mask ));
 
-      } _fbo_select.unbind();
+    } _fbo_select.unbind();
 
-      cam->markAsInactive();
-    }
   }
 
 

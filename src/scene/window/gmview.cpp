@@ -60,6 +60,7 @@ namespace GMlib {
 
 //    std::cout << "View::prepare (x1,y1,x2,y2): (" << x1 << ", " << y1 << ", " << x2 << ", " << y2 << ")" << std::endl;
     if( _camera )
+//      _camera->reshape( x1, y1, x2, y2 );
       _camera->reshape( x1, y1, x2, y2 );
     else
       _border->prepare( x1, y1, x2, y2, borders );

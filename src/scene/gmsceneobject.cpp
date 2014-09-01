@@ -168,15 +168,12 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  int SceneObject::prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
+  int SceneObject::prepare(Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
 
     int nr = 1;
     _scene  = s;
 
     _parent=parent;
-
-    Light * pl  = dynamic_cast<Light *>(this);
-    if(pl) obj += pl;
 
     mat.push();
 
@@ -196,7 +193,7 @@ namespace GMlib {
     }
     for( int i = 0; i < _children.getSize(); i++ ) {
 
-      nr += _children[i]->prepare(obj,mat,s,this);
+      nr += _children[i]->prepare(mat,s,this);
       _global_total_sphere += _children[i]->getSurroundingSphere();
     }
 
@@ -262,6 +259,16 @@ namespace GMlib {
    *  Pending Documentation
    */
   SceneObject* SceneObject::find(unsigned int name) {
+
+    SceneObject* d;
+
+    if(name == _name)	return this;
+    for(int i=0; i < _children.getSize(); i++)
+      if( (d = _children(i)->find(name)) ) return d;
+    return 0;
+  }
+
+  const SceneObject* SceneObject::find(unsigned int name) const {
 
     SceneObject* d;
 

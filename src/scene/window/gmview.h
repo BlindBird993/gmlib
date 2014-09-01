@@ -57,18 +57,18 @@ namespace GMlib {
     friend class ViewSet;
     friend class ViewBorder;
 
-    Camera*				_camera;
-    ViewBorder*		_border;
+    Camera*        _camera;
+    ViewBorder*    _border;
 
 
-    void 					corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow);
-    void 					find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders);
-    int  					getSize(bool split_vertically = true);
-    bool 					isCamera(Camera* cam);
-    void 					prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders);
-    void 					removeCamera(Camera* cam);
-    void 					split(Camera* new_cam, bool split_vertically, double d);
-    void 					splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d);
+    void           corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow);
+    void           find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders);
+    int            getSize(bool split_vertically = true);
+    bool           isCamera(Camera* cam);
+    void           prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders);
+    void           removeCamera(Camera* cam);
+    void           split(Camera* new_cam, bool split_vertically, double d);
+    void           splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d);
 
   }; // END class View
 
@@ -91,22 +91,22 @@ namespace GMlib {
     friend class ViewSet;
     friend class View;
 
-    bool			_vertical;		/// True if border is vertical
-    double		_displacement;
-    int				_x1, _x2, _y1, _y2;	/// Pixel-index of the border
-    View			_child_lt;
-    View			_child_rb;
+    bool      _vertical;    /// True if border is vertical
+    double    _displacement;
+    int        _x1, _x2, _y1, _y2;  /// Pixel-index of the border
+    View      _child_lt;
+    View      _child_rb;
 
-    void 			corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow);
-    void 			display();
-    void 			find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders);
-    int  			getSize(bool vertical=true);
-    View* 		hasCamera(Camera* cam);
-    bool 			isVertical();
-    void 			move(int x, int y);
-    void 			prepare( int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders );
-    void 			removeCamera(Camera* cam);
-    void 			splitCamera(Camera* cam_to_split, Camera* new_cam, bool vertical, double d);
+    void       corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow);
+    void       display();
+    void       find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders);
+    int        getSize(bool vertical=true);
+    View*     hasCamera(Camera* cam);
+    bool       isVertical();
+    void       move(int x, int y);
+    void       prepare( int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders );
+    void       removeCamera(Camera* cam);
+    void       splitCamera(Camera* cam_to_split, Camera* new_cam, bool vertical, double d);
 
 
   }; // END class ViewBorder
@@ -136,9 +136,9 @@ namespace GMlib {
 
 
   /*! View::View(Camera* cam)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   View::View(Camera* cam) {
@@ -149,9 +149,9 @@ namespace GMlib {
 
 
   /*! View::View(ViewBorder* border)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   View::View(ViewBorder* border) {
@@ -162,9 +162,9 @@ namespace GMlib {
 
 
   /*! View::View(const View& view)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   View::View(const View& view) {
@@ -175,9 +175,9 @@ namespace GMlib {
 
 
   /*! void View::_corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void View::corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow) {
@@ -188,9 +188,9 @@ namespace GMlib {
 
 
   /*! int View::_getSize( bool split_vertically )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   int View::getSize( bool split_vertically ) {
@@ -210,22 +210,22 @@ namespace GMlib {
 
 
   /*! bool View::_isCamera(Camera* cam)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
-  bool View::isCamera(Camera* cam)	{
+  bool View::isCamera(Camera* cam)  {
 
     return _camera == cam;
   }
 
 
   /*! void View::_split(Camera* new_cam, bool split_vertically, double d)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
-   *	Splitting this in two
+   *  Pending Documentation
+   *  Splitting this in two
    */
   inline
   void View::split(Camera* new_cam, bool split_vertically, double d) {
@@ -243,9 +243,9 @@ namespace GMlib {
   }
 
   /*! ViewBorder::ViewBorder( Camera* cam_to_split, Camera* new_cam, bool v, double r )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   ViewBorder::ViewBorder( Camera* cam_to_split, Camera* new_cam, bool v, double r )
@@ -254,9 +254,9 @@ namespace GMlib {
 
 
   /*! ViewBorder::ViewBorder(const ViewBorder& w)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   ViewBorder::ViewBorder(const ViewBorder& w)
@@ -265,9 +265,9 @@ namespace GMlib {
 
 
   /*! void ViewBorder::corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewBorder::corr(Array<ViewBorder*>& nw, const Array<ViewBorder*>& ow) {
@@ -278,9 +278,9 @@ namespace GMlib {
 
 
   /*! void ViewBorder::display()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewBorder::display() {
@@ -290,9 +290,9 @@ namespace GMlib {
 
 
   /*! void ViewBorder::find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewBorder::find(int x, int y, Camera*& cam, Array<ViewBorder*>& borders) {
@@ -313,9 +313,9 @@ namespace GMlib {
   }
 
   /*! int  ViewBorder::getSize(bool vertical)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   int  ViewBorder::getSize(bool vertical) {
@@ -328,9 +328,9 @@ namespace GMlib {
 
 
   /*! View* ViewBorder::hasCamera(Camera* cam)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   View* ViewBorder::hasCamera(Camera* cam) {
@@ -345,9 +345,9 @@ namespace GMlib {
 
 
   /*! bool ViewBorder::isVertical()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   bool ViewBorder::isVertical() {
@@ -357,9 +357,9 @@ namespace GMlib {
 
 
   /*! void ViewBorder::move(int x, int y)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewBorder::move(int x, int y) {
@@ -385,9 +385,9 @@ namespace GMlib {
 
 
   /*! void ViewBorder::prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewBorder::prepare(int x1, int y1, int x2, int y2, Array<ViewBorder*>& borders) {
@@ -415,9 +415,9 @@ namespace GMlib {
 
 
   /*! void ViewBorder::removeCamera(Camera* cam)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewBorder::removeCamera(Camera* cam) {
@@ -428,9 +428,9 @@ namespace GMlib {
 
 
   /*! void ViewBorder::splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   inline
   void ViewBorder::splitCamera(Camera* cam_to_split, Camera* new_cam, bool split_vertically, double d) {

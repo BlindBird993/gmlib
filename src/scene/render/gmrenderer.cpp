@@ -32,6 +32,11 @@
 // local
 #include "../gmfrustum.h"
 #include "../camera/gmcamera.h"
+#include "gmrendertarget.h"
+#include "rendertargets/gmnativerendertarget.h"
+
+// gmlib
+#include <opengl/utils/gmutils.h>
 
 // stl
 #include <cassert>
@@ -39,72 +44,86 @@
 
 namespace GMlib {
 
-  Renderer::Renderer(Scene *scene) {
+  Renderer::Renderer()
+    : _x(0), _y(0), _w(0), _h(0),
+      _clear_color(GMcolor::Grey) {
 
-    _scene = scene;
-    _initialized = false;
+    _rt = new NativeRenderTarget;
   }
 
-  Renderer::~Renderer() {}
+  Renderer::~Renderer() {
 
-  bool Renderer::isStereoEnabled() const {
-
-    return _stereo;
+    delete _rt;
   }
 
-  void Renderer::enableStereo(bool enable) {
+  const Color&Renderer::getClearColor() const {
 
-    _stereo = enable;
+    return _clear_color;
   }
 
-  int Renderer::getBufferHeight() const {
+  void Renderer::setClearColor(const Color& color) {
 
-    return _buffer_height;
+    _clear_color = color;
   }
 
-  int Renderer::getBufferWidth() const {
+  void Renderer::reshape(int x, int y, int w, int h) {
 
-    return _buffer_width;
+    _x = x;
+    _y = y;
+    _w = w;
+    _h = h;
+
+    _rt->resize( Vector<unsigned int,2>( _w, _h ) );
   }
 
-  bool Renderer::isInitialized() const {
+  void Renderer::setRenderTarget(RenderTarget* rt) {
 
-    return _initialized;
+    assert(rt);
+    delete _rt;
+    _rt = rt;
   }
 
-  void Renderer::markAsInitialized() {
-
-    _initialized = true;
-  }
-
-  void Renderer::resize(int w, int h) {
-
-    _buffer_width = w;
-    _buffer_height = h;
-  }
+  void Renderer::prepare(Array<DisplayObject*>& objs, Camera *cam) {
 
 
-
-
-
-
-  SingleObjectRenderer::SingleObjectRenderer(Scene *scene) : Renderer(scene) {
-
-  }
-
-  MultiObjectRenderer::MultiObjectRenderer(Scene *scene) : Renderer(scene) {
-  }
-
-  void MultiObjectRenderer::prepare(Array<DisplayObject *> &objs, Camera *cam) const {
-
-    assert( _scene );
+    Scene *scene = cam->getScene();
+    assert(scene);
 
     // Compute frustum/frustum-matrix, set glViewport
     cam->setupDisplay();
 
     // Get displayable objects
     objs.resetSize();
-    _scene->getDisplayableObjects( objs, cam );
+    scene->getDisplayableObjects( objs, cam );
+  }
+
+  void Renderer::setupViewport( int x, int y, int w, int h ) {
+
+    GL_CHECK(::glViewport(x, y, w, h));
+  }
+
+  void Renderer::render( Camera* cam) {
+
+    // Prepare
+    prepare( _objs, cam );
+
+    // Set Viewport
+    setupViewport(0, 0, _w, _h);
+
+    // Render objects
+    renderObjects( _objs, cam);
+  }
+
+  void Renderer::renderTo() {
+
+    // Set Viewport
+    setupViewport(_x, _y, _w, _h);
+
+    // Render to target
+    _rt->clear();
+    _rt->bind();
+    renderToTarget();
+    _rt->unbind();
   }
 
 

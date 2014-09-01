@@ -46,63 +46,92 @@ namespace GMlib {
    */
   class Frustum {
   public:
-    Frustum();                          // Default constructor
-    Frustum(                            // Standar perspective constructor
-      const HqMatrix<float,3>& m,
-      const Point<float,3>& p,
-      const Vector<float,3>& d,
-      const Vector<float,3>& u,
-      const Vector<float,3>& s,
-      float angle_tan,
-      float ratio,
-      float nearplane,
-      float farplane);
+    explicit Frustum();
 
-    Frustum(
-      const HqMatrix<float,3>& m,       // Iso constructor
-      const Point<float,3>& p,
-      float width,
-      float ratio,
-      const Vector<float,3>& d,
-      const Vector<float,3>& u,
-      const Vector<float,3>& s,
-      float nearplane,
-      float farplane);
+    const Point<float,3>&         getRUBCorner() const;
+    const Point<float,3>&         getLDFCorner() const;
 
-    Frustum(const Frustum&  v);
+    const Vector<float,3>&        getRightNormal() const;
+    const Vector<float,3>&        getUpNormal() const;
+    const Vector<float,3>&        getBackNormal() const;
 
-    void              set(              // Perspective
-      const HqMatrix<float,3>& m,
-      const Point<float,3>& p,
-      const Vector<float,3>& d,
-      const Vector<float,3>& u,
-      const Vector<float,3>& s,
-      float angle_tan,
-      float ratio,
-      float nearplane,
-      float farplane);
+    const Vector<float,3>&        getLeftNormal() const;
+    const Vector<float,3>&        getDownNormal() const;
+    const Vector<float,3>&        getFrontNormal() const;
 
-    void              set(              // Iso
-      const HqMatrix<float,3>& m,
-      const Point<float,3>& p,
-      float width,
-      float ratio,
-      const Vector<float,3>& d,
-      const Vector<float,3>& u,
-      const Vector<float,3>& s,
-      float nearplane,
-      float farplane);
+    int                           isInterfering(const Sphere<float,3>& s) const;
+    const HqMatrix<float,3>&      getProjectionMatrix() const;
 
-    Point<float,3>    getPos(int i) const;
-    Vector<float,3>   getNormal(int i) const;
+//    const Point<float,3>&            getPos(int i) const;
+//    const Vector<float,3>&           getNormal(int i) const;
 
-    int               isInterfering(const Sphere<float,3>& s) const;
+  protected:
+    Point<float,3>            _p[2];    // p[0]: høyre/opp/bak-hjørne  p[1]: venstre/ned/foran-hjørne
+    Vector<float,3>           _v[6];    // normal: venstre, høyre, opp, ned, bak, fram.
+
+    HqMatrix<float,3>         _matrix;  // Projection matrix
+  };
+
+
+  class PerspectiveFrustum : public Frustum {
+  public:
+    explicit PerspectiveFrustum( const HqMatrix<float,3>& m,
+                                 const Point<float,3>& p,
+                                 const Vector<float,3>& d,
+                                 const Vector<float,3>& u,
+                                 const Vector<float,3>& s,
+                                 float nearplane,
+                                 float farplane,
+                                 float ratio,
+                                 float angle_tan );
+
+    void        set( const HqMatrix<float,3>& m,
+                     const Point<float,3>& p,
+                     const Vector<float,3>& d,
+                     const Vector<float,3>& u,
+                     const Vector<float,3>& s,
+                     float nearplane,
+                     float farplane,
+                     float ratio,
+                     float angle_tan );
 
   private:
-    Point<float,3>    _p[2];	// p[0]: høyre/opp/bak-hjørne  p[1]: venstre/ned/foran-hjørne
-    Vector<float,3>   _v[6];	// normal: venstre, høyre, opp, ned, bak, fram.
+    void        computeProjectionMatrix( float nearplane,
+                                         float farplane,
+                                         float ratio,
+                                         float angle_tan );
 
-  }; // END class Frustum
+  };
+
+  class IsoFrustum : public Frustum {
+  public:
+    explicit IsoFrustum( const HqMatrix<float,3>& m,
+                         const Point<float,3>& p,
+                         const Vector<float,3>& d,
+                         const Vector<float,3>& u,
+                         const Vector<float,3>& s,
+                         float nearplane,
+                         float farplane,
+                         float ratio,
+                         float width );
+
+    void        set( const HqMatrix<float,3>& m,
+                     const Point<float,3>& p,
+                     const Vector<float,3>& d,
+                     const Vector<float,3>& u,
+                     const Vector<float,3>& s,
+                     float nearplane,
+                     float farplane,
+                     float ratio,
+                     float width );
+
+  private:
+    void        computeProjectionMatrix( float nearplane,
+                                         float farplane,
+                                         float ratio,
+                                         float width );
+
+  };
 
 
 
@@ -113,209 +142,286 @@ namespace GMlib {
 
 
 
-  /*! Frustum(const Frustum&  v)
-   *  \brief Pending Documentation
-   *
-   *  Default constructor
-   */
+
+
+
+
+
+
+
+
+
   inline
-  Frustum::Frustum(){}
+  Frustum::Frustum() {}
 
-
-  /*! Frustum::Frustum( const GL_Matrix& m, const Point<float,3>& p, const Vector<float,3>& d, const Vector<float,3>& u, const Vector<float,3>& s, float angle_tan, float ratio, float nearplane, float farplane )
-   *  \brief Pending Documentation
-   *
-   *  Standar perspective constructor
-   */
   inline
-  Frustum::Frustum(
-        const HqMatrix<float,3>& m,
-        const Point<float,3>& p,
-        const Vector<float,3>& d,
-        const Vector<float,3>& u,
-        const Vector<float,3>& s,
-        float angle_tan,
-        float ratio,
-        float nearplane,
-        float farplane
-  ) {
+  const Point<float,3>&
+  Frustum::getRUBCorner() const {
 
-    set(m,p,d,u,s,angle_tan,ratio,nearplane,farplane);
+    return _p[0];
   }
 
-
-  /*! stum::Frustum( const GL_Matrix& m, const Point<float,3>& p, float width, float ratio, const Vector<float,3>& d, const Vector<float,3>& u, const Vector<float,3>& s, float nearplane, float farplane )
-   *  \brief Pending Documentation
-   *
-   *  Iso constructor constructor
-   */
   inline
-  Frustum::Frustum(
-    const HqMatrix<float,3>& m,
-    const Point<float,3>& p,
-    float width,
-    float ratio,
-    const Vector<float,3>& d,
-    const Vector<float,3>& u,
-    const Vector<float,3>& s,
-    float nearplane,
-    float farplane
-  ) {
+  const Point<float,3>&
+  Frustum::getLDFCorner() const {
 
-    set(m,p,width,ratio,d,u,s,nearplane,farplane);
+    return _p[1];
   }
 
-
-  /*! Frustum(const Frustum&  v)
-   *  \brief Pending Documentation
-   *
-   *  Copy constructor
-   */
   inline
-  Frustum::Frustum(const Frustum&  v)
+  const Vector<float,3>&
+  Frustum::getLeftNormal() const {
 
-    {memcpy(this,&v,sizeof(Frustum));
+    return _v[0];
   }
 
-
-  /*! void Frustum::set( const GL_Matrix& m, const Point<float,3>& p, const Vector<float,3>& d, const Vector<float,3>& u, const Vector<float,3>& s, float angle_tan, float ratio, float nearplane, float farplane )
-   *  \brief Pending Documentation
-   *
-   *  Perspective
-   */
   inline
-  void Frustum::set(
-    const HqMatrix<float,3>& m,
-    const Point<float,3>& po,
-    const Vector<float,3>& d,
-    const Vector<float,3>& u,
-    const Vector<float,3>& s,
-    float at,
-    float r,
-    float nearplane,
-    float farplane)
-  {
-    r *= at;
-    double rr = sqrt(1+r*r);
-    double tt = sqrt(1+at*at);
-    Vector<float,3> f  = m*d;
-    Vector<float,3> oe = m*u;
-    Vector<float,3> ve = m*s;
-    Vector<float,3> pp = r*ve-at*oe;
-    _p[0] = m*po;			// Venstre, høyre, opp, ned (posisjon)
-    _p[1] = _p[0]+farplane*(f+pp);
-    _p[0] += nearplane*(f-pp);
-    _v[0] = ve-r*f;			// Venstre	(normal)
-    _v[1] = (_v[0]-2*ve)/rr;	// Høyre	(normal)
-    _v[0] /= rr;
-    _v[2] = oe-at*f;			// Opp		(normal)
-    _v[3] = (_v[2]-2*oe)/tt;	// ned		(normal)
-    _v[2] /= tt;
-    _v[4] = -f;				// Bak		(normal)
-    _v[5] = f;				// Fram		(normal)
+  const Vector<float,3>&
+  Frustum::getRightNormal() const {
+
+    return _v[1];
   }
 
-
-  /*! void Frustum::set( const GL_Matrix& m, const Point<float,3>& p, float width, float ratio, const Vector<float,3>& d, const Vector<float,3>& u, const Vector<float,3>& s, float nearplane, float farplane )
-   *  \brief Pending Documentation
-   *
-   *  Iso
-   */
   inline
-  void Frustum::set(
-    const HqMatrix<float,3>& m,
-    const Point<float,3>& po,
-    float w,
-    float r,
-    const Vector<float,3>& d,
-    const Vector<float,3>& u,
-    const Vector<float,3>& s,
-    float nearplane,
-    float farplane)
-  {
-    Vector<float,3> f  = m*d;
-    Vector<float,3> oe = m*u;
-    Vector<float,3> ve = m*s;
-    _p[0] = m*po;
-    _p[1] = _p[0]+farplane*f+w*(r*ve-oe);
-    _p[0] += nearplane*f-w*(r*ve-oe);
-    _v[0] = ve;				// Venstre	(normal)
-    _v[1] = -ve;				// Høyre	(normal)
-    _v[2] = oe;				// Opp		(normal)
-    _v[3] = -oe;				// ned		(normal)
-    _v[4] = -f;				// Bak		(normal)
-    _v[5] = f;				// Fram		(normal)
+  const Vector<float,3>&
+  Frustum::getUpNormal() const {
+
+    return _v[2];
   }
 
-
-  /*! Point<float,3>  Frustum::getPos(int i) const
-   *  \brief Pending Documentation
-   *
-   * Pending Documentation
-   */
   inline
-  Point<float,3>  Frustum::getPos(int i) const {
-    if(i<4) return _p[0];
-    else	return _p[i-3];
+  const Vector<float,3>&
+  Frustum::getDownNormal() const {
+
+    return _v[3];
   }
 
-
-  /*! Vector<float,3> Frustum::getNormal(int i) const
-   *  \brief Pending Documentation
-   *
-   * Pending Documentation
-   */
   inline
-  Vector<float,3> Frustum::getNormal(int i) const {
-    return _v[i];
+  const Vector<float,3>&
+  Frustum::getBackNormal() const {
+
+    return _v[4];
   }
 
-
-  /*! int Frustum::isInterfering(const Sphere<float,3>&) const
-   *  \brief Pending Documentation
-   *
-   *  \htmlonly
-   *    1 : Totally inside <br/>
-   *    0 : Intersecting sides <br/>
-   *   -1 : Totally outside <br/>
-   *  \endhtmlonly
-   *
-   *  \todo
-   *    For å optimalisere bør rekkefølgen av
-   *    behandling av sidene studeres nærmere,
-   *    i snitt bør antallet if else være under 3
-   *    hvis objektet er utenfor frustrumet.
-   */
   inline
-  int Frustum::isInterfering(const Sphere<float,3>& s) const {
+  const Vector<float,3>&
+  Frustum::getFrontNormal() const {
 
-    if(!s.isValid())	return -1;
+    return _v[5];
+  }
+
+  inline
+  int
+  Frustum::isInterfering(const Sphere<float,3>& s) const {
+
+    if(!s.isValid())  return -1;
     int ret = 1;
 
     Vector<float,3> d = s.getPos()-_p[0];
-    float dv = d*_v[1];							// Høyre
-    if(dv >= s.getRadius())		return -1;
-    else if(dv > -s.getRadius())	ret = 0;
-    dv = d*_v[2];								// Opp
-    if(dv >= s.getRadius())		return -1;
-    else if(dv > -s.getRadius())	ret = 0;
-    dv = d*_v[4];								// Bak
-    if(dv >= s.getRadius())		return -1;
-    else if(dv > -s.getRadius())	ret = 0;
+    float dv = d*_v[1];              // Høyre
+    if(dv >= s.getRadius())    return -1;
+    else if(dv > -s.getRadius())  ret = 0;
+    dv = d*_v[2];                // Opp
+    if(dv >= s.getRadius())    return -1;
+    else if(dv > -s.getRadius())  ret = 0;
+    dv = d*_v[4];                // Bak
+    if(dv >= s.getRadius())    return -1;
+    else if(dv > -s.getRadius())  ret = 0;
 
     d=s.getPos()-_p[1];
-    dv = d*_v[0];								// Venstre
-    if(dv >= s.getRadius())		return -1;
-    else if(dv > -s.getRadius())	ret = 0;
-    dv = d*_v[3];								// Ned
-    if(dv >= s.getRadius())		return -1;
-    else if(dv > -s.getRadius())	ret = 0;
-    dv = d*_v[5];								// Fram
-    if(dv >= s.getRadius())		return -1;
-    else if(dv > -s.getRadius())	ret = 0;
+    dv = d*_v[0];                // Venstre
+    if(dv >= s.getRadius())    return -1;
+    else if(dv > -s.getRadius())  ret = 0;
+    dv = d*_v[3];                // Ned
+    if(dv >= s.getRadius())    return -1;
+    else if(dv > -s.getRadius())  ret = 0;
+    dv = d*_v[5];                // Fram
+    if(dv >= s.getRadius())    return -1;
+    else if(dv > -s.getRadius())  ret = 0;
     return ret;
   }
 
+  inline
+  const HqMatrix<float,3>&
+  Frustum::getProjectionMatrix() const {
+
+    return _matrix;
+  }
+
+  inline
+  PerspectiveFrustum::PerspectiveFrustum( const HqMatrix<float,3>& m,
+                                          const Point<float,3>& p,
+                                          const Vector<float,3>& d,
+                                          const Vector<float,3>& u,
+                                          const Vector<float,3>& s,
+                                          float nearplane, float farplane,
+                                          float ratio, float angle_tan ) {
+
+    set(m,p,d,u,s,nearplane,farplane,ratio,angle_tan);
+  }
+
+  inline
+  void
+  PerspectiveFrustum::set( const HqMatrix<float,3>& m,
+                                const Point<float,3>& p,
+                                const Vector<float,3>& d,
+                                const Vector<float,3>& u,
+                                const Vector<float,3>& s,
+                                float nearplane, float farplane,
+                                float ratio, float angle_tan ) {
+
+    computeProjectionMatrix( nearplane, farplane, ratio, angle_tan );
+
+    ratio *= angle_tan;
+    double rr = sqrt(1+ratio*ratio);
+    double tt = sqrt(1+angle_tan*angle_tan);
+    Vector<float,3> f  = m*d;
+    Vector<float,3> oe = m*u;
+    Vector<float,3> ve = m*s;
+    Vector<float,3> pp = ratio*ve-angle_tan*oe;
+    _p[0] = m*p;      // Venstre, høyre, opp, ned (posisjon)
+    _p[1] = _p[0]+farplane*(f+pp);
+    _p[0] += nearplane*(f-pp);
+    _v[0] = ve-ratio*f;      // Venstre  (normal)
+    _v[1] = (_v[0]-2*ve)/rr;  // Høyre  (normal)
+    _v[0] /= rr;
+    _v[2] = oe-angle_tan*f;      // Opp    (normal)
+    _v[3] = (_v[2]-2*oe)/tt;  // ned    (normal)
+    _v[2] /= tt;
+    _v[4] = -f;        // Bak    (normal)
+    _v[5] = f;        // Fram    (normal)
+
+  }
+
+  inline
+  void
+  PerspectiveFrustum::computeProjectionMatrix( float nearplane,
+                                               float farplane,
+                                               float ratio,
+                                               float angle_tan ) {
+
+    float  hh = nearplane * angle_tan;
+    float  rr = ratio*hh;
+
+    float l, r, b, t, n, f;
+    l = -rr;
+    r = rr;
+    b = -hh;
+    t = hh;
+    n = nearplane;
+    f = farplane;
+
+    float A, B, C, D;
+    A =  ( r + l ) / ( r - l );
+    B =  ( t + b ) / ( t - b );
+    C = - ( f + n ) / ( f - n );
+    D = - 2 * f * n / ( f - n );
+
+    _matrix[0][0] = 2.0f / (r - l);
+    _matrix[0][1] = 0.0f;
+    _matrix[0][2] = A;
+    _matrix[0][3] = 0.0f;
+
+    _matrix[1][0] = 0.0f;
+    _matrix[1][1] = 2.0f / ( t - b );
+    _matrix[1][2] = B;
+    _matrix[1][3] = 0.0f;
+
+    _matrix[2][0] = 0.0f;
+    _matrix[2][1] = 0.0f;
+    _matrix[2][2] = C;
+    _matrix[2][3] = D;
+
+    _matrix[3][0] = 0.0f;
+    _matrix[3][1] = 0.0f;
+    _matrix[3][2] = -1.0f;
+    _matrix[3][3] = 0.0f;
+
+  }
+
+  inline
+  IsoFrustum::IsoFrustum( const HqMatrix<float,3>& m,
+                          const Point<float,3>& p,
+                          const Vector<float,3>& d,
+                          const Vector<float,3>& u,
+                          const Vector<float,3>& s,
+                          float nearplane,
+                          float farplane,
+                          float ratio,
+                          float width ) {
+
+    set( m, p, d, u, s, nearplane,farplane,ratio, width );
+  }
+
+  inline
+  void
+  IsoFrustum::set( const HqMatrix<float,3>& m,
+                        const Point<float,3>& p,
+                        const Vector<float,3>& d,
+                        const Vector<float,3>& u,
+                        const Vector<float,3>& s,
+                        float nearplane,
+                        float farplane,
+                        float ratio,
+                        float width ) {
+
+    Vector<float,3> f  = m*d;
+    Vector<float,3> oe = m*u;
+    Vector<float,3> ve = m*s;
+    _p[0] = m*p;
+    _p[1] = _p[0]+farplane*f+width*(ratio*ve-oe);
+    _p[0] += nearplane*f-width*(ratio*ve-oe);
+    _v[0] = ve;        // Venstre  (normal)
+    _v[1] = -ve;        // Høyre  (normal)
+    _v[2] = oe;        // Opp    (normal)
+    _v[3] = -oe;        // ned    (normal)
+    _v[4] = -f;        // Bak    (normal)
+    _v[5] = f;        // Fram    (normal)
+  }
+
+  inline
+  void
+  IsoFrustum::computeProjectionMatrix( float nearplane,
+                                       float farplane,
+                                       float ratio,
+                                       float width ) {
+
+    float  hh = width;
+    float  rr = ratio*width;
+
+    float l, r, b, t, n, f;
+    l = -rr;
+    r = rr;
+    b = -hh;
+    t = hh;
+    n = nearplane;
+    f = farplane;
+
+    float tx, ty, tz;
+    tx = -(r+l)/(r-l);
+    ty = -(t+b)/(t-b);
+    tz = -(f+n)/(f-n);
+
+    _matrix[0][0] = 2.0f / (r - l);
+    _matrix[0][1] = 0.0f;
+    _matrix[0][2] = 0.0f;
+    _matrix[0][3] = tx;
+
+    _matrix[1][0] = 0.0f;
+    _matrix[1][1] = 2.0f / ( t - b );
+    _matrix[1][2] = 0.0f;
+    _matrix[1][3] = ty;
+
+    _matrix[2][0] = 0.0f;
+    _matrix[2][1] = 0.0f;
+    _matrix[2][2] = (-2.0f)/(f-n);
+    _matrix[2][3] = tz;
+
+    _matrix[3][0] = 0.0f;
+    _matrix[3][1] = 0.0f;
+    _matrix[3][2] = 0.0f;
+    _matrix[3][3] = 1.0f;
+  }
 
 } // END namespace GMlib
 

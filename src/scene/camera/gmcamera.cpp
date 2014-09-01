@@ -32,10 +32,12 @@
 
 // local
 #include "../utils/gmmaterial.h"
-#include "../render/gmrendermanager.h"
-#include "../light/gmpointlight.h"
+//#include "../render/gmrendermanager.h"
+#include "../render/gmdisplayrenderer.h"
+#include "../render/gmselectrenderer.h"
 #include "../light/gmspotlight.h"
-#include "../window/gmwindow.h"
+#include "../light/gmpointlight.h"
+#include "../light/gmsun.h"
 
 // gmlib
 #include <core/types/gmpoint.h>
@@ -44,20 +46,21 @@
 
 //stl
 #include <iostream>
+#include <cassert>
 
 namespace GMlib {
 
 
-  Scene	Camera::_default_scene;
-  unsigned int	Camera::_display_list = 0;
+  Scene  Camera::_default_scene;
+  unsigned int  Camera::_display_list = 0;
 
 
 
 
   /*! Camera::Camera( Scene& s = _default_scene )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   Camera::Camera( Scene& s ) : DisplayObject(),_scene(&s) {
 
@@ -66,9 +69,9 @@ namespace GMlib {
 
 
   /*! Camera::Camera( Scene* s )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   Camera::Camera( Scene* s ) : DisplayObject(),_scene(s) {
 
@@ -77,9 +80,9 @@ namespace GMlib {
 
 
   /*! Camera::Camera( const Point<float,3>& pos, const Point<float,3>& look_at_pos )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   Camera::Camera(
     const Point<float,3>&  pos,
@@ -89,10 +92,10 @@ namespace GMlib {
     resetC();
   }
 
-  /*! Camera::Camera( const Point<float,3>&  pos,	const Vector<float,3>& dir,	const Vector<float,3>& up, float zoom )
-   *	\brief Pending Documentation
+  /*! Camera::Camera( const Point<float,3>&  pos,  const Vector<float,3>& dir,  const Vector<float,3>& up, float zoom )
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   Camera::Camera(
     const Point<float,3>&  pos,
@@ -106,17 +109,17 @@ namespace GMlib {
 
 
   /*! Camera::~Camera()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   Camera::~Camera() {}
 
 
   /*! double Camera::deltaTranslate(DisplayObject *)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   double Camera::deltaTranslate(DisplayObject * obj) {
 
@@ -127,15 +130,18 @@ namespace GMlib {
   }
 
 
-//  /*! SceneObject*	Camera::findSelectObject(int, int, int type_id)
-//   *	\brief Pending Documentation
-//   *
-//   *	Pending Documentation
-//   */
-//  SceneObject*	Camera::findSelectObject(int x, int y, int type_id) {
+  /*! SceneObject*  Camera::findSelectObject(int, int, int type_id)
+   *  \brief Pending Documentation
+   *
+   *  Pending Documentation
+   */
+  SceneObject*  Camera::findSelectObject(int x, int y, int type_id) {
 
-//    // Cull the scene using the camera's frustum
+    // Cull the scene using the camera's frustum
 //    _scene->culling( _frustum, _culling );
+    _select_renderer->select(this,type_id);
+    return _select_renderer->findObject(x,y);
+
 
 //    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 //    Color c;
@@ -144,7 +150,7 @@ namespace GMlib {
 //    glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
 //    GL::OGL::unbindSelectBuffer();
 //    return find(c.get());
-//  }
+  }
 
 //  SceneObject* Camera::findSelectObject(const Vector<int,2>& pos, int type_id) {
 
@@ -153,9 +159,9 @@ namespace GMlib {
 
 
 //  /*! Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id)
-//   *	\brief Pending Documentation
+//   *  \brief Pending Documentation
 //   *
-//   *	Pending Documentation
+//   *  Pending Documentation
 //   */
 //  Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id) {
 
@@ -188,21 +194,22 @@ namespace GMlib {
 
 
   /*! double Camera::getDistanceToObject(int x, int y)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   double Camera::getDistanceToObject(int x, int y) {
 
-    SceneObject* 	obj = getScene()->getRenderManager()->findObject(x,y);
-    return getDistanceToObject(obj);
+    assert(false);
+//    SceneObject*   obj = getScene()->getRenderManager()->findObject(x,y);
+//    return getDistanceToObject(obj);
   }
 
 
   /*! double Camera::getDistanceToObject(SceneObject*)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   double Camera::getDistanceToObject(SceneObject* obj) {
 
@@ -218,9 +225,9 @@ namespace GMlib {
 
 
   /*! HqMatrix<float,3>& Camera::getMatrix()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   HqMatrix<float,3>& Camera::getMatrix() {
 
@@ -243,10 +250,10 @@ namespace GMlib {
 
 
 //  /*! void Camera::go(bool stereo)
-//   *	\brief Pending Documentation
+//   *  \brief Pending Documentation
 //   *
-//   *	Pending Documentation
-//   *	Running the Camera.
+//   *  Pending Documentation
+//   *  Running the Camera.
 //   */
 //  void Camera::go(bool stereo) {
 
@@ -255,19 +262,19 @@ namespace GMlib {
 //    _active = true;
 ////    if (stereo)
 ////    {
-////      Point3D<float>		tmp_pos  = _pos  - _eye_dist*_side;
-////      UnitVector3D<float>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
-////      UnitVector3D<float>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
-////      basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
+////      Point3D<float>    tmp_pos  = _pos  - _eye_dist*_side;
+////      UnitVector3D<float>  tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
+////      UnitVector3D<float>  tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
+////      basisChange(tmp_side, _up, tmp_dir, tmp_pos);      // Change to right eye
 ////      display();
-////      basisChange(_side, _up, _dir, _pos);						// Back to left eye
+////      basisChange(_side, _up, _dir, _pos);            // Back to left eye
 ////    }
 ////    else
 //    {
-//      Point<float,3>		tmp_pos  = _pos  - _eye_dist*_side;
-//      UnitVector<float,3>	tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
-//      UnitVector<float,3>	tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
-//      basisChange(tmp_side, _up, tmp_dir, tmp_pos);			// Change to right eye
+//      Point<float,3>    tmp_pos  = _pos  - _eye_dist*_side;
+//      UnitVector<float,3>  tmp_dir  = _dir  + _ed_fd*_side; //tmp_dir  = _pos + _focus_dist*_dir - tmp_pos;
+//      UnitVector<float,3>  tmp_side = _side - _ed_fd*_dir;  //tmp_side = _up^tmp_dir;
+//      basisChange(tmp_side, _up, tmp_dir, tmp_pos);      // Change to right eye
 //      display();
 //    }
 
@@ -276,9 +283,9 @@ namespace GMlib {
 
 
   /*! void Camera::localDisplay()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void Camera::localDisplay() {
 
@@ -303,12 +310,12 @@ namespace GMlib {
 //  //  GMmaterial::PolishedBronze.glSet();
 //    glCallList(_display_list+1);
 //    glCallList(_display_list+3);
-//  //	GMmaterial::PolishedRed.glSet();
+//  //  GMmaterial::PolishedRed.glSet();
 //    lins.glSet();
 //    glCallList(_display_list+4);
 //    if(_frustum_visible) {
 
-//      Color		col( 1.0f, 1.0f, 1.0f, 1.0f ); // hvit
+//      Color    col( 1.0f, 1.0f, 1.0f, 1.0f ); // hvit
 //      Point<float,3> p1(0,0,-_near_plane);
 //      Point<float,3> p2(0,0,-_far_plane);
 //      Vector<float,3> v1(0,_angle_tan*_near_plane,0);
@@ -324,14 +331,14 @@ namespace GMlib {
 //      if(lg) glDisable(GL_LIGHTING);
 //      glColor(col);
 //      glBegin(GL_LINE_LOOP);
-//        glPoint(p1+v2);	glPoint(p1-v2);	glPoint(p1m-v2);	glPoint(p1m+v2);
+//        glPoint(p1+v2);  glPoint(p1-v2);  glPoint(p1m-v2);  glPoint(p1m+v2);
 //      glEnd();
 //      glBegin(GL_LINE_LOOP);
-//        glPoint(p2+v4);	glPoint(p2-v4);	glPoint(p2m-v4);	glPoint(p2m+v4);
+//        glPoint(p2+v4);  glPoint(p2-v4);  glPoint(p2m-v4);  glPoint(p2m+v4);
 //      glEnd();
 //      glBegin(GL_LINES);
-//        glPoint(p1 +v2);	glPoint(p2 +v4);	glPoint(p1 -v2);	glPoint(p2 -v4);
-//        glPoint(p1m-v2);	glPoint(p2m-v4);	glPoint(p1m+v2);	glPoint(p2m+v4);
+//        glPoint(p1 +v2);  glPoint(p2 +v4);  glPoint(p1 -v2);  glPoint(p2 -v4);
+//        glPoint(p1m-v2);  glPoint(p2m-v4);  glPoint(p1m+v2);  glPoint(p2m+v4);
 //      glEnd();
 //      if(lg) glEnable(GL_LIGHTING);
 //    }
@@ -352,55 +359,77 @@ namespace GMlib {
 
 
   /*! void Camera::localSelect()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void Camera::localSelect() {
 
 //    if(!_active) {
 //      glCallList(_display_list+9);
-//    }
+    //    }
+  }
+
+  void Camera::render() {
+
+    std::cout << "  Camera::render()" << std::endl;
+
+    assert(getScene());
+
+    markAsActive(); {
+
+      // Update camera orientation
+      updateCameraOrientation(); ///! \todo refactor
+
+      // Render this camera
+      _renderer->render(this);
+      _renderer->renderTo();
+
+    } markAsInactive();
   }
 
 
   /*! SceneObject* Camera::lockTargetAtPixel(int x, int y)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   SceneObject* Camera::lockTargetAtPixel(int x, int y) {
 
-    SceneObject* 	obj = getScene()->getRenderManager()->findObject(x,y);
-    if(obj)
-    {
-      lock(obj);
-      return obj;
-    }
-    return 0;
+    assert(false);
+//    SceneObject*   obj = getScene()->getRenderManager()->findObject(x,y);
+//    if(obj)
+//    {
+//      lock(obj);
+//      return obj;
+//    }
+//    return 0;
   }
 
 
   /*! void Camera::reshape(int w1, inth1, int w2, int h2)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
-   *	To be used when changing size of window
+   *  Pending Documentation
+   *  To be used when changing size of window
    */
-  void Camera::reshape(int w1, int h1, int w2, int h2) {
+  void Camera::reshape(int x1, int y1, int x2, int y2) {
 
-    _x = w1;
-    _y = h1;
-    _w = w2-w1;
-    _h = h2-h1;
+    _x = x1;
+    _y = y1;
+    _w = x2-x1;
+    _h = y2-y1;
     _ratio = float(_w)/float(_h);
+
+    _renderer->reshape( _x, _y, _w,_h);
+    _select_renderer->reshape(_x,_y,_w,_h);
   }
 
 
   /*! void Camera::zoom(float z)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void Camera::zoom(float z) {
 
@@ -409,20 +438,20 @@ namespace GMlib {
 
 
   /*! void Camera::makeGraphics()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void Camera::makeGraphics() {
 
 //    int i;
-//    Point<float,3>		p[18];
-//    UnitVector<float,3>	v[18];
+//    Point<float,3>    p[18];
+//    UnitVector<float,3>  v[18];
 
-//    p[0] = Point<float,3>(0.07,0.1,0.3);		p[4] = Point<float,3>(-0.07,0.1,0.3);
-//    p[1] = Point<float,3>(0.07,0.1,-0.3);		p[5] = Point<float,3>(-0.07,0.1,-0.3);
-//    p[2] = Point<float,3>(0.07,-0.1,-0.3);	p[6] = Point<float,3>(-0.07,-0.1,-0.3);
-//    p[3] = Point<float,3>(0.07,-0.1,0.3);		p[7] = Point<float,3>(-0.07,-0.1,0.3);
+//    p[0] = Point<float,3>(0.07,0.1,0.3);    p[4] = Point<float,3>(-0.07,0.1,0.3);
+//    p[1] = Point<float,3>(0.07,0.1,-0.3);    p[5] = Point<float,3>(-0.07,0.1,-0.3);
+//    p[2] = Point<float,3>(0.07,-0.1,-0.3);  p[6] = Point<float,3>(-0.07,-0.1,-0.3);
+//    p[3] = Point<float,3>(0.07,-0.1,0.3);    p[7] = Point<float,3>(-0.07,-0.1,0.3);
 
 //    v[0] = Vector<float,3>(1,0,0);
 //    v[1] = Vector<float,3>(0,1,0);
@@ -436,7 +465,7 @@ namespace GMlib {
 //    // Lager displayliste for display
 //    glNewList(_display_list, GL_COMPILE);
 //      glBegin(GL_QUADS);
-//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);  // right
 //        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
 //        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
 //        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
@@ -447,7 +476,7 @@ namespace GMlib {
 
 //    glNewList(_display_list+9, GL_COMPILE);
 //      glBegin(GL_QUADS);
-//        glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);  // right
 //        glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
 //        glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
 //        glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
@@ -456,14 +485,14 @@ namespace GMlib {
 //      glEnd();
 //    glEndList();
 
-//    p[0] = Point<float,3>(0.1,0.1,0.1);	p[4] = Point<float,3>(-0.1,0.1,0.1);
-//    p[1] = Point<float,3>(0.1,0.1,-0.1);	p[5] = Point<float,3>(-0.1,0.1,-0.1);
-//    p[2] = Point<float,3>(0.1,-0.1,-0.1);	p[6] = Point<float,3>(-0.1,-0.1,-0.1);
-//    p[3] = Point<float,3>(0.1,-0.1,0.1);	p[7] = Point<float,3>(-0.1,-0.1,0.1);
+//    p[0] = Point<float,3>(0.1,0.1,0.1);  p[4] = Point<float,3>(-0.1,0.1,0.1);
+//    p[1] = Point<float,3>(0.1,0.1,-0.1);  p[5] = Point<float,3>(-0.1,0.1,-0.1);
+//    p[2] = Point<float,3>(0.1,-0.1,-0.1);  p[6] = Point<float,3>(-0.1,-0.1,-0.1);
+//    p[3] = Point<float,3>(0.1,-0.1,0.1);  p[7] = Point<float,3>(-0.1,-0.1,0.1);
 
-//    glNewList(_display_list+8, GL_COMPILE);	//	For lock at Point.
+//    glNewList(_display_list+8, GL_COMPILE);  //  For lock at Point.
 //      glBegin(GL_QUADS);
-//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);  // right
 //        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
 //        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
 //        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
@@ -472,14 +501,14 @@ namespace GMlib {
 //      glEnd();
 //    glEndList();
 
-//    p[0] = Point<float,3>(0.02,-0.1,-0.02);	p[4] = Point<float,3>(-0.02,-0.1,-0.02);
-//    p[1] = Point<float,3>(0.02,-0.1,-0.08);	p[5] = Point<float,3>(-0.02,-0.1,-0.08);
-//    p[2] = Point<float,3>(0.02,-0.25,-0.06);	p[6] = Point<float,3>(-0.02,-0.25,-0.06);
-//    p[3] = Point<float,3>(0.02,-0.25,0.0);	p[7] = Point<float,3>(-0.02,-0.25,0.0);
+//    p[0] = Point<float,3>(0.02,-0.1,-0.02);  p[4] = Point<float,3>(-0.02,-0.1,-0.02);
+//    p[1] = Point<float,3>(0.02,-0.1,-0.08);  p[5] = Point<float,3>(-0.02,-0.1,-0.08);
+//    p[2] = Point<float,3>(0.02,-0.25,-0.06);  p[6] = Point<float,3>(-0.02,-0.25,-0.06);
+//    p[3] = Point<float,3>(0.02,-0.25,0.0);  p[7] = Point<float,3>(-0.02,-0.25,0.0);
 
-//    glNewList(_display_list+1, GL_COMPILE);	//	For handtak.
+//    glNewList(_display_list+1, GL_COMPILE);  //  For handtak.
 //      glBegin(GL_QUADS);
-//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);  // right
 //        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
 //        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
 //        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
@@ -488,14 +517,14 @@ namespace GMlib {
 //      glEnd();
 //    glEndList();
 
-//    p[0] = Point<float,3>(-0.016,0.12,0.09);	p[4] = Point<float,3>(-0.054,0.12,0.09);
-//    p[1] = Point<float,3>(-0.016,0.12,0.05);	p[5] = Point<float,3>(-0.054,0.12,0.05);
-//    p[2] = Point<float,3>(-0.016,0.1,0.05);	p[6] = Point<float,3>(-0.054,0.1,0.05);
-//    p[3] = Point<float,3>(-0.016,0.1,0.09);	p[7] = Point<float,3>(-0.054,0.1,0.09);
+//    p[0] = Point<float,3>(-0.016,0.12,0.09);  p[4] = Point<float,3>(-0.054,0.12,0.09);
+//    p[1] = Point<float,3>(-0.016,0.12,0.05);  p[5] = Point<float,3>(-0.054,0.12,0.05);
+//    p[2] = Point<float,3>(-0.016,0.1,0.05);  p[6] = Point<float,3>(-0.054,0.1,0.05);
+//    p[3] = Point<float,3>(-0.016,0.1,0.09);  p[7] = Point<float,3>(-0.054,0.1,0.09);
 
 //    glNewList(_display_list+2, GL_COMPILE);
-//      glBegin(GL_QUADS);						//	For søker del 1
-//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//      glBegin(GL_QUADS);            //  For søker del 1
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);  // right
 //        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
 //        glNormal(v[4]); glPoint(p[0]); glPoint(p[3]); glPoint(p[7]); glPoint(p[4]); // front
 //        glNormal(v[5]); glPoint(p[2]); glPoint(p[1]); glPoint(p[5]); glPoint(p[6]); // behind
@@ -510,8 +539,8 @@ namespace GMlib {
 //      p[6] = Point<float,3>(-0.055,0.12,0.0);
 //      p[7] = Point<float,3>(-0.055,0.12,0.35);
 
-//      glBegin(GL_QUADS);		//	For søker del 2
-//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);	// right
+//      glBegin(GL_QUADS);    //  For søker del 2
+//        glNormal(v[2]); glPoint(p[0]); glPoint(p[1]); glPoint(p[2]); glPoint(p[3]);  // right
 //        glNormal(v[1]); glPoint(p[0]); glPoint(p[4]); glPoint(p[5]); glPoint(p[1]); // top
 //        glNormal(v[0]); glPoint(p[7]); glPoint(p[6]); glPoint(p[5]); glPoint(p[4]); // left
 //        glNormal(v[3]); glPoint(p[3]); glPoint(p[2]); glPoint(p[6]); glPoint(p[7]); // botton
@@ -521,16 +550,16 @@ namespace GMlib {
 //    glEndList();
 
 //    GLMatrix mat(Angle(M_PI_4),Point<float,3>(-0.035,0.14,0.0),UnitVector<float,3>(0,0,-1));
-//    p[1]  = Point<float,3>(-0.055,0.16,0.35);		v[1]  = Vector<float,3>(-1,1,0);
-//    p[5]  = Point<float,3>(-0.015,0.16,0.35);		v[5]  = Vector<float,3>(1,1,0);
-//    p[9]  = Point<float,3>(-0.015,0.12,0.35);		v[9]  = Vector<float,3>(1,-1,0);
-//    p[13] = Point<float,3>(-0.055,0.12,0.35);		v[13] = Vector<float,3>(-1,-1,0);
-//    p[17] = Point<float,3>(-0.055,0.16,0.35);		v[17] = Vector<float,3>(-1,1,0);
+//    p[1]  = Point<float,3>(-0.055,0.16,0.35);    v[1]  = Vector<float,3>(-1,1,0);
+//    p[5]  = Point<float,3>(-0.015,0.16,0.35);    v[5]  = Vector<float,3>(1,1,0);
+//    p[9]  = Point<float,3>(-0.015,0.12,0.35);    v[9]  = Vector<float,3>(1,-1,0);
+//    p[13] = Point<float,3>(-0.055,0.12,0.35);    v[13] = Vector<float,3>(-1,-1,0);
+//    p[17] = Point<float,3>(-0.055,0.16,0.35);    v[17] = Vector<float,3>(-1,1,0);
 
-//    p[3]  = Point<float,3>(-0.035,0.16,0.35);		v[3]  = Vector<float,3>(0,1,0);
-//    p[7]  = Point<float,3>(-0.015,0.14,0.35);		v[7]  = Vector<float,3>(1,0,0);
-//    p[11] = Point<float,3>(-0.035,0.12,0.35);		v[11] = Vector<float,3>(0,-1,0);
-//    p[15] = Point<float,3>(-0.055,0.14,0.35);		v[15] = Vector<float,3>(-1,0,0);
+//    p[3]  = Point<float,3>(-0.035,0.16,0.35);    v[3]  = Vector<float,3>(0,1,0);
+//    p[7]  = Point<float,3>(-0.015,0.14,0.35);    v[7]  = Vector<float,3>(1,0,0);
+//    p[11] = Point<float,3>(-0.035,0.12,0.35);    v[11] = Vector<float,3>(0,-1,0);
+//    p[15] = Point<float,3>(-0.055,0.14,0.35);    v[15] = Vector<float,3>(-1,0,0);
 
 //    p[0] = p[1] + Vector<float,3>(-0.01,0.01,0.05); v[0] = v[1] + Vector<float,3>(0.0,0.0,0.02);
 
@@ -541,7 +570,7 @@ namespace GMlib {
 //    }
 
 //    glNewList(_display_list+3, GL_COMPILE);
-//      glBegin(GL_TRIANGLE_STRIP);		//	For søker del 3
+//      glBegin(GL_TRIANGLE_STRIP);    //  For søker del 3
 //        for(i=0; i<18;i++)
 //        {
 //          glNormal(v[i]); glPoint(p[i]);
@@ -564,7 +593,7 @@ namespace GMlib {
 //    }
 
 //    glNewList(_display_list+4, GL_COMPILE);
-//      glBegin(GL_TRIANGLE_STRIP);		//	For Linse
+//      glBegin(GL_TRIANGLE_STRIP);    //  For Linse
 //        for(i=0; i<18;i+=2)
 //        {
 //          glNormal(v[i]); glPoint(p[i]); glPoint(p[i+1]);
@@ -576,18 +605,18 @@ namespace GMlib {
 
 
   /*! void Camera::resetC(float z)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
-   *	NB!!! Only for the constructors.
+   *  Pending Documentation
+   *  NB!!! Only for the constructors.
    */
   void Camera::resetC(float z) {
 
-    basisChange(_side, _up, _dir, _pos);	// Must repete because the virtual functions do not work proper jet.
-    _ratio		= 1.0;
+    basisChange(_side, _up, _dir, _pos);  // Must repete because the virtual functions do not work proper jet.
+    _ratio    = 1.0;
     _near_plane = 1.0;
-    _far_plane	= 1000.0;
-    _eye_dist	= 0.08;
+    _far_plane  = 1000.0;
+    _eye_dist  = 0.08;
     setFocalDist(z*50);
     setSurroundingSphere(Sphere<float,3>(Point<float,3>(0,0,0),1.0));
     if (!_display_list) makeGraphics();
@@ -597,13 +626,16 @@ namespace GMlib {
     _culling = true;
 
     if(!_light_ubo.isValid()) _light_ubo.create();
+
+    _renderer = new DisplayRenderer;
+    _select_renderer = new SelectRenderer;
   }
 
 
 //  /*! void Camera::select(int type_id)
-//   *	\brief Pending Documentation
+//   *  \brief Pending Documentation
 //   *
-//   *	Pending Documentation
+//   *  Pending Documentation
 //   */
 //  void Camera::select(int type_id) {
 
@@ -632,55 +664,21 @@ namespace GMlib {
 
 
   /*! void Camera::setPerspective()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void Camera::setPerspective() {
 
-    float	hh = _near_plane*_angle_tan;
-    float	rr = _ratio*hh;
-    _frustum = Frustum(_matrix_scene,_pos,_dir,_up,_side,_angle_tan,_ratio,_near_plane,_far_plane);
-
-    float l, r, b, t, n, f;
-    l = -rr;
-    r = rr;
-    b = -hh;
-    t = hh;
-    n = _near_plane;
-    f = _far_plane;
-
-    float A, B, C, D;
-    A =  ( r + l ) / ( r - l );
-    B =  ( t + b ) / ( t - b );
-    C = - ( f + n ) / ( f - n );
-    D = - 2 * f * n / ( f - n );
-
-    _frustum_matrix[0][0] = 2.0f / (r - l);
-    _frustum_matrix[0][1] = 0.0f;
-    _frustum_matrix[0][2] = A;
-    _frustum_matrix[0][3] = 0.0f;
-
-    _frustum_matrix[1][0] = 0.0f;
-    _frustum_matrix[1][1] = 2.0f / ( t - b );
-    _frustum_matrix[1][2] = B;
-    _frustum_matrix[1][3] = 0.0f;
-
-    _frustum_matrix[2][0] = 0.0f;
-    _frustum_matrix[2][1] = 0.0f;
-    _frustum_matrix[2][2] = C;
-    _frustum_matrix[2][3] = D;
-
-    _frustum_matrix[3][0] = 0.0f;
-    _frustum_matrix[3][1] = 0.0f;
-    _frustum_matrix[3][2] = -1.0f;
-    _frustum_matrix[3][3] = 0.0f;
+    _frustum = PerspectiveFrustum( _matrix_scene,
+                                   _pos, _dir,_up,_side,
+                                   _near_plane, _far_plane, _ratio, _angle_tan );
   }
 
-  void Camera::updateLightUBO( const GMWindow* window ) {
+  void Camera::updateLightUBO( const Scene* scene ) {
 
-    const Array<Light*> &lights_array = window->getInsertedLights();
-    const Sun* window_sun = window->getSun();
+    const Array<Light*> &lights_array = scene->getLights();
+    const Sun* window_sun = scene->getSun();
 
     const HqMatrix<float,3> cammat = DisplayObject::getMatrix() * getMatrixToSceneInverse();
 

@@ -29,6 +29,9 @@
 
 #include "gmwindow.h"
 
+#include "../render/gmrenderer.h"
+#include "../render/rendertargets/gmnativerendertarget.h"
+
 // gmlib
 #include <core/containers/gmdvector.h>
 #include <opengl/gmopenglmanager.h>
@@ -36,6 +39,7 @@
 // stl
 #include <cstdio>
 #include <iostream>
+#include <cassert>
 
 
 namespace GMlib {
@@ -48,35 +52,63 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  GMWindow::GMWindow(bool init_default_cam) {
+  GMWindow::GMWindow() {
 
-    // create buffers
+    _border_prog.acquire("color");
+
     _std_rep_cube.acquire("std_rep_cube");
     _std_rep_cube_indices.acquire("std_rep_cube_indices");
     _std_rep_frame_indices.acquire("std_rep_frame_indices");
 
-
     _stereo     = false;
-    _running    = false;
     _isbig      = false;
     _target     = NULL;
-    _sun        = NULL;
     _move       = 0.0;
     _active_cam = 0;
     stop();
 
-    if( init_default_cam ) {
+    _rt = new NativeRenderTarget;
+    _clear_color  = GMcolor::Grey;
+    _select_color = GMcolor::Beige;
 
-      Point<float,3> init_cam_pos(  0.0f, 0.0f, 0.0f );
-      Vector<float,3> init_cam_dir( 0.0f, 1.0f, 0.0f );
-      Vector<float,3> init_cam_up(  0.0f, 0.0f, 1.0f );
 
-      Camera *cam = new Camera( init_cam_pos, init_cam_dir, init_cam_up );
-      insertCamera( cam );
-      addViewSet( getCameraIndex(cam) );
-    }
 
-    _rm = new RenderManager(this);
+    // Build an orthogonal matrix
+    float near_plane = -1.0f;
+    float far_plane = 1.0f;
+
+    float l, r, b, t, n, f;
+    l = 0.0f;
+    r = 1.0f;
+    b = 0.0f;
+    t = 1.0f;
+    n = near_plane;
+    f = far_plane;
+
+    float A, B, C;
+    A = - ( r + l ) / ( r - l );
+    B = - ( t + b ) / ( t - b );
+    C = - ( f + n ) / ( f - n );
+
+    _ortho_mat[0][0] = 2 / (r - l);
+    _ortho_mat[0][1] = 0.0f;
+    _ortho_mat[0][2] = 0.0f;
+    _ortho_mat[0][3] = A;
+
+    _ortho_mat[1][0] = 0.0f;
+    _ortho_mat[1][1] = 2 / ( t - b );
+    _ortho_mat[1][2] = 0.0f;
+    _ortho_mat[1][3] = B;
+
+    _ortho_mat[2][0] = 0.0f;
+    _ortho_mat[2][1] = 0.0f;
+    _ortho_mat[2][2] = - 2.0f / (f-n);
+    _ortho_mat[2][3] = C;
+
+    _ortho_mat[3][0] = 0.0f;
+    _ortho_mat[3][1] = 0.0f;
+    _ortho_mat[3][2] = 0.0f;
+    _ortho_mat[3][3] = 1.0f;
   }
 
 
@@ -96,23 +128,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  GMWindow::~GMWindow() {
-
-    int i;
-    if(_sun) delete _sun;
-    for(i=0; i<_cameras.getSize(); i++)
-    {
-      remove(_cameras[i]);
-      delete _cameras[i];
-    }
-    Light * light;
-    for(i=_lights.getSize()-1; i>=0; i=_lights.getSize()-1)
-    {
-      light = _lights.back();
-      removeLight(light);
-      delete light;
-    }
-  }
+  GMWindow::~GMWindow() {}
 
 
   void GMWindow::addViewSet( int cam_idx ) {
@@ -141,49 +157,16 @@ namespace GMlib {
     _view_set_stack.back().prepare(_w,_h);
   }
 
-
-  void GMWindow::clearScene() {
-
-    if( _running )
-      Scene::stop();
-
-    for(int i = 0; i < _sel_objs.getSize(); i++)
-      _sel_objs[i]->setSelected( false );
-    _sel_objs.clear();
-
-    Array<SceneObject*> rmobjs;
-    for( int i = 0; i < getSize(); i++ )
-      rmobjs += operator[](i);
-
-    for( int i = 0; i < rmobjs.getSize(); i++ ) {
-
-      Camera* cam   = dynamic_cast<Camera*>( rmobjs[i] );
-      Light* light  = dynamic_cast<Light*>( rmobjs[i] );
-
-      if( cam )
-        continue;
-//        removeCamera( cam );
-      else if( light )
-        continue;
-//        removeLight( light );
-      else
-        remove( rmobjs[i] );
-
-      delete rmobjs[i];
-    }
-
-    if( _running )
-      Scene::start();
-  }
-
   void GMWindow::clearViewSetConfiguration() {
 
-    if( _running )
-      Scene::stop();
+    bool running = isRunning();
+    if( running )
+      toggleRun();
 
-    for(int i = 0; i < _sel_objs.getSize(); i++)
-      _sel_objs[i]->setSelected( false );
-    _sel_objs.clear();
+    clearSelection();
+//    for(int i = 0; i < _sel_objs.getSize(); i++)
+//      _sel_objs[i]->setSelected( false );
+//    _sel_objs.clear();
 
     Array<SceneObject*> rmobjs;
     for( int i = 0; i < getSize(); i++ )
@@ -198,46 +181,13 @@ namespace GMlib {
       }
     }
 
-    if( _running )
-      Scene::start();
-  }
-
-  RenderManager* GMWindow::getRenderManager() const {
-
-    return _rm;
+    if( running )
+      toggleRun();
   }
 
   const Color& GMWindow::getSelectColor() const {
 
-    return getRenderManager()->getSelectColor();
-  }
-
-  /*! void GMWindow::insertCamera(Camera* cam, bool insert_in_scene)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void GMWindow::insertCamera(Camera* cam, bool insert_in_scene) {
-
-    cam->setScene(this);
-    _cameras += cam;
-    if(insert_in_scene)  insert(cam);
-  }
-
-
-  /*! void GMWindow::insertLight(Light* light, bool insert_in_scene)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void GMWindow::insertLight(Light* light, bool insert_in_scene) {
-
-    _lights += light;
-
-    SceneObject* obj = dynamic_cast<SceneObject*>(light);
-
-    if(insert_in_scene && obj)
-      insert(obj);
+    return _select_color;
   }
 
 
@@ -258,82 +208,39 @@ namespace GMlib {
       _view_set_stack.pop();
   }
 
+  const Color& GMWindow::getClearColor() const {
 
-  /*! bool GMWindow::removeCamera(Camera *)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  bool GMWindow::removeCamera(Camera * cam) {
-
-    if(_cameras.getSize() < 2)
-      return false;
-
-    int i = _cameras.getIndex(cam);
-    if(i>0)
-    {
-      for(int j=1; j<_view_set_stack.getSize(); j++)
-        _view_set_stack[j].removeCamera(_cameras[_active_cam]);
-
-      remove(cam);
-      _cameras.removeIndex(i);
-      return true;
-    }
-    return false;
-  }
-
-
-  /*! bool GMWindow::removeLight(Light* light)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  bool GMWindow::removeLight(Light* light) {
-
-    int i = _lights.getIndex(light);
-    if(i>=0)
-    {
-      SceneObject* obj = dynamic_cast<SceneObject*>(light);
-
-      if(obj)
-        remove(obj);
-
-      _lights.removeIndex(i);
-
-      return true;
-    }
-    return false;
-  }
-
-  const Array<Light*>&GMWindow::getInsertedLights() const {
-
-    return _lights;
-  }
-
-
-  /*! void GMWindow::scaleDayLight(double)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void GMWindow::scaleDayLight(double d) {
-
-    _sun->scaleDayLight(d);
+    return _clear_color;
   }
 
   void GMWindow::setClearColor(const Color &color) {
 
-    getRenderManager()->setClearColor(color);
+    _clear_color = color;
+    for( int i = 0; i < getCameras().getSize(); ++i)
+      getCameras()(i)->getRenderer()->setClearColor(color);
   }
 
   void GMWindow::setSelectColor( const Color& color ) {
 
-    getRenderManager()->setSelectColor(color);
+    _clear_color = color;
+    // update select renderer(s)
   }
 
   void GMWindow::setRenderTarget(RenderTarget *rt) {
 
-    _rm->setRenderTarget( rt );
+    assert(rt);
+    if( _rt ) delete _rt;
+
+    _rt = rt;
+  }
+
+  void GMWindow::insertCamera(Camera* cam) {
+
+    assert(cam);
+
+    cam->getRenderer()->setRenderTarget( new NativeRenderTarget );
+    cam->getRenderer()->setClearColor( getClearColor() );
+    Scene::insertCamera(cam);
   }
 
 
@@ -348,62 +255,6 @@ namespace GMlib {
     return _stereo;
   }
 
-  void GMWindow::initStdGeometry() {
-
-    // std radius of inscribed circle
-    float ir = 0.07;
-
-    // Vertices
-    GLfloat cube[] = {
-
-    /* 0 */     -ir,    -ir,    -ir,      // Back/Left/Down
-    /* 1 */      ir,    -ir,    -ir,
-    /* 2 */      ir,     ir,    -ir,
-    /* 3 */     -ir,     ir,    -ir,
-    /* 4 */     -ir,    -ir,     ir,      // Front/Left/Down
-    /* 5 */      ir,    -ir,     ir,
-    /* 6 */      ir,     ir,     ir,
-    /* 7 */     -ir,     ir,     ir
-    };
-
-    // Indice Coords
-    GLushort cube_indices[] = {
-
-      4,  5,  6,  7,    // Front
-      1,  2,  6,  5,    // Right
-      0,  1,  5,  4,    // Bottom
-      0,  3,  2,  1,    // Back
-      0,  4,  7,  3,    // Left
-      2,  3,  7,  6     // Top
-    };
-
-    // Frame indice coords
-    GLushort frame_indices [] = {
-
-      0,  1,    // x-axis
-      0,  3,    // y-axis
-      0,  4,    // z-axis
-
-      // Remaining frame
-      2,  3,
-      2,  1,
-      2,  6,
-
-      7,  6,
-      7,  4,
-      7,  3,
-
-      5,  4,
-      5,  6,
-      5,  1
-
-    };
-
-    _std_rep_cube.bufferData( 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
-    _std_rep_cube_indices.bufferData( 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
-    _std_rep_frame_indices.bufferData( 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
-  }
-
   SceneObject *GMWindow::findSelectObject(Camera *cam, const Vector<int,2> &pos, int type_id) const {
 
     return findSelectObject( cam, pos(0), pos(1), type_id );
@@ -411,9 +262,10 @@ namespace GMlib {
 
   SceneObject *GMWindow::findSelectObject(Camera *cam, int x, int y, int type_id) const {
 
-    RenderManager *rm = getRenderManager();
-    rm->select( cam, type_id );
-    return rm->findObject( x, y );
+    assert(false);
+//    RenderManager *rm = getRenderManager();
+//    rm->select( cam, type_id );
+//    return rm->findObject( x, y );
   }
 
 
@@ -425,16 +277,16 @@ namespace GMlib {
   GMWindow& GMWindow::operator=(const GMWindow& gw) {
 
     Scene::operator=(gw);
-    _cameras  = gw._cameras;
-    _lights  = gw._lights;
-    _sun  = gw._sun;
-    for(int i=0; i<_cameras.getSize(); i++)
-      _cameras[i]->setScene(this);
+//    _cameras  = gw._cameras;
+//    _lights  = gw._lights;
+//    _sun  = gw._sun;
+//    for(int i=0; i<_cameras.getSize(); i++)
+//      _cameras[i]->setScene(this);
 
     _stereo  = false;
-    _running = false;
+//    _running = false;
     _isbig   = false;
-    _sel_objs.clear();
+//    _sel_objs.clear();
     _view_set_stack = gw._view_set_stack;        // Active camera set
     reshape(_w,_h);
     return *this;
@@ -452,39 +304,84 @@ namespace GMlib {
    */
   void GMWindow::init() {
 
-//    cout << "GMWindow::init()" << endl;
-
-    initStdGeometry();
-
-    if(_sun)
-      _sun->scaleDayLight(1.0);
     insertCamera(new Camera(Point<float,3>(10,10,5),Point<float,3>(-10,-10,-5),Vector<float,3>(0,0,-1)));
     _view_set_stack += ViewSet(_cameras[0]);
     _view_set_stack.back().prepare(_w,_h);
-//    int numberoflights;
-//    glGetIntegerv(GL_MAX_LIGHTS,&numberoflights);
-//    char s[32];
-//    std::sprintf( s, "Max number of lights %d\n", numberoflights );
-//    message(s);
-    //char *extensions = NULL;
-      //extensions = (char *)glGetString(GL_EXTENSIONS);
-      //_message(extensions);
   }
 
+  void GMWindow::render() {
 
-  /*! bool GMWindow::toggleRun()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  bool GMWindow::toggleRun() {
+    if( _active_cam > -1 )
+      _cameras[_active_cam]->move(_move);
 
-    if( ( _running = !_running ) )
-      start();
-    else
-      stop();
+//    simulate();
+//    prepare();
+//    if(_stereo) {
 
-    return _running;
+//      glDrawBuffer(GL_BACK_LEFT);
+//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//      _view_set_stack.back()._drawCamera();
+//      swapBuffers();
+//      glDrawBuffer(GL_BACK_RIGHT);
+//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//      _view_set_stack.back()._drawCamera(true);
+//    }
+//    else {
+
+//      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//      GL::OGL::clearRenderBuffer();
+//      GL::OGL::bindRenderBuffer();
+//      _view_set_stack.back().drawCamera();
+//      GL::OGL::unbindRenderBuffer();
+
+    for( int i = 0; i < _view_set_stack.back().getCameras().getSize(); ++i )
+      _view_set_stack.back().getCameras()(i)->getRenderer()->render(_view_set_stack.back().getCameras()(i));
+
+    // Draw border
+    {
+      _rt->bind();
+
+
+
+      // Draw what rendered by the camrea to the buffer
+      for( int i = 0; i < _view_set_stack.back().getCameras().getSize(); ++i )
+        _view_set_stack.back().getCameras()(i)->getRenderer()->renderTo();
+
+
+
+      GL_CHECK(::glViewport( 0, 0, _w, _h ));
+
+      // Draw borders
+      const ViewSet &top_view_set = getTopViewSet();
+      _border_prog.bind();
+
+      _border_prog.setUniform( "u_mvpmat", _ortho_mat );
+      _border_prog.setUniform( "u_selected", false );
+      _border_prog.setUniform( "u_color", top_view_set.getBorderColor() );
+
+      const GL::AttributeLocation vert_loc = _border_prog.getAttributeLocation( "in_vertex" );
+      const GL::VertexBufferObject &border_vbo = top_view_set.getBorderVBO();
+
+      border_vbo.bind();
+      border_vbo.enable( vert_loc, 2, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
+
+      GL_CHECK(::glPointSize( 10.0f ));
+      GL_CHECK(::glDrawArrays( GL_QUADS, 0, top_view_set.getNoBorders() * 4 ));
+
+      border_vbo.disable(vert_loc);
+      border_vbo.unbind();
+
+      _border_prog.unbind();
+
+      _rt->unbind();
+    }
+  }
+
+  void GMWindow::reshape(int w, int h) {
+
+    _w = w; _h = h;
+    prepareViewSets();
+    _rt->resize(Vector<unsigned int,2>(_w,_h));
   }
 
 } // END namespace GMlib

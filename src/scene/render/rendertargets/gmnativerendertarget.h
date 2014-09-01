@@ -7,6 +7,7 @@
 
 namespace GMlib {
 
+  // PassThroughTarget
 class NativeRenderTarget : public RenderTarget {
 public:
   explicit NativeRenderTarget() {}

@@ -47,15 +47,13 @@ namespace GMlib {
 
 
 
-  DisplayRenderer::DisplayRenderer(Scene *scene)
-    : MultiObjectRenderer(scene), _w(0), _h(0)
-  {
+  DisplayRenderer::DisplayRenderer() : _w(0), _h(0) {
 
+    setClearColor( GMcolor::Grey );
 
     // Acquire programs
     initRenderProgram();
     initRenderSelectProgram();
-    _border_prog.acquire("color");
 
 
     // Create buffers
@@ -94,7 +92,6 @@ namespace GMlib {
     _rbo_select_depth.texParameterf( GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     _rbo_select_depth.texParameterf( GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-
     // Bind renderbuffers to framebuffer.
     _fbo.attachTexture2D( _rbo_color,  GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
     _fbo.attachTexture2D( _rbo_depth, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT );
@@ -130,10 +127,6 @@ namespace GMlib {
     _quad_vbo.bufferData( 4 * sizeof(GL::GLVertexTex2D),
                           data.getPtr(), GL_STATIC_DRAW );
 
-
-
-    // Set a native render target
-    _rt = new NativeRenderTarget;
 
     // Build an orthogonal matrix
     float near_plane = -1.0f;
@@ -171,6 +164,11 @@ namespace GMlib {
     _ortho_mat[3][1] = 0.0f;
     _ortho_mat[3][2] = 0.0f;
     _ortho_mat[3][3] = 1.0f;
+  }
+
+  DisplayRenderer::~DisplayRenderer() {
+
+    delete _coord_sys_visu;
   }
 
   void DisplayRenderer::initRenderProgram() {
@@ -351,28 +349,20 @@ namespace GMlib {
 
   }
 
-  void DisplayRenderer::resize(int w, int h) {
+  void DisplayRenderer::reshape(int x, int y, int w, int h) {
 
+    Renderer::reshape(x,y,w,h);
+
+    _x = x;
+    _y = y;
     _w = w;
     _h = h;
-
-    Renderer::resize(w,h);
 
     _rbo_color.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
     _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
 
     _rbo_select.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
     _rbo_select_depth.texImage2D( 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
-
-    _rt->resize( Vector<float,2>(_w,_h) );
-  }
-
-  void DisplayRenderer::setRenderTarget(RenderTarget *rt) {
-
-    assert( rt );
-
-    delete _rt;
-    _rt = rt;
   }
 
 

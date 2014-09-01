@@ -33,7 +33,7 @@
 #include "../camera/gmcamera.h"
 #include "../gmscene.h"
 #include "../gmsceneobject.h"
-#include "../window/gmwindow.h"
+//#include "../window/gmwindow.h"
 #include "gmdisplayrenderer.h"
 #include "gmselectrenderer.h"
 

@@ -44,6 +44,7 @@
 #include <core/utils/gmtimer.h>
 #include <core/containers/gmarray.h>
 #include <core/utils/gmsortobject.h>
+#include <opengl/bufferobjects/gmuniformbufferobject.h>
 
 
 namespace GMlib{
@@ -51,9 +52,9 @@ namespace GMlib{
   class EventManager;
   class SceneObject;
   class DisplayObject;
-  class RenderManager;
   class Camera;
   class Light;
+  class Sun;
 
 
 
@@ -85,6 +86,7 @@ namespace GMlib{
     virtual ~Scene();
 
     SceneObject*                find(unsigned int name);
+    const SceneObject*          find(unsigned int name) const;
     SceneObject*                getActiveObject();
     Array<Light*>&              getLights();
     int                         getSize();
@@ -93,6 +95,33 @@ namespace GMlib{
 
     virtual void                insert(SceneObject* obj);
     void                        remove(SceneObject* obj);
+
+    const Array<Light*>&        getLights() const;
+    void                        insertLight(Light* light, bool insert_in_scene = false);
+    bool                        removeLight(Light* light);
+
+    const Sun*                  getSun() const;
+    void                        insertSun();
+    void                        removeSun();
+    void                        scaleDayLight(double d);
+    void                        setSunDirection(Angle d);
+
+
+
+    bool                        isRunning() const;
+    virtual bool                toggleRun();
+
+
+
+
+    const Array<Camera*>&       getCameras() const;
+    virtual void                insertCamera(Camera* cam);
+    virtual bool                removeCamera(Camera* cam);
+
+
+
+
+
 
     Sphere<float,3>             getSphere();
     Sphere<float,3>             getSphereClean() const;
@@ -117,8 +146,14 @@ namespace GMlib{
     void                        disableFixedDt();
     void                        setFixedDt( double dt );
 
-    virtual RenderManager*      getRenderManager() const;
+//    virtual RenderManager*      getRenderManager() const;
     void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, const Camera* cam) const;
+
+    void                        clear();
+    void                        clearSelection();
+
+
+    void                        render();
 
 
     SceneObject*                operator [] (int i);
@@ -126,15 +161,22 @@ namespace GMlib{
     Scene&                      operator =  (const Scene& sc);
 
   protected:
-    Array<SceneObject*>         _sel_objs;
+    Array<Camera*>              _cameras;
 
     virtual void                updateMaxObjects( int no_objects );
 
 
   private:
     Array<SceneObject*>         _scene;
-
     Array<Light*>               _lights;
+
+    Sun*                        _sun;
+
+    bool                        _running;
+
+
+    Array<SceneObject*>         _sel_objs;
+
     Array<HqMatrix<float,3> >   _matrix_stack;
 
     GMTimer                     _timer;
@@ -145,6 +187,12 @@ namespace GMlib{
     bool                        _timer_fixed_dt_enabled;
 
     EventManager*               _event_manager;
+
+
+    GL::UniformBufferObject     _lights_ubo;
+    void                        updateLightUBO();
+
+    void                        init();
 
   }; // END class Scene
 
@@ -178,9 +226,15 @@ namespace GMlib{
    *  \return A reference to the scene's light source.
    */
   inline
-  Array<Light*>& Scene::getLights() {
+  const Array<Light*>& Scene::getLights() const {
 
     return _lights;
+  }
+
+  inline
+  const Sun* Scene::getSun() const {
+
+    return _sun;
   }
 
 
@@ -212,6 +266,17 @@ namespace GMlib{
   bool Scene::isRunning() {
 
     return _timer_active;
+  }
+
+  inline
+  bool Scene::toggleRun() {
+
+    if( _running = !_running )
+      start();
+    else
+      stop();
+
+    return _running;
   }
 
 

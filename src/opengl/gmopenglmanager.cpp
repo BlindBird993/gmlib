@@ -68,17 +68,74 @@ namespace GL {
 
   void OpenGLManager::initSystemWideBuffers() {
 
-    VertexBufferObject _std_rep_cube;
-    _std_rep_cube.create("std_rep_cube");
-    _std_rep_cube.setPersistent(true);
+    // std radius of inscribed circle
+    float ir = 0.07;
 
-    IndexBufferObject std_rep_cube_indices;
-    std_rep_cube_indices.create("std_rep_cube_indices");
-    std_rep_cube_indices.setPersistent(true);
+    // Vertices
+    GLfloat cube[] = {
 
-    IndexBufferObject std_rep_frame_indices;
-    std_rep_frame_indices.create("std_rep_frame_indices");
-    std_rep_frame_indices.setPersistent(true);
+    /* 0 */     -ir,    -ir,    -ir,      // Back/Left/Down
+    /* 1 */      ir,    -ir,    -ir,
+    /* 2 */      ir,     ir,    -ir,
+    /* 3 */     -ir,     ir,    -ir,
+    /* 4 */     -ir,    -ir,     ir,      // Front/Left/Down
+    /* 5 */      ir,    -ir,     ir,
+    /* 6 */      ir,     ir,     ir,
+    /* 7 */     -ir,     ir,     ir
+    };
+
+    // Indice Coords
+    GLushort cube_indices[] = {
+
+      4,  5,  6,  7,    // Front
+      1,  2,  6,  5,    // Right
+      0,  1,  5,  4,    // Bottom
+      0,  3,  2,  1,    // Back
+      0,  4,  7,  3,    // Left
+      2,  3,  7,  6     // Top
+    };
+
+    // Frame indice coords
+    GLushort frame_indices [] = {
+
+      0,  1,    // x-axis
+      0,  3,    // y-axis
+      0,  4,    // z-axis
+
+      // Remaining frame
+      2,  3,
+      2,  1,
+      2,  6,
+
+      7,  6,
+      7,  4,
+      7,  3,
+
+      5,  4,
+      5,  6,
+      5,  1
+
+    };
+
+
+    VertexBufferObject cube_vbo;
+    cube_vbo.create("std_rep_cube");
+    cube_vbo.setPersistent(true);
+    cube_vbo.bufferData( 24 * sizeof(GLfloat), cube, GL_STATIC_DRAW );
+
+    IndexBufferObject cube_ibo;
+    cube_ibo.create("std_rep_cube_indices");
+    cube_ibo.setPersistent(true);
+    cube_ibo.bufferData( 24 * sizeof(GLushort), cube_indices, GL_STATIC_DRAW );
+
+    IndexBufferObject cube_frame_ibo;
+    cube_frame_ibo.create("std_rep_frame_indices");
+    cube_frame_ibo.setPersistent(true);
+    cube_frame_ibo.bufferData( 24 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW );
+
+    UniformBufferObject lights_ubo;
+    lights_ubo.create("lights_ubo");
+    lights_ubo.setPersistent(true);
   }
 
 

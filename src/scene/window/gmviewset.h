@@ -258,10 +258,13 @@ namespace GMlib {
   inline
   void ViewSet::prepare(int w, int h) {
 
-//    std::cout << "ViewSet::prepare (w,h): (" << w << "," << h << ")" << std::endl;
+    std::cout << "ViewSet::prepare (w,h): (" << w << "," << h << ")" << std::endl;
     _vp_w = w; _vp_h = h;
     _borders.resetSize();
     _root.prepare(0,0, _vp_w, _vp_h, _borders );
+
+//    for( int i = 0; i < getCameras().getSize(); ++i )
+//      getCameras()(i)->reshape( 0, 0, _vp_w, _vp_h );
   }
 
 

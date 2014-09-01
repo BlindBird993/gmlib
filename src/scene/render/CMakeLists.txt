@@ -24,7 +24,7 @@
 addHeaders(
   gmDisplayRenderer
   gmRenderer
-  gmRenderManager
+#  gmRenderManager
   gmRenderTarget
   gmSelectRenderer
 )
@@ -32,7 +32,7 @@ addHeaders(
 addSources(
   gmdisplayrenderer.cpp
   gmrenderer.cpp
-  gmrendermanager.cpp
+#  gmrendermanager.cpp
   gmselectrenderer.cpp
 )
 

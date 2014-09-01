@@ -102,7 +102,9 @@ namespace Private {
     void                    unbind() const;
 
     GLuint                  getId() const;
-    InfoIterC               getInfoIter() const;
+
+    std::string             getName() const;
+    bool                    setName( const std::string& name );
 
     bool                    isPersistent() const;
     void                    setPersistent( bool persistent );
@@ -117,7 +119,9 @@ namespace Private {
   protected:
     void                    createObject( const T& info );
     void                    decrement();
+
     InfoIter                getInfoIter();
+    InfoIterC               getInfoIter() const;
 
     /* safe-bind */
     GLuint                  safeBind() const;
@@ -234,6 +238,18 @@ namespace Private {
   typename GLObject<T>::InfoIterC GLObject<T>::getInfoIter() const {
 
     return _info_iter;
+  }
+
+  template <typename T>
+  std::string GLObject<T>::getName() const {
+
+    return getInfoIter()->id;
+  }
+
+  template <typename T>
+  bool GLObject<T>::setName(const std::string& name) {
+
+    getInfoIter()->name = name;
   }
 
   template <typename T>
