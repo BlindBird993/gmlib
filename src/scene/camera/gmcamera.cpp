@@ -372,7 +372,7 @@ namespace GMlib {
 
   void Camera::render() {
 
-    std::cout << "  Camera::render()" << std::endl;
+//    std::cout << "  Camera::render()" << std::endl;
 
     assert(getScene());
 

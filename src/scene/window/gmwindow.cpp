@@ -334,8 +334,10 @@ namespace GMlib {
 //      _view_set_stack.back().drawCamera();
 //      GL::OGL::unbindRenderBuffer();
 
-    for( int i = 0; i < _view_set_stack.back().getCameras().getSize(); ++i )
+    for( int i = 0; i < _view_set_stack.back().getCameras().getSize(); ++i ) {
+      _view_set_stack.back().getCameras()(i)->updateLightUBO(this);
       _view_set_stack.back().getCameras()(i)->getRenderer()->render(_view_set_stack.back().getCameras()(i));
+    }
 
     // Draw border
     {
