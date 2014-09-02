@@ -49,30 +49,37 @@ namespace GMlib {
     Renderer();
     virtual ~Renderer();
 
+    Camera*           getCamera() const { return _camera; }
+    void              setCamera( Camera* camera );
+
     const Color&      getClearColor() const;
     void              setClearColor( const Color& color );
 
     /* prepare stuff */
-    void              render(Camera* cam );
-    void              renderTo();
-    virtual void      reshape( int x, int y, int w, int h );
+    virtual void      render() = 0;
 
-    // TEST FUNCTIONS (SHOULD BE MADE FOR LIST OF RENDER TARGETS)
+    virtual void      setViewport( int x, int y, int w, int h );
+
+    int               getViewportX() const { return _x; }
+    int               getViewportY() const { return _y; }
+    int               getViewportW() const { return _w; }
+    int               getViewportH() const { return _h; }
+
+
+    RenderTarget*     getRenderTarget() const { return _rt; }
     void              setRenderTarget( RenderTarget* rt );
 
+
+
+  protected:
+    virtual void      reshape();
+
   private:
+
     int                                     _x, _y, _w, _h;
     Color                                   _clear_color;
     RenderTarget*                           _rt;
-    mutable Array<DisplayObject *>          _objs;
-
-
-    virtual void      prepare( Array<DisplayObject*>& objs, Camera* cam );
-    virtual void      renderObjects( Array<DisplayObject*>& objs, Camera* cam ) = 0;
-    virtual void      renderToTarget() = 0;
-
-    void              setupViewport( int x, int y, int w, int h );
-
+    Camera*                                 _camera;
 
   }; // END class Renderer
 

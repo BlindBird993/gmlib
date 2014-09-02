@@ -56,6 +56,11 @@ namespace GMlib {
     delete _rt;
   }
 
+  void Renderer::setCamera(Camera* camera) {
+
+    _camera = camera;
+  }
+
   const Color&Renderer::getClearColor() const {
 
     return _clear_color;
@@ -66,14 +71,14 @@ namespace GMlib {
     _clear_color = color;
   }
 
-  void Renderer::reshape(int x, int y, int w, int h) {
+  void Renderer::setViewport(int x, int y, int w, int h) {
 
     _x = x;
     _y = y;
     _w = w;
     _h = h;
 
-    _rt->resize( Vector<unsigned int,2>( _w, _h ) );
+    reshape();
   }
 
   void Renderer::setRenderTarget(RenderTarget* rt) {
@@ -83,50 +88,11 @@ namespace GMlib {
     _rt = rt;
   }
 
-  void Renderer::prepare(Array<DisplayObject*>& objs, Camera *cam) {
+  void Renderer::reshape() {
 
-
-    Scene *scene = cam->getScene();
-    assert(scene);
-
-    // Compute frustum/frustum-matrix, set glViewport
-    cam->setupDisplay();
-
-    // Get displayable objects
-    objs.resetSize();
-    scene->getDisplayableObjects( objs, cam );
+    _camera->reshape(0, 0, _w, _h);
+    _rt->resize( Vector<unsigned int,2>( _w, _h ) );
   }
-
-  void Renderer::setupViewport( int x, int y, int w, int h ) {
-
-    GL_CHECK(::glViewport(x, y, w, h));
-  }
-
-  void Renderer::render( Camera* cam) {
-
-    // Prepare
-    prepare( _objs, cam );
-
-    // Set Viewport
-    setupViewport(0, 0, _w, _h);
-
-    // Render objects
-    renderObjects( _objs, cam);
-  }
-
-  void Renderer::renderTo() {
-
-    // Set Viewport
-    setupViewport(_x, _y, _w, _h);
-
-    // Render to target
-    _rt->clear();
-    _rt->bind();
-    renderToTarget();
-    _rt->unbind();
-  }
-
-
 
 
 

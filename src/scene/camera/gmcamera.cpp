@@ -382,8 +382,7 @@ namespace GMlib {
       updateCameraOrientation(); ///! \todo refactor
 
       // Render this camera
-      _renderer->render(this);
-      _renderer->renderTo();
+      _renderer->render();
 
     } markAsInactive();
   }
@@ -420,9 +419,6 @@ namespace GMlib {
     _w = x2-x1;
     _h = y2-y1;
     _ratio = float(_w)/float(_h);
-
-    _renderer->reshape( _x, _y, _w,_h);
-    _select_renderer->reshape(_x,_y,_w,_h);
   }
 
 
@@ -628,7 +624,7 @@ namespace GMlib {
     if(!_light_ubo.isValid()) _light_ubo.create();
 
     _renderer = new DisplayRenderer;
-    _select_renderer = new SelectRenderer;
+//    _select_renderer = new SelectRenderer;
   }
 
 

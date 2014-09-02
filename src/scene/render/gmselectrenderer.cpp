@@ -208,7 +208,8 @@ namespace GMlib {
 
   void SelectRenderer::reshape(int x, int y, int w, int h) {
 
-    Renderer::reshape(x, y, w ,h);
+//    Renderer::reshape(x, y, w ,h);
+    assert(false);
 
     _rbo_color.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
     _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
@@ -219,7 +220,8 @@ namespace GMlib {
     _what = type_id;
     _current_scene = cam->getScene();
 
-    render(cam);
+//    render(cam);
+    assert(false);
   }
 
   void SelectRenderer::renderObjects(Array<DisplayObject*>& objs, Camera* cam) {

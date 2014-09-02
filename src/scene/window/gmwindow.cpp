@@ -336,7 +336,8 @@ namespace GMlib {
 
     for( int i = 0; i < _view_set_stack.back().getCameras().getSize(); ++i ) {
       _view_set_stack.back().getCameras()(i)->updateLightUBO(this);
-      _view_set_stack.back().getCameras()(i)->getRenderer()->render(_view_set_stack.back().getCameras()(i));
+//      _view_set_stack.back().getCameras()(i)->getRenderer()->render(_view_set_stack.back().getCameras()(i));
+      assert(false);
     }
 
     // Draw border
@@ -346,8 +347,9 @@ namespace GMlib {
 
 
       // Draw what rendered by the camrea to the buffer
-      for( int i = 0; i < _view_set_stack.back().getCameras().getSize(); ++i )
-        _view_set_stack.back().getCameras()(i)->getRenderer()->renderTo();
+//      for( int i = 0; i < _view_set_stack.back().getCameras().getSize(); ++i )
+//        _view_set_stack.back().getCameras()(i)->getRenderer()->renderTo();
+      assert(false);
 
 
 
