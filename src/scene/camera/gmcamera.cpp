@@ -33,7 +33,7 @@
 // local
 #include "../utils/gmmaterial.h"
 //#include "../render/gmrendermanager.h"
-#include "../render/gmdisplayrenderer.h"
+#include "../render/gmdefaultrenderer.h"
 #include "../render/gmselectrenderer.h"
 #include "../light/gmspotlight.h"
 #include "../light/gmpointlight.h"
@@ -623,7 +623,7 @@ namespace GMlib {
 
     if(!_light_ubo.isValid()) _light_ubo.create();
 
-    _renderer = new DisplayRenderer;
+    _renderer = new DefaultRenderer;
 //    _select_renderer = new SelectRenderer;
   }
 

@@ -27,7 +27,7 @@
  */
 
 
-#include "gmdisplayrenderer.h"
+#include "gmdefaultrenderer.h"
 
 // local
 #include "../camera/gmcamera.h"
@@ -47,7 +47,7 @@ namespace GMlib {
 
 
 
-  DisplayRenderer::DisplayRenderer() : _w(0), _h(0) {
+  DefaultRenderer::DefaultRenderer() : _w(0), _h(0) {
 
     setClearColor( GMcolor::Grey );
 
@@ -166,12 +166,12 @@ namespace GMlib {
     _ortho_mat[3][3] = 1.0f;
   }
 
-  DisplayRenderer::~DisplayRenderer() {
+  DefaultRenderer::~DefaultRenderer() {
 
     delete _coord_sys_visu;
   }
 
-  void DisplayRenderer::render()  {
+  void DefaultRenderer::render()  {
 
     Scene *scene = getCamera()->getScene();
     assert(scene);
@@ -195,7 +195,7 @@ namespace GMlib {
   }
 
 
-  void DisplayRenderer::initRenderProgram() {
+  void DefaultRenderer::initRenderProgram() {
 
 
     const std::string prog_name    = "render_prog";
@@ -316,7 +316,7 @@ namespace GMlib {
     assert(link_ok);
   }
 
-  void DisplayRenderer::initRenderSelectProgram() {
+  void DefaultRenderer::initRenderSelectProgram() {
 
     const std::string prog_name    = "render_select_prog";
     if( _render_select_prog.acquire(prog_name) ) return;
@@ -390,7 +390,7 @@ namespace GMlib {
 //  }
 
 
-  void DisplayRenderer::prepare(Camera *cam) {
+  void DefaultRenderer::prepare(Camera *cam) {
 
     Scene *scene = cam->getScene();
     assert(scene);
@@ -404,17 +404,17 @@ namespace GMlib {
   }
 
 
-  const GL::Texture& DisplayRenderer::getRenderTexture() const {
+  const GL::Texture& DefaultRenderer::getRenderTexture() const {
 
     return _rbo_color;
   }
 
-  const GL::Texture& DisplayRenderer::getSelectTexture() const {
+  const GL::Texture& DefaultRenderer::getSelectTexture() const {
 
     return _rbo_select;
   }
 
-  void DisplayRenderer::render( const DisplayObject* obj, const Camera* cam ) const {
+  void DefaultRenderer::render( const DisplayObject* obj, const Camera* cam ) const {
 
     if( obj != cam ) {
 
@@ -435,7 +435,7 @@ namespace GMlib {
     }
   }
 
-  void DisplayRenderer::renderSelectedGeometry( const DisplayObject* obj, const Camera* cam ) const {
+  void DefaultRenderer::renderSelectedGeometry( const DisplayObject* obj, const Camera* cam ) const {
 
     if( obj != cam && obj->isSelected()  ) {
 
@@ -460,14 +460,14 @@ namespace GMlib {
     }
   }
 
-  void DisplayRenderer::renderCoordSys(const Camera *cam) const {
+  void DefaultRenderer::renderCoordSys(const Camera *cam) const {
 
     _coord_sys_visu->render(cam,cam);
   }
 
 
 
-  void DisplayRenderer::renderToTarget() {
+  void DefaultRenderer::renderToTarget() {
 
 
 
@@ -511,7 +511,7 @@ namespace GMlib {
     GL_CHECK(::glEnable(GL_DEPTH_TEST));
   }
 
-  void DisplayRenderer::reshape() {
+  void DefaultRenderer::reshape() {
 
       _rbo_color.texImage2D( 0, GL_RGBA8, getViewportW(), getViewportH(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
       _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, getViewportW(), getViewportH(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
@@ -523,7 +523,7 @@ namespace GMlib {
     }
 
 
-  void DisplayRenderer::renderScene(Camera* cam) {
+  void DefaultRenderer::renderScene(Camera* cam) {
 
 
     // Setup size of viewport viewport to fit size of render target

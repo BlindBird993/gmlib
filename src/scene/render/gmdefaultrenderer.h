@@ -28,8 +28,8 @@
  *  Pending Documentation
  */
 
-#ifndef __gmDISPLAYRENDERER_H__
-#define __gmDISPLAYRENDERER_H__
+#ifndef __GM_SCENE_RENDER_DEFAULTRENDERER_H__
+#define __GM_SCENE_RENDER_DEFAULTRENDERER_H__
 
 
 #include "gmrenderer.h"
@@ -52,10 +52,10 @@
 namespace GMlib {
 
 
-  class DisplayRenderer : public Renderer {
+  class DefaultRenderer : public Renderer {
   public:
-    explicit DisplayRenderer();
-    ~DisplayRenderer();
+    explicit DefaultRenderer();
+    ~DefaultRenderer();
 
     const GL::Texture&      getRenderTexture() const;
     const GL::Texture&      getSelectTexture() const;
@@ -125,4 +125,4 @@ namespace GMlib {
 
 } // END namespace GMlib
 
-#endif // __gmDISPLAYRENDERER_H__
+#endif // __GM_SCENE_RENDER_DEFAULTRENDERER_H__

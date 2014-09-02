@@ -51,7 +51,7 @@ namespace GMlib {
   class GMWindow;
 
   class Renderer;
-  class DisplayRenderer;
+  class DefaultRenderer;
   class SelectRenderer;
   class RenderTarget;
 
@@ -86,7 +86,7 @@ namespace GMlib {
     Scene                     *_scene;
     Array<DisplayObject*>       _objs;      //! Render objects "cache" array
 
-    DisplayRenderer           *_disp;
+    DefaultRenderer           *_disp;
     SelectRenderer            *_select;
 
 
