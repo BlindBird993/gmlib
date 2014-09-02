@@ -52,6 +52,9 @@ namespace GMlib {
     Camera*           getCamera() const { return _camera; }
     void              setCamera( Camera* camera );
 
+    Scene*            getScene() const;
+
+
     const Color&      getClearColor() const;
     void              setClearColor( const Color& color );
 

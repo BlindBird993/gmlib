@@ -60,6 +60,8 @@ namespace GMlib {
     const GL::Texture&      getRenderTexture() const;
     const GL::Texture&      getSelectTexture() const;
 
+    void                    setSelectColor( const Color& color );
+
     /* virtual from Renderer */
     void                    render();
 
@@ -84,10 +86,12 @@ namespace GMlib {
     GL::FramebufferObject   _fbo_select_depth;
     GL::Texture             _rbo_select_depth;
 
+    Color                   _select_color;
+
     /* other suff */
     HqMatrix<float,3>       _ortho_mat;
-    int                     _x, _y;
-    int                     _w, _h;
+//    int                     _x, _y;
+//    int                     _w, _h;
 
     GL::VertexBufferObject  _quad_vbo;
 

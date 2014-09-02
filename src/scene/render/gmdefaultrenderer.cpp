@@ -47,7 +47,7 @@ namespace GMlib {
 
 
 
-  DefaultRenderer::DefaultRenderer() : _w(0), _h(0) {
+  DefaultRenderer::DefaultRenderer() : _select_color(GMcolor::Beige) {
 
     setClearColor( GMcolor::Grey );
 
@@ -289,6 +289,13 @@ namespace GMlib {
           "\n"
           "  if( res > 0.0 )\n"
           "   gl_FragColor = u_select_color;\n"
+          "\n"
+//          "  float bah = texture( u_tex_selected, ex_tex_coord ).b; \n"
+//          "  if( bah > 0.0 )\n"
+//          "   gl_FragColor = vec4( bah, 0.0, 0.0, 1.0 );\n"
+//          "   gl_FragColor = vec4( res, 0.0, 0.0, 1.0 );\n"
+//          "   gl_FragColor = vec4( res_y, 0.0, 0.0, 1.0 );\n"
+//          "   gl_FragColor = vec4( 0.0, res_y, 0.0, 1.0 );\n"
           "}\n"
           );
 
@@ -325,7 +332,6 @@ namespace GMlib {
     std::string vs_src(
           "#version 150 compatibility \n"
           "uniform mat4 u_mvpmat; \n"
-          "uniform vec4 u_color; \n"
           "\n"
           "in vec4 in_vertex; \n"
           "\n"
@@ -414,6 +420,11 @@ namespace GMlib {
     return _rbo_select;
   }
 
+  void DefaultRenderer::setSelectColor(const Color& color) {
+
+    _select_color = color;
+  }
+
   void DefaultRenderer::render( const DisplayObject* obj, const Camera* cam ) const {
 
     if( obj != cam ) {
@@ -440,8 +451,6 @@ namespace GMlib {
     if( obj != cam && obj->isSelected()  ) {
 
       _render_select_prog.bind(); {
-
-        _render_select_prog.setUniform( "u_color", Color( obj->getVirtualName()) );
 
         if(obj->isCollapsed()) {
 
@@ -484,10 +493,9 @@ namespace GMlib {
       _render_prog.setUniform( "u_mvpmat", _ortho_mat );
       _render_prog.setUniform( "u_tex", getRenderTexture(), (GLenum)GL_TEXTURE0, 0 );
       _render_prog.setUniform( "u_tex_selected", getSelectTexture(), (GLenum)GL_TEXTURE1, 1 );
-      _render_prog.setUniform( "u_buf_w", float(_w) );
-      _render_prog.setUniform( "u_buf_h", float(_h) );
-  //    _render_prog.setUniform( "u_select_color", _select_color );
-      _render_prog.setUniform( "u_select_color", GMlib::GMcolor::Beige );
+      _render_prog.setUniform( "u_buf_w", static_cast<float>(getViewportW()) );
+      _render_prog.setUniform( "u_buf_h", static_cast<float>(getViewportH()) );
+      _render_prog.setUniform( "u_select_color", _select_color );
 
       GL::AttributeLocation vert_loc = _render_prog.getAttributeLocation( "in_vertex" );
       GL::AttributeLocation tex_coord_loc = _render_prog.getAttributeLocation( "in_tex_coord" );

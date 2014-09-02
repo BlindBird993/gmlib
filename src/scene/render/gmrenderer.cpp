@@ -94,6 +94,11 @@ namespace GMlib {
     _rt->resize( Vector<unsigned int,2>( _w, _h ) );
   }
 
+  Scene* Renderer::getScene() const {
+
+    return _camera->getScene();
+  }
+
 
 
 } // END namespace GMlib

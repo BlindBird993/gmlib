@@ -55,15 +55,16 @@ namespace GMlib {
     Array<const DisplayObject*> findObjects(int xmin, int ymin, int xmax, int ymax) const;
     Array<DisplayObject*>       findObjects(int xmin, int ymin, int xmax, int ymax);
 
-    void                        select( Camera* cam, int type_id);
 
     /* virtual from Renderer */
-    void                        reshape(int x, int y, int w, int h);
 
     void    setRBOcolorName( const std::string& name ) { _rbo_color.setName(name); }
 
+    void                        select(int what);
   protected:
-    void                        select(DisplayObject* obj, const Camera* cam, int what) const;
+    void                        reshape();
+    void                        render();
+    void                        prepare(Camera* cam);
 
   private:
     GL::Program                 _prog;
@@ -73,14 +74,12 @@ namespace GMlib {
     GL::Texture                 _rbo_depth;
 
     mutable int                 _what;
-    mutable Scene*              _current_scene;
-
+    mutable Array<DisplayObject*>    _objs;
 
     void                        initSelectProgram();
 
     /* virtual from Renderer */
-    void                        renderObjects(Array<DisplayObject *> &objs, Camera *cam);
-    void                        renderToTarget() {}
+    void                        renderScene(Camera *cam);
   };
 
 

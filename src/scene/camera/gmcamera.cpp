@@ -139,7 +139,7 @@ namespace GMlib {
 
     // Cull the scene using the camera's frustum
 //    _scene->culling( _frustum, _culling );
-    _select_renderer->select(this,type_id);
+    _select_renderer->select(type_id);
     return _select_renderer->findObject(x,y);
 
 

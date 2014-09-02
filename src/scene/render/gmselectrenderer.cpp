@@ -30,6 +30,7 @@
 #include "gmselectrenderer.h"
 
 // local
+#include "gmrendertarget.h"
 #include "../gmscene.h"
 #include "../camera/gmcamera.h"
 
@@ -78,7 +79,7 @@ namespace GMlib {
     GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
     _fbo.unbind();
 
-    const DisplayObject *obj = dynamic_cast<const DisplayObject*>(_current_scene->find(c.get()));
+    const DisplayObject *obj = dynamic_cast<const DisplayObject*>(getScene()->find(c.get()));
 
     return obj;
   }
@@ -90,7 +91,7 @@ namespace GMlib {
     GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
     _fbo.unbind();
 
-    DisplayObject *obj = dynamic_cast<DisplayObject*>(_current_scene->find(c.get()));
+    DisplayObject *obj = dynamic_cast<DisplayObject*>(getScene()->find(c.get()));
 
     return obj;
   }
@@ -111,7 +112,7 @@ namespace GMlib {
     for(int i = ymin; i < ymax; ++i) {
       for(int j = xmin; j < xmax; ++j) {
         c = pixels[ct++];
-        const DisplayObject *tmp = dynamic_cast<const DisplayObject*>(_current_scene->find(c.get()));
+        const DisplayObject *tmp = dynamic_cast<const DisplayObject*>(getScene()->find(c.get()));
         if(tmp)
           if(!tmp->isSelected()) { sel.insertAlways(tmp); }
       }
@@ -137,7 +138,7 @@ namespace GMlib {
     for(int i = ymin; i < ymax; ++i) {
       for(int j = xmin; j < xmax; ++j) {
         c = pixels[ct++];
-        DisplayObject *tmp = dynamic_cast<DisplayObject*>(_current_scene->find(c.get()));
+        DisplayObject *tmp = dynamic_cast<DisplayObject*>(getScene()->find(c.get()));
         if(tmp)
           if(!tmp->isSelected()) { sel.insertAlways(tmp); }
       }
@@ -206,25 +207,55 @@ namespace GMlib {
     assert(link_ok);
   }
 
-  void SelectRenderer::reshape(int x, int y, int w, int h) {
+  void SelectRenderer::reshape() {
 
-//    Renderer::reshape(x, y, w ,h);
-    assert(false);
+    _rbo_color.texImage2D( 0, GL_RGBA8, getViewportW(), getViewportH(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, getViewportW(), getViewportH(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
 
-    _rbo_color.texImage2D( 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-    _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, w, h, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
+    Renderer::reshape();
   }
 
-  void SelectRenderer::select(Camera* cam, int type_id) {
+  void SelectRenderer::select(int type_id) {
 
     _what = type_id;
-    _current_scene = cam->getScene();
-
-//    render(cam);
-    assert(false);
+    render();
   }
 
-  void SelectRenderer::renderObjects(Array<DisplayObject*>& objs, Camera* cam) {
+  void SelectRenderer::render()  {
+
+    Scene *scene = getCamera()->getScene();
+    assert(scene);
+
+    // Update lights
+    getCamera()->updateLightUBO(scene);
+    getCamera()->updateCameraOrientation();
+
+    // Prepare
+    prepare(getCamera());
+
+    // Render scene
+    renderScene(getCamera());
+  }
+
+
+
+  void SelectRenderer::prepare(Camera *cam) {
+
+    Scene *scene = cam->getScene();
+    assert(scene);
+
+    // Compute frustum/frustum-matrix, set glViewport
+    cam->setupDisplay();
+
+    // Get displayable objects
+    _objs.resetSize();
+    scene->getDisplayableObjects( _objs, cam );
+  }
+
+  void SelectRenderer::renderScene(Camera* cam) {
+
+
+    GL_CHECK(::glViewport(0,0,getViewportW(),getViewportH()));
 
     // Clear buffers
     _fbo.clear( GL_DEPTH_BUFFER_BIT );
@@ -239,9 +270,9 @@ namespace GMlib {
 
     _fbo.bind(); {
 
-      for( int i=0; i < objs.getSize(); ++i ) {
+      for( int i=0; i < _objs.getSize(); ++i ) {
 
-        DisplayObject *obj = objs[i];
+        DisplayObject *obj = _objs[i];
         if( obj != cam && ( _what == 0 || _what == obj->getTypeId() || ( _what < 0 && _what + obj->getTypeId() != 0 ) ) ) {
 
           _prog.bind(); {
