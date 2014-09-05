@@ -87,15 +87,13 @@ namespace GMlib{
 
     SceneObject*                find(unsigned int name);
     const SceneObject*          find(unsigned int name) const;
+    void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, const Camera* cam) const;
     SceneObject*                getActiveObject();
-    Array<Light*>&              getLights();
     int                         getSize();
-    void                        prepare();
-    void                        simulate();
-
     virtual void                insert(SceneObject* obj);
     void                        remove(SceneObject* obj);
 
+    Array<Light*>&              getLights();
     const Array<Light*>&        getLights() const;
     void                        insertLight(Light* light, bool insert_in_scene = false);
     bool                        removeLight(Light* light);
@@ -106,51 +104,46 @@ namespace GMlib{
     void                        scaleDayLight(double d);
     void                        setSunDirection(Angle d);
 
-
-
-    bool                        isRunning() const;
-    virtual bool                toggleRun();
-
-
-
-
     const Array<Camera*>&       getCameras() const;
     virtual void                insertCamera(Camera* cam);
     virtual bool                removeCamera(Camera* cam);
 
 
-
-
-
+    void                        prepare();
+    void                        simulate();
+    bool                        isRunning() const;
+    bool                        isRunning();
+    virtual bool                toggleRun();
+    void                        enabledFixedDt();
+    void                        disableFixedDt();
+    void                        setFixedDt( double dt );
+    double                      getElapsedTime();
+    double                      getTimeScale();
+    void                        setTimeScale(double s);
+    void                        resetTime();
+    void                        start();
+    void                        stop();
 
     Sphere<float,3>             getSphere();
     Sphere<float,3>             getSphereClean() const;
 
 
+    const Array<SceneObject*>&  getSelectedObjects();
     void                        updateSelection(SceneObject *obj );
-    const Array<SceneObject*>&        getSelectedObjects();
     bool                        isSelected( SceneObject* obj ) const;
     void                        removeSelections();
+    void                        clearSelection();
 
-    double                      getElapsedTime();
-    double                      getTimeScale();
-    void                        setTimeScale(double s);
-    bool                        isRunning();
-    void                        resetTime();
-    void                        start();
-    void                        stop();
+
+
+
+
 
     void                        setEventManager( EventManager* mgr );
 
-    void                        enabledFixedDt();
-    void                        disableFixedDt();
-    void                        setFixedDt( double dt );
 
-//    virtual RenderManager*      getRenderManager() const;
-    void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, const Camera* cam) const;
 
     void                        clear();
-    void                        clearSelection();
 
 
     void                        render();

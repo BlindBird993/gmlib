@@ -189,7 +189,7 @@ namespace GMlib{
     virtual SceneObject*                makeCopy() = 0;
     virtual std::string                 getIdentity() const = 0;
 
-    Scene*                              getScene() const;
+    Scene*                              getScene();
 
     int                                 getTypeId() const;
     unsigned int                        getName() const;
@@ -488,7 +488,7 @@ namespace GMlib{
   }
 
   inline
-  Scene* SceneObject::getScene() const {
+  Scene* SceneObject::getScene() {
 
     return _scene;
   }

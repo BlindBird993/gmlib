@@ -441,6 +441,7 @@ namespace GMlib {
     // SceneObject->setSelected(...) updates the selected objects array.
     Array<SceneObject*> sel_objs = getSelectedObjects();
 
+
     for( int i = 0; i < sel_objs.getSize(); i++ )
         sel_objs[i]->setSelected( false );
   }
