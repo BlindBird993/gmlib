@@ -20,33 +20,5 @@
 # #
 # ###############################################################################
 
-addHeaders(
-  gmBufferObject
-  gmFramebufferObject
-  gmGLObject
-  gmOpenGL
-  gmOpenGLManager
-  gmProgram
-  gmRenderbufferObject
-  gmShader
-  gmTexture
-)
 
-addSources(
-  gmbufferobject.cpp
-  gmframebufferobject.cpp
-  gmopenglmanager.cpp
-  gmprogram.cpp
-  gmrenderbufferobject.cpp
-  gmshader.cpp
-  gmtexture.cpp
-)
-
-addSubDirectory(bufferobjects)          # <bufferobjects> sub-module
-addSubDirectory(shaders)                # <shaders> sub-module
-addSubDirectory(utils)                  # <utils> sub-module
-
-moduleLinkLibrary( ${GLEW_LIBRARY} )
-moduleLinkLibrary( ${OPENGL_LIBRARIES} )
-
-addTestDir(test)
+GM_ADD_TESTS(dvectorn_tests)

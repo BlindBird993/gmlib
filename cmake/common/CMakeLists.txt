@@ -21,29 +21,13 @@
 # ###############################################################################
 
 
-addHeaders(
-  gmDisplayObject
-  gmFrustum
-  gmScaleObject
-  gmScene
-  gmSceneObject
-  gmVisualizer
+set( FILES
+  config.cmake.in
+  config_version.cmake.in
+  doxyfile.in
+  gen_redirect_header.cmake.in
+  namespace_header.h.in
+  redirect_header.h.in
 )
 
-addSources(
-  gmdisplayobject.cpp
-  gmscene.cpp
-  gmsceneobject.cpp
-  gmvisualizer.cpp
-)
-
-addSubDirectory(camera)           # <camera> sub-module
-addSubDirectory(displayobjects)   # <displayobject> sub-module
-addSubDirectory(event)            # <event> sub-module
-addSubDirectory(light)            # <light> sub-module
-addSubDirectory(render)           # <render> sub-module
-addSubDirectory(selector)         # <selector> sub-module
-addSubDirectory(utils)            # <utils> sub-module
-addSubDirectory(visualizers)      # <visualizers> sub-module
-addSubDirectory(window)           # <window> sub-module
-
+add_custom_target( CMakeConfigFiles SOURCES ${FILES} )

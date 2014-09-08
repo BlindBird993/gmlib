@@ -20,25 +20,13 @@
 # #
 # ###############################################################################
 
-addHeaders(
-  gmParametrics
-  gmPCurve
-  gmPSurf
-  gmPTriangle
-)
 
-addTemplateSources(
-  gmparametrics.c
-  gmpcurve.c
-  gmpsurf.c
-  gmptriangle.c
-)
+# Set name of module
+project(stereolithography)
 
-addSubDirectory(curves)
-addSubDirectory(evaluators)
-addSubDirectory(surfaces)
-addSubDirectory(triangles)
-addSubDirectory(utils)
-addSubDirectory(visualizers)
+# Add source directory
+add_subdirectory(src)
 
-addTestDir(test)
+# Add unit test directory
+#include_directories(src)
+#add_subdirectory(tests)

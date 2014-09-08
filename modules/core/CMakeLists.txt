@@ -21,14 +21,12 @@
 # ###############################################################################
 
 
-addHeaders( gmGlobal )
+# Set name of module
+project(core)
 
-addSubDirectory(containers)   # <containers> sub-module
-addSubDirectory(blas)         # <blas> sub-module
-addSubDirectory(static)       # <static> sub-module
-addSubDirectory(types)        # <types> sub-module
-addSubDirectory(utils)        # <utils> sub-module
+# Add source directory
+add_subdirectory(src)
 
-if( BLAS_FOUND )
-  moduleLinkLibrary( ${BLAS_LIBRARIES} )
-endif( BLAS_FOUND )
+# Add unit test directory
+include_directories(src)
+add_subdirectory(tests)
