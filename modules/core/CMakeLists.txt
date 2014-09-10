@@ -30,3 +30,31 @@ add_subdirectory(src)
 # Add unit test directory
 include_directories(src)
 add_subdirectory(tests)
+
+#STRINGFIRSTTOUPPER( ${PROJECT_NAME} PROJECT_NAME_CAMEL )
+#set( FULL_PROJECT_NAME ${CMAKE_PROJECT_NAME}${PROJECT_NAME_CAMEL} )
+
+#set( ${FULL_PROJECT_NAME}_VERSION 0.5.0 )
+
+
+
+
+##set( INCLUDE_INSTALL_DIR    include/${CMAKE_PROJECT_NAME} )
+##set( LIB_INSTALL_DIR        lib/ )
+##set( SYSCONFIG_INSTALL_DIR  etc/${CMAKE_PROJECT_NAME}/ )
+
+
+include(CMakePackageConfigHelpers)
+
+##configure_package_config_file(
+##  ${CMAKE_SOURCE_DIR}/cmake/common/config.cmake.in
+##  ${CMAKE_CURRENT_BINARY_DIR}/${FULL_PROJECT_NAME}Config.cmake
+##  INSTALL_DESTINATION ${CMAKE_LIBRARY_PATH}/GMlib/cmake
+##  PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR
+##)
+
+#write_basic_package_version_file(
+#  ${CMAKE_CURRENT_BINARY_DIR}/${FULL_PROJECT_NAME}ConfigVersion.cmake
+#  VERSION ${GMlib_VERSION}
+#  COMPATIBILITY ExactVersion
+#)

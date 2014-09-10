@@ -30,8 +30,8 @@
 
 
 // Version definitions
-#define GM_VERSION 0x000400
-#define GM_VERSION_STR "0.4.0"
+#define GM_VERSION 0x000500
+#define GM_VERSION_STR "0.5.0"
 
 #define GM_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 

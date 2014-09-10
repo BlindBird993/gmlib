@@ -21,10 +21,10 @@
 # ###############################################################################
 
 # Minimum CMake version required
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
 
 # Nice name for the IDEs
-project(GMlib)
+project(GMlib VERSION 0.5)
 
 # Extra CMake modules
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/" )
@@ -35,42 +35,42 @@ option( GM_DEVELOPER_MODE "Set gmlib in developer mode" OFF )
 #option( GM_DEBUG "Enable internal debugging, assertions, etc." FALSE )
 #option( GM_OGL_DEBUG "Enable opengl debug. OpenGL function calls are safe called." FALSE )
 #option( GM_DOXYGEN "Create build target for doxygen documentation." FALSE )
-option( GM_UNITTESTS "Create unit tests." FALSE )
-if(GM_UNITTESTS)
+option( GM_TESTING "Create unit tests." ON )
 
+#################
+## Developer Mode
+if(GM_DEVELOPER_MODE)
 
-  find_package(GTest REQUIRED)
-  if(GTest_FOUND)
-    message("GTest found: ${GTEST_INCLUDE_DIRS}")
-    include_directories(${GTEST_INCLUDE_DIRS})
-    enable_testing()
-  else(GTest_FOUND)
-    message("GTest NOT found")
-    set(GM_UNITTESTS FALSE)
-#    include_directories(${GTEST_DIR}/includes)
-#    set(GTEST_LIBRARIES ${GTEST_DIR}/libgtest.a)
-#    set(GTEST_MAIN_LIBRARIES ${GTEST_DIR}/libgtest_main.a)
-  endif(GTest_FOUND)
+  ##########
+  ## TESTING
+  if(GM_TESTING)
+    message("Finding GTest")
+    find_package(GTest REQUIRED)
+    if(GTest_FOUND)
+      include_directories(${GTEST_INCLUDE_DIRS})
+      message("GTest include dir: ${GTEST_INCLUDE_DIRS}")
+      set(GM_TESTING FALSE)
+      enable_testing()
+    else(GTest_FOUND)
+      message(WARNING "GTest NOT found: Unittests disabled")
+      message(WARNING "GTest include dir: ${GTEST_INCLUDE_DIRS}")
+      set(GM_TESTING FALSE)
+    endif(GTest_FOUND)
 
+  endif(GM_TESTING)
 
-
-
-
-
-
-
-endif(GM_UNITTESTS)
+endif(GM_DEVELOPER_MODE)
 
 
 
 ## Set a default build type if none was specified
-#if(NOT CMAKE_BUILD_TYPE)
-#  message(STATUS "Setting build type to 'Release' as none was specified.")
-#  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
-#  # Set the possible values of build type for cmake-gui
-#  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
-#    "MinSizeRel" "RelWithDebInfo")
-#endif()
+if(NOT CMAKE_BUILD_TYPE)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+    "MinSizeRel" "RelWithDebInfo")
+endif()
 
 
 

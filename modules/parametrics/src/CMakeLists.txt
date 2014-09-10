@@ -168,6 +168,7 @@ list( APPEND HEADER_SOURCES
   surfaces/gmpenneperssurface.c
   surfaces/gmperbssurf.c
   surfaces/gmpheart.c
+  surfaces/gmphelicoid.c
   surfaces/gmphermitecurvesurf.c
   surfaces/gmphermitesurface.c
   surfaces/gmphermitesurf.c

@@ -23,6 +23,7 @@
 
 set( FILES
   config.cmake.in
+  config.cmake.in_old
   config_version.cmake.in
   doxyfile.in
   gen_redirect_header.cmake.in

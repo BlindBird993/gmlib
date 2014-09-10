@@ -20,25 +20,26 @@
 ##
 ################################################################################
 
+############
+# Pre-config
+get_filename_component( @VAR_LIBRARY_UPPER@_CMAKE_DIR ${CMAKE_CURRENT_LIST_FILE} PATH )
 
-# Helper vars
-set( PREFIX @CMAKE_BINARY_DIR@ )
+############
+# Build type
+set( @VAR_LIBRARY_UPPER@_CMAKE_BUILD_TYPE @VAR_CMAKE_BUILD_TYPE@ )
 
+#######################
+# Add include directory
+include_directories( ${@VAR_LIBRARY_UPPER@_CMAKE_DIR}/@VAR_INC_RELPATH@ )
 
+###############
+# Set libraries
+set( @VAR_LIBRARY_UPPER@_LIBRARIES @VAR_LIBS@ )
 
-# Version
-set(@PROJECT_NAME@_VERSION @PROJECT_VERSION@)
+#################
+# Set definitions
+@VAR_DEFINITIONS@
 
-# Vars
-set(@PROJECT_NAME@_INCLUDE_DIRS "${PREFIX}/include")
-set(@PROJECT_NAME@_LINK_DIRS "${PREFIX}/lib" )
-set(@PROJECT_NAME@_LIBRARIES @VAR_MODULE_TARGETS@ )
-
-# Custom config [BEGIN]
+###############
+# Custom Config
 @VAR_CUSTOM_CONFIG@
-# Custom config [END]
-
-
-unset( PREFIX )
-
-

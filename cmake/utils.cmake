@@ -25,46 +25,80 @@
 # JOIN function to join lists
 # ref: Andrey Kamaev - stackoverflow.com
 # http://stackoverflow.com/questions/7172670/best-shortest-way-to-join-a-list-in-cmake
-FUNCTION(JOIN VALUES GLUE OUTPUT)
+function(GM_JOIN VALUES GLUE OUTPUT)
   string (REGEX REPLACE "([^\\]|^);" "\\1${GLUE}" _TMP_STR "${VALUES}")
   string (REGEX REPLACE "[\\](.)" "\\1" _TMP_STR "${_TMP_STR}") #fixes escaping
   set (${OUTPUT} "${_TMP_STR}" PARENT_SCOPE)
-ENDFUNCTION()
+endfunction()
 
-FUNCTION(TOUPPERFIRST INPUT OUTPUT)
+function(GM_STRINGFIRSTTOUPPER INPUT OUTPUT)
   string(SUBSTRING ${INPUT} 0 1 IN_PART0)
   string(SUBSTRING ${INPUT} 1 -1 IN_PART1)
   string(TOUPPER ${IN_PART0} IN_PART0)
   set(${OUTPUT} ${IN_PART0}${IN_PART1} PARENT_SCOPE)
-ENDFUNCTION()
+endfunction()
 
 
-FUNCTION(GM_ADD_LIBRARY)
-  add_library( gm${PROJECT_NAME} ${ARGN} )
-ENDFUNCTION(GM_ADD_LIBRARY)
 
-FUNCTION(GM_ADD_LIBRARY_DEPENDENCIES TARGET )
+
+
+
+function(GM_INIT)
+  if(GM_MODULE_TARGETS)
+    unset(GM_MODULE_TARGETS CACHE)
+  endif(GM_MODULE_TARGETS)
+
+  if(GM_CUSTOM_CONFIG)
+    unset(GM_CUSTOM_CONFIG CACHE)
+  endif(GM_CUSTOM_CONFIG)
+endfunction(GM_INIT)
+
+function(GM_ADD_LIBRARY)
+  set( TARGET gm${PROJECT_NAME} )
+  add_library( ${TARGET} ${ARGN} )
+
+#  message( "BAH: " $<TARGET_FILE:${TARGET}> )
+
+  if( NOT GM_MODULE_TARGETS )
+    set( GM_MODULE_TARGETS -l${TARGET} CACHE INTERNAL "TMP module targets variable" )
+  else()
+    set( GM_MODULE_TARGETS -l${TARGET} ${GM_MODULE_TARGETS} CACHE INTERNAL "TMP module targets variable" )
+  endif()
+endfunction(GM_ADD_LIBRARY)
+
+function(GM_ADD_LIBRARY_DEPENDENCIES TARGET )
   foreach(ARG ${ARGN})
     add_dependencies( gm${TARGET} gm${ARG})
   endforeach(ARG)
-ENDFUNCTION(GM_ADD_LIBRARY_DEPENDENCIES)
+endfunction(GM_ADD_LIBRARY_DEPENDENCIES)
 
-FUNCTION(GM_SET_DEFAULT_TARGET_PROPERTIES)
-
-  set_target_properties( gm${PROJECT_NAME} PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-  )
-ENDFUNCTION(GM_SET_DEFAULT_TARGET_PROPERTIES)
-
+function(GM_SET_DEFAULT_TARGET_PROPERTIES)
+#  set_target_properties( gm${PROJECT_NAME} PROPERTIES
+#    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+#    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+#    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+#  )
+endfunction(GM_SET_DEFAULT_TARGET_PROPERTIES)
 
 
 
 
-FUNCTION(GM_TARGET_LINK_LIBRARIES)
+
+function(GM_TARGET_LINK_LIBRARIES)
   target_link_libraries(gm${PROJECT_NAME} ${ARGN})
-ENDFUNCTION(GM_TARGET_LINK_LIBRARIES)
+endfunction(GM_TARGET_LINK_LIBRARIES)
+
+
+
+function(GM_ADD_CUSTOM_CONFIG CONFIG)
+#  message("add custom config: ${CONFIG}" )
+
+  if( NOT GM_CUSTOM_CONFIG )
+    set( GM_CUSTOM_CONFIG ${CONFIG} CACHE INTERNAL "TMP custom config var" )
+  else()
+    set( GM_CUSTOM_CONFIG ${CONFIG} ${GM_CUSTOM_CONFIG} CACHE INTERNAL "TMP custom config var" )
+  endif()
+endfunction(GM_ADD_CUSTOM_CONFIG)
 
 
 
@@ -72,15 +106,15 @@ ENDFUNCTION(GM_TARGET_LINK_LIBRARIES)
 
 
 
-FUNCTION(GM_ADD_TEMPLATE_TARGET)
+function(GM_ADD_TEMPLATE_TARGET)
 
   add_custom_target( ${PROJECT_NAME}TemplateModuleTarget SOURCES ${ARGN} )
 
-ENDFUNCTION(GM_ADD_TEMPLATE_TARGET)
+endfunction(GM_ADD_TEMPLATE_TARGET)
 
 
 
-FUNCTION(GM_ADD_HEADERS)
+function(GM_ADD_HEADERS)
 
   # Helper vars
   set( INCLUDE_DIR "${CMAKE_BINARY_DIR}/include" )
@@ -114,15 +148,15 @@ FUNCTION(GM_ADD_HEADERS)
 
   endforeach(ARG)
 
-  TOUPPERFIRST(${PROJECT_NAME} MODULE_NAME)
+  GM_STRINGFIRSTTOUPPER(${PROJECT_NAME} MODULE_NAME)
   set( CXX_MODULE_HEADER "${INCLUDE_DIR}/gm${MODULE_NAME}Module" )
 
-  JOIN( "${CXX_HEADER_INCLUDES}" "\n" CONF_HEADER_INCLUDES )
+  GM_JOIN( "${CXX_HEADER_INCLUDES}" "\n" CONF_HEADER_INCLUDES )
   configure_file( ${CMAKE_SOURCE_DIR}/cmake/common/redirect_header.h.in ${CXX_MODULE_HEADER} @ONLY )
 
-ENDFUNCTION(GM_ADD_HEADERS)
+endfunction(GM_ADD_HEADERS)
 
-FUNCTION(GM_ADD_HEADER_SOURCES)
+function(GM_ADD_HEADER_SOURCES)
 
   # Helper vars
   set( INCLUDE_DIR "${CMAKE_BINARY_DIR}/include" )
@@ -143,7 +177,7 @@ FUNCTION(GM_ADD_HEADER_SOURCES)
     get_filename_component(CXXHEADER ${ARG} NAME_WE)
   endforeach(ARG)
 
-ENDFUNCTION(GM_ADD_HEADER_SOURCES)
+endfunction(GM_ADD_HEADER_SOURCES)
 
 
 
@@ -160,21 +194,21 @@ ENDFUNCTION(GM_ADD_HEADER_SOURCES)
 
 
 
-FUNCTION(GM_ADD_TEST TEST_NAME)
+function(GM_ADD_TEST TEST_NAME)
   if(GM_UNITTESTS)
     add_executable(${TEST_NAME} ${TEST_NAME}.cpp)
     target_link_libraries(${TEST_NAME} ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} pthread)
     add_test( NAME ${TEST_NAME} COMMAND ${TEST_NAME})
   endif(GM_UNITTESTS)
-ENDFUNCTION(GM_ADD_TEST)
+endfunction(GM_ADD_TEST)
 
-FUNCTION(GM_ADD_TESTS TEST_SET_NAME)
+function(GM_ADD_TESTS TEST_SET_NAME)
   if(GM_UNITTESTS)
     add_executable( ${TEST_SET_NAME} ${TEST_SET_NAME}.cc )
     target_link_libraries(${TEST_SET_NAME} ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} pthread)
     gtest_add_tests( ${TEST_SET_NAME} "" ${TEST_SET_NAME}.cc )
   endif(GM_UNITTESTS)
-ENDFUNCTION(GM_ADD_TESTS)
+endfunction(GM_ADD_TESTS)
 
 
 

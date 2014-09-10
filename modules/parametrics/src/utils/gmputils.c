@@ -1,5 +1,5 @@
 
-#include <parametrics/gmPCurve>
+#include "../gmpcurve.h"
 
 
 template <typename T, int n>

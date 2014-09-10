@@ -31,7 +31,6 @@
 // gmlib
 #include <core/types/gmpoint.h>
 #include <core/types/gmmatrix.h>
-#include <opengl/gmopengl.h>
 
 
 #ifndef __GMSCALEOBJECT_H__
