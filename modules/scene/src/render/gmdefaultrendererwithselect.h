@@ -21,34 +21,25 @@
 **********************************************************************************/
 
 
-
-/*! \file gmselectrender.h
- *  \brief Pending Documentation
- *
- *  Pending Documentation
- */
-
-#ifndef __gmSELECTRENDERER_H__
-#define __gmSELECTRENDERER_H__
+#ifndef __GM_SCENE_RENDER_DEFAULTRENDERERWITHSELECT_H__
+#define __GM_SCENE_RENDER_DEFAULTRENDERERWITHSELECT_H__
 
 
-#include "gmrenderer.h"
 
-// local
-#include "../camera/gmcamera.h"
-#include "../visualizers/gmstdrepvisualizer.h"
+#include "gmdefaultrenderer.h"
+
 
 // gmlib
 #include <opengl/gmframebufferobject.h>
 #include <opengl/gmtexture.h>
 #include <opengl/gmprogram.h>
 
-
 namespace GMlib {
 
-  class SelectRenderer : public Renderer {
+
+  class DefaultRendererWithSelect : public DefaultRenderer {
   public:
-    explicit SelectRenderer();
+    explicit DefaultRendererWithSelect();
 
     const DisplayObject*        findObject(int x, int y) const;
     DisplayObject*              findObject(int x, int y);
@@ -56,36 +47,42 @@ namespace GMlib {
     Array<DisplayObject*>       findObjects(int xmin, int ymin, int xmax, int ymax);
 
 
-    /* virtual from Renderer */
-
-    void    setRBOcolorName( const std::string& name ) { _rbo_color.setName(name); }
-
     void                        select(int what);
+
+
+    void                        setSelectRboName( const std::string& name ) { _rbo_color.setName(name); }
+
   protected:
+    /* Virtual from DefaultRenderer and Renderer */
     void                        reshape();
-    void                        render();
-    void                        prepare(Camera* cam);
+
+
 
   private:
-    GL::Program                 _prog;
+    GL::Program                     _prog;
 
-    GL::FramebufferObject       _fbo;
-    GL::Texture                 _rbo_color;
-    GL::Texture                 _rbo_depth;
+    GL::FramebufferObject           _fbo;
+    GL::Texture                     _rbo_color;
+    GL::Texture                     _rbo_depth;
 
-    mutable int                 _what;
-    mutable Array<DisplayObject*>    _objs;
+    mutable int                     _what;
 
-    void                        initSelectProgram();
+    void                            initSelectProgram();
+    void                            renderScene(Camera *cam);
 
-    /* virtual from Renderer */
-    void                        renderScene(Camera *cam);
-  };
+    void                            select();
 
 
+
+
+  }; // END class DefaultRendererWithSelect
 
 
 
 } // END namespace GMlib
 
-#endif // __gmSELECTRENDERER_H__
+
+
+
+
+#endif // __GM_SCENE_RENDER_DEFAULTRENDERER_H__

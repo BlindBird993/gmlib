@@ -179,14 +179,6 @@ namespace GMlib {
     _sel_objs.clear();
   }
 
-  void Scene::render() {
-
-    for( int i = 0; i < _cameras.getSize(); ++i ) {
-      _cameras[i]->updateLightUBO(this);
-      _cameras(i)->render();
-    }
-  }
-
 
   /*! int Scene::getSize()
    *  \brief Pending Documentation

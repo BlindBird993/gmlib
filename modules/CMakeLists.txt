@@ -21,16 +21,8 @@
 # ###############################################################################
 
 
-GM_INIT()
 
 include_directories(${CMAKE_BINARY_DIR}/include)
-
-
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib" )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib" )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" )
-
-
 
 # Core
 add_subdirectory(core)
@@ -57,36 +49,6 @@ GM_ADD_LIBRARY_DEPENDENCIES(stereolithography core opengl scene)
 
 
 
-#message( "custom config: ${GM_CUSTOM_CONFIG}" )
-
-GM_JOIN( "${GM_CUSTOM_CONFIG}" "\n" VAR_CUSTOM_CONFIG )
-
-
-#foreach( TARGET ${GM_MODULE_TARGETS} )
-##  get_target_property( TARGET_LOC ${TARGET} ${CMAKE_BUILD_TYPE}_LOCATION )
-##  set( TARGET_LOC $<TARGET_FILE:${TARGET}>)
-#  message( "target: ${TARGET}, LOC: ${TARGET_LOC}"  )
-#endforeach()
-
-
-GM_JOIN( "${GM_MODULE_TARGETS}" " " VAR_MODULE_TARGETS )
-
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}/${PROJECT_NAME}ConfigVersion.cmake
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY ExactVersion
-)
-
-
-set(INCLUDE_INSTALL_DIR ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-set(SYSCONFIG_INSTALL_DIR ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-configure_package_config_file(
-  ${CMAKE_SOURCE_DIR}/cmake/common/config.cmake.in
-  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}/${PROJECT_NAME}Config.cmake
-  INSTALL_DESTINATION ${CMAKE_LIBRARY_PATH}/GMlib/cmake
-  PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR
-)
 
 
 #################################

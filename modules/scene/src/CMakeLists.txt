@@ -111,19 +111,17 @@ list( APPEND SOURCES
 # Render
 list( APPEND HEADERS
   render/gmdefaultrenderer.h
+  render/gmdefaultrendererwithselect.h
   render/gmrenderer.h
-#  render/gmrendermanager.h
   render/gmrendertarget.h
-  render/gmselectrenderer.h
   render/rendertargets/gmnativerendertarget.h
   render/rendertargets/gmrendertexture.h
 )
 
 list( APPEND SOURCES
   render/gmdefaultrenderer.cpp
+  render/gmdefaultrendererwithselect.cpp
   render/gmrenderer.cpp
-#  render/gmrendermanager.cpp
-  render/gmselectrenderer.cpp
   render/rendertargets/gmrendertexture.cpp
 )
 

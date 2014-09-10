@@ -67,8 +67,12 @@ namespace GMlib {
 
 
   protected:
-    void        reshape();
+    virtual void            prepare(Camera *cam);
 
+    /* virtual from Renderer */
+    void                    reshape();
+
+    mutable Array<DisplayObject*>    _objs;
 
 
   private:
@@ -105,13 +109,10 @@ namespace GMlib {
     void                    initRenderProgram();
     void                    initRenderSelectProgram();
 
-    mutable Array<DisplayObject*>    _objs;
 
-    /* virtual from Renderer */
-    void                    prepare(Camera *cam);
+
     void                    renderScene(Camera* cam);
     void                    renderToTarget();
-
 
   }; // END class DisplayRenderer
 

@@ -204,14 +204,6 @@ namespace GMlib {
     void                              updateLightUBO( const Scene* lights );
     const GL::UniformBufferObject&    getLightUBO() const;
 
-    Renderer*                   _renderer;
-    void                        render();
-    Renderer*                   getRenderer() { return _renderer; }
-
-
-    SelectRenderer*             _select_renderer;
-    SelectRenderer*             getSelectRenderer() { return _select_renderer; }
-
 
   public:
     void    markAsActive()    { _active = true; }

@@ -29,9 +29,26 @@ project(GMlib VERSION 0.5)
 # Extra CMake modules
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/" )
 
+# Include some cmake utils
+include(cmake/utils.cmake)
+GM_INIT()
+
+
+
+
+
+####### TEMP !!!!!!!!!!! TMP
+add_custom_target( ECMake SOURCES ecmake/enhanced.cmake )
+add_subdirectory(cmake)
+####### TEMP !!!!!!!!!!! TMP
+
+
+
+
+
 # Options
 option( GM_DEVELOPER_MODE "Set gmlib in developer mode" OFF )
-#option( GM_STREAM "Enable output stream operators for core types." TRUE )
+option( GM_STREAM "Enable output stream operators for core types." TRUE )
 #option( GM_DEBUG "Enable internal debugging, assertions, etc." FALSE )
 #option( GM_OGL_DEBUG "Enable opengl debug. OpenGL function calls are safe called." FALSE )
 #option( GM_DOXYGEN "Create build target for doxygen documentation." FALSE )
@@ -61,6 +78,12 @@ if(GM_DEVELOPER_MODE)
 
 endif(GM_DEVELOPER_MODE)
 
+# add GM_STREAM definition
+if(GM_STREAM)
+  GM_ADD_DEFINITION( GM_STREAM )
+  add_definitions(-DGM_STREAM)
+  message("GMStream enabled")
+endif(GM_STREAM)
 
 
 ## Set a default build type if none was specified
@@ -74,18 +97,87 @@ endif()
 
 
 
-####### TEMP !!!!
-add_custom_target( ECMake SOURCES ecmake/enhanced.cmake )
-####### TEMP !!!!
 
-# Include some cmake utils
-include(cmake/utils.cmake)
 
-# Add cmake subdirectory
-add_subdirectory(cmake)
+
+
+
+
+
+
+
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib" )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib" )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin" )
+
+
+
+
+
 
 # Add modules directory
 add_subdirectory(modules)
+
+
+
+
+
+
+#message( "custom config: ${GM_CUSTOM_CONFIG}" )
+
+GM_JOIN( "${GM_CUSTOM_CONFIG}" "\n" VAR_CUSTOM_CONFIG )
+
+
+#foreach( TARGET ${GM_MODULE_TARGETS} )
+##  get_target_property( TARGET_LOC ${TARGET} ${CMAKE_BUILD_TYPE}_LOCATION )
+##  set( TARGET_LOC $<TARGET_FILE:${TARGET}>)
+#  message( "target: ${TARGET}, LOC: ${TARGET_LOC}"  )
+#endforeach()
+
+
+set( GM_DEFINITIONS_STR "" )
+foreach( DEFINITION ${GM_DEFINITIONS} )
+  set( GM_DEFINITIONS_STR "-D${DEFINITION} ${GM_DEFINITIONS_STR}" )
+endforeach()
+set( VAR_DEFINITIONS "set( ${PROJECT_NAME}_DEFINITIONS ${GM_DEFINITIONS_STR})" )
+
+GM_JOIN( "${GM_MODULE_TARGETS}" " " VAR_MODULE_TARGETS )
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}/${PROJECT_NAME}ConfigVersion.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY ExactVersion
+)
+
+set(INCLUDE_INSTALL_DIR ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+set(SYSCONFIG_INSTALL_DIR ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+configure_package_config_file(
+  ${CMAKE_SOURCE_DIR}/cmake/common/config.cmake.in
+  ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/cmake/${PROJECT_NAME}-${PROJECT_VERSION}/${PROJECT_NAME}Config.cmake
+  INSTALL_DESTINATION ${CMAKE_LIBRARY_PATH}/GMlib/cmake
+  PATH_VARS INCLUDE_INSTALL_DIR SYSCONFIG_INSTALL_DIR
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

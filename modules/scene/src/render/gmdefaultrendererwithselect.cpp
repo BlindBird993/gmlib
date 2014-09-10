@@ -20,19 +20,8 @@
 **
 **********************************************************************************/
 
-/*! \file gmselectrender.cpp
- *  \brief Pending Documentation
- *
- *  Pending Documentation
- */
 
-
-#include "gmselectrenderer.h"
-
-// local
-#include "gmrendertarget.h"
-#include "../gmscene.h"
-#include "../camera/gmcamera.h"
+#include "gmdefaultrendererwithselect.h"
 
 // gmlib
 #include <opengl/shaders/gmvertexshader.h>
@@ -42,18 +31,15 @@
 // stl
 #include <cassert>
 
-
 namespace GMlib {
 
-
-  SelectRenderer::SelectRenderer() {
+  DefaultRendererWithSelect::DefaultRendererWithSelect() {
 
     initSelectProgram();
 
     _fbo.create();
     _rbo_color.create(GL_TEXTURE_2D);
     _rbo_depth.create(GL_TEXTURE_2D);
-
 
     // Color rbo texture
     _rbo_color.texParameteri( GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -70,9 +56,14 @@ namespace GMlib {
 
     _fbo.attachTexture2D( _rbo_color,  GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
     _fbo.attachTexture2D( _rbo_depth, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT );
+
+
+
   }
 
-  const DisplayObject *SelectRenderer::findObject(int x, int y) const {
+  const
+  DisplayObject*
+  DefaultRendererWithSelect::findObject(int x, int y) const {
 
     Color c;
     _fbo.bind();
@@ -84,7 +75,9 @@ namespace GMlib {
     return obj;
   }
 
-  DisplayObject *SelectRenderer::findObject(int x, int y) {
+  DisplayObject*
+  DefaultRendererWithSelect::findObject(int x, int y) {
+
 
     Color c;
     _fbo.bind();
@@ -96,7 +89,8 @@ namespace GMlib {
     return obj;
   }
 
-  Array<const DisplayObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) const {
+  Array<const DisplayObject*>
+  DefaultRendererWithSelect::findObjects(int xmin, int ymin, int xmax, int ymax) const {
 
     Array<const DisplayObject* > sel;
     int dx=(xmax-xmin)+1;
@@ -122,7 +116,8 @@ namespace GMlib {
     return sel;
   }
 
-  Array<DisplayObject*> SelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) {
+  Array<DisplayObject*>
+  DefaultRendererWithSelect::findObjects(int xmin, int ymin, int xmax, int ymax) {
 
     Array<DisplayObject* > sel;
     int dx=(xmax-xmin)+1;
@@ -148,7 +143,25 @@ namespace GMlib {
     return sel;
   }
 
-  void SelectRenderer::initSelectProgram() {
+  void DefaultRendererWithSelect::select(int what) {
+
+    _what = what;
+    select();
+  }
+
+  void
+  DefaultRendererWithSelect::reshape() {
+
+
+    _rbo_color.texImage2D( 0, GL_RGBA8, getViewportW() -40, getViewportH(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, getViewportW(), getViewportH(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
+
+    DefaultRenderer::reshape();
+  }
+
+
+  void
+  DefaultRendererWithSelect::initSelectProgram() {
 
     const std::string prog_name    = "select_prog";
     if( _prog.acquire(prog_name) ) return;
@@ -186,14 +199,15 @@ namespace GMlib {
     bool compile_ok, link_ok;
 
     GL::VertexShader vshader;
-    vshader.create("select_vs");
+
+    vshader.create("defaultrender_select_vs");
     vshader.setPersistent(true);
     vshader.setSource(vs_src);
     compile_ok = vshader.compile();
     assert(compile_ok);
 
     GL::FragmentShader fshader;
-    fshader.create("select_fs");
+    fshader.create("defaultrender_select_fs");
     fshader.setPersistent(true);
     fshader.setSource(fs_src);
     compile_ok = fshader.compile();
@@ -207,53 +221,10 @@ namespace GMlib {
     assert(link_ok);
   }
 
-  void SelectRenderer::reshape() {
+  void
+  DefaultRendererWithSelect::renderScene(Camera* cam) {
 
-    _rbo_color.texImage2D( 0, GL_RGBA8, getViewportW(), getViewportH(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-    _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, getViewportW(), getViewportH(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
-
-    Renderer::reshape();
-  }
-
-  void SelectRenderer::select(int type_id) {
-
-    _what = type_id;
-    render();
-  }
-
-  void SelectRenderer::render()  {
-
-    Scene *scene = getCamera()->getScene();
-    assert(scene);
-
-    // Update lights
-    getCamera()->updateLightUBO(scene);
-    getCamera()->updateCameraOrientation();
-
-    // Prepare
-    prepare(getCamera());
-
-    // Render scene
-    renderScene(getCamera());
-  }
-
-
-
-  void SelectRenderer::prepare(Camera *cam) {
-
-    Scene *scene = cam->getScene();
-    assert(scene);
-
-    // Compute frustum/frustum-matrix, set glViewport
-    cam->setupDisplay();
-
-    // Get displayable objects
-    _objs.resetSize();
-    scene->getDisplayableObjects( _objs, cam );
-  }
-
-  void SelectRenderer::renderScene(Camera* cam) {
-
+    std::cout << "renderScene(cam)" << std::endl;
 
     GL_CHECK(::glViewport(0,0,getViewportW(),getViewportH()));
 
@@ -277,6 +248,7 @@ namespace GMlib {
 
           _prog.bind(); {
 
+            std::cout << "Rendering: " << obj->getVirtualName() << std::endl;
             _prog.setUniform( "u_color", Color( obj->getVirtualName()) );
 
             if(obj->isCollapsed()) {
@@ -302,5 +274,22 @@ namespace GMlib {
       GL_CHECK(::glDisable( GL_DEPTH_TEST ));
   }
 
+  void
+  DefaultRendererWithSelect::select() {
+
+    Scene *scene = getCamera()->getScene();
+    assert(scene);
+
+    // Update lights
+//    getCamera()->updateLightUBO(scene);
+//    getCamera()->updateCameraOrientation();
+
+//    // Prepare
+//    prepare(getCamera());
+
+    // Render scene
+    renderScene(getCamera());
+
+  }
 
 } // END namespace GMlib

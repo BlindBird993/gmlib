@@ -51,6 +51,10 @@ function(GM_INIT)
   if(GM_CUSTOM_CONFIG)
     unset(GM_CUSTOM_CONFIG CACHE)
   endif(GM_CUSTOM_CONFIG)
+
+  if(GM_DEFINITIONS)
+    unset(GM_DEFINITIONS CACHE)
+  endif(GM_DEFINITIONS)
 endfunction(GM_INIT)
 
 function(GM_ADD_LIBRARY)
@@ -100,6 +104,17 @@ function(GM_ADD_CUSTOM_CONFIG CONFIG)
   endif()
 endfunction(GM_ADD_CUSTOM_CONFIG)
 
+
+
+function(GM_ADD_DEFINITION DEFINITION)
+#  message( "Adding definition: ${DEFINITION}" )
+
+  if( NOT GM_DEFINITIONS )
+    set( GM_DEFINITIONS ${DEFINITION} CACHE INTERNAL "TMP definitions var" )
+  else()
+    set( GM_DEFINITIONS ${DEFINITION} ${GM_DEFINITIONS} CACHE INTERNAL "TMP definitions var" )
+  endif()
+endfunction(GM_ADD_DEFINITION)
 
 
 

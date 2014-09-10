@@ -215,9 +215,9 @@ namespace GMlib {
 
   void GMWindow::setClearColor(const Color &color) {
 
-    _clear_color = color;
-    for( int i = 0; i < getCameras().getSize(); ++i)
-      getCameras()(i)->getRenderer()->setClearColor(color);
+//    _clear_color = color;
+//    for( int i = 0; i < getCameras().getSize(); ++i)
+//      getCameras()(i)->getRenderer()->setClearColor(color);
   }
 
   void GMWindow::setSelectColor( const Color& color ) {
@@ -238,8 +238,8 @@ namespace GMlib {
 
     assert(cam);
 
-    cam->getRenderer()->setRenderTarget( new NativeRenderTarget );
-    cam->getRenderer()->setClearColor( getClearColor() );
+//    cam->getRenderer()->setRenderTarget( new NativeRenderTarget );
+//    cam->getRenderer()->setClearColor( getClearColor() );
     Scene::insertCamera(cam);
   }
 

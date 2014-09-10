@@ -34,7 +34,6 @@
 #include "../utils/gmmaterial.h"
 //#include "../render/gmrendermanager.h"
 #include "../render/gmdefaultrenderer.h"
-#include "../render/gmselectrenderer.h"
 #include "../light/gmspotlight.h"
 #include "../light/gmpointlight.h"
 #include "../light/gmsun.h"
@@ -128,70 +127,6 @@ namespace GMlib {
     else
       return 0.0;
   }
-
-
-  /*! SceneObject*  Camera::findSelectObject(int, int, int type_id)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  SceneObject*  Camera::findSelectObject(int x, int y, int type_id) {
-
-    // Cull the scene using the camera's frustum
-//    _scene->culling( _frustum, _culling );
-    _select_renderer->select(type_id);
-    return _select_renderer->findObject(x,y);
-
-
-//    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-//    Color c;
-//    select(type_id);
-//    GL::OGL::bindSelectBuffer();
-//    glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c));
-//    GL::OGL::unbindSelectBuffer();
-//    return find(c.get());
-  }
-
-//  SceneObject* Camera::findSelectObject(const Vector<int,2>& pos, int type_id) {
-
-//    return findSelectObject( pos(0), pos(1), type_id );
-//  }
-
-
-//  /*! Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id)
-//   *  \brief Pending Documentation
-//   *
-//   *  Pending Documentation
-//   */
-//  Array<SceneObject* > Camera::findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id) {
-
-//    Array<SceneObject* > sel;
-//    int dx=(xmax-xmin)+1;
-//    int dy=(ymax-ymin)+1;
-//    if (dx<2 || dy <2) return sel;     // for debugging, shouldn't really be here?
-
-
-//    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-//    Color* pixels=new Color[dx*dy];
-//    DisplayObject::select(type_id, this );
-//    GL::OGL::bindSelectBuffer();
-//    glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels);
-//    GL::OGL::unbindSelectBuffer();
-
-//    int ct=0;
-//    Color c;
-//    for(int i=ymin; i<ymax; i++)
-//      for(int j=xmin;j<xmax; j++)
-//      {
-//        c=pixels[ct++];
-//        SceneObject* tmp=find(c.get());
-//        if(tmp)
-//          if(!tmp->getSelected()) { sel.insertAlways(tmp); tmp->setSelected(true); }
-//      }
-//    delete [] pixels;
-//    return sel;
-//  }
-
 
   /*! double Camera::getDistanceToObject(int x, int y)
    *  \brief Pending Documentation
@@ -369,24 +304,6 @@ namespace GMlib {
 //      glCallList(_display_list+9);
     //    }
   }
-
-  void Camera::render() {
-
-//    std::cout << "  Camera::render()" << std::endl;
-
-    assert(getScene());
-
-    markAsActive(); {
-
-      // Update camera orientation
-      updateCameraOrientation(); ///! \todo refactor
-
-      // Render this camera
-      _renderer->render();
-
-    } markAsInactive();
-  }
-
 
   /*! SceneObject* Camera::lockTargetAtPixel(int x, int y)
    *  \brief Pending Documentation
@@ -623,7 +540,7 @@ namespace GMlib {
 
     if(!_light_ubo.isValid()) _light_ubo.create();
 
-    _renderer = new DefaultRenderer;
+//    _renderer = new DefaultRenderer;
 //    _select_renderer = new SelectRenderer;
   }
 
