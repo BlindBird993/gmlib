@@ -182,9 +182,6 @@ namespace GMlib{
     EventManager*               _event_manager;
 
 
-    GL::UniformBufferObject     _lights_ubo;
-    void                        updateLightUBO();
-
     void                        init();
 
   }; // END class Scene
