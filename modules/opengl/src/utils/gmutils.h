@@ -57,14 +57,15 @@ namespace GL {
       }
   }
 
-  #ifdef GM_GL_DEBUG
+
+//  #ifdef GM_GL_DEBUG
       #define GL_CHECK(stmt) do { \
               stmt; \
               GMlib::GL::CheckOpenGLError(#stmt, __FILE__, __LINE__); \
           } while (0)
-  #else
-      #define GL_CHECK(stmt) stmt
-  #endif
+//  #else
+//      #define GL_CHECK(stmt) stmt
+//  #endif
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 

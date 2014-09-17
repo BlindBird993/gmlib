@@ -187,7 +187,10 @@ function(GM_ADD_HEADER_SOURCES)
     if(HEADER_DIR)
       file( MAKE_DIRECTORY "${MODULE_INCLUDE_DIR}/${HEADER_DIR}" )
     endif(HEADER_DIR)
-    configure_file( ${ARG} "${MODULE_INCLUDE_DIR}/${ARG}" COPYONLY )
+
+    if(NOT GM_DEVELOPER_MODE)
+      configure_file( ${ARG} "${MODULE_INCLUDE_DIR}/${ARG}" COPYONLY )
+    endif(NOT GM_DEVELOPER_MODE)
 
     # Extract filename without directory and longest extension
     get_filename_component(CXXHEADER ${ARG} NAME_WE)
