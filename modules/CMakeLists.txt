@@ -61,23 +61,23 @@ add_subdirectory(core)
 
 ## OpenGL
 add_subdirectory(opengl)
-GM_ADD_LIBRARY_DEPENDENCIES(opengl core)
+GM_ADD_MODULE_DEPENDENCIES(opengl core)
 
 # Scene
 add_subdirectory(scene)
-GM_ADD_LIBRARY_DEPENDENCIES(scene core opengl)
+GM_ADD_MODULE_DEPENDENCIES(scene core opengl)
 
 # Parametrics
 add_subdirectory(parametrics)     # Don't need dependecies as this is a pure template module
-#GM_ADD_LIBRARY_DEPENDENCIES(parametrics core opengl scene)
+#GM_ADD_MODULE_DEPENDENCIES(parametrics core opengl scene)
 
 # Trianglesystem
 add_subdirectory(trianglesystem)  # Don't need dependecies as this is a pure template module
-#GM_ADD_LIBRARY_DEPENDENCIES(trianglesystem core opengl scene)
+#GM_ADD_MODULE_DEPENDENCIES(trianglesystem core opengl scene)
 
 # Stereolithography
 add_subdirectory(stereolithography)
-GM_ADD_LIBRARY_DEPENDENCIES(stereolithography core opengl scene)
+GM_ADD_MODULE_DEPENDENCIES(stereolithography core opengl scene)
 
 
 

@@ -70,11 +70,15 @@ function(GM_ADD_LIBRARY)
   endif()
 endfunction(GM_ADD_LIBRARY)
 
-function(GM_ADD_LIBRARY_DEPENDENCIES TARGET )
+function(GM_ADD_MODULE_DEPENDENCIES TARGET )
   foreach(ARG ${ARGN})
     add_dependencies( gm${TARGET} gm${ARG})
   endforeach(ARG)
-endfunction(GM_ADD_LIBRARY_DEPENDENCIES)
+endfunction(GM_ADD_MODULE_DEPENDENCIES)
+
+function(GM_ADD_DEPENDENCIES)
+  add_dependencies(gm${PROJECT_NAME} ${ARGN})
+endfunction(GM_ADD_DEPENDENCIES)
 
 function(GM_SET_DEFAULT_TARGET_PROPERTIES)
 #  set_target_properties( gm${PROJECT_NAME} PROPERTIES
@@ -126,6 +130,11 @@ function(GM_ADD_TEMPLATE_TARGET)
   add_custom_target( ${PROJECT_NAME}TemplateModuleTarget SOURCES ${ARGN} )
 
 endfunction(GM_ADD_TEMPLATE_TARGET)
+
+macro(GM_ADD_DEPENDENCY_TARGET)
+  set( GM_DEP_TARGET ${PROJECT_NAME}DependencyTarget)
+  add_custom_target( ${GM_DEP_TARGET} SOURCES ${ARGN} )
+endmacro(GM_ADD_DEPENDENCY_TARGET)
 
 
 
