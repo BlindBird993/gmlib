@@ -243,7 +243,7 @@ namespace Private {
   template <typename T>
   std::string GLObject<T>::getName() const {
 
-    return getInfoIter()->id;
+    return getInfoIter()->name;
   }
 
   template <typename T>
