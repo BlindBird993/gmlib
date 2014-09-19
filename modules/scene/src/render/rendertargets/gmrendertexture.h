@@ -16,6 +16,7 @@ public:
   explicit RenderTexture ( const std::string& name );
 
   const GL::FramebufferObject&    getFbo() const;
+  const GL::Texture&              getTexture() const;
   void                            setClearColor( const Color& c );
 
 private:

@@ -16,6 +16,11 @@ const GL::FramebufferObject&RenderTexture::getFbo() const {
   return _fbo;
 }
 
+const GL::Texture& RenderTexture::getTexture() const {
+
+  return _tex_rb_color;
+}
+
 void RenderTexture::setClearColor(const Color& c) {
 
   _clear_color = c;
