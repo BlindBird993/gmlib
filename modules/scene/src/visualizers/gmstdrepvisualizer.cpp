@@ -31,6 +31,7 @@
 
 #include "../gmdisplayobject.h"
 #include "../camera/gmcamera.h"
+#include "../render/gmdefaultrenderer.h"
 
 
 namespace GMlib {
@@ -56,10 +57,10 @@ namespace GMlib {
     assert(_bo_cube_frame_indices.isValid());
   }
 
-  void VisualizerStdRep::render( const DisplayObject* obj, const Camera* cam) const {
+  void VisualizerStdRep::render( const DisplayObject* obj, const DefaultRenderer* renderer ) const {
 
-    render( obj->getModelViewMatrix(cam),
-             obj->getProjectionMatrix(cam) );
+    const Camera* cam = renderer->getCamera();
+    render( obj->getModelViewMatrix(cam), obj->getProjectionMatrix(cam) );
   }
 
   VisualizerStdRep *VisualizerStdRep::getInstance() {
@@ -70,10 +71,12 @@ namespace GMlib {
     return _s_instance;
   }
 
-  void VisualizerStdRep::renderGeometry( const GL::Program &prog, const DisplayObject* obj, const Camera* cam ) const {
+  void VisualizerStdRep::renderGeometry( const DisplayObject* obj, const DefaultRenderer* renderer, const Color& color ) const {
 
-    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
-    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
+    const Camera* cam = renderer->getCamera();
+    _prog.setUniform( "u_color", color );
+    _prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
+    GL::AttributeLocation vertice_loc = _prog.getAttributeLocation( "in_vertex" );
 
     _bo_cube.bind();
     _bo_cube.enableVertexArrayPointer( vertice_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );

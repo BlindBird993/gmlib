@@ -81,7 +81,8 @@ void PSurfParamLinesVisualizer<T,n>::render( const DisplayObject* obj, const Cam
     _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
     // Lights
-    _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
+    assert(false);
+//    _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
 
     // Base material
     _prog.setUniform( "u_mat_amb", obj->getMaterial().getAmb() );

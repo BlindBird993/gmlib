@@ -59,7 +59,7 @@ endfunction(GM_INIT)
 
 function(GM_ADD_LIBRARY)
   set( TARGET gm${PROJECT_NAME} )
-  add_library( ${TARGET} ${ARGN} )
+  add_library( ${TARGET} SHARED ${ARGN} )
 
 #  message( "BAH: " $<TARGET_FILE:${TARGET}> )
 

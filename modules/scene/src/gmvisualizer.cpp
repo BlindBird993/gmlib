@@ -44,11 +44,6 @@ Visualizer::Visualizer( const Visualizer& copy ) : _display_mode(copy._display_m
 
 Visualizer::~Visualizer() {}
 
-void Visualizer::render( const DisplayObject* obj, const Camera* cam ) const {
-  GM_UNUSED(obj)
-  GM_UNUSED(cam)
-}
-
 Visualizer::DISPLAY_MODE Visualizer::getDisplayMode() const {
 
   return _display_mode;
@@ -60,12 +55,6 @@ void Visualizer::glSetDisplayMode() const {
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
   else if( this->_display_mode == Visualizer::DISPLAY_MODE_WIREFRAME )
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-}
-
-void Visualizer::renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const {
-  GM_UNUSED(prog)
-  GM_UNUSED(obj)
-  GM_UNUSED(cam)
 }
 
 void Visualizer::setDisplayMode( Visualizer::DISPLAY_MODE display_mode) {

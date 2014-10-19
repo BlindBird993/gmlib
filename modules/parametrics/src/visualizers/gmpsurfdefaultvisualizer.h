@@ -41,6 +41,7 @@
 #include <opengl/gmprogram.h>
 #include <opengl/shaders/gmvertexshader.h>
 #include <opengl/shaders/gmfragmentshader.h>
+#include <scene/render/gmdefaultrenderer.h>
 
 
 
@@ -53,8 +54,8 @@ namespace GMlib {
     PSurfDefaultVisualizer();
     PSurfDefaultVisualizer( const PSurfDefaultVisualizer<T,n>& copy );
 
-    void          render( const DisplayObject* obj, const Camera* cam ) const;
-    void          renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
+    void          render( const DisplayObject* obj, const DefaultRenderer* renderer ) const;
+    void          renderGeometry( const DisplayObject* obj, const DefaultRenderer* renderer, const Color& color ) const;
 
     virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                           const DMatrix< Vector<T, 3> >& normals,
@@ -64,6 +65,7 @@ namespace GMlib {
 
   private:
     GL::Program                 _prog;
+    GL::Program                 _color_prog;
 
     GL::VertexBufferObject      _vbo;
     GL::IndexBufferObject       _ibo;

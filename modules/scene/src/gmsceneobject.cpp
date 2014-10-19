@@ -345,26 +345,6 @@ namespace GMlib {
     }
   }
 
-
-
-  /*! void localDisplay()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::localDisplay( const Camera* /*cam*/ ) const {}
-
-  /*! void localSelect()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::localSelect( const GL::Program& prog, const Camera* cam) const {
-    GM_UNUSED(prog)
-    GM_UNUSED(cam)
-  }
-
-
   /*! void localSimulate(double dt)
    *  \brief Pending Documentation
    *

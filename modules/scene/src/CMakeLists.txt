@@ -111,18 +111,18 @@ list( APPEND SOURCES
 # Render
 list( APPEND HEADERS
   render/gmdefaultrenderer.h
-  render/gmdefaultrendererwithselect.h
+#  render/gmdefaultrendererwithselect.h
   render/gmrenderer.h
   render/gmrendertarget.h
   render/rendertargets/gmnativerendertarget.h
-  render/rendertargets/gmrendertexture.h
+  render/rendertargets/gmtexturerendertarget.h
 )
 
 list( APPEND SOURCES
   render/gmdefaultrenderer.cpp
-  render/gmdefaultrendererwithselect.cpp
+#  render/gmdefaultrendererwithselect.cpp
   render/gmrenderer.cpp
-  render/rendertargets/gmrendertexture.cpp
+  render/rendertargets/gmtexturerendertarget.cpp
 )
 
 
@@ -174,17 +174,17 @@ list( APPEND SOURCES
 
 ###
 # Window
-list( APPEND HEADERS
-  window/gmview.h
-  window/gmviewset.h
-  window/gmwindow.h
-)
+#list( APPEND HEADERS
+#  window/gmview.h
+#  window/gmviewset.h
+#  window/gmwindow.h
+#)
 
-list( APPEND SOURCES
-  window/gmview.cpp
-  window/gmviewset.cpp
-  window/gmwindow.cpp
-)
+#list( APPEND SOURCES
+#  window/gmview.cpp
+#  window/gmviewset.cpp
+#  window/gmwindow.cpp
+#)
 
 
 
@@ -196,7 +196,7 @@ GM_ADD_DEPENDENCY_TARGET(${HEADER_SOURCES})
 
 GM_ADD_LIBRARY(${HEADERS} ${SOURCES} )
 GM_SET_DEFAULT_TARGET_PROPERTIES()
-GM_TARGET_LINK_LIBRARIES( ${GLEW_LIBRARY} ${OPENGL_LIBRARIES} )
+GM_TARGET_LINK_LIBRARIES( gmopengl gmcore ${GLEW_LIBRARY} ${OPENGL_LIBRARIES} )
 GM_ADD_DEPENDENCIES(${GM_DEP_TARGET})
 
 

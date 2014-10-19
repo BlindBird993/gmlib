@@ -44,21 +44,26 @@
 
 namespace GMlib {
 
-  Renderer::Renderer()
-    : _x(0), _y(0), _w(0), _h(0),
-      _clear_color(GMcolor::Grey) {
+  Renderer::Renderer() : _clear_color(GMcolor::Grey), _camera(0x0) {}
 
-    _rt = new NativeRenderTarget;
+  Renderer::~Renderer() {}
+
+  Camera*
+  Renderer::getCamera() {
+
+    return _camera;
   }
 
-  Renderer::~Renderer() {
+  const Camera*
+  Renderer::getCamera() const {
 
-    delete _rt;
+    return _camera;
   }
 
-  void Renderer::setCamera(Camera* camera) {
+  void
+  Renderer::setCamera(Camera* cam) {
 
-    _camera = camera;
+    _camera = cam;
   }
 
   const Color&Renderer::getClearColor() const {
@@ -71,33 +76,29 @@ namespace GMlib {
     _clear_color = color;
   }
 
-  void Renderer::setViewport(int x, int y, int w, int h) {
+//  void Renderer::setViewport(int x, int y, int w, int h) {
 
-    _x = x;
-    _y = y;
-    _w = w;
-    _h = h;
+//    _x = x;
+//    _y = y;
+//    _w = w;
+//    _h = h;
 
-    reshape();
-  }
+//    reshape();
+//  }
 
-  void Renderer::setRenderTarget(RenderTarget* rt) {
+//  void Renderer::setRenderTarget(RenderTarget* rt) {
 
-    assert(rt);
-    delete _rt;
-    _rt = rt;
-  }
+//    assert(rt);
+//    delete _rt;
+//    _rt = rt;
+//  }
 
-  void Renderer::reshape() {
+//  void Renderer::reshape() {
 
-    _camera->reshape(0, 0, _w, _h);
-    _rt->resize( Vector<unsigned int,2>( _w, _h ) );
-  }
+//    _camera->reshape(0, 0, _w, _h);
+//    _rt->resize( Vector<unsigned int,2>( _w, _h ) );
+//  }
 
-  Scene* Renderer::getScene() const {
-
-    return _camera->getScene();
-  }
 
 
 

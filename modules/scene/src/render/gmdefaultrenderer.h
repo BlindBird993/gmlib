@@ -47,6 +47,7 @@
 #include <opengl/gmrenderbufferobject.h>
 #include <opengl/gmtexture.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
+#include <scene/render/rendertargets/gmtexturerendertarget.h>
 
 
 namespace GMlib {
@@ -55,7 +56,7 @@ namespace GMlib {
   class DefaultRenderer : public Renderer {
   public:
     explicit DefaultRenderer();
-    ~DefaultRenderer();
+    virtual ~DefaultRenderer();
 
     const GL::Texture&      getRenderTexture() const;
     const GL::Texture&      getSelectTexture() const;
@@ -63,14 +64,19 @@ namespace GMlib {
     void                    setSelectColor( const Color& color );
 
     /* virtual from Renderer */
+    void                    prepare() {}
     void                    render();
+    void                    swap();
+    void                    reshape( const Vector<int,2>& size );
 
+
+    const TextureRenderTarget&      getFrontRenderTarget() const;
+    const TextureRenderTarget&      getBackRenderTarget() const;
+
+    const GL::UniformBufferObject&    getLightUBO() const;
 
   protected:
     virtual void            prepare(Camera *cam);
-
-    /* virtual from Renderer */
-    void                    reshape();
 
     mutable Array<DisplayObject*>    _objs;
 
@@ -94,14 +100,12 @@ namespace GMlib {
 
     /* other suff */
     HqMatrix<float,3>       _ortho_mat;
-//    int                     _x, _y;
-//    int                     _w, _h;
 
     GL::VertexBufferObject  _quad_vbo;
 
-    void                    render(const DisplayObject *obj, const Camera *cam) const;
-    void                    renderSelectedGeometry(const DisplayObject *obj, const Camera *cam) const;
-    void                    renderCoordSys(const Camera *cam ) const;
+    void                    render(const DisplayObject *obj) const;
+    void                    renderSelectedGeometry(const DisplayObject *obj) const;
+    void                    renderCoordSys() const;
 
 
     CoordSysRepVisualizer   *_coord_sys_visu;
@@ -111,8 +115,20 @@ namespace GMlib {
 
 
 
-    void                    renderScene(Camera* cam);
+    void                    renderScene();
     void                    renderToTarget();
+
+
+    Vector<int,2>           _size;
+    TextureRenderTarget     *_front_rt;
+    TextureRenderTarget     *_back_rt;
+    TextureRenderTarget     *_rt_test_dummy;
+
+    GL::UniformBufferObject           _light_ubo;
+    void                              updateLightUBO();
+
+
+
 
   }; // END class DisplayRenderer
 

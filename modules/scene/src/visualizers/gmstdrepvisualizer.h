@@ -49,12 +49,11 @@ namespace GMlib {
   public:
     VisualizerStdRep();
 
-    void              render( const DisplayObject* obj, const Camera* cam ) const;
-    void              renderGeometry( const GL::Program &prog, const DisplayObject* obj, const Camera* cam ) const;
+    void              render( const DisplayObject* obj, const DefaultRenderer* renderer ) const;
+    void              renderGeometry( const DisplayObject* obj, const DefaultRenderer* renderer, const Color& color ) const;
 
 
-    void              render( const HqMatrix<float,3>& mvmat,
-                               const HqMatrix<float,3>& pmat ) const;
+    void              render( const HqMatrix<float,3>& mvmat, const HqMatrix<float,3>& pmat ) const;
 
     static VisualizerStdRep*    getInstance();
 

@@ -31,6 +31,9 @@
 
 // local
 #include "../camera/gmcamera.h"
+#include "../light/gmspotlight.h"
+#include "../light/gmpointlight.h"
+#include "../light/gmsun.h"
 #include "rendertargets/gmnativerendertarget.h"
 
 // gmlib
@@ -55,6 +58,10 @@ namespace GMlib {
     initRenderProgram();
     initRenderSelectProgram();
 
+    // Create render targets
+    _front_rt = new TextureRenderTarget;
+    _back_rt = new TextureRenderTarget;
+    _rt_test_dummy = _back_rt;
 
     // Create buffers
     _fbo.create();
@@ -106,6 +113,7 @@ namespace GMlib {
 
     _coord_sys_visu = new CoordSysRepVisualizer;
 
+    if(!_light_ubo.isValid()) _light_ubo.create();
 
 
     // Render quad
@@ -169,31 +177,34 @@ namespace GMlib {
   DefaultRenderer::~DefaultRenderer() {
 
     delete _coord_sys_visu;
+    delete _front_rt;
+    delete _back_rt;
   }
 
   void DefaultRenderer::render()  {
 
-    Scene *scene = getCamera()->getScene();
-    assert(scene);
-
     // Update lights
-    getCamera()->updateLightUBO(scene);
+    updateLightUBO();
     getCamera()->updateCameraOrientation();
 
     // Prepare
     prepare(getCamera());
 
     // Render scene
-    renderScene(getCamera());
+    renderScene();
 
     // Set render to target
-    RenderTarget *rt = getRenderTarget();
-    rt->clear();
-    rt->bind();
+    _back_rt->clear();
+    _back_rt->bind();
     renderToTarget();
-    rt->unbind();
+    _back_rt->unbind();
   }
 
+  void DefaultRenderer::swap() {
+
+    std::swap(_back_rt, _front_rt);
+//    std::cout << "Swapping front and back render target of " << this << ", front: " << _front_rt << ", back: " << _back_rt << std::endl;
+  }
 
   void DefaultRenderer::initRenderProgram() {
 
@@ -425,52 +436,51 @@ namespace GMlib {
     _select_color = color;
   }
 
-  void DefaultRenderer::render( const DisplayObject* obj, const Camera* cam ) const {
+  void DefaultRenderer::render(const DisplayObject* obj) const {
 
-    if( obj != cam ) {
+    if( obj != getCamera() ) {
 
       if(obj->isCollapsed()) {
 
-        VisualizerStdRep::getInstance()->render(obj,cam);
+//        VisualizerStdRep::getInstance()->render(obj,*this);
       }
       else {
 
         const Array<Visualizer*>& visus = obj->getVisualizers();
         for( int i = 0; i < visus.getSize(); ++i ) {
 
-          visus(i)->render(obj,cam);
+          visus(i)->render(obj,this);
         }
 
-        obj->localDisplay(cam);
+        obj->localDisplay(this);
       }
     }
   }
 
-  void DefaultRenderer::renderSelectedGeometry( const DisplayObject* obj, const Camera* cam ) const {
+  void DefaultRenderer::renderSelectedGeometry( const DisplayObject* obj) const {
 
-    if( obj != cam && obj->isSelected()  ) {
+    const Color sel_true_color = GMcolor::White;
 
-      _render_select_prog.bind(); {
+    if( obj != getCamera() && obj->isSelected()  ) {
 
-        if(obj->isCollapsed()) {
+      if(obj->isCollapsed()) {
 
-          VisualizerStdRep::getInstance()->renderGeometry(_render_select_prog,obj,cam);
-        }
-        else {
+        VisualizerStdRep::getInstance()->renderGeometry(obj,this,sel_true_color);
+      }
+      else {
 
-          const Array<Visualizer*>& visus = obj->getVisualizers();
-          for( int i = 0; i < visus.getSize(); ++i )
-            visus(i)->renderGeometry(_render_select_prog,obj,cam);
+        const Array<Visualizer*>& visus = obj->getVisualizers();
+        for( int i = 0; i < visus.getSize(); ++i )
+          visus(i)->renderGeometry(obj,this,sel_true_color);
 
-          obj->localSelect(_render_select_prog,cam);
-        }
-
-      } _render_select_prog.unbind();
+        obj->localSelect(this,_select_color);
+      }
     }
   }
 
-  void DefaultRenderer::renderCoordSys(const Camera *cam) const {
+  void DefaultRenderer::renderCoordSys() const {
 
+    const Camera* cam = getCamera();
     _coord_sys_visu->render(cam,cam);
   }
 
@@ -480,7 +490,8 @@ namespace GMlib {
 
 
 
-    GL_CHECK(::glViewport(getViewportX(), getViewportY(), getViewportW(), getViewportH()));
+
+    GL_CHECK(::glViewport(0,0,_size(0),_size(1)));
 
     GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
     GL_CHECK(::glDisable(GL_DEPTH_TEST));
@@ -493,8 +504,8 @@ namespace GMlib {
       _render_prog.setUniform( "u_mvpmat", _ortho_mat );
       _render_prog.setUniform( "u_tex", getRenderTexture(), (GLenum)GL_TEXTURE0, 0 );
       _render_prog.setUniform( "u_tex_selected", getSelectTexture(), (GLenum)GL_TEXTURE1, 1 );
-      _render_prog.setUniform( "u_buf_w", static_cast<float>(getViewportW()) );
-      _render_prog.setUniform( "u_buf_h", static_cast<float>(getViewportH()) );
+      _render_prog.setUniform( "u_buf_w", static_cast<float>(_size(0)) );
+      _render_prog.setUniform( "u_buf_h", static_cast<float>(_size(1)) );
       _render_prog.setUniform( "u_select_color", _select_color );
 
       GL::AttributeLocation vert_loc = _render_prog.getAttributeLocation( "in_vertex" );
@@ -519,23 +530,39 @@ namespace GMlib {
     GL_CHECK(::glEnable(GL_DEPTH_TEST));
   }
 
-  void DefaultRenderer::reshape() {
+  void DefaultRenderer::reshape( const Vector<int,2>& size ) {
 
-      _rbo_color.texImage2D( 0, GL_RGBA8, getViewportW(), getViewportH(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-      _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, getViewportW(), getViewportH(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
+    std::cout << "DefaultRenderer:reshape! " << size << std::endl;
+    _size = size;
 
-      _rbo_select.texImage2D( 0, GL_RGBA8, getViewportW(), getViewportH(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
-      _rbo_select_depth.texImage2D( 0, GL_DEPTH_COMPONENT, getViewportW(), getViewportH(), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_color.texImage2D( 0, GL_RGBA8, _size(0), _size(1), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, _size(0), _size(1), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
 
-      Renderer::reshape();
-    }
+    _rbo_select.texImage2D( 0, GL_RGBA8, _size(0), _size(1), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
+    _rbo_select_depth.texImage2D( 0, GL_DEPTH_COMPONENT, _size(0), _size(1), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
 
 
-  void DefaultRenderer::renderScene(Camera* cam) {
+    _back_rt->resize(size);
+    _front_rt->resize(size);
+  }
 
+  const TextureRenderTarget&
+  DefaultRenderer::getFrontRenderTarget() const {
+
+    return *_front_rt;
+  }
+
+  const TextureRenderTarget&
+  DefaultRenderer::getBackRenderTarget() const {
+
+    return *_back_rt;
+  }
+
+
+  void DefaultRenderer::renderScene() {
 
     // Setup size of viewport viewport to fit size of render target
-    GL_CHECK(::glViewport(0, 0, getViewportW(), getViewportH()));
+    GL_CHECK(::glViewport(0, 0, _size(0), _size(1)));
 
     // Clear render buffers
     _fbo.clearColorBuffer( getClearColor() );
@@ -552,11 +579,11 @@ namespace GMlib {
     _fbo.bind(); {
 
       // Render coordinate-system visualization
-      renderCoordSys( cam );
+      renderCoordSys();
 
       // Render the scene objects
       for( int j = 0; j < _objs.getSize(); ++j )
-        render( _objs[j], cam);
+        render(_objs[j]);
 
     } _fbo.unbind();
 
@@ -566,7 +593,7 @@ namespace GMlib {
       GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
 
       for( int j = 0; j < _objs.getSize(); ++j )
-        renderSelectedGeometry( _objs[j], cam);
+        renderSelectedGeometry(_objs[j]);
 
     } _fbo_select_depth.unbind();
 
@@ -583,7 +610,7 @@ namespace GMlib {
       GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
 
       for( int j = 0; j < _objs.getSize(); ++j )
-        renderSelectedGeometry( _objs[j], cam );
+        renderSelectedGeometry(_objs[j]);
 
       GL_CHECK(::glDepthFunc( depth_func ));
       GL_CHECK(::glDepthMask( depth_mask ));
@@ -591,5 +618,170 @@ namespace GMlib {
     } _fbo_select.unbind();
 
   }
+
+  void DefaultRenderer::updateLightUBO() {
+
+    Camera* camera = getCamera();
+    const Scene* scene = camera->getScene();
+    const Array<Light*> &lights_array = scene->getLights();
+    const Sun* window_sun = scene->getSun();
+
+    const HqMatrix<float,3> cammat = camera->DisplayObject::getMatrix() * camera->getMatrixToSceneInverse();
+
+    /*
+     *  Light types of "sun", "point" and "spot" is supported.
+     *  It is assumed that the lights is grouped and sorted in that order
+     *  and that the "number of info" is recorded in the header block:
+     *  <ul>
+     *    <li>Total number of lights.</li>
+     *    <li>Number of suns.</li>
+     *    <li>Number of point lights.</li>
+     *    <li>Number of spot lights.</li>
+     *  </ul>
+     */
+
+    GL::GLVector<4,GLuint> header;
+    std::vector<unsigned int> light_ids;
+    std::vector<GL::GLLight> lights;
+
+    Array< SpotLight* > spot_lights;
+    Array< PointLight* > point_lights;
+    for( int i = 0; i < lights_array.size(); ++i ) {
+
+      if( SpotLight* spot_light = dynamic_cast<SpotLight*>( lights_array(i) ) )             spot_lights += spot_light;
+      else if( PointLight* point_light = dynamic_cast<PointLight*>( lights_array(i) ) )     point_lights += point_light;
+    }
+
+
+
+    header.p[0] = window_sun ? 1 : 0;
+    header.p[1] = header.p[0] + point_lights.size();
+    header.p[2] = header.p[1] + spot_lights.size();
+    header.p[3] = header.p[2];
+
+    if( header.p[3] <= 0 )
+      return;
+
+    // Add data to header array
+    if( window_sun ) {
+
+      GL::GLLight sun;
+
+      sun.amb.p[0] = window_sun->getGlobalAmbient().getRedC();
+      sun.amb.p[1] = window_sun->getGlobalAmbient().getGreenC();
+      sun.amb.p[2] = window_sun->getGlobalAmbient().getBlueC();
+      sun.amb.p[3] = window_sun->getGlobalAmbient().getAlphaC();
+
+      // using local matrix as it is not inserted in the scene but is said to live in the global space
+      Vector<float,3> sun_dir = cammat * window_sun->getMatrix() * window_sun->getDir();
+      sun.dir.p[0] = sun_dir(0);
+      sun.dir.p[1] = sun_dir(1);
+      sun.dir.p[2] = sun_dir(2);
+
+//      std::cout << "Sun light info: " << std::endl;
+//      std::cout << "  amb: " << _sun->getGlobalAmbient() << std::endl;
+//      std::cout << "  dir: " << _sun->getDir() << std::endl;
+//      std::cout << std::endl;
+
+      lights.push_back(sun);
+      light_ids.push_back(window_sun->getLightName());
+    }
+
+    for( int i = 0; i < point_lights.size(); ++i ) {
+
+      PointLight *light = point_lights[i];
+
+      GL::GLLight pl;
+      pl.amb.p[0] = light->getAmbient().getRedC();
+      pl.amb.p[1] = light->getAmbient().getGreenC();
+      pl.amb.p[2] = light->getAmbient().getBlueC();
+      pl.amb.p[3] = light->getAmbient().getAlphaC();
+
+      pl.dif.p[0] = light->getDiffuse().getRedC();
+      pl.dif.p[1] = light->getDiffuse().getGreenC();
+      pl.dif.p[2] = light->getDiffuse().getBlueC();
+      pl.dif.p[3] = light->getDiffuse().getAlphaC();
+
+      pl.spc.p[0] = light->getSpecular().getRedC();
+      pl.spc.p[1] = light->getSpecular().getGreenC();
+      pl.spc.p[2] = light->getSpecular().getBlueC();
+      pl.spc.p[3] = light->getSpecular().getAlphaC();
+
+      Point<float,3> pos = cammat * light->getPos();
+      pl.pos.p[0] = pos(0);
+      pl.pos.p[1] = pos(1);
+      pl.pos.p[2] = pos(2);
+      pl.pos.p[3] = 1.0f;
+//      std::cout << "Point light pos: " << pos << std::endl;
+
+      pl.att.p[0] = light->getAttenuation()(0);
+      pl.att.p[1] = light->getAttenuation()(1);
+      pl.att.p[2] = light->getAttenuation()(2);
+
+      lights.push_back(pl);
+      light_ids.push_back(light->getLightName());
+    }
+
+    for( int i = 0; i < spot_lights.size(); ++i ) {
+
+      SpotLight *light = spot_lights[i];
+
+      GL::GLLight sl;
+      sl.amb.p[0] = light->getAmbient().getRedC();
+      sl.amb.p[1] = light->getAmbient().getGreenC();
+      sl.amb.p[2] = light->getAmbient().getBlueC();
+      sl.amb.p[3] = light->getAmbient().getAlphaC();
+
+      sl.dif.p[0] = light->getDiffuse().getRedC();
+      sl.dif.p[1] = light->getDiffuse().getGreenC();
+      sl.dif.p[2] = light->getDiffuse().getBlueC();
+      sl.dif.p[3] = light->getDiffuse().getAlphaC();
+
+      sl.spc.p[0] = light->getSpecular().getRedC();
+      sl.spc.p[1] = light->getSpecular().getGreenC();
+      sl.spc.p[2] = light->getSpecular().getBlueC();
+      sl.spc.p[3] = light->getSpecular().getAlphaC();
+
+      Point<float,3> pos = cammat * light->getPos();
+      sl.pos.p[0] = pos(0);
+      sl.pos.p[1] = pos(1);
+      sl.pos.p[2] = pos(2);
+      sl.pos.p[3] = 1.0f;
+//      std::cout << "Point light pos: " << pos << std::endl;
+
+      Vector<float,3> dir = cammat * light->getDir();
+      sl.dir.p[0] = dir(0);
+      sl.dir.p[1] = dir(1);
+      sl.dir.p[2] = dir(2);
+
+      sl.spot_cut = light->getCutOff().getDeg();
+      sl.spot_exp = light->getExponent();
+
+      lights.push_back(sl);
+      light_ids.push_back(light->getLightName());
+    }
+
+//    std::reverse( lights.begin(), lights.end() );
+//    std::reverse( light_ids.begin(), light_ids.end() );
+
+//    GL::OGL::resetLightBuffer( header, light_ids, lights );
+
+    _light_ubo.bufferData( sizeof(GL::GLVector<4,GLuint>) + lights.size() * sizeof(GL::GLLight),
+                                  0x0, GL_DYNAMIC_DRAW );
+    _light_ubo.bufferSubData( 0, sizeof(GL::GLVector<4,GLuint>), &header );
+    _light_ubo.bufferSubData( sizeof(GL::GLVector<4,GLuint>), sizeof(GL::GLLight) * lights.size(), &lights[0] );
+
+//    std::cout << "Updating light UBO!" << std::endl;
+//    std::cout << "  - Sun(s):             " << header.p[0] << std::endl;
+//    std::cout << "  - Point Light(s):     " << header.p[1] - header.p[0] << std::endl;
+//    std::cout << "  - Spot Light(s):      " << header.p[2] - header.p[1] << std::endl;
+//    std::cout << "  --------------------" << std::endl;
+//    std::cout << "  - Total nr of Lights: "<< header.p[3] << std::endl;
+
+  }
+
+  const GL::UniformBufferObject&
+  DefaultRenderer::getLightUBO() const { return _light_ubo; }
+
 
 } // END namespace GMlib

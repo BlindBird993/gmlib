@@ -101,6 +101,7 @@ namespace GMlib{
 
   class DisplayObject;
   class Camera;
+  class DefaultRenderer;
   class Scene;
 
 
@@ -190,6 +191,7 @@ namespace GMlib{
     virtual std::string                 getIdentity() const = 0;
 
     Scene*                              getScene();
+    const Scene*                        getScene() const;
 
     int                                 getTypeId() const;
     unsigned int                        getName() const;
@@ -204,7 +206,7 @@ namespace GMlib{
     SceneObject*                        getParent() const;
     void                                setParent(SceneObject* obj);
 
-    const SceneObject*                 find(unsigned int name) const;
+    const SceneObject*                  find(unsigned int name) const;
     SceneObject*                        find(unsigned int name);
 
     const APoint<float,3>&              getCenterPos() const;
@@ -251,13 +253,15 @@ namespace GMlib{
     virtual void                        translateGlobal(const Vector<float,3>& trans_vector);
 
     // deprecated
-    virtual void                        localDisplay( const Camera* cam ) const;  //! Lingering function convenient for Rapid Prototyping
-                                                                                  //! (may be removed without further notice!!!)
-                                                                                  //! \deprecated
+    virtual void                        localDisplay( const DefaultRenderer* ) const {}
+      //! Lingering function convenient for Rapid Prototyping
+      //! (may be removed without further notice!!!)
+      //! \deprecated
 
-    virtual void                        localSelect( const GL::Program& prog, const Camera* cam) const;    //! Lingering function convenient for Rapid Prototyping
-                                                                                  //! (may be removed without further notice!!!)
-                                                                                  //! \deprecated
+    virtual void                        localSelect( const DefaultRenderer*, const Color& ) const {}
+      //! Lingering function convenient for Rapid Prototyping
+      //! (may be removed without further notice!!!)
+      //! \deprecated
 
   protected:
     friend class Scene;
@@ -488,8 +492,15 @@ namespace GMlib{
   }
 
   inline
-  Scene* SceneObject::getScene() {
+  Scene*
+  SceneObject::getScene() {
 
+    return _scene;
+  }
+
+  inline
+  const Scene*
+  SceneObject::getScene() const {
     return _scene;
   }
 

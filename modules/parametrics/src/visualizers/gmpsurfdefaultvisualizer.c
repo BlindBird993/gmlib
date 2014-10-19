@@ -51,6 +51,9 @@ namespace GMlib {
 
     initShaderProgram();
 
+    _color_prog.acquire("color");
+    assert(_color_prog.isValid());
+
     _vbo.create();
     _ibo.create();
     _nmap.create(GL_TEXTURE_2D);
@@ -62,6 +65,10 @@ namespace GMlib {
 
     initShaderProgram();
 
+    _color_prog.acquire("color");
+    assert(_color_prog.isValid());
+
+
     _vbo.create();
     _ibo.create();
     _nmap.create(GL_TEXTURE_2D);
@@ -69,8 +76,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::render( const DisplayObject* obj, const Camera* cam ) const {
+  void PSurfDefaultVisualizer<T,n>::render( const DisplayObject* obj, const DefaultRenderer* renderer ) const {
 
+    const Camera* cam = renderer->getCamera();
     const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
     const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
 //    const SqMatrix<float,3> &nmat = obj->getNormalMatrix(cam);
@@ -89,7 +97,7 @@ namespace GMlib {
       _prog.setUniform( "u_nmat", nmat );
 
       // Lights
-      _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
 
       // Material
       const Material &m = obj->getMaterial();
@@ -145,18 +153,22 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const {
+  void PSurfDefaultVisualizer<T,n>::renderGeometry( const DisplayObject* obj, const DefaultRenderer* renderer, const Color& color ) const {
 
-    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
-    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
+    _color_prog.bind(); {
+      _color_prog.setUniform( "u_color", color );
+      _color_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
+      GL::AttributeLocation vertice_loc = _color_prog.getAttributeLocation( "in_vertex" );
 
-    _vbo.bind();
-    _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
+      _vbo.bind();
+      _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
 
-    draw();
+      draw();
 
-    _vbo.disable( vertice_loc );
-    _vbo.unbind();
+      _vbo.disable( vertice_loc );
+      _vbo.unbind();
+
+    } _color_prog.unbind();
   }
 
   template<typename T,int n>

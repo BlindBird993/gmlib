@@ -114,8 +114,8 @@ namespace GMlib {
     virtual void                  tilt(Angle a);
     virtual void                  turn(Angle a);
 
-    const HqMatrix<float,3>&      getModelViewMatrix( const Camera *cam, bool local_cs = true ) const;
-    const HqMatrix<float,3>&      getModelViewProjectionMatrix( const Camera *cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&      getModelViewMatrix( const Camera* cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&      getModelViewProjectionMatrix( const Camera* cam, bool local_cs = true ) const;
     const HqMatrix<float,3>&      getProjectionMatrix( const Camera* cam ) const;
     const SqMatrix<float,3>&      getNormalMatrix( const Camera* cam ) const;
 

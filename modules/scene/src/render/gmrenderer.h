@@ -39,50 +39,30 @@
 
 namespace GMlib {
 
-  class Scene;
-  class DisplayObject;
   class Camera;
-  class RenderTarget;
 
   class Renderer {
   public:
     Renderer();
     virtual ~Renderer();
 
-    Camera*           getCamera() const { return _camera; }
-    void              setCamera( Camera* camera );
-
-    Scene*            getScene() const;
+    Camera*           getCamera();
+    const Camera*     getCamera() const;
+    void              setCamera( Camera* cam );
 
 
     const Color&      getClearColor() const;
     void              setClearColor( const Color& color );
 
     /* prepare stuff */
+    virtual void      prepare() = 0;
     virtual void      render() = 0;
-
-    virtual void      setViewport( int x, int y, int w, int h );
-
-    int               getViewportX() const { return _x; }
-    int               getViewportY() const { return _y; }
-    int               getViewportW() const { return _w; }
-    int               getViewportH() const { return _h; }
-
-
-    RenderTarget*     getRenderTarget() const { return _rt; }
-    void              setRenderTarget( RenderTarget* rt );
-
-
-
-  protected:
-    virtual void      reshape();
+    virtual void      swap() = 0;
+    virtual void      reshape( const Vector<int,2>& size ) = 0;
 
   private:
-
-    int                                     _x, _y, _w, _h;
-    Color                                   _clear_color;
-    RenderTarget*                           _rt;
-    Camera*                                 _camera;
+    Color             _clear_color;
+    Camera*           _camera;
 
   }; // END class Renderer
 

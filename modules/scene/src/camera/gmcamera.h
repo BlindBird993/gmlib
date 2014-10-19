@@ -200,9 +200,6 @@ namespace GMlib {
 
     bool                        _culling;
 
-    GL::UniformBufferObject           _light_ubo;
-    void                              updateLightUBO( const Scene* lights );
-    const GL::UniformBufferObject&    getLightUBO() const;
 
 
   public:

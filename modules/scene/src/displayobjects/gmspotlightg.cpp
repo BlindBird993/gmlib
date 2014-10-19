@@ -91,14 +91,14 @@ namespace GMlib {
 
 
 //    std::cout << "Rendering spotlight!" << std::endl;
-    _sphere.render( getModelViewProjectionMatrix(cam), GMcolor::Green );
+//    _sphere.render( getModelViewProjectionMatrix(cam), GMcolor::Green );
   }
 
 
   void SpotLightG::localSelect(const GL::Program& prog, const Camera* cam) const {
 
-    prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam) );
-    _sphere.select(prog);
+//    prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam) );
+//    _sphere.select(prog);
   }
 
 //  void SpotLightG::localDisplay() {

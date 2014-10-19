@@ -38,7 +38,7 @@ GM_INIT()
 
 
 ####### TEMP !!!!!!!!!!! TMP
-add_custom_target( ECMake SOURCES ecmake/enhanced.cmake )
+#add_custom_target( ECMake SOURCES ecmake/enhanced.cmake )
 add_subdirectory(cmake)
 ####### TEMP !!!!!!!!!!! TMP
 
@@ -50,7 +50,7 @@ add_subdirectory(cmake)
 option( GM_DEVELOPER_MODE "Set gmlib in developer mode" OFF )
 option( GM_STREAM "Enable output stream operators for core types." TRUE )
 #option( GM_DEBUG "Enable internal debugging, assertions, etc." FALSE )
-#option( GM_OGL_DEBUG "Enable opengl debug. OpenGL function calls are safe called." FALSE )
+option( GM_DEBUG_OPGNGL "Enable opengl debug. OpenGL function calls are safe called." TRUE )
 #option( GM_DOXYGEN "Create build target for doxygen documentation." FALSE )
 option( GM_TESTING "Create unit tests." ON )
 
@@ -75,6 +75,10 @@ if(GM_DEVELOPER_MODE)
     endif(GTest_FOUND)
 
   endif(GM_TESTING)
+
+  if(GM_DEBUG_OPENGL)
+    addDefinitions( GM_GL_DEBUG )
+  endif(GM_DEBUG_OPENGL)
 
 endif(GM_DEVELOPER_MODE)
 
