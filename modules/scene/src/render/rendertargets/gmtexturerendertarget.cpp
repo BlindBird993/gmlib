@@ -1,32 +1,32 @@
-#include "gmrendertexture.h"
+#include "gmtexturerendertarget.h"
 using namespace GMlib;
 
-RenderTexture::RenderTexture() {
+TextureRenderTarget::TextureRenderTarget() {
 
   init();
 }
 
-RenderTexture::RenderTexture(const std::string& name) {
+TextureRenderTarget::TextureRenderTarget(const std::string& name) {
 
   init(name);
 }
 
-const GL::FramebufferObject&RenderTexture::getFbo() const {
+const GL::FramebufferObject&TextureRenderTarget::getFbo() const {
 
   return _fbo;
 }
 
-const GL::Texture& RenderTexture::getTexture() const {
+const GL::Texture& TextureRenderTarget::getTexture() const {
 
   return _tex_rb_color;
 }
 
-void RenderTexture::setClearColor(const Color& c) {
+void TextureRenderTarget::setClearColor(const Color& c) {
 
   _clear_color = c;
 }
 
-void RenderTexture::init(const std::string &name) {
+void TextureRenderTarget::init(const std::string &name) {
 
   _fbo.create();
 
@@ -42,21 +42,21 @@ void RenderTexture::init(const std::string &name) {
   _clear_color = Color( 127, 127, 127 );
 }
 
-void RenderTexture::doClear() const {
+void TextureRenderTarget::doClear() const {
   _fbo.clearColorBuffer(_clear_color);
 }
 
-void RenderTexture::doBind() const {
+void TextureRenderTarget::doBind() const {
 
   _fbo.bind();
 }
 
-void RenderTexture::doUnbind() const {
+void TextureRenderTarget::doUnbind() const {
 
   _fbo.unbind();
 }
 
-void RenderTexture::doResize() {
+void TextureRenderTarget::doResize() {
 
   _tex_rb_color.texImage2D( 0, GL_RGBA8, getWidth(), getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
 }

@@ -1,5 +1,5 @@
-#ifndef __GM_SCENE_RENDER_RENDERTARGETS_RENDERTEXTURE_H__
-#define __GM_SCENE_RENDER_RENDERTARGETS_RENDERTEXTURE_H__
+#ifndef __GM_SCENE_RENDER_RENDERTARGETS_TEXTURERENDERTARGET_H__
+#define __GM_SCENE_RENDER_RENDERTARGETS_TEXTURERENDERTARGET_H__
 
 
 #include "../gmrendertarget.h"
@@ -10,10 +10,10 @@
 
 namespace GMlib {
 
-class RenderTexture : public RenderTarget {
+class TextureRenderTarget : public RenderTarget {
 public:
-  explicit RenderTexture ();
-  explicit RenderTexture ( const std::string& name );
+  explicit TextureRenderTarget ();
+  explicit TextureRenderTarget ( const std::string& name );
 
   const GL::FramebufferObject&    getFbo() const;
   const GL::Texture&              getTexture() const;
@@ -33,8 +33,8 @@ private:
   void      doUnbind() const;
   void      doResize();
 
-}; // END class RenderTexture
+}; // END class TextureRenderTarget
 
 } // End namespace GMlib
 
-#endif // __GM_SCENE_RENDER_RENDERTARGETS_RENDERTEXTURE_H__
+#endif // __GM_SCENE_RENDER_RENDERTARGETS_TEXTURERENDERTARGET_H__
