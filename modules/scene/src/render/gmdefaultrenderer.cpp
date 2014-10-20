@@ -52,7 +52,6 @@ namespace GMlib {
 
   DefaultRenderer::DefaultRenderer() : _select_color(GMcolor::Beige) {
 
-    setClearColor( GMcolor::Grey );
 
     // Acquire programs
     initRenderProgram();
@@ -61,7 +60,7 @@ namespace GMlib {
     // Create render targets
     _front_rt = new TextureRenderTarget;
     _back_rt = new TextureRenderTarget;
-    _rt_test_dummy = _back_rt;
+    setClearColor( GMcolor::Blue );
 
     // Create buffers
     _fbo.create();
@@ -431,10 +430,29 @@ namespace GMlib {
     return _rbo_select;
   }
 
+  const Color&DefaultRenderer::getClearColor() const {
+
+    return _clear_color;
+  }
+
+  void DefaultRenderer::setClearColor(const Color& color) {
+
+    _clear_color = color;
+    if(_back_rt)  _back_rt->setClearColor(color);
+    if(_front_rt) _front_rt->setClearColor(color);
+  }
+
+  const Color&DefaultRenderer::getSelectColor() const {
+
+    return _select_color;
+  }
+
   void DefaultRenderer::setSelectColor(const Color& color) {
 
     _select_color = color;
   }
+
+
 
   void DefaultRenderer::render(const DisplayObject* obj) const {
 
@@ -495,7 +513,6 @@ namespace GMlib {
 
     GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
     GL_CHECK(::glDisable(GL_DEPTH_TEST));
-
 
     // Draw scene composition
     {

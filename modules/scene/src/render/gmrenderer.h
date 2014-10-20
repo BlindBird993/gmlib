@@ -50,10 +50,6 @@ namespace GMlib {
     const Camera*     getCamera() const;
     void              setCamera( Camera* cam );
 
-
-    const Color&      getClearColor() const;
-    void              setClearColor( const Color& color );
-
     /* prepare stuff */
     virtual void      prepare() = 0;
     virtual void      render() = 0;
@@ -61,7 +57,6 @@ namespace GMlib {
     virtual void      reshape( const Vector<int,2>& size ) = 0;
 
   private:
-    Color             _clear_color;
     Camera*           _camera;
 
   }; // END class Renderer

@@ -61,6 +61,10 @@ namespace GMlib {
     const GL::Texture&      getRenderTexture() const;
     const GL::Texture&      getSelectTexture() const;
 
+    const Color&            getClearColor() const;
+    void                    setClearColor(const Color &color);
+
+    const Color&            getSelectColor() const;
     void                    setSelectColor( const Color& color );
 
     /* virtual from Renderer */
@@ -96,6 +100,7 @@ namespace GMlib {
     GL::FramebufferObject   _fbo_select_depth;
     GL::Texture             _rbo_select_depth;
 
+    Color                   _clear_color;
     Color                   _select_color;
 
     /* other suff */
@@ -122,7 +127,6 @@ namespace GMlib {
     Vector<int,2>           _size;
     TextureRenderTarget     *_front_rt;
     TextureRenderTarget     *_back_rt;
-    TextureRenderTarget     *_rt_test_dummy;
 
     GL::UniformBufferObject           _light_ubo;
     void                              updateLightUBO();

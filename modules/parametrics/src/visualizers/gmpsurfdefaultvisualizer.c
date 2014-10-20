@@ -232,8 +232,6 @@ namespace GMlib {
         "  mat.specular  = u_mat_spc;\n"
         "  mat.shininess = u_mat_shi;\n"
         "\n"
-        "  vec4 light_color = vec4(0.0);\n"
-        "\n"
         "  gl_FragColor = computeLighting( mat, ex_pos, normal );\n"
         "\n"
         "}\n"

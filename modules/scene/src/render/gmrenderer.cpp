@@ -44,7 +44,7 @@
 
 namespace GMlib {
 
-  Renderer::Renderer() : _clear_color(GMcolor::Grey), _camera(0x0) {}
+  Renderer::Renderer() : _camera(0x0) {}
 
   Renderer::~Renderer() {}
 
@@ -64,16 +64,6 @@ namespace GMlib {
   Renderer::setCamera(Camera* cam) {
 
     _camera = cam;
-  }
-
-  const Color&Renderer::getClearColor() const {
-
-    return _clear_color;
-  }
-
-  void Renderer::setClearColor(const Color& color) {
-
-    _clear_color = color;
   }
 
 //  void Renderer::setViewport(int x, int y, int w, int h) {
