@@ -59,9 +59,12 @@ endfunction(GM_INIT)
 
 function(GM_ADD_LIBRARY)
   set( TARGET gm${PROJECT_NAME} )
-  add_library( ${TARGET} SHARED ${ARGN} )
 
-#  message( "BAH: " $<TARGET_FILE:${TARGET}> )
+  if(GM_BUILD_SHARED)
+    add_library( ${TARGET} SHARED ${ARGN} )
+  else(GM_BUILD_SHARED)
+    add_library( ${TARGET} STATIC ${ARGN} )
+  endif(GM_BUILD_SHARED)
 
   if( NOT GM_MODULE_TARGETS )
     set( GM_MODULE_TARGETS -l${TARGET} CACHE INTERNAL "TMP module targets variable" )

@@ -88,15 +88,25 @@ if(GM_DEVELOPER_MODE)
 
 endif(GM_DEVELOPER_MODE)
 
-# add GM_STREAM definition
+##########################
+# Add GM_STREAM definition
 if(GM_STREAM)
   GM_ADD_DEFINITION( GM_STREAM )
   add_definitions(-DGM_STREAM)
   message("GMStream enabled")
 endif(GM_STREAM)
 
+##########################################
+# Build shared libs instead of static libs
+option( GM_BUILD_SHARED "Build shared libs instead of static libs." TRUE )
+if(GM_BUILD_SHARED)
+  message( "GMlib: Building shared libs!" )
+else(GM_BUILD_SHARED)
+  message( "GMlib: Building static libs!" )
+endif(GM_BUILD_SHARED)
 
-## Set a default build type if none was specified
+################################################
+# Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE)
   message(STATUS "Setting build type to 'Release' as none was specified.")
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
