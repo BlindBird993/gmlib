@@ -55,6 +55,7 @@
 namespace GMlib {
 
   class Camera;
+  class Renderer;
   class DefaultRenderer;
   class DisplayObject;
 
@@ -72,7 +73,7 @@ namespace GMlib {
     virtual Visualizer*       makeCopy() const = 0;
 
     virtual void              render( const DisplayObject*, const DefaultRenderer* ) const {}
-    virtual void              renderGeometry( const DisplayObject*, const DefaultRenderer*, const Color& ) const {}
+    virtual void              renderGeometry( const DisplayObject*, const Renderer*, const Color& ) const {}
 
     DISPLAY_MODE              getDisplayMode() const;
     void                      setDisplayMode( DISPLAY_MODE display_mode );

@@ -111,7 +111,7 @@ list( APPEND SOURCES
 # Render
 list( APPEND HEADERS
   render/gmdefaultrenderer.h
-#  render/gmdefaultrendererwithselect.h
+  render/gmdefaultselectrenderer.h
   render/gmrenderer.h
   render/gmrendertarget.h
   render/rendertargets/gmnativerendertarget.h
@@ -120,7 +120,7 @@ list( APPEND HEADERS
 
 list( APPEND SOURCES
   render/gmdefaultrenderer.cpp
-#  render/gmdefaultrendererwithselect.cpp
+  render/gmdefaultselectrenderer.cpp
   render/gmrenderer.cpp
   render/rendertargets/gmtexturerendertarget.cpp
 )

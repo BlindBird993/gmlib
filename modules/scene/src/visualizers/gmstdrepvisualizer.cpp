@@ -71,7 +71,7 @@ namespace GMlib {
     return _s_instance;
   }
 
-  void VisualizerStdRep::renderGeometry( const DisplayObject* obj, const DefaultRenderer* renderer, const Color& color ) const {
+  void VisualizerStdRep::renderGeometry( const DisplayObject* obj, const Renderer* renderer, const Color& color ) const {
 
     const Camera* cam = renderer->getCamera();
     _prog.setUniform( "u_color", color );

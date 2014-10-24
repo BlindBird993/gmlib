@@ -549,7 +549,6 @@ namespace GMlib {
 
   void DefaultRenderer::reshape( const Vector<int,2>& size ) {
 
-    std::cout << "DefaultRenderer:reshape! " << size << std::endl;
     _size = size;
 
     _rbo_color.texImage2D( 0, GL_RGBA8, _size(0), _size(1), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );

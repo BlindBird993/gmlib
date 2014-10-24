@@ -153,7 +153,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::renderGeometry( const DisplayObject* obj, const DefaultRenderer* renderer, const Color& color ) const {
+  void PSurfDefaultVisualizer<T,n>::renderGeometry( const DisplayObject* obj, const Renderer* renderer, const Color& color ) const {
+
+    std::cout << "PSurfDefaultVisualizer::renderGeometry: " << obj << ", color: " << color << std::endl;
 
     _color_prog.bind(); {
       _color_prog.setUniform( "u_color", color );

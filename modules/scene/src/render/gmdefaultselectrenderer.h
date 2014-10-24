@@ -21,12 +21,12 @@
 **********************************************************************************/
 
 
-#ifndef __GM_SCENE_RENDER_DEFAULTRENDERERWITHSELECT_H__
-#define __GM_SCENE_RENDER_DEFAULTRENDERERWITHSELECT_H__
+#ifndef __GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H__
+#define __GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H__
 
 
 
-#include "gmdefaultrenderer.h"
+#include "gmrenderer.h"
 
 
 // gmlib
@@ -36,10 +36,12 @@
 
 namespace GMlib {
 
+  class DisplayObject;
 
-  class DefaultRendererWithSelect : public DefaultRenderer {
+  class DefaultSelectRenderer : public Renderer {
   public:
-    explicit DefaultRendererWithSelect();
+    explicit DefaultSelectRenderer();
+    virtual ~DefaultSelectRenderer();
 
     const DisplayObject*        findObject(int x, int y) const;
     DisplayObject*              findObject(int x, int y);
@@ -52,10 +54,17 @@ namespace GMlib {
 
     void                        setSelectRboName( const std::string& name ) { _rbo_color.setName(name); }
 
-  protected:
-    /* Virtual from DefaultRenderer and Renderer */
-    void                        reshape();
+    /* Virtual from Renderer */
+    void                        prepare();
+    void                        reshape(const Vector<int,2> &size);
 
+  protected:
+    /* Virtual from Renderer */
+    void                        render() {}
+    void                        swap() {}
+
+
+    mutable Array<DisplayObject*>   _objs;
 
 
   private:
@@ -65,10 +74,11 @@ namespace GMlib {
     GL::Texture                     _rbo_color;
     GL::Texture                     _rbo_depth;
 
+    Vector<int,2>                   _size;
+
     mutable int                     _what;
 
-    void                            initSelectProgram();
-    void                            renderScene(Camera *cam);
+//    void                            initSelectProgram();
 
     void                            select();
 
@@ -85,4 +95,4 @@ namespace GMlib {
 
 
 
-#endif // __GM_SCENE_RENDER_DEFAULTRENDERER_H__
+#endif // __GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H__

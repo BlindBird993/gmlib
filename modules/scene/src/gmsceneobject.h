@@ -101,6 +101,7 @@ namespace GMlib{
 
   class DisplayObject;
   class Camera;
+  class Renderer;
   class DefaultRenderer;
   class Scene;
 
@@ -258,7 +259,7 @@ namespace GMlib{
       //! (may be removed without further notice!!!)
       //! \deprecated
 
-    virtual void                        localSelect( const DefaultRenderer*, const Color& ) const {}
+    virtual void                        localSelect( const Renderer*, const Color& ) const {}
       //! Lingering function convenient for Rapid Prototyping
       //! (may be removed without further notice!!!)
       //! \deprecated

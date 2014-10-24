@@ -50,7 +50,7 @@ namespace GMlib {
     VisualizerStdRep();
 
     void              render( const DisplayObject* obj, const DefaultRenderer* renderer ) const;
-    void              renderGeometry( const DisplayObject* obj, const DefaultRenderer* renderer, const Color& color ) const;
+    void              renderGeometry( const DisplayObject* obj, const Renderer* renderer, const Color& color ) const;
 
 
     void              render( const HqMatrix<float,3>& mvmat, const HqMatrix<float,3>& pmat ) const;
