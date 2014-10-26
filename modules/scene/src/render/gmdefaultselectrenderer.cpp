@@ -39,8 +39,6 @@ namespace GMlib {
 
   DefaultSelectRenderer::DefaultSelectRenderer() {
 
-//    initSelectProgram();
-
     _fbo.create();
     _rbo_color.create(GL_TEXTURE_2D);
     _rbo_depth.create(GL_TEXTURE_2D);
@@ -60,9 +58,6 @@ namespace GMlib {
 
     _fbo.attachTexture2D( _rbo_color,  GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 );
     _fbo.attachTexture2D( _rbo_depth, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT );
-
-
-
   }
 
   DefaultSelectRenderer::~DefaultSelectRenderer() {}
@@ -152,7 +147,6 @@ namespace GMlib {
   void DefaultSelectRenderer::select(int what) {
 
     const Camera *cam = getCamera();
-    std::cout << "renderScene(cam)" << std::endl;
 
     GL_CHECK(::glViewport(0,0,_size(0),_size(1)));
 
@@ -172,7 +166,7 @@ namespace GMlib {
       for( int i=0; i < _objs.getSize(); ++i ) {
 
         DisplayObject *obj = _objs[i];
-        if( obj != cam && ( _what == 0 || _what == obj->getTypeId() || ( _what < 0 && _what + obj->getTypeId() != 0 ) ) ) {
+        if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
 
           std::cout << "drawing: " << obj->getIdentity() << std::endl;
 
@@ -217,64 +211,5 @@ namespace GMlib {
     _rbo_color.texImage2D( 0, GL_RGBA8, _size(0), _size(1), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0x0 );
     _rbo_depth.texImage2D( 0, GL_DEPTH_COMPONENT, _size(0), _size(1), 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0x0 );
   }
-
-
-//  void
-//  DefaultSelectRenderer::initSelectProgram() {
-
-//    const std::string prog_name    = "select_prog";
-//    if( _prog.acquire(prog_name) ) return;
-
-//    std::string vs_src(
-//          "#version 150 compatibility \n"
-//          "uniform mat4 u_mvpmat; \n"
-//          "\n"
-//          "in vec4 in_vertex; \n"
-//          "\n"
-//          "out vec4 gl_Position; \n"
-//          "\n"
-//          "void main() \n"
-//          "{ \n"
-//          "  gl_Position = u_mvpmat * in_vertex; \n"
-//          "}\n"
-//          );
-
-//    std::string fs_src(
-//          "#version 150 compatibility \n"
-//          "\n"
-//          "uniform vec4 u_color; \n"
-//          "\n"
-//          "out vec4 gl_FragColor; \n"
-//          "\n"
-//          "void main() \n"
-//          "{ \n"
-//          "  gl_FragColor = u_color; \n"
-//          "} \n"
-//          );
-
-//    bool compile_ok, link_ok;
-
-//    GL::VertexShader vshader;
-
-//    vshader.create("defaultrender_select_vs");
-//    vshader.setPersistent(true);
-//    vshader.setSource(vs_src);
-//    compile_ok = vshader.compile();
-//    assert(compile_ok);
-
-//    GL::FragmentShader fshader;
-//    fshader.create("defaultrender_select_fs");
-//    fshader.setPersistent(true);
-//    fshader.setSource(fs_src);
-//    compile_ok = fshader.compile();
-//    assert(compile_ok);
-
-//    _prog.create(prog_name);
-//    _prog.setPersistent(true);
-//    _prog.attachShader(vshader);
-//    _prog.attachShader(fshader);
-//    link_ok = _prog.link();
-//    assert(link_ok);
-//  }
 
 } // END namespace GMlib

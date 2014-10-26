@@ -43,25 +43,25 @@ namespace GMlib {
     explicit DefaultSelectRenderer();
     virtual ~DefaultSelectRenderer();
 
-    const DisplayObject*        findObject(int x, int y) const;
-    DisplayObject*              findObject(int x, int y);
-    Array<const DisplayObject*> findObjects(int xmin, int ymin, int xmax, int ymax) const;
-    Array<DisplayObject*>       findObjects(int xmin, int ymin, int xmax, int ymax);
+    const DisplayObject*            findObject(int x, int y) const;
+    DisplayObject*                  findObject(int x, int y);
+    Array<const DisplayObject*>     findObjects(int xmin, int ymin, int xmax, int ymax) const;
+    Array<DisplayObject*>           findObjects(int xmin, int ymin, int xmax, int ymax);
 
 
-    void                        select(int what);
+    void                            select(int what);
 
 
-    void                        setSelectRboName( const std::string& name ) { _rbo_color.setName(name); }
+    void                            setSelectRboName( const std::string& name ) { _rbo_color.setName(name); }
 
     /* Virtual from Renderer */
-    void                        prepare();
-    void                        reshape(const Vector<int,2> &size);
+    void                            prepare();
+    void                            reshape(const Vector<int,2> &size);
 
   protected:
     /* Virtual from Renderer */
-    void                        render() {}
-    void                        swap() {}
+    void                            render() {}
+    void                            swap() {}
 
 
     mutable Array<DisplayObject*>   _objs;
@@ -75,15 +75,6 @@ namespace GMlib {
     GL::Texture                     _rbo_depth;
 
     Vector<int,2>                   _size;
-
-    mutable int                     _what;
-
-//    void                            initSelectProgram();
-
-    void                            select();
-
-
-
 
   }; // END class DefaultRendererWithSelect
 

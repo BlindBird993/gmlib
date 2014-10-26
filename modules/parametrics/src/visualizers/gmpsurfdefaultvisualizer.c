@@ -155,8 +155,6 @@ namespace GMlib {
   inline
   void PSurfDefaultVisualizer<T,n>::renderGeometry( const DisplayObject* obj, const Renderer* renderer, const Color& color ) const {
 
-    std::cout << "PSurfDefaultVisualizer::renderGeometry: " << obj << ", color: " << color << std::endl;
-
     _color_prog.bind(); {
       _color_prog.setUniform( "u_color", color );
       _color_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
