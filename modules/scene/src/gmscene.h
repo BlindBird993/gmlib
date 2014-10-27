@@ -58,7 +58,7 @@ namespace GMlib{
 
 
 
-  /*! \class Scene gmscene.h <gmScene>
+  /*! \class Scene gmscene.h <gmscene>
    *  \brief Pending Documentation cleanup, and general documentation
    *
    *    Inneholder: Scenen er startnoden i ojecttreet
@@ -89,7 +89,7 @@ namespace GMlib{
     const SceneObject*          find(unsigned int name) const;
     void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, const Camera* cam) const;
     SceneObject*                getActiveObject();
-    int                         getSize();
+    int                         getSize() const;
     virtual void                insert(SceneObject* obj);
     void                        remove(SceneObject* obj);
 
@@ -108,6 +108,7 @@ namespace GMlib{
     virtual void                insertCamera(Camera* cam);
     virtual bool                removeCamera(Camera* cam);
 
+    void                        clear();
 
     void                        prepare();
     void                        simulate();
@@ -116,7 +117,7 @@ namespace GMlib{
     void                        enabledFixedDt();
     void                        disableFixedDt();
     void                        setFixedDt( double dt );
-    double                      getElapsedTime();
+    double                      getElapsedTime() const;
     double                      getTimeScale() const;
     void                        setTimeScale(double s);
     void                        resetTime();
@@ -124,39 +125,23 @@ namespace GMlib{
     void                        stop();
 
 
-    Sphere<float,3>             getSphere();
+    Sphere<float,3>             getSphere() const;
     Sphere<float,3>             getSphereClean() const;
 
-
-    const Array<SceneObject*>&  getSelectedObjects();
+    const Array<SceneObject*>&  getSelectedObjects() const;
     void                        updateSelection(SceneObject *obj );
     bool                        isSelected( SceneObject* obj ) const;
     void                        removeSelections();
     void                        clearSelection();
 
-
-
-
-
-
     void                        setEventManager( EventManager* mgr );
-
-
-
-    void                        clear();
-
 
     SceneObject*                operator [] (int i);
     SceneObject*                operator () (int i);
     Scene&                      operator =  (const Scene& sc);
 
-  protected:
-    Array<Camera*>              _cameras;
-
-    virtual void                updateMaxObjects( int no_objects );
-
-
   private:
+    Array<Camera*>              _cameras;
     Array<SceneObject*>         _scene;
     Array<Light*>               _lights;
 
@@ -185,21 +170,11 @@ namespace GMlib{
 
 
 
-
-
-
-
-  /*! double Scene::getElapsedTime()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
-  double Scene::getElapsedTime() {
+  double Scene::getElapsedTime() const {
 
     return _timer_time_elapsed;
   }
-
 
   /*! Array<Light*>& Scene::getLights()
    *  \brief Returns the scene's light sources.
@@ -221,31 +196,18 @@ namespace GMlib{
     return _sun;
   }
 
-
   inline
-  const Array<SceneObject*>& Scene::getSelectedObjects() {
+  const Array<SceneObject*>& Scene::getSelectedObjects() const {
 
     return _sel_objs;
   }
 
-
-  /*! double Scene::getTimeScale()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   double Scene::getTimeScale() const {
 
     return _timer_time_scale;
   }
 
-
-  /*! bool Scene::isRunning()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   bool Scene::isRunning() const {
 
@@ -263,36 +225,18 @@ namespace GMlib{
     return isRunning();
   }
 
-
-  /*! void Scene::resetTime()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Scene::resetTime() {
 
     _timer_time_elapsed = 0;
   }
 
-
-  /*! void Scene::setTimeScale( double s )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Scene::setTimeScale( double s ) {
 
     _timer_time_scale = s;
   }
 
-
-  /*! void Scene::start()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Scene::start() {
 
@@ -300,12 +244,6 @@ namespace GMlib{
     _timer.update();
   }
 
-
-  /*! void   Scene::stop()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void   Scene::stop() {
 

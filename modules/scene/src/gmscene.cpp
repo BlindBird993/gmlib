@@ -45,7 +45,6 @@ namespace GMlib {
 
 
   /*! Scene::Scene()
-   *  \brief Pending Documentation
    *
    *  Default constructor
    */
@@ -61,9 +60,8 @@ namespace GMlib {
 
 
   /*! Scene::Scene( SceneObject* obj )
-   *  \brief Pending Documentation
    *
-   *  Standar constructor
+   *  Standard constructor
    */
   Scene::Scene( SceneObject* obj ) :
     _scene(),
@@ -76,12 +74,6 @@ namespace GMlib {
     init();
   }
 
-
-  /*! Scene::Scene( const Scene&  s )
-   *  \brief Pending Documentation
-   *
-   *  Copy constructor
-   */
   Scene::Scene( const Scene&  s ) :
     _scene(s._scene),
     _matrix_stack(s._matrix_stack),
@@ -90,23 +82,11 @@ namespace GMlib {
     init();
   }
 
-
-  /*! Scene::~Scene()
-   *  \brief Pending Documentation
-   *
-   *  Destructor
-   */
   Scene::~Scene() {
 
     clear();
   }
 
-
-  /*! SceneObject* Scene::find(unsigned int name)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   SceneObject* Scene::find(unsigned int name) {
     SceneObject* obj;
 
@@ -116,14 +96,11 @@ namespace GMlib {
   }
 
   const SceneObject* Scene::find(unsigned int name) const {
-//    SceneObject* obj;
 
     for(int i=0; i < _scene.getSize(); i++)
       if( const SceneObject* obj = _scene(i)->find(name) ) return obj;
-    return 0;
+    return 0x0;
   }
-
-//  RenderManager *Scene::getRenderManager() const {  return 0x0; }
 
   void Scene::getDisplayableObjects(Array<DisplayObject *> &disp_objs, const Camera *cam)  const {
 
@@ -180,37 +157,19 @@ namespace GMlib {
     _sel_objs.clear();
   }
 
-
-  /*! int Scene::getSize()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  int Scene::getSize() {
+  int Scene::getSize() const {
 
     return _scene.getSize();
   }
 
-
-  /*! Sphere<float,3>  Scene::getSphere()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  Sphere<float,3>  Scene::getSphere() {
+  Sphere<float,3>  Scene::getSphere() const {
 
     Sphere<float,3> sp;
     for(int i=0; i< _scene.getSize(); i++)
-      sp += _scene[i]->getSurroundingSphere();
+      sp += _scene(i)->getSurroundingSphere();
     return sp;
   }
 
-
-  /*! Sphere<float,3>  Scene::getSphereClean() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   Sphere<float,3>  Scene::getSphereClean() const {
 
     Sphere<float,3> sp;
@@ -227,12 +186,6 @@ namespace GMlib {
       _sel_objs.remove(obj);
   }
 
-
-  /*! void Scene::insert(SceneObject* obj)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   void Scene::insert(SceneObject* obj) {
 
     if(!obj)
@@ -241,8 +194,6 @@ namespace GMlib {
     _scene.insert(obj);
     obj->setParent(0);
   }
-
-
 
   void Scene::insertCamera(Camera* cam) {
 
@@ -260,8 +211,6 @@ namespace GMlib {
     int i = _cameras.getIndex(cam);
     if(i>0) {
 
-//      for(int j=1; j<_view_set_stack.getSize(); j++)
-//        _view_set_stack[j].removeCamera(_cameras[_active_cam]);
       remove(cam);
 
       _cameras.removeIndex(i);
@@ -270,28 +219,14 @@ namespace GMlib {
     return false;
   }
 
-
-  /*! void Scene::prepare()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   void Scene::prepare() {
 
     int no_disp_obj = 0;
 
     for(int i=0; i < _scene.getSize(); i++)
       no_disp_obj += _scene[i]->prepare( _matrix_stack, this );
-
-    updateMaxObjects(no_disp_obj);
   }
 
-
-  /*! void Scene::remove( SceneObject* obj )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   void Scene::remove( SceneObject* obj ) {
 
     if(obj) _scene.remove(obj);
@@ -351,22 +286,11 @@ namespace GMlib {
       _sun->rotateGlobal(d, Vector<float,3>(1.0,1.0,0.0));
   }
 
-  /*! SceneObject* Scene::operator[]( int i )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   SceneObject* Scene::operator[]( int i ) {
 
     return _scene[i];
   }
 
-
-  /*! Scene& Scene::operator=(const Scene& sc)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   Scene& Scene::operator=(const Scene& other) {
 
     _timer_active         = false;
@@ -424,12 +348,6 @@ namespace GMlib {
         sel_objs[i]->setSelected( false );
   }
 
-  /*! void Scene::simulate()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  NB!!! ONLY USED BY gmWindow    // Subject to change
-   */
   void Scene::simulate() {
 
     if( !_timer_active ) return;
@@ -449,9 +367,6 @@ namespace GMlib {
         _scene[i]->simulate(dt);
     }
   }
-
-  void Scene::updateMaxObjects(int /*no_objects*/) {}
-
 
   void Scene::init() {
 

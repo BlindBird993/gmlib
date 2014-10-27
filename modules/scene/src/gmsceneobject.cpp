@@ -183,7 +183,6 @@ namespace GMlib {
     _present = mat.back();
     _global_total_sphere = _global_sphere = _present*_sphere;
 
-
     if(_scale.isActive()) {
 
       _global_sphere *= _scale.getMax();
