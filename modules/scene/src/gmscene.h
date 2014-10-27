@@ -112,17 +112,17 @@ namespace GMlib{
     void                        prepare();
     void                        simulate();
     bool                        isRunning() const;
-    bool                        isRunning();
     virtual bool                toggleRun();
     void                        enabledFixedDt();
     void                        disableFixedDt();
     void                        setFixedDt( double dt );
     double                      getElapsedTime();
-    double                      getTimeScale();
+    double                      getTimeScale() const;
     void                        setTimeScale(double s);
     void                        resetTime();
     void                        start();
     void                        stop();
+
 
     Sphere<float,3>             getSphere();
     Sphere<float,3>             getSphereClean() const;
@@ -146,9 +146,6 @@ namespace GMlib{
     void                        clear();
 
 
-    void                        render();
-
-
     SceneObject*                operator [] (int i);
     SceneObject*                operator () (int i);
     Scene&                      operator =  (const Scene& sc);
@@ -164,9 +161,6 @@ namespace GMlib{
     Array<Light*>               _lights;
 
     Sun*                        _sun;
-
-    bool                        _running;
-
 
     Array<SceneObject*>         _sel_objs;
 
@@ -241,7 +235,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  double Scene::getTimeScale() {
+  double Scene::getTimeScale() const {
 
     return _timer_time_scale;
   }
@@ -253,7 +247,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  bool Scene::isRunning() {
+  bool Scene::isRunning() const {
 
     return _timer_active;
   }
@@ -261,12 +255,12 @@ namespace GMlib{
   inline
   bool Scene::toggleRun() {
 
-    if( _running = !_running )
+    if( !isRunning() )
       start();
     else
       stop();
 
-    return _running;
+    return isRunning();
   }
 
 

@@ -140,7 +140,8 @@ namespace GMlib {
 
   void Scene::clear() {
 
-    if( _running )
+    const bool running = isRunning();
+    if(running)
       stop();
 
     // Remove selections
@@ -168,7 +169,7 @@ namespace GMlib {
 
     _scene.setSize(0);
 
-    if( _running )
+    if(running)
       start();
   }
 
@@ -350,11 +351,6 @@ namespace GMlib {
       _sun->rotateGlobal(d, Vector<float,3>(1.0,1.0,0.0));
   }
 
-  bool Scene::isRunning() const {
-
-    return _running;
-  }
-
   /*! SceneObject* Scene::operator[]( int i )
    *  \brief Pending Documentation
    *
@@ -379,8 +375,6 @@ namespace GMlib {
 
     _scene                = other._scene;
     _event_manager        = other._event_manager;
-
-    _running              = false;
 
     _lights               = other._lights;
     _sun                  = other._sun;
@@ -461,15 +455,13 @@ namespace GMlib {
 
   void Scene::init() {
 
-    _timer_active   = true;
+    _timer_active   = false;
     _timer_time_scale    = 1;
     _timer_time_elapsed  = 0;
     _timer_fixed_dt_enabled = false;
     _timer_fixed_dt = 0.25;
 
     _sun = 0x0;
-
-    _running = false;
   }
 
   const Array<Camera*>& Scene::getCameras() const {
