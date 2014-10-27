@@ -168,8 +168,6 @@ namespace GMlib {
         DisplayObject *obj = _objs[i];
         if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
 
-          std::cout << "drawing: " << obj->getIdentity() << std::endl;
-
           if(obj->isCollapsed()) {
 
             VisualizerStdRep::getInstance()->renderGeometry(obj,this,obj->getVirtualName());
