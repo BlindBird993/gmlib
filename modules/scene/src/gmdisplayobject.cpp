@@ -45,7 +45,7 @@ namespace GMlib {
     const Point<float,3>&  pos,
     const Vector<float,3>& dir,
     const Vector<float,3>& up
-  ) : SceneObject(),_matrix_scene(),_matrix_scene_inv() {
+  ) : SceneObject() {
 
     init();
     set( pos, dir, up );
@@ -61,7 +61,7 @@ namespace GMlib {
     const Point<float,3>&  lock_pos,
     const Point<float,3>&  pos,
     const Vector<float,3>& up
-  ) : SceneObject(), _matrix_scene(), _matrix_scene_inv() {
+  ) : SceneObject() {
 
     init();
     Vector<float,3> dir = up.getLinIndVec();
@@ -80,7 +80,7 @@ namespace GMlib {
     SceneObject* lock_object,
     const Point<float,3>&  pos,
     const Vector<float,3>& up
-  ) : SceneObject(), _matrix_scene(), _matrix_scene_inv() {
+  ) : SceneObject() {
 
     init();
     Vector<float,3> dir = up.getLinIndVec();
@@ -96,7 +96,7 @@ namespace GMlib {
    *  Pending Documentation
    */
   DisplayObject::DisplayObject( const DisplayObject& copy )
-    : SceneObject(copy), _matrix_scene( copy._matrix_scene ), _matrix_scene_inv( copy._matrix_scene_inv )
+    : SceneObject(copy)
   {
 
     set( copy._pos, copy._dir, copy._up );

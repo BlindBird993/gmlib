@@ -151,9 +151,6 @@ namespace GMlib {
 
 
   protected:
-    // Matrices from Scene to this
-    HqMatrix<float,3>             _matrix_scene;
-    HqMatrix<float,3>             _matrix_scene_inv;
 
     Point<float,3>                _pos;
     UnitVector<float,3>           _dir;
@@ -206,8 +203,7 @@ namespace GMlib {
        *    DisplayObject( T_Stream& in, int st) : SceneObject( in, st ), _matrix(), _matrix_scene_inv()
        */
       template <typename T_Stream>
-  //    DisplayObject( T_Stream& in, int st) : SceneObject( in, st ), _matrix(), _matrix_scene_inv() {
-      DisplayObject( T_Stream& in, int st) : SceneObject( in, st ), _matrix_scene_inv() {
+      DisplayObject( T_Stream& in, int st) : SceneObject( in, st ) {
 
         prIn(in);
         init();

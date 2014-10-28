@@ -62,7 +62,7 @@ namespace GMlib {
     const Point<float,3>&  scale,
     const Vector<float,3>& rot_axel,
     Angle a
-  ) :_scale(scale) {
+  ) : _matrix(), _present(), _matrix_scene(), _matrix_scene_inv(), _scale(scale) {
 
     _scene = 0x0;
     _parent = 0x0;
@@ -76,7 +76,6 @@ namespace GMlib {
     _matrix.rotateGlobal(a, u, v);
 
     _name	            = _free_name++;
-    _active	          = false;
     _local_cs         = true;
     _type_id          = GM_SO_TYPE_SCENEOBJECT;
     _is_part          = false;
@@ -99,10 +98,11 @@ namespace GMlib {
     _scene            = 0x0;
     _parent           = 0x0;
     _matrix	          = copy._matrix;
+    _matrix_scene     = copy._matrix_scene;
+    _matrix_scene_inv = copy._matrix_scene_inv;
     _sphere	          = copy._sphere;
     _scale            = copy._scale;
     _name	            = _free_name++;
-    _active	          = false;
     _local_cs         = copy._local_cs;
     _type_id          = copy._type_id;
     _is_part          = false;

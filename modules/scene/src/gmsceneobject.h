@@ -264,6 +264,11 @@ namespace GMlib{
       //! (may be removed without further notice!!!)
       //! \deprecated
 
+  public:
+    // Matrices from Scene to this
+    HqMatrix<float,3>             _matrix_scene;
+    HqMatrix<float,3>             _matrix_scene_inv;
+
   protected:
     friend class Scene;
 
@@ -272,13 +277,14 @@ namespace GMlib{
     int                                 _type_id;
     Array<SceneObject*>                 _children;
 
-    Scene*                              _scene;                 //! The scene of the display hiearchy
-    SceneObject*                        _parent;                //! the mother in the hierarchy (tree).
     HqMatrix<float,3>                   _matrix;                //! The difference matrix from mother to this.
     HqMatrix<float,3>                   _present;               //! The difference matrix from global to this.
+
+
+    Scene*                              _scene;                 //! The scene of the display hiearchy
+    SceneObject*                        _parent;                //! the mother in the hierarchy (tree).
     ScaleObject                         _scale;                 //! The scaling for this and the children.
     bool                                _local_cs;              //! Using local coordinate system, default is true
-    bool                                _active;                //! This variable is only for camera.
 
     Sphere<float,3>                     _global_sphere;         //! for this object
     Sphere<float,3>                     _global_total_sphere;   //! included all children
@@ -356,7 +362,6 @@ namespace GMlib{
       in >> *this;
 
       _name       = _free_name++;
-      _active     = false;
       _local_cs   = true;
       _visible    = true;
     }

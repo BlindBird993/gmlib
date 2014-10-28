@@ -203,9 +203,6 @@ namespace GMlib {
 
 
   public:
-    void    markAsActive()    { _active = true; }
-    void    markAsInactive()  { _active = false; }
-
     void    switchToLeftEye() { basisChange( _side, _up, _dir, _pos ); }
 
     void    switchToRightEye() {
