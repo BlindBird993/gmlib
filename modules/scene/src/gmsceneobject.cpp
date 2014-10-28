@@ -177,7 +177,9 @@ namespace GMlib {
 
     mat.push();
 
-    prepareDisplay(mat.back());
+    _matrix_scene_inv = _matrix_scene = mat.back();
+    _matrix_scene_inv.invertOrthoNormal();
+
     mat.back() = mat.back() * getMatrix();
 
     _present = mat.back();
@@ -206,7 +208,7 @@ namespace GMlib {
    *
    *  Made specially for DisplayObject's
    */
-  void SceneObject::prepareDisplay( const HqMatrix<float,3>& /*mat*/ ) {}
+//  void SceneObject::prepareDisplay( const HqMatrix<float,3>& /*mat*/ ) {}
 
 
   /*! void culling( Array<SceneObject*>&, const Frustum& );

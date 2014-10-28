@@ -180,7 +180,6 @@ namespace GMlib {
     // *****************
     // Virtual functions
     // from SceneObject
-    void                          prepareDisplay(const HqMatrix<float,3>& m);
     void                          localSimulate(double dt);
 
 

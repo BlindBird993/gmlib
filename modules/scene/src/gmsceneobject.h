@@ -266,8 +266,8 @@ namespace GMlib{
 
   public:
     // Matrices from Scene to this
-    HqMatrix<float,3>             _matrix_scene;
-    HqMatrix<float,3>             _matrix_scene_inv;
+    HqMatrix<float,3>                   _matrix_scene;
+    HqMatrix<float,3>                   _matrix_scene_inv;
 
   protected:
     friend class Scene;
@@ -308,7 +308,7 @@ namespace GMlib{
     Sphere<float,3>                     _sphere;      //! Surrounding sphere for this object
 
     int                                 prepare(Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
-    virtual void                        prepareDisplay(const HqMatrix<float,3>& m);
+//    virtual void                        prepareDisplay(const HqMatrix<float,3>& m);
 
     virtual void                        culling( Array<DisplayObject*>&, const Frustum& );
     void                                fillObj( Array<DisplayObject*>& );

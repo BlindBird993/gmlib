@@ -570,20 +570,6 @@ namespace GMlib {
     move( _matrix_scene_inv * trans_vector );
   }
 
-  /*! void DisplayObject::prepareDisplay(const HqMatrix<float,3>& m)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  Virtual SceneObject function
-   */
-  void DisplayObject::prepareDisplay( const HqMatrix<float,3>& mat ) {
-
-    /*! \todo fix the way the matrix is handled */
-    _matrix_scene = mat;
-    _matrix_scene_inv = mat;
-    _matrix_scene_inv.invertOrthoNormal();
-  }
-
 
   /*! void DisplayObject::localSimulate(double dt)
    *  \brief Pending Documentation
