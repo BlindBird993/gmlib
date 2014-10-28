@@ -49,6 +49,7 @@ namespace GMlib {
     Camera*           getCamera();
     const Camera*     getCamera() const;
     void              setCamera( Camera* cam );
+    void              releaseCamera();
 
     /* prepare stuff */
     virtual void      prepare() = 0;

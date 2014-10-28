@@ -84,7 +84,7 @@ namespace GMlib {
 
   Scene::~Scene() {
 
-    clear();
+//    clear();
   }
 
   SceneObject* Scene::find(unsigned int name) {

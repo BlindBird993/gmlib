@@ -66,6 +66,10 @@ namespace GMlib {
     _camera = cam;
   }
 
+  void Renderer::releaseCamera() {
+    _camera = 0x0;
+  }
+
 //  void Renderer::setViewport(int x, int y, int w, int h) {
 
 //    _x = x;
