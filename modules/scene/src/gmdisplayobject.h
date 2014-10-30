@@ -86,89 +86,11 @@ namespace GMlib {
 
 
 
-
-
-
-
-
-
-    // Virtual from SceneObject
-    virtual void                  rotate(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                  rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                  rotate(const UnitQuaternion<float>& q);
-    virtual void                  rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                  rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                  rotateGlobal(const UnitQuaternion<float>& q);
-    virtual void                  translate(const Vector<float,3>& trans_vector);
-    virtual void                  translateGlobal(const Vector<float,3>& trans_vector);
-
-
   protected:
 
 
 
 
-//  private:
-
-
-//    #ifdef GM_STREAM
-//    public:
-
-//      // Stream constructor
-//      /*! DisplayObject( T_Stream& in, int st)
-//       *  \brief DisplayObject Stream Constructor
-//       *
-//       *  Pending further Documentation
-//       *
-//       *  \todo
-//       *  - Find out why this doesn't work:
-//       *    DisplayObject( T_Stream& in, int st) : SceneObject( in, st ), _matrix(), _matrix_scene_inv()
-//       */
-//      template <typename T_Stream>
-//      DisplayObject( T_Stream& in, int st) : SceneObject( in, st ) {
-
-//        prIn(in);
-//        init();
-//        _side	= _up^_dir;
-//        _locked	= false;
-//        _lock_object	= 0;
-//        basisChange(_side, _up, _dir, _pos);
-//      }
-
-
-//      template <typename T_Stream>
-//      friend T_Stream& operator<<(T_Stream& out, const DisplayObject& v) {
-
-//        out << *((SceneObject*)& v);
-//        v.prOut(out);
-//        return out;
-//      }
-
-//      template <typename T_Stream>
-//      friend T_Stream& operator>>(T_Stream& in, DisplayObject& v) {
-
-//        in >> *((SceneObject*)& v);
-//        v.prIn(in);
-//        return in;
-//      }
-
-
-//    private:
-//      //, const DisplayObject& v)
-//      template <typename T_Stream>
-//      void prOut(T_Stream& out) const {
-
-//        out << _pos << GMseparator::Object << _dir << GMseparator::Object << _up << GMseparator::Object;
-//      }
-
-//      //, DisplayObject& v)
-//      template <typename T_Stream>
-//      void prIn(T_Stream& in) {
-
-//        static Separator os(GMseparator::Object);
-//        in >> _pos >> os >> _dir >> os >> _up >> os;
-//      }
-//    #endif
 
   }; // END DisplayObject class
 

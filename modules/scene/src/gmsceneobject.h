@@ -436,11 +436,37 @@ namespace GMlib{
   public:
 
     template <typename T_Stream>
+    SceneObject( T_Stream& in, int st ) {
+
+      in >> *this;
+
+      _name       = _free_name++;
+      _local_cs   = true;
+      _visible    = true;
+
+      prIn(in);
+
+      // init begin
+      _lighted          = true;
+      _opaque           = true;
+      _material         = GMmaterial::PolishedCopper;
+      _color            = GMcolor::Red;
+      _collapsed        = false;
+      //init end
+
+      _side	= _up^_dir;
+      _locked	= false;
+      _lock_object	= 0;
+      basisChange(_side, _up, _dir, _pos);
+    }
+
+    template <typename T_Stream>
     friend T_Stream& operator << ( T_Stream& out, SceneObject& s ) {
 
       out << s._type_id << GMseparator::Object;
       out << s._matrix  << GMseparator::Object
           << s._scale   << GMseparator::Object;
+      s.prOut(out);
 
   /*  if(st)
       {
@@ -459,6 +485,7 @@ namespace GMlib{
 
       in >> s._type_id  >> os;
       in >> s._matrix   >> os >> s._scale >> os;
+      s.prIn(in);
   /*  if(st)
       {
         int nr;
@@ -469,14 +496,22 @@ namespace GMlib{
       return in;
     }
 
+
+
+  private:
+    //, const DisplayObject& v)
     template <typename T_Stream>
-    SceneObject( T_Stream& in, int st ) {
+    void prOut(T_Stream& out) const {
 
-      in >> *this;
+      out << _pos << GMseparator::Object << _dir << GMseparator::Object << _up << GMseparator::Object;
+    }
 
-      _name       = _free_name++;
-      _local_cs   = true;
-      _visible    = true;
+    //, DisplayObject& v)
+    template <typename T_Stream>
+    void prIn(T_Stream& in) {
+
+      static Separator os(GMseparator::Object);
+      in >> _pos >> os >> _dir >> os >> _up >> os;
     }
 
     #endif
