@@ -104,6 +104,7 @@ namespace GMlib{
   class Renderer;
   class DefaultRenderer;
   class Scene;
+  class Visualizer;
 
 
   enum GM_SO_TYPE {
@@ -316,6 +317,30 @@ namespace GMlib{
 
 
 
+    const Color&                        getColor() const;
+    Color&                              getColor();
+    void                                setColor( const Color& c );
+    const Material&                     getMaterial() const;
+    Material&                           getMaterial();
+    virtual void                        setMaterial(const Material& m);
+
+    bool                                isCollapsed() const;
+    virtual void                        setCollapsed(bool c);
+    virtual bool                        toggleCollapsed();
+    bool                                isLighted() const;
+    void                                setLighted( bool lighted );
+    bool                                isOpaque() const;
+    void                                setOpaque( bool o );
+
+
+    Array<Visualizer*>&                 getVisualizers();
+    const Array<Visualizer*>&           getVisualizers() const;
+    virtual void                        insertVisualizer( Visualizer* visualizer );
+    virtual void                        removeVisualizer( Visualizer* visualizer );
+
+
+
+
 
     // deprecated
     virtual void                        localDisplay( const DefaultRenderer* ) const {}
@@ -348,6 +373,7 @@ namespace GMlib{
     bool                                _lighted;
     bool                                _opaque;
 
+    Array<Visualizer*>            _visualizers;
 
   protected:
     friend class Scene;
@@ -482,6 +508,14 @@ namespace GMlib{
 
   inline
   const HqMatrix<float,3>& SceneObject::getMatrixToSceneInverse() const {  return _matrix_scene_inv; }
+
+
+  inline bool SceneObject::isCollapsed() const {  return _collapsed; }
+  inline bool SceneObject::isOpaque() const {  return _opaque; }
+  inline void SceneObject::setCollapsed(bool c) {  _collapsed = c; }
+  inline void SceneObject::setOpaque( bool o ) {  _opaque = o; }
+  inline bool SceneObject::toggleCollapsed() {  return _collapsed = !_collapsed; }
+
 
 
 

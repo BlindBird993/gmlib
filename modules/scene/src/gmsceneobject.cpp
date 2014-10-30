@@ -436,7 +436,14 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  void SceneObject::localSimulate( double /*dt*/ ) {}
+  void SceneObject::localSimulate( double /*dt*/ ) {
+
+    if(_locked) {
+
+      updateOrientation( getSceneLockPos() );
+      basisChange(_side, _up, _dir, _pos);
+    }
+  }
 
 
   /*! void SceneObject::remove(SceneObject* obj)
@@ -816,5 +823,59 @@ namespace GMlib {
     nmat.transpose();
     return nmat;
   }
+
+
+  Array<Visualizer*>&
+  SceneObject::getVisualizers() {
+
+    return _visualizers;
+  }
+
+  const Array<Visualizer*>&
+  SceneObject::getVisualizers() const {
+
+    return _visualizers;
+  }
+
+  void
+  SceneObject::insertVisualizer( Visualizer* visualizer ) {
+
+    if( _visualizers.exist( visualizer ) )
+      return;
+
+    _visualizers += visualizer;
+  }
+
+  void
+  SceneObject::removeVisualizer( Visualizer* visualizer ) {
+
+    _visualizers.remove( visualizer );
+  }
+
+
+  const Color&
+  SceneObject::getColor() const {  return _color; }
+
+  Color&
+  SceneObject::getColor() {  return _color; }
+
+  const Material&
+  SceneObject::getMaterial() const {  return _material; }
+
+  Material&
+  SceneObject::getMaterial() {  return _material; }
+
+  bool
+  SceneObject::isLighted() const {  return _lighted; }
+
+  void
+  SceneObject::setColor( const Color& c ) {  _color = c; }
+
+  void
+  SceneObject::setLighted( bool lighted ) {  _lighted = lighted; }
+
+  void
+  SceneObject::setMaterial( const Material& m ) {  _material = m; }
+
 
 }

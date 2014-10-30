@@ -53,7 +53,6 @@
 namespace GMlib {
 
 
-  class Visualizer;
 
 
   /*! \class DisplayObject gmdisplayobject.h <gmDisplayObject>
@@ -92,25 +91,6 @@ namespace GMlib {
 
 
 
-    Array<Visualizer*>&           getVisualizers();
-    const Array<Visualizer*>&     getVisualizers() const;
-    virtual void                  insertVisualizer( Visualizer* visualizer );
-    virtual void                  removeVisualizer( Visualizer* visualizer );
-
-    const Color&                  getColor() const;
-    Color&                        getColor();
-    void                          setColor( const Color& c );
-    const Material&               getMaterial() const;
-    Material&                     getMaterial();
-    virtual void                  setMaterial(const Material& m);
-
-    bool                          isCollapsed() const;
-    virtual void                  setCollapsed(bool c);
-    virtual bool                  toggleCollapsed();
-    bool                          isLighted() const;
-    void                          setLighted( bool lighted );
-    bool                          isOpaque() const;
-    void                          setOpaque( bool o );
 
     // Virtual from SceneObject
     virtual void                  rotate(Angle a, const Vector<float,3>& rot_axel);
@@ -125,15 +105,6 @@ namespace GMlib {
 
   protected:
 
-
-    Array<Visualizer*>            _visualizers;
-
-
-
-    // *****************
-    // Virtual functions
-    // from SceneObject
-    void                          localSimulate(double dt);
 
 
 
@@ -217,37 +188,6 @@ namespace GMlib {
 
 
 
-  inline
-  bool DisplayObject::isCollapsed() const {
-
-    return _collapsed;
-  }
-
-
-  inline
-  bool DisplayObject::isOpaque() const {
-
-    return _opaque;
-  }
-
-  inline
-  void DisplayObject::setCollapsed(bool c) {
-
-    _collapsed = c;
-  }
-
-
-  inline
-  void DisplayObject::setOpaque( bool o ) {
-
-    _opaque = o;
-  }
-
-  inline
-  bool DisplayObject::toggleCollapsed() {
-
-    return _collapsed = !_collapsed;
-  }
 
 
 

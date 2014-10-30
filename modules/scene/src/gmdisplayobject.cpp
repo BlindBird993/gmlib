@@ -87,31 +87,6 @@ namespace GMlib {
   DisplayObject::~DisplayObject() {}
 
 
-  Array<Visualizer*>& DisplayObject::getVisualizers() {
-
-    return _visualizers;
-  }
-
-  const Array<Visualizer*>& DisplayObject::getVisualizers() const {
-
-    return _visualizers;
-  }
-
-  void DisplayObject::insertVisualizer( Visualizer* visualizer ) {
-
-    if( _visualizers.exist( visualizer ) )
-      return;
-
-    _visualizers += visualizer;
-  }
-
-  void DisplayObject::removeVisualizer( Visualizer* visualizer ) {
-
-    _visualizers.remove( visualizer );
-  }
-
-
-
   /*! void DisplayObject::rotate(Angle a, const Vector<float,3>& rot_axel)
    *  \brief Pending Documentation
    *
@@ -255,65 +230,6 @@ namespace GMlib {
   void DisplayObject::translateGlobal(const Vector<float,3>& trans_vector) {
 
     move( _matrix_scene_inv * trans_vector );
-  }
-
-
-  /*! void DisplayObject::localSimulate(double dt)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  Virtual SceneObject function
-   */
-  void DisplayObject::localSimulate( double /*dt*/ ) {
-
-    if(_locked) {
-
-      updateOrientation( getSceneLockPos() );
-      basisChange(_side, _up, _dir, _pos);
-    }
-  }
-
-  const Color& DisplayObject::getColor() const {
-
-    return _color;
-  }
-
-
-  Color& DisplayObject::getColor() {
-
-    return _color;
-  }
-
-
-  const Material& DisplayObject::getMaterial() const {
-
-    return _material;
-  }
-
-
-  Material& DisplayObject::getMaterial() {
-
-    return _material;
-  }
-
-  bool DisplayObject::isLighted() const {
-
-    return _lighted;
-  }
-
-  void DisplayObject::setColor( const Color& c ) {
-
-    _color = c;
-  }
-
-  void DisplayObject::setLighted( bool lighted ) {
-
-    _lighted = lighted;
-  }
-
-  void DisplayObject::setMaterial( const Material& m ) {
-
-    _material = m;
   }
 
 
