@@ -25,7 +25,6 @@
 # <global>
 
 list( APPEND HEADERS
-  gmdisplayobject.h
   gmfrustum.h
   gmscaleobject.h
   gmscene.h
@@ -34,7 +33,6 @@ list( APPEND HEADERS
 )
 
 list( APPEND SOURCES
-  gmdisplayobject.cpp
   gmscene.cpp
   gmsceneobject.cpp
   gmvisualizer.cpp
@@ -57,19 +55,19 @@ list( APPEND SOURCES
 ###
 # Displayobjects
 list( APPEND HEADERS
-  displayobjects/gmarrow3d.h
-  displayobjects/gmcoordinatesystem.h
-  displayobjects/gmpathtrack.h
-  displayobjects/gmpointlightg.h
-  displayobjects/gmsphere3d.h
-  displayobjects/gmspotlightg.h
+  sceneobjects/gmarrow3d.h
+  sceneobjects/gmcoordinatesystem.h
+  sceneobjects/gmpathtrack.h
+  sceneobjects/gmpointlightg.h
+  sceneobjects/gmsphere3d.h
+  sceneobjects/gmspotlightg.h
 )
 
 list( APPEND SOURCES
-  displayobjects/gmcoordinatesystem.cpp
-  displayobjects/gmpathtrack.cpp
-  displayobjects/gmpointlightg.cpp
-  displayobjects/gmspotlightg.cpp
+  sceneobjects/gmcoordinatesystem.cpp
+  sceneobjects/gmpathtrack.cpp
+  sceneobjects/gmpointlightg.cpp
+  sceneobjects/gmspotlightg.cpp
 )
 
 
