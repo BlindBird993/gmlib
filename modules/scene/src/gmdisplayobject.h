@@ -87,37 +87,10 @@ namespace GMlib {
 
 
 
-    virtual Vector<float,3>       getDir() const;
-    virtual Vector<float,3>       getSide() const;
-    virtual Vector<float,3>       getUp() const;
-    virtual Point<float,3>        getPos() const;
-    void                          set( const Point<float,3>&  pos,
-                                       const Vector<float,3>& dir,
-                                       const Vector<float,3>& up );
 
-    const HqMatrix<float,3>&      getMatrixToScene() const;
-    const HqMatrix<float,3>&      getMatrixToSceneInverse() const;
 
-    const APoint<float,3>&        getLockPos() const;
-    double                        getLockDist() const;
-    bool                          isLocked() const;
-    virtual void                  lock(SceneObject* obj);
-    virtual void                  lock(const Point<float,3>& pos);
-    virtual void                  lock(double d);
-    void                          unLock();
 
-    virtual void                  move(float d);
-    virtual void                  move(const Vector<float,3>& t);
-    virtual void                  move(char,double);
-    virtual void                  move(const Vector<float,2>& t);
-    virtual void                  roll(Angle a);
-    virtual void                  tilt(Angle a);
-    virtual void                  turn(Angle a);
 
-    const HqMatrix<float,3>&      getModelViewMatrix( const Camera* cam, bool local_cs = true ) const;
-    const HqMatrix<float,3>&      getModelViewProjectionMatrix( const Camera* cam, bool local_cs = true ) const;
-    const HqMatrix<float,3>&      getProjectionMatrix( const Camera* cam ) const;
-    const SqMatrix<float,3>&      getNormalMatrix( const Camera* cam ) const;
 
     Array<Visualizer*>&           getVisualizers();
     const Array<Visualizer*>&     getVisualizers() const;
@@ -152,30 +125,10 @@ namespace GMlib {
 
   protected:
 
-    Point<float,3>                _pos;
-    UnitVector<float,3>           _dir;
-    UnitVector<float,3>           _side;
-    UnitVector<float,3>           _up;
-
-    Point<float,3>                _lock_pos;
-    SceneObject*                  _lock_object;
-    bool                          _locked;
-
-    bool                          _collapsed;
-    Material                      _material;
-    Color                         _color;
-    bool                          _lighted;
-    bool                          _opaque;
 
     Array<Visualizer*>            _visualizers;
 
-    virtual void                  basisChange( const Vector<float,3>& dir,
-                                               const Vector<float,3>& side,
-                                               const Vector<float,3>& up,
-                                               const Vector<float,3>& pos);
 
-    Point<float,3>                getSceneLockPos();
-    void                          updateOrientation(const Point<float,3>& lock_at_p);
 
     // *****************
     // Virtual functions
@@ -184,68 +137,67 @@ namespace GMlib {
 
 
 
-  private:
-    void                      init();
+//  private:
 
 
-    #ifdef GM_STREAM
-    public:
+//    #ifdef GM_STREAM
+//    public:
 
-      // Stream constructor
-      /*! DisplayObject( T_Stream& in, int st)
-       *  \brief DisplayObject Stream Constructor
-       *
-       *  Pending further Documentation
-       *
-       *  \todo
-       *  - Find out why this doesn't work:
-       *    DisplayObject( T_Stream& in, int st) : SceneObject( in, st ), _matrix(), _matrix_scene_inv()
-       */
-      template <typename T_Stream>
-      DisplayObject( T_Stream& in, int st) : SceneObject( in, st ) {
+//      // Stream constructor
+//      /*! DisplayObject( T_Stream& in, int st)
+//       *  \brief DisplayObject Stream Constructor
+//       *
+//       *  Pending further Documentation
+//       *
+//       *  \todo
+//       *  - Find out why this doesn't work:
+//       *    DisplayObject( T_Stream& in, int st) : SceneObject( in, st ), _matrix(), _matrix_scene_inv()
+//       */
+//      template <typename T_Stream>
+//      DisplayObject( T_Stream& in, int st) : SceneObject( in, st ) {
 
-        prIn(in);
-        init();
-        _side	= _up^_dir;
-        _locked	= false;
-        _lock_object	= 0;
-        basisChange(_side, _up, _dir, _pos);
-      }
-
-
-      template <typename T_Stream>
-      friend T_Stream& operator<<(T_Stream& out, const DisplayObject& v) {
-
-        out << *((SceneObject*)& v);
-        v.prOut(out);
-        return out;
-      }
-
-      template <typename T_Stream>
-      friend T_Stream& operator>>(T_Stream& in, DisplayObject& v) {
-
-        in >> *((SceneObject*)& v);
-        v.prIn(in);
-        return in;
-      }
+//        prIn(in);
+//        init();
+//        _side	= _up^_dir;
+//        _locked	= false;
+//        _lock_object	= 0;
+//        basisChange(_side, _up, _dir, _pos);
+//      }
 
 
-    private:
-      //, const DisplayObject& v)
-      template <typename T_Stream>
-      void prOut(T_Stream& out) const {
+//      template <typename T_Stream>
+//      friend T_Stream& operator<<(T_Stream& out, const DisplayObject& v) {
 
-        out << _pos << GMseparator::Object << _dir << GMseparator::Object << _up << GMseparator::Object;
-      }
+//        out << *((SceneObject*)& v);
+//        v.prOut(out);
+//        return out;
+//      }
 
-      //, DisplayObject& v)
-      template <typename T_Stream>
-      void prIn(T_Stream& in) {
+//      template <typename T_Stream>
+//      friend T_Stream& operator>>(T_Stream& in, DisplayObject& v) {
 
-        static Separator os(GMseparator::Object);
-        in >> _pos >> os >> _dir >> os >> _up >> os;
-      }
-    #endif
+//        in >> *((SceneObject*)& v);
+//        v.prIn(in);
+//        return in;
+//      }
+
+
+//    private:
+//      //, const DisplayObject& v)
+//      template <typename T_Stream>
+//      void prOut(T_Stream& out) const {
+
+//        out << _pos << GMseparator::Object << _dir << GMseparator::Object << _up << GMseparator::Object;
+//      }
+
+//      //, DisplayObject& v)
+//      template <typename T_Stream>
+//      void prIn(T_Stream& in) {
+
+//        static Separator os(GMseparator::Object);
+//        in >> _pos >> os >> _dir >> os >> _up >> os;
+//      }
+//    #endif
 
   }; // END DisplayObject class
 
@@ -261,161 +213,9 @@ namespace GMlib {
 
 
 
-  /*! void DisplayObject::basisChange( const Vector<float,3>& x, const Vector<float,3>& y, const Vector<float,3>& z, const Vector<float,3>& p )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void DisplayObject::basisChange( const Vector<float,3>& x, const Vector<float,3>& y, const Vector<float,3>& z, const Vector<float,3>& p ) {
-
-    static Vector<float,4> nx, ny, nz, np;
-    memcpy( nx.getPtr(), z.getPtr(), 12 );
-    memcpy( ny.getPtr(), x.getPtr(), 12 );
-    memcpy( nz.getPtr(), y.getPtr(), 12 );
-    memcpy( np.getPtr(), p.getPtr(), 12 );
-    nx[3] = ny[3] = nz[3] = 0.0f;
-    np[3] = 1.0f;
-
-    _matrix.setCol( nx, 0 );
-    _matrix.setCol( ny, 1 );
-    _matrix.setCol( nz, 2 );
-    _matrix.setCol( np, 3 );
-  }
 
 
-  /*! Vector<float,3>	DisplayObject::getDir()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In scene coordinates **
-   */
-  inline
-  Vector<float,3>	DisplayObject::getDir() const	{
 
-    return _matrix_scene*_dir;
-  }
-
-  /*! Point<float,3>	DisplayObject::getLockPos()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In the coordinates of the scene. **
-   */
-  inline
-  const APoint<float,3>& DisplayObject::getLockPos() const {
-
-    if(_lock_object)
-      return  _lock_object->getCenterPos();
-    else
-      return  _lock_pos;
-  }
-
-
-  /*! Pdouble DisplayObject::getLockDist()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  double DisplayObject::getLockDist() const {
-
-    if(_locked)
-      return  ( getLockPos()-getPos() ).getLength();
-    else
-      return  0.0;
-  }
-
-  inline
-  const HqMatrix<float,3>& DisplayObject::getMatrixToScene() const {
-
-    return _matrix_scene;
-  }
-
-  inline
-  const HqMatrix<float,3>&  DisplayObject::getMatrixToSceneInverse() const {
-
-    return _matrix_scene_inv;
-  }
-
-
-  /*! Point<float,3> DisplayObject::getPos()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In scene coordinates **
-   */
-  inline
-  Point<float,3> DisplayObject::getPos() const {
-
-    return _matrix_scene * _pos;
-  }
-
-
-  /*! Vector<float,3>	DisplayObject::getSide()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In scene coordinates **
-   */
-  inline
-  Vector<float,3>	DisplayObject::getSide() const {
-
-    return _matrix_scene * _side;
-  }
-
-
-  /*! Vector<float,3>	DisplayObject::getUp()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In scene coordinates **
-   */
-  inline
-  Vector<float,3>	DisplayObject::getUp() const {
-
-    return _matrix_scene * _up;
-  }
-
-
-  /*! bool DisplayObject::isLocked()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  bool DisplayObject::isLocked() const {
-
-    return _locked;
-  }
-
-
-  /*! Point<float,3> DisplayObject::getSceneLockPos()
-   *  \brief Get Lock Position in Scene Coordinates
-   *
-   *  Get Lock Position in Scene coordinates
-   */
-  inline
-  Point<float,3> DisplayObject::getSceneLockPos() {
-
-    if(_lock_object)
-      return _matrix_scene_inv * _lock_object->getCenterPos();
-    else
-      return _matrix_scene_inv * _lock_pos;
-  }
-
-  /*! void DisplayObject::updateOrientation(const Point<float,3>& lock_pos )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void DisplayObject::updateOrientation(const Point<float,3>& lock_pos ) {
-
-    _dir		= lock_pos - _pos;
-    _up			= _up - (_up * _dir) * _dir;
-    _side		= _up ^ _dir;
-  }
 
   inline
   bool DisplayObject::isCollapsed() const {

@@ -179,11 +179,29 @@ namespace GMlib{
 
     mutable const SceneObject                 *_copy_of;    //! Internal variable for use when coping the object.
 
+//    SceneObject(
+//      const Vector<float,3>& trans  = Vector<float,3>(0,0,0),
+//      const Point<float,3>&  scale  = Point<float,3>(1,1,1),
+//      const Vector<float,3>& rotate = Vector<float,3>(1,0,0),
+//      Angle a=0);
+
     SceneObject(
-      const Vector<float,3>& trans  = Vector<float,3>(0,0,0),
-      const Point<float,3>&  scale  = Point<float,3>(1,1,1),
-      const Vector<float,3>& rotate = Vector<float,3>(1,0,0),
-      Angle a=0);
+      const Point<float,3>&  pos = Point<float,3>(0,0,0),
+      const Vector<float,3>& dir = Vector<float,3>(1,0,0),
+      const Vector<float,3>& up  = Vector<float,3>(0,0,1)
+    );
+
+    SceneObject(
+      const Point<float,3>&  lock_pos,
+      const Point<float,3>&  pos = Point<float,3>(0,0,0),
+      const Vector<float,3>& up  = Vector<float,3>(0,0,1)
+    );
+
+    SceneObject(
+      SceneObject* lock_object,
+      const Point<float,3>&  pos = Point<float,3>(0,0,0),
+      const Vector<float,3>& up  = Vector<float,3>(0,0,1)
+    );
 
     SceneObject( const SceneObject& d );
     virtual ~SceneObject();
@@ -221,6 +239,41 @@ namespace GMlib{
     const HqMatrix<float,3>&            getMatrixParentGlobal() const;
     void                                setMatrix( const HqMatrix<float,3>& mat );
 
+    const HqMatrix<float,3>&            getMatrixToScene() const;
+    const HqMatrix<float,3>&            getMatrixToSceneInverse() const;
+
+
+    const HqMatrix<float,3>&            getModelViewMatrix( const Camera* cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&            getModelViewProjectionMatrix( const Camera* cam, bool local_cs = true ) const;
+    const HqMatrix<float,3>&            getProjectionMatrix( const Camera* cam ) const;
+    const SqMatrix<float,3>&            getNormalMatrix( const Camera* cam ) const;
+
+
+
+    const Vector<float,3>&              getDir() const;
+    const Vector<float,3>&              getSide() const;
+    const Vector<float,3>&              getUp() const;
+    const Point<float,3>&               getPos() const;
+
+    Vector<float,3>                     getGlobalDir() const;
+    Vector<float,3>                     getGlobalSide() const;
+    Vector<float,3>                     getGlobalUp() const;
+    Point<float,3>                      getGlobalPos() const;
+
+    void                                set( const Point<float,3>&  pos,
+                                             const Vector<float,3>& dir,
+                                             const Vector<float,3>& up );
+
+
+    const APoint<float,3>&              getLockPos() const;
+    double                              getLockDist() const;
+    bool                                isLocked() const;
+    virtual void                        lock(SceneObject* obj);
+    virtual void                        lock(const Point<float,3>& pos);
+    virtual void                        lock(double d);
+    void                                unLock();
+
+
     // surrounding sphere
     const Sphere<float,3>&              getSurroundingSphere() const;
     const Sphere<float,3>&              getSurroundingSphereClean() const;
@@ -253,6 +306,17 @@ namespace GMlib{
     virtual void                        translate(const Vector<float,3>& trans_vector);
     virtual void                        translateGlobal(const Vector<float,3>& trans_vector);
 
+    virtual void                        move(float d);
+    virtual void                        move(const Vector<float,3>& t);
+    virtual void                        move(char,double);
+    virtual void                        move(const Vector<float,2>& t);
+    virtual void                        roll(Angle a);
+    virtual void                        tilt(Angle a);
+    virtual void                        turn(Angle a);
+
+
+
+
     // deprecated
     virtual void                        localDisplay( const DefaultRenderer* ) const {}
       //! Lingering function convenient for Rapid Prototyping
@@ -268,6 +332,22 @@ namespace GMlib{
     // Matrices from Scene to this
     HqMatrix<float,3>                   _matrix_scene;
     HqMatrix<float,3>                   _matrix_scene_inv;
+
+    Point<float,3>                      _pos;
+    UnitVector<float,3>                 _dir;
+    UnitVector<float,3>                 _side;
+    UnitVector<float,3>                 _up;
+
+    Point<float,3>                      _lock_pos;
+    SceneObject*                        _lock_object;
+    bool                                _locked;
+
+    bool                                _collapsed;
+    Material                            _material;
+    Color                               _color;
+    bool                                _lighted;
+    bool                                _opaque;
+
 
   protected:
     friend class Scene;
@@ -302,16 +382,23 @@ namespace GMlib{
     void                                setSurroundingSphere( const Sphere<float,3>& b );
     void                                updateSurroundingSphere( const Point<float,3>& p );
 
+    Point<float,3>                      getSceneLockPos();
+    void                                updateOrientation(const Point<float,3>& lock_at_p);
+
   protected:
     static unsigned int                 _free_name;   //! For automatisk name-generations.
     unsigned int                        _name;        //! Unic name for this object, used for selecting
     Sphere<float,3>                     _sphere;      //! Surrounding sphere for this object
 
     int                                 prepare(Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
-//    virtual void                        prepareDisplay(const HqMatrix<float,3>& m);
 
     virtual void                        culling( Array<DisplayObject*>&, const Frustum& );
     void                                fillObj( Array<DisplayObject*>& );
+
+    virtual void                        basisChange( const Vector<float,3>& dir,
+                                                     const Vector<float,3>& side,
+                                                     const Vector<float,3>& up,
+                                                     const Vector<float,3>& pos);
 
 
 
@@ -374,6 +461,92 @@ namespace GMlib{
 
 
 
+
+
+
+
+
+  inline const Vector<float,3>& SceneObject::getDir() const {  return _dir; }
+  inline const Vector<float,3>& SceneObject::getSide() const {  return _side; }
+  inline const Vector<float,3>& SceneObject::getUp() const {  return _up; }
+  inline const Point<float,3>&  SceneObject::getPos() const {  return _pos; }
+
+  inline Vector<float,3> SceneObject::getGlobalDir() const {  return _matrix_scene*_dir; }
+  inline Vector<float,3> SceneObject::getGlobalSide() const {  return _matrix_scene * _side; }
+  inline Vector<float,3> SceneObject::getGlobalUp() const {  return _matrix_scene * _up; }
+  inline Point<float,3>  SceneObject::getGlobalPos() const {  return _matrix_scene * _pos; }
+
+
+  inline
+  const HqMatrix<float,3>& SceneObject::getMatrixToScene() const {  return _matrix_scene; }
+
+  inline
+  const HqMatrix<float,3>& SceneObject::getMatrixToSceneInverse() const {  return _matrix_scene_inv; }
+
+
+
+  inline
+  const APoint<float,3>& SceneObject::getLockPos() const {
+
+    if(_lock_object)
+      return  _lock_object->getCenterPos();
+    else
+      return  _lock_pos;
+  }
+
+  inline
+  double SceneObject::getLockDist() const {
+
+    if(_locked)
+      return  ( getLockPos()-getPos() ).getLength();
+    else
+      return  0.0;
+  }
+
+  inline
+  bool SceneObject::isLocked() const {  return _locked; }
+
+
+
+
+
+  /*! Point<float,3> SceneObject::getSceneLockPos()
+   *  Get Lock Position in Scene coordinates
+   */
+  inline
+  Point<float,3> SceneObject::getSceneLockPos() {
+
+    if(_lock_object)
+      return _matrix_scene_inv * _lock_object->getCenterPos();
+    else
+      return _matrix_scene_inv * _lock_pos;
+  }
+
+  inline
+  void SceneObject::updateOrientation(const Point<float,3>& lock_pos ) {
+
+    _dir    = lock_pos - _pos;
+    _up     = _up - (_up * _dir) * _dir;
+    _side   = _up ^ _dir;
+  }
+
+
+  inline
+  void SceneObject::basisChange( const Vector<float,3>& x, const Vector<float,3>& y, const Vector<float,3>& z, const Vector<float,3>& p ) {
+
+    static Vector<float,4> nx, ny, nz, np;
+    memcpy( nx.getPtr(), z.getPtr(), 12 );
+    memcpy( ny.getPtr(), x.getPtr(), 12 );
+    memcpy( nz.getPtr(), y.getPtr(), 12 );
+    memcpy( np.getPtr(), p.getPtr(), 12 );
+    nx[3] = ny[3] = nz[3] = 0.0f;
+    np[3] = 1.0f;
+
+    _matrix.setCol( nx, 0 );
+    _matrix.setCol( ny, 1 );
+    _matrix.setCol( nz, 2 );
+    _matrix.setCol( np, 3 );
+  }
 
 
 
