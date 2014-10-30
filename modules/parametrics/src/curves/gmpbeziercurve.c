@@ -179,7 +179,7 @@ namespace GMlib {
 
     // Remove Selectors
     for( int i = 0; i < _s.getDim(); i++ ) {
-      DisplayObject::remove( _s[i] );
+      this->remove( _s[i] );
       delete _s[i];
     }
 
@@ -311,7 +311,7 @@ namespace GMlib {
     _s.setDim( _c.getDim() );
     for( int i = 0, k = 0; i < _c.getDim(); i++ ) {
       Selector<T,3> *sel = new Selector<T,3>( _c[i], k++, this, T(0.3), s_color );
-      DisplayObject::insert( sel );
+      this->insert( sel );
       _s[i] = sel;
     }
 
@@ -340,7 +340,7 @@ namespace GMlib {
         _c[i] += diff;
         _s[i]->translate( diff );
       }
-      DisplayObject::translate( -d );
+      this->translate( -d );
       this->replot();
     }
   }

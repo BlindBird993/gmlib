@@ -306,7 +306,7 @@ namespace GMlib {
   inline
   void PTriangle<T,n>::insertVisualizer( Visualizer *visualizer ) {
 
-    DisplayObject::insertVisualizer( visualizer );
+    Parametrics<T,2,n>::insertVisualizer( visualizer );
 
     PTriangleVisualizer<T,n> *visu = dynamic_cast<PTriangleVisualizer<T,n>*>( visualizer );
 
@@ -329,7 +329,7 @@ namespace GMlib {
     if( visu )
       _ptriangle_visualizers.remove( visu );
 
-    DisplayObject::removeVisualizer( visualizer );
+    Parametrics<T,2,n>::removeVisualizer( visualizer );
   }
 
 

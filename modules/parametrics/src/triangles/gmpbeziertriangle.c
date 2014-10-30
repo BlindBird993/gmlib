@@ -129,7 +129,7 @@ namespace GMlib {
 
     // Remove selectors
     for( int i = 0; i < _s.getDim(); i++ ) {
-      DisplayObject::remove( _s[i] );
+      this->remove( _s[i] );
       delete _s[i];
     }
 
@@ -165,7 +165,7 @@ namespace GMlib {
       else
         sel = new Selector<T,3>( _c[i], k++, this, T(0.2), selector_color );
 
-      DisplayObject::insert( sel );
+      this->insert( sel );
       _s[i] = sel;
     }
 
@@ -195,7 +195,7 @@ namespace GMlib {
         _s[i]->translate( diff.template toType<float>() );
       }
 
-      DisplayObject::translate( -d.template toType<float>() );
+      this->translate( -d.template toType<float>() );
 
       _sgv->update();
     }

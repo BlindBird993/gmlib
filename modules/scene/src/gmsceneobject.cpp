@@ -286,14 +286,6 @@ namespace GMlib {
   }
 
 
-  /*! void SceneObject::prepareDisplay( const HqMatrix<float,3>& mat )
-   *  \brief Pending Documentation
-   *
-   *  Made specially for DisplayObject's
-   */
-//  void SceneObject::prepareDisplay( const HqMatrix<float,3>& /*mat*/ ) {}
-
-
   /*! void culling( Array<SceneObject*>&, const Frustum& );
    *  \brief Pending Documentation
    *

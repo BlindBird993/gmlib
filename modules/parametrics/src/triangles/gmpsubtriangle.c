@@ -157,7 +157,7 @@ inline
 void PSubTriangle<T>::updateCoeffs( const Vector<T,3>& d ) {
 
   //Vector<GLfloat,3> diff(_matrix.inverse2()*d);
-  DisplayObject::translate(-d);
+  this->translate(-d);
   //   cout << "Updated SubTriangle coeffs: " << d << "\n";
 }
 

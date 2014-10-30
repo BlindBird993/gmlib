@@ -77,7 +77,7 @@ namespace GMlib {
   inline
   void Parametrics<T,m,n>::rotate(Angle a, const Vector<T,n>& rot_axel) {
 
-    DisplayObject::rotate( a, rot_axel );
+    SceneObject::rotate( a, rot_axel );
     if( this->_parent )
       this->_parent->edit( this );
   }
@@ -87,7 +87,7 @@ namespace GMlib {
   inline
   void Parametrics<T,m,n>::rotate(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d) {
 
-    DisplayObject::rotate( a, p, d );
+    SceneObject::rotate( a, p, d );
     if( this->_parent )
       this->_parent->edit( this );
   }
@@ -97,7 +97,7 @@ namespace GMlib {
   inline
   void Parametrics<T,m,n>::rotateGlobal(Angle a, const Vector<T,n>& rot_axel) {
 
-    DisplayObject::rotateGlobal( a, rot_axel );
+    SceneObject::rotateGlobal( a, rot_axel );
     if( this->_parent )
       this->_parent->edit( this );
   }
@@ -107,7 +107,7 @@ namespace GMlib {
   inline
   void Parametrics<T,m,n>::rotateGlobal(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d) {
 
-    DisplayObject::rotateGlobal( a, p, d );
+    SceneObject::rotateGlobal( a, p, d );
     if( this->_parent )
       this->_parent->edit( this );
   }
@@ -124,7 +124,7 @@ namespace GMlib {
   inline
   void Parametrics<T,m,n>::translate( const Vector<T,n>& trans_vector ) {
 
-    DisplayObject::translate( trans_vector.template toType<float>() );
+    SceneObject::translate( trans_vector.template toType<float>() );
     if( this->_parent )
       this->_parent->edit( this );
   }
@@ -134,7 +134,7 @@ namespace GMlib {
   inline
   void Parametrics<T,m,n>::translateGlobal( const Vector<T,n>& trans_vector ) {
 
-    DisplayObject::translateGlobal( trans_vector.template toType<float>() );
+    SceneObject::translateGlobal( trans_vector.template toType<float>() );
     if( this->_parent )
       this->_parent->edit( this );
   }

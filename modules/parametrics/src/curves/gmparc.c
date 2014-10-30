@@ -86,7 +86,7 @@ namespace GMlib {
     this->_up   = z;
     this->_dir  = x;
     this->_pos  = p[0];
-    DisplayObject::basisChange( this->_side, this->_up, this->_dir, this->_pos );
+    this->basisChange( this->_side, this->_up, this->_dir, this->_pos );
   }
 
 

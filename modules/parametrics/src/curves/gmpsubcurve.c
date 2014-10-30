@@ -44,7 +44,7 @@ namespace GMlib {
 
     DVector<Vector<T,3> > tr = _c->evaluateParent(_t, 0);
     _trans = tr[0];
-    this->DisplayObject::translate( _trans );
+    this->translate( _trans );
   }
 
 
@@ -58,7 +58,7 @@ namespace GMlib {
 
     DVector<Vector<T,3> > tr = _c->evaluateParent(_t, 0);
     _trans = tr[0];
-    this->DisplayObject::translate( _trans );
+    this->translate( _trans );
   }
 
 

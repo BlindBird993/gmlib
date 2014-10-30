@@ -39,7 +39,7 @@ namespace GMlib {
   /*! \class  PathTrack gmpathtrack.h <gmPathTrack>
    *  \brief
    *
-   * When this object is attached to another *DisplayObject, it will keep track of
+   * When this object is attached to another *SceneObject, it will keep track of
    * the path of the object. By setting the element size and the stride between
    * points one can control the behaviour of the PathTrack object.
    */

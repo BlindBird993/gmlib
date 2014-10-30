@@ -487,7 +487,7 @@ namespace GMlib {
   inline
   void PSurf<T,n>::insertVisualizer( Visualizer *visualizer ) {
 
-    DisplayObject::insertVisualizer( visualizer );
+    Parametrics<T,2,n>::insertVisualizer( visualizer );
 
     PSurfVisualizer<T,n> *visu = dynamic_cast<PSurfVisualizer<T,n>*>( visualizer );
     if( !visu )
@@ -634,7 +634,7 @@ namespace GMlib {
     if( visu )
       _psurf_visualizers.remove( visu );
 
-    DisplayObject::removeVisualizer( visu );
+    Parametrics<T,2,n>::removeVisualizer( visu );
   }
 
 

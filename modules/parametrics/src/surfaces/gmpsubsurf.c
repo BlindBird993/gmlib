@@ -45,7 +45,7 @@ namespace GMlib {
     // Set local coordinate system
     DMatrix<Vector<T,3> > tr = _s->evaluateParent(_q, 0);
     _trans = tr[0][0];
-    this->DisplayObject::translate(_trans);
+    this->translate(_trans);
   }
 
 
@@ -58,7 +58,7 @@ namespace GMlib {
     // Set local coordinate system
     DMatrix<Vector<T,3> > tr = _s->evaluateParent(_q, 0);
     _trans = tr[0][0];
-    this->DisplayObject::translate( _trans );
+    this->translate( _trans );
   }
 
 
@@ -71,7 +71,7 @@ namespace GMlib {
     // Set local coordinate system
     DMatrix<Vector<T,3> > tr = _s->evaluateParent(_q, 0);
     _trans = tr[0][0];
-    this->DisplayObject::translate( _trans );
+    this->translate( _trans );
   }
 
 
@@ -84,7 +84,7 @@ namespace GMlib {
     // Set local coordinate system
     DMatrix<Vector<T,3> > tr = _s->evaluateParent(_q, 0);
     _trans = tr[0][0];
-    this->DisplayObject::translate( _trans );
+    this->translate( _trans );
   }
 
 
