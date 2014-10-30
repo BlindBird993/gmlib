@@ -51,7 +51,6 @@ namespace GMlib{
 
   class EventManager;
   class SceneObject;
-  class DisplayObject;
   class Camera;
   class Light;
   class Sun;
@@ -87,7 +86,7 @@ namespace GMlib{
 
     SceneObject*                find(unsigned int name);
     const SceneObject*          find(unsigned int name) const;
-    void                        getDisplayableObjects( Array<DisplayObject*>& disp_objs, const Camera* cam) const;
+    void                        getRenderableObjects( Array<SceneObject*>& disp_objs, const Camera* cam) const;
     SceneObject*                getActiveObject();
     int                         getSize() const;
     virtual void                insert(SceneObject* obj);

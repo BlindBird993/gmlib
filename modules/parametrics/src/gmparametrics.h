@@ -35,7 +35,7 @@
 
 // gmlib
 #include <core/containers/gmarray.h>
-#include <scene/gmdisplayobject.h>
+#include <scene/gmsceneobject.h>
 #include <scene/utils/gmmaterial.h>
 
 // stl
@@ -73,7 +73,7 @@ namespace GMlib {
    *  \tparam n Manifold embedding dimension
    */
   template <typename T, int m, int n>
-  class Parametrics : public DisplayObject {
+  class Parametrics : public SceneObject {
   public:
     Parametrics();
     Parametrics( const Parametrics<T,m,n>& copy );

@@ -51,7 +51,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveDerivativesVisualizer<T,n>::render(const DisplayObject *obj, const Camera *cam) const {
+  void PCurveDerivativesVisualizer<T,n>::render(const SceneObject *obj, const Camera *cam) const {
 
     const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 

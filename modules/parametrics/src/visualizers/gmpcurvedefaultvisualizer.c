@@ -51,7 +51,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::render(const DisplayObject* obj, const Camera *cam) const {
+  void PCurveDefaultVisualizer<T,n>::render(const SceneObject* obj, const Camera *cam) const {
 
     const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 
@@ -87,7 +87,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::renderGeometry( const GL::Program &prog, const DisplayObject* obj, const Camera* cam ) const {
+  void PCurveDefaultVisualizer<T,n>::renderGeometry( const GL::Program &prog, const SceneObject* obj, const Camera* cam ) const {
 
     prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
     GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );

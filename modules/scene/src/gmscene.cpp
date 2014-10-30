@@ -102,17 +102,17 @@ namespace GMlib {
     return 0x0;
   }
 
-  void Scene::getDisplayableObjects(Array<DisplayObject *> &disp_objs, const Camera *cam)  const {
+  void Scene::getRenderableObjects(Array<SceneObject*> &objs, const Camera *cam)  const {
 
     const Frustum &frustum = cam->getFrustum();
     const bool is_culling = cam->isCulling();
 
     if(is_culling)
       for( int i = 0; i < _scene.getSize(); ++i )
-        _scene(i)->culling( disp_objs, frustum );
+        _scene(i)->culling( objs, frustum );
     else
       for( int i = 0; i < _scene.getSize(); ++i )
-        _scene(i)->fillObj( disp_objs );
+        _scene(i)->fillObj( objs );
   }
 
   void Scene::clear() {

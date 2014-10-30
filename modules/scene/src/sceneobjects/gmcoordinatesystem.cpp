@@ -46,7 +46,7 @@ namespace GMlib {
   }
 
 
-  CoordinateSystem::CoordinateSystem( const CoordinateSystem& copy ) : DisplayObject( copy ) {}
+  CoordinateSystem::CoordinateSystem( const CoordinateSystem& copy ) : SceneObject( copy ) {}
 
 
   CoordinateSystem::~CoordinateSystem() {}

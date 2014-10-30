@@ -33,7 +33,7 @@
 #define __gmSELECTOR_H__
 
 
-#include "../gmdisplayobject.h"
+#include "../gmsceneobject.h"
 
 // gmlib
 #include <opengl/gmbufferobject.h>
@@ -49,7 +49,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   template <typename T, int n>
-  class Selector: public DisplayObject {
+  class Selector: public SceneObject {
     GM_SCENEOBJECT_NULL(Selector)
 
   public:

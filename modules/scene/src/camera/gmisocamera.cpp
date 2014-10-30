@@ -82,12 +82,12 @@ namespace GMlib {
   IsoCamera::~IsoCamera() {}
 
 
-  /*! double IsoCamera::deltaTranslate(DisplayObject *)
+  /*! double IsoCamera::deltaTranslate(SceneObject *)
    *	\brief Pending Documentation
    *
    *	Pending Documentation
    */
-  double IsoCamera::deltaTranslate(DisplayObject * obj) {
+  double IsoCamera::deltaTranslate(SceneObject * obj) {
 
     if(obj)
       return 2*_horisontal/getViewportH();

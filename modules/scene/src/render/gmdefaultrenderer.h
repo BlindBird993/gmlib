@@ -82,7 +82,7 @@ namespace GMlib {
   protected:
     virtual void            prepare(Camera *cam);
 
-    mutable Array<DisplayObject*>    _objs;
+    mutable Array<SceneObject*>    _objs;
 
 
   private:
@@ -108,8 +108,8 @@ namespace GMlib {
 
     GL::VertexBufferObject  _quad_vbo;
 
-    void                    render(const DisplayObject *obj) const;
-    void                    renderSelectedGeometry(const DisplayObject *obj) const;
+    void                    render(const SceneObject *obj) const;
+    void                    renderSelectedGeometry(const SceneObject *obj) const;
     void                    renderCoordSys() const;
 
 

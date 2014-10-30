@@ -61,7 +61,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  Camera::Camera( Scene& s ) : DisplayObject(),_scene(&s) {
+  Camera::Camera( Scene& s ) : SceneObject(),_scene(&s) {
 
     resetC();
   }
@@ -72,7 +72,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  Camera::Camera( Scene* s ) : DisplayObject(),_scene(s) {
+  Camera::Camera( Scene* s ) : SceneObject(),_scene(s) {
 
     resetC();
   }
@@ -86,7 +86,7 @@ namespace GMlib {
   Camera::Camera(
     const Point<float,3>&  pos,
     const Point<float,3>&  look_pos
-  ) : DisplayObject(look_pos,pos), _scene(&_default_scene) {
+  ) : SceneObject(look_pos,pos), _scene(&_default_scene) {
 
     resetC();
   }
@@ -101,7 +101,7 @@ namespace GMlib {
     const Vector<float,3>& dir,
     const Vector<float,3>& up,
     float zoom
-  ) : DisplayObject(pos,dir,up),_scene(&_default_scene) {
+  ) : SceneObject(pos,dir,up),_scene(&_default_scene) {
 
     resetC(zoom);
   }
@@ -115,12 +115,12 @@ namespace GMlib {
   Camera::~Camera() {}
 
 
-  /*! double Camera::deltaTranslate(DisplayObject *)
+  /*! double Camera::deltaTranslate(SceneObject *)
    *  \brief Pending Documentation
    *
    *  Pending Documentation
    */
-  double Camera::deltaTranslate(DisplayObject * obj) {
+  double Camera::deltaTranslate(SceneObject* obj) {
 
     if(obj)
       return 26*(getDir()*(obj->getPos()-getPos()))*getNearPlane()/(getFocalLength()*getViewportH());

@@ -32,7 +32,7 @@
 #define __gmSUN_H__
 
 
-#include "../gmdisplayobject.h"
+#include "../gmsceneobject.h"
 #include "gmlight.h"
 
 // stl

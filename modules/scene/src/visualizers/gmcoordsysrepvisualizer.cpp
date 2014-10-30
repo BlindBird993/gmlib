@@ -42,7 +42,7 @@ namespace GMlib {
     _s_instance = VisualizerStdRep::getInstance();
   }
 
-  void CoordSysRepVisualizer::render(const DisplayObject* /*obj*/, const Camera *cam) {
+  void CoordSysRepVisualizer::render(const SceneObject* /*obj*/, const Camera *cam) {
 
     // Get matrix of present camera and
     HqMatrix<float,3> base_mvmat;

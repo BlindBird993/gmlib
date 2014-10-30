@@ -54,8 +54,8 @@ namespace GMlib {
     PSurfDefaultVisualizer();
     PSurfDefaultVisualizer( const PSurfDefaultVisualizer<T,n>& copy );
 
-    void          render( const DisplayObject* obj, const DefaultRenderer* renderer ) const;
-    void          renderGeometry( const DisplayObject* obj, const Renderer* renderer, const Color& color ) const;
+    void          render( const SceneObject* obj, const DefaultRenderer* renderer ) const;
+    void          renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const;
 
     virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                           const DMatrix< Vector<T, 3> >& normals,

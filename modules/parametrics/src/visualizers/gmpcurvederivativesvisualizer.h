@@ -55,7 +55,7 @@ namespace GMlib {
     PCurveDerivativesVisualizer();
     virtual ~PCurveDerivativesVisualizer();
 
-    void            render(const DisplayObject* obj, const Camera *cam) const;
+    void            render(const SceneObject* obj, const Camera *cam) const;
     const Color&    getColor() const;
     int             getDerivative() const;
     double          getSize() const;

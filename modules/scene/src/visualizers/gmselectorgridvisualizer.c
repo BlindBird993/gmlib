@@ -58,7 +58,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void SelectorGridVisualizer<T>::render(const DisplayObject *obj, const Camera *cam) const {
+  void SelectorGridVisualizer<T>::render(const SceneObject *obj, const Camera *cam) const {
 
     const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
 

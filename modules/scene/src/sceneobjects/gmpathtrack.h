@@ -30,7 +30,7 @@
 #ifndef __gmPATHTRACK_H__
 #define __gmPATHTRACK_H__
 
-#include "../gmdisplayobject.h"
+#include "../gmsceneobject.h"
 
 
 namespace GMlib {
@@ -43,7 +43,7 @@ namespace GMlib {
    * the path of the object. By setting the element size and the stride between
    * points one can control the behaviour of the PathTrack object.
    */
-  class PathTrack : public DisplayObject {
+  class PathTrack : public SceneObject {
     GM_SCENEOBJECT(PathTrack)
   public:
     PathTrack( int max_elements = 50, int elementstride = 1, const Color& c = Color( 155, 100, 0 ) );

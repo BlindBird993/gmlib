@@ -39,7 +39,7 @@
 #include <core/containers/gmarrayt.h>
 #include <core/containers/gmarraylx.h>
 #include <core/containers/gmdmatrix.h>
-#include <scene/gmdisplayobject.h>
+#include <scene/gmsceneobject.h>
 
 
 namespace GMlib {
@@ -88,7 +88,7 @@ namespace GMlib {
    *  the storage class for the vertices, edges and triangles
    */
   template <typename T>
-  class  TriangleFacets : public ArrayLX< TSVertex<T> >, public DisplayObject {
+  class  TriangleFacets : public ArrayLX< TSVertex<T> >, public SceneObject {
     GM_SCENEOBJECT(TriangleFacets)
   public:
 
@@ -507,7 +507,7 @@ namespace GMlib {
    *  The tile class defined by vertex, and dual of its triangles
    */
   template <typename T>
-  class TSTile : public DisplayObject {
+  class TSTile : public SceneObject {
     GM_SCENEOBJECT(TSTile)
   public:
     TSTile();

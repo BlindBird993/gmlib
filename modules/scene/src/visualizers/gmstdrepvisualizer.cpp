@@ -29,7 +29,7 @@
 
 #include "gmstdrepvisualizer.h"
 
-#include "../gmdisplayobject.h"
+#include "../gmsceneobject.h"
 #include "../camera/gmcamera.h"
 #include "../render/gmdefaultrenderer.h"
 
@@ -57,7 +57,7 @@ namespace GMlib {
     assert(_bo_cube_frame_indices.isValid());
   }
 
-  void VisualizerStdRep::render( const DisplayObject* obj, const DefaultRenderer* renderer ) const {
+  void VisualizerStdRep::render( const SceneObject* obj, const DefaultRenderer* renderer ) const {
 
     const Camera* cam = renderer->getCamera();
     render( obj->getModelViewMatrix(cam), obj->getProjectionMatrix(cam) );
@@ -71,7 +71,7 @@ namespace GMlib {
     return _s_instance;
   }
 
-  void VisualizerStdRep::renderGeometry( const DisplayObject* obj, const Renderer* renderer, const Color& color ) const {
+  void VisualizerStdRep::renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const {
 
     const Camera* cam = renderer->getCamera();
     _prog.setUniform( "u_color", color );

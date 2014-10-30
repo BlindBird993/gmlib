@@ -23,7 +23,7 @@
 
 #include "gmdefaultselectrenderer.h"
 
-#include "../gmdisplayobject.h"
+#include "../gmsceneobject.h"
 #include "../camera/gmcamera.h"
 #include "../visualizers/gmstdrepvisualizer.h"
 
@@ -63,7 +63,7 @@ namespace GMlib {
   DefaultSelectRenderer::~DefaultSelectRenderer() {}
 
   const
-  DisplayObject*
+  SceneObject*
   DefaultSelectRenderer::findObject(int x, int y) const {
 
     Color c;
@@ -71,12 +71,12 @@ namespace GMlib {
     GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
     _fbo.unbind();
 
-    const DisplayObject *obj = dynamic_cast<const DisplayObject*>(getCamera()->getScene()->find(c.get()));
+    const SceneObject *obj = getCamera()->getScene()->find(c.get());
 
     return obj;
   }
 
-  DisplayObject*
+  SceneObject*
   DefaultSelectRenderer::findObject(int x, int y) {
 
 
@@ -85,15 +85,13 @@ namespace GMlib {
     GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
     _fbo.unbind();
 
-    DisplayObject *obj = dynamic_cast<DisplayObject*>(getCamera()->getScene()->find(c.get()));
-
-    return obj;
+    return getCamera()->getScene()->find(c.get());
   }
 
-  Array<const DisplayObject*>
+  Array<const SceneObject*>
   DefaultSelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) const {
 
-    Array<const DisplayObject* > sel;
+    Array<const SceneObject* > sel;
     int dx=(xmax-xmin)+1;
     int dy=(ymax-ymin)+1;
 
@@ -107,9 +105,9 @@ namespace GMlib {
     for(int i = ymin; i < ymax; ++i) {
       for(int j = xmin; j < xmax; ++j) {
         c = pixels[ct++];
-        const DisplayObject *tmp = dynamic_cast<const DisplayObject*>(getCamera()->getScene()->find(c.get()));
-        if(tmp)
-          if(!tmp->isSelected()) { sel.insertAlways(tmp); }
+        const SceneObject *tmp = getCamera()->getScene()->find(c.get());
+        if(tmp && !tmp->isSelected())
+          sel.insertAlways(tmp);
       }
     }
     delete [] pixels;
@@ -117,10 +115,10 @@ namespace GMlib {
     return sel;
   }
 
-  Array<DisplayObject*>
+  Array<SceneObject*>
   DefaultSelectRenderer::findObjects(int xmin, int ymin, int xmax, int ymax) {
 
-    Array<DisplayObject* > sel;
+    Array<SceneObject* > sel;
     int dx=(xmax-xmin)+1;
     int dy=(ymax-ymin)+1;
 
@@ -134,9 +132,10 @@ namespace GMlib {
     for(int i = ymin; i < ymax; ++i) {
       for(int j = xmin; j < xmax; ++j) {
         c = pixels[ct++];
-        DisplayObject *tmp = dynamic_cast<DisplayObject*>(getCamera()->getScene()->find(c.get()));
-        if(tmp)
-          if(!tmp->isSelected()) { sel.insertAlways(tmp); }
+
+        SceneObject *tmp = getCamera()->getScene()->find(c.get());
+        if(tmp && !tmp->isSelected())
+          sel.insertAlways(tmp);
       }
     }
     delete [] pixels;
@@ -165,7 +164,7 @@ namespace GMlib {
 
       for( int i=0; i < _objs.getSize(); ++i ) {
 
-        DisplayObject *obj = _objs[i];
+        SceneObject *obj = _objs[i];
         if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
 
           if(obj->isCollapsed()) {
@@ -198,7 +197,7 @@ namespace GMlib {
 
     // Get displayable objects
     _objs.resetSize();
-    cam->getScene()->getDisplayableObjects( _objs, cam );
+    cam->getScene()->getRenderableObjects( _objs, cam );
   }
 
   void

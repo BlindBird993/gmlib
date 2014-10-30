@@ -49,7 +49,7 @@ namespace GMlib {
     TriangleFacetsVisualizer();
     ~TriangleFacetsVisualizer();
     virtual void  replot( TriangleFacets<T>* tf );
-    void          set( DisplayObject* obj );
+    void          set( SceneObject* obj );
 
 
     static void   fillStandardVBO( GL::VertexBufferObject& vbo,

@@ -48,8 +48,8 @@ namespace GMlib {
 
     void          setTexture( const GL::Texture& tex );
 
-    void          render( const DisplayObject* obj, const Camera* cam ) const;
-    void          renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
+    void          render( const SceneObject* obj, const Camera* cam ) const;
+    void          renderGeometry( const GL::Program& prog, const SceneObject* obj, const Camera* cam ) const;
 
     virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                           const DMatrix< Vector<T, 3> >& normals,

@@ -31,7 +31,7 @@
 #include "gmsurroundingspherevisualizer.h"
 
 #include "../camera/gmcamera.h"
-#include "../displayobjects/gmsphere3d.h"
+#include "../sceneobjects/gmsphere3d.h"
 
 
 
@@ -53,7 +53,7 @@ namespace GMlib {
     delete _sphere;
   }
 
-  void SurroundingSphereVisualizer::render(const DisplayObject *obj, const Camera *cam) const{
+  void SurroundingSphereVisualizer::render(const SceneObject *obj, const Camera *cam) const{
 
     int poly_mode;
     glGetIntegerv( GL_POLYGON_MODE, &poly_mode );

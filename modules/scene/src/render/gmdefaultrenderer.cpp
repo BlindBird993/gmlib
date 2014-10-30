@@ -416,7 +416,7 @@ namespace GMlib {
 
     // Get displayable objects
     _objs.resetSize();
-    scene->getDisplayableObjects( _objs, cam );
+    scene->getRenderableObjects( _objs, cam );
   }
 
 
@@ -454,7 +454,7 @@ namespace GMlib {
 
 
 
-  void DefaultRenderer::render(const DisplayObject* obj) const {
+  void DefaultRenderer::render(const SceneObject* obj) const {
 
     if( obj != getCamera() ) {
 
@@ -475,7 +475,7 @@ namespace GMlib {
     }
   }
 
-  void DefaultRenderer::renderSelectedGeometry( const DisplayObject* obj) const {
+  void DefaultRenderer::renderSelectedGeometry( const SceneObject* obj) const {
 
     const Color sel_true_color = GMcolor::White;
 
@@ -642,7 +642,7 @@ namespace GMlib {
     const Array<Light*> &lights_array = scene->getLights();
     const Sun* window_sun = scene->getSun();
 
-    const HqMatrix<float,3> cammat = camera->DisplayObject::getMatrix() * camera->getMatrixToSceneInverse();
+    const HqMatrix<float,3> cammat = camera->SceneObject::getMatrix() * camera->getMatrixToSceneInverse();
 
     /*
      *  Light types of "sun", "point" and "spot" is supported.

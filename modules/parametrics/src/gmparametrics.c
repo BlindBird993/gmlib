@@ -41,7 +41,7 @@ namespace GMlib {
 
   template <typename T, int m, int n>
   inline
-  Parametrics<T,m,n>::Parametrics( const Parametrics<T,m,n>& copy ) : DisplayObject( copy ) {}
+  Parametrics<T,m,n>::Parametrics( const Parametrics<T,m,n>& copy ) : SceneObject( copy ) {}
 
 
   template <typename T, int m, int n>

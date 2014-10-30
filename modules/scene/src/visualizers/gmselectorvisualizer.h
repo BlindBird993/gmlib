@@ -46,8 +46,8 @@ namespace GMlib {
     SelectorVisualizer( float radius = 0.27, Material mat = GMmaterial::Jade );
     SelectorVisualizer( int m1, int m2, float radius = 0.27, Material mat = GMmaterial::Jade );
 
-    void                          render( const DisplayObject* obj, const Camera* cam ) const;
-    void                          renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
+    void                          render( const SceneObject* obj, const Camera* cam ) const;
+    void                          renderGeometry( const GL::Program& prog, const SceneObject* obj, const Camera* cam ) const;
 
     static SelectorVisualizer*    getInstance();
 

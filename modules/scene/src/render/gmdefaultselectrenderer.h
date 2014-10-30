@@ -36,17 +36,17 @@
 
 namespace GMlib {
 
-  class DisplayObject;
+  class SceneObject;
 
   class DefaultSelectRenderer : public Renderer {
   public:
     explicit DefaultSelectRenderer();
     virtual ~DefaultSelectRenderer();
 
-    const DisplayObject*            findObject(int x, int y) const;
-    DisplayObject*                  findObject(int x, int y);
-    Array<const DisplayObject*>     findObjects(int xmin, int ymin, int xmax, int ymax) const;
-    Array<DisplayObject*>           findObjects(int xmin, int ymin, int xmax, int ymax);
+    const SceneObject*            findObject(int x, int y) const;
+    SceneObject*                  findObject(int x, int y);
+    Array<const SceneObject*>     findObjects(int xmin, int ymin, int xmax, int ymax) const;
+    Array<SceneObject*>           findObjects(int xmin, int ymin, int xmax, int ymax);
 
 
     void                            select(int what);
@@ -64,7 +64,7 @@ namespace GMlib {
     void                            swap() {}
 
 
-    mutable Array<DisplayObject*>   _objs;
+    mutable Array<SceneObject*>   _objs;
 
 
   private:

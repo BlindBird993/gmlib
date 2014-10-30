@@ -99,7 +99,6 @@
 namespace GMlib{
 
 
-  class DisplayObject;
   class Camera;
   class Renderer;
   class DefaultRenderer;
@@ -418,8 +417,8 @@ namespace GMlib{
 
     int                                 prepare(Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother = 0);
 
-    virtual void                        culling( Array<DisplayObject*>&, const Frustum& );
-    void                                fillObj( Array<DisplayObject*>& );
+    virtual void                        culling( Array<SceneObject*>&, const Frustum& );
+    void                                fillObj( Array<SceneObject*>& );
 
     virtual void                        basisChange( const Vector<float,3>& dir,
                                                      const Vector<float,3>& side,
@@ -491,7 +490,7 @@ namespace GMlib{
         int nr;
         in >> nr >> os;
         for(int i=0; i<nr; i++)
-            _object += newDisplayObject(in);
+            _object += new SceneObject(in);
       }*/
       return in;
     }
@@ -499,14 +498,12 @@ namespace GMlib{
 
 
   private:
-    //, const DisplayObject& v)
     template <typename T_Stream>
     void prOut(T_Stream& out) const {
 
       out << _pos << GMseparator::Object << _dir << GMseparator::Object << _up << GMseparator::Object;
     }
 
-    //, DisplayObject& v)
     template <typename T_Stream>
     void prIn(T_Stream& in) {
 

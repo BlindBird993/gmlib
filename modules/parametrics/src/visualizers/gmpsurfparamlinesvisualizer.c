@@ -67,7 +67,7 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer(const PSurfParamLinesV
 }
 
 template <typename T, int n>
-void PSurfParamLinesVisualizer<T,n>::render( const DisplayObject* obj, const Camera* cam ) const {
+void PSurfParamLinesVisualizer<T,n>::render( const SceneObject* obj, const Camera* cam ) const {
 
   const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
   const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);

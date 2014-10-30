@@ -31,7 +31,7 @@
 #define __gmCOORDINATESYSTEM_H__
 
 
-#include "../gmdisplayobject.h"
+#include "../gmsceneobject.h"
 
 // stl
 #include <string>
@@ -47,7 +47,7 @@ namespace GMlib {
     GM_COORDSYS_PARENT
   };
 
-  class CoordinateSystem : public DisplayObject {
+  class CoordinateSystem : public SceneObject {
     GM_SCENEOBJECT(CoordinateSystem)
   public:
     CoordinateSystem();

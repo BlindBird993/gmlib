@@ -31,7 +31,7 @@
 
 #include "gmvisualizer.h"
 
-#include "gmdisplayobject.h"
+#include "gmsceneobject.h"
 
 // gmlib
 #include <core/gmglobal.h>

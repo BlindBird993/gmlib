@@ -76,7 +76,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::render( const DisplayObject* obj, const DefaultRenderer* renderer ) const {
+  void PSurfDefaultVisualizer<T,n>::render( const SceneObject* obj, const DefaultRenderer* renderer ) const {
 
     const Camera* cam = renderer->getCamera();
     const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
@@ -153,7 +153,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfDefaultVisualizer<T,n>::renderGeometry( const DisplayObject* obj, const Renderer* renderer, const Color& color ) const {
+  void PSurfDefaultVisualizer<T,n>::renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const {
 
     _color_prog.bind(); {
       _color_prog.setUniform( "u_color", color );

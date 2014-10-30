@@ -62,7 +62,7 @@ namespace GMlib {
     );
     ~IsoCamera();
 
-    double          deltaTranslate(DisplayObject *);
+    double          deltaTranslate(SceneObject *);
 
 //    void             go(bool stereo=false);
     void            lockTarget(SceneObject* obj);

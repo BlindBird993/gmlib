@@ -33,7 +33,7 @@
 #ifndef __gmCAMERA_H__
 #define __gmCAMERA_H__
 
-#include "../gmdisplayobject.h"
+#include "../gmsceneobject.h"
 #include "../gmscene.h"
 
 // gmlib
@@ -87,7 +87,7 @@ namespace GMlib {
    *          trenger tilgang til et objekt for bevegelsessimulering
    *          bør den lage en egen peker for det.
    */
-  class Camera : public DisplayObject {
+  class Camera : public SceneObject {
     GM_SCENEOBJECT(Camera)
   public:
     Camera( Scene& s = _default_scene );
@@ -121,7 +121,7 @@ namespace GMlib {
     void                        setCoordSysVisible(bool visible=true);
 
 
-    virtual double              deltaTranslate(DisplayObject * obj);
+    virtual double              deltaTranslate(SceneObject * obj);
     double                      getDistanceToObject(int, int);
     double                      getDistanceToObject(SceneObject* obj);
     virtual SceneObject*        lockTargetAtPixel(int,int);

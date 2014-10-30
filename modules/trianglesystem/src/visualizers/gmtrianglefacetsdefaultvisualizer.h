@@ -52,8 +52,8 @@ namespace GMlib {
     ~TriangleFacetsDefaultVisualizer();
 
     /* virtual from TriangleFacetsVisualizer */
-    void          render(const DisplayObject *obj, const Camera *cam) const;
-    void          renderGeometry( const GL::Program& prog, const DisplayObject* obj, const Camera* cam ) const;
+    void          render(const SceneObject *obj, const Camera *cam) const;
+    void          renderGeometry( const GL::Program& prog, const SceneObject* obj, const Camera* cam ) const;
 
     void          replot(TriangleFacets<T> *tf);
 

@@ -37,7 +37,7 @@ namespace GMlib {
   public:
     CoordSysRepVisualizer();
 
-    void              render( const DisplayObject* obj, const Camera* cam );
+    void              render( const SceneObject* obj, const Camera* cam );
 
 
   private:

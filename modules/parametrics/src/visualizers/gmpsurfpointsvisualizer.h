@@ -50,7 +50,7 @@ namespace GMlib {
     PSurfPointsVisualizer();
     PSurfPointsVisualizer( const PSurfPointsVisualizer<T,n>& copy );
 
-    void              render( const DisplayObject* obj, const Camera* cam ) const;
+    void              render( const SceneObject* obj, const Camera* cam ) const;
     void              replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                               const DMatrix< Vector<T, n> >& normals,
                               int m1, int m2, int d1, int d2,

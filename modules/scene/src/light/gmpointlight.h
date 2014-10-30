@@ -32,7 +32,7 @@
 
 
 #include "gmlight.h"
-#include "../gmdisplayobject.h"
+#include "../gmsceneobject.h"
 
 // stl
 #include <string>
@@ -47,7 +47,7 @@ namespace GMlib{
    *
    *  Pending Documentatioo
    */
-  class PointLight : public Light, public DisplayObject {
+  class PointLight : public Light, public SceneObject {
     GM_SCENEOBJECT(PointLight)
   public:
     PointLight();

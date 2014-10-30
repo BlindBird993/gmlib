@@ -44,7 +44,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  PointLight::PointLight() : Light(), DisplayObject(), _pos(0.0f), _light_sphere(Point<float,3>(0,0,0), FLT_MAX ) {
+  PointLight::PointLight() : Light(), SceneObject(), _pos(0.0f), _light_sphere(Point<float,3>(0,0,0), FLT_MAX ) {
 
     _type_id  = GM_SO_TYPE_LIGHT;
     setAttenuation( 0.8, 0.002, 0.0008 );
@@ -74,7 +74,7 @@ namespace GMlib {
         const Color& dif,
         const Color& spe,
         const Point<float,3>& pos
-  ) : Light(amb,dif,spe),DisplayObject(),_pos(0.0f) {
+  ) : Light(amb,dif,spe),SceneObject(),_pos(0.0f) {
 
     translate(pos);
     _type_id  = GM_SO_TYPE_LIGHT;
@@ -87,7 +87,7 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  PointLight::PointLight(	const PointLight& pl) : Light(pl), DisplayObject(pl), _pos(pl._pos) {
+  PointLight::PointLight(	const PointLight& pl) : Light(pl), SceneObject(pl), _pos(pl._pos) {
 
     _type_id  = GM_SO_TYPE_LIGHT;
   }

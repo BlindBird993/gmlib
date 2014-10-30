@@ -33,7 +33,7 @@
 
 // gmlib
 #include <core/containers/gmarraylx.h>
-#include <scene/gmdisplayobject.h>
+#include <scene/gmsceneobject.h>
 #include <trianglesystem/gmtrianglesystem.h>
 
 // stl
@@ -54,7 +54,7 @@ namespace GMlib {
   };
 
 
-  class StlObject : public DisplayObject {
+  class StlObject : public SceneObject {
     GM_SCENEOBJECT(StlObject)
   public:
     StlObject( const std::string& filename, const Color& color = 5, int flip = 1 ); // From file, in given color

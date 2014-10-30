@@ -30,7 +30,7 @@
 
 
 
-#include "../displayobjects/gmsphere3d.h"
+#include "../sceneobjects/gmsphere3d.h"
 #include "../visualizers/gmselectorvisualizer.h"
 
 namespace GMlib {
@@ -70,7 +70,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   Selector<T,n>::Selector(const Selector<T,n>& s)
-    : DisplayObject(s), _position( s._position )
+    : SceneObject(s), _position( s._position )
    {
 
     _type_id  = GM_SO_TYPE_SELECTOR;
