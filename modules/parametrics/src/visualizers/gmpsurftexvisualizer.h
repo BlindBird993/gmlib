@@ -48,8 +48,8 @@ namespace GMlib {
 
     void          setTexture( const GL::Texture& tex );
 
-    void          render( const SceneObject* obj, const Camera* cam ) const;
-    void          renderGeometry( const GL::Program& prog, const SceneObject* obj, const Camera* cam ) const;
+    void          render( const SceneObject* obj, const DefaultRenderer* renderer ) const;
+    void          renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const;
 
     virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                           const DMatrix< Vector<T, 3> >& normals,
@@ -59,6 +59,7 @@ namespace GMlib {
 
   private:
     GL::Program                 _prog;
+    GL::Program                 _color_prog;
 
     GL::VertexBufferObject      _vbo;
     GL::IndexBufferObject       _ibo;
