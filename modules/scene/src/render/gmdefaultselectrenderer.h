@@ -64,7 +64,7 @@ namespace GMlib {
     void                            swap() {}
 
 
-    mutable Array<SceneObject*>   _objs;
+    mutable Array<const SceneObject*>   _objs;
 
 
   private:

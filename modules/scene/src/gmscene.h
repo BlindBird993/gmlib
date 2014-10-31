@@ -86,11 +86,12 @@ namespace GMlib{
 
     SceneObject*                find(unsigned int name);
     const SceneObject*          find(unsigned int name) const;
-    void                        getRenderableObjects( Array<SceneObject*>& disp_objs, const Camera* cam) const;
     SceneObject*                getActiveObject();
     int                         getSize() const;
     virtual void                insert(SceneObject* obj);
     void                        remove(SceneObject* obj);
+
+    void                        getRenderList(Array<const SceneObject*>& disp_objs, const Camera* cam) const;
 
     Array<Light*>&              getLights();
     const Array<Light*>&        getLights() const;
@@ -161,6 +162,9 @@ namespace GMlib{
 
 
     void                        init();
+
+
+
 
   }; // END class Scene
 

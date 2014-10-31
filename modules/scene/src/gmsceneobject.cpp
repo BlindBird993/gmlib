@@ -230,27 +230,7 @@ namespace GMlib {
   }
 
 
-  /*! void SceneObject::_fillObj( Array<SceneObject*>& )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void SceneObject::fillObj( Array<SceneObject*>& objs ) {
 
-    if(_sphere.isValid()) {
-
-      objs += this;
-    }
-    for(int i=0; i< _children.getSize(); i++)
-      _children[i]->fillObj(objs);
-  }
-
-
-  /*! int SceneObject::prepare(Array<Light*>& obj, Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* mother=0)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   int SceneObject::prepare(Array<HqMatrix<float,3> >& mat, Scene* s, SceneObject* parent) {
 
     int nr = 1;
@@ -285,14 +265,19 @@ namespace GMlib {
     return nr;
   }
 
-
-  /*! void culling( Array<SceneObject*>&, const Frustum& );
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   void
-  SceneObject::culling( Array<SceneObject*>& objs, const Frustum& f ) {
+  SceneObject::getRenderList( Array<const SceneObject*>& objs ) const {
+
+    if(_sphere.isValid()) {
+
+      objs += this;
+    }
+    for(int i=0; i< _children.getSize(); i++)
+      _children(i)->getRenderList(objs);
+  }
+
+  void
+  SceneObject::getRenderList( Array<const SceneObject*>& objs, const Frustum& f ) const {
 
     //if(!_visible) return;
     if(!_sphere.isValid())
@@ -311,7 +296,7 @@ namespace GMlib {
       }
 
       for( int i = 0; i < _children.getSize(); i++ )
-        _children[i]->fillObj( objs );
+        _children(i)->getRenderList( objs );
     }
     else { // if(k == 0)     Intersecting
 
@@ -319,7 +304,7 @@ namespace GMlib {
         objs += this; // added check for visible, children don't automatic follow anymore
       }
       for( int i = 0; i < _children.getSize(); i++ )
-        _children[i]->culling( objs, f );
+        _children(i)->getRenderList( objs, f );
     }
 
 

@@ -416,7 +416,7 @@ namespace GMlib {
 
     // Get displayable objects
     _objs.resetSize();
-    scene->getRenderableObjects( _objs, cam );
+    scene->getRenderList( _objs, cam );
   }
 
 

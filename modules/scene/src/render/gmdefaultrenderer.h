@@ -82,7 +82,7 @@ namespace GMlib {
   protected:
     virtual void            prepare(Camera *cam);
 
-    mutable Array<SceneObject*>    _objs;
+    mutable Array<const SceneObject*>    _objs;
 
 
   private:

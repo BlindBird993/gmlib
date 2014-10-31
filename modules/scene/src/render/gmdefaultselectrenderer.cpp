@@ -164,7 +164,7 @@ namespace GMlib {
 
       for( int i=0; i < _objs.getSize(); ++i ) {
 
-        SceneObject *obj = _objs[i];
+        const SceneObject *obj = _objs(i);
         if( obj != cam && ( what == 0 || what == obj->getTypeId() || ( what < 0 && what + obj->getTypeId() != 0 ) ) ) {
 
           if(obj->isCollapsed()) {
@@ -197,7 +197,7 @@ namespace GMlib {
 
     // Get displayable objects
     _objs.resetSize();
-    cam->getScene()->getRenderableObjects( _objs, cam );
+    cam->getScene()->getRenderList( _objs, cam );
   }
 
   void
