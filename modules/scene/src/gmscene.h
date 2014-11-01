@@ -88,8 +88,8 @@ namespace GMlib{
     const SceneObject*          find(unsigned int name) const;
     SceneObject*                getActiveObject();
     int                         getSize() const;
-    virtual void                insert(SceneObject* obj);
-    void                        remove(SceneObject* obj);
+    virtual void                insert(SceneObject* obj);   //!< Inserts obj into the scene. Scene takes ownership.
+    void                        remove(SceneObject* obj);   //!< Removes obj from scene if it exists. Scene releases ownership.
 
     void                        getRenderList(Array<const SceneObject*>& disp_objs, const Camera* cam) const;
 
@@ -105,7 +105,7 @@ namespace GMlib{
     void                        setSunDirection(Angle d);
 
     const Array<Camera*>&       getCameras() const;
-    virtual void                insertCamera(Camera* cam);
+    virtual void                insertCamera(Camera* cam, bool insert_in_scene = true);
     virtual bool                removeCamera(Camera* cam);
 
     void                        clear();

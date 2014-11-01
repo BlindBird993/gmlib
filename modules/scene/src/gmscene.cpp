@@ -84,7 +84,7 @@ namespace GMlib {
 
   Scene::~Scene() {
 
-//    clear();
+    clear();
   }
 
   SceneObject* Scene::find(unsigned int name) {
@@ -124,27 +124,22 @@ namespace GMlib {
     // Remove selections
     clearSelection();
 
-    if(_sun) delete _sun;
+    // Remove/(delete) sun
+    removeSun();
 
-    int i;
-//    for(i=0; i<_cameras.getSize(); i++)
-//    {
-//      remove(_cameras[i]);
-//      delete _cameras[i];
-//    }
-    Light * light;
-    for(i=_lights.getSize()-1; i>=0; i=_lights.getSize()-1)
-    {
-      light = _lights.back();
-      removeLight(light);
-      delete light;
+    // Lights: if in scene remove, then delete
+    for( int i = 0; i < _lights.getSize(); ++i ) {
+      SceneObject *obj = dynamic_cast<SceneObject*>(_lights(i));
+      _scene.remove(obj);
     }
+    _lights.clear();
 
-    for( int i=0; i < _scene.getSize(); i++ )
-      if( _scene[i] != 0x0 )
-        delete _scene[i];
+    // Cameras: if in scene remove, then delete
+    for( int i = 0; i < _cameras.getSize(); ++i ) _scene.remove(_cameras(i));
+    _cameras.clear();
 
-    _scene.setSize(0);
+    // Clear rest of scene (remove and delete)
+    _scene.clear();
 
     if(running)
       start();
@@ -195,12 +190,12 @@ namespace GMlib {
     obj->setParent(0);
   }
 
-  void Scene::insertCamera(Camera* cam) {
+  void Scene::insertCamera(Camera *cam, bool insert_in_scene) {
 
     cam->setScene(this);
     _cameras += cam;
 
-    insert(cam);
+    if(insert_in_scene) insert(cam);
   }
 
   bool Scene::removeCamera(Camera* cam) {
