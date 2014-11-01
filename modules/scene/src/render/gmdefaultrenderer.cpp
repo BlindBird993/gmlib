@@ -60,7 +60,7 @@ namespace GMlib {
     // Create render targets
     _front_rt = new TextureRenderTarget;
     _back_rt = new TextureRenderTarget;
-    setClearColor( GMcolor::Blue );
+    setClearColor(GMcolor::Grey);
 
     // Create buffers
     _fbo.create();
