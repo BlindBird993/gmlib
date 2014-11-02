@@ -53,7 +53,7 @@ namespace GMlib {
     delete _sphere;
   }
 
-  void SurroundingSphereVisualizer::render(const SceneObject *obj, const Camera *cam) const{
+  void SurroundingSphereVisualizer::render(const SceneObject *obj, const DefaultRenderer *renderer) const{
 
     int poly_mode;
     glGetIntegerv( GL_POLYGON_MODE, &poly_mode );

@@ -40,7 +40,7 @@
 
 namespace GMlib {
 
-  class Camera;
+  class DefaultRenderer;
   class Sphere3D;
 
   class SurroundingSphereVisualizer : public GMlib::Visualizer {
@@ -48,7 +48,8 @@ namespace GMlib {
       SurroundingSphereVisualizer();
       ~SurroundingSphereVisualizer();
 
-      void              render(const SceneObject *obj, const Camera *cam) const;
+      void              render(const SceneObject *obj, const DefaultRenderer *renderer) const;
+
       void              enableCleanSphere( bool enable );
       void              enableTotalSphere( bool enable );
       const Color&      getCleanSphereColor() const;

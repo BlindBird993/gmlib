@@ -50,7 +50,7 @@ namespace GMlib {
   public:
     SelectorGridVisualizer();
 
-    void                          render(const SceneObject *obj, const Camera *cam) const;
+    void                          render(const SceneObject *obj, const DefaultRenderer *renderer) const;
     void                          reset();
     void                          setLineWidth( float line_width = 1.0f );
     void                          setSelectors( DVector< Vector<T,3> >& c, int tp=0 );

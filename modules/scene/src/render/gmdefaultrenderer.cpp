@@ -498,8 +498,7 @@ namespace GMlib {
 
   void DefaultRenderer::renderCoordSys() const {
 
-    const Camera* cam = getCamera();
-    _coord_sys_visu->render(cam,cam);
+    _coord_sys_visu->render(getCamera(),this);
   }
 
 

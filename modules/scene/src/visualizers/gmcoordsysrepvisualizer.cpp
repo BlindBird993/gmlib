@@ -31,6 +31,7 @@
 
 // local
 #include "gmstdrepvisualizer.h"
+#include "../render/gmdefaultrenderer.h"
 #include "../camera/gmcamera.h"
 
 
@@ -42,8 +43,9 @@ namespace GMlib {
     _s_instance = VisualizerStdRep::getInstance();
   }
 
-  void CoordSysRepVisualizer::render(const SceneObject* /*obj*/, const Camera *cam) {
+  void CoordSysRepVisualizer::render(const SceneObject* /*obj*/, const DefaultRenderer *renderer) {
 
+    const Camera *cam = renderer->getCamera();
     // Get matrix of present camera and
     HqMatrix<float,3> base_mvmat;
     HqMatrix<float,3> mvmat = cam->SceneObject::getMatrix();

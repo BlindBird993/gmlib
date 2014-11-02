@@ -29,7 +29,6 @@
 namespace GMlib {
 
 
-  class Camera;
   class VisualizerStdRep;
 
   class CoordSysRepVisualizer : public Visualizer {
@@ -37,7 +36,7 @@ namespace GMlib {
   public:
     CoordSysRepVisualizer();
 
-    void              render( const SceneObject* obj, const Camera* cam );
+    void              render( const SceneObject* obj, const DefaultRenderer* renderer );
 
 
   private:

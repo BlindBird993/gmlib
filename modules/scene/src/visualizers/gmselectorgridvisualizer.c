@@ -58,9 +58,9 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void SelectorGridVisualizer<T>::render(const SceneObject *obj, const Camera *cam) const {
+  void SelectorGridVisualizer<T>::render(const SceneObject *obj, const DefaultRenderer *renderer) const {
 
-    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(renderer->getCamera());
 
     GL_CHECK(::glLineWidth(_line_width));
     _prog.bind(); {
