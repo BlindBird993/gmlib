@@ -46,8 +46,8 @@ namespace GMlib {
     PCurveDefaultVisualizer();
     PCurveDefaultVisualizer( const PCurveDefaultVisualizer<T,n>& copy );
 
-    void          render(const SceneObject* obj, const Camera *cam) const;
-    void          renderGeometry( const GL::Program &prog, const SceneObject* obj, const Camera* cam ) const;
+    void          render(const SceneObject* obj, const DefaultRenderer* render) const;
+    void          renderGeometry( const SceneObject* obj, const Renderer* render, const Color& color ) const;
 
     virtual void  replot( const DVector< DVector< Vector<T, n> > >& p,
                           int m, int d, bool closed );
@@ -55,7 +55,6 @@ namespace GMlib {
   protected:
     GL::Program               _prog;
     GL::VertexBufferObject    _vbo;
-
     unsigned int              _no_vertices;
     GLfloat                   _line_width;
 

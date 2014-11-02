@@ -48,13 +48,14 @@ namespace GMlib {
   public:
     PTriangleDefaultVisualizer();
 
-    void            render(const SceneObject *obj, const Camera *cam) const;
-    void            renderGeometry( const GL::Program& prog, const SceneObject* obj, const Camera* cam ) const;
+    void            render(const SceneObject *obj, const DefaultRenderer *renderer) const;
+    void            renderGeometry(const SceneObject* obj, const Renderer* renderer, const Color& color) const;
 
     virtual void    replot(const DVector< DVector< Vector<T,3> > >& p,int m);
 
   private:
     GL::Program               _prog;
+    GL::Program               _color_prog;
 
     GL::VertexBufferObject    _vbo;
     GL::IndexBufferObject     _ibo;

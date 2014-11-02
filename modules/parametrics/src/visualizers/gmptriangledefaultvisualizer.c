@@ -41,6 +41,7 @@ namespace GMlib {
     : _no_elements(0) {
 
     _prog.acquire("phong");
+    _prog.acquire("color");
 
     _vbo.create();
     _ibo.create();
@@ -48,7 +49,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PTriangleDefaultVisualizer<T,n>::render(const SceneObject *obj, const Camera *cam) const {
+  void PTriangleDefaultVisualizer<T,n>::render(const SceneObject *obj, const DefaultRenderer* renderer) const {
+
+    const Camera* cam = renderer->getCamera();
 
     const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
     const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
@@ -103,18 +106,23 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PTriangleDefaultVisualizer<T,n>::renderGeometry( const GL::Program& prog, const SceneObject* obj, const Camera* cam ) const {
+  void PTriangleDefaultVisualizer<T,n>::renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const {
 
-    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
-    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
+    _color_prog.bind(); {
 
-    _vbo.bind();
-    _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
+      _color_prog.setUniform( "u_color", color );
+      _color_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
+      GL::AttributeLocation vertice_loc = _color_prog.getAttributeLocation( "in_vertex" );
 
-    draw();
+      _vbo.bind();
+      _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
 
-    _vbo.disable( vertice_loc );
-    _vbo.unbind();
+      draw();
+
+      _vbo.disable( vertice_loc );
+      _vbo.unbind();
+
+    } _color_prog.unbind();
   }
 
   template <typename T, int n>

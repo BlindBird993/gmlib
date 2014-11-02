@@ -67,7 +67,9 @@ PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer(const PSurfParamLinesV
 }
 
 template <typename T, int n>
-void PSurfParamLinesVisualizer<T,n>::render( const SceneObject* obj, const Camera* cam ) const {
+void PSurfParamLinesVisualizer<T,n>::render( const SceneObject* obj, const DefaultRenderer * renderer) const {
+
+  const Camera* cam = renderer->getCamera();
 
   const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
   const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
@@ -81,8 +83,7 @@ void PSurfParamLinesVisualizer<T,n>::render( const SceneObject* obj, const Camer
     _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
     // Lights
-    assert(false);
-//    _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
+    _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
 
     // Base material
     _prog.setUniform( "u_mat_amb", obj->getMaterial().getAmb() );

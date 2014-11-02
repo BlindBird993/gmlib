@@ -53,9 +53,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurfDerivativesVisualizer<T,n>::render(const SceneObject *obj, const Camera *cam) const {
+  void PSurfDerivativesVisualizer<T,n>::render(const SceneObject *obj, const DefaultRenderer *renderer) const {
 
-    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(renderer->getCamera());
 
     _prog.bind(); {
 

@@ -51,9 +51,9 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::render(const SceneObject* obj, const Camera *cam) const {
+  void PCurveDefaultVisualizer<T,n>::render(const SceneObject* obj, const DefaultRenderer* renderer) const {
 
-    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(cam);
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(renderer->getCamera());
 
     // GL States
     glLineWidth( _line_width );
@@ -87,16 +87,21 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PCurveDefaultVisualizer<T,n>::renderGeometry( const GL::Program &prog, const SceneObject* obj, const Camera* cam ) const {
+  void PCurveDefaultVisualizer<T,n>::renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const {
 
-    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
-    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
+    _prog.bind(); {
 
-    _vbo.bind();
-    _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
-    glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
-    _vbo.disable( vertice_loc );
-    _vbo.unbind();
+      _prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
+      _prog.setUniform( "u_color", color );
+      GL::AttributeLocation vertice_loc = _prog.getAttributeLocation( "in_vertex" );
+
+      _vbo.bind();
+      _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), reinterpret_cast<const GLvoid*>(0x0) );
+      glDrawArrays( GL_LINE_STRIP, 0, _no_vertices );
+      _vbo.disable( vertice_loc );
+      _vbo.unbind();
+
+    } _prog.bind();
   }
 
 

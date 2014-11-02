@@ -61,7 +61,7 @@ namespace GMlib {
     PSurfDerivativesVisualizer();
     virtual ~PSurfDerivativesVisualizer();
 
-    void            render(const SceneObject *obj, const Camera *cam) const;
+    void            render(const SceneObject *obj, const DefaultRenderer *renderer) const;
     const Color&    getColor() const;
     int             getDerivativeU() const;
     int             getDerivativeV() const;
