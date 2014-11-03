@@ -65,10 +65,9 @@ namespace GMlib {
     double          deltaTranslate(SceneObject *);
 
 //    void             go(bool stereo=false);
-    void            lockTarget(SceneObject* obj);
-    void            lockTarget(const Point<float,3>& p);
-    void            lockTarget(double d);
-    SceneObject*    lockTargetAtPixel(int,int);
+    void            lock(SceneObject* obj) {}         //!< Disable locking
+    void            lock(const Point<float,3>& p) {}  //!< Disable locking
+    void            lock(double d) {}                 //!< Disable locking
     void            move(float d);
     void            move(const Vector<float,3>& t);
 

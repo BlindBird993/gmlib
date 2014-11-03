@@ -34,9 +34,9 @@ namespace GMlib {
 
 
   /*! IsoCamera::IsoCamera(Scene* s)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   IsoCamera::IsoCamera(Scene* s) : Camera(s) {
 
@@ -45,9 +45,9 @@ namespace GMlib {
 
 
   /*!IsoCamera::IsoCamera( const Point<float,3>&  pos, const Point<float,3>&  look_pos )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   IsoCamera::IsoCamera(
     const Point<float,3>&  pos,
@@ -59,9 +59,9 @@ namespace GMlib {
 
 
   /*! IsoCamera::IsoCamera( const Point<float,3>&  pos, const Vector<float,3>& dir, const Vector<float,3>& up, float zoom )
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   IsoCamera::IsoCamera(
     const Point<float,3>&  pos,
@@ -75,17 +75,17 @@ namespace GMlib {
 
 
   /*! IsoCamera::~IsoCamera()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   IsoCamera::~IsoCamera() {}
 
 
   /*! double IsoCamera::deltaTranslate(SceneObject *)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   double IsoCamera::deltaTranslate(SceneObject * obj) {
 
@@ -97,10 +97,10 @@ namespace GMlib {
 
 
 //  /*! void IsoCamera::go(bool stereo)
-//   *	\brief Pending Documentation
+//   *  \brief Pending Documentation
 //   *
-//   *	Pending Documentation
-//   *	Running the IsoCamera.
+//   *  Pending Documentation
+//   *  Running the IsoCamera.
 //   */
 //  void IsoCamera::go(bool /*stereo*/) {
 
@@ -111,73 +111,38 @@ namespace GMlib {
 
 
   /*! void IsoCamera::localDisplay()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void IsoCamera::localDisplay() {}
 
 
   /*! void IsoCamera::localSelect()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void IsoCamera::localSelect() {}
 
 
-  /*! void IsoCamera::lockTarget(SceneObject* obj)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void IsoCamera::lockTarget(SceneObject* /*obj*/) {}
-
-
-  /*! void IsoCamera::lockTarget(const Point<float,3>& p)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void IsoCamera::lockTarget(const Point<float,3>& /*p*/) {}
-
-
-  /*! void IsoCamera::lockTarget(double d)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  void IsoCamera::lockTarget(double /*d*/) {}
-
-
-  /*! SceneObject* IsoCamera::lockTargetAtPixel(int x,int y)
-   *	\brief Pending Documentation
-   *
-   *	Pending Documentation
-   */
-  SceneObject* IsoCamera::lockTargetAtPixel(int /*x*/,int /*y*/) {
-
-    return 0;
-  }
-
-
   /*! void IsoCamera::resetC(float z)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
-   *	Only for the constructors.
+   *  Pending Documentation
+   *  Only for the constructors.
    */
   void IsoCamera::resetC(float z) {
 
-    _horisontal	= z;
+    _horisontal  = z;
     _gw  = _gh  = 0.1;
   }
 
 
   /*! void IsoCamera::setPerspective()
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void IsoCamera::setPerspective() {
 
@@ -189,9 +154,9 @@ namespace GMlib {
 
 
   /*! void IsoCamera::zoom(float z)
-   *	\brief Pending Documentation
+   *  \brief Pending Documentation
    *
-   *	Pending Documentation
+   *  Pending Documentation
    */
   void IsoCamera::zoom(float z) {
 
