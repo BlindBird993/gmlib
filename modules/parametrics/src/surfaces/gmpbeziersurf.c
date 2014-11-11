@@ -33,6 +33,7 @@
 // gmlib
 #include <core/containers/gmdmatrix.h>
 #include <scene/selector/gmselector.h>
+#include <scene/visualizers/gmselectorgridvisualizer.h>
 
 namespace GMlib {
 
