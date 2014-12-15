@@ -134,7 +134,7 @@ namespace GMlib {
           >> fn           >> gs;
 
       m.set( GL_ONE, GL_ONE );
-      delete fn;
+//      delete fn;
       return in;
     }
 

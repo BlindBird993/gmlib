@@ -77,7 +77,7 @@ namespace GMlib {
   template <typename T>
   PBezierCurve<T>::~PBezierCurve() {
 
-    delete _sgv;
+    if(_sgv) delete _sgv;
   }
 
 
@@ -106,7 +106,7 @@ namespace GMlib {
       this->_parent->edit( this );
 
     this->replot();
-    _sgv->update();
+    if(_sgv) _sgv->update();
 
     _c_moved = false;
   }
@@ -174,8 +174,10 @@ namespace GMlib {
       return;
 
     // Remove Selector Grid
-    this->removeVisualizer( _sgv );
-    _sgv->reset();
+    if(_sgv) {
+      this->removeVisualizer( _sgv );
+      _sgv->reset();
+    }
 
     // Remove Selectors
     for( int i = 0; i < _s.getDim(); i++ ) {
@@ -200,7 +202,7 @@ namespace GMlib {
     _pre_eval = true;
     _resamp_mode = GM_RESAMPLE_PREEVAL;
 
-    _sgv = new SelectorGridVisualizer<T>;
+    _sgv = 0x0;
   }
 
 
@@ -317,6 +319,7 @@ namespace GMlib {
 
 
     if( grid ) {
+      if(!_sgv) _sgv = new SelectorGridVisualizer<T>;
       _sgv->setSelectors( _c );
       this->insertVisualizer( _sgv );
     }

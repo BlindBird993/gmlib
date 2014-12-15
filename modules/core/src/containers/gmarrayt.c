@@ -679,7 +679,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void ArrayT<T>::print( char prompt[], std::ostream& out ) const {
+  void ArrayT<T>::print( const std::string& prompt, std::ostream& out ) const {
 
     out << prompt << ": " << (*this) << "\n";
   }

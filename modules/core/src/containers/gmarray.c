@@ -739,7 +739,7 @@ namespace GMlib {
       }
 
       //memcpy(_data_ptr, old_data_ptr, _no_elements * sizeof(T));
-      for(int i=0; i = _no_elements; i++) {
+      for(int i=0; i < _no_elements; i++) {
         _data_ptr[i] = old_data_ptr[i];
       }
 

@@ -32,7 +32,7 @@
 #include <cmath>
 
 // Platform
-#include <omp.h>
+//#include <omp.h>
 
 
 #ifdef GM_INTEL

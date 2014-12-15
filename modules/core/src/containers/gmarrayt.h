@@ -143,7 +143,7 @@ namespace GMlib {
       return ar._printIn( in );
     }
 
-    void print( char prompt[] = "ArrayT<T>", std::ostream& out = std::cout ) const;
+    void print( const std::string& = "ArrayT<T>", std::ostream& out = std::cout ) const;
 
   #endif
 

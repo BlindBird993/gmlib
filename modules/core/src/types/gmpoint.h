@@ -999,7 +999,7 @@ namespace GMlib {
     template <typename T_Stream, typename T, int n>
     inline
     T_Stream &operator<<(T_Stream& os, const Sphere<T,n>* s) {
-      if(s.isValid())
+      if(s->isValid())
         os << reinterpret_cast< ScalarPoint<T,n> >( (*s) );
       else
         os << ScalarPoint<T,n>(Point<T,n>(),T(-1));

@@ -88,7 +88,7 @@ namespace GMlib {
   inline
   PBezierSurf<T>::~PBezierSurf() {
 
-    delete _sgv;
+    if(_sgv) delete _sgv;
   }
 
 
@@ -100,7 +100,7 @@ namespace GMlib {
     if( this->_parent )
       this->_parent->edit( this );
 
-    _sgv->update();
+    if(_sgv) _sgv->update();
 
     _c_moved = false;
   }
@@ -228,8 +228,10 @@ namespace GMlib {
       return;
 
     // Remove Selector Grid Visualizer
-    this->removeVisualizer( _sgv );
-    _sgv->reset();
+    if(_sgv) {
+      this->removeVisualizer( _sgv );
+      _sgv->reset();
+    }
 
     // Remove Selectors
     for( int i = 0; i < _s.getDim1(); i++ ) {
@@ -259,7 +261,7 @@ namespace GMlib {
     _pre_eval = true;
     _resamp_mode = GM_RESAMPLE_PREEVAL;
 
-    _sgv = new SelectorGridVisualizer<T>;
+    _sgv = 0x0;
   }
 
 
@@ -399,6 +401,8 @@ namespace GMlib {
     }
 
     if( grid ) {
+
+      if(!_sgv) _sgv = new SelectorGridVisualizer<T>;
 
       _sgv->setSelectors( _c );
       this->insertVisualizer( _sgv );
