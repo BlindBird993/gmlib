@@ -57,7 +57,7 @@ namespace GMlib {
     _marked     = c.getInverse();
     _selected   = false;
     _root       = root;
-    translate( _position.template toType<float>() );
+    translateParent( _position.template toType<float>() );
     if(r != 1.0) scale(Vector<float,3>(r,r,r));
 
     insertVisualizer( SelectorVisualizer::getInstance() );
@@ -191,7 +191,7 @@ namespace GMlib {
     HqMatrix<float,3> invmat = _present;
     invmat.invertOrthoNormal();
     _position+=Point<float,n>(invmat*dp);
-    translate(invmat*dp);
+    translateParent(invmat*dp);
     _parent->edit(_id);
   }
 
@@ -286,11 +286,11 @@ namespace GMlib {
   void Selector<T,n>::update() {
 
     Vector<T,n> d = _position - _pos;
-    translate(d.toFloat());
+    translateParent(d.toFloat());
     for(int i=0; i<_children.getSize(); i++)
     {
       Selector<T,n> *s = dynamic_cast<Selector<T,n> *>(_children[i]);
-      if(s)  s->translate(-d.toFloat());  // don't bring children
+      if(s)  s->translateParent(-d.toFloat());  // don't bring children
     }
   }
 
@@ -306,11 +306,11 @@ namespace GMlib {
 
     Vector<T,n> d=p-_position;
     _position=p;
-    translate(d.toFloat());
+    translateParent(d.toFloat());
     for(int i=0; i<_children.getSize(); i++)
     {
       Selector<T,n> *s = dynamic_cast<Selector<T,n> *>(_children[i]);
-      if(s)  s->translate(-d.toFloat());  // don't bring children
+      if(s)  s->translateParent(-d.toFloat());  // don't bring children
     }
   }
 

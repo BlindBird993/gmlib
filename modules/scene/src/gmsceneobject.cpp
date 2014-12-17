@@ -442,42 +442,6 @@ namespace GMlib {
     _matrix.reset();
   }
 
-
-  /*! void SceneObject::rotate(Angle a, const Vector<float,3>& rot_axel)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In local coordinates.**
-   */
-  void SceneObject::rotate(Angle a, const Vector<float,3>& rot_axel) {
-
-    if(_locked)
-    {
-      Point<float,3> lock_pos = getSceneLockPos();
-      double       dir_length = (lock_pos - _pos).getLength();
-      Vector<float,3> t,ra = rot_axel;
-      double dd= a.getRad()/M_PI_4;
-      while(dd > 1.0)
-      {
-        t = ra^_dir;
-        t.setLength(dir_length);
-        move(Vector<float,2>(t*_side,t*_up));
-        dd -= 1.0;
-      }
-      t = ra^_dir;
-      t.setLength(tan(dd*M_PI_4)*dir_length);
-      move(Vector<float,2>(t*_side,t*_up));
-    }
-    else
-    {
-      HqMatrix<float,3> m( a, rot_axel );
-      _up   = m * _up;
-      _dir  = m * _dir;
-      _side = m * _side;
-    }
-    basisChange(_side, _up, _dir, _pos);
-  }
-
   void SceneObject::move( float d ) {
 
     _pos += d*_dir;
@@ -586,16 +550,65 @@ namespace GMlib {
     }
   }
 
+  void SceneObject::rotate( Angle a, const Vector<float,3>& rot_axel ) {
+
+    rotateParent( a, _matrix * rot_axel );
+  }
+
+  void SceneObject::rotate(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d) {
+
+    rotateParent( a, _matrix * p, _matrix * d );
+  }
+
+  void SceneObject::rotate(const UnitQuaternion<float>& q) {
+
+    HqMatrix<float,3> m = _matrix * HqMatrix<float,3>(q);
+    _pos  = m * _pos;
+    _up   = m * _up;
+    _dir  = m * _dir;
+    _side = m * _side;
+
+    if(_locked)
+    {
+      Point<float,3> lock_pos = getSceneLockPos();
+      updateOrientation(lock_pos);
+    }
+
+    basisChange(_side, _up, _dir, _pos);
+  }
 
 
+  void SceneObject::rotateParent(Angle a, const Vector<float,3>& rot_axel) {
 
-  /*! void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& rot_axel)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In local coordinates.**
-   */
-  void SceneObject::rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d ) {
+    if(_locked)
+    {
+      Point<float,3> lock_pos = getSceneLockPos();
+      double       dir_length = (lock_pos - _pos).getLength();
+      Vector<float,3> t,ra = rot_axel;
+      double dd= a.getRad()/M_PI_4;
+      while(dd > 1.0)
+      {
+        t = ra^_dir;
+        t.setLength(dir_length);
+        move(Vector<float,2>(t*_side,t*_up));
+        dd -= 1.0;
+      }
+      t = ra^_dir;
+      t.setLength(tan(dd*M_PI_4)*dir_length);
+      move(Vector<float,2>(t*_side,t*_up));
+    }
+    else
+    {
+      HqMatrix<float,3> m( a, rot_axel );
+      _up   = m * _up;
+      _dir  = m * _dir;
+      _side = m * _side;
+    }
+    basisChange(_side, _up, _dir, _pos);
+  }
+
+
+  void SceneObject::rotateParent(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d ) {
 
     HqMatrix<float,3> m( a, d, p );
     _pos  = m * _pos;
@@ -612,31 +625,7 @@ namespace GMlib {
     basisChange(_side, _up, _dir, _pos);
   }
 
-
-  /*! void SceneObject::rotateGlobal(Angle a, const Vector<float,3>& rot_axel)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In Scene Coordinates **
-   */
-  void SceneObject::rotateGlobal( Angle a, const Vector<float,3>& rot_axel ) {
-
-    rotate( a, _matrix_scene_inv * rot_axel );
-  }
-
-
-  /*! void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In Scene Coordinates **
-   */
-  void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d) {
-
-    rotate( a, _matrix_scene_inv * p, _matrix_scene_inv *d );
-  }
-
-  void SceneObject::rotate(const UnitQuaternion<float>& q) {
+  void SceneObject::rotateParent(const UnitQuaternion<float>& q) {
 
     HqMatrix<float,3> m(q);
     _pos  = m * _pos;
@@ -651,6 +640,17 @@ namespace GMlib {
     }
 
     basisChange(_side, _up, _dir, _pos);
+  }
+
+
+  void SceneObject::rotateGlobal( Angle a, const Vector<float,3>& rot_axel ) {
+
+    rotateParent( a, _matrix_scene_inv * rot_axel );
+  }
+
+  void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d) {
+
+    rotateParent( a, _matrix_scene_inv * p, _matrix_scene_inv *d );
   }
 
   void SceneObject::rotateGlobal(const UnitQuaternion<float>& q) {
@@ -698,7 +698,7 @@ namespace GMlib {
     for(int i=0; i<_children.getSize(); i++)
     {
       Point<float,3> tr = -(_children[i]->_matrix*Point<float,3>(0.0f));
-      _children[i]->translate(scale_factor%tr);
+      _children[i]->translateParent(scale_factor%tr);
       _children[i]->scale(scale_factor);
     }
     _scale.scale(scale_factor);
@@ -752,13 +752,13 @@ namespace GMlib {
       _children[i]->simulate(dt);
   }
 
-  /*! void SceneObject::translate(const Vector<float,3>& trans_vector)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   *  ** In local coordinates.**
-   */
+
   void SceneObject::translate(const Vector<float,3>& trans_vector) {
+
+    move(getMatrix()*trans_vector);
+  }
+
+  void SceneObject::translateParent(const Vector<float,3>& trans_vector) {
 
     move(trans_vector);
   }

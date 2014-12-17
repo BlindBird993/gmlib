@@ -192,10 +192,10 @@ namespace GMlib {
       for( int i = 0; i < _c.getDim(); i++ ) {
 
         _c[i] += diff;
-        _s[i]->translate( diff.template toType<float>() );
+        _s[i]->translateParent( diff.template toType<float>() );
       }
 
-      this->translate( -d.template toType<float>() );
+      this->translateParent( -d.template toType<float>() );
 
       _sgv->update();
     }

@@ -92,6 +92,25 @@ namespace GMlib {
       this->_parent->edit( this );
   }
 
+  template <typename T, int m, int n>
+  inline
+  void Parametrics<T,m,n>::rotateParent(Angle a, const Vector<T,n>& rot_axel) {
+
+    SceneObject::rotateParent( a, rot_axel );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
+
+
+  template <typename T, int m, int n>
+  inline
+  void Parametrics<T,m,n>::rotateParent(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d) {
+
+    SceneObject::rotateParent( a, p, d );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
+
 
   template <typename T, int m, int n>
   inline
@@ -125,6 +144,17 @@ namespace GMlib {
   void Parametrics<T,m,n>::translate( const Vector<T,n>& trans_vector ) {
 
     SceneObject::translate( trans_vector.template toType<float>() );
+    if( this->_parent )
+      this->_parent->edit( this );
+  }
+
+
+
+  template <typename T, int m, int n>
+  inline
+  void Parametrics<T,m,n>::translateParent( const Vector<T,n>& trans_vector ) {
+
+    SceneObject::translateParent( trans_vector.template toType<float>() );
     if( this->_parent )
       this->_parent->edit( this );
   }

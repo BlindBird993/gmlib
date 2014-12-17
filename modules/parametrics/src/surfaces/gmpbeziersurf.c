@@ -426,10 +426,10 @@ namespace GMlib {
         for( int j = 0; j < _c.getDim2(); j++ ) {
 
           _c[i][j] += diff;
-          _s[i][j]->translate( diff );
+          _s[i][j]->translateParent( diff );
         }
       }
-      this->translate( -d );
+      this->translateParent( -d );
       this->replot();
     }
   }

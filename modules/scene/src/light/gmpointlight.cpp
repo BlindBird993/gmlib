@@ -58,7 +58,7 @@ namespace GMlib {
    */
   PointLight::PointLight(	const Point<float,3>& pos) : Light(), _pos(0.0f) {
 
-    translate(pos);
+    translateParent(pos);
     _type_id  = GM_SO_TYPE_LIGHT;
     setAttenuation( 0.8, 0.002, 0.0008 );
   }
@@ -76,7 +76,7 @@ namespace GMlib {
         const Point<float,3>& pos
   ) : Light(amb,dif,spe),SceneObject(),_pos(0.0f) {
 
-    translate(pos);
+    translateParent(pos);
     _type_id  = GM_SO_TYPE_LIGHT;
     setAttenuation( 0.9, 0.0002, 0.00008 );
   }

@@ -61,7 +61,7 @@ namespace GMlib {
 
     for( int i = 0; i < c.getDim(); i++ )
       _c[i] -= c(0);
-    this->translate( c(0) );
+    this->translateParent( c(0) );
   }
 
 
@@ -341,9 +341,9 @@ namespace GMlib {
       for( int i = 0; i < _c.getDim(); i++ ) {
 
         _c[i] += diff;
-        _s[i]->translate( diff );
+        _s[i]->translateParent( diff );
       }
-      this->translate( -d );
+      this->translateParent( -d );
       this->replot();
     }
   }

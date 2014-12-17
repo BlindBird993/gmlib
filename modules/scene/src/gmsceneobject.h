@@ -299,11 +299,15 @@ namespace GMlib{
     virtual void                        rotate(Angle a, const Vector<float,3>& rot_axel);
     virtual void                        rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     virtual void                        rotate(const UnitQuaternion<float>& q );
+    virtual void                        rotateParent(Angle a, const Vector<float,3>& rot_axel);
+    virtual void                        rotateParent(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
+    virtual void                        rotateParent(const UnitQuaternion<float>& q );
     virtual void                        rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
     virtual void                        rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
     virtual void                        rotateGlobal(const UnitQuaternion<float>& q );
     virtual void                        scale(const Point<float,3>& scale_factor);
     virtual void                        translate(const Vector<float,3>& trans_vector);
+    virtual void                        translateParent(const Vector<float,3>& trans_vector);
     virtual void                        translateGlobal(const Vector<float,3>& trans_vector);
 
     virtual void                        move(float d);
