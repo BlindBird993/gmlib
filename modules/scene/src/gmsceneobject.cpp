@@ -713,7 +713,9 @@ namespace GMlib {
 
   void SceneObject::setMatrix( const HqMatrix<float,3>& mat ) {
 
-    _matrix = mat;
+    set(mat * Point<float,3>(0.0f,0.0f,0.0f),
+        mat * Vector<float,3>(1.0f,0.0f,0.0f),
+        mat * Vector<float,3>(0.0f,0.0f,1.0f) );
   }
 
   /*! void SceneObject::setSelected( bool s )
