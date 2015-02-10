@@ -69,8 +69,7 @@ namespace GMlib {
     nmat.invertOrthoNormal();
     nmat.transpose();
 
-//    this->glSetDisplayMode();
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    this->glSetDisplayMode();
 
     _prog.bind(); {
 
@@ -80,7 +79,6 @@ namespace GMlib {
       _prog.setUniform( "u_nmat", nmat );
 
       // Lights
-//      assert(false);
       _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
 
       // Get Material Data
@@ -126,15 +124,13 @@ namespace GMlib {
   }
 
   template <typename T>
-  void TriangleFacetsDefaultVisualizer<T>::initShader()
-  {
+  void TriangleFacetsDefaultVisualizer<T>::initShader() {
 
-      const std::string prog_name = "triangle_facets_prog";
+    const std::string prog_name = "triangle_facets_prog";
 
-      if(_prog.acquire(prog_name)) return;
+    if(_prog.acquire(prog_name)) return;
 
-  // Triangle facets shader
-  std::string vs_str =
+    std::string vs_str =
       GMlib::GL::OpenGLManager::glslDefHeader150Source() +
 
       "uniform mat4 u_mvmat, u_mvpmat;\n"
@@ -163,7 +159,7 @@ namespace GMlib {
       "}\n"
       ;
 
-  std::string fs_str =
+    std::string fs_str =
       GMlib::GL::OpenGLManager::glslDefHeader150Source() +
       GMlib::GL::OpenGLManager::glslFnComputeLightingSource() +
 
@@ -194,34 +190,33 @@ namespace GMlib {
       "}\n"
       ;
 
-  bool compile_ok, link_ok;
+    bool compile_ok, link_ok;
 
-  GMlib::GL::VertexShader vshader;
-  vshader.create("phong_tf_vs");
-  vshader.setPersistent(true);
-  vshader.setSource(vs_str);
-  compile_ok = vshader.compile();
-  assert(compile_ok);
+    GMlib::GL::VertexShader vshader;
+    vshader.create("phong_tf_vs");
+    vshader.setPersistent(true);
+    vshader.setSource(vs_str);
+    compile_ok = vshader.compile();
+    assert(compile_ok);
 
-  GMlib::GL::FragmentShader fshader;
-  fshader.create("phong_tf_fs");
-  fshader.setPersistent(true);
-  fshader.setSource(fs_str);
-  compile_ok = fshader.compile();
-  if( !compile_ok ) {
-    std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
-    std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
-  }
-  assert(compile_ok);
+    GMlib::GL::FragmentShader fshader;
+    fshader.create("phong_tf_fs");
+    fshader.setPersistent(true);
+    fshader.setSource(fs_str);
+    compile_ok = fshader.compile();
+    if( !compile_ok ) {
+      std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
+      std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
+    }
+    assert(compile_ok);
 
-  _prog.create(prog_name);
-  _prog.setPersistent(true);
-  _prog.attachShader( vshader );
-  _prog.attachShader( fshader );
-  link_ok = _prog.link();
-  assert(link_ok);
+    _prog.create(prog_name);
+    _prog.setPersistent(true);
+    _prog.attachShader( vshader );
+    _prog.attachShader( fshader );
+    link_ok = _prog.link();
+    assert(link_ok);
 
-  std::cout << "triangle facets shader prog initialized: " << prog_name << std::endl;
   }
 
   template <typename T>
@@ -243,7 +238,5 @@ namespace GMlib {
         _vbo.unbind();
       } _color_prog.unbind();
   }
-
-
 
 } // END namespace GMlib
