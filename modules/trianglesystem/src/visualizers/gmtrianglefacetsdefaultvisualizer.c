@@ -128,7 +128,11 @@ namespace GMlib {
   template <typename T>
   void TriangleFacetsDefaultVisualizer<T>::initShader()
   {
-///////////////
+
+      const std::string prog_name = "triangle_facets_prog";
+
+      if(_prog.acquire(prog_name)) return;
+
   // Triangle facets shader
   std::string vs_str =
       GMlib::GL::OpenGLManager::glslDefHeader150Source() +
@@ -193,14 +197,14 @@ namespace GMlib {
   bool compile_ok, link_ok;
 
   GMlib::GL::VertexShader vshader;
-  vshader.create("pvs");
+  vshader.create("phong_tf_vs");
   vshader.setPersistent(true);
   vshader.setSource(vs_str);
   compile_ok = vshader.compile();
   assert(compile_ok);
 
   GMlib::GL::FragmentShader fshader;
-  fshader.create("pfs");
+  fshader.create("phong_tf_fs");
   fshader.setPersistent(true);
   fshader.setSource(fs_str);
   compile_ok = fshader.compile();
@@ -210,12 +214,14 @@ namespace GMlib {
   }
   assert(compile_ok);
 
-  _prog.create("phongy");
+  _prog.create(prog_name);
   _prog.setPersistent(true);
   _prog.attachShader( vshader );
   _prog.attachShader( fshader );
   link_ok = _prog.link();
   assert(link_ok);
+
+  std::cout << "triangle facets shader prog initialized: " << prog_name << std::endl;
   }
 
   template <typename T>
