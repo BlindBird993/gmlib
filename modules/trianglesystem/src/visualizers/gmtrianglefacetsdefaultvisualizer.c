@@ -32,7 +32,8 @@
 
 // gmlib
 #include <opengl/gmopengl.h>
-#include <scene/camera/gmcamera.h>
+#include <opengl/gmopenglmanager.h>
+#include <scene/render/gmdefaultrenderer.h>
 
 
 namespace GMlib {
@@ -41,9 +42,14 @@ namespace GMlib {
   TriangleFacetsDefaultVisualizer<T>::TriangleFacetsDefaultVisualizer() :
     _no_elements(0) {
 
-    _prog.acquire("phong");
+    initShader();
+
+    _color_prog.acquire("color");
     _vbo.create();
     _ibo.create();
+
+    _colors.push_back(GMcolor::Blue);
+    _colors.push_back(GMcolor::Red);
   }
 
   template <typename T>
@@ -51,22 +57,31 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void TriangleFacetsDefaultVisualizer<T>::render(const SceneObject *obj, const Camera *cam) const {
+  void TriangleFacetsDefaultVisualizer<T>::render(const SceneObject *obj, const DefaultRenderer *renderer) const {
+
+
+    const Camera* cam = renderer->getCamera();
 
     const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
     const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
 
-    this->glSetDisplayMode();
+    SqMatrix<float,3>        nmat = mvmat.getRotationMatrix();
+    nmat.invertOrthoNormal();
+    nmat.transpose();
+
+//    this->glSetDisplayMode();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     _prog.bind(); {
 
       // Model view and projection matrices
       _prog.setUniform( "u_mvmat", mvmat );
       _prog.setUniform( "u_mvpmat", pmat * mvmat );
+      _prog.setUniform( "u_nmat", nmat );
 
       // Lights
-      assert(false);
-//      _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
+//      assert(false);
+      _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
 
       // Get Material Data
       const Material &m = obj->getMaterial();
@@ -111,20 +126,116 @@ namespace GMlib {
   }
 
   template <typename T>
+  void TriangleFacetsDefaultVisualizer<T>::initShader()
+  {
+///////////////
+  // Triangle facets shader
+  std::string vs_str =
+      GMlib::GL::OpenGLManager::glslDefHeader150Source() +
+
+      "uniform mat4 u_mvmat, u_mvpmat;\n"
+      "\n"
+      "in vec4 in_vertex;\n"
+      "in vec4 in_normal;\n"
+      "in vec2 in_tex;\n"
+      "\n"
+      "out vec4 gl_Position;\n"
+      "\n"
+      "smooth out vec3 ex_pos;\n"
+      "smooth out vec3 ex_normal;\n"
+      "\n"
+      "void main() {\n"
+      "\n"
+      "  // Transform the normal to view space\n"
+      "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
+      "  ex_normal = nmat * vec3(in_normal);\n"
+      "\n"
+      "  // Transform position into view space;\n"
+      "  vec4 v_pos = u_mvmat * in_vertex;\n"
+      "  ex_pos = v_pos.xyz * v_pos.w;\n"
+      "\n"
+      "  // Compute vertex position\n"
+      "  gl_Position = u_mvpmat * in_vertex;\n"
+      "}\n"
+      ;
+
+  std::string fs_str =
+      GMlib::GL::OpenGLManager::glslDefHeader150Source() +
+      GMlib::GL::OpenGLManager::glslFnComputeLightingSource() +
+
+      "uniform mat4      u_mvmat;\n"
+      "uniform mat3      u_nmat;\n"
+      "\n"
+      "uniform vec4      u_mat_amb;\n"
+      "uniform vec4      u_mat_dif;\n"
+      "uniform vec4      u_mat_spc;\n"
+      "uniform float     u_mat_shi;\n"
+      "\n"
+      "smooth in vec3    ex_pos;\n"
+      "smooth in vec3    ex_normal;\n"
+      "\n"
+      "out vec4 gl_FragColor;\n"
+      "\n"
+      "void main() {\n"
+      "\n"
+      "  vec3 normal = normalize( u_nmat * ex_normal );\n"
+      "\n"
+      "  Material mat;\n"
+      "  mat.ambient   = u_mat_amb;\n"
+      "  mat.diffuse   = u_mat_dif;\n"
+      "  mat.specular  = u_mat_spc;\n"
+      "  mat.shininess = u_mat_shi;\n"
+      "\n"
+      "  gl_FragColor = computeLighting( mat, ex_pos, normal );\n"
+      "}\n"
+      ;
+
+  bool compile_ok, link_ok;
+
+  GMlib::GL::VertexShader vshader;
+  vshader.create("pvs");
+  vshader.setPersistent(true);
+  vshader.setSource(vs_str);
+  compile_ok = vshader.compile();
+  assert(compile_ok);
+
+  GMlib::GL::FragmentShader fshader;
+  fshader.create("pfs");
+  fshader.setPersistent(true);
+  fshader.setSource(fs_str);
+  compile_ok = fshader.compile();
+  if( !compile_ok ) {
+    std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
+    std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
+  }
+  assert(compile_ok);
+
+  _prog.create("phongy");
+  _prog.setPersistent(true);
+  _prog.attachShader( vshader );
+  _prog.attachShader( fshader );
+  link_ok = _prog.link();
+  assert(link_ok);
+  }
+
+  template <typename T>
   inline
-  void TriangleFacetsDefaultVisualizer<T>::renderGeometry( const GL::Program& prog, const SceneObject* obj, const Camera* cam ) const {
+  void TriangleFacetsDefaultVisualizer<T>::renderGeometry(const SceneObject* obj, const Renderer *renderer, const Color &color ) const {
 
-    prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
-    GL::AttributeLocation vertice_loc = prog.getAttributeLocation( "in_vertex" );
+    _color_prog.bind(); {
+        _color_prog.setUniform("u_color", color);
+        _color_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
+        GL::AttributeLocation vertice_loc = _color_prog.getAttributeLocation( "in_vertex" );
 
-    _vbo.bind();
-    _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
+        _vbo.bind();
+        _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
 
-    draw();
+        draw();
 
-    _ibo.unbind();
-    _vbo.disable( vertice_loc );
-    _vbo.unbind();
+        _ibo.unbind();
+        _vbo.disable( vertice_loc );
+        _vbo.unbind();
+      } _color_prog.unbind();
   }
 
 

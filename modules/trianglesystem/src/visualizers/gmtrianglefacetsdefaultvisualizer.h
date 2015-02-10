@@ -52,20 +52,24 @@ namespace GMlib {
     ~TriangleFacetsDefaultVisualizer();
 
     /* virtual from TriangleFacetsVisualizer */
-    void          render(const SceneObject *obj, const Camera *cam) const;
-    void          renderGeometry( const GL::Program& prog, const SceneObject* obj, const Camera* cam ) const;
+    void          render(const SceneObject *obj, const DefaultRenderer *renderer) const;
+    void          renderGeometry( const SceneObject *obj, const Renderer *renderer, const Color &color ) const;
 
     void          replot(TriangleFacets<T> *tf);
 
   private:
     GL::Program                   _prog;
+    GL::Program                   _color_prog;
 
     GL::VertexBufferObject        _vbo;
     GL::IndexBufferObject         _ibo;
 
+    std::vector<Color>            _colors;
+
     int                           _no_elements;
 
     void                          draw() const;
+    void                          initShader();
 
   }; // END class TriangleFacetsDefaultVisualizer
 

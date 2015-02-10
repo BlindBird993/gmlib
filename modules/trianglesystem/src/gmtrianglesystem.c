@@ -1074,7 +1074,7 @@ namespace GMlib {
   template <typename T>
   void TriangleFacets<T>::insertVisualizer( Visualizer *visualizer ) {
 
-    this->insertVisualizer( visualizer );
+    SceneObject::insertVisualizer( visualizer );
 
     TriangleFacetsVisualizer<T> *visu = dynamic_cast<TriangleFacetsVisualizer<T>*>( visualizer );
     if( !visu )
