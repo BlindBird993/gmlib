@@ -515,9 +515,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  const Matrix<T,n,m>& Matrix<T,n,m>::operator+(const Matrix<T,n,m>& mat) const	{
+  Matrix<T,n,m> Matrix<T,n,m>::operator+(const Matrix<T,n,m>& mat) const	{
 
-    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator +(mat));
+    return static_cast< Matrix<T,n,m> >(Vector<Vector<T,m>,n>::operator +(mat));
   }
 
 
@@ -531,9 +531,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  const Matrix<T,n,m>& Matrix<T,n,m>::operator-(const Matrix<T,n,m>& mat) const	{
+  Matrix<T,n,m> Matrix<T,n,m>::operator-(const Matrix<T,n,m>& mat) const	{
 
-    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -(mat));
+    return static_cast< Matrix<T,n,m> >(Vector<Vector<T,m>,n>::operator -(mat));
   }
 
 
@@ -547,9 +547,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  const Matrix<T,n,m>& Matrix<T,n,m>::operator-() const	{
+  Matrix<T,n,m> Matrix<T,n,m>::operator-() const	{
 
-    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator -());
+    return static_cast< Matrix<T,n,m> >(Vector<Vector<T,m>,n>::operator -());
   }
 
 
@@ -593,9 +593,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  const Matrix<T,n,m>& Matrix<T,n,m>::operator*(const double d) const	{
+  Matrix<T,n,m> Matrix<T,n,m>::operator*(const double d) const {
 
-    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator *(d));
+    return static_cast< Matrix<T,n,m> >(Vector<Vector<T,m>,n>::operator *(d));
   }
 
 
@@ -624,9 +624,9 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  const Matrix<T,n,m>& Matrix<T,n,m>::operator/(double d) const {
+  Matrix<T,n,m> Matrix<T,n,m>::operator/(double d) const {
 
-    return static_cast<const Matrix<T,n,m>&>(Vector<Vector<T,m>,n>::operator /(d));
+    return static_cast< Matrix<T,n,m> >(Vector<Vector<T,m>,n>::operator /(d));
   }
 
 
@@ -787,16 +787,16 @@ namespace GMlib {
 
   template <class T, int n, int m>
   template <typename G>
-  Matrix<T,n,m>::operator const Matrix<G,n,m>& () const {
-    static Matrix<G,n,m> v;
+  Matrix<T,n,m>::operator Matrix<G,n,m> () const {
+    Matrix<G,n,m> v;
     GM_Static1_<G,T,n*m>::eq( v.getPtr(), getPtr() );
     return v;
   }
 
   template <class T, int n, int m>
   template <typename G>
-  const Matrix<G,n,m>& Matrix<T,n,m>::toType() const {
-    static Matrix<G,n,m> mat;
+  Matrix<G,n,m> Matrix<T,n,m>::toType() const {
+    Matrix<G,n,m> mat;
     mat = *this;
     return mat;
   }
@@ -1180,6 +1180,18 @@ namespace GMlib {
       x[i].normalize();
     }
   }
+
+
+  template <typename T, int n>
+  template <typename G>
+  SqMatrix<T,n>::operator SqMatrix<G,n> () const {
+
+      SqMatrix<G,n> v;
+      GM_Static1_<G,T,n*n>::eq( v.getPtr(), this->getPtr() );
+      return v;
+    }
+
+
 
   /*! HqMatrix_<T, n>::HqMatrix_():SqMatrix<T,n+1>()
    *  \brief The default constructor
@@ -1579,6 +1591,15 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
 
     return (*static_cast<Matrix<T,n+1,n+1>const*>(this)) *
       (static_cast<const Matrix<T,n+1,n+1>&>(v));
+  }
+
+  template <typename T, int n>
+  template <typename G>
+  HqMatrix_<T,n>::operator HqMatrix<G,n> () const  {
+
+    HqMatrix<G,n> v;
+    GM_Static1_<G,T,(n+1)*(n+1)>::eq( v.getPtr(), this->getPtr() );
+    return v;
   }
 
 

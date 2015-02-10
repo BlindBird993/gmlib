@@ -101,9 +101,9 @@ namespace GMlib {
     // ***** Additions and substractions. ******
     const Matrix<T,n,m>&      operator+=(const Matrix<T,n,m>& mat);
     const Matrix<T,n,m>&      operator-=(const Matrix<T,n,m>& mat);
-    const Matrix<T,n,m>&      operator+(const Matrix<T,n,m>& mat) const;
-    const Matrix<T,n,m>&      operator-(const Matrix<T,n,m>& mat) const;
-    const Matrix<T,n,m>&      operator-() const;
+    Matrix<T,n,m>             operator+(const Matrix<T,n,m>& mat) const;
+    Matrix<T,n,m>             operator-(const Matrix<T,n,m>& mat) const;
+    Matrix<T,n,m>             operator-() const;
 
     // ******* Multiplication vector ******
     const APoint<T,n>&        operator*(const APoint<T,m>& v) const;
@@ -111,18 +111,18 @@ namespace GMlib {
 
     //***** Scaling. *****
     const Matrix<T,n,m>&      operator*=(const double d);
-    const Matrix<T,n,m>&      operator*(const double d) const;
+    Matrix<T,n,m>             operator*(const double d) const;
 
     //***** Invers scaling. *****
     const Matrix<T,n,m>&      operator/=(double d);
-    const Matrix<T,n,m>&      operator/(double d) const;
+    Matrix<T,n,m>             operator/(double d) const;
 
     // Casting
     template <typename G>
-    operator const Matrix<G,n,m>& () const;
+    operator Matrix<G,n,m> () const;
 
     template <typename G>
-    const Matrix<G,n,m>&      toType() const;
+    Matrix<G,n,m>             toType() const;
 
     // Dummy for Array - should maby use determinant
     bool                      operator < ( const Matrix<T,n,m>& ) const;
@@ -331,12 +331,7 @@ namespace GMlib {
 
     // Casting
     template <typename G>
-    operator const SqMatrix<G,n>& () const {
-
-      static SqMatrix<G,n> v;
-      GM_Static1_<G,T,n*n>::eq( v.getPtr(), this->getPtr() );
-      return v;
-    }
+    operator SqMatrix<G,n> () const ;
 
 
   protected:
@@ -402,12 +397,7 @@ namespace GMlib {
 
     // Casting
     template <typename G>
-    operator const HqMatrix<G,n>& () const {
-
-      static HqMatrix<G,n> v;
-      GM_Static1_<G,T,(n+1)*(n+1)>::eq( v.getPtr(), this->getPtr() );
-      return v;
-    }
+    operator HqMatrix<G,n> () const;
 
 
   protected:
