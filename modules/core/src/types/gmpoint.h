@@ -112,22 +112,22 @@ namespace GMlib {
     const APoint<T, n>&     operator =  ( const APoint<T, n> &p );
     const APoint<T, n>&     operator += ( const APoint<T, n> &p );
     const APoint<T, n>&     operator -= ( const APoint<T, n> &p );
-    const APoint<T, n>&     operator -  () const;
-    const APoint<T, n>&     operator +  ( const APoint<T, n> &p ) const;
-    const APoint<T, n>&     operator -  ( const APoint<T, n> &p ) const;
+    APoint<T, n>            operator -  () const;
+    APoint<T, n>            operator +  ( const APoint<T, n> &p ) const;
+    APoint<T, n>            operator -  ( const APoint<T, n> &p ) const;
     T                       operator *  ( const APoint<T,n>& p) const;
     T&                      operator [] ( int i);
     T const&                operator () ( int i) const;
 
     // Scaling
     const APoint<T, n>&     operator *= ( double d );
-    const APoint<T, n>&     operator *  ( double d ) const;
+    APoint<T, n>            operator *  ( double d ) const;
     const APoint<T, n>&     operator %= ( const APoint<T, n> &p );
-    const APoint<T, n>&     operator %  ( const APoint<T, n> &p ) const;
+    APoint<T, n>            operator %  ( const APoint<T, n> &p ) const;
 
     // Scaling: inverse
     const APoint<T, n>&     operator /= ( double d );
-    const APoint<T, n>&     operator /  ( double d ) const;
+    APoint<T, n>            operator /  ( double d ) const;
 
     // Boolean on equality
     bool                    operator == ( const APoint<T, n> &p ) const;
@@ -141,13 +141,13 @@ namespace GMlib {
 
     // Casting
     template <typename G, int m>
-    operator const APoint<G,m>& () const;
+    operator APoint<G,m> () const;
 
     template <typename G,int m>
-    const APoint<G,m>&          to() const;
+    APoint<G,m>             to() const;
 
     template <typename G>
-    const APoint<G,n>&          toType() const;
+    APoint<G,n>             toType() const;
 
 
 
@@ -706,10 +706,10 @@ namespace GMlib {
     Arrow<T,n>           operator -  () const;
 
     template <typename G, int m>
-    operator Arrow<G, m>& () const;
+    operator Arrow<G, m> () const;
 
-    Arrow<float,n>&      toFloat() const;
-    Arrow<double,n>&     toDouble() const;
+    Arrow<float,n>       toFloat() const;
+    Arrow<double,n>      toDouble() const;
 
 
   protected:
@@ -841,13 +841,13 @@ namespace GMlib {
 
     // Casting
     template <typename G, int m>
-    operator const ScalarPoint<G, m>& () const;
+    operator ScalarPoint<G, m> () const;
 
     template <typename G,int m>
-    const ScalarPoint<G,m>&     to() const;
+    ScalarPoint<G,m>            to() const;
 
     template <typename G>
-    const ScalarPoint<G,n>&     toType() const;
+    ScalarPoint<G,n>            toType() const;
 
 
 
@@ -958,7 +958,7 @@ namespace GMlib {
 
     // Casting
     template <typename G, int m>
-    operator const Sphere<G, m>& () const;
+    operator Sphere<G, m> () const;
 
   private:
     bool _valid;

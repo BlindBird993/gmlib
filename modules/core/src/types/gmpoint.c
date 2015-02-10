@@ -282,8 +282,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const APoint<T, n>& APoint<T, n>::operator - () const {
-    static APoint<T, n> r;
+  APoint<T, n> APoint<T, n>::operator - () const {
+    APoint<T, n> r;
     GM_Static_<T, n>::eqm( r.getPtr(), getPtr());
     return r;
   }
@@ -291,8 +291,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const APoint<T, n>& APoint<T, n>::operator + ( const APoint<T, n> &p ) const {
-    static APoint<T, n> r;
+  APoint<T, n> APoint<T, n>::operator + ( const APoint<T, n> &p ) const {
+    APoint<T, n> r;
     GM_Static_<T, n>::eq_p( r.getPtr(), getPtr(), p.getPtr());
     return r;
   }
@@ -300,8 +300,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const APoint<T, n>& APoint<T, n>::operator - ( const APoint<T, n> &p ) const {
-    static APoint<T, n> r;
+  APoint<T, n> APoint<T, n>::operator - ( const APoint<T, n> &p ) const {
+    APoint<T, n> r;
     GM_Static_<T, n>::eq_m( r.getPtr(), getPtr(), p.getPtr() );
     return r;
   }
@@ -336,9 +336,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const APoint<T, n>& APoint<T, n>::operator * ( double d ) const {
-    static APoint<T, n> r;
-//    APoint<T, n> r;
+  APoint<T, n> APoint<T, n>::operator * ( double d ) const {
+    APoint<T, n> r;
     GM_Static_<T, n>::sc_r( r.getPtr(), getPtr(), d);
     return r;
   }
@@ -352,8 +351,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const APoint<T, n>& APoint<T, n>::operator % ( const APoint<T, n> &p ) const {
-    static APoint<T, n> r;
+  APoint<T, n> APoint<T, n>::operator % ( const APoint<T, n> &p ) const {
+    APoint<T, n> r;
     GM_Static_<T, n>::eq_x( r.getPtr(), getPtr(), p.getPtr());
     return r;
   }
@@ -368,8 +367,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  const APoint<T, n>& APoint<T, n>::operator /  ( double d ) const {
-    static APoint<T,n> r;
+  APoint<T, n> APoint<T, n>::operator /  ( double d ) const {
+    APoint<T,n> r;
     d = 1/d;
     r = (*this) * d;
     return r;
@@ -429,8 +428,8 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  APoint<T, n>::operator const APoint<G,m>& () const {
-    static APoint<G,m> v;
+  APoint<T, n>::operator APoint<G,m> () const {
+    APoint<G,m> v;
     GM_Static1_<G,T,(n<m?n:m)>::eq( v.getPtr(), getPtr());
     return v;
   }
@@ -449,8 +448,8 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  const APoint<G,m>& APoint<T, n>::to() const {
-    static APoint<G,m> v;
+  APoint<G,m> APoint<T, n>::to() const {
+    APoint<G,m> v;
     v = *this;
     return v;
   }
@@ -469,7 +468,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G>
   inline
-  const APoint<G,n>& APoint<T, n>::toType() const {
+  APoint<G,n> APoint<T, n>::toType() const {
     return to<G,n>();
   }
 
@@ -1489,8 +1488,8 @@ namespace GMlib {
   template <typename T, int n>
   template <class G, int m>
   inline
-  Arrow<T, n>::operator Arrow<G, m>& () const {
-    static Arrow<G,m> v;
+  Arrow<T, n>::operator Arrow<G, m> () const {
+    Arrow<G,m> v;
     GM_Static1_<G,T,(n<m?n:m)>::eq( v.getPtr(), APoint<T, n>::getPtr());
     GM_Static1_<G,T,(n<m?n:m)>::eq( v.getDir().getPtr(), _dir.getPtr());
     return v;
@@ -1498,8 +1497,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Arrow<float, n>& Arrow<T, n>::toFloat() const {
-    static Arrow<float,n> v;
+  Arrow<float, n> Arrow<T, n>::toFloat() const {
+    Arrow<float,n> v;
     GM_Static1_<float,T,n>::eq( v.getPtr(), APoint<T, n>::getPtr() );
     GM_Static1_<float,T,n>::eq( v.getDir().getPtr(), APoint<T, n>::getPtr() );
     return v;
@@ -1507,9 +1506,8 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Arrow<double, n>& Arrow<T, n>::toDouble() const
-  {
-    static Arrow<double,n> v;
+  Arrow<double, n> Arrow<T, n>::toDouble() const {
+    Arrow<double,n> v;
     GM_Static1_<double,T,n>::eq( v.getPtr(), APoint<T, n>::getPtr());
     GM_Static1_<double,T,n>::eq( v.getDir().getPtr(), APoint<T, n>::getPtr());
     return v;
@@ -1682,8 +1680,8 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  ScalarPoint<T,n>::operator const ScalarPoint<G,m>& () const {
-    static ScalarPoint<G,m> v;
+  ScalarPoint<T,n>::operator ScalarPoint<G,m> () const {
+    ScalarPoint<G,m> v;
     v.resetPos(this->_pos);
     v.resetValue(this->_value);
     return v;
@@ -1692,8 +1690,8 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  const ScalarPoint<G,m>& ScalarPoint<T, n>::to() const {
-    static ScalarPoint<G,m> v;
+  ScalarPoint<G,m> ScalarPoint<T, n>::to() const {
+    ScalarPoint<G,m> v;
     v = *this;
     return v;
   }
@@ -1701,7 +1699,7 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G>
   inline
-  const ScalarPoint<G,n>& ScalarPoint<T, n>::toType() const {
+  ScalarPoint<G,n> ScalarPoint<T, n>::toType() const {
     return to<G,n>();
   }
 
@@ -1860,10 +1858,8 @@ namespace GMlib {
   template <typename T, int n>
   template <typename G, int m>
   inline
-  Sphere<T,n>::operator const Sphere<G,m>& () const {
-    static Sphere<G,m> v = ScalarPoint<T,n>::operator ScalarPoint<G,m>& ();
-    // _valid is set by Sphere
-    return v;
+  Sphere<T,n>::operator Sphere<G,m> () const {
+    return ScalarPoint<T,n>::operator ScalarPoint<G,m>& ();
   }
 
 
