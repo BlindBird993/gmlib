@@ -52,7 +52,7 @@ option( GM_STREAM "Enable output stream operators for core types." ON )
 # Developer/debug options
 option( GM_DEVELOPER_MODE "Set gmlib in developer mode" OFF )
 #option( GM_DEBUG "Enable internal debugging, assertions, etc." FALSE )
-option( GM_DEBUG_OPGNGL "Enable opengl debug. OpenGL function calls are safe called." ON )
+option( GM_DEBUG_OPENGL "Enable opengl debug. OpenGL function calls are safe called." ON )
 option( GM_TESTING "Create unit tests." OFF )
 
 # API documentation options
@@ -82,7 +82,8 @@ if(GM_DEVELOPER_MODE)
   endif(GM_TESTING)
 
   if(GM_DEBUG_OPENGL)
-    addDefinitions( GM_GL_DEBUG )
+    GM_ADD_DEFINITION( GM_GL_DEBUG )
+    add_definitions( -DGM_GL_DEBUG )
   endif(GM_DEBUG_OPENGL)
 
 endif(GM_DEVELOPER_MODE)

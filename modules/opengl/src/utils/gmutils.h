@@ -30,10 +30,10 @@
 #ifndef __GM_OPENL_UTILS_GMUTILS_H__
 #define __GM_OPENL_UTILS_GMUTILS_H__
 
-#include <iostream>
 
 // stl
 #include <iostream>
+#include <cassert>
 
 namespace GMlib {
 
@@ -53,19 +53,20 @@ namespace GL {
       {
           std::cout << "OpenGL error " << err << ", at " << fname << ":" << line << " - for "
                     << stmt << "\n" << "\t Str: " << gluErrorString(err) << std::endl;
-          abort();
+
+          assert(err == GL_NO_ERROR);
       }
   }
 
 
-//  #ifdef GM_GL_DEBUG
+  #ifdef GM_GL_DEBUG
       #define GL_CHECK(stmt) do { \
               stmt; \
               GMlib::GL::CheckOpenGLError(#stmt, __FILE__, __LINE__); \
           } while (0)
-//  #else
-//      #define GL_CHECK(stmt) stmt
-//  #endif
+  #else
+      #define GL_CHECK(stmt) stmt
+  #endif
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 

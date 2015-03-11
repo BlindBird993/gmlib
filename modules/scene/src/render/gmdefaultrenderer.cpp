@@ -452,6 +452,11 @@ namespace GMlib {
     _select_color = color;
   }
 
+  const Vector<int,2>& DefaultRenderer::getViewportSize() const {
+
+    return _size;
+  }
+
 
 
   void DefaultRenderer::render(const SceneObject* obj) const {

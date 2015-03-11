@@ -67,6 +67,9 @@ namespace GMlib {
     const Color&            getSelectColor() const;
     void                    setSelectColor( const Color& color );
 
+
+    const Vector<int,2>&    getViewportSize() const;
+
     /* virtual from Renderer */
     void                    prepare() {}
     void                    render();
