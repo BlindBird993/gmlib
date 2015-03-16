@@ -71,7 +71,7 @@ namespace GMlib {
   inline
   T PLine<T>::getEndP() {
 
-    return T( M_2PI );
+    return T(1);
   }
 
 
