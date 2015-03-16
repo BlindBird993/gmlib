@@ -41,7 +41,7 @@ namespace GMlib {
     : _no_elements(0) {
 
     _prog.acquire("phong");
-    _prog.acquire("color");
+    _geometry_prog.acquire("color");
 
     _vbo.create();
     _ibo.create();
@@ -108,11 +108,11 @@ namespace GMlib {
   inline
   void PTriangleDefaultVisualizer<T,n>::renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const {
 
-    _color_prog.bind(); {
+    _geometry_prog.bind(); {
 
-      _color_prog.setUniform( "u_color", color );
-      _color_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
-      GL::AttributeLocation vertice_loc = _color_prog.getAttributeLocation( "in_vertex" );
+      _geometry_prog.setUniform( "u_color", color );
+      _geometry_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
+      GL::AttributeLocation vertice_loc = _geometry_prog.getAttributeLocation( "in_vertex" );
 
       _vbo.bind();
       _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
@@ -122,7 +122,7 @@ namespace GMlib {
       _vbo.disable( vertice_loc );
       _vbo.unbind();
 
-    } _color_prog.unbind();
+    } _geometry_prog.unbind();
   }
 
   template <typename T, int n>

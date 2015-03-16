@@ -55,7 +55,7 @@ namespace GMlib {
 
   private:
     GL::Program               _prog;
-    GL::Program               _color_prog;
+    GL::Program               _geometry_prog;
 
     GL::VertexBufferObject    _vbo;
     GL::IndexBufferObject     _ibo;
