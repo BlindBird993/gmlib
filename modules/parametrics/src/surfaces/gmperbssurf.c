@@ -460,6 +460,8 @@ namespace GMlib {
     for( int i = 0; i < _c.getDim1(); i++ )
       for( int j = 0; j < _c.getDim2(); j++ )
         SceneObject::remove( _c[i][j] );
+
+    delete _evaluator;
   }
 
   template <typename T>
@@ -963,7 +965,8 @@ namespace GMlib {
     _no_der_u                       = 1;
     _no_der_v                       = 1;
 
-    _evaluator = ERBSEvaluator<long double>::getInstance();
+//    _evaluator = ERBSEvaluator<long double>::getInstance();
+    _evaluator = new ERBSEvaluator<long double>;
     _resamp_mode = GM_RESAMPLE_PREEVAL;
     _pre_eval = true;
   }
