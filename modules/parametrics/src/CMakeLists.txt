@@ -52,6 +52,7 @@ list( APPEND HEADERS
   curves/gmpchrysanthemumcurve.h
   curves/gmpcircle.h
   curves/gmperbscurve.h
+  curves/gmpline.h
   curves/gmprosecurve.h
   curves/gmpsubcurve.h
   curves/gmpsurfcurve.h
@@ -69,6 +70,7 @@ list( APPEND HEADER_SOURCES
   curves/gmpchrysanthemumcurve.c
   curves/gmpcircle.c
   curves/gmperbscurve.c
+  curves/gmpline.c
   curves/gmprosecurve.c
   curves/gmpsubcurve.c
   curves/gmpsurfcurve.c
