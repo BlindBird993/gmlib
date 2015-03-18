@@ -417,13 +417,6 @@ namespace GMlib{
     unsigned int                        _name;                  //!< Unic name for this object, used for selecting
     Sphere<float,3>                     _sphere;                //!< Surrounding sphere for this object
 
-
-
-
-
-
-  private:
-
     virtual void                        basisChange( const Vector<float,3>& dir,
                                                      const Vector<float,3>& side,
                                                      const Vector<float,3>& up,

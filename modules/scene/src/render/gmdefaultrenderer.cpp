@@ -461,11 +461,11 @@ namespace GMlib {
 
   void DefaultRenderer::render(const SceneObject* obj) const {
 
-    if( obj != getCamera() ) {
+    if( obj != getCamera() && obj->isVisible() ) {
 
       if(obj->isCollapsed()) {
 
-//        VisualizerStdRep::getInstance()->render(obj,*this);
+        VisualizerStdRep::getInstance()->render(obj,this);
       }
       else {
 
@@ -484,7 +484,7 @@ namespace GMlib {
 
     const Color sel_true_color = GMcolor::White;
 
-    if( obj != getCamera() && obj->isSelected()  ) {
+    if( obj != getCamera() && obj->isSelected() && obj->isVisible()  ) {
 
       if(obj->isCollapsed()) {
 
@@ -590,10 +590,6 @@ namespace GMlib {
 
     _fbo_select.clearColorBuffer( GMcolor::Black );
     _fbo_select_depth.clear( GL_DEPTH_BUFFER_BIT );
-
-
-//      cam->updateLightUBO( window );
-
 
     // Object rendering
     _fbo.bind(); {
