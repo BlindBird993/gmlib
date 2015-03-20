@@ -37,35 +37,37 @@
 #include <core/types/gmpoint.h>
 #include <core/containers/gmdvector.h>
 #include <core/utils/gmcolor.h>
+#include <opengl/gmprogram.h>
 
 
 namespace GMlib {
 
 
-  template <typename T>
-  class PCurvePointsVisualizer : public PCurveVisualizer<T> {
+  template <typename T, int n>
+  class PCurvePointsVisualizer : public PCurveVisualizer<T,n> {
+    GM_VISUALIZER(PCurvePointsVisualizer)
   public:
     PCurvePointsVisualizer();
     virtual ~PCurvePointsVisualizer();
 
-    void              display();
+    void              render(const SceneObject* obj, const DefaultRenderer* render) const;
     const Color&      getColor() const;
     float             getSize() const;
-    void              replot(
-      DVector< DVector< Vector<T, 3> > >& p,
-      int m, int d, bool closed
-    );
     void              setColor( const Color& color );
     void              setSize( float size );
 
+
+    void              replot( const DVector< DVector< Vector<T, n> > >& p,
+                              int m, int d, bool closed );
+
   protected:
-    GL::GLProgram         _display;
+    GL::Program               _prog;
 
-    GLuint            _vbo_v;
-    int               _no_elements;
+    GL::VertexBufferObject    _vbo;
+    int                       _no_vertices;
 
-    float             _size;
-    Color             _color;
+    float                     _size;
+    Color                     _color;
   };
 
 } // END namespace GMlib

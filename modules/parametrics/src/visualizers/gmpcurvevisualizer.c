@@ -43,7 +43,8 @@ namespace GMlib {
   template <typename T, int n>
   void PCurveVisualizer<T,n>::fillStandardVBO( GL::VertexBufferObject &vbo,
                                                const DVector< DVector< Vector<T, n> > >& p,
-                                               unsigned int& no_vertices ) {
+                                               int& no_vertices,
+                                               int d) {
 
     no_vertices = p.getDim();
     GLsizeiptr buffer_size = no_vertices * sizeof(GL::GLVertex);
@@ -54,35 +55,14 @@ namespace GMlib {
     if( ptr ) {
       for( int i = 0; i < p.getDim(); i++ ) {
 
-        ptr->x = p(i)(0)(0);
-        ptr->y = p(i)(0)(1);
-        ptr->z = p(i)(0)(2);
+        ptr->x = p(i)(d)(0);
+        ptr->y = p(i)(d)(1);
+        ptr->z = p(i)(d)(2);
         ptr++;
       }
     }
     vbo.unmapBuffer();
   }
-
-//  template <typename T, int n>
-//  inline
-//  void PCurveVisualizer<T,n>::populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d ) {
-
-//    no_dp = p.getDim();
-
-//    glBindBuffer( GL_ARRAY_BUFFER, _vbo_id );
-//    glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
-
-//    float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
-//    if( ptr ) {
-
-//      for( int i = 0; i < p.getDim(); i++ )
-//        for( int j = 0; j < 3; j++ )
-//          *(ptr++) = p[i][d][j];
-//    }
-
-//    glUnmapBuffer( GL_ARRAY_BUFFER );
-//    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-//  }
 
   template <typename T, int n>
   inline

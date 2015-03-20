@@ -27,82 +27,77 @@
  *  Implementation of the PCurvePointsVisualizer template class.
  */
 
+#include "gmpcurvepointsvisualizer.h"
+
 
 namespace GMlib {
 
-  template <typename T>
-  PCurvePointsVisualizer<T>::PCurvePointsVisualizer() {
+  template <typename T, int n>
+  PCurvePointsVisualizer<T,n>::PCurvePointsVisualizer()
+    : _no_vertices{0}, _size{T(1)}, _color{GMcolor::BlueViolet} {
 
-    _size = 1.0;
-    _color = GMcolor::BlueViolet;
-
-    _no_elements = 0;
-    glGenBuffers( 1, &_vbo_v );
+    _prog.acquire("color");
+    _vbo.create();
   }
 
-  template <typename T>
-  PCurvePointsVisualizer<T>::~PCurvePointsVisualizer() {
+  template <typename T, int n>
+  PCurvePointsVisualizer<T,n>::~PCurvePointsVisualizer() {}
 
-    glDeleteBuffers( 1, &_vbo_v );
-  }
-
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurvePointsVisualizer<T>::display() {
+  void PCurvePointsVisualizer<T,n>::render(const SceneObject* obj, const DefaultRenderer* renderer) const {
 
-    glPointSize( _size );
+    const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(renderer->getCamera());
 
-    const GL::GLProgram &prog = this->getRenderProgram();
-    prog.setUniform( "u_color", _color );
-    prog.setUniform( "u_selected", this->_obj->isSelected() );
+    GL_CHECK(::glPointSize( _size ));
 
+    _prog.bind(); {
 
-    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
+      // Model view and projection matrices
+      _prog.setUniform( "u_mvpmat", mvpmat );
+      _prog.setUniform( "u_color", _color );
 
-    glBindBuffer( GL_ARRAY_BUFFER, _vbo_v );
-    glVertexAttribPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-    glEnableVertexAttribArray( vert_loc );
+      // Vertex attribute location
+      GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
-    // Draw
-    glDrawArrays( GL_POINTS, 0, _no_elements );
+      // Bind and draw
+      _vbo.bind();
+      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertex), static_cast<const GLvoid*>(0x0) );
+      GL_CHECK(::glDrawArrays( GL_POINTS, 0, _no_vertices ));
+      _vbo.disable( vert_loc );
+      _vbo.unbind();
 
-    glDisableVertexAttribArray( vert_loc );
-
-    glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
-
-
+    } _prog.unbind();
   }
 
-  template <typename T>
-  const Color& PCurvePointsVisualizer<T>::getColor() const {
+  template <typename T, int n>
+  const Color& PCurvePointsVisualizer<T,n>::getColor() const {
 
     return _color;
   }
 
-  template <typename T>
-  float PCurvePointsVisualizer<T>::getSize() const {
+  template <typename T, int n>
+  float PCurvePointsVisualizer<T,n>::getSize() const {
 
     return _size;
   }
 
-  template <typename T>
+  template <typename T, int n>
   inline
-  void PCurvePointsVisualizer<T>::replot(
-    DVector< DVector< Vector<T, 3> > >& p,
-    int /*m*/, int /*d*/, bool /*closed*/
-  ) {
+  void PCurvePointsVisualizer<T,n>::replot( const DVector< DVector< Vector<T, n> > >& p,
+                                             int /*m*/, int /*d*/, bool /*closed*/ ) {
 
-    PCurveVisualizer<T>::populateLineStripVBO( _vbo_v, _no_elements, p );
+    this->fillStandardVBO( _vbo, p, _no_vertices );
   }
 
-  template <typename T>
-  void PCurvePointsVisualizer<T>::setColor( const Color& color ) {
+  template <typename T, int n>
+  void PCurvePointsVisualizer<T,n>::setColor( const Color& color ) {
 
     _color = color;
   }
 
-  template <typename T>
-  void PCurvePointsVisualizer<T>::setSize( float size ) {
+  template <typename T, int n>
+  void PCurvePointsVisualizer<T,n>::setSize( float size ) {
 
     _size = size;
   }

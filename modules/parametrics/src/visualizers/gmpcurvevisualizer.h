@@ -56,8 +56,8 @@ namespace GMlib {
 
     static void   fillStandardVBO( GL::VertexBufferObject& vbo,
                                    const DVector< DVector< Vector<T, n> > >& p,
-                                   unsigned int& no_vertices );
-//    static void   populateLineStripVBO( GLuint _vbo_id, int& no_dp, DVector< DVector< Vector<T, 3> > >& p, int d = 0 );
+                                   int& no_vertices,
+                                   int d = 0 );
 
   }; // END class PCurveVisualizer
 

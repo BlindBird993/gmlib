@@ -89,7 +89,7 @@ namespace GMlib {
   void PCurveDefaultVisualizer<T,n>::replot( const DVector< DVector< Vector<T, n> > >& p,
                                              int /*m*/, int /*d*/, bool /*closed*/ ) {
 
-    PCurveVisualizer<T,n>::fillStandardVBO( _vbo, p, _no_vertices );
+    this->fillStandardVBO( _vbo, p, _no_vertices );
   }
 
   template <typename T, int n>

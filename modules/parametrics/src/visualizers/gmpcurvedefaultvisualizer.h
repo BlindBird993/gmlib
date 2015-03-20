@@ -58,7 +58,7 @@ namespace GMlib {
   protected:
     GL::Program               _prog;
     GL::VertexBufferObject    _vbo;
-    unsigned int              _no_vertices;
+    int                       _no_vertices;
     GLfloat                   _line_width;
 
   }; // END class PCurveDefaultVisualizer

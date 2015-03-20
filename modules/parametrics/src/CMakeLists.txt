@@ -229,7 +229,7 @@ list( APPEND HEADERS
 #  visualizers/gmpcurveContoursvisualizer.h
   visualizers/gmpcurvedefaultvisualizer.h
   visualizers/gmpcurvederivativesvisualizer.h
-#  visualizers/gmpcurvepointsvisualizer.h
+  visualizers/gmpcurvepointsvisualizer.h
   visualizers/gmpcurvevisualizer.h
 #  visualizers/gmpsurfcontoursvisualizer.h
   visualizers/gmpsurfdefaultvisualizer.h
@@ -249,7 +249,7 @@ list( APPEND HEADER_SOURCES
 #  visualizers/gmpcurvecontoursvisualizer.c
   visualizers/gmpcurvedefaultvisualizer.c
   visualizers/gmpcurvederivativesvisualizer.c
-#  visualizers/gmpcurvepointsvisualizer.c
+  visualizers/gmpcurvepointsvisualizer.c
   visualizers/gmpcurvevisualizer.c
 #  visualizers/gmpsurfcontoursvisualizer.c
   visualizers/gmpsurfdefaultvisualizer.c
