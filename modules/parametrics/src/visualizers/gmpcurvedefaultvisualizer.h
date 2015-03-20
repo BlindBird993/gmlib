@@ -46,6 +46,9 @@ namespace GMlib {
     PCurveDefaultVisualizer();
     PCurveDefaultVisualizer( const PCurveDefaultVisualizer<T,n>& copy );
 
+    GLfloat       getLineWidth() const;
+    void          setLineWidth( GLfloat width );
+
     void          render(const SceneObject* obj, const DefaultRenderer* render) const;
     void          renderGeometry( const SceneObject* obj, const Renderer* render, const Color& color ) const;
 

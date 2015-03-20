@@ -51,6 +51,13 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  GLfloat PCurveDefaultVisualizer<T,n>::getLineWidth() const {
+
+    return _line_width;
+  }
+
+  template <typename T, int n>
+  inline
   void PCurveDefaultVisualizer<T,n>::render(const SceneObject* obj, const DefaultRenderer* renderer) const {
 
     const HqMatrix<float,3> &mvpmat = obj->getModelViewProjectionMatrix(renderer->getCamera());
@@ -83,6 +90,13 @@ namespace GMlib {
                                              int /*m*/, int /*d*/, bool /*closed*/ ) {
 
     PCurveVisualizer<T,n>::fillStandardVBO( _vbo, p, _no_vertices );
+  }
+
+  template <typename T, int n>
+  inline
+  void PCurveDefaultVisualizer<T,n>::setLineWidth(GLfloat width) {
+
+    _line_width = width;
   }
 
   template <typename T, int n>
