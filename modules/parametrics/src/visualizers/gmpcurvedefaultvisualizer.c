@@ -30,6 +30,9 @@
 
 #include "gmpcurvedefaultvisualizer.h"
 
+// gmlib
+#include <scene/render/gmdefaultrenderer.h>
+
 namespace GMlib {
 
   template <typename T, int n>

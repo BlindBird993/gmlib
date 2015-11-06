@@ -41,7 +41,6 @@
 #include <opengl/gmprogram.h>
 #include <opengl/shaders/gmvertexshader.h>
 #include <opengl/shaders/gmfragmentshader.h>
-#include <scene/render/gmdefaultrenderer.h>
 
 
 

@@ -440,7 +440,7 @@ void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool close
 
 
 template <typename T, int n>
-void GMlib::DD::compute( T& p, const Vector<int,n>& sizes, const Vector<double,n>& dt, const Vector<bool,n>& closed, const Vector<int,n>& d, const Vector<int,n>& ed = Vector<int,n>(0) ) {
+void GMlib::DD::compute( T& p, const Vector<int,n>& sizes, const Vector<double,n>& dt, const Vector<bool,n>& closed, const Vector<int,n>& d, const Vector<int,n>& ed ) {
 
   const Vector<int,n> k = sizes - Vector<int,n>(1);
   const Vector<double,n> dt2 = dt * 2;
