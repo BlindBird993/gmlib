@@ -37,6 +37,7 @@
 #include <scene/gmscene.h>
 #include <scene/camera/gmcamera.h>
 #include <scene/light/gmlight.h>
+#include <scene/render/gmdefaultrenderer.h>
 #include <scene/utils/gmmaterial.h>
 
 // stl
