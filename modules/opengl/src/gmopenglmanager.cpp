@@ -163,7 +163,7 @@ namespace GL {
     ///////////////
     // Phong shader
     std::string vs_str =
-        glslDefHeader150Source() +
+        glslDefHeaderVersionSource() +
 
         "uniform mat4 u_mvmat, u_mvpmat;\n"
         "\n"
@@ -192,7 +192,7 @@ namespace GL {
         ;
 
     std::string fs_str =
-        glslDefHeader150Source() +
+        glslDefHeaderVersionSource() +
         glslFnComputeLightingSource() +
 
         "uniform mat4      u_mvmat;\n"
@@ -261,8 +261,8 @@ namespace GL {
   void OpenGLManager::initColorProg() {
 
     std::string vs_src =
-          "#version 150 core\n"
-          "\n"
+          glslDefHeaderVersionSource() +
+
           "uniform mat4 u_mvpmat;\n"
           "\n"
           "in vec4 in_vertex;\n"
@@ -277,8 +277,8 @@ namespace GL {
 
 
     std::string fs_src =
-          "#version 150 core\n"
-          "\n"
+          glslDefHeaderVersionSource() +
+
           "uniform vec4 u_color;\n"
           "\n"
           "out vec4 gl_FragColor;\n"
@@ -478,7 +478,7 @@ namespace GL {
   /// GLSL Helper functions
   ///
 
-  std::string OpenGLManager::glslDefHeader150Source() {
+  std::string OpenGLManager::glslDefHeader150CoreSource() {
 
     return
         "#version 150 core\n"
@@ -486,6 +486,51 @@ namespace GL {
         "layout(std140) uniform;\n"
         "\n"
         ;
+  }
+
+  std::string OpenGLManager::glslDefHeader330CoreSource() {
+
+    return
+        "#version 330 core \n"
+        "\n"
+        "layout(std140) uniform;\n"
+        "\n"
+        ;
+  }
+
+  std::string OpenGLManager::glslDefHeader330CompatibilitySource() {
+
+    return
+        "#version 330 compatibility \n"
+        "\n"
+        "layout(std140) uniform;\n"
+        "\n"
+        ;
+  }
+
+  std::string OpenGLManager::glslDefHeader400CoreSource() {
+
+    return
+        "#version 400 core \n"
+        "\n"
+        "layout(std140) uniform;\n"
+        "\n"
+        ;
+  }
+
+  std::string OpenGLManager::glslDefHeader440CoreSource() {
+
+    return
+        "#version 440 core \n"
+        "\n"
+        "layout(std140) uniform;\n"
+        "\n"
+        ;
+  }
+
+  std::string OpenGLManager::glslDefHeaderVersionSource() {
+
+    return glslDefHeader330CompatibilitySource();
   }
 
   std::string OpenGLManager::glslStructMaterialSource() {

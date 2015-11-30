@@ -51,7 +51,12 @@ namespace GL {
     static void                 cleanUp();
 
     // GLSL snipet functions
-    static std::string            glslDefHeader150Source();
+    static std::string            glslDefHeader150CoreSource();
+    static std::string            glslDefHeader330CoreSource();
+    static std::string            glslDefHeader330CompatibilitySource();
+    static std::string            glslDefHeader400CoreSource();
+    static std::string            glslDefHeader440CoreSource();
+    static std::string            glslDefHeaderVersionSource();
     static std::string            glslStructMaterialSource();
     static std::string            glslStructLightSource();
     static std::string            glslUniformLightsSource();

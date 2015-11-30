@@ -179,7 +179,7 @@ namespace GMlib {
 
 
     std::string vs_src;
-    vs_src.append( GL::OpenGLManager::glslDefHeader150Source() );
+    vs_src.append( GL::OpenGLManager::glslDefHeaderVersionSource() );
     vs_src.append(
       "uniform mat4 u_mvmat, u_mvpmat;\n"
       "\n"
@@ -203,7 +203,7 @@ namespace GMlib {
     );
 
     std::string fs_src;
-    fs_src.append( GL::OpenGLManager::glslDefHeader150Source() );
+    fs_src.append( GL::OpenGLManager::glslDefHeaderVersionSource() );
     fs_src.append( GL::OpenGLManager::glslFnComputeLightingSource() );
     fs_src.append(
           "uniform sampler2D u_nmap;\n"

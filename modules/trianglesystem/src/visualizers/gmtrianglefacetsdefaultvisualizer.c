@@ -131,7 +131,7 @@ namespace GMlib {
     if(_prog.acquire(prog_name)) return;
 
     std::string vs_str =
-      GMlib::GL::OpenGLManager::glslDefHeader150Source() +
+      GMlib::GL::OpenGLManager::glslDefHeaderVersionSource() +
 
       "uniform mat4 u_mvmat, u_mvpmat;\n"
       "\n"
@@ -160,7 +160,7 @@ namespace GMlib {
       ;
 
     std::string fs_str =
-      GMlib::GL::OpenGLManager::glslDefHeader150Source() +
+      GMlib::GL::OpenGLManager::glslDefHeaderVersionSource() +
       GMlib::GL::OpenGLManager::glslFnComputeLightingSource() +
 
       "uniform mat4      u_mvmat;\n"

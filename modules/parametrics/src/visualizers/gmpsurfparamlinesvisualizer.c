@@ -205,7 +205,7 @@ void PSurfParamLinesVisualizer<T,n>::initShaderProgram() {
 
 
   std::string vs_src =
-      GL::OpenGLManager::glslDefHeader150Source() +
+      GL::OpenGLManager::glslDefHeaderVersionSource() +
 
       "uniform mat4 u_mvmat, u_mvpmat;\n"
       "\n"
@@ -229,7 +229,7 @@ void PSurfParamLinesVisualizer<T,n>::initShaderProgram() {
       ;
 
   std::string fs_src =
-      GL::OpenGLManager::glslDefHeader150Source() +
+      GL::OpenGLManager::glslDefHeaderVersionSource() +
       GL::OpenGLManager::glslFnComputeLightingSource() +
 
       "uniform sampler2D u_nmap;\n"
