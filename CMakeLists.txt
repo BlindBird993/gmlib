@@ -50,7 +50,7 @@ add_subdirectory(cmake)
 option( GM_STREAM "Enable output stream operators for core types." ON )
 
 # Developer/debug options
-option( GM_DEVELOPER_MODE "Set gmlib in developer mode" OFF )
+option( GM_DEVELOPER_MODE "Set gmlib in developer mode" ON )
 #option( GM_DEBUG "Enable internal debugging, assertions, etc." FALSE )
 option( GM_DEBUG_OPENGL "Enable opengl debug. OpenGL function calls are safe called." ON )
 option( GM_TESTING "Create unit tests." OFF )
