@@ -58,7 +58,7 @@ namespace GMlib {
     PSurf( const PSurf<T,n>& copy );
     virtual ~PSurf();
 
-    //virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v );
+    virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v );
     DMatrix<Vector<T,n> >&        evaluate( const APoint<T,2>& p, const APoint<int,2>& d );
     DMatrix<Vector<T,n> >&        evaluate( T u, T v, int d1, int d2 );
     DVector<Vector<T,n> >         evaluateD( const APoint<T,2>& p, const APoint<int,2>& d );

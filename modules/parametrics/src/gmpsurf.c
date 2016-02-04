@@ -124,10 +124,36 @@ namespace GMlib {
   }
 
 
-//  template <typename T, int n>
-//  inline
-//  void PSurf<T,n>::estimateClpPar( const Point<T,n>& p, T& u, T& v ) {
-//  }
+  template <typename T, int n>
+  inline
+  void PSurf<T,n>::estimateClpPar( const Point<T,n>& p, T& u, T& v ) {
+
+    T su = getParStartU();
+    T sv = getParStartV();
+    T du = getParDeltaU()/19;
+    T dv = getParDeltaV()/19;
+
+    Vector<T,n> q = getPosition(su, sv);
+    T min = (p-q).getLength();
+    u = su; v = sv;
+
+    for(int i=0; i<20; i++) {
+      for(int j=0; j<20; j++) {
+        if(!(i==0 && j==0)) {
+
+          q = getPosition(su+i*du, sv+j*dv);
+          T mn = (p-q).getLength();
+          if (mn < min) {
+
+            min = mn;
+            u = su + i*du;
+            v = sv + j*dv;
+          }
+        }
+      }
+    }
+  }
+
 
   template <typename T, int n>
   void PSurf<T,n>::enableDefaultVisualizer( bool enable ) {
