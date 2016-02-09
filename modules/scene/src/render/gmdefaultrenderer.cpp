@@ -723,7 +723,7 @@ namespace GMlib {
       pl.spc.p[2] = light->getSpecular().getBlueC();
       pl.spc.p[3] = light->getSpecular().getAlphaC();
 
-      Point<float,3> pos = cammat * light->getPos();
+      Point<float,3> pos = cammat * light->getGlobalPos();
       pl.pos.p[0] = pos(0);
       pl.pos.p[1] = pos(1);
       pl.pos.p[2] = pos(2);
@@ -758,14 +758,14 @@ namespace GMlib {
       sl.spc.p[2] = light->getSpecular().getBlueC();
       sl.spc.p[3] = light->getSpecular().getAlphaC();
 
-      Point<float,3> pos = cammat * light->getPos();
+      Point<float,3> pos = cammat * light->getGlobalPos();
       sl.pos.p[0] = pos(0);
       sl.pos.p[1] = pos(1);
       sl.pos.p[2] = pos(2);
       sl.pos.p[3] = 1.0f;
 //      std::cout << "Point light pos: " << pos << std::endl;
 
-      Vector<float,3> dir = cammat * light->getDir();
+      Vector<float,3> dir = cammat * light->getGlobalDir();
       sl.dir.p[0] = dir(0);
       sl.dir.p[1] = dir(1);
       sl.dir.p[2] = dir(2);
