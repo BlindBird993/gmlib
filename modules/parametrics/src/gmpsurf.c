@@ -571,7 +571,7 @@ namespace GMlib {
       u   += du;
       v   += dv;
 
-      if(std::fabs(du) < 1e-6 && std::fabs(dv) < 1e-6)
+      if(std::abs(du) < 1e-6 && std::abs(dv) < 1e-6)
         return true;
     }
 

@@ -30,6 +30,7 @@
 
 
 #include <cstring>
+#include <cmath>
 
 namespace GMlib {
 
@@ -571,11 +572,11 @@ namespace GMlib {
     double r;
 
     for (int i=0,j=1; i<a.size(); i++,j++) {
-      if (j == a.size())	j = 0;
+      if (j == a.size()) j = 0;
       UnitVector<T,2> b = a(j) - a(i);
       r = b^((*this) - a(i));
-      if (r < - POS_TOLERANCE)		return 0;
-      if (std::fabs(r) < POS_TOLERANCE)	v += -i-1;
+      if (r < - POS_TOLERANCE) return 0;
+      if (std::abs(r) < POS_TOLERANCE) v += -i-1;
     }
 
     if (v.size() == 0)	return 1;
