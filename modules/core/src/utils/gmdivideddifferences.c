@@ -334,6 +334,25 @@ namespace GMlib {
   }
 }
 
+template <typename T>
+inline
+double GMlib::DD::relationCK(const T& p1, const T& p2, const T& p3) {
+  T v0 = p3-p1;
+  T v1 = p2-p1;
+  T v2 = p3-p2;
+
+  double a1 = v1*v1;
+  double a2 = v2*v2;
+  double a3 = v1*v2;
+  double a4 = a3/a1;
+  double a5 = a2-a3*a4;
+
+  if(a5 < 1e-5) return 1;
+
+  double a6 = v0*v2;
+  return acos(a3/sqrt(a1*a2))*sqrt((a1+a6*a6/a5)/(v0*v0));
+}
+
 template< typename T>
 inline
 void GMlib::DD::compute1D( T& p, double dt, bool closed, int d, int ed ) {
@@ -363,7 +382,6 @@ void GMlib::DD::compute1D( T& p, double dt, bool closed, int d, int ed ) {
   }
 }
 
-
 template <typename T>
 inline
 void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool closed_v,
@@ -388,21 +406,26 @@ void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool close
 
     // ordinary divided differences
     for(int k = 1; k < ku; ++k)       // data points u
-      for(int l = 0; l < kv+1; ++l)  // data points v
-        p[k][l][i][0] = (p[k+1][l][i1][0] - p[k-1][l][i1][0]) / du2;
+      for(int l = 0; l < kv+1; ++l) { // data points v
+        double scale = relationCK(p(k-1)(l)(0)(0), p(k)(l)(0)(0), p(k+1)(l)(0)(0));
+        p[k][l][i][0] = scale * (p[k+1][l][i1][0] - p[k-1][l][i1][0]) / ( du2);
+      }
 
     if(closed_u) { // biting its own tail
 
       for(int l = 0; l < kv+1; ++l) { // data points u
-        p[0 ][l][i][0] = (p[1][l][i1][0] - p[ku-1][l][i1][0]) / du2;
+        double scale = relationCK(p(ku-1)(l)(0)(0), p(0)(l)(0)(0), p(1)(l)(0)(0));
+        p[0 ][l][i][0] = scale * (p[1][l][i1][0] - p[ku-1][l][i1][0]) / du2;
         p[ku][l][i][0] = p[0][l][i][0];
       }
     }
     else { // second degree endpoints divided differences
 
       for(int l = 0; l < kv+1; ++l) { // data points u
-        p[0 ][l][i][0] = ( 4*p[1   ][l][i1][0] - 3*p[0 ][l][i1][0] - p[2   ][l][i1][0] ) / du2;
-        p[ku][l][i][0] = (-4*p[ku-1][l][i1][0] + 3*p[ku][l][i1][0] + p[ku-2][l][i1][0] ) / du2;
+        double scale = relationCK(p(0)(l)(0)(0), p(1)(l)(0)(0), p(2)(l)(0)(0));
+        p[0 ][l][i][0] = scale * ( 4*p[1   ][l][i1][0] - 3*p[0 ][l][i1][0] - p[2   ][l][i1][0] ) / du2;
+        scale = relationCK(p(ku-2)(l)(0)(0), p(ku-1)(l)(0)(0), p(ku)(l)(0)(0));
+        p[ku][l][i][0] = scale * (-4*p[ku-1][l][i1][0] + 3*p[ku][l][i1][0] + p[ku-2][l][i1][0] ) / du2;
       }
     }
   }
@@ -417,21 +440,26 @@ void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool close
 
       // ordinary divided differences
       for(int k = 0; k < ku+1; ++k)   // data points u
-        for(int l = 1; l < kv; ++l)   // data points v
-          p[k][l][i][j] = (p[k][l+1][i][j1] - p[k][l-1][i][j1]) / dv2;
+        for(int l = 1; l < kv; ++l) {  // data points v
+          double scale = relationCK(p(k)(l-1)(0)(0), p(k)(l)(0)(0), p(k)(l+1)(0)(0) );
+          p[k][l][i][j] = scale * (p[k][l+1][i][j1] - p[k][l-1][i][j1]) / (  dv2 );
+        }
 
       if(closed_v) { // biting its own tail
 
         for(int k = 0; k < ku+1; ++k) { // data points v
-          p[k][0 ][i][j] = (p[k][1][i][j1] - p[k][kv-1][i][j1]) / dv2;
+          double scale = relationCK(p(k)(kv-1)(0)(0), p(k)(0)(0)(0), p(k)(1)(0)(0) );
+          p[k][0 ][i][j] = scale * (p[k][1][i][j1] - p[k][kv-1][i][j1]) / dv2;
           p[k][kv][i][j] = p[k][0][i][j];
         }
       }
       else { // second degree endpoints divided differences
 
         for(int k = 0; k < ku+1; ++k) { // data points v
-          p[k][0 ][i][j] = ( 4*p[k][1   ][i][j1] - 3*p[k][0 ][i][j1] - p[k][2   ][i][j1] ) / dv2;
-          p[k][kv][i][j] = (-4*p[k][kv-1][i][j1] + 3*p[k][kv][i][j1] + p[k][kv-2][i][j1] ) / dv2;
+          double scale = relationCK(p(k)(0)(0)(0), p(k)(1)(0)(0), p(k)(2)(0)(0) );
+          p[k][0 ][i][j] = scale * ( 4*p[k][1   ][i][j1] - 3*p[k][0 ][i][j1] - p[k][2   ][i][j1] ) / dv2;
+          scale = relationCK(p(k)(kv-2)(0)(0), p(k)(kv-1)(0)(0), p(k)(kv)(0)(0) );
+          p[k][kv][i][j] = scale * (-4*p[k][kv-1][i][j1] + 3*p[k][kv][i][j1] + p[k][kv-2][i][j1] ) / dv2;
         }
       }
     }

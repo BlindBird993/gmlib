@@ -60,6 +60,11 @@ namespace GMlib {
                   const Vector<bool,n>& closed,
                   const Vector<int,n>& d, const Vector<int,n>& ed = Vector<int,n>(0) );
 
+    /*!
+     * Computes the relation between arc length and chord length, given three points
+     */
+    template <typename T>
+    double relationCK(const T& p1, const T& p2, const T& p3);
 
   } // END namespace DD
 } // END namespace GMlib
