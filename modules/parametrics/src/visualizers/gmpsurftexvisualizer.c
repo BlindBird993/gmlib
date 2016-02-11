@@ -91,8 +91,7 @@ namespace GMlib {
       _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      assert(false);
-//      _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
 
       // Material
       const Material &m = obj->getMaterial();
@@ -206,8 +205,8 @@ namespace GMlib {
     fs_src.append( GL::OpenGLManager::glslDefHeaderVersionSource() );
     fs_src.append( GL::OpenGLManager::glslFnComputeLightingSource() );
     fs_src.append(
-          "uniform sampler2D u_nmap;\n"
           "uniform sampler2D u_tex;\n"
+          "uniform sampler2D u_nmap;\n"
           "uniform mat4      u_mvmat;\n"
           "\n"
           "uniform vec4      u_mat_amb;\n"
@@ -226,15 +225,17 @@ namespace GMlib {
           "  vec3 nmap_normal = texture( u_nmap, ex_tex.ts).xyz;\n"
           "  vec3 normal = normalize( nmat * nmap_normal );\n"
           "\n"
+          "  vec4 texture_color = vec4( texture( u_tex, ex_tex.st ).rgb, 1.0);"
+          "\n"
           "  Material mat;\n"
-          "  mat.ambient   = u_mat_amb;\n"
-          "  mat.diffuse   = u_mat_dif;\n"
+          "  mat.ambient   = u_mat_amb * texture_color;\n"
+          "  mat.diffuse   = u_mat_dif * texture_color;\n"
           "  mat.specular  = u_mat_spc;\n"
           "  mat.shininess = u_mat_shi;\n"
           "\n"
           "  vec4 light_color = vec4(0.0);\n"
           "\n"
-          "  gl_FragColor = texture( u_tex, ex_tex.st ) + computeLighting( mat, normal, ex_pos );\n"
+          "  gl_FragColor = computeLighting( mat, ex_pos, normal );\n"
           "\n"
           "}\n"
     );
