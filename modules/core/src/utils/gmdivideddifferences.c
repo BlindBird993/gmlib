@@ -294,7 +294,7 @@ namespace GMlib {
         static void compute( T& p, const Vector<int,n>& k, const Vector<double,n>& dt, const Vector<bool,n>& closed, const Vector<int,n>& d, const Vector<int,n>& ed ) {
 
           for( int i = 1+ed(ln-1); i <= ed(ln-1)+d(ln-1); ++i ) {
-            Private::Static_For_Data_<1,ln,n>::compute( p, p, p, k, dt, d, ed, i );
+            Static_For_Data_<1,ln,n>::compute( p, p, p, k, dt, d, ed, i );
 
             if( closed(ln-1) )
               Static_For_Data_Boundary_Closed_<1,ln,n>::compute( p, p, p, k, dt, d, ed, i );
@@ -318,7 +318,7 @@ namespace GMlib {
 
 
           for( int i = 1+ed(n-1); i <= ed(n-1)+d(n-1); ++i ) {
-            Private::Static_For_Data_<1,n,n>::compute( p, p, p, k, dt, d, ed, i );
+            Static_For_Data_<1,n,n>::compute( p, p, p, k, dt, d, ed, i );
 
             if( closed(n-1) )
               Static_For_Data_Boundary_Closed_<1,n,n>::compute( p, p, p, k, dt, d, ed, i );
