@@ -294,7 +294,7 @@ namespace GMlib {
         static void compute( T& p, const Vector<int,n>& k, const Vector<double,n>& dt, const Vector<bool,n>& closed, const Vector<int,n>& d, const Vector<int,n>& ed ) {
 
           for( int i = 1+ed(ln-1); i <= ed(ln-1)+d(ln-1); ++i ) {
-            GMlib::DD::Private::Static_For_Data_<1,ln,n>::compute( p, p, p, k, dt, d, ed, i );
+            Private::Static_For_Data_<1,ln,n>::compute( p, p, p, k, dt, d, ed, i );
 
             if( closed(ln-1) )
               Static_For_Data_Boundary_Closed_<1,ln,n>::compute( p, p, p, k, dt, d, ed, i );
@@ -318,7 +318,7 @@ namespace GMlib {
 
 
           for( int i = 1+ed(n-1); i <= ed(n-1)+d(n-1); ++i ) {
-            GMlib::DD::Private::Static_For_Data_<1,n,n>::compute( p, p, p, k, dt, d, ed, i );
+            Private::Static_For_Data_<1,n,n>::compute( p, p, p, k, dt, d, ed, i );
 
             if( closed(n-1) )
               Static_For_Data_Boundary_Closed_<1,n,n>::compute( p, p, p, k, dt, d, ed, i );
@@ -331,147 +331,148 @@ namespace GMlib {
       };
     }
 
-  }
-}
 
-template <typename T>
-inline
-double GMlib::DD::relationCK(const T& p1, const T& p2, const T& p3) {
-  T v0 = p3-p1;
-  T v1 = p2-p1;
-  T v2 = p3-p2;
+    template <typename T>
+    inline
+    double relationCK(const T& p1, const T& p2, const T& p3) {
+      T v0 = p3-p1;
+      T v1 = p2-p1;
+      T v2 = p3-p2;
 
-  double a1 = v1*v1;
-  double a2 = v2*v2;
-  double a3 = v1*v2;
-  double a4 = a3/a1;
-  double a5 = a2-a3*a4;
+      double a1 = v1*v1;
+      double a2 = v2*v2;
+      double a3 = v1*v2;
+      double a4 = a3/a1;
+      double a5 = a2-a3*a4;
 
-  if(a5 < 1e-5) return 1;
+      if(a5 < 1e-5) return 1;
 
-  double a6 = v0*v2;
-  return acos(a3/sqrt(a1*a2))*sqrt((a1+a6*a6/a5)/(v0*v0));
-}
-
-template< typename T>
-inline
-void GMlib::DD::compute1D( T& p, double dt, bool closed, int d, int ed ) {
-
-  assert( ed >= 0 );
-
-  double dt2 = 2*dt;
-  int k = p.getDim()-1;
-
-  for(int i = 1+ed; i <= ed+d; i++) {
-
-    int i1 = i-1;
-
-    for(int l = 1; l < k; l++) // ordinary diviedd differences
-      p[l][i] = (p[l+1][i1] - p[l-1][i1])/dt2;
-
-    if(closed) // biting its own tail
-    {
-      p[0][i] = (p[1][i1] - p[k-1][i1])/dt2;
-      p[k][i] = p[0][i];
+      double a6 = v0*v2;
+      return acos(a3/sqrt(a1*a2))*sqrt((a1+a6*a6/a5)/(v0*v0));
     }
-    else // second degree endpoints diviedd differences
-    {
-      p[0][i] = ( 4*p[1][i1]   - 3*p[0][i1] - p[2][i1]  )/dt2;
-      p[k][i] = (-4*p[k-1][i1] + 3*p[k][i1] + p[k-2][i1])/dt2;
-    }
-  }
-}
 
-template <typename T>
-inline
-void GMlib::DD::compute2D( T& p, double du, double dv, bool closed_u, bool closed_v,
-                int d1, int d2, int ed1, int ed2 ) {
+    template< typename T>
+    inline
+    void compute1D( T& p, double dt, bool closed, int d, int ed ) {
 
-  assert( ed1 >= 0 );
-  assert( ed2 >= 0 );
+      assert( ed >= 0 );
 
+      double dt2 = 2*dt;
+      int k = p.getDim()-1;
 
-  double du2 = 2*du;
-  double dv2 = 2*dv;
-  int ku = p.getDim1()-1;
-  int kv = p.getDim2()-1;
+      for(int i = 1+ed; i <= ed+d; i++) {
 
+        int i1 = i-1;
 
-  // Compute U derivatives
+        for(int l = 1; l < k; l++) // ordinary diviedd differences
+          p[l][i] = (p[l+1][i1] - p[l-1][i1])/dt2;
 
-  for(int i = 1+ed1; i <= ed1+d1; ++i) { // edr in u
-    // j = 0
-
-    int i1 = i-1;
-
-    // ordinary divided differences
-    for(int k = 1; k < ku; ++k)       // data points u
-      for(int l = 0; l < kv+1; ++l) { // data points v
-        double scale = relationCK(p(k-1)(l)(0)(0), p(k)(l)(0)(0), p(k+1)(l)(0)(0));
-        p[k][l][i][0] = scale * (p[k+1][l][i1][0] - p[k-1][l][i1][0]) / ( du2);
-      }
-
-    if(closed_u) { // biting its own tail
-
-      for(int l = 0; l < kv+1; ++l) { // data points u
-        double scale = relationCK(p(ku-1)(l)(0)(0), p(0)(l)(0)(0), p(1)(l)(0)(0));
-        p[0 ][l][i][0] = scale * (p[1][l][i1][0] - p[ku-1][l][i1][0]) / du2;
-        p[ku][l][i][0] = p[0][l][i][0];
-      }
-    }
-    else { // second degree endpoints divided differences
-
-      for(int l = 0; l < kv+1; ++l) { // data points u
-        double scale = relationCK(p(0)(l)(0)(0), p(1)(l)(0)(0), p(2)(l)(0)(0));
-        p[0 ][l][i][0] = scale * ( 4*p[1   ][l][i1][0] - 3*p[0 ][l][i1][0] - p[2   ][l][i1][0] ) / du2;
-        scale = relationCK(p(ku-2)(l)(0)(0), p(ku-1)(l)(0)(0), p(ku)(l)(0)(0));
-        p[ku][l][i][0] = scale * (-4*p[ku-1][l][i1][0] + 3*p[ku][l][i1][0] + p[ku-2][l][i1][0] ) / du2;
-      }
-    }
-  }
-
-
-  // Compute ALL V derivatives
-
-  for( int i = 0; i <= ed1+d1; ++i ) {
-    for(int j = 1+ed2; j <= ed2+d2; ++j) { // edr in u
-
-      int j1 = j-1;
-
-      // ordinary divided differences
-      for(int k = 0; k < ku+1; ++k)   // data points u
-        for(int l = 1; l < kv; ++l) {  // data points v
-          double scale = relationCK(p(k)(l-1)(0)(0), p(k)(l)(0)(0), p(k)(l+1)(0)(0) );
-          p[k][l][i][j] = scale * (p[k][l+1][i][j1] - p[k][l-1][i][j1]) / (  dv2 );
+        if(closed) // biting its own tail
+        {
+          p[0][i] = (p[1][i1] - p[k-1][i1])/dt2;
+          p[k][i] = p[0][i];
         }
-
-      if(closed_v) { // biting its own tail
-
-        for(int k = 0; k < ku+1; ++k) { // data points v
-          double scale = relationCK(p(k)(kv-1)(0)(0), p(k)(0)(0)(0), p(k)(1)(0)(0) );
-          p[k][0 ][i][j] = scale * (p[k][1][i][j1] - p[k][kv-1][i][j1]) / dv2;
-          p[k][kv][i][j] = p[k][0][i][j];
-        }
-      }
-      else { // second degree endpoints divided differences
-
-        for(int k = 0; k < ku+1; ++k) { // data points v
-          double scale = relationCK(p(k)(0)(0)(0), p(k)(1)(0)(0), p(k)(2)(0)(0) );
-          p[k][0 ][i][j] = scale * ( 4*p[k][1   ][i][j1] - 3*p[k][0 ][i][j1] - p[k][2   ][i][j1] ) / dv2;
-          scale = relationCK(p(k)(kv-2)(0)(0), p(k)(kv-1)(0)(0), p(k)(kv)(0)(0) );
-          p[k][kv][i][j] = scale * (-4*p[k][kv-1][i][j1] + 3*p[k][kv][i][j1] + p[k][kv-2][i][j1] ) / dv2;
+        else // second degree endpoints diviedd differences
+        {
+          p[0][i] = ( 4*p[1][i1]   - 3*p[0][i1] - p[2][i1]  )/dt2;
+          p[k][i] = (-4*p[k-1][i1] + 3*p[k][i1] + p[k-2][i1])/dt2;
         }
       }
     }
-  }
-}
+
+    template <typename T>
+    inline
+    void compute2D( T& p, double du, double dv, bool closed_u, bool closed_v,
+                    int d1, int d2, int ed1, int ed2 ) {
+
+      assert( ed1 >= 0 );
+      assert( ed2 >= 0 );
 
 
-template <typename T, int n>
-void GMlib::DD::compute( T& p, const Vector<int,n>& sizes, const Vector<double,n>& dt, const Vector<bool,n>& closed, const Vector<int,n>& d, const Vector<int,n>& ed ) {
+      double du2 = 2*du;
+      double dv2 = 2*dv;
+      int ku = p.getDim1()-1;
+      int kv = p.getDim2()-1;
 
-  const Vector<int,n> k = sizes - Vector<int,n>(1);
-  const Vector<double,n> dt2 = dt * 2;
 
-  Private::Static_For_Dim_<1,n>::compute(p,k,dt2,closed,d,ed);
-}
+      // Compute U derivatives
+
+      for(int i = 1+ed1; i <= ed1+d1; ++i) { // edr in u
+        // j = 0
+
+        int i1 = i-1;
+
+        // ordinary divided differences
+        for(int k = 1; k < ku; ++k)       // data points u
+          for(int l = 0; l < kv+1; ++l) { // data points v
+            double scale = relationCK(p(k-1)(l)(0)(0), p(k)(l)(0)(0), p(k+1)(l)(0)(0));
+            p[k][l][i][0] = scale * (p[k+1][l][i1][0] - p[k-1][l][i1][0]) / ( du2);
+          }
+
+        if(closed_u) { // biting its own tail
+
+          for(int l = 0; l < kv+1; ++l) { // data points u
+            double scale = relationCK(p(ku-1)(l)(0)(0), p(0)(l)(0)(0), p(1)(l)(0)(0));
+            p[0 ][l][i][0] = scale * (p[1][l][i1][0] - p[ku-1][l][i1][0]) / du2;
+            p[ku][l][i][0] = p[0][l][i][0];
+          }
+        }
+        else { // second degree endpoints divided differences
+
+          for(int l = 0; l < kv+1; ++l) { // data points u
+            double scale = relationCK(p(0)(l)(0)(0), p(1)(l)(0)(0), p(2)(l)(0)(0));
+            p[0 ][l][i][0] = scale * ( 4*p[1   ][l][i1][0] - 3*p[0 ][l][i1][0] - p[2   ][l][i1][0] ) / du2;
+            scale = relationCK(p(ku-2)(l)(0)(0), p(ku-1)(l)(0)(0), p(ku)(l)(0)(0));
+            p[ku][l][i][0] = scale * (-4*p[ku-1][l][i1][0] + 3*p[ku][l][i1][0] + p[ku-2][l][i1][0] ) / du2;
+          }
+        }
+      }
+
+
+      // Compute ALL V derivatives
+
+      for( int i = 0; i <= ed1+d1; ++i ) {
+        for(int j = 1+ed2; j <= ed2+d2; ++j) { // edr in u
+
+          int j1 = j-1;
+
+          // ordinary divided differences
+          for(int k = 0; k < ku+1; ++k)   // data points u
+            for(int l = 1; l < kv; ++l) {  // data points v
+              double scale = relationCK(p(k)(l-1)(0)(0), p(k)(l)(0)(0), p(k)(l+1)(0)(0) );
+              p[k][l][i][j] = scale * (p[k][l+1][i][j1] - p[k][l-1][i][j1]) / (  dv2 );
+            }
+
+          if(closed_v) { // biting its own tail
+
+            for(int k = 0; k < ku+1; ++k) { // data points v
+              double scale = relationCK(p(k)(kv-1)(0)(0), p(k)(0)(0)(0), p(k)(1)(0)(0) );
+              p[k][0 ][i][j] = scale * (p[k][1][i][j1] - p[k][kv-1][i][j1]) / dv2;
+              p[k][kv][i][j] = p[k][0][i][j];
+            }
+          }
+          else { // second degree endpoints divided differences
+
+            for(int k = 0; k < ku+1; ++k) { // data points v
+              double scale = relationCK(p(k)(0)(0)(0), p(k)(1)(0)(0), p(k)(2)(0)(0) );
+              p[k][0 ][i][j] = scale * ( 4*p[k][1   ][i][j1] - 3*p[k][0 ][i][j1] - p[k][2   ][i][j1] ) / dv2;
+              scale = relationCK(p(k)(kv-2)(0)(0), p(k)(kv-1)(0)(0), p(k)(kv)(0)(0) );
+              p[k][kv][i][j] = scale * (-4*p[k][kv-1][i][j1] + 3*p[k][kv][i][j1] + p[k][kv-2][i][j1] ) / dv2;
+            }
+          }
+        }
+      }
+    }
+
+
+    template <typename T, int n>
+    void compute( T& p, const Vector<int,n>& sizes, const Vector<double,n>& dt, const Vector<bool,n>& closed, const Vector<int,n>& d, const Vector<int,n>& ed ) {
+
+      const Vector<int,n> k = sizes - Vector<int,n>(1);
+      const Vector<double,n> dt2 = dt * 2;
+
+      Private::Static_For_Dim_<1,n>::compute(p,k,dt2,closed,d,ed);
+    }
+
+  } // end namespace DD
+}   // end namespace GMlib
