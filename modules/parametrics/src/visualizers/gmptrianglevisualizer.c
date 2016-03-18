@@ -43,25 +43,31 @@ namespace GMlib {
   void  PTriangleVisualizer<T,n>::fillStandardVBO(GL::VertexBufferObject vbo, const DVector<DVector<Vector<T,n> > > &p) {
 
     int no_dp = p.getDim();
-
-    Vector<T,3> a, b;
-    UnitVector<T,3> norm;
-
     DVector<GL::GLVertexNormal> dp(no_dp);
+
+    const GMlib::Vector<float,3> e1 {0.3,0.3,0.4}; // Directional derivative
+    const GMlib::Vector<float,3> e2 {0.6,-0.3,0.7}; // Directional derivative (linear independent of e1
+
+    GMlib::Vector<float,3> v1, v2;
+    GMlib::UnitVector<float,3> N;
+
     for( int i = 0; i < p.getDim(); i++ ) {
 
-//      const UnitVector<float,3> n = Vector3D<float>( p(i)(0)(1) ) ^ p(i)(1)(0);
+      const Vector<float,3> p0 = p(i)(0);
+      const Vector<float,3> p1 = p(i)(1);
+      const Vector<float,3> p2 = p(i)(2);
+      const Vector<float,3> p3 = p(i)(3);
 
-      a = p(i)(3)-p(i)(1);
-      b = p(i)(2)-p(i)(1);
-      norm = a^b;
+      v1 = e1(0) * p1 + e1(1) * p2 + e1(2) * p3;
+      v2 = e2(0) * p2 + e2(1) * p2 + e2(2) * p3;
+      N = v1 ^ v2;
 
-      dp[i].x   = p(i)(0)(0);
-      dp[i].y   = p(i)(0)(1);
-      dp[i].z   = p(i)(0)(2);
-      dp[i].nx  = norm(0);
-      dp[i].ny  = norm(1);
-      dp[i].nz  = norm(2);
+      dp[i].x   = p0(0);
+      dp[i].y   = p0(1);
+      dp[i].z   = p0(2);
+      dp[i].nx  = N(0);
+      dp[i].ny  = N(1);
+      dp[i].nz  = N(2);
     }
 
     vbo.bind();

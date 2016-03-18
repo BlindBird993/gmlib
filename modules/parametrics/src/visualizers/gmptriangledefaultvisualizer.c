@@ -65,8 +65,7 @@ namespace GMlib {
       _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      assert(false);
-//      _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
 
       // Get Material Data
       const Material &m = obj->getMaterial();
