@@ -40,7 +40,7 @@ namespace GMlib {
   PTriangleDefaultVisualizer<T,n>::PTriangleDefaultVisualizer()
     : _no_elements(0) {
 
-    _prog.acquire("phong");
+    _prog.acquire("blinn_phong");
     _geometry_prog.acquire("color");
 
     _vbo.create();

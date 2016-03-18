@@ -230,7 +230,7 @@ void PSurfParamLinesVisualizer<T,n>::initShaderProgram() {
 
   std::string fs_src =
       GL::OpenGLManager::glslDefHeaderVersionSource() +
-      GL::OpenGLManager::glslFnComputeLightingSource() +
+      GL::OpenGLManager::glslFnComputeBlinnPhongLightingSource() +
 
       "uniform sampler2D u_nmap;\n"
       "uniform sampler2D u_ptex_u;\n"
@@ -278,7 +278,7 @@ void PSurfParamLinesVisualizer<T,n>::initShaderProgram() {
       "\n"
       "  vec4 light_color = vec4(0.0);\n"
       "\n"
-      "  gl_FragColor = computeLighting( mat, ex_pos, normal );\n"
+      "  gl_FragColor = computeBlinnPhongLighting( mat, ex_pos, normal );\n"
       "\n"
       "}\n"
       ;

@@ -161,7 +161,7 @@ namespace GMlib {
 
     std::string fs_str =
       GMlib::GL::OpenGLManager::glslDefHeaderVersionSource() +
-      GMlib::GL::OpenGLManager::glslFnComputeLightingSource() +
+      GMlib::GL::OpenGLManager::glslFnComputeBlinnPhongLightingSource() +
 
       "uniform mat4      u_mvmat;\n"
       "uniform mat3      u_nmat;\n"
@@ -186,7 +186,7 @@ namespace GMlib {
       "  mat.specular  = u_mat_spc;\n"
       "  mat.shininess = u_mat_shi;\n"
       "\n"
-      "  gl_FragColor = computeLighting( mat, ex_pos, normal );\n"
+      "  gl_FragColor = computeBlinnPhongLighting( mat, ex_pos, normal );\n"
       "}\n"
       ;
 

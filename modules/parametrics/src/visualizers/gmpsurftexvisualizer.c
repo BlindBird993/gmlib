@@ -203,7 +203,7 @@ namespace GMlib {
 
     std::string fs_src;
     fs_src.append( GL::OpenGLManager::glslDefHeaderVersionSource() );
-    fs_src.append( GL::OpenGLManager::glslFnComputeLightingSource() );
+    fs_src.append( GL::OpenGLManager::glslFnComputeBlinnPhongLightingSource() );
     fs_src.append(
           "uniform sampler2D u_tex;\n"
           "uniform sampler2D u_nmap;\n"
@@ -235,7 +235,7 @@ namespace GMlib {
           "\n"
           "  vec4 light_color = vec4(0.0);\n"
           "\n"
-          "  gl_FragColor = computeLighting( mat, ex_pos, normal );\n"
+          "  gl_FragColor = computeBlinnPhongLighting( mat, ex_pos, normal );\n"
           "\n"
           "}\n"
     );

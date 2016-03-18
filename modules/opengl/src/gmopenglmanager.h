@@ -60,10 +60,13 @@ namespace GL {
     static std::string            glslStructMaterialSource();
     static std::string            glslStructLightSource();
     static std::string            glslUniformLightsSource();
-    static std::string            glslFnSunlightSource();
-    static std::string            glslFnPointlightSource();
-    static std::string            glslFnSpotlightSource();
-    static std::string            glslFnComputeLightingSource();
+    static std::string            glslFnDirLightSource();
+    static std::string            glslFnPhongLightSource();
+    static std::string            glslFnBlinnPhongLightSource();
+    static std::string            glslFnSpotAttenuationSource();
+    static std::string            glslFnGammaCorrection();
+    static std::string            glslFnComputePhongLightingSource();
+    static std::string            glslFnComputeBlinnPhongLightingSource();
 
   private:
     static bool                 _initialized;
@@ -76,6 +79,7 @@ namespace GL {
 
     // System wide programs/shaders
     static void                   initPhongProg();
+    static void                   initBlinnPhongProg();
     static void                   initColorProg();
 
 //    // "PCurve: Contours" program

@@ -41,7 +41,7 @@ namespace GMlib {
     : _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
       _mat(mat) {
 
-    _prog.acquire("phong");
+    _prog.acquire("blinn_phong");
     _color_prog.acquire("color");
 
     _vbo.create();
@@ -54,7 +54,7 @@ namespace GMlib {
     : _top_bot_verts(0), _mid_strips(0), _mid_strips_verts(0),
       _mat(mat) {
 
-    _prog.acquire("phong");
+    _prog.acquire("blinn_phong");
 
     _vbo.create();
     _ibo.create();
@@ -75,8 +75,7 @@ namespace GMlib {
       _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      assert(false);
-//      _prog.setUniformBlockBinding( "Lights", cam->getLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
 
       // Material data
       _prog.setUniform( "u_mat_amb", _mat.getAmb() );

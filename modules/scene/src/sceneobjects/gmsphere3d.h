@@ -96,7 +96,7 @@ namespace GMlib {
   inline
   Sphere3D::Sphere3D(float r, int m1, int m2) : Sphere<float,3>(Point<float,3>(float(0)),r) {
 
-    _shade_prog.acquire("phong");
+    _shade_prog.acquire("blinn_phong");
     _color_prog.acquire("color");
     _vbo_v.create();
     _vbo_n.create();
@@ -112,7 +112,7 @@ namespace GMlib {
   inline
   Sphere3D::Sphere3D(const Sphere<float,3>& s, int m1, int m2) : Sphere<float,3>(s) {
 
-    _shade_prog.acquire("phong");
+    _shade_prog.acquire("blinn_phong");
     _color_prog.acquire("color");
     _vbo_v.create();
     _vbo_n.create();
@@ -122,7 +122,7 @@ namespace GMlib {
   inline
   Sphere3D::Sphere3D( const Sphere3D& copy ): Sphere<float,3>( copy ) {
 
-    _shade_prog.acquire("phong");
+    _shade_prog.acquire("blinn_phong");
     _color_prog.acquire("color");
     _vbo_v.create();
     _vbo_n.create();
