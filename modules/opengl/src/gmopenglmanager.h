@@ -63,7 +63,8 @@ namespace GL {
     static std::string            glslFnDirLightSource();
     static std::string            glslFnPhongLightSource();
     static std::string            glslFnBlinnPhongLightSource();
-    static std::string            glslFnSpotAttenuationSource();
+    static std::string            glslFnSpotCutoffFactorSource();
+    static std::string            glslFnLuminosityFromAttenuation();
     static std::string            glslFnGammaCorrection();
     static std::string            glslFnComputePhongLightingSource();
     static std::string            glslFnComputeBlinnPhongLightingSource();

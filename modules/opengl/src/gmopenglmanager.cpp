@@ -687,6 +687,7 @@ namespace GL {
   std::string OpenGLManager::glslFnPhongLightSource() {
 
     return
+        glslFnLuminosityFromAttenuation() +
         "vec3\n"
         "phongLighting( Light light, Material mat, vec3 frag_pos, vec3 N ) { \n"
         "\n"
@@ -703,10 +704,14 @@ namespace GL {
         "    specular = pow( specular_angle, mat.shininess/4.0 ); \n"
         "  } \n"
         "\n"
+        "  float luminosity = luminosityFromAttenuation(light,frag_pos);\n"
+        "\n"
         "  return \n"
-        "    mat.ambient.rgb * light.ambient.rgb + \n"
-        "    mat.diffuse.rgb * light.diffuse.rgb * lambertian + \n"
-        "    mat.specular.rgb * light.specular.rgb * specular; \n"
+        "    luminosity * ("
+        "      mat.ambient.rgb * light.ambient.rgb + \n"
+        "      mat.diffuse.rgb * light.diffuse.rgb * lambertian + \n"
+        "      mat.specular.rgb * light.specular.rgb * specular \n"
+        "    ); \n"
         "}\n"
         "\n"
         ;
@@ -715,6 +720,7 @@ namespace GL {
   std::string OpenGLManager::glslFnBlinnPhongLightSource() {
 
     return
+        glslFnLuminosityFromAttenuation() +
         "vec3\n"
         "blinnPhongLighting( Light light, Material mat, vec3 frag_pos, vec3 N ) { \n"
         "\n"
@@ -731,31 +737,57 @@ namespace GL {
         "    specular = pow( specular_angle, mat.shininess ); \n"
         "  } \n"
         "\n"
+        "\n"
+        "  float luminosity = luminosityFromAttenuation(light,frag_pos);\n"
+        "\n"
         "  return \n"
-        "    mat.ambient.rgb * light.ambient.rgb + \n"
-        "    mat.diffuse.rgb * light.diffuse.rgb * lambertian + \n"
-        "    mat.specular.rgb * light.specular.rgb * specular; \n"
+        "    luminosity * ("
+        "      mat.ambient.rgb * light.ambient.rgb + \n"
+        "      mat.diffuse.rgb * light.diffuse.rgb * lambertian + \n"
+        "      mat.specular.rgb * light.specular.rgb * specular \n"
+        "    ); \n"
         "}\n"
         "\n"
         ;
   }
 
-  std::string OpenGLManager::glslFnSpotAttenuationSource() {
+  std::string OpenGLManager::glslFnSpotCutoffFactorSource() {
 
     return
         "float\n"
-        "spotAttenuationFactor(Light light, vec3 frag_pos) {\n"
+        "spotCutoffFactor(Light light, vec3 frag_pos) {\n"
         "\n"
         "  vec3 light_dir = normalize( light.position.xyz - frag_pos ); \n"
         "  vec3 spotlight_dir = normalize(light.direction); \n"
         "\n"
-        "  float attenuation = 0.0; \n"
+        "  float cutoff_fact = 0.0; \n"
         "\n"
         "  float light_dir_angle = dot( -light_dir, spotlight_dir ); \n"
         "  if( light_dir_angle > cos(light.spot_cut ) ) \n"
-        "    attenuation = pow( light_dir_angle, light.spot_exp ); \n"
+        "    cutoff_fact = pow( light_dir_angle, light.spot_exp ); \n"
         "\n"
-        "  return attenuation; \n"
+        "  return cutoff_fact; \n"
+        "}\n"
+        "\n"
+        ;
+  }
+
+  std::string OpenGLManager::glslFnLuminosityFromAttenuation() {
+
+    return
+        "float\n"
+        "luminosityFromAttenuation(Light light, vec3 frag_pos) {\n"
+        "\n"
+        "  float dist = length( light.position.xyz - frag_pos ); \n"
+        "\n"
+        "  float constant  = light.att[0]; \n"
+        "  float linear    = light.att[1]; \n"
+        "  float quadratic = light.att[2]; \n"
+        "\n"
+        "  return \n"
+        "    constant + "
+        "    linear * 1.0/dist +"
+        "    quadratic * 1.0/(dist*dist);"
         "}\n"
         "\n"
         ;
@@ -780,7 +812,7 @@ namespace GL {
         glslUniformLightsSource() +
         glslFnDirLightSource() +
         glslFnPhongLightSource() +
-        glslFnSpotAttenuationSource() +
+        glslFnSpotCutoffFactorSource() +
         glslFnGammaCorrection() +
 
         "vec4\n"
@@ -799,7 +831,7 @@ namespace GL {
         "  // Compute spot light contribution\n"
         "  for( uint i = u_lights.info[1]; i < u_lights.info[2]; ++i )\n"
         "    color += phongLighting(    u_lights.light[i], mat, pos, normal ) * \n"
-        "             spotAttenuationFactor( u_lights.light[i], pos ); \n"
+        "             spotCutoffFactor( u_lights.light[i], pos ); \n"
         "\n"
         "  return vec4(correctGamma(color.rgb,2.2),mat.diffuse.a);\n"
         "}\n"
@@ -814,7 +846,7 @@ namespace GL {
         glslUniformLightsSource() +
         glslFnDirLightSource() +
         glslFnBlinnPhongLightSource() +
-        glslFnSpotAttenuationSource() +
+        glslFnSpotCutoffFactorSource() +
         glslFnGammaCorrection() +
 
         "vec4\n"
@@ -833,7 +865,7 @@ namespace GL {
         "  // Compute spot light contribution\n"
         "  for( uint i = u_lights.info[1]; i < u_lights.info[2]; ++i )\n"
         "    color += blinnPhongLighting(    u_lights.light[i], mat, pos, normal ) * \n"
-        "             spotAttenuationFactor( u_lights.light[i], pos ); \n"
+        "             spotCutoffFactor( u_lights.light[i], pos ); \n"
         "\n"
         "  return vec4(correctGamma(color.rgb,2.2),mat.diffuse.a);\n"
         "}\n"

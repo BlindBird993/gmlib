@@ -32,6 +32,7 @@
 // gmlib
 #include "gmsphere3d.h"
 #include "../camera/gmcamera.h"
+#include "../render/gmdefaultrenderer.h"
 
 
 namespace GMlib {
@@ -71,26 +72,27 @@ namespace GMlib {
     setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
   }
 
+  void PointLightG::localDisplay(const DefaultRenderer* renderer) const {
+
+    _sphere.render( this->getModelViewProjectionMatrix(renderer->getCamera()), getAmbient() );
+
+////    _sphere.render( getModelViewMatrix(cam), getProjectionMatrix(cam), Material(getAmbient(),getDiffuse(),getSpecular()));
+    //    _sphere.render( getModelViewProjectionMatrix(cam), getAmbient() );
+  }
+
+  void PointLightG::localSelect(const Renderer* renderer, const Color& color) const {
+
+
+//    prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam) );
+    _sphere.render( this->getModelViewProjectionMatrix(renderer->getCamera()), color );
+
+
+  }
+
 
   void PointLightG::init() {
 
     setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
-  }
-
-
-
-
-  void PointLightG::localDisplay(const Camera* cam) const {
-
-//    _sphere.render( getModelViewMatrix(cam), getProjectionMatrix(cam), Material(getAmbient(),getDiffuse(),getSpecular()));
-    _sphere.render( getModelViewProjectionMatrix(cam), getAmbient() );
-  }
-
-
-  void PointLightG::localSelect(const GL::Program& prog, const Camera* cam) const {
-
-    prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam) );
-    _sphere.select(prog);
   }
 
 } // END namespace GMlib

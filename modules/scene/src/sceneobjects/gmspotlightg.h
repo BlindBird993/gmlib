@@ -67,11 +67,20 @@ namespace GMlib {
 
   protected:
     // inherited from SceneObject
-    void            localDisplay(const Camera* cam) const;
-    void            localSelect(const GL::Program &prog, const Camera *cam) const;
+    void            localDisplay(const DefaultRenderer *) const;
+    void            localSelect(const Renderer *, const Color &) const;
+//    void            localDisplay(const Camera* cam) const;
+//    void            localSelect(const GL::Program &prog, const Camera *cam) const;
 
   private:
-    Sphere3D        _sphere;
+    GL::VertexBufferObject    _light_box_geom_vbo;
+    int                       _light_box_geom_elements;
+
+    GL::VertexBufferObject    _light_geom_vbo;
+    int                       _light_geom_elements;
+
+    GL::Program               _color_prog;
+    GL::Program               _blinn_phong_prog;
 
     void            init();
 

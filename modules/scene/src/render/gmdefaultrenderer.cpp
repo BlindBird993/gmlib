@@ -664,8 +664,10 @@ namespace GMlib {
     Array< PointLight* > point_lights;
     for( int i = 0; i < lights_array.size(); ++i ) {
 
-      if( SpotLight* spot_light = dynamic_cast<SpotLight*>( lights_array(i) ) )             spot_lights += spot_light;
-      else if( PointLight* point_light = dynamic_cast<PointLight*>( lights_array(i) ) )     point_lights += point_light;
+      if(!lights_array(i)->isEnabled()) continue;
+
+      if( SpotLight* spot_light = dynamic_cast<SpotLight*>( lights_array(i) ) )         spot_lights += spot_light;
+      else if( PointLight* point_light = dynamic_cast<PointLight*>( lights_array(i) ) ) point_lights += point_light;
     }
 
 

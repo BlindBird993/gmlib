@@ -62,7 +62,7 @@ namespace GMlib {
 
     _dir = Vector<float,3>(0,0,1);
     setCutOff(cut_off);
-    rotateParent(_dir.getAngle(dir), _dir^dir);
+//    rotateParent(_dir.getAngle(dir), _dir^dir);
   }
 
 
@@ -82,7 +82,7 @@ namespace GMlib {
 
     _dir = Vector<float,3>(0,0,1);
     setCutOff(cut_off);
-    rotateParent( _dir.getAngle(dir), _dir^dir );
+//    rotateParent( _dir.getAngle(dir), _dir^dir );
   }
 
 
@@ -95,7 +95,7 @@ namespace GMlib {
 
     _dir = copy._dir;
     setCutOff(copy._cutoff);
-    rotateParent(_dir.getAngle(copy._dir),_dir^copy._dir);
+//    rotateParent(_dir.getAngle(copy._dir),_dir^copy._dir);
   }
 
 
