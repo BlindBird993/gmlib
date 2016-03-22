@@ -72,7 +72,7 @@ namespace GMlib {
       _prog.setUniform( "u_mat_amb", m.getAmb() );
       _prog.setUniform( "u_mat_dif", m.getDif() );
       _prog.setUniform( "u_mat_spc", m.getSpc() );
-      _prog.setUniform( "u_mat_shin", m.getShininess() );
+      _prog.setUniform( "u_mat_shi", m.getShininess() );
 
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
       GL::AttributeLocation normal_loc = _prog.getAttributeLocation( "in_normal" );
