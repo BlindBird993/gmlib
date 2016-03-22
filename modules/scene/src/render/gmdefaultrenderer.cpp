@@ -496,7 +496,7 @@ namespace GMlib {
         for( int i = 0; i < visus.getSize(); ++i )
           visus(i)->renderGeometry(obj,this,sel_true_color);
 
-        obj->localSelect(this,_select_color);
+        obj->localSelect(this,sel_true_color);
       }
     }
   }
