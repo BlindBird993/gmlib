@@ -45,8 +45,8 @@ namespace GMlib {
     int no_dp = p.getDim();
     DVector<GL::GLVertexNormal> dp(no_dp);
 
-    const GMlib::Vector<float,3> e1 {0.3,0.3,0.4}; // Directional derivative
-    const GMlib::Vector<float,3> e2 {0.6,-0.3,0.7}; // Directional derivative (linear independent of e1
+    const GMlib::Vector<float,3> e1 {-1.0,1.0,0.0}; // Directional derivative
+    const GMlib::Vector<float,3> e2 {-1.0,0.0,1.0}; // Directional derivative (linear independent of e1
 
     GMlib::Vector<float,3> v1, v2;
     GMlib::UnitVector<float,3> N;
@@ -59,7 +59,7 @@ namespace GMlib {
       const Vector<float,3> p3 = p(i)(3);
 
       v1 = e1(0) * p1 + e1(1) * p2 + e1(2) * p3;
-      v2 = e2(0) * p2 + e2(1) * p2 + e2(2) * p3;
+      v2 = e2(0) * p1 + e2(1) * p2 + e2(2) * p3;
       N = v1 ^ v2;
 
       dp[i].x   = p0(0);

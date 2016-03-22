@@ -677,7 +677,7 @@ namespace GL {
         "vec3 \n"
         "directionalLighting( Light light, Material mat, vec3 frag_pos, vec3 N ) { \n"
         "\n"
-        "  vec3 light_dir = normalize(light.direction); \n"
+        "  vec3 light_dir = normalize(-light.direction); \n"
         "  return mat.diffuse.rgb * light.ambient.rgb * max( dot( light_dir, N ), 0.0 ); \n"
         "}\n"
         "\n"
