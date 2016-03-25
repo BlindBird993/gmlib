@@ -69,8 +69,6 @@ namespace GMlib {
     // inherited from SceneObject
     void            localDisplay(const DefaultRenderer *) const;
     void            localSelect(const Renderer *, const Color &) const;
-//    void            localDisplay(const Camera* cam) const;
-//    void            localSelect(const GL::Program &prog, const Camera *cam) const;
 
   private:
     GL::VertexBufferObject    _light_box_geom_vbo;
@@ -79,8 +77,9 @@ namespace GMlib {
     GL::VertexBufferObject    _light_geom_vbo;
     int                       _light_geom_elements;
 
+    GL::Program               _shading_prog;
     GL::Program               _color_prog;
-    GL::Program               _blinn_phong_prog;
+
 
     void            init();
 

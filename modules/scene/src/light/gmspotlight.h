@@ -63,15 +63,10 @@ namespace GMlib{
     virtual ~SpotLight();
 
     const Angle&          getCutOff() const;
-    double                getExponent() const;
-
     virtual void          setCutOff( const Angle& cut_off);
-    void                  setExponent(double exp);
 
   protected:
-    Vector<float,3>       _dir;
     Angle                 _cutoff;
-    double                _exp;
 
 
   };  // END class SpotLight

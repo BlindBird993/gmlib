@@ -255,6 +255,6 @@ void Program::setUniform( const std::string& name, int i ) const {
 
 void Program::setUniformBlockBinding(const std::string &name, const UniformBufferObject &ubo, GLuint binding_point) const {
 
-  GL_CHECK(::glBindBufferBase( GL_UNIFORM_BUFFER, binding_point, ubo.getId() ));
   GL_CHECK(::glUniformBlockBinding( getId(), getUniformBlockIndex( name)(), binding_point ));
+  GL_CHECK(::glBindBufferBase( GL_UNIFORM_BUFFER, binding_point, ubo.getId() ));
 }

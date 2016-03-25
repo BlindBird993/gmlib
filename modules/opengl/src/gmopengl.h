@@ -143,13 +143,7 @@ namespace GL {
 
   typedef GLuintType    AttributeLocation;
   typedef GLuintType    UniformLocation;
-
   typedef GLuintType    UniformBlockIndex;
-
-
-
-
-
 
 
 
@@ -189,22 +183,11 @@ namespace GL {
     T p[n];
   };
 
-  struct GLLight {
-    GLVector<4>   amb;
-    GLVector<4>   dif;
-    GLVector<4>   spc;
 
-    GLVector<4>   pos;
-    GLVector<3>   dir;
-    GLfloat       _padding01;
 
-    GLVector<3>   att;
-    GLfloat       _padding02;
 
-    GLint         spot_cut;
-    GLfloat       spot_exp;
-    GLfloat       _padding03[2];
-  };
+
+
 
   struct GLMaterial {
 
@@ -214,6 +197,68 @@ namespace GL {
 
     GLfloat       shininess;
     GLfloat       _padding[3];
+  };
+
+
+
+
+
+
+
+
+
+
+  // Structs modeled to reflect internal shader structs used with GLSL uniform layout std140
+  // Complete spesification: https://www.opengl.org/registry/specs/ARB/uniform_buffer_object.txt
+  // Section 2.15.3.1.2
+  //
+  // N = size of base unit (uint|int|float)
+
+  struct GLLightHeader {      //  4 N
+    GLuint    no_lights;
+    GLuint    _pad_2;
+    GLuint    _pad_3;
+    GLuint    _pad_4;
+  };
+
+  struct GLLightBase {        // 12 N
+    GLVector<3>   amb;
+    GLfloat       _pad_amb_4;
+    GLVector<3>   dif;
+    GLfloat       _pad_dif_4;
+    GLVector<3>   spc;
+    GLfloat       _pad_spc_4;
+  };
+
+  struct GLAttenuation {      //  4 N
+    GLfloat       constant;
+    GLfloat       linear;
+    GLfloat       quadratic;
+    GLfloat       _pad_4;
+  };
+
+  struct GLDirectionalLight { // 16 N
+
+    GLLightBase     base;
+    GLVector<3>     dir;
+    GLfloat         _dir_pad_4;
+  };
+
+
+  struct GLPointLight {       // 20 N
+
+    GLLightBase     base;
+    GLVector<3>     pos;
+    GLfloat         _pos_pad_4;
+    GLAttenuation   attenuation;
+  };
+
+  struct GLSpotLight {        // 24 N
+
+    GLPointLight    pointlight;
+
+    GLVector<3>     dir;
+    GLfloat         cutoff;
   };
 
 

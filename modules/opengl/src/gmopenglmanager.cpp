@@ -150,7 +150,9 @@ namespace GL {
 
     initPhongProg();
     initBlinnPhongProg();
+    initDirectionalLightingProg();
     initColorProg();
+
 
 //    initPCurveContoursProg();
 //    initPSurfContours();
@@ -221,33 +223,17 @@ namespace GL {
         "}\n"
         ;
 
-    bool compile_ok, link_ok;
+    VertexShader vs;
+    createAndCompilePersistenShader(vs,"phong_vs",vs_str);
 
-    VertexShader vshader;
-    vshader.create("phong_vs");
-    vshader.setPersistent(true);
-    vshader.setSource(vs_str);
-    compile_ok = vshader.compile();
-    assert(compile_ok);
+    FragmentShader fs;
+    createAndCompilePersistenShader(fs,"phong_fs",fs_str);
 
-    FragmentShader fshader;
-    fshader.create("phong_fs");
-    fshader.setPersistent(true);
-    fshader.setSource(fs_str);
-    compile_ok = fshader.compile();
-    if( !compile_ok ) {
-      std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
-      std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
-    }
-    assert(compile_ok);
-
-    Program phong_prog;
-    phong_prog.create("phong");
-    phong_prog.setPersistent(true);
-    phong_prog.attachShader( vshader );
-    phong_prog.attachShader( fshader );
-    link_ok = phong_prog.link();
-    assert(link_ok);
+    Program prog;
+    prog.create("phong");
+    prog.attachShader( vs);
+    prog.attachShader( fs);
+    linkPersistentProgram(prog);
   }
 
   void OpenGLManager::initBlinnPhongProg() {
@@ -312,34 +298,103 @@ namespace GL {
         "}\n"
         ;
 
-    bool compile_ok, link_ok;
+    VertexShader vs;
+    createAndCompilePersistenShader( vs, "blinn_phong_vs", vs_str );
 
-    VertexShader vshader;
-    vshader.create("blinn_phong_vs");
-    vshader.setPersistent(true);
-    vshader.setSource(vs_str);
-    compile_ok = vshader.compile();
-    assert(compile_ok);
+    FragmentShader fs;
+    createAndCompilePersistenShader( fs, "blinn_phong_fs", fs_str );
 
-    FragmentShader fshader;
-    fshader.create("blinn_phong_fs");
-    fshader.setPersistent(true);
-    fshader.setSource(fs_str);
-    compile_ok = fshader.compile();
-    if( !compile_ok ) {
-      std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
-      std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
-    }
-    assert(compile_ok);
+    Program prog;
+    prog.create("blinn_phong");
+    prog.attachShader( vs);
+    prog.attachShader( fs);
+    linkPersistentProgram(prog);
+  }
 
-    Program phong_prog;
-    phong_prog.create("blinn_phong");
-    phong_prog.setPersistent(true);
-    phong_prog.attachShader( vshader );
-    phong_prog.attachShader( fshader );
-    link_ok = phong_prog.link();
-    assert(link_ok);
+  void OpenGLManager::initDirectionalLightingProg() {
 
+
+    /////////////////////
+    // Blinn-Phong shader
+    std::string vs_str =
+        glslDefHeaderVersionSource() +
+
+        "uniform mat4 u_mvmat, u_mvpmat;\n"
+        "\n"
+        "in vec4 in_vertex;\n"
+        "in vec4 in_normal;\n"
+        "\n"
+        "out vec4 gl_Position;\n"
+        "\n"
+        "smooth out vec3 ex_pos;\n"
+        "smooth out vec3 ex_normal;\n"
+        "\n"
+        "void main() {\n"
+        "\n"
+        "  // Transform the normal to view space\n"
+        "  mat3 nmat = inverse( transpose( mat3( u_mvmat ) ) );\n"
+        "  ex_normal = nmat * vec3(in_normal);\n"
+        "\n"
+        "  // Transform position into view space;\n"
+        "  vec4 v_pos = u_mvmat * in_vertex;\n"
+        "  ex_pos = v_pos.xyz * v_pos.w;\n"
+        "\n"
+        "  // Compute vertex position\n"
+        "  gl_Position = u_mvpmat * in_vertex;\n"
+        "}\n"
+        ;
+
+    std::string fs_str =
+        glslDefHeaderVersionSource() +
+        glslStructMaterialSource() +
+        glslUniformLightsSource() +
+        glslFnDirLightSource() +
+        glslFnSpotCutoffFactorSource() +
+        glslFnGammaCorrection() +
+
+        "uniform mat4      u_mvmat;\n"
+        "\n"
+        "uniform vec4      u_mat_amb;\n"
+        "uniform vec4      u_mat_dif;\n"
+        "uniform vec4      u_mat_spc;\n"
+        "uniform float     u_mat_shi;\n"
+        "\n"
+        "smooth in vec3    ex_pos;\n"
+        "smooth in vec3    ex_normal;\n"
+        "\n"
+        "out vec4 gl_FragColor;\n"
+        "\n"
+        "void main() {\n"
+        "\n"
+        "  vec3 normal = normalize( ex_normal );\n"
+        "\n"
+        "  Material mat;\n"
+        "  mat.ambient   = u_mat_amb;\n"
+        "  mat.diffuse   = u_mat_dif;\n"
+        "  mat.specular  = u_mat_spc;\n"
+        "  mat.shininess = u_mat_shi;\n"
+        "\n"
+        "  vec3 color = vec3(0);\n"
+        "\n"
+        "  // Compute directional light contribution\n"
+        "  for( uint i = uint(0); i < u_directionallights.info.no_lights; ++i )\n"
+        "    color += directionalLighting( u_directionallights.lights[i], mat, ex_pos, normal );\n"
+        "\n"
+        "  gl_FragColor = vec4(correctGamma(color.rgb,2.2),mat.diffuse.a);\n"
+        "}\n"
+        ;
+
+    VertexShader vs;
+    createAndCompilePersistenShader(vs,"directional_lighting_vs", vs_str);
+
+    FragmentShader fs;
+    createAndCompilePersistenShader(fs,"directional_lighting_fs", fs_str);
+
+    Program prog;
+    prog.create("directional_lighting");
+    prog.attachShader( vs);
+    prog.attachShader( fs);
+    linkPersistentProgram(prog);
   }
 
 
@@ -379,29 +434,17 @@ namespace GL {
           "}\n"
           ;
 
-    bool compile_ok, link_ok;
+    VertexShader vs;
+    createAndCompilePersistenShader(vs,"color_vs",vs_src);
 
-    VertexShader _vs_color;
-    _vs_color.create("color_vs");
-    _vs_color.setPersistent(true);
-    _vs_color.setSource(vs_src);
-    compile_ok = _vs_color.compile();
-    assert(compile_ok);
+    FragmentShader fs;
+    createAndCompilePersistenShader(fs,"color_fs",fs_src);
 
-    FragmentShader _fs_color;
-    _fs_color.create("color_fs");
-    _fs_color.setPersistent(true);
-    _fs_color.setSource(fs_src);
-    compile_ok = _fs_color.compile();
-    assert(compile_ok);
-
-    Program _prog_color;
-    _prog_color.create("color");
-    _prog_color.setPersistent(true);
-    _prog_color.attachShader(_vs_color);
-    _prog_color.attachShader(_fs_color);
-    link_ok = _prog_color.link();
-    assert(link_ok);
+    Program prog;
+    prog.create("color");
+    prog.attachShader(vs);
+    prog.attachShader(fs);
+    linkPersistentProgram(prog);
   }
 
 
@@ -640,19 +683,33 @@ namespace GL {
   std::string OpenGLManager::glslStructLightSource() {
 
     return
-        "struct Light {\n"
+        "struct LightBase {\n"
+        "  vec3  ambient;\n"
+        "  vec3  diffuse;\n"
+        "  vec3  specular;\n"
+        "};\n"
         "\n"
-        "  vec4  ambient;\n"
-        "  vec4  diffuse;\n"
-        "  vec4  specular;\n"
-        "  \n"
-        "  vec4  position;\n"
-        "  vec3  direction;\n"
+        "struct Attenuation {\n"
+        "  float constant;\n"
+        "  float linear;\n"
+        "  float quadratic;\n"
+        "};\n"
         "\n"
-        "  vec3  att;\n"
+        "struct DirectionalLight {\n"
+        "  LightBase base;\n"
+        "  vec3      direction;\n"
+        "};\n"
         "\n"
-        "  float spot_cut;\n"
-        "  float spot_exp;\n"
+        "struct PointLight {\n"
+        "  LightBase    base;\n"
+        "  vec3         position;\n"
+        "  Attenuation  attenuation;\n"
+        "};\n"
+        "\n"
+        "struct SpotLight {\n"
+        "  PointLight   pointlight; \n"
+        "  vec3         direction;\n"
+        "  float        cutoff;\n"
         "};\n"
         "\n"
         ;
@@ -663,10 +720,26 @@ namespace GL {
     return
         glslStructLightSource() +
 
-        "uniform Lights {\n"
-        "  uvec4 info;\n"
-        "  Light light[200];\n"
-        "} u_lights;\n"
+        "struct LightHeader {\n"
+        "  uint no_lights;\n"
+        "};\n"
+
+        "uniform DirectionalLights {\n"
+        "  LightHeader      info;\n"
+        "  DirectionalLight lights[10];\n"
+        "} u_directionallights;\n"
+        "\n"
+
+        "uniform PointLights {\n"
+        "  LightHeader info;\n"
+        "  PointLight  lights[50];\n"
+        "} u_pointlights;\n"
+        "\n"
+
+        "uniform SpotLights {\n"
+        "  LightHeader info;\n"
+        "  SpotLight   lights[50];\n"
+        "} u_spotlights;\n"
         "\n"
         ;
   }
@@ -675,10 +748,10 @@ namespace GL {
 
     return
         "vec3 \n"
-        "directionalLighting( Light light, Material mat, vec3 frag_pos, vec3 N ) { \n"
+        "directionalLighting( DirectionalLight light, Material mat, vec3 frag_pos, vec3 N ) { \n"
         "\n"
         "  vec3 light_dir = normalize(-light.direction); \n"
-        "  return mat.diffuse.rgb * light.ambient.rgb * max( dot( light_dir, N ), 0.0 ); \n"
+        "  return mat.diffuse.rgb * light.base.ambient * max( dot( light_dir, N ), 0.0 ); \n"
         "}\n"
         "\n"
         ;
@@ -689,9 +762,9 @@ namespace GL {
     return
         glslFnLuminosityFromAttenuation() +
         "vec3\n"
-        "phongLighting( Light light, Material mat, vec3 frag_pos, vec3 N ) { \n"
+        "phongLighting( PointLight light, Material mat, vec3 frag_pos, vec3 N ) { \n"
         "\n"
-        "  vec3 light_dir = normalize( light.position.xyz - frag_pos ); \n"
+        "  vec3 light_dir = normalize( light.position- frag_pos ); \n"
         "\n"
         "  float lambertian = max( dot( light_dir, N ), 0.0 ); \n"
         "  float specular = 0.0; \n"
@@ -708,9 +781,9 @@ namespace GL {
         "\n"
         "  return \n"
         "    luminosity * ("
-        "      mat.ambient.rgb * light.ambient.rgb + \n"
-        "      mat.diffuse.rgb * light.diffuse.rgb * lambertian + \n"
-        "      mat.specular.rgb * light.specular.rgb * specular \n"
+        "      mat.ambient.rgb * light.base.ambient + \n"
+        "      mat.diffuse.rgb * light.base.diffuse * lambertian + \n"
+        "      mat.specular.rgb * light.base.specular * specular \n"
         "    ); \n"
         "}\n"
         "\n"
@@ -722,9 +795,9 @@ namespace GL {
     return
         glslFnLuminosityFromAttenuation() +
         "vec3\n"
-        "blinnPhongLighting( Light light, Material mat, vec3 frag_pos, vec3 N ) { \n"
+        "blinnPhongLighting( PointLight light, Material mat, vec3 frag_pos, vec3 N ) { \n"
         "\n"
-        "  vec3 light_dir = normalize( light.position.xyz - frag_pos ); \n"
+        "  vec3 light_dir = normalize( light.position- frag_pos ); \n"
         "\n"
         "  float lambertian = max( dot( light_dir, N ), 0.0 ); \n"
         "  float specular = 0.0; \n"
@@ -742,9 +815,9 @@ namespace GL {
         "\n"
         "  return \n"
         "    luminosity * ("
-        "      mat.ambient.rgb * light.ambient.rgb + \n"
-        "      mat.diffuse.rgb * light.diffuse.rgb * lambertian + \n"
-        "      mat.specular.rgb * light.specular.rgb * specular \n"
+        "      mat.ambient.rgb * light.base.ambient + \n"
+        "      mat.diffuse.rgb * light.base.diffuse * lambertian + \n"
+        "      mat.specular.rgb * light.base.specular * specular \n"
         "    ); \n"
         "}\n"
         "\n"
@@ -755,16 +828,18 @@ namespace GL {
 
     return
         "float\n"
-        "spotCutoffFactor(Light light, vec3 frag_pos) {\n"
+        "spotCutoffFactor(SpotLight light, vec3 frag_pos) {\n"
         "\n"
-        "  vec3 light_dir = normalize( light.position.xyz - frag_pos ); \n"
+        "  vec3 light_to_frag = normalize(frag_pos - light.pointlight.position); \n"
         "  vec3 spotlight_dir = normalize(light.direction); \n"
+        "\n"
+        "  float spot_fact = clamp( dot( light_to_frag, spotlight_dir ), 0.0, 1.0); \n"
         "\n"
         "  float cutoff_fact = 0.0; \n"
         "\n"
-        "  float light_dir_angle = dot( -light_dir, spotlight_dir ); \n"
-        "  if( light_dir_angle > cos(light.spot_cut ) ) \n"
-        "    cutoff_fact = pow( light_dir_angle, light.spot_exp ); \n"
+        "  if( spot_fact > light.cutoff ) {\n"
+        "    cutoff_fact = (spot_fact - light.cutoff) / (1.0 - light.cutoff); \n"
+        "  }\n"
         "\n"
         "  return cutoff_fact; \n"
         "}\n"
@@ -776,13 +851,13 @@ namespace GL {
 
     return
         "float\n"
-        "luminosityFromAttenuation(Light light, vec3 frag_pos) {\n"
+        "luminosityFromAttenuation(PointLight light, vec3 frag_pos) {\n"
         "\n"
-        "  float dist = length( light.position.xyz - frag_pos ); \n"
+        "  float dist = length( light.position- frag_pos ); \n"
         "\n"
-        "  float constant  = light.att[0]; \n"
-        "  float linear    = light.att[1]; \n"
-        "  float quadratic = light.att[2]; \n"
+        "  float constant  = light.attenuation.constant; \n"
+        "  float linear    = light.attenuation.linear; \n"
+        "  float quadratic = light.attenuation.quadratic; \n"
         "\n"
         "  return \n"
         "    constant + "
@@ -820,18 +895,17 @@ namespace GL {
         "\n"
         "  vec3 color = vec3(0);\n"
         "\n"
-        "  // Compute sun contribution\n"
-        "  for( uint i = uint(0); i < u_lights.info[0]; ++i )\n"
-        "    color += directionalLighting( u_lights.light[i], mat, pos, normal );\n"
+        "  // Compute directional light contribution\n"
+        "  for( uint i = uint(0); i < u_directionallights.info.no_lights; ++i )\n"
+        "    color += directionalLighting( u_directionallights.lights[i], mat, pos, normal );\n"
         "\n"
-        "  // Compute point light contribution\n"
-        "  for( uint i = u_lights.info[0]; i < u_lights.info[1]; ++i )\n"
-        "    color += phongLighting( u_lights.light[i], mat, pos, normal );\n"
+        "  // Compute pointlight contribution\n"
+        "  for( uint i = uint(0); i < u_pointlights.info.no_lights; ++i )\n"
+        "    color += phongLighting( u_pointlights.lights[i], mat, pos, normal );\n"
         "\n"
-        "  // Compute spot light contribution\n"
-        "  for( uint i = u_lights.info[1]; i < u_lights.info[2]; ++i )\n"
-        "    color += phongLighting(    u_lights.light[i], mat, pos, normal ) * \n"
-        "             spotCutoffFactor( u_lights.light[i], pos ); \n"
+        "  // Compute spotlight contribution\n"
+        "  for( uint i = uint(0); i < u_spotlights.info.no_lights; ++i )\n"
+        "    color += phongLighting( u_spotlights.lights[i].pointlight, mat, pos, normal) * spotCutoffFactor( u_spotlights.lights[i], pos ); \n"
         "\n"
         "  return vec4(correctGamma(color.rgb,2.2),mat.diffuse.a);\n"
         "}\n"
@@ -854,18 +928,17 @@ namespace GL {
         "\n"
         "  vec3 color = vec3(0);\n"
         "\n"
-        "  // Compute sun contribution\n"
-        "  for( uint i = uint(0); i < u_lights.info[0]; ++i )\n"
-        "    color += directionalLighting( u_lights.light[i], mat, pos, normal );\n"
+        "  // Compute directional light contribution\n"
+        "  for( uint i = uint(0); i < u_directionallights.info.no_lights; ++i )\n"
+        "    color += directionalLighting( u_directionallights.lights[i], mat, pos, normal );\n"
         "\n"
-        "  // Compute point light contribution\n"
-        "  for( uint i = u_lights.info[0]; i < u_lights.info[1]; ++i )\n"
-        "    color += blinnPhongLighting( u_lights.light[i], mat, pos, normal );\n"
+        "  // Compute pointlight contribution\n"
+        "  for( uint i = uint(0); i < u_pointlights.info.no_lights; ++i )\n"
+        "    color += blinnPhongLighting( u_pointlights.lights[i], mat, pos, normal );\n"
         "\n"
-        "  // Compute spot light contribution\n"
-        "  for( uint i = u_lights.info[1]; i < u_lights.info[2]; ++i )\n"
-        "    color += blinnPhongLighting(    u_lights.light[i], mat, pos, normal ) * \n"
-        "             spotCutoffFactor( u_lights.light[i], pos ); \n"
+        "  // Compute spotlight contribution\n"
+        "  for( uint i = uint(0); i < u_spotlights.info.no_lights; ++i )\n"
+        "    color += blinnPhongLighting( u_spotlights.lights[i].pointlight, mat, pos, normal ) * spotCutoffFactor( u_spotlights.lights[i], pos ); \n"
         "\n"
         "  return vec4(correctGamma(color.rgb,2.2),mat.diffuse.a);\n"
         "}\n"

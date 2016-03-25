@@ -60,9 +60,8 @@ namespace GMlib {
     Angle cut_off
   ) : PointLight(pos) {
 
-    _dir = Vector<float,3>(0,0,1);
     setCutOff(cut_off);
-//    rotateParent(_dir.getAngle(dir), _dir^dir);
+    rotateParent( getDir().getAngle(dir), getDir()^dir );
   }
 
 
@@ -80,9 +79,8 @@ namespace GMlib {
     Angle cut_off
   ) : PointLight(amb,dif,spe,pos) {
 
-    _dir = Vector<float,3>(0,0,1);
     setCutOff(cut_off);
-//    rotateParent( _dir.getAngle(dir), _dir^dir );
+    rotateParent( getDir().getAngle(dir), getDir()^dir );
   }
 
 
@@ -93,9 +91,7 @@ namespace GMlib {
    */
   SpotLight::SpotLight( const SpotLight& copy ) : PointLight( copy ) {
 
-    _dir = copy._dir;
     setCutOff(copy._cutoff);
-//    rotateParent(_dir.getAngle(copy._dir),_dir^copy._dir);
   }
 
 
@@ -112,13 +108,6 @@ namespace GMlib {
     return _cutoff;
   }
 
-
-  double SpotLight::getExponent() const {
-
-    return _exp;
-  }
-
-
   /*! void SpotLight::setCuttoff(const Angle cut_off)
    * \brief Pending Documentation
    *
@@ -127,10 +116,5 @@ namespace GMlib {
   void SpotLight::setCutOff( const Angle& cut_off ) {
 
     _cutoff = cut_off;
-  }
-
-  void SpotLight::setExponent(double exp) {
-
-    _exp = exp;
   }
 }

@@ -75,7 +75,9 @@ namespace GMlib {
       _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "DirectionalLights",  renderer->getDirectionalLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "PointLights",        renderer->getPointLightUBO(), 1 );
+      _prog.setUniformBlockBinding( "SpotLights",         renderer->getSpotLightUBO(), 2 );
 
       // Material data
       _prog.setUniform( "u_mat_amb", _mat.getAmb() );

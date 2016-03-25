@@ -122,12 +122,9 @@ namespace GMlib {
    */
   void PointLight::setAttenuation(float constant, float linear, float quadratic) {
 
-    float sum = constant + linear + quadratic;
-    if(sum < 1e-5) return;
-
-    _attenuation[0] = constant/sum;
-    _attenuation[1] = linear/sum;
-    _attenuation[2] = quadratic/sum;
+    _attenuation[0] = constant;
+    _attenuation[1] = linear;
+    _attenuation[2] = quadratic;
 
     calculateRadius( constant, linear, quadratic );
   }

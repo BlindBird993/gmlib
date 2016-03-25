@@ -81,6 +81,7 @@ namespace GL {
     // System wide programs/shaders
     static void                   initPhongProg();
     static void                   initBlinnPhongProg();
+    static void                   initDirectionalLightingProg();
     static void                   initColorProg();
 
 //    // "PCurve: Contours" program
@@ -96,8 +97,101 @@ namespace GL {
 //    static FragmentShader         _fs_psurf_contours;
 //    static void                   initPSurfContours();
 
+
   public:
 
+    template <typename T>
+    static void
+    fillLightUBO( GL::UniformBufferObject& ubo, const GL::GLLightHeader& header, const std::vector<T>& data ) {
+
+      ubo.bufferData( sizeof(GL::GLLightHeader) + data.size() * sizeof(T), 0x0, GL_DYNAMIC_DRAW );
+      ubo.bufferSubData( 0, sizeof(GL::GLLightHeader), &header );
+      ubo.bufferSubData( sizeof(GL::GLLightHeader), data.size() * sizeof(T), data.data() );
+    }
+
+    static void
+    fillGLLightBase( GL::GLLightBase& light,
+                     const Color& amb, const Color& dif, const Color& spc ) {
+
+      light.amb.p[0] = amb.getRedC();
+      light.amb.p[1] = amb.getGreenC();
+      light.amb.p[2] = amb.getBlueC();
+
+      light.dif.p[0] = dif.getRedC();
+      light.dif.p[1] = dif.getGreenC();
+      light.dif.p[2] = dif.getBlueC();
+
+      light.spc.p[0] = spc.getRedC();
+      light.spc.p[1] = spc.getGreenC();
+      light.spc.p[2] = spc.getBlueC();
+    }
+
+    static void
+    fillGLDirectionalLight( GL::GLDirectionalLight& light,
+                            const Color& amb, const Color& dif, const Color& spc,
+                            const Vector<float,3>& dir ) {
+
+      fillGLLightBase(light.base, amb, dif, spc);
+      light.dir.p[0] = dir(0);
+      light.dir.p[1] = dir(1);
+      light.dir.p[2] = dir(2);
+    }
+
+    static void
+    fillGLPointLight( GL::GLPointLight& light,
+                      const Color& amb, const Color& dif, const Color& spc,
+                      const Point<float,3>& pos, const Point<float,3>& att ) {
+
+      fillGLLightBase(light.base,amb,dif,spc);
+      light.pos.p[0] = pos(0);
+      light.pos.p[1] = pos(1);
+      light.pos.p[2] = pos(2);
+      light.attenuation.constant  = att(0);
+      light.attenuation.linear    = att(1);
+      light.attenuation.quadratic = att(2);
+    }
+
+    static void
+    fillGLSpotLight( GL::GLSpotLight& light,
+                     const Color& amb, const Color& dif, const Color& spc,
+                     const Point<float,3>& pos, const Point<float,3>& att,
+                     const Vector<float,3>& dir, float cutoff ) {
+
+      fillGLPointLight( light.pointlight, amb, dif, spc, pos, att );
+      light.dir.p[0] = dir(0);
+      light.dir.p[1] = dir(1);
+      light.dir.p[2] = dir(2);
+      light.cutoff   = cutoff;
+    }
+
+  private:
+
+    template <typename Shader_T>
+    static void
+    createAndCompilePersistenShader( Shader_T& shader, const std::string& name, const std::string& source ) {
+
+      shader.create(name);
+      shader.setPersistent(true);
+      shader.setSource(source);
+      bool compile_ok = shader.compile();
+      if( !compile_ok ) {
+        std::cout << "Src:" << std::endl << shader.getSource() << std::endl << std::endl;
+        std::cout << "Error: " << shader.getCompilerLog() << std::endl;
+      }
+      assert(compile_ok);
+    }
+
+    template <typename Program_T>
+    static void
+    linkPersistentProgram( Program_T& program ) {
+
+      program.setPersistent(true);
+      bool link_ok = program.link();
+      if( !link_ok ) {
+        std::cout << "Error: " << program.getLinkerLog() << std::endl;
+      }
+      assert(link_ok);
+    }
 
 
   }; // END class OpenGL

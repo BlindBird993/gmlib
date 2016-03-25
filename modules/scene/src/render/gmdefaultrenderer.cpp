@@ -37,6 +37,7 @@
 #include "rendertargets/gmnativerendertarget.h"
 
 // gmlib
+#include <opengl/gmopenglmanager.h>
 #include <opengl/shaders/gmvertexshader.h>
 #include <opengl/shaders/gmfragmentshader.h>
 
@@ -112,7 +113,9 @@ namespace GMlib {
 
     _coord_sys_visu = new CoordSysRepVisualizer;
 
-    if(!_light_ubo.isValid()) _light_ubo.create();
+    if(!_dirlight_ubo.isValid()) _dirlight_ubo.create();
+    if(!_pointlight_ubo.isValid()) _pointlight_ubo.create();
+    if(!_spotlight_ubo.isValid()) _spotlight_ubo.create();
 
 
     // Render quad
@@ -640,7 +643,7 @@ namespace GMlib {
     Camera* camera = getCamera();
     const Scene* scene = camera->getScene();
     const Array<Light*> &lights_array = scene->getLights();
-    const Sun* window_sun = scene->getSun();
+    const Sun* sun = scene->getSun();
 
     const HqMatrix<float,3> cammat = camera->SceneObject::getMatrix() * camera->getMatrixToSceneInverse();
 
@@ -656,9 +659,12 @@ namespace GMlib {
      *  </ul>
      */
 
-    GL::GLVector<4,GLuint> header;
-    std::vector<unsigned int> light_ids;
-    std::vector<GL::GLLight> lights;
+    GL::GLLightHeader      dirlight_header;
+    GL::GLLightHeader      pointlight_header;
+    GL::GLLightHeader      spotlight_header;
+    std::vector<GL::GLDirectionalLight> dirlights_data;
+    std::vector<GL::GLPointLight> pointlights_data;
+    std::vector<GL::GLSpotLight> spotlights_data;
 
     Array< SpotLight* > spot_lights;
     Array< PointLight* > point_lights;
@@ -672,134 +678,144 @@ namespace GMlib {
 
 
 
-    header.p[0] = window_sun ? 1 : 0;
-    header.p[1] = header.p[0] + point_lights.size();
-    header.p[2] = header.p[1] + spot_lights.size();
-    header.p[3] = header.p[2];
+    dirlight_header.no_lights   = sun ? 1 : 0;
+    pointlight_header.no_lights = point_lights.size();
+    spotlight_header.no_lights  = spot_lights.size();
 
-    if( header.p[3] <= 0 )
+
+
+    if( dirlight_header.no_lights + pointlight_header.no_lights + spotlight_header.no_lights <= 0 )
       return;
 
     // Add data to header array
-    if( window_sun ) {
+    if( sun ) {
 
-      GL::GLLight sun;
-
-      sun.amb.p[0] = window_sun->getGlobalAmbient().getRedC();
-      sun.amb.p[1] = window_sun->getGlobalAmbient().getGreenC();
-      sun.amb.p[2] = window_sun->getGlobalAmbient().getBlueC();
-      sun.amb.p[3] = window_sun->getGlobalAmbient().getAlphaC();
-
-      // using local matrix as it is not inserted in the scene but is said to live in the global space
-      Vector<float,3> sun_dir = cammat * window_sun->getMatrix() * window_sun->getDir();
-      sun.dir.p[0] = sun_dir(0);
-      sun.dir.p[1] = sun_dir(1);
-      sun.dir.p[2] = sun_dir(2);
-
-//      std::cout << "Sun light info: " << std::endl;
-//      std::cout << "  amb: " << _sun->getGlobalAmbient() << std::endl;
-//      std::cout << "  dir: " << _sun->getDir() << std::endl;
-//      std::cout << std::endl;
-
-      lights.push_back(sun);
-      light_ids.push_back(window_sun->getLightName());
+      GL::GLDirectionalLight dl;
+      GL::OpenGLManager::fillGLDirectionalLight( dl,
+                                                 sun->getGlobalAmbient(), GMcolor::Black, GMcolor::Black,
+                                                 cammat * sun->getMatrix() * sun->getDir()
+                                                 );
+      dirlights_data.push_back(dl);
     }
 
     for( int i = 0; i < point_lights.size(); ++i ) {
 
       PointLight *light = point_lights[i];
 
-      GL::GLLight pl;
-      pl.amb.p[0] = light->getAmbient().getRedC();
-      pl.amb.p[1] = light->getAmbient().getGreenC();
-      pl.amb.p[2] = light->getAmbient().getBlueC();
-      pl.amb.p[3] = light->getAmbient().getAlphaC();
-
-      pl.dif.p[0] = light->getDiffuse().getRedC();
-      pl.dif.p[1] = light->getDiffuse().getGreenC();
-      pl.dif.p[2] = light->getDiffuse().getBlueC();
-      pl.dif.p[3] = light->getDiffuse().getAlphaC();
-
-      pl.spc.p[0] = light->getSpecular().getRedC();
-      pl.spc.p[1] = light->getSpecular().getGreenC();
-      pl.spc.p[2] = light->getSpecular().getBlueC();
-      pl.spc.p[3] = light->getSpecular().getAlphaC();
-
-      Point<float,3> pos = cammat * light->getGlobalPos();
-      pl.pos.p[0] = pos(0);
-      pl.pos.p[1] = pos(1);
-      pl.pos.p[2] = pos(2);
-      pl.pos.p[3] = 1.0f;
-//      std::cout << "Point light pos: " << pos << std::endl;
-
-      pl.att.p[0] = light->getAttenuation()(0);
-      pl.att.p[1] = light->getAttenuation()(1);
-      pl.att.p[2] = light->getAttenuation()(2);
-
-      lights.push_back(pl);
-      light_ids.push_back(light->getLightName());
+      GL::GLPointLight pl;
+      GL::OpenGLManager::fillGLPointLight(pl,
+                                          light->getAmbient(), light->getDiffuse(), light->getSpecular(),
+                                          cammat * light->getGlobalPos(),
+                                          light->getAttenuation()
+                                          );
+      pointlights_data.push_back(pl);
     }
 
     for( int i = 0; i < spot_lights.size(); ++i ) {
 
       SpotLight *light = spot_lights[i];
 
-      GL::GLLight sl;
-      sl.amb.p[0] = light->getAmbient().getRedC();
-      sl.amb.p[1] = light->getAmbient().getGreenC();
-      sl.amb.p[2] = light->getAmbient().getBlueC();
-      sl.amb.p[3] = light->getAmbient().getAlphaC();
-
-      sl.dif.p[0] = light->getDiffuse().getRedC();
-      sl.dif.p[1] = light->getDiffuse().getGreenC();
-      sl.dif.p[2] = light->getDiffuse().getBlueC();
-      sl.dif.p[3] = light->getDiffuse().getAlphaC();
-
-      sl.spc.p[0] = light->getSpecular().getRedC();
-      sl.spc.p[1] = light->getSpecular().getGreenC();
-      sl.spc.p[2] = light->getSpecular().getBlueC();
-      sl.spc.p[3] = light->getSpecular().getAlphaC();
-
-      Point<float,3> pos = cammat * light->getGlobalPos();
-      sl.pos.p[0] = pos(0);
-      sl.pos.p[1] = pos(1);
-      sl.pos.p[2] = pos(2);
-      sl.pos.p[3] = 1.0f;
-//      std::cout << "Point light pos: " << pos << std::endl;
-
-      Vector<float,3> dir = cammat * light->getGlobalDir();
-      sl.dir.p[0] = dir(0);
-      sl.dir.p[1] = dir(1);
-      sl.dir.p[2] = dir(2);
-
-      sl.spot_cut = light->getCutOff().getDeg();
-      sl.spot_exp = light->getExponent();
-
-      lights.push_back(sl);
-      light_ids.push_back(light->getLightName());
+      GL::GLSpotLight sl;
+      GL::OpenGLManager::fillGLSpotLight(sl,
+                                         light->getAmbient(), light->getDiffuse(), light->getSpecular(),
+                                         cammat * light->getGlobalPos(),
+                                         light->getAttenuation(),
+                                         cammat * light->getGlobalDir(),
+                                         std::cos( light->getCutOff().getDeg() * M_PI / 180.0f )
+                                         );
+      spotlights_data.push_back(sl);
     }
 
-//    std::reverse( lights.begin(), lights.end() );
-//    std::reverse( light_ids.begin(), light_ids.end() );
+    GL::OpenGLManager::fillLightUBO(_dirlight_ubo,   dirlight_header,   dirlights_data );
+    GL::OpenGLManager::fillLightUBO(_pointlight_ubo, pointlight_header, pointlights_data );
+    GL::OpenGLManager::fillLightUBO(_spotlight_ubo,  spotlight_header,  spotlights_data );
 
-//    GL::OGL::resetLightBuffer( header, light_ids, lights );
 
-    _light_ubo.bufferData( sizeof(GL::GLVector<4,GLuint>) + lights.size() * sizeof(GL::GLLight),
-                                  0x0, GL_DYNAMIC_DRAW );
-    _light_ubo.bufferSubData( 0, sizeof(GL::GLVector<4,GLuint>), &header );
-    _light_ubo.bufferSubData( sizeof(GL::GLVector<4,GLuint>), sizeof(GL::GLLight) * lights.size(), &lights[0] );
+
+
+
+
+
 
 //    std::cout << "Updating light UBO!" << std::endl;
-//    std::cout << "  - Sun(s):             " << header.p[0] << std::endl;
-//    std::cout << "  - Point Light(s):     " << header.p[1] - header.p[0] << std::endl;
-//    std::cout << "  - Spot Light(s):      " << header.p[2] - header.p[1] << std::endl;
+//    std::cout << "  - Total nr of Lights: " << dirlight_header.no_lights + pointlight_header.no_lights + spotlight_header.no_lights << std::endl;
+//    std::cout << "  - Sun(s):             " << dirlight_header.no_lights << std::endl;
+//    std::cout << "  - Point Light(s):     " << pointlight_header.no_lights << std::endl;
+//    std::cout << "  - Spot Light(s):      " << spotlight_header.no_lights << std::endl;
 //    std::cout << "  --------------------" << std::endl;
-//    std::cout << "  - Total nr of Lights: "<< header.p[3] << std::endl;
+
+//    for( int i = 0; i < dirlights_data.size(); ++i) {
+
+//      if( i < dirlight_header.no_lights) std::cout << "  Directional light";
+//      else                                std::cout << "ERROR";
+//      std::cout << " (" << i << ")" << std::endl;
+
+//      const GL::GLDirectionalLight& light = dirlights_data.at(i);
+//      const GLfloat *amb = light.base.amb.p;
+//      const GLfloat *dif = light.base.dif.p;
+//      const GLfloat *spc = light.base.spc.p;
+//      const GLfloat *dir = light.dir.p;
+
+//      std::cout << "    - Amb: " << amb[0] << ", " << amb[1] << ", " << amb[2] << std::endl;
+//      std::cout << "    - Dif: " << dif[0] << ", " << dif[1] << ", " << dif[2] << std::endl;
+//      std::cout << "    - Spc: " << spc[0] << ", " << spc[1] << ", " << spc[2] << std::endl;
+//      std::cout << "    - Dir: " << dir[0] << ", " << dir[1] << ", " << dir[2] << std::endl;
+//    }
+
+//    for( int i = 0; i < pointlights_data.size(); ++i) {
+
+//      if( i < pointlight_header.no_lights) std::cout << "  Pointlight";
+//      else                                 std::cout << "ERROR";
+//      std::cout << " (" << i << ")" << std::endl;
+
+//      const GL::GLPointLight& light = pointlights_data.at(i);
+//      const GLfloat *amb = light.base.amb.p;
+//      const GLfloat *dif = light.base.dif.p;
+//      const GLfloat *spc = light.base.spc.p;
+//      const GLfloat *pos = light.pos.p;
+//      const GL::GLAttenuation &att = light.attenuation;
+
+//      std::cout << "    - Amb: " << amb[0]       << ", " << amb[1]     << ", " << amb[2]        << std::endl;
+//      std::cout << "    - Dif: " << dif[0]       << ", " << dif[1]     << ", " << dif[2]        << std::endl;
+//      std::cout << "    - Spc: " << spc[0]       << ", " << spc[1]     << ", " << spc[2]        << std::endl;
+//      std::cout << "    - Pos: " << pos[0]       << ", " << pos[1]     << ", " << pos[2]        << std::endl;
+//      std::cout << "    - Att: " << att.constant << ", " << att.linear << ", " << att.quadratic << std::endl;
+//    }
+
+//    for( int i = 0; i < spotlights_data.size(); ++i) {
+
+//      if( i < spotlight_header.no_lights) std::cout << "  Spotlight";
+//      else                                std::cout << "ERROR";
+//      std::cout << " (" << i << ")" << std::endl;
+
+//      const GL::GLSpotLight& light = spotlights_data.at(i);
+//      const GLfloat *amb = light.pointlight.base.amb.p;
+//      const GLfloat *dif = light.pointlight.base.dif.p;
+//      const GLfloat *spc = light.pointlight.base.spc.p;
+//      const GLfloat *pos = light.pointlight.pos.p;
+//      const GL::GLAttenuation &att = light.pointlight.attenuation;
+//      const GLfloat *dir = light.dir.p;
+//      const GLfloat &cutoff = light.cutoff;
+
+//      std::cout << "    - Amb: " << amb[0]       << ", " << amb[1]     << ", " << amb[2]        << std::endl;
+//      std::cout << "    - Dif: " << dif[0]       << ", " << dif[1]     << ", " << dif[2]        << std::endl;
+//      std::cout << "    - Spc: " << spc[0]       << ", " << spc[1]     << ", " << spc[2]        << std::endl;
+//      std::cout << "    - Pos: " << pos[0]       << ", " << pos[1]     << ", " << pos[2]        << std::endl;
+//      std::cout << "    - Att: " << att.constant << ", " << att.linear << ", " << att.quadratic << std::endl;
+//      std::cout << "    - Dir: " << dir[0]       << ", " << dir[1]     << ", " << dir[2]        << std::endl;
+//      std::cout << "    - Cut: " << cutoff                                                      << std::endl;
+//    }
 
   }
 
   const GL::UniformBufferObject&
-  DefaultRenderer::getLightUBO() const { return _light_ubo; }
+  DefaultRenderer::getDirectionalLightUBO() const { return _dirlight_ubo; }
+
+  const GL::UniformBufferObject&
+  DefaultRenderer::getPointLightUBO() const { return _pointlight_ubo; }
+
+  const GL::UniformBufferObject&
+  DefaultRenderer::getSpotLightUBO() const { return _spotlight_ubo; }
 
 
 } // END namespace GMlib

@@ -31,6 +31,8 @@
 
 // gmlib
 #include "../render/gmdefaultrenderer.h"
+#include <opengl/gmopenglmanager.h>
+#include <opengl/shaders/gmgeometryshader.h>
 
 
 namespace GMlib {
@@ -82,7 +84,7 @@ namespace GMlib {
     setSurroundingSphere( Sphere<float,3>( Point<float,3>( 0.0 ), 1.0 ) );
 
     _color_prog.acquire("color");
-    _blinn_phong_prog.acquire("blinn_phong");
+    _shading_prog.acquire("directional_lighting");
 
 
     // Create geometry
@@ -92,19 +94,17 @@ namespace GMlib {
     double a = sqrt(k*k-b*b);
     if(_cutoff.getDeg()>90) b = -b;
 
-    Vector<float,3> d = _dir;
+    Vector<float,3> d = _up;
     Vector<float,3> n = d^d.getLinIndVec();
     d.setLength(b);
     n.setLength(a);
     UnitVector<float,3> n2 = -d;
     if(_cutoff.getDeg()!=90) n2 = Vector<float,3>((b/a)*n-(a/b)*d);
 
-    Vector<float,3> dir_lin_indp = _dir.getLinIndVec();
-    Vector<float,3> u = _dir ^ dir_lin_indp;
-    Vector<float,3> v = _dir ^ u;
+    Vector<float,3> v = d ^ n;
 
-    HqMatrix<float,3> m1(Angle(30),u,v,_pos);
-    HqMatrix<float,3> m2(Angle(-30),u,v,_pos);
+    HqMatrix<float,3> m1(Angle(30),n,v,_pos);
+    HqMatrix<float,3> m2(Angle(-30),n,v,_pos);
 
     Array<Point<float,3> > p1;
     p1 += _pos;
@@ -166,9 +166,6 @@ namespace GMlib {
     _light_geom_vbo.bufferData( _light_geom_elements * sizeof(GL::GLVertexNormal), dp_light.getPtr(), GL_STATIC_DRAW );
   }
 
-
-
-
   void SpotLightG::setCutOff(const Angle& cut_off) {
 
     SpotLight::setCutOff( cut_off );
@@ -176,79 +173,38 @@ namespace GMlib {
 
   void SpotLightG::localDisplay(const DefaultRenderer* renderer) const {
 
-    _blinn_phong_prog.bind(); {
+    _color_prog.bind(); {
 
-      // Model view and projection matrices
-      _blinn_phong_prog.setUniform( "u_mvmat", this->getModelViewMatrix(renderer->getCamera())  );
-      _blinn_phong_prog.setUniform( "u_mvpmat", this->getModelViewProjectionMatrix(renderer->getCamera())  );
+      // Common stuf for both geoemtry pieces
+      _color_prog.setUniform( "u_mvpmat", this->getModelViewProjectionMatrix(renderer->getCamera())  );
+      GL::AttributeLocation vert_loc   = _shading_prog.getAttributeLocation( "in_vertex" );
 
-      GL::AttributeLocation vert_loc   = _blinn_phong_prog.getAttributeLocation( "in_vertex" );
-      GL::AttributeLocation normal_loc = _blinn_phong_prog.getAttributeLocation( "in_normal" );
 
-      // Draw the light emitting surface
-      _blinn_phong_prog.setUniform( "u_mat_amb", GMmaterial::Emerald.getAmb() );
-      _blinn_phong_prog.setUniform( "u_mat_dif", GMmaterial::Emerald.getDif() );
-      _blinn_phong_prog.setUniform( "u_mat_spc", GMmaterial::Emerald.getSpc() );
-      _blinn_phong_prog.setUniform( "u_mat_shin", GMmaterial::Emerald.getShininess() );
+      // Render light housing
+      _color_prog.setUniform( "u_color", GMcolor::DarkGrey );
 
       _light_box_geom_vbo.bind();
       _light_box_geom_vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
-      _light_box_geom_vbo.enable( normal_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(sizeof(GL::GLVertex)) );
 
       glDrawArrays( GL_TRIANGLE_FAN, 0, _light_box_geom_elements );
 
-      _light_box_geom_vbo.disable(normal_loc);
       _light_box_geom_vbo.disable(vert_loc);
       _light_box_geom_vbo.unbind();
 
 
-      // Draw the light emitting surface
-      _blinn_phong_prog.setUniform( "u_mat_amb", getAmbient() );
-      _blinn_phong_prog.setUniform( "u_mat_dif", getDiffuse() );
-      _blinn_phong_prog.setUniform( "u_mat_spc", getSpecular() );
-      _blinn_phong_prog.setUniform( "u_mat_shin", 100 );
+      // Render light surface
+      _color_prog.setUniform( "u_color", getAmbient() );
 
       _light_geom_vbo.bind();
       _light_geom_vbo.enable( vert_loc,   3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
-      _light_geom_vbo.enable( normal_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(sizeof(GL::GLVertex)) );
 
       glDrawArrays( GL_TRIANGLE_FAN, 0, _light_geom_elements );
 
-      _light_geom_vbo.disable(normal_loc);
       _light_geom_vbo.disable(vert_loc);
       _light_geom_vbo.unbind();
 
-    } _blinn_phong_prog.unbind();
+    } _color_prog.unbind();
 
-
-//    _color_prog.bind(); {
-
-//      // Model view and projection matrices
-//      _color_prog.setUniform( "u_mvpmat", this->getModelViewProjectionMatrix(renderer->getCamera()) );
-
-//      GL::AttributeLocation vert_loc = _color_prog.getAttributeLocation( "in_vertex" );
-
-//      // Draw top and bottom caps
-//      _color_prog.setUniform( "u_color",  GMcolor::Grey );
-//      _light_box_geom_vbo.bind();
-//      _light_box_geom_vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
-
-//      glDrawArrays( GL_TRIANGLE_FAN, 0, _light_box_geom_elements );
-
-//      _light_box_geom_vbo.disable(vert_loc);
-//      _light_box_geom_vbo.unbind();
-
-//      // Draw the light emitting surface
-//      _color_prog.setUniform( "u_color",  getAmbient() );
-//      _light_geom_vbo.bind();
-//      _light_geom_vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
-
-//      glDrawArrays( GL_TRIANGLE_FAN, 0, _light_geom_elements );
-
-//      _light_geom_vbo.disable(vert_loc);
-//      _light_geom_vbo.unbind();
-
-//    } _color_prog.unbind();
   }
 
 

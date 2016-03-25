@@ -80,7 +80,9 @@ namespace GMlib {
     const TextureRenderTarget&      getFrontRenderTarget() const;
     const TextureRenderTarget&      getBackRenderTarget() const;
 
-    const GL::UniformBufferObject&    getLightUBO() const;
+    const GL::UniformBufferObject&    getDirectionalLightUBO() const;
+    const GL::UniformBufferObject&    getPointLightUBO() const;
+    const GL::UniformBufferObject&    getSpotLightUBO() const;
 
   protected:
     virtual void            prepare(Camera *cam);
@@ -131,7 +133,9 @@ namespace GMlib {
     TextureRenderTarget     *_front_rt;
     TextureRenderTarget     *_back_rt;
 
-    GL::UniformBufferObject           _light_ubo;
+    GL::UniformBufferObject           _dirlight_ubo;
+    GL::UniformBufferObject           _pointlight_ubo;
+    GL::UniformBufferObject           _spotlight_ubo;
     void                              updateLightUBO();
 
 

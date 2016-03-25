@@ -32,6 +32,7 @@
 
 // gmlib
 #include <scene/camera/gmcamera.h>
+#include <opengl/shaders/gmgeometryshader.h>
 
 namespace GMlib {
 
@@ -39,6 +40,7 @@ namespace GMlib {
   template <typename T, int n>
   PTriangleDefaultVisualizer<T,n>::PTriangleDefaultVisualizer()
     : _no_elements(0) {
+
 
     _prog.acquire("blinn_phong");
     _geometry_prog.acquire("color");
@@ -65,7 +67,9 @@ namespace GMlib {
       _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
       // Lights
-      _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "DirectionalLights",  renderer->getDirectionalLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "PointLights",        renderer->getPointLightUBO(), 1 );
+      _prog.setUniformBlockBinding( "SpotLights",         renderer->getSpotLightUBO(), 2 );
 
       // Get Material Data
       const Material &m = obj->getMaterial();
@@ -83,8 +87,8 @@ namespace GMlib {
 
       draw();
 
-      _vbo.disable( vert_loc );
       _vbo.disable( normal_loc );
+      _vbo.disable( vert_loc );
       _vbo.unbind();
 
     } _prog.unbind();

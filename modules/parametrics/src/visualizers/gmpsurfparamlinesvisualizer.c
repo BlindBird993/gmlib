@@ -83,7 +83,9 @@ void PSurfParamLinesVisualizer<T,n>::render( const SceneObject* obj, const Defau
     _prog.setUniform( "u_mvpmat", pmat * mvmat );
 
     // Lights
-    _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
+    _prog.setUniformBlockBinding( "DirectionalLights",  renderer->getDirectionalLightUBO(), 0 );
+    _prog.setUniformBlockBinding( "PointLights",        renderer->getPointLightUBO(), 1 );
+    _prog.setUniformBlockBinding( "SpotLights",         renderer->getSpotLightUBO(), 2 );
 
     // Base material
     _prog.setUniform( "u_mat_amb", obj->getMaterial().getAmb() );

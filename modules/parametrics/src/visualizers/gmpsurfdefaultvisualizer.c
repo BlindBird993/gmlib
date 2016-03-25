@@ -98,7 +98,9 @@ namespace GMlib {
       _prog.setUniform( "u_nmat", nmat );
 
       // Lights
-      _prog.setUniformBlockBinding( "Lights", renderer->getLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "DirectionalLights",  renderer->getDirectionalLightUBO(), 0 );
+      _prog.setUniformBlockBinding( "PointLights",        renderer->getPointLightUBO(), 1 );
+      _prog.setUniformBlockBinding( "SpotLights",         renderer->getSpotLightUBO(), 2 );
 
       // Material
       const Material &m = obj->getMaterial();
