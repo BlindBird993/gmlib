@@ -85,8 +85,8 @@ namespace GMlib {
 //    const SqMatrix<float,3> &nmat = obj->getNormalMatrix(cam);
 
     SqMatrix<float,3>        nmat = mvmat.getRotationMatrix();
-    nmat.invertOrthoNormal();
-    nmat.transpose();
+//    nmat.invertOrthoNormal();
+//    nmat.transpose();
 
     this->glSetDisplayMode();
 

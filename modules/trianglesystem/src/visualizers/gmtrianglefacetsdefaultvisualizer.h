@@ -57,18 +57,22 @@ namespace GMlib {
 
     void          replot(TriangleFacets<T> *tf);
 
+
+
+  protected:
+    GL::VertexBufferObject        _vbo;
+    GL::IndexBufferObject         _ibo;
+    void                          draw() const;
+
+
   private:
     GL::Program                   _prog;
     GL::Program                   _color_prog;
-
-    GL::VertexBufferObject        _vbo;
-    GL::IndexBufferObject         _ibo;
 
     std::vector<Color>            _colors;
 
     int                           _no_elements;
 
-    void                          draw() const;
     void                          initShader();
 
   }; // END class TriangleFacetsDefaultVisualizer

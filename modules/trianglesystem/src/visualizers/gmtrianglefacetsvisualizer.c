@@ -46,7 +46,7 @@ namespace GMlib {
 
       TSVertex<float> *v = tf->getVertex(i);
       const Point<float,3> &pos = v->getPos();
-      const Vector<float,3> &nor = v->getDir();
+      Vector<float,3> nor = v->getDir();
 
       vertices[i].x = pos(0);
       vertices[i].y = pos(1);

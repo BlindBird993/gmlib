@@ -49,8 +49,7 @@ namespace GMlib {
     glGenBuffers( 1, &_vbo );
     glGenBuffers( 1, &_ibo );
 
-    _default_visualizer = new TriangleFacetsDefaultVisualizer<T>();
-    enableDefaultVisualizer( true );
+    _default_visualizer = 0x0;
   }
 
 
@@ -66,8 +65,7 @@ namespace GMlib {
     glGenBuffers( 1, &_vbo );
     glGenBuffers( 1, &_ibo );
 
-    _default_visualizer = new TriangleFacetsDefaultVisualizer<T>();
-    enableDefaultVisualizer( true );
+    _default_visualizer = 0x0;
   }
 
 
@@ -125,7 +123,8 @@ namespace GMlib {
     glDeleteBuffers( 1, &_ibo );
 
     enableDefaultVisualizer( false );
-    delete _default_visualizer;
+    if( _default_visualizer )
+      delete _default_visualizer;
   }
 
 
@@ -1067,8 +1066,11 @@ namespace GMlib {
 
     if( !enable )
       removeVisualizer( _default_visualizer );
-    else
+    else {
+
+      if(!_default_visualizer) _default_visualizer = new TriangleFacetsDefaultVisualizer<T>();
       insertVisualizer( _default_visualizer );
+    }
   }
 
   template <typename T>
@@ -1094,7 +1096,7 @@ namespace GMlib {
     if( visu )
       _tf_visualizers.remove( visu );
 
-    this->removeVisualizer( visu );
+    SceneObject::removeVisualizer( visu );
   }
 
   template <typename T>
@@ -1237,8 +1239,9 @@ namespace GMlib {
     Vector<T,3> nor(T(0));
     for( int i = 0; i < tris.getSize(); i++ )
       nor += tris[i]->getNormal();
+    nor /= float(tris.getSize());
 
-    this->setDir( UnitVector<T,3>(nor) );
+    this->setDir( Vector<T,3>(nor) );
   }
 
 
@@ -2479,7 +2482,7 @@ namespace GMlib {
 
     Array<TSVertex<T>*> v = getVertices();
     Vector<T,3> a = v[1]->getPosition() - v[0]->getPosition();
-    Vector<T,3> b = v[2]->getPosition() - v[1]->getPosition();
+    Vector<T,3> b = v[2]->getPosition() - v[0]->getPosition();
 
     return  a^b;
   }
