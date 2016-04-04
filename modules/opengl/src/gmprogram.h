@@ -69,15 +69,34 @@ namespace GL {
     void                      setUniform( const std::string& name, float f ) const;
     void                      setUniform( const std::string& name, int i ) const;
     void                      setUniform( const std::string& name, const Color& c ) const;
-    void                      setUniform( const std::string& name, const Matrix<float,3,3>& matrix, bool transpose = true ) const;
-    void                      setUniform( const std::string& name, const Matrix<float,4,4>& matrix, bool transpose = true ) const;
+    void                      setUniform( const std::string& name, const APoint<int,2>& p ) const;
+    void                      setUniform( const std::string& name, const APoint<float,2>& p ) const;
     void                      setUniform( const std::string& name, const APoint<float,3>& p ) const;
     void                      setUniform( const std::string& name, const APoint<float,4>& p ) const;
     void                      setUniform( const std::string& name, const Texture&, GLenum tex_unit, GLuint tex_nr ) const;
+    void                      setUniform( const std::string& name, const Matrix<float,3,3>& matrix, bool transpose = true ) const;
+    void                      setUniform( const std::string& name, const Matrix<float,4,4>& matrix, bool transpose = true ) const;
     void                      setUniformBlockBinding( const std::string& name, const UniformBufferObject& ubo, GLuint binding_point ) const;
+
 
     void                      attachShader( const Shader& shader ) const;
     void                      detachShader( const Shader& shader ) const;
+
+#ifdef GL_VERSION_4_1
+
+    void                      programUniform( const std::string& name, bool b ) const;
+    void                      programUniform( const std::string& name, float f ) const;
+    void                      programUniform( const std::string& name, int i ) const;
+    void                      programUniform( const std::string& name, const Color& c ) const;
+    void                      programUniform( const std::string& name, const APoint<int,2>& p ) const;
+    void                      programUniform( const std::string& name, const APoint<float,2>& p ) const;
+    void                      programUniform( const std::string& name, const APoint<float,3>& p ) const;
+    void                      programUniform( const std::string& name, const APoint<float,4>& p ) const;
+    void                      programUniform( const std::string& name, const Texture&, GLenum tex_unit, GLuint tex_nr ) const;
+    void                      programUniformMatrix( const std::string& name, const Matrix<float,3,3>& matrix, bool transpose = true ) const;
+    void                      programUniformMatrix( const std::string& name, const Matrix<float,4,4>& matrix, bool transpose = true ) const;
+
+#endif // GL_VERSION_4_1
 
 
   private:
@@ -91,6 +110,8 @@ namespace GL {
     virtual void              doBind( GLuint id ) const;
     virtual GLuint            doGenerate() const;
     virtual void              doDelete(GLuint id) const;
+
+
 
 
   }; // END class Program

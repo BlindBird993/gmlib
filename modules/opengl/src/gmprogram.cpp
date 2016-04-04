@@ -226,6 +226,16 @@ void Program::setUniform(const std::string& name, const Matrix<float,4,4>& matri
       ));
 }
 
+void Program::setUniform(const std::string &name, const APoint<int, 2> &p) const {
+
+  GL_CHECK(::glUniform2iv( getUniformLocation(name)(), 1, p.getPtr() ));
+}
+
+void Program::setUniform(const std::string &name, const APoint<float, 2> &p) const {
+
+  GL_CHECK(::glUniform2fv( getUniformLocation(name)(), 1, p.getPtr() ));
+}
+
 void Program::setUniform(const std::string &name, const APoint<float, 3> &p) const {
 
   GL_CHECK(::glUniform3fv( getUniformLocation(name)(), 1, p.getPtr() ));
@@ -258,3 +268,82 @@ void Program::setUniformBlockBinding(const std::string &name, const UniformBuffe
   GL_CHECK(::glUniformBlockBinding( getId(), getUniformBlockIndex( name)(), binding_point ));
   GL_CHECK(::glBindBufferBase( GL_UNIFORM_BUFFER, binding_point, ubo.getId() ));
 }
+
+
+
+
+
+#ifdef GL_VERSION_4_1
+
+void Program::programUniform(const std::string &name, bool b) const {
+
+  GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation(name)(), b ));
+}
+
+void Program::programUniform(const std::string &name, float f) const {
+
+  GL_CHECK(::glProgramUniform1f( getId(), getUniformLocation( name )(), f ));
+}
+
+void Program::programUniform( const std::string& name, int i ) const {
+
+  GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation( name )(), i ));
+}
+
+
+void Program::programUniform(const std::__cxx11::string& name, const GMlib::Color& c) const {
+  GL_CHECK(::glProgramUniform4f(
+      getId(),
+      getUniformLocation( name )(),
+      c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC()
+      ));
+}
+
+void Program::programUniform(const std::string &name, const APoint<int, 2> &p) const {
+
+  GL_CHECK(::glProgramUniform2iv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+}
+
+void Program::programUniform(const std::string &name, const APoint<float, 2> &p) const {
+
+  GL_CHECK(::glProgramUniform2fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+}
+
+void Program::programUniform(const std::string &name, const APoint<float, 3> &p) const {
+
+  GL_CHECK(::glProgramUniform3fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+}
+
+void Program::programUniform(const std::string &name, const APoint<float, 4> &p) const {
+
+  GL_CHECK(::glProgramUniform4fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+}
+
+void Program::programUniform(const std::string &name, const Texture& tex, GLenum tex_unit, GLuint tex_nr ) const {
+
+  GL_CHECK(::glActiveTexture( tex_unit ));
+  GL_CHECK(::glBindTexture( tex.getTarget(), tex.getId() ));
+  GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation( name )(), tex_nr ));
+}
+
+
+void Program::programUniformMatrix(const std::string& name, const Matrix<float,3,3>& matrix, bool transpose ) const {
+
+  GL_CHECK(::glProgramUniformMatrix3fv(
+      getId(),
+      getUniformLocation( name )(),
+      1, transpose, matrix.getPtr()
+      ));
+}
+
+void Program::programUniformMatrix(const std::string& name, const Matrix<float,4,4>& matrix, bool transpose ) const {
+
+  GL_CHECK(::glProgramUniformMatrix4fv(
+      getId(),
+      getUniformLocation( name )(),
+      1, transpose, matrix.getPtr()
+      ));
+}
+
+
+#endif // GL_VERSION_4_1
