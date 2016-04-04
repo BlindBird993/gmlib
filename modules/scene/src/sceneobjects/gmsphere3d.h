@@ -141,8 +141,8 @@ namespace GMlib {
     _color_prog.bind(); {
 
       // Model view and projection matrices
-      _color_prog.setUniform( "u_mvpmat", modelview_projection );
-      _color_prog.setUniform( "u_color",  color );
+      _color_prog.uniform( "u_mvpmat", modelview_projection );
+      _color_prog.uniform( "u_color",  color );
 
       GL::AttributeLocation vert_loc = _color_prog.getAttributeLocation( "in_vertex" );
 
@@ -175,17 +175,17 @@ namespace GMlib {
 //    _shade_prog.bind(); {
 
 //      // Model view and projection matrices
-//      _shade_prog.setUniform( "u_mvmat",  modelview );
-//      _shade_prog.setUniform( "u_mvpmat", modelview * projection );
+//      _shade_prog.uniform( "u_mvmat",  modelview );
+//      _shade_prog.uniform( "u_mvpmat", modelview * projection );
 
 //      // Lights
-//      _shade_prog.setUniformBlockBinding( "Lights", _lights_ubo, 0 );
+//      _shade_prog.uniformBlockBinding( "Lights", _lights_ubo, 0 );
 
 //      // Get Material Data
-//      _shade_prog.setUniform( "u_mat_amb",  material.getAmb() );
-//      _shade_prog.setUniform( "u_mat_dif",  material.getDif() );
-//      _shade_prog.setUniform( "u_mat_spc",  material.getSpc() );
-//      _shade_prog.setUniform( "u_mat_shin", material.getShininess() );
+//      _shade_prog.uniform( "u_mat_amb",  material.getAmb() );
+//      _shade_prog.uniform( "u_mat_dif",  material.getDif() );
+//      _shade_prog.uniform( "u_mat_spc",  material.getSpc() );
+//      _shade_prog.uniform( "u_mat_shin", material.getShininess() );
 
 //      GL::AttributeLocation vert_loc = _shade_prog.getAttributeLocation( "in_vertex" );
 //      GL::AttributeLocation normal_loc = _shade_prog.getAttributeLocation( "in_normal" );

@@ -65,10 +65,10 @@ namespace GMlib {
     GL_CHECK(::glLineWidth(_line_width));
     _prog.bind(); {
 
-      _prog.setUniform( "u_mvpmat", mvpmat );
+      _prog.uniform( "u_mvpmat", mvpmat );
 
-      _prog.setUniform( "u_color", GMcolor::LightGreen );
-      _prog.setUniform( "u_selected", false );
+      _prog.uniform( "u_color", GMcolor::LightGreen );
+      _prog.uniform( "u_selected", false );
 
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 

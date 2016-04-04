@@ -76,8 +76,8 @@ namespace GMlib {
     const Camera* cam = renderer->getCamera();
     _prog.bind(); {
 
-      _prog.setUniform( "u_color", color );
-      _prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
+      _prog.uniform( "u_color", color );
+      _prog.uniform( "u_mvpmat", obj->getModelViewProjectionMatrix(cam) );
       GL::AttributeLocation vertice_loc = _prog.getAttributeLocation( "in_vertex" );
 
       _bo_cube.bind();
@@ -98,8 +98,8 @@ namespace GMlib {
 
     _prog.bind(); {
 
-      _prog.setUniform( "u_mvmat", mvmat );
-      _prog.setUniform( "u_mvpmat", pmat * mvmat );
+      _prog.uniform( "u_mvmat", mvmat );
+      _prog.uniform( "u_mvpmat", pmat * mvmat );
 
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
@@ -114,17 +114,17 @@ namespace GMlib {
         const GLsizei frame_stride = 2 * sizeof(GLushort);
 
         glLineWidth( 2.0f );
-        _prog.setUniform( "u_color", GMcolor::Red );
+        _prog.uniform( "u_color", GMcolor::Red );
         glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(0x0) );
 
-        _prog.setUniform( "u_color", GMcolor::Green );
+        _prog.uniform( "u_color", GMcolor::Green );
         glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(frame_stride) );
 
-        _prog.setUniform( "u_color", GMcolor::Blue );
+        _prog.uniform( "u_color", GMcolor::Blue );
         glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, (const GLvoid*)(2*frame_stride) );
 
         glLineWidth( 1.0f );
-        _prog.setUniform( "u_color", GMcolor::LightGrey );
+        _prog.uniform( "u_color", GMcolor::LightGrey );
         glDrawElements( GL_LINES, 18, GL_UNSIGNED_SHORT, (const GLvoid*)(3*frame_stride) );
 
       } _bo_cube_frame_indices.unbind();
@@ -134,7 +134,7 @@ namespace GMlib {
       ::glEnable( GL_BLEND ); {
 
         glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-        _prog.setUniform( "u_color", blend_color );
+        _prog.uniform( "u_color", blend_color );
         _bo_cube_indices.bind();
           glDrawElements( GL_QUADS, 24, GL_UNSIGNED_SHORT, 0x0 );
         _bo_cube_indices.unbind();

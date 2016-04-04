@@ -56,7 +56,7 @@ namespace GMlib {
   void PCurveContoursVisualizer<T>::display() {
 
     const GL::GLProgram &prog = this->getRenderProgram();
-    prog.setUniform( "u_selected", this->_obj->isSelected() );
+    prog.uniform( "u_selected", this->_obj->isSelected() );
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
     GLuint color_loc = prog.getAttributeLocation( "in_color" );

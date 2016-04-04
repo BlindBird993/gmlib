@@ -197,12 +197,12 @@ UniformLocation Program::getUniformLocation(const std::string& name) const {
   return uniform_loc;
 }
 
-void Program::setUniform(const std::string &name, bool b) const {
+void Program::uniform(const std::string &name, bool b) const {
 
   GL_CHECK(::glUniform1i( getUniformLocation(name)(), b ));
 }
 
-void Program::setUniform(const std::string& name, const Color &c) const {
+void Program::uniform(const std::string& name, const Color &c) const {
 
   GL_CHECK(::glUniform4f(
       getUniformLocation( name )(),
@@ -210,7 +210,7 @@ void Program::setUniform(const std::string& name, const Color &c) const {
       ));
 }
 
-void Program::setUniform(const std::string& name, const Matrix<float,3,3>& matrix, bool transpose ) const {
+void Program::uniform(const std::string& name, const Matrix<float,3,3>& matrix, bool transpose ) const {
 
   GL_CHECK(::glUniformMatrix3fv(
       getUniformLocation( name )(),
@@ -218,7 +218,7 @@ void Program::setUniform(const std::string& name, const Matrix<float,3,3>& matri
       ));
 }
 
-void Program::setUniform(const std::string& name, const Matrix<float,4,4>& matrix, bool transpose ) const {
+void Program::uniform(const std::string& name, const Matrix<float,4,4>& matrix, bool transpose ) const {
 
   GL_CHECK(::glUniformMatrix4fv(
       getUniformLocation( name )(),
@@ -226,44 +226,44 @@ void Program::setUniform(const std::string& name, const Matrix<float,4,4>& matri
       ));
 }
 
-void Program::setUniform(const std::string &name, const APoint<int, 2> &p) const {
+void Program::uniform(const std::string &name, const APoint<int, 2> &p) const {
 
   GL_CHECK(::glUniform2iv( getUniformLocation(name)(), 1, p.getPtr() ));
 }
 
-void Program::setUniform(const std::string &name, const APoint<float, 2> &p) const {
+void Program::uniform(const std::string &name, const APoint<float, 2> &p) const {
 
   GL_CHECK(::glUniform2fv( getUniformLocation(name)(), 1, p.getPtr() ));
 }
 
-void Program::setUniform(const std::string &name, const APoint<float, 3> &p) const {
+void Program::uniform(const std::string &name, const APoint<float, 3> &p) const {
 
   GL_CHECK(::glUniform3fv( getUniformLocation(name)(), 1, p.getPtr() ));
 }
 
-void Program::setUniform(const std::string &name, const APoint<float, 4> &p) const {
+void Program::uniform(const std::string &name, const APoint<float, 4> &p) const {
 
   GL_CHECK(::glUniform4fv( getUniformLocation(name)(), 1, p.getPtr() ));
 }
 
-void Program::setUniform(const std::string &name, const Texture& tex, GLenum tex_unit, GLuint tex_nr ) const {
+void Program::uniform(const std::string &name, const Texture& tex, GLenum tex_unit, GLuint tex_nr ) const {
 
   GL_CHECK(::glActiveTexture( tex_unit ));
   GL_CHECK(::glBindTexture( tex.getTarget(), tex.getId() ));
   GL_CHECK(::glUniform1i( getUniformLocation( name )(), tex_nr ));
 }
 
-void Program::setUniform(const std::string &name, float f) const {
+void Program::uniform(const std::string &name, float f) const {
 
   GL_CHECK(::glUniform1f( getUniformLocation( name )(), f ));
 }
 
-void Program::setUniform( const std::string& name, int i ) const {
+void Program::uniform( const std::string& name, int i ) const {
 
   GL_CHECK(::glUniform1i( getUniformLocation( name )(), i ));
 }
 
-void Program::setUniformBlockBinding(const std::string &name, const UniformBufferObject &ubo, GLuint binding_point) const {
+void Program::bindBufferBase(const std::string &name, const UniformBufferObject &ubo, GLuint binding_point) const {
 
   GL_CHECK(::glUniformBlockBinding( getId(), getUniformBlockIndex( name)(), binding_point ));
   GL_CHECK(::glBindBufferBase( GL_UNIFORM_BUFFER, binding_point, ubo.getId() ));

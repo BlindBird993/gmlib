@@ -72,21 +72,21 @@ namespace GMlib {
     _prog.bind(); {
 
       // Model view and projection matrices
-      _prog.setUniform( "u_mvmat", mvmat );
-      _prog.setUniform( "u_mvpmat", pmat * mvmat );
-      _prog.setUniform( "u_nmat", nmat );
+      _prog.uniform( "u_mvmat", mvmat );
+      _prog.uniform( "u_mvpmat", pmat * mvmat );
+      _prog.uniform( "u_nmat", nmat );
 
       // Lights
-      _prog.setUniformBlockBinding( "DirectionalLights",  renderer->getDirectionalLightUBO(), 0 );
-      _prog.setUniformBlockBinding( "PointLights",        renderer->getPointLightUBO(), 1 );
-      _prog.setUniformBlockBinding( "SpotLights",         renderer->getSpotLightUBO(), 2 );
+      _prog.bindBufferBase( "DirectionalLights",  renderer->getDirectionalLightUBO(), 0 );
+      _prog.bindBufferBase( "PointLights",        renderer->getPointLightUBO(), 1 );
+      _prog.bindBufferBase( "SpotLights",         renderer->getSpotLightUBO(), 2 );
 
       // Get Material Data
       const Material &m = obj->getMaterial();
-      _prog.setUniform( "u_mat_amb", m.getAmb() );
-      _prog.setUniform( "u_mat_dif", m.getDif() );
-      _prog.setUniform( "u_mat_spc", m.getSpc() );
-      _prog.setUniform( "u_mat_shi", m.getShininess() );
+      _prog.uniform( "u_mat_amb", m.getAmb() );
+      _prog.uniform( "u_mat_dif", m.getDif() );
+      _prog.uniform( "u_mat_spc", m.getSpc() );
+      _prog.uniform( "u_mat_shi", m.getShininess() );
 
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
       GL::AttributeLocation normal_loc = _prog.getAttributeLocation( "in_normal" );
@@ -224,8 +224,8 @@ namespace GMlib {
   void TriangleFacetsDefaultVisualizer<T>::renderGeometry(const SceneObject* obj, const Renderer *renderer, const Color &color ) const {
 
     _color_prog.bind(); {
-        _color_prog.setUniform("u_color", color);
-        _color_prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
+        _color_prog.uniform("u_color", color);
+        _color_prog.uniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
         GL::AttributeLocation vertice_loc = _color_prog.getAttributeLocation( "in_vertex" );
 
         _vbo.bind();

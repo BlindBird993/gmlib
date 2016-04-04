@@ -176,12 +176,12 @@ namespace GMlib {
     _color_prog.bind(); {
 
       // Common stuf for both geoemtry pieces
-      _color_prog.setUniform( "u_mvpmat", this->getModelViewProjectionMatrix(renderer->getCamera())  );
+      _color_prog.uniform( "u_mvpmat", this->getModelViewProjectionMatrix(renderer->getCamera())  );
       GL::AttributeLocation vert_loc   = _shading_prog.getAttributeLocation( "in_vertex" );
 
 
       // Render light housing
-      _color_prog.setUniform( "u_color", GMcolor::DarkGrey );
+      _color_prog.uniform( "u_color", GMcolor::DarkGrey );
 
       _light_box_geom_vbo.bind();
       _light_box_geom_vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
@@ -193,7 +193,7 @@ namespace GMlib {
 
 
       // Render light surface
-      _color_prog.setUniform( "u_color", getAmbient() );
+      _color_prog.uniform( "u_color", getAmbient() );
 
       _light_geom_vbo.bind();
       _light_geom_vbo.enable( vert_loc,   3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );
@@ -213,8 +213,8 @@ namespace GMlib {
     _color_prog.bind(); {
 
       // Model view and projection matrices
-      _color_prog.setUniform( "u_mvpmat", this->getModelViewProjectionMatrix(renderer->getCamera()) );
-      _color_prog.setUniform( "u_color",  color );
+      _color_prog.uniform( "u_mvpmat", this->getModelViewProjectionMatrix(renderer->getCamera()) );
+      _color_prog.uniform( "u_color",  color );
 
       GL::AttributeLocation vert_loc = _color_prog.getAttributeLocation( "in_vertex" );
 

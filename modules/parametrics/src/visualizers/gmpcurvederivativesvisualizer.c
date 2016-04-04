@@ -57,8 +57,8 @@ namespace GMlib {
 
     _prog.bind(); {
 
-      _prog.setUniform( "u_mvpmat", mvpmat );
-      _prog.setUniform( "u_color", _color );
+      _prog.uniform( "u_mvpmat", mvpmat );
+      _prog.uniform( "u_color", _color );
 
       // Vertex attribute location
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );

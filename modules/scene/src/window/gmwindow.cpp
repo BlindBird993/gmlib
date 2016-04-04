@@ -359,9 +359,9 @@ namespace GMlib {
       const ViewSet &top_view_set = getTopViewSet();
       _border_prog.bind();
 
-      _border_prog.setUniform( "u_mvpmat", _ortho_mat );
-      _border_prog.setUniform( "u_selected", false );
-      _border_prog.setUniform( "u_color", top_view_set.getBorderColor() );
+      _border_prog.uniform( "u_mvpmat", _ortho_mat );
+      _border_prog.uniform( "u_selected", false );
+      _border_prog.uniform( "u_color", top_view_set.getBorderColor() );
 
       const GL::AttributeLocation vert_loc = _border_prog.getAttributeLocation( "in_vertex" );
       const GL::VertexBufferObject &border_vbo = top_view_set.getBorderVBO();

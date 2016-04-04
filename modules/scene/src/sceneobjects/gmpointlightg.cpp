@@ -75,18 +75,11 @@ namespace GMlib {
   void PointLightG::localDisplay(const DefaultRenderer* renderer) const {
 
     _sphere.render( this->getModelViewProjectionMatrix(renderer->getCamera()), getAmbient() );
-
-////    _sphere.render( getModelViewMatrix(cam), getProjectionMatrix(cam), Material(getAmbient(),getDiffuse(),getSpecular()));
-    //    _sphere.render( getModelViewProjectionMatrix(cam), getAmbient() );
   }
 
   void PointLightG::localSelect(const Renderer* renderer, const Color& color) const {
 
-
-//    prog.setUniform( "u_mvpmat", getModelViewProjectionMatrix(cam) );
     _sphere.render( this->getModelViewProjectionMatrix(renderer->getCamera()), color );
-
-
   }
 
 

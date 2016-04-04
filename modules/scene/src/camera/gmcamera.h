@@ -420,18 +420,18 @@ namespace GMlib {
 
 //    prog.bind();
 
-//    prog.setUniform( "u_mvpmat", mvpmat, 1, true );
-//    prog.setUniform( "u_selected", false );
+//    prog.uniform( "u_mvpmat", mvpmat, 1, true );
+//    prog.uniform( "u_selected", false );
 
 
 //    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
 
-//    prog.setUniform( "u_color", GMcolor::Red );
+//    prog.uniform( "u_color", GMcolor::Red );
 //    bo_qs.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
 //      glDrawArrays( GL_QUAD_STRIP, 0, 10 );
 //    bo_qs.disableVertexArrayPointer( vert_loc );
 
-//    prog.setUniform( "u_color", GMcolor::Blue );
+//    prog.uniform( "u_color", GMcolor::Blue );
 //    bo_q.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
 //      glDrawArrays( GL_QUADS, 0, 8 );
 //    bo_q.disableVertexArrayPointer( vert_loc );

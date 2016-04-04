@@ -79,30 +79,30 @@ void PSurfParamLinesVisualizer<T,n>::render( const SceneObject* obj, const Defau
   _prog.bind(); {
 
     // Model view and projection matrices
-    _prog.setUniform( "u_mvmat", mvmat );
-    _prog.setUniform( "u_mvpmat", pmat * mvmat );
+    _prog.uniform( "u_mvmat", mvmat );
+    _prog.uniform( "u_mvpmat", pmat * mvmat );
 
     // Lights
-    _prog.setUniformBlockBinding( "DirectionalLights",  renderer->getDirectionalLightUBO(), 0 );
-    _prog.setUniformBlockBinding( "PointLights",        renderer->getPointLightUBO(), 1 );
-    _prog.setUniformBlockBinding( "SpotLights",         renderer->getSpotLightUBO(), 2 );
+    _prog.bindBufferBase( "DirectionalLights",  renderer->getDirectionalLightUBO(), 0 );
+    _prog.bindBufferBase( "PointLights",        renderer->getPointLightUBO(), 1 );
+    _prog.bindBufferBase( "SpotLights",         renderer->getSpotLightUBO(), 2 );
 
     // Base material
-    _prog.setUniform( "u_mat_amb", obj->getMaterial().getAmb() );
-    _prog.setUniform( "u_mat_dif", obj->getMaterial().getDif() );
-    _prog.setUniform( "u_mat_spc", obj->getMaterial().getSpc() );
-    _prog.setUniform( "u_mat_shi", obj->getMaterial().getShininess() );
+    _prog.uniform( "u_mat_amb", obj->getMaterial().getAmb() );
+    _prog.uniform( "u_mat_dif", obj->getMaterial().getDif() );
+    _prog.uniform( "u_mat_spc", obj->getMaterial().getSpc() );
+    _prog.uniform( "u_mat_shi", obj->getMaterial().getShininess() );
 
     // Line Material
-    _prog.setUniform( "u_mat_line_amb", _mat.getAmb() );
-    _prog.setUniform( "u_mat_line_dif", _mat.getDif() );
-    _prog.setUniform( "u_mat_line_spc", _mat.getSpc() );
-    _prog.setUniform( "u_mat_line_shi", _mat.getShininess() );
+    _prog.uniform( "u_mat_line_amb", _mat.getAmb() );
+    _prog.uniform( "u_mat_line_dif", _mat.getDif() );
+    _prog.uniform( "u_mat_line_spc", _mat.getSpc() );
+    _prog.uniform( "u_mat_line_shi", _mat.getShininess() );
 
     // Normal map
-    _prog.setUniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
-    _prog.setUniform( "u_ptex_u", _ptex_u, (GLenum)GL_TEXTURE1, 1 );
-    _prog.setUniform( "u_ptex_v", _ptex_v, (GLenum)GL_TEXTURE2, 2 );
+    _prog.uniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
+    _prog.uniform( "u_ptex_u", _ptex_u, (GLenum)GL_TEXTURE1, 1 );
+    _prog.uniform( "u_ptex_v", _ptex_v, (GLenum)GL_TEXTURE2, 2 );
 
     // Get vertex and texture attrib locations
     GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );

@@ -65,18 +65,19 @@ namespace GL {
     GL::UniformBlockIndex     getUniformBlockIndex( const std::string& name ) const;
     GL::UniformLocation       getUniformLocation( const std::string& name ) const;
 
-    void                      setUniform( const std::string& name, bool b ) const;
-    void                      setUniform( const std::string& name, float f ) const;
-    void                      setUniform( const std::string& name, int i ) const;
-    void                      setUniform( const std::string& name, const Color& c ) const;
-    void                      setUniform( const std::string& name, const APoint<int,2>& p ) const;
-    void                      setUniform( const std::string& name, const APoint<float,2>& p ) const;
-    void                      setUniform( const std::string& name, const APoint<float,3>& p ) const;
-    void                      setUniform( const std::string& name, const APoint<float,4>& p ) const;
-    void                      setUniform( const std::string& name, const Texture&, GLenum tex_unit, GLuint tex_nr ) const;
-    void                      setUniform( const std::string& name, const Matrix<float,3,3>& matrix, bool transpose = true ) const;
-    void                      setUniform( const std::string& name, const Matrix<float,4,4>& matrix, bool transpose = true ) const;
-    void                      setUniformBlockBinding( const std::string& name, const UniformBufferObject& ubo, GLuint binding_point ) const;
+    void                      uniform( const std::string& name, bool b ) const;
+    void                      uniform( const std::string& name, float f ) const;
+    void                      uniform( const std::string& name, int i ) const;
+    void                      uniform( const std::string& name, const Color& c ) const;
+    void                      uniform( const std::string& name, const APoint<int,2>& p ) const;
+    void                      uniform( const std::string& name, const APoint<float,2>& p ) const;
+    void                      uniform( const std::string& name, const APoint<float,3>& p ) const;
+    void                      uniform( const std::string& name, const APoint<float,4>& p ) const;
+    void                      uniform( const std::string& name, const Texture&, GLenum tex_unit, GLuint tex_nr ) const;
+    void                      uniform( const std::string& name, const Matrix<float,3,3>& matrix, bool transpose = true ) const;
+    void                      uniform( const std::string& name, const Matrix<float,4,4>& matrix, bool transpose = true ) const;
+
+    void                      bindBufferBase( const std::string& name, const UniformBufferObject& ubo, GLuint binding_point ) const;
 
 
     void                      attachShader( const Shader& shader ) const;

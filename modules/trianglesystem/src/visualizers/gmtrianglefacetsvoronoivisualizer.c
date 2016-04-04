@@ -60,19 +60,19 @@ namespace GMlib {
 /*
     const GL::GLProgram &prog = this->getRenderProgram();
 
-    prog.setUniform( "u_color", this->_obj->getColor() );
-    prog.setUniform( "u_selected", this->_obj->isSelected() );
-    prog.setUniform( "u_lighted", this->_obj->isLighted() );
-    prog.setUniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
-    prog.setUniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
-    prog.setUniform( "u_light_pos", Point<float,3>( 0.0f, 10.0f, 0.0f ) );
+    prog.uniform( "u_color", this->_obj->getColor() );
+    prog.uniform( "u_selected", this->_obj->isSelected() );
+    prog.uniform( "u_lighted", this->_obj->isLighted() );
+    prog.uniform( "u_mat_dif", this->_obj->getMaterial().getDif() );
+    prog.uniform( "u_light_dif", Color( 1.0f, 1.0f, 1.0f ) );//lights[0]->getDiffuse() );
+    prog.uniform( "u_light_pos", Point<float,3>( 0.0f, 10.0f, 0.0f ) );
 
     // Get Material Data
     const Material &m = this->_obj->getMaterial();
-    prog.setUniform( "u_amb", m.getAmb() );
-    prog.setUniform( "u_dif", m.getDif() );
-    prog.setUniform( "u_spc", m.getSpc() );
-    prog.setUniform( "u_shin", m.getShininess() );
+    prog.uniform( "u_amb", m.getAmb() );
+    prog.uniform( "u_dif", m.getDif() );
+    prog.uniform( "u_spc", m.getSpc() );
+    prog.uniform( "u_shin", m.getShininess() );
 
     GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
     GLuint normal_loc = prog.getAttributeLocation( "in_normal" );

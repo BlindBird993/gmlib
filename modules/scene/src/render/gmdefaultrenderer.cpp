@@ -525,12 +525,12 @@ namespace GMlib {
     {
       _render_prog.bind();
 
-      _render_prog.setUniform( "u_mvpmat", _ortho_mat );
-      _render_prog.setUniform( "u_tex", getRenderTexture(), (GLenum)GL_TEXTURE0, 0 );
-      _render_prog.setUniform( "u_tex_selected", getSelectTexture(), (GLenum)GL_TEXTURE1, 1 );
-      _render_prog.setUniform( "u_buf_w", static_cast<float>(_size(0)) );
-      _render_prog.setUniform( "u_buf_h", static_cast<float>(_size(1)) );
-      _render_prog.setUniform( "u_select_color", _select_color );
+      _render_prog.uniform( "u_mvpmat", _ortho_mat );
+      _render_prog.uniform( "u_tex", getRenderTexture(), (GLenum)GL_TEXTURE0, 0 );
+      _render_prog.uniform( "u_tex_selected", getSelectTexture(), (GLenum)GL_TEXTURE1, 1 );
+      _render_prog.uniform( "u_buf_w", static_cast<float>(_size(0)) );
+      _render_prog.uniform( "u_buf_h", static_cast<float>(_size(1)) );
+      _render_prog.uniform( "u_select_color", _select_color );
 
       GL::AttributeLocation vert_loc = _render_prog.getAttributeLocation( "in_vertex" );
       GL::AttributeLocation tex_coord_loc = _render_prog.getAttributeLocation( "in_tex_coord" );

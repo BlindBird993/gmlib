@@ -71,8 +71,8 @@ namespace GMlib {
     _prog.bind(); {
 
       // Model view and projection matrices
-      _prog.setUniform( "u_mvpmat", mvpmat );
-      _prog.setUniform( "u_color", obj->getColor() );
+      _prog.uniform( "u_mvpmat", mvpmat );
+      _prog.uniform( "u_color", obj->getColor() );
 
       // Vertex attribute location
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
@@ -108,8 +108,8 @@ namespace GMlib {
 
     _prog.bind(); {
 
-      _prog.setUniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
-      _prog.setUniform( "u_color", color );
+      _prog.uniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
+      _prog.uniform( "u_color", color );
       GL::AttributeLocation vertice_loc = _prog.getAttributeLocation( "in_vertex" );
 
       _vbo.bind();

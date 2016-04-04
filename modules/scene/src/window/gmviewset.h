@@ -190,7 +190,7 @@ namespace GMlib {
       GL::Program prog;
       prog.acquire("color");
 
-      prog.setUniform( "u_color", _border_color );
+      prog.uniform( "u_color", _border_color );
 
       GL::AttributeLocation vert_loc = prog.getAttributeLocation( "in_vertex" );
       _vbo.bind();
