@@ -32,6 +32,7 @@ list( APPEND HEADERS
   gmglobject.h
   gmopengl.h
   gmopenglmanager.h
+  gmprogrampipeline.h
   gmprogram.h
   gmrenderbufferobject.h
   gmshader.h
@@ -42,6 +43,7 @@ list( APPEND SOURCES
   gmbufferobject.cpp
   gmframebufferobject.cpp
   gmopenglmanager.cpp
+  gmprogrampipeline.cpp
   gmprogram.cpp
   gmrenderbufferobject.cpp
   gmshader.cpp
