@@ -291,7 +291,7 @@ void Program::programUniform( const std::string& name, int i ) const {
 }
 
 
-void Program::programUniform(const std::__cxx11::string& name, const GMlib::Color& c) const {
+void Program::programUniform(const std::string& name, const GMlib::Color& c) const {
   GL_CHECK(::glProgramUniform4f(
       getId(),
       getUniformLocation( name )(),
