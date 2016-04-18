@@ -98,12 +98,27 @@ namespace GMlib {
   }
 
   template <typename T>
+  void SelectorGridVisualizer<T>::setSelectors( DVector< Point<T,3> >& c, int tp) {
+
+    storeSelectorValuePointers(c);
+
+    // Fill VBO
+    _fillVBO();
+
+    // Define grid lines
+    switch(tp){
+      case 0: _makeLines();
+              break;
+      case 1: _makeTriangs();
+              break;
+      default: ;
+    }
+  }
+
+  template <typename T>
   void SelectorGridVisualizer<T>::setSelectors( DVector< Vector<T,3> >& c, int tp) {
 
-    // Order the selectors in the local Dvector structure
-    _c.setDim( c.getDim() );
-    for( int i = 0; i < c.getDim(); i++ )
-      _c[i] = &c[i];
+    storeSelectorValuePointers(c);
 
     // Fill VBO
     _fillVBO();
@@ -154,45 +169,55 @@ namespace GMlib {
     _ibo.bufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
   }
 
-
   template <typename T>
-  void SelectorGridVisualizer<T>::setSelectors( DMatrix< Vector<T,3> >& c ) {
+  void SelectorGridVisualizer<T>::_makeQuads(int m1, int m2) { // Fill IBO
 
-    // Order the selectors in a DVector structure
-    _c.setDim( c.getDim1() * c.getDim2() );
-    for( int i = 0; i < c.getDim1(); i++ )
-      for( int j = 0; j < c.getDim2(); j++ )
-        _c[i*c.getDim1()+j] = &c[i][j];
-
-    // Fill VBO
-    _fillVBO();
-
-
-    // Fill IBO
-    _no_indices = (c.getDim1() * (c.getDim2()-1) + (c.getDim1()-1) * c.getDim2()) * 2;
+    _no_indices = (m1 * (m2-1) + (m1-1) * m2) * 2;
     DVector<GLushort> indices(_no_indices);     // Create the indice buffer
 
 
     // "Lines" in i dir
     GLushort *iptr = indices.getPtr();
-    for( int i = 0; i < c.getDim1(); i++ ) {
-      for( int j = 0; j < c.getDim2()-1; j++ ) {
+    for( int i = 0; i < m1; i++ ) {
+      for( int j = 0; j < m2-1; j++ ) {
 
-        *iptr++ = i * c.getDim2() + j;
-        *iptr++ = i * c.getDim2() + j + 1;
+        *iptr++ = i * m2 + j;
+        *iptr++ = i * m2 + j + 1;
       }
     }
 
     // "Lines" in j dir
-    for( int i = 0; i < c.getDim1()-1; i++ ) {
-      for( int j = 0; j < c.getDim2(); j++ ) {
+    for( int i = 0; i < m1-1; i++ ) {
+      for( int j = 0; j < m2; j++ ) {
 
-        *iptr++ = i * c.getDim2() + j;
-        *iptr++ = (i+1) * c.getDim2() + j;
+        *iptr++ = i * m2 + j;
+        *iptr++ = (i+1) * m2 + j;
       }
     }
 
     _ibo.bufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
+  }
+
+  template <typename T>
+  void SelectorGridVisualizer<T>::setSelectors( DMatrix< Point<T,3> >& c ) {
+
+    storeSelectorValuePointers(c);
+
+    // Fill VBO
+    _fillVBO();
+
+    _makeQuads(c.getDim1(), c.getDim2());
+  }
+
+  template <typename T>
+  void SelectorGridVisualizer<T>::setSelectors( DMatrix< Vector<T,3> >& c ) {
+
+    storeSelectorValuePointers(c);
+
+    // Fill VBO
+    _fillVBO();
+
+    _makeQuads(c.getDim1(), c.getDim2());
   }
 
   template <typename T>
@@ -207,6 +232,44 @@ namespace GMlib {
       ptr[i].z = (*_c[i])(2);
     }
     _vbo.unmapBuffer();
+  }
+
+  template <typename T>
+  void SelectorGridVisualizer<T>::storeSelectorValuePointers( DVector<Point<T,3> >& c ) {
+
+    // Order the selectors in the local Dvector structure
+    _c.setDim( c.getDim() );
+    for( int i = 0; i < c.getDim(); i++ )
+      _c[i] = &c[i];
+  }
+
+  template <typename T>
+  void SelectorGridVisualizer<T>::storeSelectorValuePointers( DVector<Vector<T,3> >& c ) {
+
+    // Order the selectors in the local Dvector structure
+    _c.setDim( c.getDim() );
+    for( int i = 0; i < c.getDim(); i++ )
+      _c[i] = reinterpret_cast<Point<T,3>*>(&c[i]);
+  }
+
+  template <typename T>
+  void SelectorGridVisualizer<T>::storeSelectorValuePointers( DMatrix<Point<T,3> >& c ) {
+
+    // Order the selectors in a DVector structure
+    _c.setDim( c.getDim1() * c.getDim2() );
+    for( int i = 0; i < c.getDim1(); i++ )
+      for( int j = 0; j < c.getDim2(); j++ )
+        _c[i*c.getDim1()+j] = &c[i][j];
+  }
+
+  template <typename T>
+  void SelectorGridVisualizer<T>::storeSelectorValuePointers( DMatrix<Vector<T,3> >& c ) {
+
+    // Order the selectors in a DVector structure
+    _c.setDim( c.getDim1() * c.getDim2() );
+    for( int i = 0; i < c.getDim1(); i++ )
+      for( int j = 0; j < c.getDim2(); j++ )
+        _c[i*c.getDim1()+j] = reinterpret_cast<Point<T,3>*>(&c[i][j]);
   }
 
 } // END namespace GMlib

@@ -53,14 +53,16 @@ namespace GMlib {
     void                          render(const SceneObject *obj, const DefaultRenderer *renderer) const;
     void                          reset();
     void                          setLineWidth( float line_width = 1.0f );
+    void                          setSelectors( DVector< Point<T,3> >& c, int tp=0 );
     void                          setSelectors( DVector< Vector<T,3> >& c, int tp=0 );
+    void                          setSelectors( DMatrix< Point<T,3> >& c );
     void                          setSelectors( DMatrix< Vector<T,3> >& c );
     void                          update();
 
   protected:
     int                           _no_indices;
     float                         _line_width;
-    DVector< Vector<T,3>* >       _c;
+    DVector< Point<T,3>* >       _c;
 
     GL::Program                   _prog;
 
@@ -72,6 +74,13 @@ namespace GMlib {
 
     void                          _makeLines();
     void                          _makeTriangs();
+    void                          _makeQuads( int m1, int m2);
+
+
+    void                          storeSelectorValuePointers( DVector<Point<T,3> >& c );
+    void                          storeSelectorValuePointers( DVector<Vector<T,3> >& c );
+    void                          storeSelectorValuePointers( DMatrix<Point<T,3> >& c );
+    void                          storeSelectorValuePointers( DMatrix<Vector<T,3> >& c );
 
   }; // END class SelectorGridVisualizer
 
