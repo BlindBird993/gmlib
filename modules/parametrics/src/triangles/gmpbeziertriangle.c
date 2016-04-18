@@ -195,7 +195,7 @@ namespace GMlib {
         _s[i]->translateParent( diff.template toType<float>() );
       }
 
-      this->translateParent( -d.template toType<float>() );
+      this->translateParent( -d.template toType<float>(), false );
 
       _sgv->update();
     }

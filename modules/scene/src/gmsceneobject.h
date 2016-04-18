@@ -296,27 +296,27 @@ namespace GMlib{
     virtual bool                        toggleVisible();
 
     // transformation
-    virtual void                        rotate(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                        rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                        rotate(const UnitQuaternion<float>& q );
-    virtual void                        rotateParent(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                        rotateParent(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                        rotateParent(const UnitQuaternion<float>& q );
-    virtual void                        rotateGlobal(Angle a, const Vector<float,3>& rot_axel);
-    virtual void                        rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d);
-    virtual void                        rotateGlobal(const UnitQuaternion<float>& q );
-    virtual void                        scale(const Point<float,3>& scale_factor);
-    virtual void                        translate(const Vector<float,3>& trans_vector);
-    virtual void                        translateParent(const Vector<float,3>& trans_vector);
-    virtual void                        translateGlobal(const Vector<float,3>& trans_vector);
+    virtual void                        rotate(Angle a, const Vector<float,3>& rot_axel, bool propagate = true );
+    virtual void                        rotate(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d, bool propagate = true );
+    virtual void                        rotate(const UnitQuaternion<float>& q, bool propagate = true  );
+    virtual void                        rotateParent(Angle a, const Vector<float,3>& rot_axel, bool propagate = true );
+    virtual void                        rotateParent(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d, bool propagate = true );
+    virtual void                        rotateParent(const UnitQuaternion<float>& q, bool propagate = true  );
+    virtual void                        rotateGlobal(Angle a, const Vector<float,3>& rot_axel, bool propagate = true );
+    virtual void                        rotateGlobal(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d, bool propagate = true );
+    virtual void                        rotateGlobal(const UnitQuaternion<float>& q, bool propagate = true  );
+    virtual void                        scale(const Point<float,3>& scale_factor, bool propagate = true );
+    virtual void                        translate(const Vector<float,3>& trans_vector, bool propagate = true );
+    virtual void                        translateParent(const Vector<float,3>& trans_vector, bool propagate = true );
+    virtual void                        translateGlobal(const Vector<float,3>& trans_vector, bool propagate = true );
 
-    virtual void                        move(float d);
-    virtual void                        move(const Vector<float,3>& t);
-    virtual void                        move(char,double);
-    virtual void                        move(const Vector<float,2>& t);
-    virtual void                        roll(Angle a);
-    virtual void                        tilt(Angle a);
-    virtual void                        turn(Angle a);
+    virtual void                        move(float d, bool propagate = true);
+    virtual void                        move(const Vector<float,3>& t, bool propagate = true);
+    virtual void                        move(char,double, bool propagate = true);
+    virtual void                        move(const Vector<float,2>& t, bool propagate = true);
+    virtual void                        roll(Angle a, bool propagate = true);
+    virtual void                        tilt(Angle a, bool propagate = true);
+    virtual void                        turn(Angle a, bool propagate = true);
 
 
 

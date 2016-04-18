@@ -74,99 +74,10 @@ namespace GMlib {
 
 
   template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::rotate(Angle a, const Vector<T,n>& rot_axel) {
-
-    SceneObject::rotate( a, rot_axel );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::rotate(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d) {
-
-    SceneObject::rotate( a, p, d );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-  template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::rotateParent(Angle a, const Vector<T,n>& rot_axel) {
-
-    SceneObject::rotateParent( a, rot_axel );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::rotateParent(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d) {
-
-    SceneObject::rotateParent( a, p, d );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::rotateGlobal(Angle a, const Vector<T,n>& rot_axel) {
-
-    SceneObject::rotateGlobal( a, rot_axel );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::rotateGlobal(Angle a, const Point<T,n>& p,const UnitVector<T,n>& d) {
-
-    SceneObject::rotateGlobal( a, p, d );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T, int m, int n>
   void Parametrics<T,m,n>::setDerivationMethod( GM_DERIVATION_METHOD method ) {
 
     _dm = method;
   }
 
-
-  template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::translate( const Vector<T,n>& trans_vector ) {
-
-    SceneObject::translate( trans_vector.template toType<float>() );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-
-  template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::translateParent( const Vector<T,n>& trans_vector ) {
-
-    SceneObject::translateParent( trans_vector.template toType<float>() );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
-
-
-  template <typename T, int m, int n>
-  inline
-  void Parametrics<T,m,n>::translateGlobal( const Vector<T,n>& trans_vector ) {
-
-    SceneObject::translateGlobal( trans_vector.template toType<float>() );
-    if( this->_parent )
-      this->_parent->edit( this );
-  }
 
 } // END namespace GMlib

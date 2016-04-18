@@ -478,7 +478,7 @@ namespace GMlib {
 
     PBezierSurf<T> *bezier = dynamic_cast<PBezierSurf<T>*>(_c[i][j]);
     if( bezier )
-      bezier->updateCoeffs( _c[i][j]->getPos() - _c[i][j]->evaluate( 0.5, 0.5, 0, 0 )[0][0] );
+      bezier->updateCoeffs( _c[i][j]->getPos() - _c[i][j]->evaluateParent( 0.5, 0.5, 0, 0 )[0][0] );
 
     replot();
   }

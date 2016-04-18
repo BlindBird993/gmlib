@@ -343,7 +343,7 @@ namespace GMlib {
         _c[i] += diff;
         _s[i]->translateParent( diff );
       }
-      this->translateParent( -d );
+      this->translateParent( -d, false );
       this->replot();
     }
   }

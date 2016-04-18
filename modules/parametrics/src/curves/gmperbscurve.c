@@ -148,7 +148,7 @@ namespace GMlib {
     // If Bezier Patch
     PBezierCurve<T> *bezier = dynamic_cast<PBezierCurve<T>*>(_c[i]);
     if( bezier )
-      bezier->updateCoeffs( _c[i]->getPos() - _c[i]->evaluate(_t[i],0)[0]);
+      bezier->updateCoeffs( _c[i]->getPos() - _c[i]->evaluateParent(_t[i],0)[0]);
 
     replot();
   }

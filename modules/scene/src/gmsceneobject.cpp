@@ -442,13 +442,16 @@ namespace GMlib {
     _matrix.reset();
   }
 
-  void SceneObject::move( float d ) {
+  void SceneObject::move( float d, bool propagate ) {
 
     _pos += d*_dir;
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
-  void SceneObject::move( const Vector<float,3>& t ) {
+  void SceneObject::move( const Vector<float,3>& t, bool propagate ) {
 
     Point<float,3> lock_pos;
 
@@ -460,9 +463,12 @@ namespace GMlib {
     else _pos += t;
 
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
-  void SceneObject::move(char c, double d) {
+  void SceneObject::move(char c, double d, bool propagate) {
 
     double dir_length = double();
     Point<float,3> lock_pos;
@@ -497,9 +503,12 @@ namespace GMlib {
     }
 
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
-  void SceneObject::move(const Vector<float,2>& t) {
+  void SceneObject::move(const Vector<float,2>& t, bool propagate) {
 
     double dir_length;
     Point<float,3> lock_pos;
@@ -518,17 +527,23 @@ namespace GMlib {
       _pos += _side*t(0) + _up*t(1);
     }
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
-  void SceneObject::roll(Angle a) {
+  void SceneObject::roll(Angle a, bool propagate) {
 
     HqMatrix<float,3> m( a, _dir );
     _up   = m * _up;
     _side = m * _side;
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
-  void SceneObject::tilt( Angle a ) {
+  void SceneObject::tilt( Angle a, bool propagate ) {
 
     if(!_locked) {
 
@@ -536,10 +551,13 @@ namespace GMlib {
       _up   = m * _up;
       _dir  = m * _dir;
       basisChange(_side, _up, _dir, _pos);
+
+      if(propagate && _parent )
+        _parent->edit( this );
     }
   }
 
-  void SceneObject::turn(Angle a) {
+  void SceneObject::turn(Angle a, bool propagate) {
 
     if(!_locked) {
 
@@ -547,20 +565,23 @@ namespace GMlib {
       _dir  = m * _dir;
       _side = m * _side;
       basisChange(_side, _up, _dir, _pos);
+
+      if(propagate && _parent )
+        _parent->edit( this );
     }
   }
 
-  void SceneObject::rotate( Angle a, const Vector<float,3>& rot_axel ) {
+  void SceneObject::rotate( Angle a, const Vector<float,3>& rot_axel, bool propagate ) {
 
-    rotateParent( a, _matrix * rot_axel );
+    rotateParent( a, _matrix * rot_axel, propagate );
   }
 
-  void SceneObject::rotate(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d) {
+  void SceneObject::rotate(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d, bool propagate) {
 
-    rotateParent( a, _matrix * p, _matrix * d );
+    rotateParent( a, _matrix * p, _matrix * d, propagate );
   }
 
-  void SceneObject::rotate(const UnitQuaternion<float>& q) {
+  void SceneObject::rotate(const UnitQuaternion<float>& q, bool propagate) {
 
     HqMatrix<float,3> m = _matrix * HqMatrix<float,3>(q);
     _pos  = m * _pos;
@@ -575,10 +596,13 @@ namespace GMlib {
     }
 
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
 
-  void SceneObject::rotateParent(Angle a, const Vector<float,3>& rot_axel) {
+  void SceneObject::rotateParent(Angle a, const Vector<float,3>& rot_axel, bool propagate) {
 
     if(_locked)
     {
@@ -605,10 +629,13 @@ namespace GMlib {
       _side = m * _side;
     }
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
 
-  void SceneObject::rotateParent(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d ) {
+  void SceneObject::rotateParent(Angle a, const Point<float,3>& p,const UnitVector<float,3>& d, bool propagate ) {
 
     HqMatrix<float,3> m( a, d, p );
     _pos  = m * _pos;
@@ -623,9 +650,12 @@ namespace GMlib {
     }
 
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
-  void SceneObject::rotateParent(const UnitQuaternion<float>& q) {
+  void SceneObject::rotateParent(const UnitQuaternion<float>& q, bool propagate) {
 
     HqMatrix<float,3> m(q);
     _pos  = m * _pos;
@@ -640,20 +670,23 @@ namespace GMlib {
     }
 
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
 
-  void SceneObject::rotateGlobal( Angle a, const Vector<float,3>& rot_axel ) {
+  void SceneObject::rotateGlobal( Angle a, const Vector<float,3>& rot_axel, bool propagate ) {
 
-    rotateParent( a, _matrix_scene_inv * rot_axel );
+    rotateParent( a, _matrix_scene_inv * rot_axel, propagate );
   }
 
-  void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d) {
+  void SceneObject::rotateGlobal(Angle a, const Point<float,3>& p, const UnitVector<float,3>& d, bool propagate) {
 
-    rotateParent( a, _matrix_scene_inv * p, _matrix_scene_inv *d );
+    rotateParent( a, _matrix_scene_inv * p, _matrix_scene_inv *d, propagate );
   }
 
-  void SceneObject::rotateGlobal(const UnitQuaternion<float>& q) {
+  void SceneObject::rotateGlobal(const UnitQuaternion<float>& q, bool propagate) {
 
     HqMatrix<float,3> m = _matrix_scene_inv * HqMatrix<float,3>(q);
     _pos  = m * _pos;
@@ -668,6 +701,9 @@ namespace GMlib {
     }
 
     basisChange(_side, _up, _dir, _pos);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
   /*! void SceneObject::set ( const Point<float,3>&  pos, const Vector<float,3>& dir, const Vector<float,3>& up )
@@ -694,7 +730,7 @@ namespace GMlib {
    *
    *  ( Only geometry )
    */
-  void SceneObject::scale(const Point<float,3>& scale_factor) {
+  void SceneObject::scale(const Point<float,3>& scale_factor, bool propagate) {
     for(int i=0; i<_children.getSize(); i++)
     {
       Point<float,3> tr = -(_children[i]->_matrix*Point<float,3>(0.0f));
@@ -703,6 +739,9 @@ namespace GMlib {
     }
     _scale.scale(scale_factor);
     _sphere = _scale.scaleSphere(_sphere);
+
+    if(propagate && _parent )
+      _parent->edit( this );
   }
 
 
@@ -755,14 +794,14 @@ namespace GMlib {
   }
 
 
-  void SceneObject::translate(const Vector<float,3>& trans_vector) {
+  void SceneObject::translate(const Vector<float,3>& trans_vector, bool propagate) {
 
-    move(getMatrix()*trans_vector);
+    move(getMatrix()*trans_vector,propagate);
   }
 
-  void SceneObject::translateParent(const Vector<float,3>& trans_vector) {
+  void SceneObject::translateParent(const Vector<float,3>& trans_vector, bool propagate) {
 
-    move(trans_vector);
+    move(trans_vector, propagate);
   }
 
 
@@ -772,9 +811,9 @@ namespace GMlib {
    *  Pending Documentation
    *  ** In Scene Coordinates **
    */
-  void SceneObject::translateGlobal(const Vector<float,3>& trans_vector) {
+  void SceneObject::translateGlobal(const Vector<float,3>& trans_vector, bool propagate) {
 
-    move( _matrix_scene_inv * trans_vector );
+    move( _matrix_scene_inv * trans_vector, propagate );
   }
 
 
