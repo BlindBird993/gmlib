@@ -147,7 +147,7 @@ namespace GMlib {
 
     const Camera *cam = getCamera();
 
-    GL_CHECK(::glViewport(0,0,_size(0),_size(1)));
+//    GL_CHECK(::glViewport(0,0,_size(0),_size(1)));
 
     // Clear buffers
     _fbo.clear( GL_DEPTH_BUFFER_BIT );

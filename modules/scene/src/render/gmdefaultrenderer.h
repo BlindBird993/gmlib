@@ -47,10 +47,16 @@
 #include <opengl/gmrenderbufferobject.h>
 #include <opengl/gmtexture.h>
 #include <opengl/bufferobjects/gmvertexbufferobject.h>
-#include <scene/render/rendertargets/gmtexturerendertarget.h>
+//#include <scene/render/rendertargets/gmtexturerendertarget.h>
+//#include <scene/render/rendertargets/gmnativerendertarget.h>
 
 
 namespace GMlib {
+
+
+
+  class RenderTarget;
+
 
 
   class DefaultRenderer : public Renderer {
@@ -73,12 +79,13 @@ namespace GMlib {
     /* virtual from Renderer */
     void                    prepare() {}
     void                    render();
+    void                    render(RenderTarget& target);
     void                    swap();
     void                    reshape( const Vector<int,2>& size );
 
 
-    const TextureRenderTarget&      getFrontRenderTarget() const;
-    const TextureRenderTarget&      getBackRenderTarget() const;
+    const RenderTarget&      getFrontRenderTarget() const;
+    const RenderTarget&      getBackRenderTarget() const;
 
     const GL::UniformBufferObject&    getDirectionalLightUBO() const;
     const GL::UniformBufferObject&    getPointLightUBO() const;
@@ -130,8 +137,8 @@ namespace GMlib {
 
 
     Vector<int,2>           _size;
-    TextureRenderTarget     *_front_rt;
-    TextureRenderTarget     *_back_rt;
+    RenderTarget     *_front_rt;
+    RenderTarget     *_back_rt;
 
     GL::UniformBufferObject           _dirlight_ubo;
     GL::UniformBufferObject           _pointlight_ubo;

@@ -59,8 +59,8 @@ namespace GMlib {
     initRenderSelectProgram();
 
     // Create render targets
-    _front_rt = new TextureRenderTarget;
-    _back_rt = new TextureRenderTarget;
+    _front_rt = new NativeRenderTarget;
+    _back_rt = new NativeRenderTarget;
     setClearColor(GMcolor::Grey);
 
     // Create buffers
@@ -200,6 +200,26 @@ namespace GMlib {
     _back_rt->bind();
     renderToTarget();
     _back_rt->unbind();
+  }
+
+  void DefaultRenderer::render(RenderTarget& target) {
+
+    // Update lights
+    updateLightUBO();
+    getCamera()->updateCameraOrientation();
+
+    // Prepare
+    prepare(getCamera());
+
+    // Render scene
+    renderScene();
+
+    // Set render to target
+    target.clear();
+    target.bind();
+    renderToTarget();
+    target.unbind();
+
   }
 
   void DefaultRenderer::swap() {
@@ -441,8 +461,8 @@ namespace GMlib {
   void DefaultRenderer::setClearColor(const Color& color) {
 
     _clear_color = color;
-    if(_back_rt)  _back_rt->setClearColor(color);
-    if(_front_rt) _front_rt->setClearColor(color);
+//    if(_back_rt)  _back_rt->setClearColor(color);
+//    if(_front_rt) _front_rt->setClearColor(color);
   }
 
   const Color&DefaultRenderer::getSelectColor() const {
@@ -516,7 +536,7 @@ namespace GMlib {
 
 
 
-    GL_CHECK(::glViewport(0,0,_size(0),_size(1)));
+//    GL_CHECK(::glViewport(0,0,_size(0),_size(1)));
 
     GL_CHECK(::glPolygonMode( GL_FRONT_AND_BACK, GL_FILL ));
     GL_CHECK(::glDisable(GL_DEPTH_TEST));
@@ -569,13 +589,13 @@ namespace GMlib {
     _front_rt->resize(size);
   }
 
-  const TextureRenderTarget&
+  const RenderTarget&
   DefaultRenderer::getFrontRenderTarget() const {
 
     return *_front_rt;
   }
 
-  const TextureRenderTarget&
+  const RenderTarget&
   DefaultRenderer::getBackRenderTarget() const {
 
     return *_back_rt;
@@ -585,7 +605,7 @@ namespace GMlib {
   void DefaultRenderer::renderScene() {
 
     // Setup size of viewport viewport to fit size of render target
-    GL_CHECK(::glViewport(0, 0, _size(0), _size(1)));
+//    GL_CHECK(::glViewport(0, 0, _size(0), _size(1)));
 
     // Clear render buffers
     _fbo.clearColorBuffer( getClearColor() );
