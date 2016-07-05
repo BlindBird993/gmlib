@@ -42,8 +42,9 @@ void TextureRenderTarget::init(const std::string &name) {
   _clear_color = Color( 127, 127, 127 );
 }
 
-void TextureRenderTarget::doClear() const {
+void TextureRenderTarget::doPrepare() const {
   _fbo.clearColorBuffer(_clear_color);
+  GL_CHECK(::glViewport(0, 0, getWidth(), getHeight()));
 }
 
 void TextureRenderTarget::doBind() const {

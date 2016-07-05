@@ -14,7 +14,7 @@ public:
 
 private:
   // Virtual from RenderTarget
-  void    doClear() const {}
+  void    doPrepare() const {}
   void    doBind() const {}
   void    doUnbind() const {}
   void    doResize() {}

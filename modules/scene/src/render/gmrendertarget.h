@@ -13,7 +13,7 @@ public:
   RenderTarget() : _size() {}
   virtual ~RenderTarget() {}
 
-  void                              clear() const;
+  void                              prepare() const;
   void                              bind() const;
   void                              unbind() const;
 
@@ -25,7 +25,7 @@ public:
 private:
   Vector<int,2>                     _size;
 
-  virtual void                      doClear() const = 0;
+  virtual void                      doPrepare() const = 0;
   virtual void                      doBind() const = 0;
   virtual void                      doUnbind() const = 0;
   virtual void                      doResize() = 0;
@@ -36,7 +36,7 @@ private:
 
 
 inline
-void RenderTarget::clear() const { doClear(); }
+void RenderTarget::prepare() const { doPrepare(); }
 
 inline
 void RenderTarget::bind() const { doBind(); }

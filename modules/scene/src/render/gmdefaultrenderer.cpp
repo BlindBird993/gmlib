@@ -185,21 +185,7 @@ namespace GMlib {
 
   void DefaultRenderer::render()  {
 
-    // Update lights
-    updateLightUBO();
-    getCamera()->updateCameraOrientation();
-
-    // Prepare
-    prepare(getCamera());
-
-    // Render scene
-    renderScene();
-
-    // Set render to target
-    _back_rt->clear();
-    _back_rt->bind();
-    renderToTarget();
-    _back_rt->unbind();
+    render(*_back_rt);
   }
 
   void DefaultRenderer::render(RenderTarget& target) {
@@ -215,18 +201,13 @@ namespace GMlib {
     renderScene();
 
     // Set render to target
-    target.clear();
+    target.prepare();
     target.bind();
     renderToTarget();
     target.unbind();
-
   }
 
-  void DefaultRenderer::swap() {
-
-    std::swap(_back_rt, _front_rt);
-//    std::cout << "Swapping front and back render target of " << this << ", front: " << _front_rt << ", back: " << _back_rt << std::endl;
-  }
+  void DefaultRenderer::swap() {  std::swap(_back_rt, _front_rt); }
 
   void DefaultRenderer::initRenderProgram() {
 
@@ -605,7 +586,7 @@ namespace GMlib {
   void DefaultRenderer::renderScene() {
 
     // Setup size of viewport viewport to fit size of render target
-//    GL_CHECK(::glViewport(0, 0, _size(0), _size(1)));
+    GL_CHECK(::glViewport(0, 0, _size(0), _size(1)));
 
     // Clear render buffers
     _fbo.clearColorBuffer( getClearColor() );
