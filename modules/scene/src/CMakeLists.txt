@@ -151,6 +151,7 @@ list( APPEND SOURCES
 ###
 # Visualizer
 list( APPEND HEADERS
+  visualizers/gmcameravisualizer.h
   visualizers/gmcoordsysrepvisualizer.h
   visualizers/gmselectorvisualizer.h
   visualizers/gmselectorgridvisualizer.h
@@ -163,6 +164,7 @@ list( APPEND HEADER_SOURCES
 )
 
 list( APPEND SOURCES
+  visualizers/gmcameravisualizer.cpp
   visualizers/gmcoordsysrepvisualizer.cpp
   visualizers/gmselectorvisualizer.cpp
   visualizers/gmsurroundingspherevisualizer.cpp
