@@ -42,6 +42,9 @@
 namespace GMlib{
 
 
+  class Camera;
+
+
   /*! \class PointLight gmpointlight.h <gmPointLight>
    * \brief Pending Documentatioo
    *
@@ -61,7 +64,7 @@ namespace GMlib{
     PointLight(  const PointLight& pl);
     virtual ~PointLight();
 
-    virtual void              culling( const Frustum& frustum );
+    virtual void              culling( const Camera& cam );
     const Point<float,3>&     getAttenuation() const;
     void                      setAttenuation(float constant, float linear, float quadratic);
     void                      setAttenuation(const float att[]);

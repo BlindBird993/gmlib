@@ -30,7 +30,6 @@
 #include "gmrenderer.h"
 
 // local
-#include "../gmfrustum.h"
 #include "../camera/gmcamera.h"
 #include "gmrendertarget.h"
 #include "rendertargets/gmnativerendertarget.h"

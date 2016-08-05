@@ -33,6 +33,7 @@
 // GMlib includes
 #include "gmpointlight.h"
 #include "../gmscene.h"
+#include "../camera/gmcamera.h"
 
 
 namespace GMlib {
@@ -106,10 +107,10 @@ namespace GMlib {
    *
    *	Pending Documentation
    */
-  void PointLight::culling( const Frustum& frustum ) {
+  void PointLight::culling( const Camera& cam ) {
 
     if (!isCullable()) { Light::_culled = false; return;}
-    int k = frustum.isInterfering(_light_sphere);
+    int k = cam.isInsideFrustum(_light_sphere);
     if (k < 0) Light::_culled = true;
     else Light::_culled = false;
   }

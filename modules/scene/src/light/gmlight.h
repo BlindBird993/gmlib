@@ -32,8 +32,6 @@
 #ifndef __gmLIGHT_H__
 #define __gmLIGHT_H__
 
-#include "../gmfrustum.h"
-
 // gmlib
 #include <core/utils/gmcolor.h>
 #include <opengl/gmopengl.h>
@@ -41,6 +39,8 @@
 
 
 namespace GMlib{
+
+  class Camera;
 
   /*! \class Light gmlight.h <gmLight>
 	 * \brief Pending Documentatioo
@@ -54,7 +54,7 @@ namespace GMlib{
     Light( const Light& );
     virtual ~Light();
 
-    virtual void                  culling( const Frustum& );
+    virtual void                  culling( const Camera& );
     bool                          isActive() const;
     bool                          isCullable();
     bool                          isEnabled() const;
@@ -107,7 +107,7 @@ namespace GMlib{
    *  Pending Documentation
    */
   inline
-  void Light::culling( const Frustum& ) {}
+  void Light::culling( const Camera& ) {}
 
   inline
   bool Light::isActive() const {

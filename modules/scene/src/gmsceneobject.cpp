@@ -277,13 +277,13 @@ namespace GMlib {
   }
 
   void
-  SceneObject::getRenderList( Array<const SceneObject*>& objs, const Frustum& f ) const {
+  SceneObject::getRenderList( Array<const SceneObject*>& objs, const Camera& cam) const {
 
     //if(!_visible) return;
     if(!_sphere.isValid())
       return;
 
-    int k = f.isInterfering(getSurroundingSphere());
+    int k = cam.isInsideFrustum(getSurroundingSphere());
 
     if( k < 0 )
       return;  // Outside
@@ -300,11 +300,11 @@ namespace GMlib {
     }
     else { // if(k == 0)     Intersecting
 
-      if( _visible && f.isInterfering( _global_sphere ) >= 0 ) {
+      if( _visible && cam.isInsideFrustum( _global_sphere ) >= 0 ) {
         objs += this; // added check for visible, children don't automatic follow anymore
       }
       for( int i = 0; i < _children.getSize(); i++ )
-        _children(i)->getRenderList( objs, f );
+        _children(i)->getRenderList( objs, cam );
     }
 
 

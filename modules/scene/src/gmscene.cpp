@@ -104,12 +104,11 @@ namespace GMlib {
 
   void Scene::getRenderList( Array<const SceneObject*> &objs, const Camera *cam)  const {
 
-    const Frustum &frustum = cam->getFrustum();
     const bool is_culling = cam->isCulling();
 
     if(is_culling)
       for( int i = 0; i < _scene.getSize(); ++i )
-        _scene(i)->getRenderList( objs, frustum );
+        _scene(i)->getRenderList( objs, *cam );
     else
       for( int i = 0; i < _scene.getSize(); ++i )
         _scene(i)->getRenderList( objs );

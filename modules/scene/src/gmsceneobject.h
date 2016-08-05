@@ -37,7 +37,6 @@
 
 
 
-#include "gmfrustum.h"
 #include "gmscaleobject.h"
 #include "gmscene.h"
 #include "event/gmsceneobjectattribute.h"
@@ -343,7 +342,7 @@ namespace GMlib{
 
     virtual void                        simulate( double dt );
 
-    void                                getRenderList( Array<const SceneObject*>&, const Frustum& ) const;
+    void                                getRenderList( Array<const SceneObject*>&, const Camera& ) const;
     void                                getRenderList( Array<const SceneObject*>& ) const;
 
 

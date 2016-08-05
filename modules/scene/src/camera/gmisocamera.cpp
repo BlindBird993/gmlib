@@ -90,7 +90,7 @@ namespace GMlib {
   double IsoCamera::deltaTranslate(SceneObject * obj) {
 
     if(obj)
-      return 2*_horisontal/getViewportH();
+      return 2*_horizontal/getViewportH();
     else
       return 0.0;
   }
@@ -110,20 +110,6 @@ namespace GMlib {
 //  }
 
 
-  /*! void IsoCamera::localDisplay()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void IsoCamera::localDisplay() {}
-
-
-  /*! void IsoCamera::localSelect()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void IsoCamera::localSelect() {}
 
 
   /*! void IsoCamera::resetC(float z)
@@ -134,23 +120,10 @@ namespace GMlib {
    */
   void IsoCamera::resetC(float z) {
 
-    _horisontal  = z;
+    _horizontal  = z;
     _gw  = _gh  = 0.1;
+    updateFrustum();
   }
-
-
-  /*! void IsoCamera::setPerspective()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  void IsoCamera::setPerspective() {
-
-    _frustum = IsoFrustum( _matrix_scene,
-                           _pos, _dir,_up,_side,
-                           _near_plane, _far_plane, _ratio, _horisontal );
-  }
-
 
 
   /*! void IsoCamera::zoom(float z)
@@ -160,7 +133,8 @@ namespace GMlib {
    */
   void IsoCamera::zoom(float z) {
 
-    _horisontal *= z;
+    _horizontal *= z;
+    updateFrustum();
   }
 
 }

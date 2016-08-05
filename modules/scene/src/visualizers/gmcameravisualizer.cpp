@@ -163,8 +163,39 @@ namespace GMlib {
       _vbo_lens.disable(vertex_loc);
       _vbo_lens.unbind();
 
-
     } _prog.unbind();
+
+
+
+
+
+
+    // If frustum visible - draw frustum
+    const Camera * this_cam = dynamic_cast<const Camera*>(obj);
+    if(this_cam && this_cam->isFrustumVisible()) {
+
+      _vbo_frame.bufferSubData(  0x0, 8 * 3 * sizeof(GLfloat), this_cam->getFrustumFramePtr() );
+
+      _color_prog.bind(); {
+
+        GL::AttributeLocation vertex_loc = _color_prog.getAttributeLocation( "in_vertex" );
+        _color_prog.uniform( "u_color", GMcolor::White );
+        _color_prog.uniform( "u_mvpmat", pmat * mvmat );
+
+        _vbo_frame.bind();
+        _vbo_frame.enable( vertex_loc, 3, GL_FLOAT, GL_FALSE, 0, static_cast<const GLvoid*>(0x0) );
+        _ibo_frame_np.bind();
+
+        GL_CHECK(::glDrawElements( GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, static_cast<const GLvoid*>(0x0) ));
+        GL_CHECK(::glDrawElements( GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, reinterpret_cast<const GLvoid*>(4 * sizeof(GLushort)) ));
+        GL_CHECK(::glDrawElements( GL_LINES,     8, GL_UNSIGNED_SHORT, reinterpret_cast<const GLvoid*>(8 * sizeof(GLushort)) ));
+
+        _ibo_frame_np.unbind();
+        _vbo_frame.disable(vertex_loc);
+        _vbo_frame.unbind();
+
+      } _color_prog.unbind();
+    }
   }
 
   void CameraVisualizer::renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const {
@@ -225,6 +256,26 @@ namespace GMlib {
 
   void CameraVisualizer::initGeometry() {
 
+
+    _vbo_np.create();
+    _vbo_fp.create();
+    _vbo_flines.create();
+
+    _vbo_np.bufferData(    4 * 3 * sizeof(GLfloat), 0x0, GL_DYNAMIC_DRAW);
+    _vbo_fp.bufferData(    4 * 3 * sizeof(GLfloat), 0x0, GL_DYNAMIC_DRAW);
+    _vbo_flines.bufferData(8 * 3 * sizeof(GLfloat), 0x0, GL_DYNAMIC_DRAW);
+
+    _vbo_frame.create();
+    _vbo_frame.bufferData( 8 * 3 * sizeof(GLfloat), 0x0, GL_DYNAMIC_DRAW);
+
+    _ibo_frame_np.create();
+    GLushort frame_indices[] { 0, 1, 2 ,3, 4, 5, 6, 7, 0, 4, 1, 5, 2, 6, 3, 7 };
+    _ibo_frame_np.bufferData( 16 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW);
+
+
+
+
+
     // Buffer identifiers
     std::string vbo_display_str {"gm_vbo_camera_display"};
     std::string vbo_grip_str {"gm_vbo_camera_grip"};
@@ -241,12 +292,19 @@ namespace GMlib {
       assert(_vbo_lens.acquire(vbo_lens_str));
       return;
     }
+    else {
 
-    _vbo_display.create(vbo_display_str);
-    _vbo_grip.create(vbo_grip_str);
-    _vbo_viewfinder.create(vbo_viewfinder_str);
-    _vbo_viewfinder_2.create(vbo_viewfinder_2_str);
-    _vbo_lens.create(vbo_lens_str);
+      _vbo_display.create(vbo_display_str);
+      _vbo_display.setPersistent(true);
+      _vbo_grip.create(vbo_grip_str);
+      _vbo_grip.setPersistent(true);
+      _vbo_viewfinder.create(vbo_viewfinder_str);
+      _vbo_viewfinder.setPersistent(true);
+      _vbo_viewfinder_2.create(vbo_viewfinder_2_str);
+      _vbo_viewfinder_2.setPersistent(true);
+      _vbo_lens.create(vbo_lens_str);
+      _vbo_lens.setPersistent(true);
+    }
 
 
 
@@ -285,7 +343,6 @@ namespace GMlib {
     display[22] = Arrow<GLfloat,3>(Point<GLfloat,3>(-0.07,0.1,-0.3),  Vector<float,3>(0,0,-1));
     display[23] = Arrow<GLfloat,3>(Point<GLfloat,3>(-0.07,-0.1,-0.3), Vector<float,3>(0,0,-1));
 
-    _vbo_display.setPersistent(true);
     _vbo_display.bufferData( 24 * sizeof(Arrow<GLfloat,3>), display.data(), GL_STATIC_DRAW );
 
 
@@ -326,8 +383,6 @@ namespace GMlib {
     grip[22] = Arrow<GLfloat,3>(Point<float,3>(-0.02,-0.1,-0.08),  Vector<float,3>(0,0,-1));
     grip[23] = Arrow<GLfloat,3>(Point<float,3>(-0.02,-0.25,-0.06), Vector<float,3>(0,0,-1));
 
-
-    _vbo_grip.setPersistent(true);
     _vbo_grip.bufferData( 24 * sizeof(Arrow<GLfloat,3>), grip.data(), GL_STATIC_DRAW );
 
 
@@ -377,7 +432,6 @@ namespace GMlib {
     viewfinder[38] = Arrow<GLfloat,3>(Point<float,3>(-0.055,0.16,0.0),Vector<float,3>(0,0,-1));
     viewfinder[39] = Arrow<GLfloat,3>(Point<float,3>(-0.055,0.12,0.0),Vector<float,3>(0,0,-1));
 
-    _vbo_viewfinder.setPersistent(true);
     _vbo_viewfinder.bufferData( 40 * sizeof(Arrow<GLfloat,3>), viewfinder.data(), GL_STATIC_DRAW );
 
 
@@ -408,7 +462,6 @@ namespace GMlib {
     for(int i=2; i<18;i+=2)
       viewfinder_2[i] = Arrow<GLfloat,3>( mat * viewfinder_2[i-2].getPos(), mat * viewfinder_2[i-2].getDir() );
 
-    _vbo_viewfinder_2.setPersistent(true);
     _vbo_viewfinder_2.bufferData( 18 * sizeof(Arrow<GLfloat,3>), viewfinder_2.data(), GL_STATIC_DRAW );
 
 
@@ -430,12 +483,7 @@ namespace GMlib {
     }
 
 
-    _vbo_lens.setPersistent(true);
     _vbo_lens.bufferData( 18 * sizeof(Arrow<GLfloat,3>), lens.data(), GL_STATIC_DRAW );
-
-
-
-
 
   }
 

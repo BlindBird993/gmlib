@@ -415,9 +415,6 @@ namespace GMlib {
     Scene *scene = cam->getScene();
     assert(scene);
 
-    // Compute frustum/frustum-matrix, set glViewport
-    cam->setupDisplay();
-
     // Get displayable objects
     _objs.resetSize();
     scene->getRenderList( _objs, cam );

@@ -36,9 +36,6 @@
 #define __gmSCENE_H__
 
 
-// local
-#include "gmfrustum.h"
-
 // gmlib
 #include <core/types/gmpoint.h>
 #include <core/utils/gmtimer.h>

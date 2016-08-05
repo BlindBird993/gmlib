@@ -25,7 +25,6 @@
 # <global>
 
 list( APPEND HEADERS
-  gmfrustum.h
   gmscaleobject.h
   gmscene.h
   gmsceneobject.h

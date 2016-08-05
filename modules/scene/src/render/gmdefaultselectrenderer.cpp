@@ -192,8 +192,6 @@ namespace GMlib {
   DefaultSelectRenderer::prepare() {
 
     Camera* cam = getCamera();
-    // Compute frustum/frustum-matrix, set glViewport
-    cam->setupDisplay();
 
     // Get displayable objects
     _objs.resetSize();

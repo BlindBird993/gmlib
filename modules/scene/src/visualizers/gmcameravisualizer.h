@@ -57,6 +57,12 @@ namespace GMlib {
     GL::VertexBufferObject    _vbo_viewfinder_2;
     GL::VertexBufferObject    _vbo_lens;
 
+    GL::VertexBufferObject    _vbo_frame;
+    GL::IndexBufferObject     _ibo_frame_np;
+    GL::IndexBufferObject     _ibo_frame_fp;
+    GL::IndexBufferObject     _ibo_frame_lines;
+    GL::VertexBufferObject    _vbo_np, _vbo_fp, _vbo_flines;
+
     void              initGeometry();
 
   }; // END class CameraVisualizer

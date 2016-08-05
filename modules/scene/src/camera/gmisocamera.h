@@ -88,19 +88,104 @@ namespace GMlib {
     void            zoom(float z);
 
 
+
+
+
+    void            computeProjectionMatrix() {
+
+      float  hh = _horizontal;
+      float  rr = getAspectRatio()*_horizontal;
+
+      float l, r, b, t, n, f;
+      l = -rr;
+      r = rr;
+      b = -hh;
+      t = hh;
+      n = getNearPlane();
+      f = getFarPlane();
+
+      float tx, ty, tz;
+      tx = -(r+l)/(r-l);
+      ty = -(t+b)/(t-b);
+      tz = -(f+n)/(f-n);
+
+      _projection_matrix[0][0] = 2.0f / (r - l);
+      _projection_matrix[0][1] = 0.0f;
+      _projection_matrix[0][2] = 0.0f;
+      _projection_matrix[0][3] = tx;
+
+      _projection_matrix[1][0] = 0.0f;
+      _projection_matrix[1][1] = 2.0f / ( t - b );
+      _projection_matrix[1][2] = 0.0f;
+      _projection_matrix[1][3] = ty;
+
+      _projection_matrix[2][0] = 0.0f;
+      _projection_matrix[2][1] = 0.0f;
+      _projection_matrix[2][2] = (-2.0f)/(f-n);
+      _projection_matrix[2][3] = tz;
+
+      _projection_matrix[3][0] = 0.0f;
+      _projection_matrix[3][1] = 0.0f;
+      _projection_matrix[3][2] = 0.0f;
+      _projection_matrix[3][3] = 1.0f;
+    }
+
+
+    void            computeFrustumBounds() {
+
+      float ratio = getAspectRatio();
+
+      Vector<float,3> f  = _matrix_scene*_dir;
+      Vector<float,3> oe = _matrix_scene*_up;
+      Vector<float,3> ve = _matrix_scene*_side;
+      _frustum_p[0] = _matrix_scene*_pos;
+      _frustum_p[1] = _frustum_p[0]+_frustum_far*f+_horizontal*(ratio*ve-oe);
+      _frustum_p[0] += _frustum_near*f-_horizontal*(ratio*ve-oe);
+      _frustum_v[0] = ve;        // Venstre  (normal)
+      _frustum_v[1] = -ve;        // Høyre  (normal)
+      _frustum_v[2] = oe;        // Opp    (normal)
+      _frustum_v[3] = -oe;        // ned    (normal)
+      _frustum_v[4] = -f;        // Bak    (normal)
+      _frustum_v[5] = f;        // Fram    (normal)
+    }
+
+
+    void            computeFrustumFrame() {
+
+      float ratio = getAspectRatio();
+
+      Point<float,3>  p1(0,0,-_frustum_near);
+      Point<float,3>  p2(0,0,-_frustum_far);
+
+      Vector<float,3> v1(0,_horizontal,0);
+      Vector<float,3> v2(-ratio*_horizontal,0,0);
+      Vector<float,3> v3(0,_horizontal,0);
+      Vector<float,3> v4(-ratio*_horizontal,0,0);
+
+
+      Point<float,3>  p1m(p1-v1);
+      Point<float,3>  p2m(p2-v3);
+      p1 += v1;
+      p2 += v3;
+
+      _frustum_frame[0] = p1  + v2;
+      _frustum_frame[1] = p1  - v2;
+      _frustum_frame[2] = p1m - v2;
+      _frustum_frame[3] = p1m + v2;
+      _frustum_frame[4] = p2  + v4;
+      _frustum_frame[5] = p2  - v4;
+      _frustum_frame[6] = p2m - v4;
+      _frustum_frame[7] = p2m + v4;
+
+    }
+
+
+
+
   protected:
-    // ***********
-    // From Camera
-    void            setPerspective();
-
-    // ****************
-    // From SceneObject
-    void            localDisplay();
-    void            localSelect();
-
 
   private:
-    double          _horisontal;
+    double          _horizontal;
     double          _gh,_gw;
 
     // ***********

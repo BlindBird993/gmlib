@@ -129,20 +129,21 @@ namespace GMlib {
     bool                        isCulling() const;
     void                        enableCulling( bool enable = true );
 
-    void                        decreaseEyeDist(double delta=0.01);
-    void                        decreaseFocalDist(double delta=1);
-    float                       getRatio() const;
-    void                        increaseEyeDist(double delta=0.01);
-    void                        increaseFocalDist(double delta=1);
+    float                       getAspectRatio() const;
     float                       getNearPlane() const;
     void                        setCuttingPlanes(float near_plane, float far_plane);
-    void                        setEyeDist(double eye_dist=0.08);
     float                       getAngleTan() const;
     float                       getFarPlane() const;
-    float                       getFocalLength() const;
-    void                        setFocalDist(double focal=50.0);
 
-    const Frustum&              getFrustum() const;
+    float                       getFocalLength() const;
+    void                        setFocalLength(double focal=50.0);
+    void                        decreaseFocalLength(double delta=1);
+    void                        increaseFocalLength(double delta=1);
+
+    void                        increaseEyeDist(double delta=0.01);
+    void                        decreaseEyeDist(double delta=0.01);
+    void                        setEyeDist(double eye_dist=0.08);
+
     void                        setFrustumVisible(bool visible=true);
     bool                        isFrustumVisible() const;
 
@@ -157,11 +158,7 @@ namespace GMlib {
 
 //  protected:
   public:
-    float                       _near_plane;
-    float                       _far_plane;
-    float                       _ratio;
 
-    Frustum                     _frustum;
 
     void                        basisChange( const Vector<float,3>& x,
                                              const Vector<float,3>& y,
@@ -169,18 +166,10 @@ namespace GMlib {
                                              const Vector<float,3>& p);
 
 //    virtual void                display();
-    virtual  void               drawActiveCam();
     SceneObject*                find(unsigned int name);
-    virtual void                makeGraphics();
     void                        resetC(float z = 1);
 //    void                        select(int type_id);
-    virtual void                setPerspective();
-
-    // *****************
-    // Virtual functions
-    // from SceneObject
-    void                        localDisplay();
-    void                        localSelect();
+    virtual void                updateFrustum();
 
 
 //  private:
@@ -192,13 +181,153 @@ namespace GMlib {
 
     bool                        _coord_sys_visible;
     bool                        _frustum_visible;
+//    PerspectiveFrustum          _frustum;
 
     double                      _focal_length;
     double                      _eye_dist;
     double                      _ed_fd;
-    float                       _angle_tan;
 
     bool                        _culling;
+
+
+
+
+
+
+
+    Point<float,3>              _frustum_p[2];    // p[0]: høyre/opp/bak-hjørne  p[1]: venstre/ned/foran-hjørne
+    Vector<float,3>             _frustum_v[6];    // normal: venstre, høyre, opp, ned, bak, fram.
+
+    HqMatrix<float,3>           _projection_matrix;
+
+    Point<float,3>              _frustum_frame[8];
+
+    float                       _frustum_near;
+    float                       _frustum_far;
+    float                       _frustum_angle_tan;
+
+
+    int                           isInsideFrustum(const Sphere<float,3>& s) const {
+
+      if(!s.isValid())  return -1;
+      int ret = 1;
+
+      Vector<float,3> d = s.getPos()-_frustum_p[0];
+      float dv = d*_frustum_v[1];              // Høyre
+      if(dv >= s.getRadius())    return -1;
+      else if(dv > -s.getRadius())  ret = 0;
+      dv = d*_frustum_v[2];                // Opp
+      if(dv >= s.getRadius())    return -1;
+      else if(dv > -s.getRadius())  ret = 0;
+      dv = d*_frustum_v[4];                // Bak
+      if(dv >= s.getRadius())    return -1;
+      else if(dv > -s.getRadius())  ret = 0;
+
+      d=s.getPos()-_frustum_p[1];
+      dv = d*_frustum_v[0];                // Venstre
+      if(dv >= s.getRadius())    return -1;
+      else if(dv > -s.getRadius())  ret = 0;
+      dv = d*_frustum_v[3];                // Ned
+      if(dv >= s.getRadius())    return -1;
+      else if(dv > -s.getRadius())  ret = 0;
+      dv = d*_frustum_v[5];                // Fram
+      if(dv >= s.getRadius())    return -1;
+      else if(dv > -s.getRadius())  ret = 0;
+      return ret;
+    }
+
+    const Point<float,3>*     getFrustumFramePtr() const { return _frustum_frame; }
+
+    virtual void              computeProjectionMatrix() {
+
+      float  hh = _frustum_near* _frustum_angle_tan;
+      float  rr = getAspectRatio()*hh;
+
+      float l, r, b, t, n, f;
+      l = -rr;
+      r = rr;
+      b = -hh;
+      t = hh;
+      n = _frustum_near;
+      f = _frustum_far;
+
+      float A, B, C, D;
+      A =  ( r + l ) / ( r - l );
+      B =  ( t + b ) / ( t - b );
+      C = - ( f + n ) / ( f - n );
+      D = - 2 * f * n / ( f - n );
+
+      _projection_matrix[0][0] = 2.0f / (r - l);
+      _projection_matrix[0][1] = 0.0f;
+      _projection_matrix[0][2] = A;
+      _projection_matrix[0][3] = 0.0f;
+
+      _projection_matrix[1][0] = 0.0f;
+      _projection_matrix[1][1] = 2.0f / ( t - b );
+      _projection_matrix[1][2] = B;
+      _projection_matrix[1][3] = 0.0f;
+
+      _projection_matrix[2][0] = 0.0f;
+      _projection_matrix[2][1] = 0.0f;
+      _projection_matrix[2][2] = C;
+      _projection_matrix[2][3] = D;
+
+      _projection_matrix[3][0] = 0.0f;
+      _projection_matrix[3][1] = 0.0f;
+      _projection_matrix[3][2] = -1.0f;
+      _projection_matrix[3][3] = 0.0f;
+    }
+
+    virtual void              computeFrustumBounds() {
+
+      float ratio = getAspectRatio() * _frustum_angle_tan;
+      double rr = sqrt(1+ratio*ratio);
+      double tt = sqrt(1+_frustum_angle_tan*_frustum_angle_tan);
+      Vector<float,3> f  = _matrix_scene*_dir;
+      Vector<float,3> oe = _matrix_scene*_up;
+      Vector<float,3> ve = _matrix_scene*_side;
+      Vector<float,3> pp = ratio*ve-_frustum_angle_tan*oe;
+      _frustum_p[0] = _matrix_scene*_pos;      // Venstre, høyre, opp, ned (posisjon)
+      _frustum_p[1] = _frustum_p[0]+_frustum_far*(f+pp);
+      _frustum_p[0] += _frustum_near*(f-pp);
+
+      _frustum_v[0] = ve-ratio*f;      // Venstre  (normal)
+      _frustum_v[1] = (_frustum_v[0]-2*ve)/rr;  // Høyre  (normal)
+      _frustum_v[0] /= rr;
+      _frustum_v[2] = oe-_frustum_angle_tan*f;      // Opp    (normal)
+      _frustum_v[3] = (_frustum_v[2]-2*oe)/tt;  // ned    (normal)
+      _frustum_v[2] /= tt;
+      _frustum_v[4] = -f;        // Bak    (normal)
+      _frustum_v[5] = f;        // Fram    (normal)
+
+    }
+
+    virtual void              computeFrustumFrame() {
+
+      float ratio = getAspectRatio();
+
+      Point<float,3>  p1(0,0,-_frustum_near);
+      Point<float,3>  p2(0,0,-_frustum_far);
+
+      Vector<float,3> v1(0,_frustum_angle_tan*_frustum_near,0);
+      Vector<float,3> v2(-ratio*_frustum_angle_tan*_frustum_near,0,0);
+      Vector<float,3> v3(0,_frustum_angle_tan*_frustum_far,0);
+      Vector<float,3> v4(-ratio*_frustum_angle_tan*_frustum_far,0,0);
+
+      Point<float,3>  p1m(p1-v1);
+      Point<float,3>  p2m(p2-v3);
+      p1 += v1;
+      p2 += v3;
+
+      _frustum_frame[0] = p1  + v2;
+      _frustum_frame[1] = p1  - v2;
+      _frustum_frame[2] = p1m - v2;
+      _frustum_frame[3] = p1m + v2;
+      _frustum_frame[4] = p2  + v4;
+      _frustum_frame[5] = p2  - v4;
+      _frustum_frame[6] = p2m - v4;
+      _frustum_frame[7] = p2m + v4;
+    }
 
 
 
@@ -213,9 +342,6 @@ namespace GMlib {
       basisChange(tmp_side, _up, tmp_dir, tmp_pos);            // Change to right eye
     }
 
-    virtual
-    void                        setupDisplay();
-    void                        applyViewport() const;
 
   }; // END class Camera
 
@@ -274,9 +400,9 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Camera::decreaseFocalDist(double delta) {
+  void Camera::decreaseFocalLength(double delta) {
 
-    increaseFocalDist(-delta);
+    increaseFocalLength(-delta);
   }
 
 
@@ -299,150 +425,6 @@ namespace GMlib {
 //    if(_coord_sys_visible)
 //      drawActiveCam();
 //  }
-
-  inline
-  void Camera::setupDisplay() {
-
-    setPerspective();
-  }
-
-
-  /*! void Camera::drawActiveCam()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  void Camera::drawActiveCam() {
-
-    float hh = -1.5*_near_plane*_angle_tan;
-    Point<float,3> cp(_ratio*hh, hh, -_near_plane-1.0);
-
-
-    /*! \todo check if this is correct and fix if not */
-//    cp = _matrix_scene * cp;
-//    cp = getMatrix() * cp;
-
-//  //  GLboolean lg;
-//  //  glGetBooleanv(GL_LIGHTING,&lg);
-//  //  if(lg) glDisable(GL_LIGHTING);
-//    glPushAttrib( GL_LIGHTING );
-//    glDisable( GL_LIGHTING );
-//    glBegin(GL_LINES); // draw Coordsys
-//      glColor( GMcolor::Red );  glPoint(cp); glPoint(cp+Vector<float,3>(0.1,0,0));
-//      glColor( GMcolor::Green );  glPoint(cp); glPoint(cp+Vector<float,3>(0,0.1,0));
-//      glColor( GMcolor::Blue );  glPoint(cp); glPoint(cp+Vector<float,3>(0,0,0.1));
-//    glEnd();
-//    if(_locked && ! _lock_object)
-//    {
-//      glPushMatrix();
-//      glTranslate(_lock_pos);
-//      glCallList(_display_list+8);
-//      glPopMatrix();
-//    }
-//    glPopAttrib();
-//  //  if (lg) glEnable(GL_LIGHTING);
-
-
-
-
-
-
-    // NEW CODE //
-
-
-
-//    HqMatrix<float,3> mat;
-//    mat[0][3] = cp[0];
-//    mat[1][3] = cp[1];
-//    mat[2][3] = cp[2];
-
-
-//    HqMatrix<float,3> proj_mat = getProjectionMatrix();
-
-
-//    HqMatrix<float,3> mv_mat = _matrix_scene_inv * _matrix * mat;
-
-
-//    HqMatrix<float,3> mvpmat = proj_mat * this->SceneObject::getMatrix() * this->_matrix_scene;
-
-
-
-
-//    std::cout << "mat:" << std::endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      for( int j = 0; j < 4; j++ ) {
-
-//        std::cout << mat[i][j] << "  ";
-//      }
-//      std::cout << std::endl;
-//    }
-//    std::cout << std::endl;
-
-//    std::cout << "proj_mat:" << std::endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      for( int j = 0; j < 4; j++ ) {
-
-//        std::cout << proj_mat[i][j] << "  ";
-//      }
-//      std::cout << std::endl;
-//    }
-//    std::cout << std::endl;
-
-//    std::cout << "mv_mat:" << std::endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      for( int j = 0; j < 4; j++ ) {
-
-//        std::cout << mv_mat[i][j] << "  ";
-//      }
-//      std::cout << std::endl;
-//    }
-//    std::cout << std::endl;
-
-
-
-
-//    std::cout << "mvpmat:" << std::endl;
-//    for( int i = 0; i < 4; i++ ) {
-//      for( int j = 0; j < 4; j++ ) {
-
-//        std::cout << mvpmat[i][j] << "  ";
-//      }
-//      std::cout << std::endl;
-//    }
-//    std::cout << std::endl;
-
-
-
-//    GL::GLProgram prog( "color" );
-//    GLBufferObject bo_qs( "std_rep_qs" );
-//    GLBufferObject bo_q( "std_rep_q" );
-
-//    prog.bind();
-
-//    prog.uniform( "u_mvpmat", mvpmat, 1, true );
-//    prog.uniform( "u_selected", false );
-
-
-//    GLuint vert_loc = prog.getAttributeLocation( "in_vertex" );
-
-//    prog.uniform( "u_color", GMcolor::Red );
-//    bo_qs.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-//      glDrawArrays( GL_QUAD_STRIP, 0, 10 );
-//    bo_qs.disableVertexArrayPointer( vert_loc );
-
-//    prog.uniform( "u_color", GMcolor::Blue );
-//    bo_q.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
-//      glDrawArrays( GL_QUADS, 0, 8 );
-//    bo_q.disableVertexArrayPointer( vert_loc );
-
-//    prog.unbind();
-
-//    std::cout << "Info:" << std::endl;
-//    std::cout << " - vert_loc: " << vert_loc << std::endl;
-//    std::cout << " - bo_qs ID: " << bo_qs.getId() << std::endl;
-//    std::cout << " - bo_q  ID: " << bo_q.getId() << std::endl;
-  }
 
 
   /*! void Camera::enableCulling( bool enable )
@@ -477,7 +459,7 @@ namespace GMlib {
   inline
   float Camera::getAngleTan() const {
 
-    return _angle_tan;
+    return _frustum_angle_tan;
   }
 
 
@@ -489,7 +471,7 @@ namespace GMlib {
   inline
   float Camera::getFarPlane() const  {
 
-    return _far_plane;
+    return _frustum_far;
   }
 
   /*! float Camera::getFocalLength() const
@@ -503,12 +485,6 @@ namespace GMlib {
     return _focal_length;
   }
 
-  inline
-  const Frustum &Camera::getFrustum() const {
-
-    return _frustum;
-  }
-
 
   /*! float Camera::getNearPlane() const
    *  \brief Pending Documentation
@@ -518,14 +494,14 @@ namespace GMlib {
   inline
   float Camera::getNearPlane() const {
 
-    return _near_plane;
+    return _frustum_near;
   }
 
 
   inline
   const HqMatrix<float,3>& Camera::getProjectionMatrix() const {
 
-    return _frustum.getProjectionMatrix();
+    return _projection_matrix;
   }
 
 
@@ -535,9 +511,9 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  float Camera::getRatio() const {
+  float Camera::getAspectRatio() const {
 
-    return _ratio;
+    return float(_w)/float(_h);
   }
 
   inline
@@ -608,9 +584,9 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Camera::increaseFocalDist(double delta) {
+  void Camera::increaseFocalLength(double delta) {
 
-    setFocalDist(_focal_length+delta);
+    setFocalLength(_focal_length+delta);
   }
 
 
@@ -673,9 +649,10 @@ namespace GMlib {
   inline
   void Camera::setCuttingPlanes(float near_plane, float far_plane) {
 
-    _near_plane = near_plane;
-    _far_plane  = far_plane;
-    _angle_tan  = 13.0f*_near_plane/_focal_length;
+    _frustum_near      = near_plane;
+    _frustum_far       = far_plane;
+    _frustum_angle_tan = 13.0f*_frustum_near/_focal_length;
+    updateFrustum();
   }
 
 
@@ -710,11 +687,12 @@ namespace GMlib {
    *  Pending Documentation
    */
   inline
-  void Camera::setFocalDist(double focal)  {
+  void Camera::setFocalLength(double focal)  {
 
-    _focal_length   = focal;
-    _ed_fd      = _eye_dist/_focal_length;
-    _angle_tan    = 13.0f*_near_plane/_focal_length;
+    _focal_length      = focal;
+    _ed_fd             = _eye_dist/_focal_length;
+    _frustum_angle_tan = 13.0f*_frustum_near/_focal_length;
+    updateFrustum();
   }
 
 
