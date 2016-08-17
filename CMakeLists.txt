@@ -26,6 +26,10 @@ cmake_minimum_required(VERSION 3.0)
 # Nice name for the IDEs
 project(GMlib VERSION 0.5)
 
+###########################
+# Specify compiler features
+set(CMAKE_CXX_STANDARD 98)
+
 # Extra CMake modules
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/" )
 
@@ -114,7 +118,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
     "MinSizeRel" "RelWithDebInfo")
 endif()
-
 
 
 

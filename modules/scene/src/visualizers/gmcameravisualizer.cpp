@@ -277,11 +277,11 @@ namespace GMlib {
 
 
     // Buffer identifiers
-    std::string vbo_display_str {"gm_vbo_camera_display"};
-    std::string vbo_grip_str {"gm_vbo_camera_grip"};
-    std::string vbo_viewfinder_str {"gm_vbo_camera_viewfinder"};
-    std::string vbo_viewfinder_2_str {"gm_vbo_camera_viewfinder_2"};
-    std::string vbo_lens_str {"gm_vbo_camera_lens"};
+    std::string vbo_display_str ("gm_vbo_camera_display");
+    std::string vbo_grip_str ("gm_vbo_camera_grip");
+    std::string vbo_viewfinder_str ("gm_vbo_camera_viewfinder");
+    std::string vbo_viewfinder_2_str ("gm_vbo_camera_viewfinder_2");
+    std::string vbo_lens_str ("gm_vbo_camera_lens");
 
     // IF first acquired acquire the rest and return; ELSE create
     if(_vbo_display.acquire(vbo_display_str)) {
@@ -312,7 +312,7 @@ namespace GMlib {
 
 
     // Display
-    std::vector<Arrow<GLfloat,3>> display(24);
+    std::vector< Arrow<GLfloat,3> > display(24);
     display[0]  = Arrow<GLfloat,3>(Point<GLfloat,3>(0.07,0.1,0.3),    Vector<float,3>(-1,0,0));
     display[1]  = Arrow<GLfloat,3>(Point<GLfloat,3>(0.07,0.1,-0.3),   Vector<float,3>(-1,0,0));
     display[2]  = Arrow<GLfloat,3>(Point<GLfloat,3>(0.07,-0.1,-0.3),  Vector<float,3>(-1,0,0));
@@ -352,7 +352,7 @@ namespace GMlib {
 
 
     // Grip
-    std::vector<Arrow<GLfloat,3>> grip(24);
+    std::vector< Arrow<GLfloat,3> > grip(24);
     grip[0] = Arrow<GLfloat,3>(Point<float,3>(0.02,-0.1,-0.02),    Vector<float,3>(-1,0,0));
     grip[1] = Arrow<GLfloat,3>(Point<float,3>(0.02,-0.1,-0.08),    Vector<float,3>(-1,0,0));
     grip[2] = Arrow<GLfloat,3>(Point<float,3>(0.02,-0.25,-0.06),   Vector<float,3>(-1,0,0));
@@ -388,7 +388,7 @@ namespace GMlib {
 
 
     // Viewfinder (part 1 and 2)
-    std::vector<Arrow<GLfloat,3>> viewfinder(40);
+    std::vector< Arrow<GLfloat,3> > viewfinder(40);
 
 
     viewfinder[0] = Arrow<GLfloat,3>(Point<float,3>(-0.016,0.12,0.09),Vector<float,3>(-1,0,0));
@@ -440,7 +440,7 @@ namespace GMlib {
 
 
     // Viewfinder (part 3)
-    std::vector<Arrow<GLfloat,3>>  viewfinder_2(18);
+    std::vector< Arrow<GLfloat,3> >  viewfinder_2(18);
 
     HqMatrix<GLfloat,3> mat(Angle(M_PI_4),
                           Vector<GLfloat,3>(0,1,0), Vector<GLfloat,3>(1,0,0),
@@ -469,7 +469,7 @@ namespace GMlib {
 
 
     // Lens
-    std::vector<Arrow<GLfloat,3>>  lens(18);
+    std::vector< Arrow<GLfloat,3> >  lens(18);
 
     HqMatrix<float,3> mat2(Angle(M_PI_4),Vector<float,3>(0,1,0),Vector<float,3>(1,0,0));
 
