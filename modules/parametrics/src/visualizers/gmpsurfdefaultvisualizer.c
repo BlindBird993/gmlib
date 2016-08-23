@@ -247,6 +247,10 @@ namespace GMlib {
     vshader.setPersistent(true);
     vshader.setSource(vs_src);
     compile_ok = vshader.compile();
+    if( !compile_ok ) {
+      std::cout << "Src:" << std::endl << vshader.getSource() << std::endl << std::endl;
+      std::cout << "Error: " << vshader.getCompilerLog() << std::endl;
+    }
     assert(compile_ok);
 
     GL::FragmentShader fshader;
@@ -265,6 +269,9 @@ namespace GMlib {
     _prog.attachShader(vshader);
     _prog.attachShader(fshader);
     link_ok = _prog.link();
+    if( !link_ok ) {
+      std::cout << "Error: " << _prog.getLinkerLog() << std::endl;
+    }
     assert(link_ok);
   }
 

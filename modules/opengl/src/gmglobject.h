@@ -104,7 +104,7 @@ namespace Private {
     GLuint                  getId() const;
 
     std::string             getName() const;
-    bool                    setName( const std::string& name );
+    void                    setName( const std::string& name );
 
     bool                    isPersistent() const;
     void                    setPersistent( bool persistent );
@@ -247,7 +247,7 @@ namespace Private {
   }
 
   template <typename T>
-  bool GLObject<T>::setName(const std::string& name) {
+  void GLObject<T>::setName(const std::string& name) {
 
     getInfoIter()->name = name;
   }

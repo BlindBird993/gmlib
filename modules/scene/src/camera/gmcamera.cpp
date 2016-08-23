@@ -136,6 +136,7 @@ namespace GMlib {
   double Camera::getDistanceToObject(int x, int y) {
 
     assert(false);
+    return getDistanceToObject(0x0);
 //    SceneObject*   obj = getScene()->getRenderManager()->findObject(x,y);
 //    return getDistanceToObject(obj);
   }
@@ -226,6 +227,7 @@ namespace GMlib {
   SceneObject* Camera::lockTargetAtPixel(int x, int y) {
 
     assert(false);
+    return 0x0;
 //    SceneObject*   obj = getScene()->getRenderManager()->findObject(x,y);
 //    if(obj)
 //    {

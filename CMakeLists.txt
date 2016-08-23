@@ -21,14 +21,20 @@
 # ###############################################################################
 
 # Minimum CMake version required
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
-# Nice name for the IDEs
-project(GMlib VERSION 0.5)
-
-###########################
 # Specify compiler features
 set(CMAKE_CXX_STANDARD 98)
+
+# Clang++
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")  # -Weverything equivalent to g++ -pedantic, -Werror and -Wall
+else()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Werror")
+endif()
+
+# Nice name for the IDEs
+project(GMlib VERSION 0.5 LANGUAGES C CXX)
 
 # Extra CMake modules
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/" )

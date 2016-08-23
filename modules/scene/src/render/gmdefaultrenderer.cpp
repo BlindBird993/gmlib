@@ -320,6 +320,10 @@ namespace GMlib {
     vshader.setPersistent(true);
     vshader.setSource(vs_src);
     compile_ok = vshader.compile();
+    if( !compile_ok ) {
+      std::cout << "Src:" << std::endl << vshader.getSource() << std::endl << std::endl;
+      std::cout << "Error: " << vshader.getCompilerLog() << std::endl;
+    }
     assert(compile_ok);
 
     GL::FragmentShader fshader;
@@ -327,6 +331,10 @@ namespace GMlib {
     fshader.setPersistent(true);
     fshader.setSource(fs_src);
     compile_ok = fshader.compile();
+    if( !compile_ok ) {
+      std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
+      std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
+    }
     assert(compile_ok);
 
     _render_prog.create(prog_name);
@@ -334,6 +342,9 @@ namespace GMlib {
     _render_prog.attachShader(vshader);
     _render_prog.attachShader(fshader);
     link_ok = _render_prog.link();
+    if( !link_ok ) {
+      std::cout << "Error: " << _render_prog.getLinkerLog() << std::endl;
+    }
     assert(link_ok);
   }
 
@@ -375,6 +386,10 @@ namespace GMlib {
     vshader.setPersistent(true);
     vshader.setSource(vs_src);
     compile_ok = vshader.compile();
+    if( !compile_ok ) {
+      std::cout << "Src:" << std::endl << vshader.getSource() << std::endl << std::endl;
+      std::cout << "Error: " << vshader.getCompilerLog() << std::endl;
+    }
     assert(compile_ok);
 
     GL::FragmentShader fshader;
@@ -382,6 +397,10 @@ namespace GMlib {
     fshader.setPersistent(true);
     fshader.setSource(fs_src);
     compile_ok = fshader.compile();
+    if( !compile_ok ) {
+      std::cout << "Src:" << std::endl << fshader.getSource() << std::endl << std::endl;
+      std::cout << "Error: " << fshader.getCompilerLog() << std::endl;
+    }
     assert(compile_ok);
 
     _render_select_prog.create(prog_name);
@@ -389,6 +408,9 @@ namespace GMlib {
     _render_select_prog.attachShader(vshader);
     _render_select_prog.attachShader(fshader);
     link_ok = _render_select_prog.link();
+    if( !link_ok ) {
+      std::cout << "Error: " << _render_select_prog.getLinkerLog() << std::endl;
+    }
     assert(link_ok);
 
   }

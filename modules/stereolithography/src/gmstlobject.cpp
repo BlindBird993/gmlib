@@ -335,11 +335,14 @@ namespace GMlib {
 
   void StlObject::save( std::ofstream& stream, bool binary ) {
 
+    typedef std::stringstream std_ss;
+
     // Binary
     if( binary ) {
 
-      std::stringstream header;
-      header << "GMlib STL: " << this->getIdentity();
+
+      std_ss header;
+      header << std_ss("GMlib STL: ") << std_ss(this->getIdentity());
 
       char hbuff[80]; for( int i = 0; i < 80; i++ ) hbuff[i] = ' ';
       memcpy( hbuff, header.str().c_str(), header.str().length() );
@@ -364,8 +367,8 @@ namespace GMlib {
     }
     else {
 
-      std::stringstream content;
-      content << "solid " << this->getIdentity() << std::endl;
+      std_ss content;
+      content << std_ss("solid ") << std_ss(this->getIdentity()) << std::endl;
 
       for( int i = 0; i < _normals.getSize(); i++ ) {
 
@@ -376,21 +379,24 @@ namespace GMlib {
         // Normal
         const Vector<float,3> &n = _normals(i);
 
-        content << "  facet normal " << n(0) << " " << n(1) << " " << n(2) << std::endl;
+        content << std_ss("  facet normal ") << n(0) << std_ss(" ") << n(1) << std_ss(" ") << n(2) << std::endl;
 
-        content << "    outer loop" << std::endl;
+        content << std_ss("    outer loop") << std::endl;
 
         // Vertices
-        content << "      vertex " << v0(0) << " " << v0(1) << " " << v0(2) << std::endl;
-        content << "      vertex " << v1(0) << " " << v1(1) << " " << v1(2) << std::endl;
-        content << "      vertex " << v2(0) << " " << v2(1) << " " << v2(2) << std::endl;
+        content << std_ss("      vertex ") << v0(0) << std_ss(" ") << v0(1) <<
+                   std_ss(" ") << v0(2) << std::endl;
+        content << std_ss("      vertex ") << v1(0) << std_ss(" ") << v1(1) <<
+                   std_ss(" ") << v1(2) << std::endl;
+        content << std_ss("      vertex ") << v2(0) << std_ss(" ") << v2(1) <<
+                   std_ss(" ") << v2(2) << std::endl;
 
-        content << "    endloop" << std::endl;
+        content << std_ss("    endloop") << std::endl;
 
-        content << "  endfacet" << std::endl;
+        content << std_ss("  endfacet") << std::endl;
       }
 
-      content << "endsolid " << this->getIdentity() << std::endl;
+      content << std_ss("endsolid ") << std_ss(this->getIdentity()) << std::endl;
 
       stream.write( content.str().c_str(), content.str().length() * sizeof( char ) );
     }

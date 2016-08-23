@@ -143,13 +143,14 @@ namespace GMlib {
         else if( j < a.getValueAt(0,1) || j > a.getValueAt(1,1) )
           _tri_order[i][j].remove(t);
 
-    if(wider)
+    if(wider) {
       for(i=a.getValueAt(0,0); i<=a.getValueAt(1,0); i++)
         for(j=a.getValueAt(0,1); j<=a.getValueAt(1,1); j++)
           if( i < b.getValueAt(0,0) || i > b.getValueAt(1,0) )
             _tri_order[i][j] += t;
           else if( j < b.getValueAt(0,1) || j > b.getValueAt(1,1) )
             _tri_order[i][j] += t;
+    }
   }
 
 
@@ -353,7 +354,7 @@ namespace GMlib {
     for (it=_tri_order[i][j].getSize()-1; it>=0; it--)
       if( ( k = v.isInside( _tri_order[i][j](it) ) ) ) break;
 
-      t = (it >= 0 ? _tri_order[i][j](it) : NULL);
+    t = (it >= 0 ? _tri_order[i][j](it) : NULL);
 
     return k;
   }

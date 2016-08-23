@@ -247,7 +247,9 @@ namespace GMlib {
     int n=a.getDim1();  //nrows
     Array<double> vv(n);
     double d=1.0;
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
     for (i=0;i<n;i++)
     {
       big=0.0;
@@ -255,10 +257,14 @@ namespace GMlib {
 //      if (big == 0.0) return (*this);   //nrerror("Singular matrix in routine ludcmp");
       vv[i]=1.0/big;
     }
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
     for (j=0;j<n;j++)
     {
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
       for (i=0;i<j;i++)
       {
         sum=a[i][j];
@@ -266,7 +272,9 @@ namespace GMlib {
         a[i][j]=sum;
       }
       big=0.0;
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
       for (i=j;i<n;i++)
       {
         sum=a[i][j];
@@ -276,7 +284,9 @@ namespace GMlib {
       }
       if (j != imax)
       {
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
         for (k=0;k<n;k++)
         {
           dum=a[imax][k];
@@ -296,14 +306,18 @@ namespace GMlib {
     }                           // LU-decomp. finished, stored in a[][]
 
     DVector<T> b(a.getDim1());  // LU-back subst. begins
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
     for(int cols=0; cols<a.getDim2(); cols++)
     {
       int i,ii=0,ip,j;
       for(i=0; i<getDim1(); i++) if(i==cols) b[i]=T(1.0); else b[i]=T(0.0);
       T sum;
       int n=a.getDim1();
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
       for (i=0;i<n;i++)
       {
         ip=indx[i];
@@ -314,7 +328,9 @@ namespace GMlib {
         else if (sum != 0.0) ii=i+1;
         b[i]=sum;
       }
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
       for (i=n-1;i>=0;i--)
       {
         sum=b[i];
@@ -322,7 +338,9 @@ namespace GMlib {
         b[i]=sum/a[i][i];
       }
       // LU-back subst. finished,
-#pragma omp parallel for
+#ifdef _OPENMP
+  #pragma omp parallel for
+#endif
       for(i=0; i<getDim1(); i++)    // inverse stored in this, a and b is disappearing?
         (*this)[i][cols]=b[i];
     }

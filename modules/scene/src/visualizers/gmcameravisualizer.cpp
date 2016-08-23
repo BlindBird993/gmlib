@@ -269,7 +269,7 @@ namespace GMlib {
     _vbo_frame.bufferData( 8 * 3 * sizeof(GLfloat), 0x0, GL_DYNAMIC_DRAW);
 
     _ibo_frame_np.create();
-    GLushort frame_indices[] { 0, 1, 2 ,3, 4, 5, 6, 7, 0, 4, 1, 5, 2, 6, 3, 7 };
+    GLushort frame_indices[] = { 0, 1, 2 ,3, 4, 5, 6, 7, 0, 4, 1, 5, 2, 6, 3, 7 };
     _ibo_frame_np.bufferData( 16 * sizeof(GLushort), frame_indices, GL_STATIC_DRAW);
 
 
@@ -286,10 +286,10 @@ namespace GMlib {
     // IF first acquired acquire the rest and return; ELSE create
     if(_vbo_display.acquire(vbo_display_str)) {
 
-      assert(_vbo_grip.acquire(vbo_grip_str));
-      assert(_vbo_viewfinder.acquire(vbo_viewfinder_str));
-      assert(_vbo_viewfinder_2.acquire(vbo_viewfinder_2_str));
-      assert(_vbo_lens.acquire(vbo_lens_str));
+      _vbo_grip.acquire(vbo_grip_str);
+      _vbo_viewfinder.acquire(vbo_viewfinder_str);
+      _vbo_viewfinder_2.acquire(vbo_viewfinder_2_str);
+      _vbo_lens.acquire(vbo_lens_str);
       return;
     }
     else {
