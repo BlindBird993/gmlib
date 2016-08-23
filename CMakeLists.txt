@@ -34,7 +34,7 @@ else()
 endif()
 
 # Nice name for the IDEs
-project(GMlib VERSION 0.5 LANGUAGES C CXX)
+project(GMlib VERSION 0.6.0 LANGUAGES C CXX)
 
 # Extra CMake modules
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/" )
