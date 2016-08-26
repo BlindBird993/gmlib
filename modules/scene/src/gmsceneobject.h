@@ -221,6 +221,7 @@ namespace GMlib{
     void                                setIsPart( bool part );
 
     Array<SceneObject*>&                getChildren();
+    const Array<SceneObject*>&          getChildren() const;
     SceneObject*                        getParent() const;
     void                                setParent(SceneObject* obj);
 
@@ -702,6 +703,12 @@ namespace GMlib{
    */
   inline
   Array<SceneObject*>& SceneObject::getChildren(){
+
+    return _children;
+  }
+
+  inline
+  const Array<SceneObject*>& SceneObject::getChildren() const{
 
     return _children;
   }
