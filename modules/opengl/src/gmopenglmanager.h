@@ -74,9 +74,11 @@ namespace GL {
 
     // System wide buffers
     static void                   initSystemWideBuffers();
+    static void                   purgeAllBuffers();
 
     // Programs and shaders
     static void                   initSystemWideShadersAndPrograms();
+    static void                   purgeAllShadersAndPrograms();
 
     // System wide programs/shaders
     static void                   initPhongProg();

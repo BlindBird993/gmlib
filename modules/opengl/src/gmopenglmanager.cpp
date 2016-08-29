@@ -21,6 +21,9 @@
 **********************************************************************************/
 
 #include "gmopenglmanager.h"
+#include "gmframebufferobject.h"
+#include "gmbufferobject.h"
+#include "gmprogrampipeline.h"
 
 // stl
 #include <cassert>
@@ -55,7 +58,8 @@ namespace GL {
   void OpenGLManager::cleanUp() {
 
     //! \todo Implement this... It crashes bad!!
-    assert(false);
+    purgeAllBuffers();
+    purgeAllShadersAndPrograms();
   }
 
 
@@ -138,6 +142,25 @@ namespace GL {
     lights_ubo.setPersistent(true);
   }
 
+  void OpenGLManager::purgeAllBuffers() {
+
+    BufferObject bo_purge_obj;
+    bo_purge_obj.purgeAll();
+
+    RenderbufferObject rbo_purge_obj;
+    rbo_purge_obj.purgeAll();
+
+    FramebufferObject fbo_purge_obj;
+    fbo_purge_obj.purgeAll();
+
+    ProgramPipeline progpipeline_purge_obj;
+    progpipeline_purge_obj.purgeAll();
+
+    Texture texture_purge_obj;
+    texture_purge_obj.purgeAll();
+  }
+
+
 
 
 
@@ -155,7 +178,16 @@ namespace GL {
 
 
 //    initPCurveContoursProg();
-//    initPSurfContours();
+    //    initPSurfContours();
+  }
+
+  void OpenGLManager::purgeAllShadersAndPrograms() {
+
+    Program program_purge_obj;
+    program_purge_obj.purgeAll();
+
+    Shader shader_purge_obj;
+    shader_purge_obj.purgeAll();
   }
 
 

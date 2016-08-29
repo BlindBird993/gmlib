@@ -127,6 +127,9 @@ void Program::updateLinkerLog() {
 
 std::vector<GLuint> Program::getAttachedShaders() const {
 
+  if(!isValid())
+    return std::vector<GLuint>();
+
   GLint no_as;
   GL_CHECK(::glGetProgramiv( getId(), GL_ATTACHED_SHADERS, &no_as ));
 

@@ -142,7 +142,8 @@ namespace Private {
 
   // Backend
   public:
-    static const std::list<T>&     getData() { return _data; }
+    static const std::list<T>&    getData() { return _data; }
+    void                    purgeAll();
 
   private:
     static std::list<T>     _data;      // List as internal data structure as it's
@@ -193,6 +194,16 @@ namespace Private {
     _info_iter = other._info_iter;
     _info_iter->increment();
     return true;
+  }
+
+  template <typename T>
+  void GLObject<T>::purgeAll() {
+
+    for(InfoIter itr = _data.begin(); itr != _data.end(); ++itr ) {
+      if( itr->persistent )
+        doDelete( itr->id );
+    }
+    _data.clear();
   }
 
   template <typename T>

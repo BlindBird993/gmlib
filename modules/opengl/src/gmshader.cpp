@@ -123,13 +123,13 @@ void Shader::doDelete(GLuint id) const {
     GL_CHECK(::glGetAttachedShaders( p_itr->id, no_as, 0x0, &shader_ids[0] ) );
 
     std::vector<GLuint>::const_iterator s_itr =
-        std::find( shader_ids.begin(), shader_ids.end(), getId() );
+        std::find( shader_ids.begin(), shader_ids.end(), id );
     if( s_itr != shader_ids.end() )
       GL_CHECK(::glDetachShader( p_itr->id, *s_itr ));
   }
 
   // delete shader
-  GL_CHECK(::glDeleteShader( getId() ));
+  GL_CHECK(::glDeleteShader( id ));
 }
 
 void Shader::updateCompilerLog() {
