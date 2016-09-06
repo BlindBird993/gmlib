@@ -801,7 +801,8 @@ namespace GMlib {
     s += Point<T,n>( p( p.getDim1()/2 )( p.getDim2()-1 )(0)(0) );
     s += Point<T,n>( p( 0             )( p.getDim2()/2 )(0)(0) );
     s += Point<T,n>( p( p.getDim1()/2 )( 0             )(0)(0) );
-    Parametrics<T,2,n>::setSurroundingSphere(s.template toType<float>());
+
+    Parametrics<T,2,n>::setSurroundingSphere(s);
   }
 
 

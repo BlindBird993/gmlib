@@ -985,7 +985,7 @@ namespace GMlib {
     inline
     T_Stream &operator<<(T_Stream& os, const Sphere<T,n>& s) {
       if(s.isValid())
-        os << ScalarPoint<T,n>::s;
+        os << static_cast<ScalarPoint<T,n> >(s);
       else
         os << ScalarPoint<T,n>(Point<T,n>(),T(-1));
       return os;
