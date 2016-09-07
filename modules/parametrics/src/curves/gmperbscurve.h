@@ -94,14 +94,14 @@ namespace GMlib {
 
 
     // virtual functions from DO/PCurve
-    void                            insertVisualizer( Visualizer* visualizer );
-    void                            removeVisualizer(Visualizer *visualizer);
+    void                            insertVisualizer(Visualizer* visualizer ) override;
+    void                            removeVisualizer(Visualizer *visualizer) override;
 
     // virtual functions from PCurve
-    void                            edit( SceneObject *obj );
-    bool                            isClosed() const;
-    void                            preSample( int m, int d, T start, T end );
-    void                            replot(int m = 0, int d = 0);
+    void                            edit( SceneObject *obj ) override;
+    bool                            isClosed() const override;
+    void                            preSample( int m, int d, T start, T end ) override;
+    void                            replot(int m = 0, int d = 0) override;
 
   protected:
     bool                            _closed;
@@ -117,9 +117,9 @@ namespace GMlib {
     DVector< DVector<T> >           _B;        // Storing sample values - GERBS
 
     // virual functions from PSurf
-    void                            eval( T t, int d = 0, bool l = false );
-    T                               getEndP();
-    T                               getStartP();
+    void                            eval( T t, int d = 0, bool l = false ) override;
+    T                               getEndP() override;
+    T                               getStartP() override;
 
     // Local help functions
     int                             findIndex( T t);// const;

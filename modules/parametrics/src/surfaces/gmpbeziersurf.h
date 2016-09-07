@@ -53,15 +53,15 @@ namespace GMlib {
     PBezierSurf( const PBezierSurf<T>& dpbs );
     virtual ~PBezierSurf();
 
-    virtual void                  edit(int selector);
+    void                          edit(int selector) override;
     DMatrix< Vector<T,3> >&       getControlPoints();
     int                           getDegreeU() const;
     int                           getDegreeV() const;
     virtual void                  hideSelectors();
-    bool                          isClosedU() const;
-    bool                          isClosedV() const;
+    bool                          isClosedU() const override;
+    bool                          isClosedV() const override;
     bool                          isSelectorsVisible() const;
-    void                          preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
+    void                          preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) ) override;
     void                          setClosed( bool closed_u, bool closed_v );
     void                          setControlPoints( const DMatrix< Vector<T,3> >& cp );
     void                          setResampleMode( GM_RESAMPLE_MODE mode );
@@ -87,13 +87,13 @@ namespace GMlib {
     DMatrix< Selector<T,3>* >     _s;
     bool                          _c_moved;
 
-    void                          eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
+    void                          eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false ) override;
     void                          evalPre( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
     void                          findIndex( T u, T v, int& iu, int& iv );
-    T                             getEndPU();
-    T                             getEndPV();
-    T                             getStartPU();
-    T                             getStartPV();
+    T                             getEndPU() override;
+    T                             getEndPV() override;
+    T                             getStartPU() override;
+    T                             getStartPV() override;
     virtual void                  init();
 
   }; // END class PBezierSurf

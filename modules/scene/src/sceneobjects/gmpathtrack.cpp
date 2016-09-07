@@ -49,7 +49,7 @@ namespace GMlib {
   }
 
 
-  void PathTrack::localDisplay() {
+  void PathTrack::localDisplay(const DefaultRenderer*) const {
 
 //    int k = _recent_path.size() - _element;
 

@@ -52,7 +52,7 @@ namespace GMlib {
   CoordinateSystem::~CoordinateSystem() {}
 
 
-  void CoordinateSystem::localDisplay() {
+  void CoordinateSystem::localDisplay(const DefaultRenderer*) const {
 
 //    glPushMatrix(); {
 

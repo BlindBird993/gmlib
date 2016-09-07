@@ -57,11 +57,12 @@ namespace GMlib {
     PSurfNormalsVisualizer();
     PSurfNormalsVisualizer( const PSurfNormalsVisualizer<T,n>& copy );
 
-    void                              render( const SceneObject* obj, const DefaultRenderer* renderer) const;
+    void                              render( const SceneObject* obj, const DefaultRenderer* renderer) const override;
     void                              replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                                               const DMatrix< Vector<T, n> >& normals,
                                               int m1, int m2, int d1, int d2,
-                                              bool closed_u, bool closed_v );
+                                              bool closed_u, bool closed_v
+                                              ) override;
 
     const Color&                      getColor() const;
     void                              setColor( const Color& color );

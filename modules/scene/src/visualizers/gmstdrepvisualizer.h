@@ -49,8 +49,8 @@ namespace GMlib {
   public:
     VisualizerStdRep();
 
-    void              render( const SceneObject* obj, const DefaultRenderer* renderer ) const;
-    void              renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const;
+    void              render( const SceneObject* obj, const DefaultRenderer* renderer ) const override;
+    void              renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const override;
 
 
     void              render( const HqMatrix<float,3>& mvmat, const HqMatrix<float,3>& pmat ) const;

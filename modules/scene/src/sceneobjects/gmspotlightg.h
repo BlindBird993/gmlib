@@ -63,12 +63,12 @@ namespace GMlib {
     SpotLightG( const SpotLight& copy );
     SpotLightG( const SpotLightG& copy );
 
-    void            setCutOff(const Angle& cut_off);
+    void            setCutOff(const Angle& cut_off) override;
 
   protected:
     // inherited from SceneObject
-    void            localDisplay(const DefaultRenderer *) const;
-    void            localSelect(const Renderer *, const Color &) const;
+    void            localDisplay(const DefaultRenderer *) const override;
+    void            localSelect(const Renderer *, const Color &) const override;
 
   private:
     GL::VertexBufferObject    _light_box_geom_vbo;

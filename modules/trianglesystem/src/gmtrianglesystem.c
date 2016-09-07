@@ -165,9 +165,7 @@ namespace GMlib {
   template <typename T>
   bool TriangleFacets<T>::_fillPolygon( Array<TSEdge<T>*>& e ) {
 
-    int i, j, index;
-    bool stop;
-
+    int i, j;
 
 
     for(i=0; i< e.getSize(); i++)
@@ -201,7 +199,8 @@ namespace GMlib {
         ang += (b->getVector2D()).getAngle(-(a->getVector2D()));
       }
 
-      index=ang.sort();
+      ang.sort();
+      index=ang.getSortedIndex();
 
       for(i=index.getSize()-1; i>=0; i--)
       {

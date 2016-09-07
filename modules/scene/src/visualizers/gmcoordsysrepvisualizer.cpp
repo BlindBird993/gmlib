@@ -43,7 +43,7 @@ namespace GMlib {
     _s_instance = VisualizerStdRep::getInstance();
   }
 
-  void CoordSysRepVisualizer::render(const SceneObject* /*obj*/, const DefaultRenderer *renderer) {
+  void CoordSysRepVisualizer::render(const SceneObject* /*obj*/, const DefaultRenderer *renderer) const {
 
     const Camera *cam = renderer->getCamera();
     // Get matrix of present camera and

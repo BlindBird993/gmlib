@@ -79,8 +79,8 @@ namespace GMlib {
     void                              setPointSize( float s = 5.0 );
 
   protected:
-    void                              localDisplay();
-    void                              localSelect();
+    void                              localDisplay(const DefaultRenderer *) const override;
+    void                              localSelect(const Renderer *, const Color &) const override;
 
   private:
     float                             _getFloat();
@@ -172,7 +172,7 @@ namespace GMlib {
 
 
   inline
-  void StlObject::localDisplay() {
+  void StlObject::localDisplay(const DefaultRenderer*) const {
 
 //    glPushAttrib( GL_LIGHTING_BIT );
 
@@ -194,7 +194,7 @@ namespace GMlib {
 
 
   inline
-  void StlObject::localSelect() {
+  void StlObject::localSelect(const Renderer *, const Color &) const {
 
     glCallList( _dlist+1 );
   }

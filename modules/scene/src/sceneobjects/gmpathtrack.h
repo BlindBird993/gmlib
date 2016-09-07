@@ -49,8 +49,8 @@ namespace GMlib {
     PathTrack( int max_elements = 50, int elementstride = 1, const Color& c = Color( 155, 100, 0 ) );
 
   protected:
-    void                      localDisplay();
-    void                      localSimulate( double dt );
+    void                      localDisplay(const DefaultRenderer *) const override;
+    void                      localSimulate( double dt ) override;
     void                      setColor( const Color& c );
 
   private:

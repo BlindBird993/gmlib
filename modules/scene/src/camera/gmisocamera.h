@@ -62,36 +62,36 @@ namespace GMlib {
     );
     ~IsoCamera();
 
-    double          deltaTranslate(SceneObject *);
+    double          deltaTranslate(SceneObject *) override;
 
 //    void             go(bool stereo=false);
-    void            lock(SceneObject* obj) {}         //!< Disable locking
-    void            lock(const Point<float,3>& p) {}  //!< Disable locking
-    void            lock(double d) {}                 //!< Disable locking
-    void            move(float d);
-    void            move(const Vector<float,3>& t);
+    void            lock(SceneObject* obj) override {}         //!< Disable locking
+    void            lock(const Point<float,3>& p) override {}  //!< Disable locking
+    void            lock(double d) override {}                 //!< Disable locking
+    void            move(float d, bool propagate = true) override;
+    void            move(const Vector<float,3>& t, bool propagate = true) override;
 
 
-    void            rotate(Angle, const Vector<float,3>&);
-    void            rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&);
-    void            rotateParent(Angle, const Vector<float,3>&);
-    void            rotateParent(Angle, const Point<float,3>&,const UnitVector<float,3>&);
-    void            rotateGlobal(Angle, const Vector<float,3>&);
-    void            rotateGlobal(Angle, const Point<float,3>&,const UnitVector<float,3>&);
+    void            rotate(Angle, const Vector<float,3>&, bool propagate = true) override;
+    void            rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&, bool propagate = true) override;
+    void            rotateParent(Angle, const Vector<float,3>&, bool propagate = true) override;
+    void            rotateParent(Angle, const Point<float,3>&,const UnitVector<float,3>&, bool propagate = true) override;
+    void            rotateGlobal(Angle, const Vector<float,3>&, bool propagate = true) override;
+    void            rotateGlobal(Angle, const Point<float,3>&,const UnitVector<float,3>&, bool propagate = true) override;
 
     void            setGrid(double w, double h);
-    void            tilt(Angle a);
-    void            translate(const Vector<float,3>& trans_vector);
-    void            translateParent(const Vector<float,3>& trans_vector);
-    void            translateGlobal(const Vector<float,3>&);
-    void            turn(Angle a);
-    void            zoom(float z);
+    void            tilt(Angle a, bool propagate = true) override;
+    void            translate(const Vector<float,3>& trans_vector, bool propagate = true) override;
+    void            translateParent(const Vector<float,3>& trans_vector, bool propagate = true) override;
+    void            translateGlobal(const Vector<float,3>&, bool propagate = true) override;
+    void            turn(Angle a, bool propagate = true) override;
+    void            zoom(float z) override;
 
 
 
 
 
-    void            computeProjectionMatrix() {
+    void            computeProjectionMatrix() override {
 
       float  hh = _horizontal;
       float  rr = getAspectRatio()*_horizontal;
@@ -131,7 +131,7 @@ namespace GMlib {
     }
 
 
-    void            computeFrustumBounds() {
+    void            computeFrustumBounds() override {
 
       float ratio = getAspectRatio();
 
@@ -150,7 +150,7 @@ namespace GMlib {
     }
 
 
-    void            computeFrustumFrame() {
+    void            computeFrustumFrame() override {
 
       float ratio = getAspectRatio();
 
@@ -242,7 +242,7 @@ namespace GMlib {
    *  Moveing in shooting direction
    */
   inline
-  void IsoCamera::move( float /* delta */ ) {}
+  void IsoCamera::move(float /* delta */, bool /*propagate*/) {}
 
 
   /*! void IsoCamera::move(const Vector<float,3>& t)
@@ -252,25 +252,25 @@ namespace GMlib {
    *  Move in direction t.
    */
   inline
-  void IsoCamera::move( const Vector<float,3>& /* delta */ ) {}
+  void IsoCamera::move( const Vector<float,3>& /* delta */, bool /*propagate*/ ) {}
 
   inline
-  void IsoCamera::rotate( Angle /*angle*/, const Vector<float,3>& /* axel */ ) {}
+  void IsoCamera::rotate( Angle /*angle*/, const Vector<float,3>& /* axel */, bool /*propagate*/ ) {}
 
   inline
-  void IsoCamera::rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&) {}
+  void IsoCamera::rotate(Angle, const Point<float,3>&,const UnitVector<float,3>&, bool /*propagate*/) {}
 
   inline
-  void IsoCamera::rotateParent( Angle /*angle*/, const Vector<float,3>& /* axel */ ) {}
+  void IsoCamera::rotateParent( Angle /*angle*/, const Vector<float,3>& /* axel */, bool /*propagate*/ ) {}
 
   inline
-  void IsoCamera::rotateParent(Angle, const Point<float,3>&,const UnitVector<float,3>&) {}
+  void IsoCamera::rotateParent(Angle, const Point<float,3>&,const UnitVector<float,3>&, bool /*propagate*/) {}
 
   inline
-  void IsoCamera::rotateGlobal(Angle, const Vector<float,3>&) {}
+  void IsoCamera::rotateGlobal(Angle, const Vector<float,3>&, bool /*propagate*/) {}
 
   inline
-  void IsoCamera::rotateGlobal(Angle, const Point<float,3>&,const UnitVector<float,3>&) {}
+  void IsoCamera::rotateGlobal(Angle, const Point<float,3>&,const UnitVector<float,3>&, bool /*propagate*/) {}
 
   inline
   void IsoCamera::setGrid(double w, double h) {
@@ -279,19 +279,19 @@ namespace GMlib {
   }
 
   inline
-  void IsoCamera::tilt( Angle /* angle */ ) {}
+  void IsoCamera::tilt( Angle /* angle */, bool /*propagate*/ ) {}
 
   inline
-  void IsoCamera::translate( const Vector<float,3>& /*trans_vector*/ ) {}
+  void IsoCamera::translate( const Vector<float,3>& /*trans_vector*/, bool /*propagate*/ ) {}
 
   inline
-  void IsoCamera::translateParent( const Vector<float,3>& /*trans_vector*/ ) {}
+  void IsoCamera::translateParent( const Vector<float,3>& /*trans_vector*/, bool /*propagate*/ ) {}
 
   inline
-  void IsoCamera::translateGlobal( const Vector<float,3>& /*trans_vector*/ ) {}
+  void IsoCamera::translateGlobal( const Vector<float,3>& /*trans_vector*/, bool /*propagate*/ ) {}
 
   inline
-  void IsoCamera::turn( Angle /*angle*/ ) {}
+  void IsoCamera::turn( Angle /*angle*/, bool /*propagate*/ ) {}
 
 
 

@@ -67,7 +67,7 @@ namespace GMlib {
       float shininess     = 0.0f
     );
     Material( const Material& copy );
-    virtual ~Material();
+    ~Material();
 
     const Color&    getAmb() const;
     const Color&    getDif() const;

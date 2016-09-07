@@ -52,7 +52,7 @@ namespace GMlib {
     PBezierCurve( const PBezierCurve<T>& copy );
     virtual ~PBezierCurve();
 
-    void                            edit( int selector );
+    void                            edit( int selector ) override;
     DVector< Vector<T,3> >&         getControlPoints();
     int                             getDegree() const;
     virtual void                    hideSelectors();
@@ -65,8 +65,8 @@ namespace GMlib {
     void                            updateCoeffs( const Vector<T,3>& d );
 
     // virtual from PCurve
-    bool                            isClosed() const;
-    void                            preSample( int m, int d, T start, T end );
+    bool                            isClosed() const override;
+    void                            preSample( int m, int d, T start, T end ) override;
 
 
 
@@ -85,11 +85,11 @@ namespace GMlib {
     DVector< Selector<T,3>* >       _s;
     bool                            _c_moved;
 
-    void                            eval( T t, int d = 0, bool l = false );
+    void                            eval( T t, int d = 0, bool l = false ) override;
     void                            evalPre( T t, int d = 0, bool l = false );
     void                            findIndex( T t, int& it );
-    T                               getEndP();
-    T                               getStartP();
+    T                               getEndP() override;
+    T                               getStartP() override;
     virtual void                    init();
   }; // END class PBezierCurve
 

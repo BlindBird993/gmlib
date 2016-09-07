@@ -335,71 +335,72 @@ namespace GMlib {
 
   void StlObject::save( std::ofstream& stream, bool binary ) {
 
-    typedef std::stringstream std_ss;
+    assert(false);
+//    typedef std::stringstream std_ss;
 
-    // Binary
-    if( binary ) {
-
-
-      std_ss header;
-      header << std_ss("GMlib STL: ") << std_ss(this->getIdentity());
-
-      char hbuff[80]; for( int i = 0; i < 80; i++ ) hbuff[i] = ' ';
-      memcpy( hbuff, header.str().c_str(), header.str().length() );
-      stream.write( hbuff, 80 );
+//    // Binary
+//    if( binary ) {
 
 
-      unsigned int facets = _normals.getSize();
-      stream.write( (char*)&facets, sizeof( unsigned int ) );
+//      std_ss header;
+//      header << std_ss("GMlib STL: ") << std_ss(this->getIdentity());
 
-      for( int i = 0; i < _normals.getSize(); i++ ) {
+//      char hbuff[80]; for( int i = 0; i < 80; i++ ) hbuff[i] = ' ';
+//      memcpy( hbuff, header.str().c_str(), header.str().length() );
+//      stream.write( hbuff, 80 );
 
-        // Normal
-        stream.write( (char*)&_normals[i], 3 * sizeof( unsigned int ) );
 
-        // Vertices
-        stream.write( (char*)&_vertices[i*3], 9 * sizeof( unsigned int ) );
+//      unsigned int facets = _normals.getSize();
+//      stream.write( (char*)&facets, sizeof( unsigned int ) );
 
-        // Attribute
-        unsigned short attrib = 0;
-        stream.write( (char*)&attrib, sizeof( unsigned short ) );
-      }
-    }
-    else {
+//      for( int i = 0; i < _normals.getSize(); i++ ) {
 
-      std_ss content;
-      content << std_ss("solid ") << std_ss(this->getIdentity()) << std::endl;
+//        // Normal
+//        stream.write( (char*)&_normals[i], 3 * sizeof( unsigned int ) );
 
-      for( int i = 0; i < _normals.getSize(); i++ ) {
+//        // Vertices
+//        stream.write( (char*)&_vertices[i*3], 9 * sizeof( unsigned int ) );
 
-        const Vector<float,3> &v0 = _vertices(i*3);
-        const Vector<float,3> &v1 = _vertices(i*3+1);
-        const Vector<float,3> &v2 = _vertices(i*3+2);
+//        // Attribute
+//        unsigned short attrib = 0;
+//        stream.write( (char*)&attrib, sizeof( unsigned short ) );
+//      }
+//    }
+//    else {
 
-        // Normal
-        const Vector<float,3> &n = _normals(i);
+//      std_ss content;
+//      content << std_ss("solid ") << std_ss(this->getIdentity()) << std::endl;
 
-        content << std_ss("  facet normal ") << n(0) << std_ss(" ") << n(1) << std_ss(" ") << n(2) << std::endl;
+//      for( int i = 0; i < _normals.getSize(); i++ ) {
 
-        content << std_ss("    outer loop") << std::endl;
+//        const Vector<float,3> &v0 = _vertices(i*3);
+//        const Vector<float,3> &v1 = _vertices(i*3+1);
+//        const Vector<float,3> &v2 = _vertices(i*3+2);
 
-        // Vertices
-        content << std_ss("      vertex ") << v0(0) << std_ss(" ") << v0(1) <<
-                   std_ss(" ") << v0(2) << std::endl;
-        content << std_ss("      vertex ") << v1(0) << std_ss(" ") << v1(1) <<
-                   std_ss(" ") << v1(2) << std::endl;
-        content << std_ss("      vertex ") << v2(0) << std_ss(" ") << v2(1) <<
-                   std_ss(" ") << v2(2) << std::endl;
+//        // Normal
+//        const Vector<float,3> &n = _normals(i);
 
-        content << std_ss("    endloop") << std::endl;
+//        content << std_ss("  facet normal ") << n(0) << std_ss(" ") << n(1) << std_ss(" ") << n(2) << std::endl;
 
-        content << std_ss("  endfacet") << std::endl;
-      }
+//        content << std_ss("    outer loop") << std::endl;
 
-      content << std_ss("endsolid ") << std_ss(this->getIdentity()) << std::endl;
+//        // Vertices
+//        content << std_ss("      vertex ") << v0(0) << std_ss(" ") << v0(1) <<
+//                   std_ss(" ") << v0(2) << std::endl;
+//        content << std_ss("      vertex ") << v1(0) << std_ss(" ") << v1(1) <<
+//                   std_ss(" ") << v1(2) << std::endl;
+//        content << std_ss("      vertex ") << v2(0) << std_ss(" ") << v2(1) <<
+//                   std_ss(" ") << v2(2) << std::endl;
 
-      stream.write( content.str().c_str(), content.str().length() * sizeof( char ) );
-    }
+//        content << std_ss("    endloop") << std::endl;
+
+//        content << std_ss("  endfacet") << std::endl;
+//      }
+
+//      content << std_ss("endsolid ") << std_ss(this->getIdentity()) << std::endl;
+
+//      stream.write( content.str().c_str(), content.str().length() * sizeof( char ) );
+//    }
   }
 
 

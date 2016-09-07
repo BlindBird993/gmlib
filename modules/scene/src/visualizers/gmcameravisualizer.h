@@ -43,8 +43,8 @@ namespace GMlib {
   public:
     CameraVisualizer();
 
-    void              render( const SceneObject* obj, const DefaultRenderer* renderer ) const;
-    void              renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const;
+    void              render( const SceneObject* obj, const DefaultRenderer* renderer ) const override;
+    void              renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const override;
 
 
   private:

@@ -51,13 +51,13 @@ namespace GMlib {
   protected:
     T             _radius;
 
-    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
-    T             getEndPV();
-    T             getEndPU();
-    T             getStartPU();
-    T             getStartPV();
-    bool          isClosedU() const;
-    bool          isClosedV() const;
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getEndPV() override;
+    T             getEndPU() override;
+    T             getStartPU() override;
+    T             getStartPV() override;
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
 
   }; // END class PSphere
 

@@ -228,7 +228,7 @@ namespace GMlib {
 
 
     unsigned long int v = idx;
-    int mu = res;
+//    int mu = res;
     int m = dim -1;
 
 

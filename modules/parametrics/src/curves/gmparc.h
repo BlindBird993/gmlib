@@ -49,7 +49,7 @@ namespace GMlib {
 
     T                   getCurvature() const;
     T                   getSpeed() const;
-    bool                isClosed() const;
+    bool                isClosed() const override;
     void                setCurvature( T curvature );
     void                setEnd( T end );
     void                setSpeed( T speed );
@@ -62,10 +62,10 @@ namespace GMlib {
     T                   _start;   // Start
     T                   _end;     // End
 
-    void	              eval(T t, int d, bool l);
+    void	              eval(T t, int d, bool l) override;
     T                   getCurvature( DVector< Vector<T,3> >& p );
-    T                   getEndP();
-    T                   getStartP();
+    T                   getEndP() override;
+    T                   getStartP() override;
 
   }; // END class PArc
 

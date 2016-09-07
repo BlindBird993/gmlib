@@ -64,7 +64,7 @@ namespace GMlib{
     PointLight(  const PointLight& pl);
     virtual ~PointLight();
 
-    virtual void              culling( const Camera& cam );
+    void              culling( const Camera& cam ) override;
     const Point<float,3>&     getAttenuation() const;
     void                      setAttenuation(float constant, float linear, float quadratic);
     void                      setAttenuation(const float att[]);

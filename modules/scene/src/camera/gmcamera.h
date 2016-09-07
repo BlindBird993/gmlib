@@ -107,8 +107,8 @@ namespace GMlib {
 //    SceneObject*                findSelectObject( const Vector<int,2>& pos, int type_id=0);
 //    Array<SceneObject* >        findSelectObjects(int xmin, int ymin, int xmax, int ymax, int type_id=0);
 
-    HqMatrix<float,3>&          getMatrix();
-    const HqMatrix<float,3>&    getMatrix() const;
+    HqMatrix<float,3>&          getMatrix() override;
+    const HqMatrix<float,3>&    getMatrix() const override;
     const HqMatrix<float,3>&    getProjectionMatrix() const;
     Arrow<int,2>                getViewport() const;
     void                        getViewport(int& w1, int& w2, int& h1, int& h2) const;
@@ -163,7 +163,8 @@ namespace GMlib {
     void                        basisChange( const Vector<float,3>& x,
                                              const Vector<float,3>& y,
                                              const Vector<float,3>& z,
-                                             const Vector<float,3>& p);
+                                             const Vector<float,3>& p
+                                             ) override;
 
 //    virtual void                display();
     SceneObject*                find(unsigned int name);

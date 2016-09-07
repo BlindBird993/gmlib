@@ -36,7 +36,7 @@ namespace GMlib {
   public:
     CoordSysRepVisualizer();
 
-    void              render( const SceneObject* obj, const DefaultRenderer* renderer );
+    void              render( const SceneObject* obj, const DefaultRenderer* renderer ) const override;
 
 
   private:

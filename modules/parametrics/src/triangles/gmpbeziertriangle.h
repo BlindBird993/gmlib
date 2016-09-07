@@ -56,12 +56,12 @@ class SelectorGridVisualizer;
     ~PBezierTriangle();
 
     DVector< Vector<T,3> >      getControlPoints();
-    virtual void                edit( int selector );
+    void                        edit( int selector ) override;
     virtual void                hideSelectors();
     bool                        isSelectorsVisible() const;
     void                        setControlPoints( const DVector< Vector<T,3> >& c );
     virtual void                showSelectors( bool grid, Color selector_color = GMcolor::DarkBlue, Color grid_color = GMcolor::LightGreen );
-    void                        updateCoeffs( const Vector<T,3>& d );
+    void                        updateCoeffs( const Vector<T,3>& d ) override;
 
   protected:
     DVector< Vector<T,3> >      _c;
@@ -72,7 +72,7 @@ class SelectorGridVisualizer;
     bool                        _c_moved;
 
     /* implemented from PTriangle */
-    void                        eval( T u, T v, T w, int d );
+    void                        eval( T u, T v, T w, int d ) override;
 
   }; // END class PBezierTriangle
 

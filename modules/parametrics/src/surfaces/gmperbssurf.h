@@ -104,15 +104,15 @@ namespace GMlib {
     void                                splitKnotAlongV( int vk ) { assert(false); }
 
     // virtual functions from DO/PSurf
-    void                                insertVisualizer( Visualizer* visualizer );
-    void                                removeVisualizer( Visualizer* visualizer );
+    void                                insertVisualizer( Visualizer* visualizer ) override;
+    void                                removeVisualizer( Visualizer* visualizer ) override;
 
     // virtual functions from PSurf
-    void                                edit( SceneObject *obj );
-    bool                                isClosedU() const;
-    bool                                isClosedV() const;
-    void                                preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v );
-    void                                replot(int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0);
+    void                                edit( SceneObject *obj ) override;
+    bool                                isClosedU() const override;
+    bool                                isClosedV() const override;
+    void                                preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v ) override;
+    void                                replot(int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0) override;
 
   protected:
     bool                                _closed_u;
@@ -136,17 +136,17 @@ namespace GMlib {
 
     DMatrix< PSurf<T,3>* >              _c;
 
-    void	                              eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
+    void	                              eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false ) override;
     void                                evalPre( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
     void                                findIndex( T u, T v, int& iu, int& iv );
     void                                generateKnotVector( DVector<T>& kv, const T s, const T d, int kvd, bool closed );
     void                                getB( DVector<T>& B, const DVector<T>& kv, int tk, T t, int d );
     DMatrix< Vector<T,3> >              getC( T u, T v, int uk, int vk, T du, T dv );
     DMatrix< Vector<T,3> >              getCPre( T u, T v, int uk, int vk, T du, T dv, int iu, int iv );
-    T                                   getEndPU();
-    T                                   getEndPV();
-    T                                   getStartPU();
-    T                                   getStartPV();
+    T                                   getEndPU() override;
+    T                                   getEndPV() override;
+    T                                   getStartPU() override;
+    T                                   getStartPV() override;
     virtual void                        init();
     void                                insertPatch( PSurf<T,3> *patch );
     void                                padKnotVector( DVector<T>& kv, bool closed );

@@ -59,18 +59,18 @@
 
 // getIdentity
 #define GM_DECLARE_SO_IDENTITY( CNAME ) \
-  std::string getIdentity() const { \
+  std::string getIdentity() const override { \
     return #CNAME; \
   }
 
 // makeCopy
 #define GM_DECLARE_SO_MAKECOPY( CNAME ) \
-  GMlib::SceneObject* makeCopy() { \
+  GMlib::SceneObject* makeCopy() override { \
     return new CNAME(*this); \
   }
 
 #define GM_DECLARE_SO_MAKECOPY_NULL() \
-  GMlib::SceneObject* makeCopy() { \
+  GMlib::SceneObject* makeCopy() override { \
     return 0x0; \
   }
 

@@ -177,7 +177,6 @@ namespace GMlib {
       {
         int di  = d-i;
         int di1 = di-1;
-        int i1 = i+1;
         for( int j = 0; j < di; j++ ) w[j] = delta(s,di,ii-di1+j);
 
         mat[i][k] = w[di1] * mat[i][k-1];

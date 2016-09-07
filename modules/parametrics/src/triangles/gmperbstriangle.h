@@ -45,8 +45,8 @@ namespace GMlib {
                    BasisTriangleType t = BFBS_2 );
     virtual ~PERBSTriangle();
 
-    void                            edit( SceneObject *obj );
-    DVector< PTriangle<T,3>* >&       getLocalPatches();
+    void                            edit( SceneObject *obj ) override;
+    DVector< PTriangle<T,3>* >&     getLocalPatches();
     virtual void                    hideLocalPatches();
     bool                            isLocalPatchesVisible() const;
     virtual void                    showLocalPatches();
@@ -54,14 +54,14 @@ namespace GMlib {
     void                            resetBasis( BasisTriangleType type );
 
     /* virtual from PTriangle */
-    Vector<Point<T,3>,3>            getPoints();
+    Vector<Point<T,3>,3>            getPoints() override;
 
 
   protected:
     BasisTriangleERBS<T>            *_B;
     DVector< PTriangle<T,3>* >        _c;
 
-    void                            eval( T u, T v, T w, int d );
+    void                            eval( T u, T v, T w, int d ) override;
 
     void                            insertPatch( PTriangle<T,3> *patch );
 

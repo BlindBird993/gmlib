@@ -34,6 +34,7 @@
 #include "gmstream.h"
 
 // stl
+#include <cmath>
 #include <algorithm>
 
 
@@ -594,9 +595,9 @@ namespace GMlib {
       double rc = (mx-r)/(mx-mn);
       double gc = (mx-g)/(mx-mn);
       double bc = (mx-b)/(mx-mn);
-      if(r == mx)			h = bc-gc;
-      else if(g == mx)	h = rc-bc + 2.0;
-      else if(b == mx)	h = gc-rc + 4.0;
+      if(std::fabs(r-mx) < 1e-7)         h = bc-gc;
+      else if(std::fabs(g - mx) < 1e-7)  h = rc-bc + 2.0;
+      else                               h = gc-rc + 4.0;                                // else if(std::abs(b -mx) < 1e-7)
       h *= 60.0;
       if(h<0.0) h += 360.0;
       h /= 360.0;			// 360 degree is skaled to 1.
@@ -635,7 +636,6 @@ namespace GMlib {
       case 3: r=p; g=q; b=v; break;
       case 4: r=t; g=p; b=v; break;
       case 5: r=v; g=p; b=q; break;
-      default: ;
       }
     }
     setRed( r ); setGreen( g ); setBlue( b );

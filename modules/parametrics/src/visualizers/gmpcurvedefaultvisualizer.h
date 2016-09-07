@@ -49,11 +49,10 @@ namespace GMlib {
     GLfloat       getLineWidth() const;
     void          setLineWidth( GLfloat width );
 
-    void          render(const SceneObject* obj, const DefaultRenderer* render) const;
-    void          renderGeometry( const SceneObject* obj, const Renderer* render, const Color& color ) const;
+    void          render(const SceneObject* obj, const DefaultRenderer* render) const override;
+    void          renderGeometry( const SceneObject* obj, const Renderer* render, const Color& color ) const override;
 
-    virtual void  replot( const DVector< DVector< Vector<T, n> > >& p,
-                          int m, int d, bool closed );
+    void          replot( const DVector< DVector< Vector<T, n> > >& p, int m, int d, bool closed  ) override;
 
   protected:
     GL::Program               _prog;

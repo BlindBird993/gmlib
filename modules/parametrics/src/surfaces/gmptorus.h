@@ -46,8 +46,8 @@ namespace GMlib {
     const T&      getTubeRadius1() const;
     const T&      getTubeRadius2() const;
     const T&      getWheelRadius() const;
-    bool          isClosedU() const;
-    bool          isClosedV() const;
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
     void          setTubeRadius1( const T& radius );
     void          setTubeRadius2( const T& radius );
     void          setWheelRadius( const T& radius );
@@ -57,11 +57,11 @@ namespace GMlib {
     T             _b;		//Tuberadius1
     T             _c;		//Tuberadius2
 
-    void          eval(T u, T v, int d1, int d2, bool lu, bool lv );
-    T             getEndPU();
-    T             getEndPV();
-    T             getStartPU();
-    T             getStartPV();
+    void          eval(T u, T v, int d1, int d2, bool lu, bool lv ) override;
+    T             getEndPU() override;
+    T             getEndPV() override;
+    T             getStartPU() override;
+    T             getStartPV() override;
 
   }; // END class PTorus
 

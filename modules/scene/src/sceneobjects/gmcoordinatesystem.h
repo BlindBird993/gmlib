@@ -58,7 +58,7 @@ namespace GMlib {
     void               setCoordinateSystem( GM_COORDSYS coordsys );
 
   protected:
-    void               localDisplay();
+    void               localDisplay( const DefaultRenderer* ) const override;
 
     GM_COORDSYS        _cs;
 

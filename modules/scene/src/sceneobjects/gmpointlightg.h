@@ -59,8 +59,8 @@ namespace GMlib{
 
   protected:
     // inherited from SceneObject
-    void            localDisplay(const DefaultRenderer *) const;
-    void            localSelect(const Renderer *, const Color &) const;
+    void            localDisplay(const DefaultRenderer *) const override;
+    void            localSelect(const Renderer *, const Color &) const override;
 
   private:
     Sphere3D        _sphere;
