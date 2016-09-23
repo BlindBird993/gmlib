@@ -23,19 +23,25 @@
 # Minimum CMake version required
 cmake_minimum_required(VERSION 3.1)
 
+# Nice name for the IDEs
+project(GMlib VERSION 0.6.0 LANGUAGES C CXX)
+
 # Specify compiler features
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 14)
 
-# Clang++
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything")  # -Weverything equivalent to g++ -pedantic, -Werror and -Wall
+# Compiler options
+if(MSVC)
+  message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Werror -Wsuggest-override")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything -Winconsistent-missing-override")  # -Weverything equivalent to g++ -pedantic, -Werror and -Wall
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Werror")
+  message(WARNING "Compiler <${CMAKE_CXX_COMPILER_ID}> is not a supported C++ compiler.")
 endif()
-
-# Nice name for the IDEs
-project(GMlib VERSION 0.6.0 LANGUAGES C CXX)
 
 # Extra CMake modules
 set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/" )
