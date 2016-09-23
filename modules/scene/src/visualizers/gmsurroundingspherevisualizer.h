@@ -48,7 +48,7 @@ namespace GMlib {
       SurroundingSphereVisualizer();
       ~SurroundingSphereVisualizer();
 
-      void              render(const SceneObject *obj, const DefaultRenderer *renderer) const;
+      void              render(const SceneObject *obj, const DefaultRenderer *renderer) const override;
 
       void              enableCleanSphere( bool enable );
       void              enableTotalSphere( bool enable );

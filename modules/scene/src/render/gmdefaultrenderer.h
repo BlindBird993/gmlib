@@ -76,12 +76,7 @@ namespace GMlib {
 
     const Vector<int,2>&    getViewportSize() const;
 
-    /* virtual from Renderer */
-    void                    prepare() {}
-    void                    render();
     void                    render(RenderTarget& target);
-    void                    swap();
-    void                    reshape( const Vector<int,2>& size );
 
 
     const RenderTarget&      getFrontRenderTarget() const;
@@ -90,6 +85,12 @@ namespace GMlib {
     const GL::UniformBufferObject&    getDirectionalLightUBO() const;
     const GL::UniformBufferObject&    getPointLightUBO() const;
     const GL::UniformBufferObject&    getSpotLightUBO() const;
+
+    /* virtual from Renderer */
+    void                    prepare() override {}
+    void                    render()override ;
+    void                    swap() override ;
+    void                    reshape( const Vector<int,2>& size ) override ;
 
   protected:
     virtual void            prepare(Camera *cam);

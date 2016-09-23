@@ -55,13 +55,13 @@ namespace GMlib {
     void                            setSelectRboName( const std::string& name ) { _rbo_color.setName(name); }
 
     /* Virtual from Renderer */
-    void                            prepare();
-    void                            reshape(const Vector<int,2> &size);
+    void                            prepare() override;
+    void                            reshape(const Vector<int,2> &size) override;
 
   protected:
     /* Virtual from Renderer */
-    void                            render() {}
-    void                            swap() {}
+    void                            render() override {}
+    void                            swap() override {}
 
 
     mutable Array<const SceneObject*>   _objs;

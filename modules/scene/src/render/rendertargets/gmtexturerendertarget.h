@@ -28,10 +28,10 @@ private:
   void      init( const std::string& name = std::string());
 
   // Virtual from RenderTarget
-  void      doPrepare() const;
-  void      doBind() const;
-  void      doUnbind() const;
-  void      doResize();
+  void      doPrepare() const override;
+  void      doBind() const override;
+  void      doUnbind() const override;
+  void      doResize() override;
 
 }; // END class TextureRenderTarget
 

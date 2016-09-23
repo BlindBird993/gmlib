@@ -112,8 +112,8 @@ namespace GMlib {
     void                          enableDefaultVisualizer( bool enable = true );
     PSurfVisualizer<T,n>*         getDefaultVisualizer() const;
     void                          toggleDefaultVisualizer();
-    void                          insertVisualizer( Visualizer *visualizer );
-    void                          removeVisualizer( Visualizer *visualizer );
+    void                          insertVisualizer( Visualizer *visualizer ) override;
+    void                          removeVisualizer( Visualizer *visualizer ) override;
 
     const Point<T,n>&             operator () ( T u, T v );
 

@@ -107,10 +107,10 @@ namespace GL {
     void                      detachShaderInternal( GLuint id ) const;
 
     /* pure-virtual functions from Object */
-    virtual GLuint            getCurrentBoundId() const;
-    virtual void              doBind( GLuint id ) const;
-    virtual GLuint            doGenerate() const;
-    virtual void              doDelete(GLuint id) const;
+    GLuint                    getCurrentBoundId() const override;
+    void                      doBind( GLuint id ) const override;
+    GLuint                    doGenerate() const override;
+    void                      doDelete(GLuint id) const override;
 
 
 
