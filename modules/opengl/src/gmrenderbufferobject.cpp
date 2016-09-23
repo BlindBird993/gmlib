@@ -24,62 +24,69 @@
 
 #include "gmrenderbufferobject.h"
 
-using namespace GMlib::GL;
+namespace GMlib { namespace GL {
 
+  namespace Private {
 
-template <>
-typename std::list<Private::RBOInfo> Private::GLObject<Private::RBOInfo>::_data = std::list<Private::RBOInfo>();
-
-
-RenderbufferObject::RenderbufferObject() {}
-
-RenderbufferObject::~RenderbufferObject() { decrement(); }
-
-void RenderbufferObject::create() {
-
-  Private::RBOInfo info;
-  createObject(info);
-}
-
-void RenderbufferObject::create(const std::string& name) {
-
-  Private::RBOInfo info;
-  info.name = name;
-  createObject(info);
-}
+    template <>
+    typename std::list<RBOInfo> GLObject<RBOInfo>::_data = std::list<RBOInfo>();
+  }
 
 
 
 
+  RenderbufferObject::RenderbufferObject() {}
+
+  RenderbufferObject::~RenderbufferObject() { decrement(); }
+
+  void RenderbufferObject::create() {
+
+    Private::RBOInfo info;
+    createObject(info);
+  }
+
+  void RenderbufferObject::create(const std::string& name) {
+
+    Private::RBOInfo info;
+    info.name = name;
+    createObject(info);
+  }
 
 
-void RenderbufferObject::renderbufferStorage(GLenum internal_format, GLsizei width, GLsizei height) const {
 
-  GLuint id = safeBind();
-  GL_CHECK(::glRenderbufferStorage( GL_RENDERBUFFER, internal_format, width, height ));
-  safeUnbind(id);
-}
 
-GLuint RenderbufferObject::getCurrentBoundId() const {
 
-  GLint id;
-  GL_CHECK(::glGetIntegerv( GL_RENDERBUFFER_BINDING, &id ));
-  return id;
-}
 
-void RenderbufferObject::doBind(GLuint id) const {
+  void RenderbufferObject::renderbufferStorage(GLenum internal_format, GLsizei width, GLsizei height) const {
 
-  GL_CHECK(::glBindRenderbuffer( GL_RENDERBUFFER, id ));
-}
+    GLuint id = safeBind();
+    GL_CHECK(::glRenderbufferStorage( GL_RENDERBUFFER, internal_format, width, height ));
+    safeUnbind(id);
+  }
 
-GLuint RenderbufferObject::doGenerate() const {
+  GLuint RenderbufferObject::getCurrentBoundId() const {
 
-  GLuint id;
-  GL_CHECK(::glGenRenderbuffers( 1, &id ));
-  return id;
-}
+    GLint id;
+    GL_CHECK(::glGetIntegerv( GL_RENDERBUFFER_BINDING, &id ));
+    return id;
+  }
 
-void RenderbufferObject::doDelete(GLuint id) const {
+  void RenderbufferObject::doBind(GLuint id) const {
 
-  GL_CHECK(::glDeleteRenderbuffers( 1, &id ));
-}
+    GL_CHECK(::glBindRenderbuffer( GL_RENDERBUFFER, id ));
+  }
+
+  GLuint RenderbufferObject::doGenerate() const {
+
+    GLuint id;
+    GL_CHECK(::glGenRenderbuffers( 1, &id ));
+    return id;
+  }
+
+  void RenderbufferObject::doDelete(GLuint id) const {
+
+    GL_CHECK(::glDeleteRenderbuffers( 1, &id ));
+  }
+
+
+}} // END namespace GMlib::GL

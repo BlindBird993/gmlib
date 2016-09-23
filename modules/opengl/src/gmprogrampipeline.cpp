@@ -28,64 +28,69 @@
 
   #include <functional>
 
-using namespace GMlib::GL;
+
+namespace GMlib { namespace GL {
+
+  namespace Private {
+
+    template <>
+    typename std::list<ProgramPipelineInfo> GLObject<ProgramPipelineInfo>::_data = std::list<ProgramPipelineInfo>();
+  }
 
 
-template <>
-typename std::list<Private::ProgramPipelineInfo> Private::GLObject<Private::ProgramPipelineInfo>::_data = std::list<Private::ProgramPipelineInfo>();
+
+
+  ProgramPipeline::ProgramPipeline() {}
+
+  ProgramPipeline::~ProgramPipeline() { decrement(); }
+
+  void ProgramPipeline::create() {
+
+    Private::ProgramPipelineInfo info;
+    createObject(info);
+  }
+
+  void ProgramPipeline::create(const std::string &name) {
+
+    Private::ProgramPipelineInfo info;
+    info.name = name;
+    createObject(info);
+  }
+
+  void ProgramPipeline::useProgramStages(GLbitfield stages, const Program& program) {
+
+    GL_CHECK(::glUseProgramStages(getId(),stages,program.getId()));
+  }
+
+  GLuint ProgramPipeline::getCurrentBoundId() const {
+
+    GLint id;
+    GL_CHECK(::glGetIntegerv( GL_CURRENT_PROGRAM, &id ));
+    return id;
+  }
+
+  void ProgramPipeline::doBind(GLuint id) const {
+
+    GL_CHECK(::glBindProgramPipeline( id ));
+  }
+
+  GLuint ProgramPipeline::doGenerate() const {
+
+    GLuint id;
+    GL_CHECK(::glGenProgramPipelines(1,&id));
+    return id;
+  }
+
+  void ProgramPipeline::doDelete(GLuint id) const {
+
+    // delete
+    GL_CHECK(::glDeleteProgramPipelines(1,&id));
+  }
 
 
 
-
-ProgramPipeline::ProgramPipeline() {}
-
-ProgramPipeline::~ProgramPipeline() { decrement(); }
-
-void ProgramPipeline::create() {
-
-  Private::ProgramPipelineInfo info;
-  createObject(info);
-}
-
-void ProgramPipeline::create(const std::string &name) {
-
-  Private::ProgramPipelineInfo info;
-  info.name = name;
-  createObject(info);
-}
-
-void ProgramPipeline::useProgramStages(GLbitfield stages, const Program& program) {
-
-  GL_CHECK(::glUseProgramStages(getId(),stages,program.getId()));
-}
-
-GLuint ProgramPipeline::getCurrentBoundId() const {
-
-  GLint id;
-  GL_CHECK(::glGetIntegerv( GL_CURRENT_PROGRAM, &id ));
-  return id;
-}
-
-void ProgramPipeline::doBind(GLuint id) const {
-
-  GL_CHECK(::glBindProgramPipeline( id ));
-}
-
-GLuint ProgramPipeline::doGenerate() const {
-
-  GLuint id;
-  GL_CHECK(::glGenProgramPipelines(1,&id));
-  return id;
-}
-
-void ProgramPipeline::doDelete(GLuint id) const {
-
-  // delete
-  GL_CHECK(::glDeleteProgramPipelines(1,&id));
-}
+}} // END namespace GMlib::GL
 
 
 #endif // GL_VERSION_4_1
-
-
 

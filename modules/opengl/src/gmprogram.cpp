@@ -26,327 +26,337 @@
 
 #include <functional>
 
-using namespace GMlib::GL;
+namespace GMlib { namespace GL {
 
+  namespace Private {
 
-template <>
-typename std::list<Private::ProgramInfo> Private::GLObject<Private::ProgramInfo>::_data = std::list<Private::ProgramInfo>();
-
-
-
-
-Program::Program() {}
-
-Program::~Program() { decrement(); }
-
-void Program::create() {
-
-  Private::ProgramInfo info;
-  createObject(info);
-}
-
-void Program::create(const std::string &name) {
-
-  Private::ProgramInfo info;
-  info.name = name;
-  createObject(info);
-}
-
-bool Program::link() {
-
-  // Link program
-  GL_CHECK(::glLinkProgram( getId() ));
-
-  // get link status
-  int param;
-  GL_CHECK(::glGetProgramiv( getId(), GL_LINK_STATUS, &param ));
-
-  updateLinkerLog();
-
-  return param == GL_TRUE;
-}
-
-const std::string&Program::getLinkerLog() const {
-
-  return getInfoIter()->linker_log;
-}
-
-GLuint Program::getCurrentBoundId() const {
-
-  GLint id;
-  GL_CHECK(::glGetIntegerv( GL_CURRENT_PROGRAM, &id ));
-  return id;
-}
-
-void Program::doBind(GLuint id) const {
-
-  GL_CHECK(::glUseProgram( id ));
-}
-
-GLuint Program::doGenerate() const {
-
-  GLuint id;
-  GL_CHECK(id = ::glCreateProgram());
-  return id;
-}
-
-void Program::doDelete(GLuint id) const {
-
-  // Detach shaders
-  std::vector<GLuint> as = getAttachedShaders();
-  std::for_each( as.begin(), as.end(), std::bind1st( std::mem_fun(&Program::detachShaderInternal), this ) );
-
-  // delete
-  GL_CHECK(::glDeleteProgram( id ));
-}
-
-void Program::updateLinkerLog() {
-
-  InfoIter itr = getInfoIter();
-  itr->linker_log.clear();
-
-  //! \todo Check if this can be written directly to the compile log std::string
-
-  int len = 0;
-  int written = 0;
-  char *log;
-
-  GL_CHECK(::glGetProgramiv( getId(), GL_INFO_LOG_LENGTH, &len ));
-
-  if( len > 0 ) {
-
-    len = len+1;
-    log = new char[len];
-
-    GL_CHECK(::glGetProgramInfoLog( getId(), len, &written, log ));
-
-    itr->linker_log.append( log, len );
-    delete log;
+    template <>
+    typename std::list<ProgramInfo> GLObject<ProgramInfo>::_data = std::list<ProgramInfo>();
   }
-}
 
-std::vector<GLuint> Program::getAttachedShaders() const {
 
-  if(!isValid())
-    return std::vector<GLuint>();
 
-  GLint no_as;
-  GL_CHECK(::glGetProgramiv( getId(), GL_ATTACHED_SHADERS, &no_as ));
 
-  std::vector<GLuint> shader_ids(no_as);
-  GL_CHECK(::glGetAttachedShaders( getId(), no_as, 0x0, &shader_ids[0] ) );
+  Program::Program() {}
 
-  return shader_ids;
-}
+  Program::~Program() { decrement(); }
 
-void Program::attachShader(const Shader& shader) const {
+  void Program::create() {
 
-  attachShaderInternal( shader.getId() );
-}
+    Private::ProgramInfo info;
+    createObject(info);
+  }
 
-void Program::detachShader(const Shader& shader) const {
+  void Program::create(const std::string &name) {
 
-  detachShaderInternal( shader.getId() );
-}
+    Private::ProgramInfo info;
+    info.name = name;
+    createObject(info);
+  }
 
-void Program::attachShaderInternal(GLuint id) const {
+  bool Program::link() {
 
-  GL_CHECK(::glAttachShader( getId(), id ));
-}
+    // Link program
+    GL_CHECK(::glLinkProgram( getId() ));
 
-void Program::detachShaderInternal(GLuint id) const {
+    // get link status
+    int param;
+    GL_CHECK(::glGetProgramiv( getId(), GL_LINK_STATUS, &param ));
 
-  GL_CHECK(::glDetachShader( getId(), id ));
-}
+    updateLinkerLog();
 
-void Program::disableAttributeArray( const std::string& name ) const {
+    return param == GL_TRUE;
+  }
 
-  disableAttributeArray( getAttributeLocation(name) );
-}
+  const std::string&Program::getLinkerLog() const {
 
-void Program::disableAttributeArray( const AttributeLocation& loc ) const {
+    return getInfoIter()->linker_log;
+  }
 
-  GL_CHECK(::glDisableVertexAttribArray( loc() ));
-}
+  GLuint Program::getCurrentBoundId() const {
 
-void Program::enableAttributeArray( const std::string& name ) const {
+    GLint id;
+    GL_CHECK(::glGetIntegerv( GL_CURRENT_PROGRAM, &id ));
+    return id;
+  }
 
-  enableAttributeArray( getAttributeLocation( name ) );
-}
+  void Program::doBind(GLuint id) const {
 
-void Program::enableAttributeArray( const AttributeLocation& loc ) const {
+    GL_CHECK(::glUseProgram( id ));
+  }
 
-  GL_CHECK(::glEnableVertexAttribArray( loc() ));
-}
+  GLuint Program::doGenerate() const {
 
-AttributeLocation Program::getAttributeLocation(const std::string& name) const {
+    GLuint id;
+    GL_CHECK(id = ::glCreateProgram());
+    return id;
+  }
 
-  GL::AttributeLocation loc;
-  GL_CHECK(loc = ::glGetAttribLocation( getId(), name.c_str() ));
-  return loc;
-}
+  void Program::doDelete(GLuint id) const {
 
-UniformBlockIndex Program::getUniformBlockIndex(const std::string &name) const {
+    // Detach shaders
+    std::vector<GLuint> as = getAttachedShaders();
+    std::for_each( as.begin(), as.end(), std::bind1st( std::mem_fun(&Program::detachShaderInternal), this ) );
 
-  GL::UniformBlockIndex block_index;
-  GL_CHECK(block_index = ::glGetUniformBlockIndex( getId(), name.c_str() ));
-  return block_index;
-}
+    // delete
+    GL_CHECK(::glDeleteProgram( id ));
+  }
 
-UniformLocation Program::getUniformLocation(const std::string& name) const {
+  void Program::updateLinkerLog() {
 
-  GL::UniformLocation uniform_loc;
-  GL_CHECK(uniform_loc = ::glGetUniformLocation( getId(), name.c_str() ));
-  return uniform_loc;
-}
+    InfoIter itr = getInfoIter();
+    itr->linker_log.clear();
 
-void Program::uniform(const std::string &name, bool b) const {
+    //! \todo Check if this can be written directly to the compile log std::string
 
-  GL_CHECK(::glUniform1i( getUniformLocation(name)(), b ));
-}
+    int len = 0;
+    int written = 0;
+    char *log;
 
-void Program::uniform(const std::string& name, const Color &c) const {
+    GL_CHECK(::glGetProgramiv( getId(), GL_INFO_LOG_LENGTH, &len ));
 
-  GL_CHECK(::glUniform4f(
-      getUniformLocation( name )(),
-      c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC()
-      ));
-}
+    if( len > 0 ) {
 
-void Program::uniform(const std::string& name, const Matrix<float,3,3>& matrix, bool transpose ) const {
+      len = len+1;
+      log = new char[len];
 
-  GL_CHECK(::glUniformMatrix3fv(
-      getUniformLocation( name )(),
-      1, transpose, matrix.getPtr()
-      ));
-}
+      GL_CHECK(::glGetProgramInfoLog( getId(), len, &written, log ));
 
-void Program::uniform(const std::string& name, const Matrix<float,4,4>& matrix, bool transpose ) const {
+      itr->linker_log.append( log, len );
+      delete log;
+    }
+  }
 
-  GL_CHECK(::glUniformMatrix4fv(
-      getUniformLocation( name )(),
-      1, transpose, matrix.getPtr()
-      ));
-}
+  std::vector<GLuint> Program::getAttachedShaders() const {
 
-void Program::uniform(const std::string &name, const APoint<int, 2> &p) const {
+    if(!isValid())
+      return std::vector<GLuint>();
 
-  GL_CHECK(::glUniform2iv( getUniformLocation(name)(), 1, p.getPtr() ));
-}
+    GLint no_as;
+    GL_CHECK(::glGetProgramiv( getId(), GL_ATTACHED_SHADERS, &no_as ));
 
-void Program::uniform(const std::string &name, const APoint<float, 2> &p) const {
+    std::vector<GLuint> shader_ids(no_as);
+    GL_CHECK(::glGetAttachedShaders( getId(), no_as, 0x0, &shader_ids[0] ) );
 
-  GL_CHECK(::glUniform2fv( getUniformLocation(name)(), 1, p.getPtr() ));
-}
+    return shader_ids;
+  }
 
-void Program::uniform(const std::string &name, const APoint<float, 3> &p) const {
+  void Program::attachShader(const Shader& shader) const {
 
-  GL_CHECK(::glUniform3fv( getUniformLocation(name)(), 1, p.getPtr() ));
-}
+    attachShaderInternal( shader.getId() );
+  }
 
-void Program::uniform(const std::string &name, const APoint<float, 4> &p) const {
+  void Program::detachShader(const Shader& shader) const {
 
-  GL_CHECK(::glUniform4fv( getUniformLocation(name)(), 1, p.getPtr() ));
-}
+    detachShaderInternal( shader.getId() );
+  }
 
-void Program::uniform(const std::string &name, const Texture& tex, GLenum tex_unit, GLuint tex_nr ) const {
+  void Program::attachShaderInternal(GLuint id) const {
 
-  GL_CHECK(::glActiveTexture( tex_unit ));
-  GL_CHECK(::glBindTexture( tex.getTarget(), tex.getId() ));
-  GL_CHECK(::glUniform1i( getUniformLocation( name )(), tex_nr ));
-}
+    GL_CHECK(::glAttachShader( getId(), id ));
+  }
 
-void Program::uniform(const std::string &name, float f) const {
+  void Program::detachShaderInternal(GLuint id) const {
 
-  GL_CHECK(::glUniform1f( getUniformLocation( name )(), f ));
-}
+    GL_CHECK(::glDetachShader( getId(), id ));
+  }
 
-void Program::uniform( const std::string& name, int i ) const {
+  void Program::disableAttributeArray( const std::string& name ) const {
 
-  GL_CHECK(::glUniform1i( getUniformLocation( name )(), i ));
-}
+    disableAttributeArray( getAttributeLocation(name) );
+  }
 
-void Program::bindBufferBase(const std::string &name, const UniformBufferObject &ubo, GLuint binding_point) const {
+  void Program::disableAttributeArray( const AttributeLocation& loc ) const {
 
-  GL_CHECK(::glUniformBlockBinding( getId(), getUniformBlockIndex( name)(), binding_point ));
-  GL_CHECK(::glBindBufferBase( GL_UNIFORM_BUFFER, binding_point, ubo.getId() ));
-}
+    GL_CHECK(::glDisableVertexAttribArray( loc() ));
+  }
 
+  void Program::enableAttributeArray( const std::string& name ) const {
+
+    enableAttributeArray( getAttributeLocation( name ) );
+  }
+
+  void Program::enableAttributeArray( const AttributeLocation& loc ) const {
+
+    GL_CHECK(::glEnableVertexAttribArray( loc() ));
+  }
+
+  AttributeLocation Program::getAttributeLocation(const std::string& name) const {
+
+    GL::AttributeLocation loc;
+    GL_CHECK(loc = ::glGetAttribLocation( getId(), name.c_str() ));
+    return loc;
+  }
+
+  UniformBlockIndex Program::getUniformBlockIndex(const std::string &name) const {
+
+    GL::UniformBlockIndex block_index;
+    GL_CHECK(block_index = ::glGetUniformBlockIndex( getId(), name.c_str() ));
+    return block_index;
+  }
+
+  UniformLocation Program::getUniformLocation(const std::string& name) const {
+
+    GL::UniformLocation uniform_loc;
+    GL_CHECK(uniform_loc = ::glGetUniformLocation( getId(), name.c_str() ));
+    return uniform_loc;
+  }
+
+  void Program::uniform(const std::string &name, bool b) const {
+
+    GL_CHECK(::glUniform1i( getUniformLocation(name)(), b ));
+  }
+
+  void Program::uniform(const std::string& name, const Color &c) const {
+
+    GL_CHECK(::glUniform4f(
+        getUniformLocation( name )(),
+        c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC()
+        ));
+  }
+
+  void Program::uniform(const std::string& name, const Matrix<float,3,3>& matrix, bool transpose ) const {
+
+    GL_CHECK(::glUniformMatrix3fv(
+        getUniformLocation( name )(),
+        1, transpose, matrix.getPtr()
+        ));
+  }
+
+  void Program::uniform(const std::string& name, const Matrix<float,4,4>& matrix, bool transpose ) const {
+
+    GL_CHECK(::glUniformMatrix4fv(
+        getUniformLocation( name )(),
+        1, transpose, matrix.getPtr()
+        ));
+  }
+
+  void Program::uniform(const std::string &name, const APoint<int, 2> &p) const {
+
+    GL_CHECK(::glUniform2iv( getUniformLocation(name)(), 1, p.getPtr() ));
+  }
+
+  void Program::uniform(const std::string &name, const APoint<float, 2> &p) const {
+
+    GL_CHECK(::glUniform2fv( getUniformLocation(name)(), 1, p.getPtr() ));
+  }
+
+  void Program::uniform(const std::string &name, const APoint<float, 3> &p) const {
+
+    GL_CHECK(::glUniform3fv( getUniformLocation(name)(), 1, p.getPtr() ));
+  }
+
+  void Program::uniform(const std::string &name, const APoint<float, 4> &p) const {
+
+    GL_CHECK(::glUniform4fv( getUniformLocation(name)(), 1, p.getPtr() ));
+  }
+
+  void Program::uniform(const std::string &name, const Texture& tex, GLenum tex_unit, GLuint tex_nr ) const {
+
+    GL_CHECK(::glActiveTexture( tex_unit ));
+    GL_CHECK(::glBindTexture( tex.getTarget(), tex.getId() ));
+    GL_CHECK(::glUniform1i( getUniformLocation( name )(), tex_nr ));
+  }
+
+  void Program::uniform(const std::string &name, float f) const {
+
+    GL_CHECK(::glUniform1f( getUniformLocation( name )(), f ));
+  }
+
+  void Program::uniform( const std::string& name, int i ) const {
+
+    GL_CHECK(::glUniform1i( getUniformLocation( name )(), i ));
+  }
+
+  void Program::bindBufferBase(const std::string &name, const UniformBufferObject &ubo, GLuint binding_point) const {
+
+    GL_CHECK(::glUniformBlockBinding( getId(), getUniformBlockIndex( name)(), binding_point ));
+    GL_CHECK(::glBindBufferBase( GL_UNIFORM_BUFFER, binding_point, ubo.getId() ));
+  }
+
+}} // END namespace GMlib::GL
 
 
 
 
 #ifdef GL_VERSION_4_1
 
-void Program::programUniform(const std::string &name, bool b) const {
+namespace GMlib { namespace GL {
 
-  GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation(name)(), b ));
-}
+  void Program::programUniform(const std::string &name, bool b) const {
 
-void Program::programUniform(const std::string &name, float f) const {
+    GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation(name)(), b ));
+  }
 
-  GL_CHECK(::glProgramUniform1f( getId(), getUniformLocation( name )(), f ));
-}
+  void Program::programUniform(const std::string &name, float f) const {
 
-void Program::programUniform( const std::string& name, int i ) const {
+    GL_CHECK(::glProgramUniform1f( getId(), getUniformLocation( name )(), f ));
+  }
 
-  GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation( name )(), i ));
-}
+  void Program::programUniform( const std::string& name, int i ) const {
 
-
-void Program::programUniform(const std::string& name, const GMlib::Color& c) const {
-  GL_CHECK(::glProgramUniform4f(
-      getId(),
-      getUniformLocation( name )(),
-      c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC()
-      ));
-}
-
-void Program::programUniform(const std::string &name, const APoint<int, 2> &p) const {
-
-  GL_CHECK(::glProgramUniform2iv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
-}
-
-void Program::programUniform(const std::string &name, const APoint<float, 2> &p) const {
-
-  GL_CHECK(::glProgramUniform2fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
-}
-
-void Program::programUniform(const std::string &name, const APoint<float, 3> &p) const {
-
-  GL_CHECK(::glProgramUniform3fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
-}
-
-void Program::programUniform(const std::string &name, const APoint<float, 4> &p) const {
-
-  GL_CHECK(::glProgramUniform4fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
-}
-
-void Program::programUniform(const std::string &name, const Texture& tex, GLenum tex_unit, GLuint tex_nr ) const {
-
-  GL_CHECK(::glActiveTexture( tex_unit ));
-  GL_CHECK(::glBindTexture( tex.getTarget(), tex.getId() ));
-  GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation( name )(), tex_nr ));
-}
+    GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation( name )(), i ));
+  }
 
 
-void Program::programUniformMatrix(const std::string& name, const Matrix<float,3,3>& matrix, bool transpose ) const {
+  void Program::programUniform(const std::string& name, const GMlib::Color& c) const {
+    GL_CHECK(::glProgramUniform4f(
+        getId(),
+        getUniformLocation( name )(),
+        c.getRedC(), c.getGreenC(), c.getBlueC(), c.getAlphaC()
+        ));
+  }
 
-  GL_CHECK(::glProgramUniformMatrix3fv(
-      getId(),
-      getUniformLocation( name )(),
-      1, transpose, matrix.getPtr()
-      ));
-}
+  void Program::programUniform(const std::string &name, const APoint<int, 2> &p) const {
 
-void Program::programUniformMatrix(const std::string& name, const Matrix<float,4,4>& matrix, bool transpose ) const {
+    GL_CHECK(::glProgramUniform2iv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+  }
 
-  GL_CHECK(::glProgramUniformMatrix4fv(
-      getId(),
-      getUniformLocation( name )(),
-      1, transpose, matrix.getPtr()
-      ));
-}
+  void Program::programUniform(const std::string &name, const APoint<float, 2> &p) const {
 
+    GL_CHECK(::glProgramUniform2fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+  }
+
+  void Program::programUniform(const std::string &name, const APoint<float, 3> &p) const {
+
+    GL_CHECK(::glProgramUniform3fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+  }
+
+  void Program::programUniform(const std::string &name, const APoint<float, 4> &p) const {
+
+    GL_CHECK(::glProgramUniform4fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+  }
+
+  void Program::programUniform(const std::string &name, const Texture& tex, GLenum tex_unit, GLuint tex_nr ) const {
+
+    GL_CHECK(::glActiveTexture( tex_unit ));
+    GL_CHECK(::glBindTexture( tex.getTarget(), tex.getId() ));
+    GL_CHECK(::glProgramUniform1i( getId(), getUniformLocation( name )(), tex_nr ));
+  }
+
+
+  void Program::programUniformMatrix(const std::string& name, const Matrix<float,3,3>& matrix, bool transpose ) const {
+
+    GL_CHECK(::glProgramUniformMatrix3fv(
+        getId(),
+        getUniformLocation( name )(),
+        1, transpose, matrix.getPtr()
+        ));
+  }
+
+  void Program::programUniformMatrix(const std::string& name, const Matrix<float,4,4>& matrix, bool transpose ) const {
+
+    GL_CHECK(::glProgramUniformMatrix4fv(
+        getId(),
+        getUniformLocation( name )(),
+        1, transpose, matrix.getPtr()
+        ));
+  }
+
+}} // END namespace GMlib::GL
 
 #endif // GL_VERSION_4_1
+
+
+
+

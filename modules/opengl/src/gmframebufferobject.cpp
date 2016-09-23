@@ -24,102 +24,110 @@
 
 #include "gmframebufferobject.h"
 
-using namespace GMlib::GL;
+
+namespace GMlib { namespace GL {
 
 
-template <>
-std::list<Private::FBOInfo> Private::GLObject<Private::FBOInfo>::_data = std::list<Private::FBOInfo>();
+  namespace Private {
 
-
-FramebufferObject::FramebufferObject() {}
-
-
-
-FramebufferObject::~FramebufferObject() { decrement(); }
-
-void FramebufferObject::create() {
-
-  Private::FBOInfo info;
-  createObject(info);
-}
-
-void FramebufferObject::create(const std::string& name) {
-
-  Private::FBOInfo info;
-  info.name = name;
-  createObject(info);
-}
-
-GLuint FramebufferObject::getCurrentBoundId() const{
-
-  GLint id;
-  GL_CHECK(::glGetIntegerv( GL_FRAMEBUFFER_BINDING, &id ));
-  return id;
-}
-
-void FramebufferObject::doBind(GLuint id) const {
-
-  privateBind( GL_FRAMEBUFFER, id );
-}
-
-GLuint FramebufferObject::doGenerate() const {
-
-  GLuint id;
-  GL_CHECK(::glGenFramebuffers( 1, &id ));
-  return id;
-}
-
-void FramebufferObject::doDelete(GLuint id) const {
-
-  GL_CHECK(::glDeleteFramebuffers( 1, &id ));
-}
+    template <>
+    std::list<FBOInfo> GLObject<FBOInfo>::_data = std::list<FBOInfo>();
+  }
 
 
 
-void FramebufferObject::attachRenderbuffer(const RenderbufferObject &rbo, GLenum attachment) {
 
-  GLint id = safeBind();
-  rbo.bind();
-  GL_CHECK(::glFramebufferRenderbuffer( GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, rbo.getId() ));
-  rbo.unbind();
-  safeUnbind(id);
-}
+  FramebufferObject::FramebufferObject() {}
 
-void FramebufferObject::attachTexture1D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
 
-  GLint id = safeBind();
-  GL_CHECK(::glFramebufferTexture1D( target, attachment, textarget, tex.getId(), level ));
-  safeUnbind(id);
-}
 
-void FramebufferObject::attachTexture2D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
+  FramebufferObject::~FramebufferObject() { decrement(); }
 
-  GLint id = safeBind();
-  GL_CHECK(::glFramebufferTexture2D( target, attachment, textarget, tex.getId(), level ));
-  safeUnbind(id);
-}
+  void FramebufferObject::create() {
 
-void FramebufferObject::attachTexture3D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level, GLint layer ) {
+    Private::FBOInfo info;
+    createObject(info);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glFramebufferTexture3D( target, attachment, textarget, tex.getId(), level, layer ));
-  safeUnbind(id);
-}
+  void FramebufferObject::create(const std::string& name) {
 
-void FramebufferObject::blitTo(const FramebufferObject& dest_fbo, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) const {
+    Private::FBOInfo info;
+    info.name = name;
+    createObject(info);
+  }
 
-  bindRead();
-  dest_fbo.bindDraw();
-  GL_CHECK(::glBlitFramebuffer( srcX0,srcY0,srcX1,srcY1,dstX0,dstY0,dstX1,dstY1,mask,filter ));
-  dest_fbo.unbindDraw();
-  unbindRead();
-}
+  GLuint FramebufferObject::getCurrentBoundId() const{
 
-void FramebufferObject::blitTo(GLuint dest_id, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) const {
+    GLint id;
+    GL_CHECK(::glGetIntegerv( GL_FRAMEBUFFER_BINDING, &id ));
+    return id;
+  }
 
-  bindRead();
-  GL_CHECK(::glBindFramebuffer( GL_DRAW_FRAMEBUFFER, dest_id ));
-  GL_CHECK(::glBlitFramebuffer( srcX0,srcY0,srcX1,srcY1,dstX0,dstY0,dstX1,dstY1,mask,filter ));
-  GL_CHECK(::glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0x0 ));
-  unbindRead();
-}
+  void FramebufferObject::doBind(GLuint id) const {
+
+    privateBind( GL_FRAMEBUFFER, id );
+  }
+
+  GLuint FramebufferObject::doGenerate() const {
+
+    GLuint id;
+    GL_CHECK(::glGenFramebuffers( 1, &id ));
+    return id;
+  }
+
+  void FramebufferObject::doDelete(GLuint id) const {
+
+    GL_CHECK(::glDeleteFramebuffers( 1, &id ));
+  }
+
+
+
+  void FramebufferObject::attachRenderbuffer(const RenderbufferObject &rbo, GLenum attachment) {
+
+    GLint id = safeBind();
+    rbo.bind();
+    GL_CHECK(::glFramebufferRenderbuffer( GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, rbo.getId() ));
+    rbo.unbind();
+    safeUnbind(id);
+  }
+
+  void FramebufferObject::attachTexture1D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
+
+    GLint id = safeBind();
+    GL_CHECK(::glFramebufferTexture1D( target, attachment, textarget, tex.getId(), level ));
+    safeUnbind(id);
+  }
+
+  void FramebufferObject::attachTexture2D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level ) {
+
+    GLint id = safeBind();
+    GL_CHECK(::glFramebufferTexture2D( target, attachment, textarget, tex.getId(), level ));
+    safeUnbind(id);
+  }
+
+  void FramebufferObject::attachTexture3D(const Texture &tex, GLenum target, GLenum attachment, GLenum textarget, GLint level, GLint layer ) {
+
+    GLint id = safeBind();
+    GL_CHECK(::glFramebufferTexture3D( target, attachment, textarget, tex.getId(), level, layer ));
+    safeUnbind(id);
+  }
+
+  void FramebufferObject::blitTo(const FramebufferObject& dest_fbo, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) const {
+
+    bindRead();
+    dest_fbo.bindDraw();
+    GL_CHECK(::glBlitFramebuffer( srcX0,srcY0,srcX1,srcY1,dstX0,dstY0,dstX1,dstY1,mask,filter ));
+    dest_fbo.unbindDraw();
+    unbindRead();
+  }
+
+  void FramebufferObject::blitTo(GLuint dest_id, GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter) const {
+
+    bindRead();
+    GL_CHECK(::glBindFramebuffer( GL_DRAW_FRAMEBUFFER, dest_id ));
+    GL_CHECK(::glBlitFramebuffer( srcX0,srcY0,srcX1,srcY1,dstX0,dstY0,dstX1,dstY1,mask,filter ));
+    GL_CHECK(::glBindFramebuffer( GL_DRAW_FRAMEBUFFER, 0x0 ));
+    unbindRead();
+  }
+
+}} // END namespace GMlib::GL

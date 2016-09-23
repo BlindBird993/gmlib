@@ -28,116 +28,119 @@ namespace GMlib {
 namespace GL {
 
 
-template <>
-typename std::list<Private::TextureInfo> Private::GLObject<Private::TextureInfo>::_data = std::list<Private::TextureInfo>();
+  namespace Private {
+
+    template <>
+    typename std::list<TextureInfo> GLObject<TextureInfo>::_data = std::list<TextureInfo>();
+  }
 
 
-Texture::Texture() {}
 
-Texture::~Texture() { decrement(); }
+  Texture::Texture() {}
 
-void Texture::create(GLenum target) {
+  Texture::~Texture() { decrement(); }
 
-  Private::TextureInfo info;
-  info.target = target;
-  this->createObject(info);
-}
+  void Texture::create(GLenum target) {
 
-void Texture::create(const std::string& name, GLenum target) {
+    Private::TextureInfo info;
+    info.target = target;
+    this->createObject(info);
+  }
 
-  Private::TextureInfo info;
-  info.name = name;
-  info.target = target;
-  this->createObject(info);
-}
+  void Texture::create(const std::string& name, GLenum target) {
 
-GLuint Texture::doGenerate() const {
+    Private::TextureInfo info;
+    info.name = name;
+    info.target = target;
+    this->createObject(info);
+  }
 
-  GLuint id;
-  GL_CHECK(::glGenTextures( 1, &id));
-  return id;
-}
+  GLuint Texture::doGenerate() const {
 
-void Texture::doDelete(GLuint id) const {
+    GLuint id;
+    GL_CHECK(::glGenTextures( 1, &id));
+    return id;
+  }
 
-  GL_CHECK(::glDeleteTextures( 1, &id ));
-}
+  void Texture::doDelete(GLuint id) const {
 
-GLuint Texture::getCurrentBoundId() const {
+    GL_CHECK(::glDeleteTextures( 1, &id ));
+  }
 
-  GLint id;
-  GL_CHECK(::glGetIntegerv( getTarget(), &id ));
-  return id;
-}
+  GLuint Texture::getCurrentBoundId() const {
 
-void Texture::doBind(GLuint id) const {
+    GLint id;
+    GL_CHECK(::glGetIntegerv( getTarget(), &id ));
+    return id;
+  }
 
-  GL_CHECK(::glBindTexture( getTarget(), id ));
-}
+  void Texture::doBind(GLuint id) const {
 
-void Texture::texImage1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *data) {
+    GL_CHECK(::glBindTexture( getTarget(), id ));
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glTexImage1D( getTarget(), level, internal_format, width, border, format, type, data ));
-  safeUnbind(id);
-}
+  void Texture::texImage1D(GLint level, GLint internal_format, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *data) {
 
-void Texture::texImage2D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data) {
+    GLint id = safeBind();
+    GL_CHECK(::glTexImage1D( getTarget(), level, internal_format, width, border, format, type, data ));
+    safeUnbind(id);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glTexImage2D( getTarget(), level, internal_format, width, height, border, format, type, data ));
-  safeUnbind(id);
-}
+  void Texture::texImage2D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *data) {
 
-void Texture::texImage3D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *data) {
+    GLint id = safeBind();
+    GL_CHECK(::glTexImage2D( getTarget(), level, internal_format, width, height, border, format, type, data ));
+    safeUnbind(id);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glTexImage3D( getTarget(), level, internal_format, width, height, depth, border, format, type, data ));
-  safeUnbind(id);
-}
+  void Texture::texImage3D(GLint level, GLint internal_format, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, const GLvoid *data) {
 
-void Texture::texSubImage1D(GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid* data) {
+    GLint id = safeBind();
+    GL_CHECK(::glTexImage3D( getTarget(), level, internal_format, width, height, depth, border, format, type, data ));
+    safeUnbind(id);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glTexSubImage1D(getTarget(), level, xoffset, width, format, type, data));
-  safeUnbind(id);
-}
+  void Texture::texSubImage1D(GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, const GLvoid* data) {
 
-void Texture::texSubImage2D(GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* data) {
+    GLint id = safeBind();
+    GL_CHECK(::glTexSubImage1D(getTarget(), level, xoffset, width, format, type, data));
+    safeUnbind(id);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glTexSubImage2D(getTarget(), level, xoffset, yoffset, width, height, format, type, data));
-  safeUnbind(id);
-}
+  void Texture::texSubImage2D(GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid* data) {
 
-void Texture::texSubImage3D(GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid* data) {
+    GLint id = safeBind();
+    GL_CHECK(::glTexSubImage2D(getTarget(), level, xoffset, yoffset, width, height, format, type, data));
+    safeUnbind(id);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glTexSubImage3D(getTarget(), level, xoffset, yoffset, zoffset, width, height, depth, format, type, data));
-  safeUnbind(id);
-}
+  void Texture::texSubImage3D(GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid* data) {
 
-void Texture::getTexImage(GLint level, GLenum format, GLenum type, GLvoid* pixels) {
+    GLint id = safeBind();
+    GL_CHECK(::glTexSubImage3D(getTarget(), level, xoffset, yoffset, zoffset, width, height, depth, format, type, data));
+    safeUnbind(id);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glGetTexImage( getTarget(), level, format, type, pixels ));
-  safeUnbind(id);
-}
+  void Texture::getTexImage(GLint level, GLenum format, GLenum type, GLvoid* pixels) {
 
-void Texture::texParameterf(GLenum pname, GLfloat param) {
+    GLint id = safeBind();
+    GL_CHECK(::glGetTexImage( getTarget(), level, format, type, pixels ));
+    safeUnbind(id);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glTexParameterf( getTarget(), pname, param ));
-  safeUnbind(id);
-}
+  void Texture::texParameterf(GLenum pname, GLfloat param) {
 
-void Texture::texParameteri( GLenum pname, GLint param) {
+    GLint id = safeBind();
+    GL_CHECK(::glTexParameterf( getTarget(), pname, param ));
+    safeUnbind(id);
+  }
 
-  GLint id = safeBind();
-  GL_CHECK(::glTexParameteri( getTarget(), pname, param ));
-  safeUnbind(id);
-}
+  void Texture::texParameteri( GLenum pname, GLint param) {
+
+    GLint id = safeBind();
+    GL_CHECK(::glTexParameteri( getTarget(), pname, param ));
+    safeUnbind(id);
+  }
 
 
-}
-}
+}}  // END namespace GMlib::GL
