@@ -27,8 +27,8 @@
  *  Interface for the SubSpace, Line, Plane and Cube classes.
  */
 
-#ifndef __gmSUBSPACE_H__
-#define __gmSUBSPACE_H__
+#ifndef GM_CORE_TYPES_SUBSPACE_H
+#define GM_CORE_TYPES_SUBSPACE_H
 
 
 
@@ -320,4 +320,4 @@ class Cube;
 
 
 
-#endif // __gmSUBSPACE_H__
+#endif // GM_CORE_TYPES_SUBSPACE_H

@@ -27,8 +27,8 @@
  *  GMlib interface to the OpenGL API
  */
 
-#ifndef __gm_OPENGL_OPENGL_H__
-#define __gm_OPENGL_OPENGL_H__
+#ifndef GM_OPENGL_OPENGL_H
+#define GM_OPENGL_OPENGL_H
 
 
 //#if defined(_WIN32)
@@ -279,4 +279,4 @@ namespace GL {
 } // END namespace GMlib
 
 
-#endif // __gm_OPENGL_OPENGL_H__
+#endif // GM_OPENGL_OPENGL_H

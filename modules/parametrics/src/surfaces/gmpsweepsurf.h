@@ -29,8 +29,8 @@
  *  \date   2011-03-26
  */
 
-#ifndef __gmPSWEEPSURF_H__
-#define __gmPSWEEPSURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PSWEEPSURF_H
+#define GM_PARAMETRICS_SURFACE_PSWEEPSURF_H
 
 
 // GMlib
@@ -80,4 +80,4 @@ namespace GMlib {
 #include "gmpsweepsurf.c"
 
 
-#endif // __gmPSWEEPSURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PSWEEPSURF_H

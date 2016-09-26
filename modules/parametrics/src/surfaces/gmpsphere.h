@@ -27,8 +27,8 @@
  *  Interface for the PSphere class.
  */
 
-#ifndef __gmPSPHERE_H__
-#define __gmPSPHERE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PSPHERE_H
+#define GM_PARAMETRICS_SURFACE_PSPHERE_H
 
 #include "../gmpsurf.h"
 
@@ -67,5 +67,5 @@ namespace GMlib {
 #include "gmpsphere.c"
 
 
-#endif // __gmPSPHERE_H__
+#endif // GM_PARAMETRICS_SURFACE_PSPHERE_H
 

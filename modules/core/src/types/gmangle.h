@@ -27,8 +27,8 @@
  *  Interface for the Angle class.
  */
 
-#ifndef __gmANGLE_H__
-#define __gmANGLE_H__
+#ifndef GM_CORE_TYPES_ANGLE_H
+#define GM_CORE_TYPES_ANGLE_H
 
 
 // stl
@@ -826,5 +826,5 @@ namespace GMlib {
 
 
 
-#endif // __gmANGLE_H__
+#endif // GM_CORE_TYPES_ANGLE_H
 

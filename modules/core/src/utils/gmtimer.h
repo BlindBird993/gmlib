@@ -27,8 +27,8 @@
  *  Interface for the GMTimer class.
  */
 
-#ifndef __gmTIMER_H__
-#define __gmTIMER_H__
+#ifndef GM_CORE_UTILS_TIMER_H
+#define GM_CORE_UTILS_TIMER_H
 
 // system
 #include <sys/timeb.h>
@@ -61,4 +61,4 @@ namespace GMlib {
 // Include inline GMTimer class implementations
 #include "gmtimer.c"
 
-#endif // __gmTIMER_H__
+#endif // GM_CORE_UTILS_TIMER_H

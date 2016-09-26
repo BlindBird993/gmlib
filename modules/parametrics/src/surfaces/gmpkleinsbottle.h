@@ -27,8 +27,8 @@
  *  Interface for the PKleinsBottle class.
  */
 
-#ifndef __gmPKLEINSBOTTLE_H__
-#define __gmPKLEINSBOTTLE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PKLEINSBOTTLE_H
+#define GM_PARAMETRICS_SURFACE_PKLEINSBOTTLE_H
 
 #include "../gmpsurf.h"
 
@@ -68,5 +68,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPKLEINSBOTTLE_H__
+#endif // GM_PARAMETRICS_SURFACE_PKLEINSBOTTLE_H
 

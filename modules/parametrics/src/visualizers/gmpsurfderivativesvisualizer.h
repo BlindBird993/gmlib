@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __GMPSURFDERIVATIVESVISUALIZER_H__
-#define __GMPSURFDERIVATIVESVISUALIZER_H__
+#ifndef GM_PARAMETRICS_VISUALIZERS_PSURFDERIVATIVESVISUALIZER_H
+#define GM_PARAMETRICS_VISUALIZERS_PSURFDERIVATIVESVISUALIZER_H
 
 
 #include "gmpsurfvisualizer.h"
@@ -99,4 +99,4 @@ namespace GMlib {
 // Include PSurfDerivativesVisualizer class function implementations
 #include "gmpsurfderivativesvisualizer.c"
 
-#endif // __GMPSURFDERIVATIVESVISUALIZER_H__
+#endif // GM_PARAMETRICS_VISUALIZERS_PSURFDERIVATIVESVISUALIZER_H

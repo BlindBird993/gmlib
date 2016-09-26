@@ -28,8 +28,8 @@
  *  Pending Documentation
  */
 
-#ifndef __GM_SCENE_RENDER_DEFAULTRENDERER_H__
-#define __GM_SCENE_RENDER_DEFAULTRENDERER_H__
+#ifndef GM_SCENE_RENDER_DEFAULTRENDERER_H
+#define GM_SCENE_RENDER_DEFAULTRENDERER_H
 
 
 #include "gmrenderer.h"
@@ -165,4 +165,4 @@ namespace GMlib {
 
 } // END namespace GMlib
 
-#endif // __GM_SCENE_RENDER_DEFAULTRENDERER_H__
+#endif // GM_SCENE_RENDER_DEFAULTRENDERER_H

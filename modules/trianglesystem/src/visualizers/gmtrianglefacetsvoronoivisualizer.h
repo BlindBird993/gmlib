@@ -27,8 +27,8 @@
  *  Interface for the TriangleFacetsVoronoiVisualizer class.
  */
 
-#ifndef __gmTRIANGLEFACETSVORONOIVISUALIZER_H__
-#define __gmTRIANGLEFACETSVORONOIVISUALIZER_H__
+#ifndef GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSVORONOIVISUALIZER_H
+#define GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSVORONOIVISUALIZER_H
 
 
 #include "gmtrianglefacetsvisualizer.h"
@@ -55,4 +55,5 @@ namespace GMlib {
 // Include TriangleFacetsVoronoiVisualizer class function implementations
 #include "gmtrianglefacetsvoronoivisualizer.c"
 
-#endif // __gmTRIANGLEFACETSVORONOIVISUALIZER_H__
+
+#endif // GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSVORONOIVISUALIZER_H

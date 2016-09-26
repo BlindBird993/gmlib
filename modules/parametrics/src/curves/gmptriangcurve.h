@@ -29,8 +29,8 @@
  *  \date   2011-04-06, ALA
  */
 
-#ifndef __gmPTRIANGCURVE_H__
-#define __gmPTRIANGCURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PTRIANGCURVE_H
+#define GM_PARAMETRICS_CURVE_PTRIANGCURVE_H
 
 
 // GMlib includes+
@@ -98,5 +98,5 @@ namespace GMlib {
 #include "gmptriangcurve.c"
 
 
-#endif // __gmPTRIANGCURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PTRIANGCURVE_H
 

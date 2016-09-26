@@ -27,8 +27,8 @@
  *  GMPUtils
  */
 
-#ifndef __gmPUTILS_H__
-#define __gmPUTILS_H__
+#ifndef GM_PARAMETRICS_UTILS_PUTILS_H__
+#define GM_PARAMETRICS_UTILS_PUTILS_H__
 
 
 namespace GMlib {
@@ -75,4 +75,4 @@ namespace GMlib {
 
 #include "gmputils.c"
 
-#endif // __gmPUTILS_H__
+#endif // GM_PARAMETRICS_UTILS_PUTILS_H__

@@ -29,8 +29,8 @@
  * Matrix SqMatrix, HqMatrix classes.
  */
 
-#ifndef __gmSTATICPROC2_H__
-#define __gmSTATICPROC2_H__
+#ifndef GM_CORE_STATIC_STATICPROC2_H
+#define GM_CORE_STATIC_STATICPROC2_H
 
 #include "../types/gmpoint.h"
 
@@ -173,5 +173,5 @@ namespace GMlib {
 
 
 
-#endif   // GM_STATIC_PROC2_H_
+#endif   // GM_CORE_STATIC_STATICPROC2_H
 

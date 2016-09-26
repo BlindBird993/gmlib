@@ -34,8 +34,8 @@
   *     - String(double)
   */
 
-#ifndef __gmSTRING_H__
-#define __gmSTRING_H__
+#ifndef GM_CORE_UTILS_STRING_H
+#define GM_CORE_UTILS_STRING_H
 
 
 #include "../types/gmpoint.h"
@@ -117,5 +117,5 @@ namespace GMlib {
 
 
 
-#endif // __gmSTRING_H__
+#endif // GM_CORE_UTILS_STRING_H
 

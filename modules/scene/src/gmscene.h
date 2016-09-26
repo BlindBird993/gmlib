@@ -32,8 +32,8 @@
  */
 
 
-#ifndef __gmSCENE_H__
-#define __gmSCENE_H__
+#ifndef GM_SCENE_SCENE_H
+#define GM_SCENE_SCENE_H
 
 
 // gmlib
@@ -252,4 +252,4 @@ namespace GMlib{
 
 } // END namespace GMlib
 
-#endif // __gmSCENE_H__
+#endif // GM_SCENE_SCENE_H

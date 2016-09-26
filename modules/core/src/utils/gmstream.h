@@ -28,8 +28,8 @@
  *  Compile with GM_STREAM defined to turn on this functionaity
  */
 
-#ifndef __gmSTREAM_H__
-#define __gmSTREAM_H__
+#ifndef GM_CORE_UTILS_STREAM_H
+#define GM_CORE_UTILS_STREAM_H
 
 
 #ifdef GM_STREAM
@@ -194,4 +194,4 @@ namespace GMlib {
 #endif // GM_STREAM
 
 
-#endif // __gmSTREAM_H__
+#endif // GM_CORE_UTILS_STREAM_H

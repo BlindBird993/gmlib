@@ -27,8 +27,8 @@
  *  Interface for the Visualizer class.
  */
 
-#ifndef __gmVISUALIZER_H__
-#define __gmVISUALIZER_H__
+#ifndef GM_SCENE_VISUALIZER_H
+#define GM_SCENE_VISUALIZER_H
 
 
 // gmlib
@@ -95,4 +95,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmVISUALIZER_H__
+#endif // GM_SCENE_VISUALIZER_H

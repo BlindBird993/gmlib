@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmTEXTURE_H__
-#define __gmTEXTURE_H__
+#ifndef GM_SCENE_UTILS_TEXTURE_H
+#define GM_SCENE_UTILS_TEXTURE_H
 
 // gmlib
 #include <core/utils/gmcolor.h>
@@ -92,4 +92,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmTEXTURE_H__
+#endif // GM_SCENE_UTILS_TEXTURE_H

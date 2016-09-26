@@ -27,8 +27,8 @@
  *  Interface for the PSwallowTail class.
  */
 
-#ifndef __gmPSWALLOWTAIL_H__
-#define __gmPSWALLOWTAIL_H__
+#ifndef GM_PARAMETRICS_SURFACE_PSWALLOWTAIL_H
+#define GM_PARAMETRICS_SURFACE_PSWALLOWTAIL_H
 
 #include "../gmpsurf.h"
 
@@ -64,5 +64,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPSWALLOWTAIL_H__
+#endif // GM_PARAMETRICS_SURFACE_PSWALLOWTAIL_H
 

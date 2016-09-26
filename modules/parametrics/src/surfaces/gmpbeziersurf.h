@@ -27,8 +27,8 @@
  *  Interface for the gmPBezierSurf class.
  */
 
-#ifndef __gmPBEZIERSURF_H__
-#define __gmPBEZIERSURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PBEZIERSURF_H
+#define GM_PARAMETRICS_SURFACE_PBEZIERSURF_H
 
 
 #include "../gmpsurf.h"
@@ -107,6 +107,6 @@ namespace GMlib {
 #include "gmpbeziersurf.c"
 
 
-#endif // __gmPBEZIERSURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PBEZIERSURF_H
 
 

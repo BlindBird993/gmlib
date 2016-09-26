@@ -27,8 +27,8 @@
  *  Interface for the PTriangle class.
  */
 
-#ifndef __gmPTRIANGLE_H__
-#define __gmPTRIANGLE_H__
+#ifndef GM_PARAMETRICS_PTRIANGLE_H
+#define GM_PARAMETRICS_PTRIANGLE_H
 
 
 #include "gmparametrics.h"
@@ -165,4 +165,4 @@ namespace GMlib {
 // Include PTriangle class function implementations
 #include "gmptriangle.c"
 
-#endif // __gmPTRIANGLE_H__
+#endif // GM_PARAMETRICS_PTRIANGLE_H

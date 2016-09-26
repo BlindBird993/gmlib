@@ -27,8 +27,8 @@
  *  Interface for the PSinSurface class.
  */
 
-#ifndef __gmPSINSURFACE_H__
-#define __gmPSINSURFACE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PSINSURFACE_H
+#define GM_PARAMETRICS_SURFACE_PSINSURFACE_H
 
 #include "../gmpsurf.h"
 
@@ -66,5 +66,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPSINSURFACE_H__
+#endif // GM_PARAMETRICS_SURFACE_PSINSURFACE_H
 

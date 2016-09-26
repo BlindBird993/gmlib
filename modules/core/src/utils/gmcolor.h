@@ -27,8 +27,8 @@
  *  An implementation of colors and different color operations
  */
 
-#ifndef __gmCOLOR_H__
-#define __gmCOLOR_H__
+#ifndef GM_CORE_UTILS_COLOR_H
+#define GM_CORE_UTILS_COLOR_H
 
 
 #include "gmstream.h"
@@ -1032,6 +1032,6 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmCOLOR_H__
+#endif // GM_CORE_UTILS_COLOR_H
 
 

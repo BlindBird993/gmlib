@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmPCURVEDEFAULTVISUALIZER_H__
-#define __gmPCURVEDEFAULTVISUALIZER_H__
+#ifndef GM_PARAMETRICS_VISUALIZERS_PCURVEDEFAULTVISUALIZER_H
+#define GM_PARAMETRICS_VISUALIZERS_PCURVEDEFAULTVISUALIZER_H
 
 #include "gmpcurvevisualizer.h"
 
@@ -67,4 +67,4 @@ namespace GMlib {
 // Include PCurveDefaultVisualizer class function implementations
 #include "gmpcurvedefaultvisualizer.c"
 
-#endif // __gmPCURVEDEFAULTVISUALIZER_H__
+#endif // GM_PARAMETRICS_VISUALIZERS_PCURVEDEFAULTVISUALIZER_H

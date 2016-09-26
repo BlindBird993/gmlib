@@ -27,8 +27,8 @@
  *  Interface for the PBottle8 class.
  */
 
-#ifndef __gmPBOTTLE8_H__
-#define __gmPBOTTLE8_H__
+#ifndef GM_PARAMETRICS_SURFACE_PBOTTLE8_H
+#define GM_PARAMETRICS_SURFACE_PBOTTLE8_H
 
 
 #include "../gmpsurf.h"
@@ -68,5 +68,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPBOTTLE8_H__
+#endif // GM_PARAMETRICS_SURFACE_PBOTTLE8_H
 

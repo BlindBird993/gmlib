@@ -20,8 +20,8 @@
 **
 **********************************************************************************/
 
-#ifndef __GM_SCENE_EVENT_EVENT_H__
-#define __GM_SCENE_EVENT_EVENT_H__
+#ifndef GM_SCENE_EVENT_EVENT_H
+#define GM_SCENE_EVENT_EVENT_H
 
 namespace GMlib {
 
@@ -62,4 +62,5 @@ namespace GMlib {
 
 }
 
-#endif
+#endif // GM_SCENE_EVENT_EVENT_H
+

@@ -27,8 +27,8 @@
  *  Interface for the PBoysSurface class.
  */
 
-#ifndef __gmPBOYSSURFACE_H__
-#define __gmPBOYSSURFACE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PBOYSSURFACE_H
+#define GM_PARAMETRICS_SURFACE_PBOYSSURFACE_H
 
 
 #include "../gmpsurf.h"
@@ -66,5 +66,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPBOYSSURFACE_H__
+#endif // GM_PARAMETRICS_SURFACE_PBOYSSURFACE_H
 

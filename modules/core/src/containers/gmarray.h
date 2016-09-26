@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmARRAY_H__
-#define __gmARRAY_H__
+#ifndef GM_CORE_CONTAINERS_ARRAY_H
+#define GM_CORE_CONTAINERS_ARRAY_H
 
 // GMlib
 #include "../utils/gmstream.h"
@@ -206,4 +206,4 @@ namespace GMlib {
 // Including template definition file.
 #include "gmarray.c"
 
-#endif // __gmARRAY_H__
+#endif // GM_CORE_CONTAINERS_ARRAY_H

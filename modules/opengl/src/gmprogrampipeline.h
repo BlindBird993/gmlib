@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gm_OPENGL_PIPELINE_H__
-#define __gm_OPENGL_PIPELINE_H__
+#ifndef GM_OPENGL_PROGRAMPIPELINE_H
+#define GM_OPENGL_PROGRAMPIPELINE_H
 
 
 #include "gmopengl.h"
@@ -82,4 +82,4 @@ namespace GL {
 
 #endif // GL_VERSION_4_1
 
-#endif // __gm_OPENGL_PIPELINE_H__
+#endif // GM_OPENGL_PROGRAMPIPELINE_H

@@ -27,8 +27,8 @@
  *  Interface for the PERBSTriangle class.
  */
 
-#ifndef __gmPERBSTRIANGLE_H__
-#define __gmPERBSTRIANGLE_H__
+#ifndef GM_PARAMETRICS_TRIANGLES_PERBSTRIANGLE_H
+#define GM_PARAMETRICS_TRIANGLES_PERBSTRIANGLE_H
 
 
 #include "../gmptriangle.h"
@@ -73,4 +73,4 @@ namespace GMlib {
 // Include PERBSTriangle class function implementations
 #include "gmperbstriangle.c"
 
-#endif // __gmPERBSTRIANGLE_H__
+#endif // GM_PARAMETRICS_TRIANGLES_PERBSTRIANGLE_H

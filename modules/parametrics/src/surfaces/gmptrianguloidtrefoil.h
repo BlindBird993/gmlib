@@ -27,8 +27,8 @@
  *  Interface for the PTrianguloidTrefoil class.
  */
 
-#ifndef __gmPTRIANGULOIDTREFOIL_H__
-#define __gmPTRIANGULOIDTREFOIL_H__
+#ifndef GM_PARAMETRICS_SURFACE_PTRIANGULOIDTREFOIL_H
+#define GM_PARAMETRICS_SURFACE_PTRIANGULOIDTREFOIL_H
 
 #include "../gmpsurf.h"
 
@@ -63,5 +63,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPTRIANGULOIDTREFOIL_H__
+#endif // GM_PARAMETRICS_SURFACE_PTRIANGULOIDTREFOIL_H
 

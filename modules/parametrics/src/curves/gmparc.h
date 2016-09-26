@@ -27,8 +27,8 @@
  *  Interface for the PArc class.
  */
 
-#ifndef __gmPARC_H__
-#define __gmPARC_H__
+#ifndef GM_PARAMETRICS_CURVES_PARC_H
+#define GM_PARAMETRICS_CURVES_PARC_H
 
 
 #include "../gmpcurve.h"
@@ -62,7 +62,7 @@ namespace GMlib {
     T                   _start;   // Start
     T                   _end;     // End
 
-    void	              eval(T t, int d, bool l) override;
+    void                eval(T t, int d, bool l) override;
     T                   getCurvature( DVector< Vector<T,3> >& p );
     T                   getEndP() override;
     T                   getStartP() override;
@@ -75,5 +75,5 @@ namespace GMlib {
 #include "gmparc.c"
 
 
-#endif // __gmPARC_H__
+#endif // GM_PARAMETRICS_CURVES_PARC_H
 

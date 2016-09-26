@@ -1,5 +1,5 @@
-#ifndef BSPLINEBASIS1_H
-#define BSPLINEBASIS1_H
+#ifndef GM_PARAMETRICS_CURVES_BSPLINEBASIS1_H
+#define GM_PARAMETRICS_CURVES_BSPLINEBASIS1_H
 
 
 
@@ -45,4 +45,4 @@ namespace GMlib {
 #include "gmpbsplinebasiscurve.c"
 
 
-#endif // BSPLINEBASIS1_H
+#endif // GM_PARAMETRICS_CURVES_BSPLINEBASIS1_H

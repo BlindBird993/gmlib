@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gm_OPENGL_TEXTURE_H__
-#define __gm_OPENGL_TEXTURE_H__
+#ifndef GM_OPENGL_TEXTURE_H
+#define GM_OPENGL_TEXTURE_H
 
 
 #include "gmglobject.h"
@@ -82,4 +82,4 @@ namespace GL {
 } // END namespace GMlib
 
 
-#endif // __gm_OPENGL_TEXTURE_H__
+#endif // GM_OPENGL_TEXTURE_H

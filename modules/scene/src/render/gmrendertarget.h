@@ -1,5 +1,5 @@
-#ifndef __GM_SCENE_RENDER_RENDERTARGET_H__
-#define __GM_SCENE_RENDER_RENDERTARGET_H__
+#ifndef GM_SCENE_RENDER_RENDERTARGET_H
+#define GM_SCENE_RENDER_RENDERTARGET_H
 
 
 // gmlib
@@ -59,4 +59,4 @@ void RenderTarget::resize(const Vector<int,2>& size)  { _size = size; doResize()
 
 } // End namespace GMlib
 
-#endif // __GM_SCENE_RENDER_RENDERTARGET_H__
+#endif // GM_SCENE_RENDER_RENDERTARGET_H

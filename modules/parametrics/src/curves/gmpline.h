@@ -20,8 +20,8 @@
 **
 **********************************************************************************/
 
-#ifndef __gmPLINE_H__
-#define __gmPLINE_H__
+#ifndef GM_PARAMETRICS_CURVE_PLINE_H
+#define GM_PARAMETRICS_CURVE_PLINE_H
 
 
 #include "../gmpcurve.h"
@@ -57,4 +57,4 @@ namespace GMlib {
 #include "gmpline.c"
 
 
-#endif // __gmPLINE_H__
+#endif // GM_PARAMETRICS_CURVE_PLINE_H

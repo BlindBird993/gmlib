@@ -27,8 +27,8 @@
  *  Interface for the PBSplineCurve class.
  */
 
-#ifndef __gmPBSPLINECURVE_H__
-#define __gmPBSPLINECURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PBSPLINECURVE_H
+#define GM_PARAMETRICS_CURVE_PBSPLINECURVE_H
 
 
 #include "../gmpcurve.h"
@@ -91,6 +91,6 @@ namespace GMlib {
 #include "gmpbsplinecurve.c"
 
 
-#endif // __gmPBSPLINECURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PBSPLINECURVE_H
 
 

@@ -27,8 +27,8 @@
  *  Interface for the PInsideOutTorus class.
  */
 
-#ifndef __gmPINSIDEOUTTORUS_H__
-#define __gmPINSIDEOUTTORUS_H__
+#ifndef GM_PARAMETRICS_SURFACE_PINSIDEOUTTORUS_H
+#define GM_PARAMETRICS_SURFACE_PINSIDEOUTTORUS_H
 
 #include "../gmpsurf.h"
 
@@ -68,5 +68,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPINSIDEOUTTORUS_H__
+#endif // GM_PARAMETRICS_SURFACE_PINSIDEOUTTORUS_H
 

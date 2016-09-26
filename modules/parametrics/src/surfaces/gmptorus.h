@@ -27,8 +27,8 @@
  *  Interface for the PTorus class.
  */
 
-#ifndef __gmPTORUS_H__
-#define __gmPTORUS_H__
+#ifndef GM_PARAMETRICS_SURFACE_PTORUS_H
+#define GM_PARAMETRICS_SURFACE_PTORUS_H
 
 #include "../gmpsurf.h"
 
@@ -72,6 +72,6 @@ namespace GMlib {
 #include "gmptorus.c"
 
 
-#endif // __gmPTORUS_H__
+#endif // GM_PARAMETRICS_SURFACE_PTORUS_H
 
 

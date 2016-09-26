@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H__
-#define __GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H__
+#ifndef GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H
+#define GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H
 
 #include "gmpsurfvisualizer.h"
 
@@ -82,4 +82,4 @@ namespace GMlib {
 #include "gmpsurftexvisualizer.c"
 
 
-#endif // __GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H__
+#endif // GM_PARAMETRICS_VISUALIZERS_PSURFTEXVISUALIZER_H

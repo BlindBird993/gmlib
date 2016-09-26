@@ -27,8 +27,8 @@
  *  Interface for the PCircularSurface class.
  */
 
-#ifndef __gmPCircularSurface_H__
-#define __gmPCircularSurface_H__
+#ifndef GM_PARAMETRICS_SURFACE_PCIRCULARSURFACE_H
+#define GM_PARAMETRICS_SURFACE_PCIRCULARSURFACE_H
 
 
 #include "../gmpsurf.h"
@@ -72,4 +72,4 @@ namespace GMlib {
 
 
 
-#endif // __gmPCircularSurface_H__
+#endif // GM_PARAMETRICS_SURFACE_PCIRCULARSURFACE_H

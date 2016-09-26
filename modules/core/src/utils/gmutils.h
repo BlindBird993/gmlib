@@ -31,8 +31,8 @@
 #include "../gmglobal.h"
 
 
-#ifndef __gmUTILS_H__
-#define __gmUTILS_H__
+#ifndef GM_CORE_UTILS_UTILS_H
+#define GM_CORE_UTILS_UTILS_H
 
 
 namespace GMlib {
@@ -98,4 +98,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmUTILS_H__
+#endif // GM_CORE_UTILS_UTILS_H

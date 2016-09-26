@@ -27,8 +27,8 @@
  *  Interface for the PWhitneyUmbrella class.
  */
 
-#ifndef __gmPWHITNEYUMBRELLA_H__
-#define __gmPWHITNEYUMBRELLA_H__
+#ifndef GM_PARAMETRICS_SURFACE_PWHITNEYUMBRELLA_H
+#define GM_PARAMETRICS_SURFACE_PWHITNEYUMBRELLA_H
 
 #include "../gmpsurf.h"
 
@@ -64,5 +64,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPWHITNEYUMBRELLA_H__
+#endif // GM_PARAMETRICS_SURFACE_PWHITNEYUMBRELLA_H
 

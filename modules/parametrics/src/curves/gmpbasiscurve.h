@@ -27,8 +27,8 @@
  *  Interface for the PBasisCurve class.
  */
 
-#ifndef __gmPBASISCURVE_H__
-#define __gmPBASISCURVE_H__
+#ifndef GM_PARAMETRICS_CURVES_PBASISCURVE_H
+#define GM_PARAMETRICS_CURVES_PBASISCURVE_H
 
 
 #include "../gmpcurve.h"
@@ -77,4 +77,4 @@ namespace GMlib {
 #include "gmpbasiscurve.c"
 
 
-#endif // __gmPBASISCURVE_H__
+#endif // GM_PARAMETRICS_CURVES_PBASISCURVE_H

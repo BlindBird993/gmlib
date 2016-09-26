@@ -29,8 +29,8 @@
  *  \date   2011-04-06, ALA
  */
 
-#ifndef __gmPBEZIERCURVESURF_H__
-#define __gmPBEZIERCURVESURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PBEZIERCURVESURF_H
+#define GM_PARAMETRICS_SURFACE_PBEZIERCURVESURF_H
 
 
 // GMlib
@@ -73,4 +73,4 @@ namespace GMlib {
 #include "gmpbeziercurvesurf.c"
 
 
-#endif // __gmPBEZIERCURVESURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PBEZIERCURVESURF_H

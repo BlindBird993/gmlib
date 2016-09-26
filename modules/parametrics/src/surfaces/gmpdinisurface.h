@@ -27,8 +27,8 @@
  *  Interface for the PDiniSurface class.
  */
 
-#ifndef __gmPDINISURFACE_H__
-#define __gmPDINISURFACE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PDINISURFACE_H
+#define GM_PARAMETRICS_SURFACE_PDINISURFACE_H
 
 #include "../gmpsurf.h"
 
@@ -67,5 +67,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPDINISURFACE_H__
+#endif // GM_PARAMETRICS_SURFACE_PDINISURFACE_H
 

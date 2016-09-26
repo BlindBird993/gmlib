@@ -29,8 +29,8 @@
  *  \date   2012-04-02, ALA
  */
 
-#ifndef __gmPCOONSPATCH_H__
-#define __gmPCOONSPATCH_H__
+#ifndef GM_PARAMETRICS_SURFACE_PCOONSPATCH_H
+#define GM_PARAMETRICS_SURFACE_PCOONSPATCH_H
 
 // STL
 #include <string>
@@ -75,4 +75,4 @@ namespace GMlib {
 #include "gmpcoonspatch.c"
 
 
-#endif // __gmPCOONSPATCH_H__
+#endif // GM_PARAMETRICS_SURFACE_PCOONSPATCH_H

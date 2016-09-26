@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gmINDEXBUFFEROBJECT_H__
-#define __gmINDEXBUFFEROBJECT_H__
+#ifndef GM_OPENGL_BUFFEROBJECTS_INDEXBUFFEROBJECT_H
+#define GM_OPENGL_BUFFEROBJECTS_INDEXBUFFEROBJECT_H
 
 
 #include "../gmbufferobject.h"
@@ -63,4 +63,4 @@ namespace GL {
 
 } // END namespace GMlib
 
-#endif // __gmINDEXBUFFEROBJECT_H__
+#endif // GM_OPENGL_BUFFEROBJECTS_INDEXBUFFEROBJECT_H

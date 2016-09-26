@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gm_OPENGL_SHADERS_TESSEVALUATIONSHADER_H__
-#define __gm_OPENGL_SHADERS_TESSEVALUATIONSHADER_H__
+#ifndef GM_OPENGL_SHADERS_TESSEVALUATIONSHADER_H
+#define GM_OPENGL_SHADERS_TESSEVALUATIONSHADER_H
 
 
 #include "../gmshader.h"
@@ -45,4 +45,4 @@ namespace GL {
 
 } // END namespace GMlib
 
-#endif // __gm_OPENGL_SHADERS_TESSEVALUATIONSHADER_H__
+#endif // GM_OPENGL_SHADERS_TESSEVALUATIONSHADER_H

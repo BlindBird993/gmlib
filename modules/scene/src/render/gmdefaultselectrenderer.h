@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H__
-#define __GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H__
+#ifndef GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H
+#define GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H
 
 
 
@@ -86,4 +86,4 @@ namespace GMlib {
 
 
 
-#endif // __GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H__
+#endif // GM_SCENE_RENDER_DEFAULTSELECTRENDERER_H

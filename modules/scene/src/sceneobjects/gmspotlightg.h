@@ -29,8 +29,8 @@
 
 
 
-#ifndef __gmSPOTLIGHTG_H__
-#define __gmSPOTLIGHTG_H__
+#ifndef GM_SCENE_SCENEOBJECTS_SPOTLIGHTG_H
+#define GM_SCENE_SCENEOBJECTS_SPOTLIGHTG_H
 
 
 #include "../light/gmspotlight.h"
@@ -89,4 +89,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmSPOTLIGHTG_H__
+#endif // GM_SCENE_SCENEOBJECTS_SPOTLIGHTG_H

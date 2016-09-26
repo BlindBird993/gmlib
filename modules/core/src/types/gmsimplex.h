@@ -26,8 +26,8 @@
  *  File Description
  */
 
-#ifndef __gmSIMPLEX_H__
-#define __gmSIMPLEX_H__
+#ifndef GM_CORE_TYPES_SIMPLEX_H
+#define GM_CORE_TYPES_SIMPLEX_H
 
 #include "gmpoint.h"
 #include "gmsubspace.h"
@@ -199,4 +199,4 @@ namespace GMlib {
 
 
 
-#endif   // __gmSIMPLEX_H__
+#endif   // GM_CORE_TYPES_SIMPLEX_H

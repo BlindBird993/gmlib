@@ -27,8 +27,8 @@
  *  Interface for the PSeashell class.
  */
 
-#ifndef __gmPSEASHELL_H__
-#define __gmPSEASHELL_H__
+#ifndef GM_PARAMETRICS_SURFACE_PSEASHELL_H
+#define GM_PARAMETRICS_SURFACE_PSEASHELL_H
 
 #include "../gmpsurf.h"
 
@@ -64,5 +64,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPSEASHELL_H__
+#endif // GM_PARAMETRICS_SURFACE_PSEASHELL_H
 

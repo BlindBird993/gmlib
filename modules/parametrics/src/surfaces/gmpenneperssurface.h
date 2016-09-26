@@ -27,8 +27,8 @@
  *  Interface for the PEnnepersSurface class.
  */
 
-#ifndef __gmPENNEPERSSURFACE_H__
-#define __gmPENNEPERSSURFACE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PENNEPERSURFACE_H
+#define GM_PARAMETRICS_SURFACE_PENNEPERSURFACE_H
 
 #include "../gmpsurf.h"
 
@@ -64,5 +64,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPENNEPERSSURFACE_H__
+#endif // GM_PARAMETRICS_SURFACE_PENNEPERSURFACE_H
 

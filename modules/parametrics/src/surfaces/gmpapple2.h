@@ -27,8 +27,8 @@
  *  Interface for the PApple2 class.
  */
 
-#ifndef __gmPAPPLE2_H__
-#define __gmPAPPLE2_H__
+#ifndef GM_PARAMETRICS_SURFACE_PAPPLE2_H
+#define GM_PARAMETRICS_SURFACE_PAPPLE2_H
 
 
 #include "../gmpsurf.h"
@@ -67,5 +67,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPAPPLE2_H__
+#endif // GM_PARAMETRICS_SURFACE_PAPPLE2_H
 

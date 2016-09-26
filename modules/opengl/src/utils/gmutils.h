@@ -27,8 +27,8 @@
  *  GMUtils
  */
 
-#ifndef __GM_OPENL_UTILS_GMUTILS_H__
-#define __GM_OPENL_UTILS_GMUTILS_H__
+#ifndef GM_OPENGL_UTILS_UTILS_H
+#define GM_OPENGL_UTILS_UTILS_H
 
 
 // stl
@@ -77,4 +77,4 @@ namespace GL {
 } // END namespace GMlib
 
 
-#endif // __GM_OPENL_UTILS_GMUTILS_H__
+#endif // GM_OPENGL_UTILS_UTILS_H

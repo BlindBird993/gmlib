@@ -27,8 +27,8 @@
  *  A graphical implementation of the Sphere class
  */
 
-#ifndef __gmSPHERE3D_H__
-#define __gmSPHERE3D_H__
+#ifndef GM_SCENE_SCENEOBJECTS_SPHERE3D_H
+#define GM_SCENE_SCENEOBJECTS_SPHERE3D_H
 
 
 #include "../utils/gmmaterial.h"
@@ -386,4 +386,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmSPHERE3D_H__
+#endif // GM_SCENE_SCENEOBJECTS_SPHERE3D_H

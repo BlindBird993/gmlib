@@ -29,8 +29,8 @@
 
 
 
-#ifndef __gmLIGHT_H__
-#define __gmLIGHT_H__
+#ifndef GM_SCENE_LIGHT_H
+#define GM_SCENE_LIGHT_H
 
 // gmlib
 #include <core/utils/gmcolor.h>
@@ -230,4 +230,4 @@ namespace GMlib{
 }	// END namespace GMlib
 
 
-#endif // __gmLIGHT_H__
+#endif // GM_SCENE_LIGHT_H

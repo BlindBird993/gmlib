@@ -27,8 +27,8 @@
  *  Interface for the PERBSCurve class.
  */
 
-#ifndef __gmPERBSCURVE_H__
-#define __gmPERBSCURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PERBSCURVE_H
+#define GM_PARAMETRICS_CURVE_PERBSCURVE_H
 
 
 #include "../gmpcurve.h"
@@ -150,6 +150,6 @@ namespace GMlib {
 #include "gmperbscurve.c"
 
 
-#endif // __gmDPERBSCURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PERBSCURVE_H
 
 

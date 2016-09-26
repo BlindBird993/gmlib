@@ -27,8 +27,8 @@
  *  Interface for the PChrysanthemumCurve class.
  */
 
-#ifndef __gmPCHRYSANTHEMUMCURVE_H__
-#define __gmPCHRYSANTHEMUMCURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PCHRYSANTHEMUMCURVE_H
+#define GM_PARAMETRICS_CURVE_PCHRYSANTHEMUMCURVE_H
 
 
 #include "../gmpcurve.h"
@@ -59,4 +59,4 @@ namespace GMlib {
 // Include PChrysanthemumCurve class function implementations
 #include "gmpchrysanthemumcurve.c"
 
-#endif // __gmPCHRYSANTHEMUMCURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PCHRYSANTHEMUMCURVE_H

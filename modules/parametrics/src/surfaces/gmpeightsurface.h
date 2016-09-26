@@ -27,8 +27,8 @@
  *  Interface for the PEightSurface class.
  */
 
-#ifndef __gmPEIGHTSURFACE_H__
-#define __gmPEIGHTSURFACE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PEIGHTSURFACE_H
+#define GM_PARAMETRICS_SURFACE_PEIGHTSURFACE_H
 
 
 #include "../gmpsurf.h"
@@ -64,5 +64,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPEIGHTSURFACE_H__
+#endif // GM_PARAMETRICS_SURFACE_PEIGHTSURFACE_H
 

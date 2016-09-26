@@ -27,8 +27,8 @@
  *  Interface classes for the Point/Vector/UnitVector/Arrow/ScalarPoint/Sphere/Box classes
  */
 
-#ifndef __gmPOINT_H__
-#define __gmPOINT_H__
+#ifndef GM_CORE_TYPES_POINT_H
+#define GM_CORE_TYPES_POINT_H
 
 
 // **** GMlib ****
@@ -1222,4 +1222,4 @@ namespace GMlib {
 
 
 
-#endif // __gmPOINT_H__
+#endif // GM_CORE_TYPES_POINT_H

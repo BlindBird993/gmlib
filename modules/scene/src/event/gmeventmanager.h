@@ -20,8 +20,8 @@
 **
 **********************************************************************************/
 
-#ifndef __GM_SCENE_EVENT_GMEVENTMANAGER_H__
-#define __GM_SCENE_EVENT_GMEVENTMANAGER_H__
+#ifndef GM_SCENE_EVENT_GMEVENTMANAGER_H
+#define GM_SCENE_EVENT_GMEVENTMANAGER_H
 
 //- gmlib
 #include <core/containers/gmarray.h>
@@ -54,4 +54,5 @@ namespace GMlib {
 
 }
 
-#endif
+#endif // GM_SCENE_EVENT_GMEVENTMANAGER_H
+

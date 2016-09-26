@@ -27,8 +27,8 @@
  *  Interface for the PKuenSurface class.
  */
 
-#ifndef __gmPKUENSURFACE_H__
-#define __gmPKUENSURFACE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PKUENSURFACE_H
+#define GM_PARAMETRICS_SURFACE_PKUENSURFACE_H
 
 #include "../gmpsurf.h"
 
@@ -66,5 +66,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPKUENSURFACE_H__
+#endif // GM_PARAMETRICS_SURFACE_PKUENSURFACE_H
 

@@ -29,8 +29,8 @@
  *  \date   2012-04-08, ALA
  */
 
-#ifndef __GMPHERMITESURF_H__
-#define __GMPHERMITESURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PHERMITESURF_H
+#define GM_PARAMETRICS_SURFACE_PHERMITESURF_H
 
 
 // local
@@ -81,6 +81,6 @@ namespace GMlib {
 // Include PHermiteSurf class function implementations
 #include "gmphermitesurf.c"
 
-#endif // __GMPHERMITESURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PHERMITESURF_H
 
 

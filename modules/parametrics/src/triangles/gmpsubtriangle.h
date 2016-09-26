@@ -29,8 +29,8 @@
  *  \date   2010-07-13
  */
 
-#ifndef __gmPSUBTRIANGLE_H__
-#define __gmPSUBTRIANGLE_H__
+#ifndef GM_PARAMETRICS_TRIANGLES_PSUBTRIANGLE_H
+#define GM_PARAMETRICS_TRIANGLES_PSUBTRIANGLE_H
 
 
 
@@ -78,4 +78,4 @@ private:
 #include "gmpsubtriangle.c"
 
 
-#endif // __gmPSUBTRIANGLE_H__
+#endif // GM_PARAMETRICS_TRIANGLES_PSUBTRIANGLE_H

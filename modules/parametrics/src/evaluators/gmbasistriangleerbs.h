@@ -27,8 +27,8 @@
  *  Interface for the BasisTriangleERBS class.
  */
 
-#ifndef __gmBASISTRIANGLEERBS_H__
-#define __gmBASISTRIANGLEERBS_H__
+#ifndef GM_PARAMETRICS_EVALUATORS_BASISTRANGLEERBS_H
+#define GM_PARAMETRICS_EVALUATORS_BASISTRANGLEERBS_H
 
 
 #include "gmbasisevaluator.h"
@@ -87,4 +87,4 @@ enum BasisTriangleType
 
 
 
-#endif // __gmBASISTRIANGLEERBS_H__
+#endif // GM_PARAMETRICS_EVALUATORS_BASISTRANGLEERBS_H

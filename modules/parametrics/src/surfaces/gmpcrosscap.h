@@ -27,8 +27,8 @@
  *  Interface for the PCrossCap class.
  */
 
-#ifndef __gmPCROSSCAP_H__
-#define __gmPCROSSCAP_H__
+#ifndef GM_PARAMETRICS_SURFACE_PCROSSCAP_H
+#define GM_PARAMETRICS_SURFACE_PCROSSCAP_H
 
 
 #include "../gmpsurf.h"
@@ -67,5 +67,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPCROSSCAP_H__
+#endif // GM_PARAMETRICS_SURFACE_PCROSSCAP_H
 

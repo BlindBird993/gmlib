@@ -36,8 +36,8 @@
  */
 
 
-#ifndef __gmDVECTOR_H__
-#define __gmDVECTOR_H__
+#ifndef GM_CORE_CONTAINERS_DVECTOR_H
+#define GM_CORE_CONTAINERS_DVECTOR_H
 
 
 
@@ -209,4 +209,4 @@ namespace GMlib {
 
 
 
-#endif // __gmDVECTOR_H__
+#endif // GM_CORE_CONTAINERS_DVECTOR_H

@@ -27,8 +27,8 @@
  */
 
 
-#ifndef __gmSORTOBJECT_H__
-#define __gmSORTOBJECT_H__
+#ifndef GM_CORE_UTILS_SORTOBJECT_H
+#define GM_CORE_UTILS_SORTOBJECT_H
 
 
 namespace GMlib {
@@ -60,4 +60,4 @@ namespace GMlib {
 #include "gmsortobject.c"
 
 
-#endif // __gmSORTOBJECT_H__
+#endif // GM_CORE_UTILS_SORTOBJECT_H

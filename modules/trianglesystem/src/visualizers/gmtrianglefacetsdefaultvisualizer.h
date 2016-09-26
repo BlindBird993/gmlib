@@ -27,8 +27,8 @@
  *  Interface for the TriangleFacetsDefaultVisualizer class.
  */
 
-#ifndef __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
-#define __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
+#ifndef GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSDEFAULTVISUALIZER_H
+#define GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSDEFAULTVISUALIZER_H
 
 
 #include "gmtrianglefacetsvisualizer.h"
@@ -82,4 +82,4 @@ namespace GMlib {
 // Include TriangleFacetsDefaultVisualizer class function implementations
 #include "gmtrianglefacetsdefaultvisualizer.c"
 
-#endif // __gmTRIANGLEFACETSDEFAULTVISUALIZER_H__
+#endif // GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSDEFAULTVISUALIZER_H

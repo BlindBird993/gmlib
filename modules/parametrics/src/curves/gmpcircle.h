@@ -27,8 +27,8 @@
  *  Interface for the PCircle class.
  */
 
-#ifndef __gmPCIRCLE_H__
-#define __gmPCIRCLE_H__
+#ifndef GM_PARAMETRICS_CURVE_PCIRCLE_H
+#define GM_PARAMETRICS_CURVE_PCIRCLE_H
 
 
 #include "../gmpcurve.h"
@@ -65,4 +65,4 @@ namespace GMlib {
 #include "gmpcircle.c"
 
 
-#endif // __gmPCIRCLE_H__
+#endif // GM_PARAMETRICS_CURVE_PCIRCLE_H

@@ -29,8 +29,8 @@
  *  \date   2013-09-26, ALA
  */
 
-#ifndef __gmPROTATIONALSURF_H__
-#define __gmPROTATIONALSURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PROTATIONALSURF_H
+#define GM_PARAMETRICS_SURFACE_PROTATIONALSURF_H
 
 // STL
 #include <string>
@@ -75,4 +75,4 @@ namespace GMlib {
 #include "gmprotationalsurf.c"
 
 
-#endif // __gmPROTATIONALSURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PROTATIONALSURF_H

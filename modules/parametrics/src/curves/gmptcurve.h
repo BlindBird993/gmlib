@@ -27,8 +27,8 @@
  *  Interface for the PTCurve class (Parametric Tranformed Curve).
  */
 
-#ifndef __gmPTCURVE_H__
-#define __gmPTCURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PTCURVE_H
+#define GM_PARAMETRICS_CURVE_PTCURVE_H
 
 #include "../gmpcurve.h"
 
@@ -86,5 +86,5 @@ namespace GMlib {
 // Include PTCurve class function implementations
 #include "gmptcurve.c"
 
-#endif // __gmPTCURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PTCURVE_H
 

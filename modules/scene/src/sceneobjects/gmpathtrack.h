@@ -27,8 +27,8 @@
  *  Interface for the PathTrack class.
  */
 
-#ifndef __gmPATHTRACK_H__
-#define __gmPATHTRACK_H__
+#ifndef GM_SCENE_SCENEOBJECT_PATHTRACK_H
+#define GM_SCENE_SCENEOBJECT_PATHTRACK_H
 
 #include "../gmsceneobject.h"
 
@@ -65,5 +65,5 @@ namespace GMlib {
 
 } // END namespace
 
-#endif // __gmPATHTRACK_H__
+#endif // GM_SCENE_SCENEOBJECT_PATHTRACK_H
 

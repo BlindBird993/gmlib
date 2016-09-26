@@ -27,8 +27,8 @@
  *  Interface for the Parametrics class.
  */
 
-#ifndef __gmPARAMETRICS_H__
-#define __gmPARAMETRICS_H__
+#ifndef GM_PARAMETRICS_PARAMETRICS_H
+#define GM_PARAMETRICS_PARAMETRICS_H
 
 
 
@@ -99,4 +99,4 @@ namespace GMlib {
 
 
 
-#endif // __gmPARAMETRICS_H__
+#endif // GM_PARAMETRICS_PARAMETRICS_H

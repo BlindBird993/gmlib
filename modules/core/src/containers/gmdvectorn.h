@@ -27,8 +27,8 @@
  *  Dynamic Vector NDim implementation.
  */
 
-#ifndef __gmDVECTORN_H__
-#define __gmDVECTORN_H__
+#ifndef GM_CORE_CONTAINERS_DVECTORN_H
+#define GM_CORE_CONTAINERS_DVECTORN_H
 
 
 // gmlib
@@ -160,4 +160,4 @@ namespace GMlib {
 
 
 
-#endif // __gmDVECTORN_H__
+#endif // GM_CORE_CONTAINERS_DVECTORN_H

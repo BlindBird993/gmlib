@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gm_OPENGL_GLOBJECT_H__
-#define __gm_OPENGL_GLOBJECT_H__
+#ifndef GM_OPENGL_GLOBJECT_H
+#define GM_OPENGL_GLOBJECT_H
 
 
 #include "gmopengl.h"
@@ -427,4 +427,4 @@ namespace Private {
 
 
 
-#endif // __gm_OPENGL_GLOBJECT_H__
+#endif // GM_OPENGL_GLOBJECT_H

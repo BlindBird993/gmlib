@@ -27,8 +27,8 @@
  *  Interface for the gmPBSplineSurf class.
  */
 
-#ifndef __gmPBSPLINESURF_H__
-#define __gmPBSPLINESURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PBSPLINESURF_H
+#define GM_PARAMETRICS_SURFACE_PBSPLINESURF_H
 
 
 #include "../gmpsurf.h"
@@ -113,6 +113,6 @@ namespace GMlib {
 #include "gmpbsplinesurf.c"
 
 
-#endif // __gmPBSPLINESURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PBSPLINESURF_H
 
 

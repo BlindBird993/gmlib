@@ -27,8 +27,8 @@
  *  Interface for the PSlippersSurface class.
  */
 
-#ifndef __gmPSLIPPERSSURFACE_H__
-#define __gmPSLIPPERSSURFACE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PSLIPPERSSURFACE_H
+#define GM_PARAMETRICS_SURFACE_PSLIPPERSSURFACE_H
 
 #include "../gmpsurf.h"
 
@@ -64,5 +64,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPSLIPPERSSURFACE_H__
+#endif // GM_PARAMETRICS_SURFACE_PSLIPPERSSURFACE_H
 

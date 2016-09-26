@@ -30,8 +30,8 @@
  */
 
 
-#ifndef __gmCAMERA_H__
-#define __gmCAMERA_H__
+#ifndef GM_SCENE_CAMERA_CAMERA_H
+#define GM_SCENE_CAMERA_CAMERA_H
 
 #include "../gmsceneobject.h"
 #include "../gmscene.h"
@@ -752,4 +752,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmCAMERA_H__
+#endif // GM_SCENE_CAMERA_CAMERA_H

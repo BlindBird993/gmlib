@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmARRAYLX_H__
-#define __gmARRAYLX_H__
+#ifndef GM_CORE_CONTAINERS_ARRAYLX_H
+#define GM_CORE_CONTAINERS_ARRAYLX_H
 
 
 // GMlib includes
@@ -166,5 +166,5 @@ namespace GMlib{
 
 #include "gmarraylx.c"
 
-#endif // __gmARRAYLX_H__
+#endif // GM_CORE_CONTAINERS_ARRAYLX_H
 

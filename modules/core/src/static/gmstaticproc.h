@@ -31,8 +31,8 @@
  */
 
 
-#ifndef __gmSTATICPROC_H__
-#define __gmSTATICPROC_H__
+#ifndef GM_CORE_STATIC_STATICPROC_H
+#define GM_CORE_STATIC_STATICPROC_H
 
 
 
@@ -297,5 +297,5 @@ namespace GMlib {
 
 
 
-#endif   // __gmSTATICPROC_H__
+#endif   // GM_CORE_STATIC_STATICPROC_H
 

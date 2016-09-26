@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmISOCAMERA_H__
-#define __gmISOCAMERA_H__
+#ifndef GM_SCENE_CAMERA_ISOCAMERA_H
+#define GM_SCENE_CAMERA_ISOCAMERA_H
 
 
 #include "gmcamera.h"
@@ -300,4 +300,4 @@ namespace GMlib {
 
 }  // END namespace GMlib
 
-#endif // __gmISOCAMERA_H__
+#endif // GM_SCENE_CAMERA_ISOCAMERA_H

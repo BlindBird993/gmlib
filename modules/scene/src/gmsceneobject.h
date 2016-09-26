@@ -32,8 +32,8 @@
  *  - Translage documentation text for the class, from Norwegian to English
  */
 
-#ifndef __gmSCENEOBJECT_H__
-#define __gmSCENEOBJECT_H__
+#ifndef GM_SCENE_SCENEOBJECT_H
+#define GM_SCENE_SCENEOBJECT_H
 
 
 
@@ -874,4 +874,4 @@ namespace GMlib{
 
 
 
-#endif  // __gmSCENEOBJECT_H__
+#endif  // GM_SCENE_SCENEOBJECT_H

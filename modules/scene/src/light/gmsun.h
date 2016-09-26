@@ -28,8 +28,8 @@
 
 
 
-#ifndef __gmSUN_H__
-#define __gmSUN_H__
+#ifndef GM_SCENE_LIGHT_SUN_H
+#define GM_SCENE_LIGHT_SUN_H
 
 
 #include "../gmsceneobject.h"
@@ -84,4 +84,4 @@ namespace GMlib{
 }	// END namespace GMlib
 
 
-#endif // __gmSUN_H__
+#endif // GM_SCENE_LIGHT_SUN_H

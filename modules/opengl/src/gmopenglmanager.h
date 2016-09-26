@@ -22,8 +22,8 @@
 
 
 
-#ifndef __gm_OPENGL_OPENGLMANAGER_H__
-#define __gm_OPENGL_OPENGLMANAGER_H__
+#ifndef GM_OPENGL_OPENGLMANAGER_H
+#define GM_OPENGL_OPENGLMANAGER_H
 
 
 
@@ -206,4 +206,4 @@ namespace GL {
 
 
 
-#endif // __gm_OPENGL_OPENGLMANAGER_H__
+#endif // GM_OPENGL_OPENGLMANAGER_H

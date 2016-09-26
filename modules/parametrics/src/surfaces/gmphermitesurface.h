@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmPHERMITESURFACE_H__
-#define __gmPHERMITESURFACE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PHERMITESURFACE_H
+#define GM_PARAMETRICS_SURFACE_PHERMITESURFACE_H
 
 
 #include "../gmpsurf.h"
@@ -80,4 +80,4 @@ namespace GMlib {
 #include "gmphermitesurface.c"
 
 
-#endif // __gmPHERMITESURFACE_H__
+#endif // GM_PARAMETRICS_SURFACE_PHERMITESURFACE_H

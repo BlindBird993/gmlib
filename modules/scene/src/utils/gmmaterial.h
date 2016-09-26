@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmMATERIAL_H__
-#define __gmMATERIAL_H__
+#ifndef GM_SCENE_UTILS_MATERIAL_H
+#define GM_SCENE_UTILS_MATERIAL_H
 
 
 
@@ -650,4 +650,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmMATERIAL_H__
+#endif // GM_SCENE_UTILS_MATERIAL_H

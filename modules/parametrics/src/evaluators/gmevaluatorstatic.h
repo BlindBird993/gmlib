@@ -27,8 +27,8 @@
  *  Interface for the EvaluatorStatic class.
  */
 
-#ifndef __gmEVALUATORSTATIC_H__
-#define __gmEVALUATORSTATIC_H__
+#ifndef GM_PARAMETRICS_EVALUATORS_EVALUATORSTATIC_H
+#define GM_PARAMETRICS_EVALUATORS_EVALUATORSTATIC_H
 
 
 // gmlib
@@ -54,4 +54,4 @@ namespace GMlib {
 // Include function implementations
 #include "gmevaluatorstatic.c"
 
-#endif // __gmEVALUATORSTATIC_H__
+#endif // GM_PARAMETRICS_EVALUATORS_EVALUATORSTATIC_H

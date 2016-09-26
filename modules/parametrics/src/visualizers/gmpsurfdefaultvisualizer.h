@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmPSURFDEFAULTVISUALIZER_H__
-#define __gmPSURFDEFAULTVISUALIZER_H__
+#ifndef GM_PARAMETRICS_VISUALIZERS_PSURFDEFAULTVISUALIZER_H
+#define GM_PARAMETRICS_VISUALIZERS_PSURFDEFAULTVISUALIZER_H
 
 #include "gmpsurfvisualizer.h"
 
@@ -86,4 +86,4 @@ namespace GMlib {
 #include "gmpsurfdefaultvisualizer.c"
 
 
-#endif // __gmPSURFDEFAULTVISUALIZER_H__
+#endif // GM_PARAMETRICS_VISUALIZERS_PSURFDEFAULTVISUALIZER_H

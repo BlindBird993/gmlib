@@ -28,8 +28,8 @@
  *  Pending Documentation
  */
 
-#ifndef __gmRENDERER_H__
-#define __gmRENDERER_H__
+#ifndef GM_SCENE_RENDER_RENDERER
+#define GM_SCENE_RENDER_RENDERER
 
 
 // GMlib
@@ -65,4 +65,4 @@ namespace GMlib {
 
 } // END namespace GMlib
 
-#endif // __gmRENDERER_H__
+#endif // GM_SCENE_RENDER_RENDERER

@@ -27,8 +27,8 @@
  *  Interface for the PERBSSurf class.
  */
 
-#ifndef __gmPERBSSURF_H__
-#define __gmPERBSSURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PERBSSURF_H
+#define GM_PARAMETRICS_SURFACE_PERBSSURF_H
 
 #include "../gmpsurf.h"
 
@@ -172,7 +172,7 @@ namespace GMlib {
 #include "gmperbssurf.c"
 
 
-#endif // __gmPERBSSURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PERBSSURF_H
 
 
 

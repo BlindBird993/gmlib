@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __GM_CORE_UTILS_DIVIDEDDIFFERENCES_H__
-#define __GM_CORE_UTILS_DIVIDEDDIFFERENCES_H__
+#ifndef GM_CORE_UTILS_DIVIDEDDIFFERENCES_H
+#define GM_CORE_UTILS_DIVIDEDDIFFERENCES_H
 
 // GMlib
 #include "../types/gmpoint.h"
@@ -73,4 +73,4 @@ namespace GMlib {
 // Including template definition file.
 #include "gmdivideddifferences.c"
 
-#endif // __GM_CORE_UTILS_DIVIDEDDIFFERENCES_H__
+#endif // GM_CORE_UTILS_DIVIDEDDIFFERENCES_H

@@ -29,8 +29,8 @@
  *  \date   2012-08-22, ALA
  */
 
-#ifndef __GMHERMITE4EVALUATOR_H__
-#define __GMHERMITE4EVALUATOR_H__
+#ifndef GM_PARAMETRICS_EVALUATORS_HERMITE4EVALUATOR_H
+#define GM_PARAMETRICS_EVALUATORS_HERMITE4EVALUATOR_H
 
 
 // GMlib includes
@@ -80,7 +80,7 @@ namespace GMlib {
 #include "gmhermite4evaluator.c"
 
 
-#endif // __GMHERMITE4EVALUATOR_H__
+#endif // GM_PARAMETRICS_EVALUATORS_HERMITE4EVALUATOR_H
 
 
 

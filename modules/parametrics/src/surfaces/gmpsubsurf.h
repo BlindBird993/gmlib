@@ -29,8 +29,8 @@
  *  \date   2012-11-25, ALA
  */
 
-#ifndef __gmPSUBSURF_H__
-#define __gmPSUBSURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PSUBSURF_H
+#define GM_PARAMETRICS_SURFACE_PSUBSURF_H
 
 
 // GMlib includes+
@@ -101,5 +101,5 @@ namespace GMlib {
 #include "gmpsubsurf.c"
 
 
-#endif // __gmPSUBSURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PSUBSURF_H
 

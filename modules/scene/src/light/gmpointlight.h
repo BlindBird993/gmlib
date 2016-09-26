@@ -27,8 +27,8 @@
 
 
 
-#ifndef __gmPOINTLIGHT_H__
-#define __gmPOINTLIGHT_H__
+#ifndef GM_SCENE_LIGHT_POINTLIGHT_H
+#define GM_SCENE_LIGHT_POINTLIGHT_H
 
 
 #include "gmlight.h"
@@ -101,4 +101,4 @@ namespace GMlib{
 
 }  // END namespace GMlib
 
-#endif // __gmPOINTLIGHT_H__
+#endif // GM_SCENE_LIGHT_POINTLIGHT_H

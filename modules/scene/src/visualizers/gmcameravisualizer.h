@@ -22,8 +22,8 @@
 
 
 
-#ifndef __gmCAMERAVISUALIZER_H__
-#define __gmCAMERAVISUALIZER_H__
+#ifndef GM_SCENE_VISUALIZERS_CAMERAVISUALIZER_H
+#define GM_SCENE_VISUALIZERS_CAMERAVISUALIZER_H
 
 #include "../gmvisualizer.h"
 
@@ -70,4 +70,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmCAMERAVISUALIZER_H__
+#endif // GM_SCENE_VISUALIZERS_CAMERAVISUALIZER_H

@@ -27,8 +27,8 @@
  *  Interface for the PHelicoid class.
  */
 
-#ifndef __gmPHELICOID_H__
-#define __gmPHELICOID_H__
+#ifndef GM_PARAMETRICS_SURFACE_PHELICOID_H
+#define GM_PARAMETRICS_SURFACE_PHELICOID_H
 
 
 
@@ -73,5 +73,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPHELICOID_H__
+#endif // GM_PARAMETRICS_SURFACE_PHELICOID_H
 

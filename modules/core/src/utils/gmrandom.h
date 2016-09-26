@@ -27,8 +27,8 @@
  *  Interface for the gmRamdon template class.
  */
 
-#ifndef __gmRANDOM_H__
-#define __gmRANDOM_H__
+#ifndef GM_CORE_UTILS_RANDOM_H
+#define GM_CORE_UTILS_RANDOM_H
 
 // Numeric includes
 #include <cmath>
@@ -70,4 +70,4 @@ namespace GMlib {
 // Including template definition file.
 #include "gmrandom.c"
 
-#endif // __gmRANDOM_H__
+#endif // GM_CORE_UTILS_RANDOM_H

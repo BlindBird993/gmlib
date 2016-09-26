@@ -33,8 +33,8 @@
 #include <core/types/gmmatrix.h>
 
 
-#ifndef __GMSCALEOBJECT_H__
-#define __GMSCALEOBJECT_H__
+#ifndef GM_SCENE_SCALEOBJECT_H
+#define GM_SCENE_SCALEOBJECT_H
 
 
 namespace GMlib {
@@ -267,4 +267,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __GMSCALEOBJECT_H__
+#endif // GM_SCENE_SCALEOBJECT_H

@@ -29,8 +29,8 @@
  */
 
 
-#ifndef __gmSELECTOR_H__
-#define __gmSELECTOR_H__
+#ifndef GM_SCENE_SELECTOR_SELECTOR_H
+#define GM_SCENE_SELECTOR_SELECTOR_H
 
 
 #include "../gmsceneobject.h"
@@ -99,4 +99,4 @@ namespace GMlib{
 
 
 
-#endif // __gmSELECTOR_H__
+#endif // GM_SCENE_SELECTOR_SELECTOR_H

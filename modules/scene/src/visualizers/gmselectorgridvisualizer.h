@@ -26,8 +26,8 @@
  */
 
 
-#ifndef __gmSELECTORGRIDVISUALIZER_H__
-#define __gmSELECTORGRIDVISUALIZER_H__
+#ifndef GM_SCENE_VISUALIZERS_SELECTORGRIDVISUALIZER_H
+#define GM_SCENE_VISUALIZERS_SELECTORGRIDVISUALIZER_H
 
 
 #include "../gmvisualizer.h"
@@ -90,4 +90,4 @@ namespace GMlib {
 #include "gmselectorgridvisualizer.c"
 
 
-#endif // __gmSELECTORGRIDVISUALIZER_H__
+#endif // GM_SCENE_VISUALIZERS_SELECTORGRIDVISUALIZER_H

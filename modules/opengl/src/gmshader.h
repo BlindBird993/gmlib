@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gm_OPENGL_SHADER_H__
-#define __gm_OPENGL_SHADER_H__
+#ifndef GM_OPENGL_SHADER_H
+#define GM_OPENGL_SHADER_H
 
 
 #include "gmglobject.h"
@@ -72,4 +72,4 @@ namespace GL {
 } // END namespace GMlib
 
 
-#endif // __gm_OPENGL_SHADER_H__
+#endif // GM_OPENGL_SHADER_H

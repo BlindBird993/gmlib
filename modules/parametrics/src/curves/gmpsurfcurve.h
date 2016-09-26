@@ -29,8 +29,8 @@
  *  \date   2011-04-06, ALA
  */
 
-#ifndef __gmPSURFCURVE_H__
-#define __gmPSURFCURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PSURFCURVE_H
+#define GM_PARAMETRICS_CURVE_PSURFCURVE_H
 
 
 // GMlib includes+
@@ -89,5 +89,5 @@ namespace GMlib {
 #include "gmpsurfcurve.c"
 
 
-#endif // __gmPSURFCURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PSURFCURVE_H
 

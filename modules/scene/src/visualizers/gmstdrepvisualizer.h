@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmVISUALIZERSTDREP_H__
-#define __gmVISUALIZERSTDREP_H__
+#ifndef GM_SCENE_VISUALIZERS_VISUALIZERSTDREP_H
+#define GM_SCENE_VISUALIZERS_VISUALIZERSTDREP_H
 
 #include "../gmvisualizer.h"
 
@@ -73,4 +73,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmVISUALIZERSTDREP_H__
+#endif // GM_SCENE_VISUALIZERS_VISUALIZERSTDREP_H

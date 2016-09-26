@@ -27,8 +27,9 @@
  *  Interface for the PBezierTriangle class.
  */
 
-#ifndef __gmPBEZIERTRIANGLE_H__
-#define __gmPBEZIERTRIANGLE_H__
+
+#ifndef GM_PARAMETRICS_TRIANGLES_PBEZIERTRIANGLE_H
+#define GM_PARAMETRICS_TRIANGLES_PBEZIERTRIANGLE_H
 
 
 
@@ -87,4 +88,4 @@ class SelectorGridVisualizer;
 #include "gmpbeziertriangle.c"
 
 
-#endif // __gmPBEZIERTRIANGLE_H__
+#endif // GM_PARAMETRICS_TRIANGLES_PBEZIERTRIANGLE_H

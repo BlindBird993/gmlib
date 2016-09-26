@@ -27,8 +27,8 @@
  *  Interface for the PRoseCurve class.
  */
 
-#ifndef __gmPROSECURVE_H__
-#define __gmPROSECURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PROSECURVE_H
+#define GM_PARAMETRICS_CURVE_PROSECURVE_H
 
 
 #include "../gmpcurve.h"
@@ -63,6 +63,6 @@ namespace GMlib {
 #include "gmprosecurve.c"
 
 
-#endif // __gmPROSECURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PROSECURVE_H
 
 

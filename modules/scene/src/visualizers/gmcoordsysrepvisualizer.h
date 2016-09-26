@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H__
-#define __GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H__
+#ifndef GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H
+#define GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H
 
 #include "../gmvisualizer.h"
 
@@ -47,4 +47,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H__
+#endif // GM_SCENE_VISUALIZERS_COORDSYSREPVISUALIZER_H

@@ -27,8 +27,8 @@
  *  Interface for the PPlane class.
  */
 
-#ifndef __gmPPLANE_H__
-#define __gmPPLANE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PPLANE_H
+#define GM_PARAMETRICS_SURFACE_PPLANE_H
 
 #include "../gmpsurf.h"
 
@@ -75,4 +75,4 @@ namespace GMlib {
 
 
 
-#endif // __gmPPLANE_H__
+#endif // GM_PARAMETRICS_SURFACE_PPLANE_H

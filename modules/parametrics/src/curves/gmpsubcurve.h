@@ -27,8 +27,8 @@
  *  Interface for the PSurfCurve class.
  */
 
-#ifndef __gmPSUBCURVE_H__
-#define __gmPSUBCURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PSUBCURVE_H
+#define GM_PARAMETRICS_CURVE_PSUBCURVE_H
 
 
 #include "../gmpcurve.h"
@@ -79,5 +79,5 @@ namespace GMlib {
 #include "gmpsubcurve.c"
 
 
-#endif // __gmPSUBCURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PSUBCURVE_H
 

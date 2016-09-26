@@ -27,8 +27,8 @@
  *  Interface for the PCone class.
  */
 
-#ifndef __gmPCONE_H__
-#define __gmPCONE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PCONE_H
+#define GM_PARAMETRICS_SURFACE_PCONE_H
 
 #include "../gmpsurf.h"
 
@@ -68,5 +68,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPCONE_H__
+#endif // GM_PARAMETRICS_SURFACE_PCONE_H
 

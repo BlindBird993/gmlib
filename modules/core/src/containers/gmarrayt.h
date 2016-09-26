@@ -27,8 +27,8 @@
  *  Interface for the Array Tiny class.
  */
 
-#ifndef __gmARRAYT_H__
-#define __gmARRAYT_H__
+#ifndef GM_CORE_CONTAINERS_ARRAYT_H
+#define GM_CORE_CONTAINERS_ARRAYT_H
 
 
 // gmlib
@@ -155,6 +155,6 @@ namespace GMlib {
 // Including template definition file.
 #include "gmarrayt.c"
 
-#endif // __gmARRAYT_H__
+#endif // GM_CORE_CONTAINERS_ARRAYT_H
 
 

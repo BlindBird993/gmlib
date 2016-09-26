@@ -27,8 +27,8 @@
  *  Interface for the PAsteroidalSphere surface class.
  */
 
-#ifndef __gmPASTEROIDALSPHERE_H__
-#define __gmPASTEROIDALSPHERE_H__
+#ifndef GM_PARAMETRICS_SURFACE_PASTEROIDALSPHERE_H
+#define GM_PARAMETRICS_SURFACE_PASTEROIDALSPHERE_H
 
 
 #include "../gmpsurf.h"
@@ -66,4 +66,4 @@ namespace GMlib {
 // Include PAsteroidalSphere class function implementations
 #include "gmpasteroidalsphere.c"
 
-#endif // __gmPASTEROIDALSPHERE_H__
+#endif // GM_PARAMETRICS_SURFACE_PASTEROIDALSPHERE_H

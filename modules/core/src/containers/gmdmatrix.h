@@ -28,8 +28,8 @@
  */
 
 
-#ifndef __gmDMATRIX_H__
-#define __gmDMATRIX_H__
+#ifndef GM_CORE_CONTAINERS_DMATRIX_H
+#define GM_CORE_CONTAINERS_DMATRIX_H
 
 
 // gmlib
@@ -262,4 +262,4 @@ namespace GMlib{
 #include "gmdmatrix.c"
 //#include <core/blas/gmblasdmatrixincludes.h>
 
-#endif  // __gmDMATRIX_H__
+#endif  // GM_CORE_CONTAINERS_DMATRIX_H

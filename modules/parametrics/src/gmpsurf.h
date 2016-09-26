@@ -27,8 +27,8 @@
  *  Interface for the PSurf class.
  */
 
-#ifndef __gmDSURF_H__
-#define __gmDSURF_H__
+#ifndef GM_PARAMETRICS_PSURF_H
+#define GM_PARAMETRICS_PSURF_H
 
 
 #include "gmparametrics.h"
@@ -209,4 +209,4 @@ namespace GMlib {
 #include "gmpsurf.c"
 
 
-#endif  //__gmDSURF_H__
+#endif  //GM_PARAMETRICS_PSURF_H

@@ -27,8 +27,8 @@
  *  Interface for the PCurve class.
  */
 
-#ifndef __gmPCURVE_H__
-#define __gmPCURVE_H__
+#ifndef GM_PARAMETRICS_PCURVE_H
+#define GM_PARAMETRICS_PCURVE_H
 
 
 
@@ -133,5 +133,5 @@ namespace GMlib {
 #include "gmpcurve.c"
 
 
-#endif  // __gmPCURVE_H__
+#endif  // GM_PARAMETRICS_PCURVE_H
 

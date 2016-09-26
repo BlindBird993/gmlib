@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gm_OPENGL_SHADERS_VERTEXSHADER_H__
-#define __gm_OPENGL_SHADERS_VERTEXSHADER_H__
+#ifndef GM_OPENGL_SHADERS_VERTEXSHADER_H
+#define GM_OPENGL_SHADERS_VERTEXSHADER_H
 
 
 #include "../gmshader.h"
@@ -46,4 +46,4 @@ namespace GL {
 
 } // END namespace GMlib
 
-#endif // __gm_OPENGL_SHADERS_VERTEXSHADER_H__
+#endif // GM_OPENGL_SHADERS_VERTEXSHADER_H

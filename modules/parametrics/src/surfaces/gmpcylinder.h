@@ -27,8 +27,8 @@
  *  Interface for the PCylinder class.
  */
 
-#ifndef __gmPCYLINDER_H__
-#define __gmPCYLINDER_H__
+#ifndef GM_PARAMETRICS_SURFACE_PCYLINDER_H
+#define GM_PARAMETRICS_SURFACE_PCYLINDER_H
 
 
 #include "../gmpsurf.h"
@@ -73,6 +73,6 @@ namespace GMlib {
 
 
 
-#endif // __gmPCYLINDER_H__
+#endif // GM_PARAMETRICS_SURFACE_PCYLINDER_H
 
 

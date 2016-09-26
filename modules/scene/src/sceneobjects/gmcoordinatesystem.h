@@ -27,8 +27,8 @@
  *  Interface for the CoordinateSystem class.
  */
 
-#ifndef __gmCOORDINATESYSTEM_H__
-#define __gmCOORDINATESYSTEM_H__
+#ifndef GM_SCENE_SCENEOBJECTS_COORDINATESYSTEM_H
+#define GM_SCENE_SCENEOBJECTS_COORDINATESYSTEM_H
 
 
 #include "../gmsceneobject.h"

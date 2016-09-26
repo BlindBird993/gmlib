@@ -27,8 +27,8 @@
  *  Interface for the PButterfly class.
  */
 
-#ifndef __gmPBUTTERFLY_H__
-#define __gmPBUTTERFLY_H__
+#ifndef GM_PARAMETRICS_CURVE_PBUTTERFLY_H
+#define GM_PARAMETRICS_CURVE_PBUTTERFLY_H
 
 
 #include "../gmpcurve.h"
@@ -63,5 +63,5 @@ namespace GMlib {
 #include "gmpbutterfly.c"
 
 
-#endif // __gmPBUTTERFLY_H__
+#endif // GM_PARAMETRICS_CURVE_PBUTTERFLY_H
 

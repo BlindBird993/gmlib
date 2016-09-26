@@ -27,8 +27,8 @@
  *  Interface for the ERBSEvaluator class.
  */
 
-#ifndef __gmERBSEVALUATOR_H__
-#define __gmERBSEVALUATOR_H__
+#ifndef GM_PARAMETRICS_EVALUATORS_ERBSEVALUATOR_H
+#define GM_PARAMETRICS_EVALUATORS_ERBSEVALUATOR_H
 
 
 
@@ -86,4 +86,4 @@ namespace GMlib {
 
 
 
-#endif // __gmERBSEVALUATOR_H__
+#endif // GM_PARAMETRICS_EVALUATORS_ERBSEVALUATOR_H

@@ -27,8 +27,8 @@
  *  Interface for the PBohemianDome class.
  */
 
-#ifndef __gmPBOHEMIANDOME_H__
-#define __gmPBOHEMIANDOME_H__
+#ifndef GM_PARAMETRICS_SURFACE_PBOHEMIANDOME_H
+#define GM_PARAMETRICS_SURFACE_PBOHEMIANDOME_H
 
 
 #include "../gmpsurf.h"
@@ -68,5 +68,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPBOHEMIANDOME_H__
+#endif // GM_PARAMETRICS_SURFACE_PBOHEMIANDOME_H
 

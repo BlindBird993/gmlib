@@ -29,8 +29,8 @@
  *  \date   2011-04-06, ALA
  */
 
-#ifndef __gmPHERMITECURVESURF_H__
-#define __gmPHERMITECURVESURF_H__
+#ifndef GM_PARAMETRICS_SURFACE_PHERMITECURVESURF_H
+#define GM_PARAMETRICS_SURFACE_PHERMITECURVESURF_H
 
 // STL
 #include <string>
@@ -83,4 +83,4 @@ namespace GMlib {
 #include "gmphermitecurvesurf.c"
 
 
-#endif // __gmPHERMITECURVESURF_H__
+#endif // GM_PARAMETRICS_SURFACE_PHERMITECURVESURF_H

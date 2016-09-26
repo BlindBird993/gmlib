@@ -27,8 +27,8 @@
  *  Interface for the PBentHorns class.
  */
 
-#ifndef __gmPBENTHORNS_H__
-#define __gmPBENTHORNS_H__
+#ifndef GM_PARAMETRICS_SURFACE_PBENTHORNS_H
+#define GM_PARAMETRICS_SURFACE_PBENTHORNS_H
 
 
 
@@ -66,5 +66,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPBENTHORNS_H__
+#endif // GM_PARAMETRICS_SURFACE_PBENTHORNS_H
 

@@ -27,8 +27,9 @@
  *  Interface for the PHeart class.
  */
 
-#ifndef __gmPHEART_H__
-#define __gmPHEART_H__
+#ifndef GM_PARAMETRICS_SURFACE_PHEART_H
+#define GM_PARAMETRICS_SURFACE_PHEART_H
+
 
 #include "../gmpsurf.h"
 
@@ -64,5 +65,5 @@ namespace GMlib {
 
 
 
-#endif // __gmPHEART_H__
+#endif // GM_PARAMETRICS_SURFACE_PHEART_H
 

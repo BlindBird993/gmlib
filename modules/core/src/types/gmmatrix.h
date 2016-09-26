@@ -31,8 +31,8 @@
 // GM_Matrix.h: interface for the Static matrices classes.
 //**********************************************************
 
-#ifndef __gmMATRIX_H__
-#define __gmMATRIX_H__
+#ifndef GM_CORE_TYPES_MATRIX_H
+#define GM_CORE_TYPES_MATRIX_H
 
 #include "../static/gmstaticproc2.h"
 
@@ -495,4 +495,4 @@ namespace GMlib {
 
 
 
-#endif // __gmMATRIX_H__
+#endif // GM_CORE_TYPES_MATRIX_H

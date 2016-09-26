@@ -27,8 +27,8 @@
  *  Interface for the PBezierCurve class.
  */
 
-#ifndef __gmPBEZIERCURVE_H__
-#define __gmPBEZIERCURVE_H__
+#ifndef GM_PARAMETRICS_CURVE_PBEZIERCURVE_H
+#define GM_PARAMETRICS_CURVE_PBEZIERCURVE_H
 
 
 #include "../gmpcurve.h"
@@ -100,5 +100,5 @@ namespace GMlib {
 #include "gmpbeziercurve.c"
 
 
-#endif // __gmPBEZIERCURVE_H__
+#endif // GM_PARAMETRICS_CURVE_PBEZIERCURVE_H
 

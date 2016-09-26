@@ -27,8 +27,8 @@
  *  Interface for the BasisEvaluator class.
  */
 
-#ifndef __gmBASISEVALUATOR_H__
-#define __gmBASISEVALUATOR_H__
+#ifndef GM_PARAMETRICS_EVALUATORS_BASISEVALUATOR_H
+#define GM_PARAMETRICS_EVALUATORS_BASISEVALUATOR_H
 
 
 // gmlib
@@ -104,4 +104,4 @@ namespace GMlib {
 #include "gmbasisevaluator.c"
 
 
-#endif // __gmBASISEVALUATOR_H__
+#endif // GM_PARAMETRICS_EVALUATORS_BASISEVALUATOR_H

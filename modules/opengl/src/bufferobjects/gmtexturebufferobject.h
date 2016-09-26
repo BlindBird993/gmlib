@@ -22,8 +22,8 @@
 **********************************************************************************/
 
 
-#ifndef __gmTEXTUREBUFFEROBJECT_H__
-#define __gmTEXTUREBUFFEROBJECT_H__
+#ifndef GM_OPENGL_BUFFEROBJECTS_VERTEXBUFFEROBJECT_H
+#define GM_OPENGL_BUFFEROBJECTS_VERTEXBUFFEROBJECT_H
 
 
 #include "../gmbufferobject.h"
@@ -48,4 +48,4 @@ namespace GL {
 } // END namespace GMlib
 
 
-#endif // __gmTEXTUREBUFFEROBJECT_H__
+#endif // GM_OPENGL_BUFFEROBJECTS_VERTEXBUFFEROBJECT_H

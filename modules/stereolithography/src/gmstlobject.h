@@ -27,8 +27,8 @@
  */
 
 
-#ifndef __gmSTLOBJECT_H__
-#define __gmSTLOBJECT_H__
+#ifndef GM_STEREOLITHOGRAPHY_STLOBJECT_H
+#define GM_STEREOLITHOGRAPHY_STLOBJECT_H
 
 
 // gmlib
@@ -202,8 +202,6 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmSTLOBJECT_H__
-
-
+#endif // GM_STEREOLITHOGRAPHY_STLOBJECT_H
 
 

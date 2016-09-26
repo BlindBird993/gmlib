@@ -27,8 +27,8 @@
  *  Interface for the BFBSEvaluator class.
  */
 
-#ifndef __gmBFBSEVALUATOR_H__
-#define __gmBFBSEVALUATOR_H__
+#ifndef GM_PARAMETRICS_EVALUATORS_BFBSEVALUATOR_H
+#define GM_PARAMETRICS_EVALUATORS_BFBSEVALUATOR_H
 
 
 
@@ -65,4 +65,4 @@ namespace GMlib {
 #include "gmbfbsevaluator.c"
 
 
-#endif // __gmBFBSEVALUATOR_H__
+#endif // GM_PARAMETRICS_EVALUATORS_BFBSEVALUATOR_H

@@ -29,8 +29,8 @@
 
 
 
-#ifndef __gmARROW3D_H__
-#define __gmARROW3D_H__
+#ifndef GM_SCENE_SCENEOBJECTS_ARROW3D_H
+#define GM_SCENE_SCENEOBJECTS_ARROW3D_H
 
 
 
@@ -170,4 +170,4 @@ namespace GMlib {
 } // END namespace GMlib
 
 
-#endif // __gmARROW3D_H__
+#endif // GM_SCENE_SCENEOBJECTS_ARROW3D_H

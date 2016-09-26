@@ -21,8 +21,8 @@
 **********************************************************************************/
 
 
-#ifndef __gm_OPENGL_PROGRAM_H__
-#define __gm_OPENGL_PROGRAM_H__
+#ifndef GM_OPENGL_PROGRAM_H
+#define GM_OPENGL_PROGRAM_H
 
 
 #include "gmglobject.h"
@@ -123,4 +123,4 @@ namespace GL {
 } // END namespace GMlib
 
 
-#endif // __gm_OPENGL_PROGRAM_H__
+#endif // GM_OPENGL_PROGRAM_H

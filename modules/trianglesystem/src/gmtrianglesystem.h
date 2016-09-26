@@ -29,8 +29,8 @@
 
 
 
-#ifndef __gmTRIANGLESYSTEM_H__
-#define __gmTRIANGLESYSTEM_H__
+#ifndef GM_TRIANGLESYSTEM_TRIANGLESYSTEM_H
+#define GM_TRIANGLESYSTEM_TRIANGLESYSTEM_H
 
 
 
@@ -557,6 +557,6 @@ namespace GMlib {
 
 
 
-#endif // __gmTRIANGLESYSTEM_H__
+#endif // GM_TRIANGLESYSTEM_TRIANGLESYSTEM_H
 
 
