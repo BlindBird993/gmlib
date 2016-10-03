@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmstlobject.cpp
- *
- *  Implementation of StlObject class functions.
- */
 
 
 #include "gmstlobject.h"

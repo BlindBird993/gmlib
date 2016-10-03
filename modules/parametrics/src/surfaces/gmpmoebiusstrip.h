@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpmoebiusstrip.h
- *
- *  Interface for the PMoebiusStrip class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PMOEBIUSSTRIP_H
 #define GM_PARAMETRICS_SURFACE_PMOEBIUSSTRIP_H

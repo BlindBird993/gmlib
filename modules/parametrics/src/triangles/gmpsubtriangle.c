@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPSubTriangle.c
- *
- *  Implementation of the PSubTriangle template class.
- *
- *  \date   2010-03-25, uppdated 2012-07-12, ALA
- */
 
 
 namespace GMlib {

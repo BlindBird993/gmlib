@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpenneperssurface.h
- *
- *  Interface for the PEnnepersSurface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PENNEPERSURFACE_H
 #define GM_PARAMETRICS_SURFACE_PENNEPERSURFACE_H

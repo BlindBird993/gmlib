@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmsceneobject.cpp
- *
- *  Implementation of the SceneObject class.
- */
 
 
 #include "gmsceneobject.h"

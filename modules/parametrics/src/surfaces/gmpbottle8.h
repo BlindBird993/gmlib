@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbottle8.h
- *
- *  Interface for the PBottle8 class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PBOTTLE8_H
 #define GM_PARAMETRICS_SURFACE_PBOTTLE8_H

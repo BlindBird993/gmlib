@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmlight.h
- *
- *  Interface for the basic Light class
- */
-
 
 
 #ifndef GM_SCENE_LIGHT_H

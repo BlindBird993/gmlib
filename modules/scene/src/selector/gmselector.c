@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmselector.c
- *  \brief Pending Description
- *
- *  Detailed File Description
- */
 
 
 

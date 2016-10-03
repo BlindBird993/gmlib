@@ -23,12 +23,6 @@
 
 
 
-/*! \file gmpinsideouttorus.c
- *
- *  Implementation of the PInsideOutTorus template class.
- */
-
-
 namespace GMlib {
 
 

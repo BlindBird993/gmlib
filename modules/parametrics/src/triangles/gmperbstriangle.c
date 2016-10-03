@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmperbstriangle.c
- *
- *  Implementation of the PERBSTriangle template class.
- */
 
 
 namespace GMlib {

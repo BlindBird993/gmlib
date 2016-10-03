@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcone.h
- *
- *  Interface for the PCone class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PCONE_H
 #define GM_PARAMETRICS_SURFACE_PCONE_H

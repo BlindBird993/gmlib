@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmtimer.h
- *
- *  Interface for the GMTimer class.
- */
-
 #ifndef GM_CORE_UTILS_TIMER_H
 #define GM_CORE_UTILS_TIMER_H
 

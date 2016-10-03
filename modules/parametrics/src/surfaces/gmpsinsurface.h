@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsinsurface.h
- *
- *  Interface for the PSinSurface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PSINSURFACE_H
 #define GM_PARAMETRICS_SURFACE_PSINSURFACE_H

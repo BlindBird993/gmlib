@@ -23,12 +23,6 @@
 
 
 
-/*! \file gmpseashell.c
- *
- *  Implementation of the PSeashell template class.
- */
-
-
 namespace GMlib {
 
 

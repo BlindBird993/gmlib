@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcircle.c
- *
- *  Implementation of the PCircle template class.
- */
 
 
 namespace GMlib {

@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPCoonsPatch.h
- *
- *  Interface for the PCoonsPatch class.
- *
- *  \date   2012-04-02, ALA
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PCOONSPATCH_H
 #define GM_PARAMETRICS_SURFACE_PCOONSPATCH_H

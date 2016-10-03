@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmspotlight.h
- */
-
-
-
 #ifndef GM_SCENE_LIGHT_SPOTLIGHT_H
 #define GM_SCENE_LIGHT_SPOTLIGHT_H
 

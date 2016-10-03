@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpcone.c
- *
- *  Implementation of the PCone template class.
- */
 
 
 namespace GMlib {

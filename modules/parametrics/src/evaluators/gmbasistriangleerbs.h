@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmbasistriangleerbs.h
- *
- *  Interface for the BasisTriangleERBS class.
- */
 
 #ifndef GM_PARAMETRICS_EVALUATORS_BASISTRANGLEERBS_H
 #define GM_PARAMETRICS_EVALUATORS_BASISTRANGLEERBS_H

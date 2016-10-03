@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbeziersurf.h
- *
- *  Interface for the gmPBSplineSurf class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PBSPLINESURF_H
 #define GM_PARAMETRICS_SURFACE_PBSPLINESURF_H

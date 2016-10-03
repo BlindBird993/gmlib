@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbsplinecurve.c
- *
- *  Implementation of the PBSplineCurve template class.
- */
 
 
 namespace GMlib {

@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmspotlightg.cpp
- *
- *  Implementation of the SpotLightG class.
- */
-
 #include "gmspotlightg.h"
 
 // gmlib

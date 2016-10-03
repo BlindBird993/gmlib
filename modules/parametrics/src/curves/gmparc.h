@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmparc.h
- *
- *  Interface for the PArc class.
- */
-
 #ifndef GM_PARAMETRICS_CURVES_PARC_H
 #define GM_PARAMETRICS_CURVES_PARC_H
 

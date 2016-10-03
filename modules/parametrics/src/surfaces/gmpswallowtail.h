@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpswallowtail.h
- *
- *  Interface for the PSwallowTail class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PSWALLOWTAIL_H
 #define GM_PARAMETRICS_SURFACE_PSWALLOWTAIL_H

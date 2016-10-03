@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbohemiandome.h
- *
- *  Interface for the PBohemianDome class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PBOHEMIANDOME_H
 #define GM_PARAMETRICS_SURFACE_PBOHEMIANDOME_H

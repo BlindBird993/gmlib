@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsteinersurf.c
- *
- *  Implementation of the PSteinerSurf template class.
- */
 
 
 namespace GMlib {

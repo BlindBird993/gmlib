@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmstring.c
- *  \brief Inline String class implementations.
- *
- *  Inline implementations of the String class.
- */
 
 
 

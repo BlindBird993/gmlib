@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpkuensurface.c
- *
- *  Implementation of the PKuenSurface template class.
- */
 
 
 namespace GMlib {

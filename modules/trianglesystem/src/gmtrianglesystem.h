@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmtrianglesystem.h
- *
- *  Interface of the Triangle system classes.
- */
 
 
 

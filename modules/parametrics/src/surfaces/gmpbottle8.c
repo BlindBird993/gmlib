@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpbottle8.c
- *
- *  Implementation of the PBottle8 template class.
- */
 
 
 namespace GMlib {

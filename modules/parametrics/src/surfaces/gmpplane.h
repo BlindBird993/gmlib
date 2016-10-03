@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpplane.h
- *
- *  Interface for the PPlane class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PPLANE_H
 #define GM_PARAMETRICS_SURFACE_PPLANE_H

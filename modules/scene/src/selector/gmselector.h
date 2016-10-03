@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmselector.h
- *  \brief Interface to the Selector class
- *
- *  Interface to the Selector class
- */
 
 
 #ifndef GM_SCENE_SELECTOR_SELECTOR_H

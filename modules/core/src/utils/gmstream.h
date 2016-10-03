@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmstream.h
- *
- *  Overloaded IOSTREAM stream operators and an interface for a separator class.
- *  Compile with GM_STREAM defined to turn on this functionaity
- */
 
 #ifndef GM_CORE_UTILS_STREAM_H
 #define GM_CORE_UTILS_STREAM_H

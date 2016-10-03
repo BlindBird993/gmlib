@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcircularsurface.h
- *
- *  Interface for the PCircularSurface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PCIRCULARSURFACE_H
 #define GM_PARAMETRICS_SURFACE_PCIRCULARSURFACE_H

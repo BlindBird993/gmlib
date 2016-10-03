@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmparametrics.h
- *
- *  Interface for the Parametrics class.
- */
 
 #ifndef GM_PARAMETRICS_PARAMETRICS_H
 #define GM_PARAMETRICS_PARAMETRICS_H

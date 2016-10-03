@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcylinder.c
- *
- */
-
 
 namespace GMlib {
 

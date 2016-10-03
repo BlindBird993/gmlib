@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpchrysanthemumcurve.h
- *
- *  Interface for the PChrysanthemumCurve class.
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PCHRYSANTHEMUMCURVE_H
 #define GM_PARAMETRICS_CURVE_PCHRYSANTHEMUMCURVE_H

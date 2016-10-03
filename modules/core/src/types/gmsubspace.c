@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmsubspace.c
- *  \brief Implementation of SubSpace template class.
- *
- *  Implementation of SubSpace template class.
- */
 
 
 namespace GMlib {

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmprosecurve.h
- *
- *  Interface for the PRoseCurve class.
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PROSECURVE_H
 #define GM_PARAMETRICS_CURVE_PROSECURVE_H

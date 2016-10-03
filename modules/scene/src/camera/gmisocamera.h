@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmisocamera.h
- *
- *  Interface for the IsoCamera class.
- */
 
 
 #ifndef GM_SCENE_CAMERA_ISOCAMERA_H

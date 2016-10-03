@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmarrayt.c
- *
- *  Implementation of Array Tiny template class.
- */
 
 
 namespace GMlib {

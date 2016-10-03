@@ -20,11 +20,6 @@
 **
 **********************************************************************************/
 
-/*! \file gmrender.cpp
- *  \brief Pending Documentation
- *
- *  Pending Documentation
- */
 
 
 #include "gmrenderer.h"

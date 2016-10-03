@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmrandom.h
- *
- *  Interface for the gmRamdon template class.
- */
-
 #ifndef GM_CORE_UTILS_RANDOM_H
 #define GM_CORE_UTILS_RANDOM_H
 

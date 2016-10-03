@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmmatrix.h
- *
- */
-
 
 //**********************************************************
 // GM_Matrix.h: interface for the Static matrices classes.

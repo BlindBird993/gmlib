@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmspotlightg.h
- *
- *  Graphical SpotLight Class
- */
-
 
 
 #ifndef GM_SCENE_SCENEOBJECTS_SPOTLIGHTG_H

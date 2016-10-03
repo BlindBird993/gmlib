@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurf.c
- *
- *  Implementation of the PSurf template class.
- */
 
 
 // gmlib

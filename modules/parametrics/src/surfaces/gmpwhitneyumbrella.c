@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpwhitneyumbrella.c
- *
- *  Implementation of the PWhitneyUmbrella template class.
- */
 
 
 namespace GMlib {

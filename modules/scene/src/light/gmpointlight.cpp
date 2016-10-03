@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpointlight.cpp
- *
- *  Implementation of the PointLight class.
- */
-
 // System includes
 #include <float.h>
 

@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmsun.h
- *
- */
-
-
 
 #ifndef GM_SCENE_LIGHT_SUN_H
 #define GM_SCENE_LIGHT_SUN_H

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmcolor.h
- *
- *  An implementation of colors and different color operations
- */
 
 #ifndef GM_CORE_UTILS_COLOR_H
 #define GM_CORE_UTILS_COLOR_H

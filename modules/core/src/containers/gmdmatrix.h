@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmdmatrix.h
- *
- *  Interface for the Dynamic Matrix class.
- */
 
 
 #ifndef GM_CORE_CONTAINERS_DMATRIX_H

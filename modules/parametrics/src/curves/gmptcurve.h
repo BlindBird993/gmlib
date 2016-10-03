@@ -22,10 +22,6 @@
 
 
 
-/*! \file   gmptcurve.h
- *
- *  Interface for the PTCurve class (Parametric Tranformed Curve).
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PTCURVE_H
 #define GM_PARAMETRICS_CURVE_PTCURVE_H

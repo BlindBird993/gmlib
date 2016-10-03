@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmperbstriangle.h
- *
- *  Interface for the PERBSTriangle class.
- */
 
 #ifndef GM_PARAMETRICS_TRIANGLES_PERBSTRIANGLE_H
 #define GM_PARAMETRICS_TRIANGLES_PERBSTRIANGLE_H

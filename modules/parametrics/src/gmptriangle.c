@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmptriangle.c
- *
- *  Implementation of the PTriangle template class.
- */
 
 // local
 #include "visualizers/gmptriangledefaultvisualizer.h"

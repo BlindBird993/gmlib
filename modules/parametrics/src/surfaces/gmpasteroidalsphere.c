@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpasteroidalsphere.c
- *
- *  Implementation of the PAsteroidalSphere template class.
- */
 
 
 namespace GMlib {

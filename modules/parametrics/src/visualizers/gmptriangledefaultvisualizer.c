@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmptriangledefaultvisualizer.c
- *
- *  Implementation of the PTriangleDefaultVisualizer template class.
- */
 
 #include "gmptriangledefaultvisualizer.h"
 

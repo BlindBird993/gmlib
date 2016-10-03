@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmsortobject.c
- *
- *  Description
- */
-
 
 namespace GMlib {
 

@@ -21,13 +21,6 @@
 **********************************************************************************/
 
 
-
-/*! \file gmarray.h
- *
- *  Interface for the Array classes.
- */
-
-
 #ifndef GM_CORE_CONTAINERS_ARRAY_H
 #define GM_CORE_CONTAINERS_ARRAY_H
 

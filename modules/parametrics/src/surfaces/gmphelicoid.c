@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmphelicoid.c
- *
- *  Implementation of the PHelicoid template class.
- */
 
 
 namespace GMlib {

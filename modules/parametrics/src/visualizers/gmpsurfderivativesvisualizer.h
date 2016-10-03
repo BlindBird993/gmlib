@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurfderivativesvisualizer.h
- *
- *  Interface for the PSurfDerivativesVisualizer class.
- */
 
 
 #ifndef GM_PARAMETRICS_VISUALIZERS_PSURFDERIVATIVESVISUALIZER_H

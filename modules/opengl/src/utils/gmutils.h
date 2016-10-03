@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmutils.h
- *
- *  GMUtils
- */
-
 #ifndef GM_OPENGL_UTILS_UTILS_H
 #define GM_OPENGL_UTILS_UTILS_H
 

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpchrysanthemumcurve.c
- *
- *  Implementation of the PChrysanthemumCurve template class.
- */
 
 
 namespace GMlib {

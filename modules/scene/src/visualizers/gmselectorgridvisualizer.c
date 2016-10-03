@@ -22,8 +22,6 @@
 
 
 
-/*! \file gmselectorgridvisualizer.c
- */
 
 #include "gmselectorgridvisualizer.h"
 

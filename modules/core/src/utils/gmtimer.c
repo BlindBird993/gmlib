@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmtimer.c
- *  \brief Inline mplementation of the GMTimer class.
- *
- *  Implementation of the GMTimer class.
- */
 
 
 namespace GMlib {

@@ -22,13 +22,6 @@
 
 
 
-/*! \file   gmglobal.h
- *  \brief  GMlib global defines file
- *
- *  This file provides a number of functions and definitions globally used or needed in GMlib.
- */
-
-
 // Version definitions
 #define GM_VERSION 0x000600
 #define GM_VERSION_STR "0.6.0"

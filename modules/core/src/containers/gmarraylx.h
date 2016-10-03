@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmarraylx.h
- *
- *  Interface for the gmArrayLX, Large eXpandable Array.
- */
 
 
 #ifndef GM_CORE_CONTAINERS_ARRAYLX_H

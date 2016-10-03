@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmptrianguloidtrefoil.h
- *
- *  Interface for the PTrianguloidTrefoil class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PTRIANGULOIDTREFOIL_H
 #define GM_PARAMETRICS_SURFACE_PTRIANGULOIDTREFOIL_H

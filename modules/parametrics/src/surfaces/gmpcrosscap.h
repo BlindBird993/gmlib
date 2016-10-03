@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcrosscap.h
- *
- *  Interface for the PCrossCap class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PCROSSCAP_H
 #define GM_PARAMETRICS_SURFACE_PCROSSCAP_H

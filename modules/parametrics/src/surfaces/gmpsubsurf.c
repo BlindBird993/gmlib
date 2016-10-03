@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPSubSurf.c
- *
- *  Implementation of the PSubSurf template class.
- *
- *  \date   2012-11-25, ALA
- */
 
 
 namespace GMlib {

@@ -22,14 +22,6 @@
 
 
 
-/*! \file gmscene.h
- *  \brief Interface to the Scene Object
- *
- *  Interface to the Scene Object
- *
- *  \todo
- *  Rewrite the Scene class documentation, and translate it into english
- */
 
 
 #ifndef GM_SCENE_SCENE_H

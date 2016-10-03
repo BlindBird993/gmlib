@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpbasiscurve.h
- *
- *  Interface for the PBasisCurve class.
- */
-
 #ifndef GM_PARAMETRICS_CURVES_PBASISCURVE_H
 #define GM_PARAMETRICS_CURVES_PBASISCURVE_H
 

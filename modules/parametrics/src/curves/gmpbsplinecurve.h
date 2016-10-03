@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbsplinecurve.h
- *
- *  Interface for the PBSplineCurve class.
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PBSPLINECURVE_H
 #define GM_PARAMETRICS_CURVE_PBSPLINECURVE_H

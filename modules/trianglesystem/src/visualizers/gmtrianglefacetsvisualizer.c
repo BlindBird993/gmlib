@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmtrianglefacetsvisualizer.h
- *
- *  TriangleFacetsVisualizer implementations
- */
 
 namespace GMlib {
 

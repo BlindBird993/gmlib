@@ -21,12 +21,6 @@
 **********************************************************************************/
 
 
-/*! \file gmphermitesurface.c
- *
- *  Implementation of the PHermiteSurface template class.
- */
-
-
 namespace GMlib {
 
   /*! PHermiteSurface<T>::PHermiteSurface( const Array< PCurve<T>* >& c1, const Array<PCurve<T>* >& c2 )

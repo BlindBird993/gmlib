@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpheart.c
- *
- *  Implementation of the PHeart template class.
- */
 
 
 namespace GMlib {

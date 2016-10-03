@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbsplinesurf.c
- *
- *  Implementation of the PBSplineSurf template class.
- */
 
 
 #include "../evaluators/gmevaluatorstatic.h"

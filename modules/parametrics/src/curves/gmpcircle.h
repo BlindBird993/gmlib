@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcircle.h
- *
- *  Interface for the PCircle class.
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PCIRCLE_H
 #define GM_PARAMETRICS_CURVE_PCIRCLE_H

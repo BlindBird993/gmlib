@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPSweepSurf.c
- *
- *  Implementation of the PSweepSurf template class.
- *
- *  \date   2011-04-04, ALA
- */
 
 
 

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpdinisurface.h
- *
- *  Interface for the PDiniSurface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PDINISURFACE_H
 #define GM_PARAMETRICS_SURFACE_PDINISURFACE_H

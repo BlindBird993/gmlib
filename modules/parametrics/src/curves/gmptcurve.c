@@ -22,10 +22,6 @@
 
 
 
-/*! \file   gmptcurve.c
- *
- *  Implementation of the gmPTCurve template class.
- */
 
 
 namespace GMlib {

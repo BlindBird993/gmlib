@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmstlobject.h
- *
- */
-
 
 #ifndef GM_STEREOLITHOGRAPHY_STLOBJECT_H
 #define GM_STEREOLITHOGRAPHY_STLOBJECT_H

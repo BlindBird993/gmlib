@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpslipperssurface.h
- *
- *  Interface for the PSlippersSurface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PSLIPPERSSURFACE_H
 #define GM_PARAMETRICS_SURFACE_PSLIPPERSSURFACE_H

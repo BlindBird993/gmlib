@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmtexture.cpp
- *	\brief Pending Description
- *
- *  Implementation of the Texture class.
- */
 
 
 #include "gmtexture.h"

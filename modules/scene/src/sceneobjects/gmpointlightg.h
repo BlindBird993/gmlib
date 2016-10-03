@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpointlightg.h
- *
- *  Graphical PointLight Class
- */
-
 
 
 #ifndef GM_SCENE_SCENEOBJECTS_POINTLIGHTG_H

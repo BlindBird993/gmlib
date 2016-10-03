@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurfnormalsvisualizer.c
- *
- *  Implementation of the PSurfNormalsVisualizer template class.
- */
 
 
 #include "gmpsurfnormalsvisualizer.h"

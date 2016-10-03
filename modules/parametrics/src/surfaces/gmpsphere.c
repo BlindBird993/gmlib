@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsphere.c
- *
- *  Implementation of the PSphere template class.
- */
 
 
 

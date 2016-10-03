@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmvisualizer.cpp
- *  \brief Visualizer class function implementations
- *
- *  Implementation of the Visualizer class.
- */
 
 
 #include "gmvisualizer.h"

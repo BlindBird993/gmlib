@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpasteroidalsphere.h
- *
- *  Interface for the PAsteroidalSphere surface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PASTEROIDALSPHERE_H
 #define GM_PARAMETRICS_SURFACE_PASTEROIDALSPHERE_H

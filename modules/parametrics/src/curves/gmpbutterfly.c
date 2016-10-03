@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbutterfly.c
- *
- *  Implementation of the PButterfly template class.
- */
 
 
 namespace GMlib {

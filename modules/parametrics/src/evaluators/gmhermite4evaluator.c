@@ -22,13 +22,6 @@
 
 
 
-/*! \file gmHermite4Evaluator.c
- *
- *  Implementation of the Hermite4Evaluator template class.
- *
- *  \date   2010-02-14
- */
-
 
 
 

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpseashell.h
- *
- *  Interface for the PSeashell class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PSEASHELL_H
 #define GM_PARAMETRICS_SURFACE_PSEASHELL_H

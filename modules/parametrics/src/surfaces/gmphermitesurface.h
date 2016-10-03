@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmphermitesurface.h
- *
- *  Interface for the PHermiteSurface class.
- */
-
-
 #ifndef GM_PARAMETRICS_SURFACE_PHERMITESURFACE_H
 #define GM_PARAMETRICS_SURFACE_PHERMITESURFACE_H
 

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcurve.h
- *
- *  Interface for the PCurve class.
- */
 
 #ifndef GM_PARAMETRICS_PCURVE_H
 #define GM_PARAMETRICS_PCURVE_H

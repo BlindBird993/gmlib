@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPSubTriangle.h
- *
- *  Interface for the PSubTriangle class.
- *
- *  \date   2010-07-13
- */
 
 #ifndef GM_PARAMETRICS_TRIANGLES_PSUBTRIANGLE_H
 #define GM_PARAMETRICS_TRIANGLES_PSUBTRIANGLE_H

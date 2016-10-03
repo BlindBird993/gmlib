@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpinsideouttorus.h
- *
- *  Interface for the PInsideOutTorus class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PINSIDEOUTTORUS_H
 #define GM_PARAMETRICS_SURFACE_PINSIDEOUTTORUS_H

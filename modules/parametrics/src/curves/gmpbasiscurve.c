@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpbasiscurve.c
- *
- *  Implementation of the PBasisCurve template class.
- */
-
 #include "../evaluators/gmerbsevaluator.h"
 
 namespace GMlib {

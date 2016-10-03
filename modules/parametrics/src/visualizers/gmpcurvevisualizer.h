@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcurvevisualizer.h
- *
- *  Interface for the PCurveVisualizer class.
- */
 
 
 #ifndef GM_PARAMETRICS_VISUALIZERS_PCURVEVISUALIZER_H

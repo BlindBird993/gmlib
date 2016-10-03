@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurf.h
- *
- *  Interface for the PSurf class.
- */
 
 #ifndef GM_PARAMETRICS_PSURF_H
 #define GM_PARAMETRICS_PSURF_H

@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpswallowtail.c
- *
- *  Implementation of the PSwallowTail template class.
- */
 
 
 namespace GMlib {

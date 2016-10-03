@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpoint.h
- *
- *  Interface classes for the Point/Vector/UnitVector/Arrow/ScalarPoint/Sphere/Box classes
- */
 
 #ifndef GM_CORE_TYPES_POINT_H
 #define GM_CORE_TYPES_POINT_H

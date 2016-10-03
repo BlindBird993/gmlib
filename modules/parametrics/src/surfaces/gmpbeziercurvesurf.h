@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPBezierCurveSurf.h
- *
- *  Interface for the PBezierCurveSurf class.
- *
- *  \date   2011-04-06, ALA
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PBEZIERCURVESURF_H
 #define GM_PARAMETRICS_SURFACE_PBEZIERCURVESURF_H

@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmbasisevaluator.c
- *
- *  Implementation of the BasisEvaluator template class.
- */
-
-
 
 namespace GMlib {
 

@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpcrosscap.c
- *
- *  Implementation of the PCrossCap template class.
- */
 
 
 namespace GMlib {

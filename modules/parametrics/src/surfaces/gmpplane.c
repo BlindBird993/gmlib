@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpplane.c
- *
- *  Implementation of the PPlane template class.
- */
 
 
 // for syntaxhighlighting

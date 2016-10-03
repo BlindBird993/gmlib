@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcurvederivativesvisualizer.h
- *
- *  Interface for the PCurveDerivativesVisualizer class.
- */
 
 
 #ifndef GM_PARAMETRICS_VISUALIZERS_PPCURVEDERIVATIVESVISUALIZER_H

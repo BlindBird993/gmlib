@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpwhitneyumbrella.h
- *
- *  Interface for the PWhitneyUmbrella class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PWHITNEYUMBRELLA_H
 #define GM_PARAMETRICS_SURFACE_PWHITNEYUMBRELLA_H

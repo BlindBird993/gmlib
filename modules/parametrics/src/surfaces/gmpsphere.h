@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsphere.h
- *
- *  Interface for the PSphere class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PSPHERE_H
 #define GM_PARAMETRICS_SURFACE_PSPHERE_H

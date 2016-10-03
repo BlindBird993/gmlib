@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPHermiteSurf.h
- *
- *  Interface for the PHermiteSurf class.
- *
- *  \date   2012-04-08, ALA
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PHERMITESURF_H
 #define GM_PARAMETRICS_SURFACE_PHERMITESURF_H

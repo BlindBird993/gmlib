@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmtexture.h
- *
- *  Interface for the gmTexture subcomponent
- */
-
 
 #ifndef GM_SCENE_UTILS_TEXTURE_H
 #define GM_SCENE_UTILS_TEXTURE_H

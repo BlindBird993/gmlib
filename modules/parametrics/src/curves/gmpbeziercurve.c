@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpbeziercurve.c
- *
- *  Implementation of the PBezierCurve template class.
- */
-
 #include "../evaluators/gmevaluatorstatic.h"
 
 // gmlib

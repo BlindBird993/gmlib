@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmcolor.cpp
- *  \brief Color class implementations
- *
- *  Implementation of the Color class.
- *  Definitions of standard colors
- */
 
 
 #include "gmcolor.h"

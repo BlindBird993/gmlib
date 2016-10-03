@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmsphere3d.h
- *
- *  A graphical implementation of the Sphere class
- */
-
 #ifndef GM_SCENE_SCENEOBJECTS_SPHERE3D_H
 #define GM_SCENE_SCENEOBJECTS_SPHERE3D_H
 

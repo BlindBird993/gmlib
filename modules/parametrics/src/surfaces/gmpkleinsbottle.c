@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpkleinsbottle.c
- *
- *  Implementation of the PKleinsBottle template class.
- */
 
 
 namespace GMlib {

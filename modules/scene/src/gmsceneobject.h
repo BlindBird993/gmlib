@@ -22,15 +22,6 @@
 
 
 
-/*! \file gmsceneobject.h
- *  \brief Interface to the Scene Object class
- *
- *  Pending Detailed Documentation
- *
- *  \todo
- *  - Move variable documentation physicaly out of the header file.
- *  - Translage documentation text for the class, from Norwegian to English
- */
 
 #ifndef GM_SCENE_SCENEOBJECT_H
 #define GM_SCENE_SCENEOBJECT_H

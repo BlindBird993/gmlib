@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmtrianglefacetsvoronoivisualizer.h
- *
- *  Interface for the TriangleFacetsVoronoiVisualizer class.
- */
 
 #ifndef GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSVORONOIVISUALIZER_H
 #define GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSVORONOIVISUALIZER_H

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpheart.h
- *
- *  Interface for the PHeart class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PHEART_H
 #define GM_PARAMETRICS_SURFACE_PHEART_H

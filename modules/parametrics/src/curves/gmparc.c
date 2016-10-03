@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmparc.c
- *
- *  Implementation of the PArc template class.
- */
-
 
 namespace GMlib {
 

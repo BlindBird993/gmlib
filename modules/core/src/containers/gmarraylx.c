@@ -21,13 +21,6 @@
 **********************************************************************************/
 
 
-
-/*! \file gmarraylx.c
- *
- *  Implementation of Array Large eXtended class.
- */
-
-
 namespace GMlib {
 
 

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpeightsurface.h
- *
- *  Interface for the PEightSurface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PEIGHTSURFACE_H
 #define GM_PARAMETRICS_SURFACE_PEIGHTSURFACE_H

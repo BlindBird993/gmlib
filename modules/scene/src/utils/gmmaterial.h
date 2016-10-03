@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmmaterial.h
- *
- *  Material Class
- */
-
 
 #ifndef GM_SCENE_UTILS_MATERIAL_H
 #define GM_SCENE_UTILS_MATERIAL_H

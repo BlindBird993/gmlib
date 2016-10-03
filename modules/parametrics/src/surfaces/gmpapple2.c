@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpapple2.c
- *
- *  Implementation of the PApple2 template class.
- */
 
 
 namespace GMlib {

@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmvisualizerstdrep.cpp
- *
- *  Implementations VisualizerStdRep class.
- */
-
 #include "gmcoordsysrepvisualizer.h"
 
 // local

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmerbsevaluator.h
- *
- *  Interface for the ERBSEvaluator class.
- */
 
 #ifndef GM_PARAMETRICS_EVALUATORS_ERBSEVALUATOR_H
 #define GM_PARAMETRICS_EVALUATORS_ERBSEVALUATOR_H

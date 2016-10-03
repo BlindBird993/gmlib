@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbutterfly.h
- *
- *  Interface for the PButterfly class.
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PBUTTERFLY_H
 #define GM_PARAMETRICS_CURVE_PBUTTERFLY_H

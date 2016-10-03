@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmptrianglevisualizer.h
- *
- *  Interface for the PTriangleVisualizer class.
- */
 
 
 #ifndef GM_PARAMETRICS_VISUALIZERS_PTRIANGLEVISUALIZER_H

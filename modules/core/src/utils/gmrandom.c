@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmrandom.c
- *  \brief Implementation of the gmRandom template class.
- *
- *  Implementation of the gmRandom template class.
- */
 
 
 

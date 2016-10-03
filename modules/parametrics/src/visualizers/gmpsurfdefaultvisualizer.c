@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpsurfdefaultvisualizer.c
- *
- *  Implementation of the PSurfDefaultVisualizer template class.
- */
 
 
 #include "../gmpsurf.h"

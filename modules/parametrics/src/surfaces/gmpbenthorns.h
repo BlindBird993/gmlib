@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbenthorns.h
- *
- *  Interface for the PBentHorns class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PBENTHORNS_H
 #define GM_PARAMETRICS_SURFACE_PBENTHORNS_H

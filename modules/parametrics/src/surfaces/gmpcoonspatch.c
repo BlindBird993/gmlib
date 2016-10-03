@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPCoonsPatch.c
- *
- *  Implementation of the PCoonsPatch template class.
- *
- *  \date   2011-04-02, ALA
- */
 
 
 

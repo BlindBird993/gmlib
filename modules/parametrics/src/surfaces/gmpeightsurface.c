@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpeightsurface.c
- *
- *  Implementation of the PEightSurface template class.
- */
 
 
 namespace GMlib {

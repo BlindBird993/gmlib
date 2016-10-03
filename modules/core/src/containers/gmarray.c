@@ -20,13 +20,6 @@
 **
 **********************************************************************************/
 
-
-
-/*! \file gmarray.c
- *
- *  Implementation of Array class.
- */
-
 // gmlib
 #include "gmarrayt.h"
 

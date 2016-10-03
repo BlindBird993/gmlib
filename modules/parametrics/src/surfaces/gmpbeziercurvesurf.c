@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPBezierCurveSurf.c
- *
- *  Implementation of the PBezierCurveSurf template class.
- *
- *  \date   2011-04-06, ALA
- */
 
 
 #include "../evaluators/gmevaluatorstatic.h"

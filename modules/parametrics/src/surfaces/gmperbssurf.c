@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmperbssurf.c
- *
- *  Implementation of the PERBSSurf template class.
- */
 
 
 #include "gmperbssurf.h"

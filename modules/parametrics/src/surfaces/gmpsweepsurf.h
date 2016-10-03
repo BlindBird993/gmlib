@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPSweepSurf.h
- *
- *  Interface for the PSweepSurf class.
- *
- *  \date   2011-03-26
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PSWEEPSURF_H
 #define GM_PARAMETRICS_SURFACE_PSWEEPSURF_H

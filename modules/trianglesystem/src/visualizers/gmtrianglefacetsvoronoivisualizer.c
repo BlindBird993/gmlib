@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmtrianglefacetsvoronoivisualizer.h
- *
- *  TriangleFacetsVoronoiVisualizer implementations
- */
 
 
 // gmlib

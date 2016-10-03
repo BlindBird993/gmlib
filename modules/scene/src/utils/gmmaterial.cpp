@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmmaterial.cpp
- *
- *  Implementation of the Material class.
- */
-
 
 #include "gmmaterial.h"
 

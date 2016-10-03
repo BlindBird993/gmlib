@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpoint.c
- *  \brief Implementations for the APoint class
- *
- *  Implementations for the APoint class
- */
 
 
 #include <cstring>

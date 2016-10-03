@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurfvisualizer.h
- *
- *  Interface for the PSurfVisualizer class.
- */
 
 
 #ifndef GM_PARAMETRICS_VISUALIZERS_PSURFVISUALIZER_H

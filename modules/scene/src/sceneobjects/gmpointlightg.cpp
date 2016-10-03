@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpointlightg.cpp
- *
- *  Implementation of the PointLightG class.
- */
-
 #include "gmpointlightg.h"
 
 // gmlib

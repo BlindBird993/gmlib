@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmsun.cpp
- *
- *  Implementation of the Sun class.
- */
-
 
 #include "gmsun.h"
 

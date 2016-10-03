@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmperbssurf.h
- *
- *  Interface for the PERBSSurf class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PERBSSURF_H
 #define GM_PARAMETRICS_SURFACE_PERBSSURF_H

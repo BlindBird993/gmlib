@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpbeziercurve.h
- *
- *  Interface for the PBezierCurve class.
- */
-
 #ifndef GM_PARAMETRICS_CURVE_PBEZIERCURVE_H
 #define GM_PARAMETRICS_CURVE_PBEZIERCURVE_H
 

@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmparametrics.c
- *
- *  Implementation of the Parametrics class.
- */
-
 
 namespace GMlib {
 

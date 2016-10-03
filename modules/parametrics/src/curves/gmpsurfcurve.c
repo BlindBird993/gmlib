@@ -22,13 +22,6 @@
 
 
 
-/*! \file gmPSurfCurve.c
- *
- *  Implementation of the PSurfCurve template class.
- *
- *  \date   2010-10-28, ALA
- */
-
 #include "../evaluators/gmevaluatorstatic.h"
 
 namespace GMlib {

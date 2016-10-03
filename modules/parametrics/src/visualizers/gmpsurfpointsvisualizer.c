@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurfpointsvisualizer.c
- *
- *  Implementation of the PSurfPointsVisualizer template class.
- */
 
 
 

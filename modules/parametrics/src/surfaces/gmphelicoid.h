@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmphelicoid.h
- *
- *  Interface for the PHelicoid class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PHELICOID_H
 #define GM_PARAMETRICS_SURFACE_PHELICOID_H

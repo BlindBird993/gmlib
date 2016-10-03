@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpbohemiandome.c
- *
- *  Implementation of the PBohemianDome template class.
- */
 
 
 namespace GMlib {

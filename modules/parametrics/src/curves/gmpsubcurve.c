@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsubcurve.c
- *
- *  Implementation of the PSubCurve template class.
- */
 
 
 namespace GMlib {

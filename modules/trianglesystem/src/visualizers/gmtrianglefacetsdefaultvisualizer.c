@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmtrianglefacetsdefaultvisualizer.h
- *
- *  TriangleFacetsDefaultVisualizer implementations
- */
 
 
 #include "../gmtrianglesystem.h"

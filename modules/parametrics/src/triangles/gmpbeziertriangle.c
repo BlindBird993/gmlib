@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbeziertriangle.c
- *
- *  Implementation of the PBezierTriangle template class.
- */
 
 
 #include "../evaluators/gmevaluatorstatic.h"

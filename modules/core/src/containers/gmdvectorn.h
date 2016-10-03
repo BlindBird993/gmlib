@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmdvectorn.h
- *
- *  Dynamic Vector NDim implementation.
- */
 
 #ifndef GM_CORE_CONTAINERS_DVECTORN_H
 #define GM_CORE_CONTAINERS_DVECTORN_H

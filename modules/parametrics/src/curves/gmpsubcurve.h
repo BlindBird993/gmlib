@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsubcurve.h
- *
- *  Interface for the PSurfCurve class.
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PSUBCURVE_H
 #define GM_PARAMETRICS_CURVE_PSUBCURVE_H

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcurvederivativesvisualizer.c
- *
- *  Implementation of the PCurveDerivativesVisualizer template class.
- */
 
 
 // include for syntax highlighting ^^

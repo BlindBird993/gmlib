@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPHermiteSurf.c
- *
- *  Implementation of the PHermiteSurf template class.
- *
- *  \date   2012-04-09, ALA
- */
 
 
 #include "../evaluators/gmevaluatorstatic.h"

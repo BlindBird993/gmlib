@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmputils.h
- *
- *  GMPUtils
- */
 
 #ifndef GM_PARAMETRICS_UTILS_PUTILS_H__
 #define GM_PARAMETRICS_UTILS_PUTILS_H__

@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPRotationalSurf.c
- *
- *  Implementation of the PMonkeySaddle template class.
- *
- *  \date   2013-09-26, ALA
- */
 
 
 namespace GMlib {

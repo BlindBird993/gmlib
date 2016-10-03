@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmsubspace.h
- *
- *  Interface for the SubSpace, Line, Plane and Cube classes.
- */
 
 #ifndef GM_CORE_TYPES_SUBSPACE_H
 #define GM_CORE_TYPES_SUBSPACE_H

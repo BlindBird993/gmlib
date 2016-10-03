@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpslipperssurface.c
- *
- *  Implementation of the PSlippersSurface template class.
- */
 
 
 namespace GMlib {

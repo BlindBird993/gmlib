@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmrender.h
- *  \brief Pending Documentation
- *
- *  Pending Documentation
- */
 
 #ifndef GM_SCENE_RENDER_RENDERER
 #define GM_SCENE_RENDER_RENDERER

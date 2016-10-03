@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmstaticproc2.c
- *
- *  File Description
- */
 
 
 namespace GMlib {

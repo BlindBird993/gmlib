@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmmatrix.c
- *
- */
-
 
 
 #include <cmath>

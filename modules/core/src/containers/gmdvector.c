@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmdvector.c
- *
- *  Implementation of the Dynamic Vector class
- */
 
 
 #include "gmdvector.h"

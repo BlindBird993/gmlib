@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpkleinsbottle.h
- *
- *  Interface for the PKleinsBottle class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PKLEINSBOTTLE_H
 #define GM_PARAMETRICS_SURFACE_PKLEINSBOTTLE_H

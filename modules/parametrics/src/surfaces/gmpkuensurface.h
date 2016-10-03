@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpkuensurface.h
- *
- *  Interface for the PKuenSurface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PKUENSURFACE_H
 #define GM_PARAMETRICS_SURFACE_PKUENSURFACE_H

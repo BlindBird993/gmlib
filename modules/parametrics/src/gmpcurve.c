@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcurve.c
- *
- *  Implementation of the PCurve template class.
- */
 
 
 // gmlib

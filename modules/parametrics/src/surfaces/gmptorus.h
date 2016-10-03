@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmptorus.h
- *
- *  Interface for the PTorus class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PTORUS_H
 #define GM_PARAMETRICS_SURFACE_PTORUS_H

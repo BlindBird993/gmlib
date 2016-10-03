@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmerbsevaluator.c
- *
- *  Implementation of the ERBSEvaluator template class.
- */
 
 
 namespace GMlib {

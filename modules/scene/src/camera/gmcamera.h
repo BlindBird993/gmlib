@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmcamera.h
- *
- *  Interface for the Camera class.
- *  \todo
- *  - Translate the already documented parts into English
- */
 
 
 #ifndef GM_SCENE_CAMERA_CAMERA_H

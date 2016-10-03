@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurfvisualizer.c
- *
- *  Implementation of the PSurfVisualizer template class.
- */
 
 
 #include "../gmpsurf.h"

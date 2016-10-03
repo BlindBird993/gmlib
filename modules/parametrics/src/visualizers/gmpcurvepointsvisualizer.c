@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcurvepointsvisualizer.c
- *
- *  Implementation of the PCurvePointsVisualizer template class.
- */
 
 #include "gmpcurvepointsvisualizer.h"
 

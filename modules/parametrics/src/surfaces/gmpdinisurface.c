@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpdinisurface.c
- *
- *  Implementation of the PDiniSurface template class.
- */
 
 
 namespace GMlib {

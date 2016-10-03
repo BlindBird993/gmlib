@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurfnormalsvisualizer.h
- *
- *  Interface for the PSurfNormalsVisualizer class.
- */
 
 
 #ifndef GM_PARAMETRICS_VISUALIZERS_PSURFNORMALSVISUALIZER_H

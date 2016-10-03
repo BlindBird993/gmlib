@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmptorus.c
- *
- *  Implementation of the PTorus template class.
- */
-
-
 
 
 namespace GMlib {

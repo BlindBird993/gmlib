@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPTriangCurve.h
- *
- *  Interface for the PSurfCurve class.
- *
- *  \date   2011-04-06, ALA
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PTRIANGCURVE_H
 #define GM_PARAMETRICS_CURVE_PTRIANGCURVE_H

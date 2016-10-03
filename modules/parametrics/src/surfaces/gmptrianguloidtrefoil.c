@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmptrianguloidtrefoil.c
- *
- *  Implementation of the PTrianguloidTrefoil template class.
- */
 
 
 namespace GMlib {

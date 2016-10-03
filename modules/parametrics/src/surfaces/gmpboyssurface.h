@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpboyssurface.h
- *
- *  Interface for the PBoysSurface class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PBOYSSURFACE_H
 #define GM_PARAMETRICS_SURFACE_PBOYSSURFACE_H

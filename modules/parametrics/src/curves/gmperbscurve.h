@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmperbscurve.h
- *
- *  Interface for the PERBSCurve class.
- */
 
 #ifndef GM_PARAMETRICS_CURVE_PERBSCURVE_H
 #define GM_PARAMETRICS_CURVE_PERBSCURVE_H

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmdvectorn.c
- *
- *  Implementation of the Dynamic Vector NDim class
- */
 
 
 namespace GMlib {

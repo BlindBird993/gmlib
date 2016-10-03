@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcylinder.h
- *
- *  Interface for the PCylinder class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PCYLINDER_H
 #define GM_PARAMETRICS_SURFACE_PCYLINDER_H

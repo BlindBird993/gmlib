@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmangle.h
- *
- *  Interface for the Angle class.
- */
 
 #ifndef GM_CORE_TYPES_ANGLE_H
 #define GM_CORE_TYPES_ANGLE_H

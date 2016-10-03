@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpcircularsurface.c
- *
- *  Implementation of the PCircularSurface template class.
- */
 
 
 

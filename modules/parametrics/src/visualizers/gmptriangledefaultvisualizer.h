@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmptriangledefaultvisualizer.h
- *
- *  Interface for the PTriangleDefaultVisualizer class.
- */
 
 
 #ifndef GM_PARAMETRICS_VISUALIZERS_PTRIANGLEDEFAULTVISUALIZER_H

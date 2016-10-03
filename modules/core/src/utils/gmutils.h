@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmutils.h
- *
- *  GMUtils
- */
-
 
 #include "../gmglobal.h"
 

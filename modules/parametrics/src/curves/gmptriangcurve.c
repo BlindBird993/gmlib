@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPTriangCurve.c
- *
- *  Implementation of the PTriangCurve template class.
- *
- *  \date   2008-10-28
- */
 
 #include "../evaluators/gmevaluatorstatic.h"
 

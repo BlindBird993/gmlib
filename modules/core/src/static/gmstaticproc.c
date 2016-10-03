@@ -22,9 +22,6 @@
 
 
 
-/*! \file gmstaticproc.c
- *  StaticProc implementations
- */
 
 // stl
 #include <cmath>

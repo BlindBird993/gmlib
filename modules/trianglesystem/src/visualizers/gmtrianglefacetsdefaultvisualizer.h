@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmtrianglefacetsdefaultvisualizer.h
- *
- *  Interface for the TriangleFacetsDefaultVisualizer class.
- */
 
 #ifndef GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSDEFAULTVISUALIZER_H
 #define GM_TRIANGLESYSTEM_VISUALIZERS_TRIANGLEFACETSDEFAULTVISUALIZER_H

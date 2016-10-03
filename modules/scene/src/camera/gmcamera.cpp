@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmcamera.cpp
- *
- *  Implementation of the Camera class.
- */
 
 
 #include "gmcamera.h"

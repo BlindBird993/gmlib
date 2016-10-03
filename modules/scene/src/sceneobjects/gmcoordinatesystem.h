@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmcoordinatesystem.h
- *
- *  Interface for the CoordinateSystem class.
- */
-
 #ifndef GM_SCENE_SCENEOBJECTS_COORDINATESYSTEM_H
 #define GM_SCENE_SCENEOBJECTS_COORDINATESYSTEM_H
 

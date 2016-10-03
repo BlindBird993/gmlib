@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPHermiteCurveSurf.h
- *
- *  Interface for the PHermiteCurveSurf class.
- *
- *  \date   2011-04-06, ALA
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PHERMITECURVESURF_H
 #define GM_PARAMETRICS_SURFACE_PHERMITECURVESURF_H

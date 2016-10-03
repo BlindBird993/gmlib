@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmdisplayrender.h
- *  \brief Pending Documentation
- *
- *  Pending Documentation
- */
 
 #ifndef GM_SCENE_RENDER_DEFAULTRENDERER_H
 #define GM_SCENE_RENDER_DEFAULTRENDERER_H

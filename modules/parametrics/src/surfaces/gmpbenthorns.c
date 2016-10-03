@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpbenthorns.c
- *
- *  Implementation of the PBentHorns template class.
- */
 
 
 namespace GMlib {

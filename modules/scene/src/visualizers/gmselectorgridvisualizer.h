@@ -22,8 +22,6 @@
 
 
 
-/*! \file gmselectorgridvisualizer.h
- */
 
 
 #ifndef GM_SCENE_VISUALIZERS_SELECTORGRIDVISUALIZER_H

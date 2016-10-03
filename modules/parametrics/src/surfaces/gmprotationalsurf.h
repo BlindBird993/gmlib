@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPRotationalSurf.h
- *
- *  Interface for the PRotationalSurf class.
- *
- *  \date   2013-09-26, ALA
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PROTATIONALSURF_H
 #define GM_PARAMETRICS_SURFACE_PROTATIONALSURF_H

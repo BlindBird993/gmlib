@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmbfbsevaluator.c
- *
- *  Implementation of the BFBSEvaluator template class.
- */
 
 
 namespace GMlib {

@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmarrow3d.h
- *
- *  A graphical implementation of the Arrow class
- */
-
 
 
 #ifndef GM_SCENE_SCENEOBJECTS_ARROW3D_H

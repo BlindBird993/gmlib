@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpmoebiusstrip.c
- *
- *  Implementation of the PMoebiusStrip template class.
- */
 
 
 namespace GMlib {

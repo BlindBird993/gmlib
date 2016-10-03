@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmpathtrack.cpp
- *
- *  Implementation of the PathTrack class.
- */
-
 
 #include "gmpathtrack.h"
 

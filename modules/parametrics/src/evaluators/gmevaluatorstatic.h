@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmevaluatorstatic.h
- *
- *  Interface for the EvaluatorStatic class.
- */
 
 #ifndef GM_PARAMETRICS_EVALUATORS_EVALUATORSTATIC_H
 #define GM_PARAMETRICS_EVALUATORS_EVALUATORSTATIC_H

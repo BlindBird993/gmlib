@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmvisualizerstdrep.cpp
- *
- *  Implementations VisualizerStdRep class.
- */
 
 #include "gmstdrepvisualizer.h"
 

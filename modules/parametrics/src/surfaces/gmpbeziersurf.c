@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmpbeziersurf.c
- *
- *  Implementation of the PBezierSurf template class.
- */
-
-
 #include "../evaluators/gmevaluatorstatic.h"
 
 // gmlib

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsteinersurf.h
- *  \brief Interface for the PSteinerSurf class.
- */
-
 #ifndef GM_PARAMETRICS_SURFACE_PSTEINERSURF_H
 #define GM_PARAMETRICS_SURFACE_PSTEINERSURF_H
 

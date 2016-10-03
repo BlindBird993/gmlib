@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpbeziertriangle.h
- *
- *  Interface for the PBezierTriangle class.
- */
 
 
 #ifndef GM_PARAMETRICS_TRIANGLES_PBEZIERTRIANGLE_H

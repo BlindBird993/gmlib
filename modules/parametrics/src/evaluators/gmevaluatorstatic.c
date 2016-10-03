@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmevaluatorstatic.c
- *
- *  EvaluatorStatic class function implementations
- */
 
 
 namespace GMlib {

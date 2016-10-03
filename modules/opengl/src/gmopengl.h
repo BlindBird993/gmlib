@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmopengl.h
- *
- *  GMlib interface to the OpenGL API
- */
-
 #ifndef GM_OPENGL_OPENGL_H
 #define GM_OPENGL_OPENGL_H
 

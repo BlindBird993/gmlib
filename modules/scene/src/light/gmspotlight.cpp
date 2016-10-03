@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmspotlight.cpp
- *
- *  Implementation of the SpotLight class.
- */
-
 
 #include "gmspotlight.h"
 #include "../gmscene.h"

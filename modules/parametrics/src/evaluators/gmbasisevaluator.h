@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmbasisevaluator.h
- *
- *  Interface for the BasisEvaluator class.
- */
 
 #ifndef GM_PARAMETRICS_EVALUATORS_BASISEVALUATOR_H
 #define GM_PARAMETRICS_EVALUATORS_BASISEVALUATOR_H

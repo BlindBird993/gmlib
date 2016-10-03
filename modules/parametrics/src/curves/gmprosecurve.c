@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmprosecurve.c
- *
- *  Implementation of the PRoseCurve template class.
- */
 
 
 namespace GMlib {

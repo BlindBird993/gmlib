@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurfdefaultvisualizer.h
- *
- *  Default PSurf Visualizer
- */
 
 
 #ifndef GM_PARAMETRICS_VISUALIZERS_PSURFDEFAULTVISUALIZER_H

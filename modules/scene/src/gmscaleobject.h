@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmscaleobject.h
- *
- *  ScaleObject class definitions
- */
 
 
 // gmlib

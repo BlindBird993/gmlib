@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpsinsurface.c
- *
- *  Implementation of the PSinSurface template class.
- */
 
 
 namespace GMlib {

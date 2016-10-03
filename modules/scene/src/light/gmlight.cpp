@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmlight.cpp
- *
- *  Implementation of Light class.
- */
-
 #include "gmlight.h"
 
 namespace GMlib {

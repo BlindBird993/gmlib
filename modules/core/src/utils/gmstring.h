@@ -22,17 +22,6 @@
 
 
 
-/*! \file gmstring.h
- *
- *  Interface for the gmString class.
- */
-
- /*! \todo
-  *   1. Documentation of this class!!
-  *   2. Fix conversion from number to string
-  *     - String(int)
-  *     - String(double)
-  */
 
 #ifndef GM_CORE_UTILS_STRING_H
 #define GM_CORE_UTILS_STRING_H

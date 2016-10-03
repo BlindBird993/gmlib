@@ -20,11 +20,6 @@
 **
 **********************************************************************************/
 
-/*! \file gmstream.cpp
- *  \brief Implementation of Separator class.
- *
- *  Implementation of Separator class.
- */
 
 #include "gmstream.h"
 

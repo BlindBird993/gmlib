@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmsortobject.h
- *  File Description
- */
-
-
 #ifndef GM_CORE_UTILS_SORTOBJECT_H
 #define GM_CORE_UTILS_SORTOBJECT_H
 

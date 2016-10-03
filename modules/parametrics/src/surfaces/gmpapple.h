@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpapple.h
- *
- *  Interface for the PApple class.
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PAPPLE_H
 #define GM_PARAMETRICS_SURFACE_PAPPLE_H

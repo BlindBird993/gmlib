@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPSubSurf.h
- *
- *  Interface for the PSurfCurve class.
- *
- *  \date   2012-11-25, ALA
- */
 
 #ifndef GM_PARAMETRICS_SURFACE_PSUBSURF_H
 #define GM_PARAMETRICS_SURFACE_PSUBSURF_H

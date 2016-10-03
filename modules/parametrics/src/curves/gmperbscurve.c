@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmperbscurve.c
- *
- *  Implementation of the PERBSCurve template class.
- */
 
 
 #include "gmperbscurve.h"

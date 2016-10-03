@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmcoordinatesystem.cpp
- *  \brief CoordinateSystem class function implementations
- *
- *  Implementations of the CoordinateSystem class.
- */
 
 #include "gmcoordinatesystem.h"
 

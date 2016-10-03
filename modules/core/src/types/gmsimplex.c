@@ -22,9 +22,6 @@
 
 
 
-/*! \file gmsimplex.c
- *  File Description
- */
 
 
 namespace GMlib {

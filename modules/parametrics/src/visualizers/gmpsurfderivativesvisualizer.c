@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpsurfderivativesvisualizer.c
- *
- *  Implementation of the PSurfDerivativesVisualizer template class.
- */
 
 
 // include for syntax highlighting

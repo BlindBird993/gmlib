@@ -22,11 +22,6 @@
 
 
 
-/*! \file gmvisualizer.h
- *
- *  Interface for the Visualizer class.
- */
-
 #ifndef GM_SCENE_VISUALIZER_H
 #define GM_SCENE_VISUALIZER_H
 

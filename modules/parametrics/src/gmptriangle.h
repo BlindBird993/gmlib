@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmptriangle.h
- *
- *  Interface for the PTriangle class.
- */
 
 #ifndef GM_PARAMETRICS_PTRIANGLE_H
 #define GM_PARAMETRICS_PTRIANGLE_H

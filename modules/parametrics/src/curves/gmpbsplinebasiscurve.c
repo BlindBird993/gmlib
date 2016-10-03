@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmPBSplineBasisCurve.c
- *
- *  Implementation of the PBSplineBasisCurve template class.
- *
- *  \date   2008-10-28
- */
 
 #include <gmParametricsModule>
 

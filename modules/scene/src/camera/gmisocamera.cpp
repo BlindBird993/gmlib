@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmisocamera.cpp
- *
- *  Implementation of the IsoCamera class.
- */
 
 
 #include "gmisocamera.h"

@@ -22,9 +22,6 @@
 
 
 
-/*! \file gmsimplex.h
- *  File Description
- */
 
 #ifndef GM_CORE_TYPES_SIMPLEX_H
 #define GM_CORE_TYPES_SIMPLEX_H

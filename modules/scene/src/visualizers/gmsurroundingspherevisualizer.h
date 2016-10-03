@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmsurroundingspherevisualizer.h
- *
- *  Header for the SurroundingSphereVisualizer class.
- */
 
 
 #ifndef GM_SCENE_VISUALIZERS_SURROUNDINGSPHEREVISUALIZER_H

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmvisualizerstdrep.h
- *
- *  Header for the VisualizerStdRep class.
- */
 
 
 #ifndef GM_SCENE_VISUALIZERS_VISUALIZERSTDREP_H

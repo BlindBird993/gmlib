@@ -20,11 +20,6 @@
 **
 **********************************************************************************/
 
-/*! \file gmdisplayrender.cpp
- *  \brief Pending Documentation
- *
- *  Pending Documentation
- */
 
 
 #include "gmdefaultrenderer.h"

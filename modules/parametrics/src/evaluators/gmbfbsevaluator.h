@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmbfbsevaluator.h
- *
- *  Interface for the BFBSEvaluator class.
- */
 
 #ifndef GM_PARAMETRICS_EVALUATORS_BFBSEVALUATOR_H
 #define GM_PARAMETRICS_EVALUATORS_BFBSEVALUATOR_H

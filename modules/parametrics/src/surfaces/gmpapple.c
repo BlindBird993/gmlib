@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmpapple.c
- *
- *  Implementation of the gmPApple template class.
- */
 
 
 namespace GMlib {

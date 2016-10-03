@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpenneperssurface.c
- *
- *  Implementation of the PEnnepersSurface template class.
- */
 
 
 namespace GMlib {

@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmdmatrix.c
- *
- *  Implementation of the Dynamic Matrix class
- */
 
 
 // STL includes

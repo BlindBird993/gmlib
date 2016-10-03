@@ -22,12 +22,6 @@
 
 
 
-/*! \file gmHermite4Evaluator.h
- *
- *  Interface for the Hermite4Evaluator class.
- *
- *  \date   2012-08-22, ALA
- */
 
 #ifndef GM_PARAMETRICS_EVALUATORS_HERMITE4EVALUATOR_H
 #define GM_PARAMETRICS_EVALUATORS_HERMITE4EVALUATOR_H

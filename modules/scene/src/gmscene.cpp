@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmscene.cpp
- *
- *  Implementation of the Scene class.
- */
 
 
 #include "gmscene.h"

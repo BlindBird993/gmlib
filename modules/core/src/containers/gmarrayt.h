@@ -22,10 +22,6 @@
 
 
 
-/*! \file gmarrayt.h
- *
- *  Interface for the Array Tiny class.
- */
 
 #ifndef GM_CORE_CONTAINERS_ARRAYT_H
 #define GM_CORE_CONTAINERS_ARRAYT_H

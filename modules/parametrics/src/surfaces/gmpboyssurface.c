@@ -23,10 +23,6 @@
 
 
 
-/*! \file gmpboyssurface.c
- *
- *  Implementation of the PBoysSurface template class.
- */
 
 
 namespace GMlib {
