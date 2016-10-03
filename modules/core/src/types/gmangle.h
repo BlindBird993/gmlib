@@ -780,13 +780,6 @@ namespace GMlib {
 
 #ifdef GM_STREAM
 
-  /*! T_Stream& operator << ( T_Stream &out, const Angle &a )
-   *  \brief
-   *
-   *
-   *
-   *  \return T_Stream
-   */
   template <typename T_Stream>
   T_Stream& operator << ( T_Stream &out, const Angle &a ) {
 
@@ -796,13 +789,6 @@ namespace GMlib {
 
 
 
-  /*! T_Stream& operator >> ( T_Stream &in, Angle &a )
-   *  \brief
-   *
-   *
-   *
-   *  \return T_Stream
-   */
   template <typename T_Stream>
   T_Stream& operator >> ( T_Stream &in, Angle &a ) {
 

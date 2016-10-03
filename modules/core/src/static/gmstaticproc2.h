@@ -38,8 +38,6 @@ namespace GMlib {
 
   /*! \class  GM_Static_P_ gmstaticproc2.h <gmStaticProc2.h>
    *  \brief  For Matrices ( 2 dimentional)
-   *
-   *  Detailed Description of class
    */
   template <typename T, int n, int m>
   class GM_Static_P_ {
@@ -65,8 +63,6 @@ namespace GMlib {
 
   /*! \class  GM_Static_P_ gmstaticproc2.h <gmStaticProc2.h>
    *  \brief  For Matrices ( 2 dimentional)
-   *
-   *  Detailed Description of class
    */
   template <typename T,int m>
   class GM_Static_P_<T,1,m> {
@@ -104,9 +100,6 @@ namespace GMlib {
 
 
   /*! \class  GM_Static_P2_ gmstaticproc2.h <gmStaticProc2.h>
-   *  \brief
-   *
-   *  Detailed Description of class
    */
   template <typename T, int n, int m, int k>
   class GM_Static_P2_ {
@@ -129,9 +122,6 @@ namespace GMlib {
 
 
   /*! \class  GM_Static_P2_ gmstaticproc2.h <gmStaticProc2.h>
-   *  \brief
-   *
-   *  Detailed Description of class
    */
   template <class T, int m, int k>
   class GM_Static_P2_<T,1,m,k> {
@@ -153,8 +143,6 @@ namespace GMlib {
 
   /*! \class  GM_Static_P2_ gmstaticproc2.h <gmStaticProc2.h>
    *  \brief  a = b^T	matrix transposeing
-   *
-   *  Detailed Description of class
    */
   template <class T, int n, int m>
   class GM_Static_P2_<T,n,m,1> {

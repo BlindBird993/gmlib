@@ -45,7 +45,6 @@ namespace GMlib {
    *  \brief  For Point and Vectors ( 1 dimentional)
    *
    *  For Point and Vectors ( 1 dimentional)
-   *  [Implementations located in gmStaticProc_GM_Static_.c]
    */
   template <typename T, int n>
   class GM_Static_ {
@@ -119,7 +118,6 @@ namespace GMlib {
    *  \brief  Pending Documentation
    *
    *  For Point and Vectors ( 1 dimentional)
-   *  [Implementations located in gmStaticProc_GM_Static1_.c]
    */
   template <typename T, typename G, int n>
   class GM_Static1_ {
@@ -153,7 +151,6 @@ namespace GMlib {
    *  \brief Pending Documentation
    *
    *  For Vectors in Matrices ( column-vectors, using strides)
-   *  [Implementations located in gmStaticProc_GM_Static2_.c]
    */
   template <typename T, int n, int m>
   class GM_Static2_ {
@@ -207,7 +204,6 @@ namespace GMlib {
    *  \brief Pending Documentation
    *
    *  For Diagonals in Matrices or homogenius matrix (using strides m+1)
-   *  [Implementations located in gmStaticProc_GM_Static3_.c]
    */
   template <typename T, int n, int m>
   class GM_Static3_ {
@@ -267,7 +263,6 @@ namespace GMlib {
    *  \brief Pending Documentation
    *
    *  For Diagonals in Matrices or homogenius matrix (using strides m+1)
-   *  [Implementations located in gmStaticProc_GM_Std_.c]
    */
   template <typename T, int n>
   class GM_Std_ {

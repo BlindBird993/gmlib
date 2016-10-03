@@ -25,10 +25,7 @@ namespace GMlib {
 
 
 
-  /*! ArrayLX<T>::~ArrayLX()
-   *  \brief Default Constructor
-   *
-   *  Default Constructor
+  /*! \brief Default Constructor
    *
    *  \param[in] n Initial number of elements
    *  \param[in] inc Initial increment size.
@@ -44,10 +41,7 @@ namespace GMlib {
   }
 
 
-  /*! ArrayLX<T>::~ArrayLX()
-   *  \brief Copy Constructor
-   *
-   *  Copy Constructor
+  /*! \brief Copy Constructor
    *
    *  \param[in] array The array to create this from.
    *  \param[in] inc Incremental size. If none is provided the incremental size of the template array will be used.
@@ -72,10 +66,7 @@ namespace GMlib {
   }
 
 
-  /*! ArrayLX<T>::~ArrayLX()
-   *  \brief Standard Constructor
-   *
-   *  Standard Constructor
+  /*! \brief Standard Constructor
    *
    *  \param[in] n The initial number of elements
    *  \param[in] p Initial data.
@@ -106,11 +97,6 @@ namespace GMlib {
   }
 
 
-  /*! ArrayLX<T>::~ArrayLX()
-   *  \brief Default Descructor
-   *
-   *  Default Descructor
-   */
   template<typename T>
   ArrayLX<T>::~ArrayLX() {
     for(int i=0; i<_no_ptrs; i++)
@@ -119,12 +105,9 @@ namespace GMlib {
   }
 
 
-  /*! T& ArrayLX<T>::back()
-   *  \brief Return the last(back) element of the array
+  /*! \brief Return the last(back) element of the array
    *
-   *  Return the last(back) element of the array
-   *
-   *  \return The last(back) element of the array
+   *  \return reference to element
    */
   template <typename T>
   inline
@@ -133,8 +116,7 @@ namespace GMlib {
   }
 
 
-  /*! void  ArrayLX<T>::clear( int inc )
-   *  \brief Clear the Array
+  /*! \brief Clear the Array
    *
    *  Clear/Reset/Truncate Array.
    *
@@ -153,13 +135,9 @@ namespace GMlib {
   }
 
 
-  /*! bool	ArrayLX<T>::empty() const
-   *  \brief Function which returns wheter or not the array is empty.
+  /*! \brief Function which returns wheter or not the array is empty.
    *
-   *  Function which returns wheter or not the array is empty.
-   *  Empty means that the Array has no elements.
-   *
-   *  \return True if the Array has no elements.
+   *  \return True if Array has no elements.
    */
   template <typename T>
   inline
@@ -169,13 +147,10 @@ namespace GMlib {
   }
 
 
-  /*! bool ArrayLX<T>::exist(const T& obj) const
-   *  \brief Returns whether or not an element exists in the array
-   *
-   *  Returns whether or not an element exists in the array
+  /*! \brief Returns whether or not an element exists in the array
    *
    *  \param[in] obj The object to search for
-   *  \return True if the Element exists.
+   *  \return True if Element exists.
    */
   template <typename T>
   inline
@@ -185,12 +160,9 @@ namespace GMlib {
   }
 
 
-  /*! T& ArrayLX<T>::front()
-   *  \brief Return the first(front) element of the array
+  /*! \brief Return the first(front) element of the array
    *
-   *  Return the first(front) element of the array
-   *
-   *  \return The first(front) element of the array
+   *  \return reference to element
    */
   template <typename T>
   inline
@@ -199,14 +171,13 @@ namespace GMlib {
   }
 
 
-  /*! T& ArrayLX<T>::getBack()
-   *  \brief Return the last(back) element of the array
+  /*! \brief Return the last(back) element of the array
    *
    *  Return the last(back) element of the array
    *  Alias: int back() function
    *  \see back()
    *
-   *  \return The last(back) element of the array
+   *  \return reference to element
    */
   template <typename T>
   inline
@@ -215,13 +186,10 @@ namespace GMlib {
   }
 
 
-  /*! T&  ArrayLX<T>::getElement( int i ) const
-   *  \brief Get Element by index
-   *
-   *  Get Element by index
+  /*! \brief Get Element by index
    *
    *  \param[in] i The index of the element to get.
-   *  \return The element at position i.
+   *  \return reference to element
    */
   template<typename T>
   inline
@@ -242,14 +210,13 @@ namespace GMlib {
   }
 
 
-  /*! T& ArrayLX<T>::getFront()
-   *  \brief Return the first(front) element of the array
+  /*! \brief Return the first(front) element of the array
    *
    *  Return the first(front) element of the array
    *  Alias: front() function
    *  \see front()
    *
-   *  \return The first(front) element of the array
+   *  \return reference to element
    */
   template <typename T>
   inline
@@ -258,8 +225,7 @@ namespace GMlib {
   }
 
 
-  /*! int ArrayLX<T>::getIndex( const T& obj ) const
-   *  \brief Gets the index of a spesific object
+  /*! \brief Gets the index of a spesific object
    *
    *  Gets the index of a spesific object
    *  Alias: int index( const T& obj ) const
@@ -275,8 +241,7 @@ namespace GMlib {
   }
 
 
-  /*! int ArrayLX<T>::getMaxSize() const
-   *  \brief Returns the max number of elements of the Array.
+  /*! \brief Returns the max number of elements of the Array.
    *
    *  Returns the max number of elements of the Array.
    *  This can be extended.
@@ -292,8 +257,7 @@ namespace GMlib {
   }
 
 
-  /*! int ArrayLX<T>::getSize() const
-   *  \brief Returns the size of the Array.
+  /*! \brief Returns the size of the Array.
    *
    *  Returns the number of elements in the array.
    *  Alias: int size() const
@@ -308,8 +272,7 @@ namespace GMlib {
   }
 
 
-  /*! int	ArrayLX<T>::index( const T& obj ) const
-   *  \brief Gets the index of a spesific object
+  /*! \brief Gets the index of a spesific object
    *
    *  Gets the index of a spesific object
    *
@@ -326,8 +289,7 @@ namespace GMlib {
   }
 
 
-  /*! bool ArrayLX<T>::insert( const ArrayLX<T>& array, bool front )
-   *  \brief Insert an ArrayLX into the Array
+  /*! \brief Insert an ArrayLX into the Array
    *
    *  Insert an ArrayLX into the array
    *
@@ -349,8 +311,7 @@ namespace GMlib {
   }
 
 
-  /*! bool ArrayLX<T>::insert( const T& obj, bool front )
-   *  \brief Insert into Array
+  /*! \brief Insert into Array
    *
    *  Insert an object into the array
    *
@@ -370,8 +331,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::insertAlways( const ArrayLX<T>& a, bool first = false )
-   *  \brief Insert Objects into the Array (Always)
+  /*! \brief Insert Objects into the Array (Always)
    *
    *  Insert Objects into the Array (Always)
    *
@@ -385,8 +345,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::insertAlways( const T& obj, bool first )
-   *  \brief Insert Objects into the Array (Always)
+  /*! \brief Insert Objects into the Array (Always)
    *
    *  Insert Objects into the Array (Always)
    *
@@ -425,8 +384,7 @@ namespace GMlib {
   }
 
 
-  /*! bool ArrayLX<T>::remove(const T& obj)
-   *  \brief Remove the given object
+  /*! \brief Remove the given object
    *
    *  Remove the given object from the array.
    *
@@ -440,8 +398,7 @@ namespace GMlib {
   }
 
 
-  /*! bool ArrayLX<T>::removeBack()
-   *  \brief Remove the back element of the array.
+  /*! \brief Remove the back element of the array.
    *
    *  Remove the back element of the array.
    *
@@ -454,8 +411,7 @@ namespace GMlib {
   }
 
 
-  /*! bool ArrayLX<T>::removeFront()
-   *  \brief Remove the front element of the array
+  /*! \brief Remove the front element of the array
    *
    *  Remove the front element of the array
    *
@@ -471,8 +427,7 @@ namespace GMlib {
 
 
 
-  /*! bool ArrayLX<T>::removeIndex(int	index)
-   *  \brief Remove element with a given index
+  /*! \brief Remove element with a given index
    *
    *  Remove element with a given index
    *
@@ -492,8 +447,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::resize( int n )
-   *  \brief Resizes the Array.
+  /*! \brief Resizes the Array.
    *
    *  Resizes the array. Sets the array and strips excessive elements \see strip()
    *
@@ -507,8 +461,7 @@ namespace GMlib {
   }
 
 
-  /*! void	ArrayLX<T>::reverse()
-   *  \brief Reverse the Array
+  /*! \brief Reverse the Array
    *
    *  Reverse the Array
    */
@@ -519,8 +472,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::setMaxSize( int n , int incr )
-   *  \brief set size of potential numbers
+  /*! \brief set size of potential numbers
    *
    *  set size of potential numbers
    *  \param[in] n The new max size of the Array.
@@ -555,8 +507,7 @@ namespace GMlib {
   }
 
 
-  /*! void	ArrayLX<T>::setSize( int n )
-   *  \brief set size of active numbers not potential
+  /*! \brief set size of active numbers not potential
    *
    *  set size of active numbers not potential
    *  \param[in] n The new array size.
@@ -619,8 +570,7 @@ namespace GMlib {
   }
 
 
-  /*! int ArrayLX<T>::size() const
-   *  \brief Returns the size of the Array.
+  /*! \brief Returns the size of the Array.
    *
    *  Returns the number of elements in the array.
    *
@@ -634,8 +584,7 @@ namespace GMlib {
   }
 
 
-  /*! void	ArrayLX<T>::strip()
-   *  \brief Strip all the excess elements, only actual numbers
+  /*! \brief Strip all the excess elements, only actual numbers
    *
    *  Strip all the excess elements, only actual numers
    */
@@ -662,8 +611,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::stripEquals()
-   *  \brief Strip all the excess elements, no free elements.
+  /*! \brief Strip all the excess elements, no free elements.
    *
    *   Strip all the excess elements, no free elements.
    */
@@ -677,8 +625,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::swap(int i, int j)
-   *  \brief Swap two elements in the array.
+  /*! \brief Swap two elements in the array.
    *
    *   Swap two elements in the array.
    *
@@ -695,8 +642,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::_indexDecr()
-   *  \brief Keeps track of the next write index.
+  /*! \brief Keeps track of the next write index.
    *
    *  Keeps track of the next write index.
    *  Decreases the element counter by one, and moves the index
@@ -714,8 +660,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::_indexIncr()
-   *  \brief Keeps track of the next write index.
+  /*! \brief Keeps track of the next write index.
    *
    *  Keeps track of the next write index.
    *  Increases the element counter by one, and moves the index
@@ -734,8 +679,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::_newRow(int n, T* ptr)
-   *  \brief Extends the Array.
+  /*! \brief Extends the Array.
    *
    *  Extends the Array.
    *  Extends by size n if no data ptr is given.
@@ -770,8 +714,7 @@ namespace GMlib {
   }
 
 
-  /*! T&  ArrayLX<T>::operator[](int i)
-   *  \brief Returns a referance to the given element at index i
+  /*! \brief Returns a referance to the given element at index i
    *
    *   Returns a referance to the given element at index i
    *
@@ -796,8 +739,7 @@ namespace GMlib {
   }
 
 
-  /*! const T&   ArrayLX<T>::operator()(int i) const
-   *  \brief Returns a constant referance to the given element at index i
+  /*! \brief Returns a constant referance to the given element at index i
    *
    *   Returns a constant referance to the given element at index i
    *
@@ -822,8 +764,7 @@ namespace GMlib {
   }
 
 
-  /*! ArrayLX<T>& ArrayLX<T>::operator=( const	ArrayLX<T>&	array )
-   *  \brief Assign the given array to this array.
+  /*! \brief Assign the given array to this array.
    *
    *  Assign the given array to this array, all data in this data will be lost.
    *
@@ -850,8 +791,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::operator += ( const ArrayLX<T>& array )
-   *  \brief Append an ArrayLX to this array.
+  /*! \brief Append an ArrayLX to this array.
    *
    *  Append an ArrayLX to this array. Expands this to make room for the array.
    *
@@ -864,8 +804,7 @@ namespace GMlib {
   }
 
 
-  /*! void ArrayLX<T>::operator += ( const T& obj )
-   *  \brief Appends an object to this array
+  /*! \brief Appends an object to this array
    *
    *  Appends an object to this array.
    *
@@ -879,8 +818,7 @@ namespace GMlib {
 
 
 
-  /*! bool ArrayLX<T>::operator == ( const ArrayLX<T>& array ) const
-   *  \brief Equality test for the whole Array.
+  /*! \brief Equality test for the whole Array.
    *
    *  Equality test for the whole Array.
    *  Every element of the two Arrays is paired against each other.
@@ -903,8 +841,7 @@ namespace GMlib {
   }
 
 
-  /*! bool ArrayLX<T>::operator != ( const ArrayLX<T>& array ) const
-   *  \brief Equality (not) test for the whole Array.
+  /*! \brief Equality (not) test for the whole Array.
    *
    *  Equality (not) test for the whole Array
    *  \see operator==( const ArrayLX<T>& array ).

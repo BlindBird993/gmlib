@@ -38,12 +38,6 @@ namespace GMlib {
   class ArrayT;
 
 
-  /*! \class  Array gmarray.h <gmArray>
-   *  \brief  Interface for the Array classes
-   *
-   *  Interface for the Array classes.
-   *  This class is functions - compatible with STL containers
-   */
   template <typename T>
   class Array {
   public:

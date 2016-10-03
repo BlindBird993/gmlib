@@ -483,7 +483,7 @@ namespace GMlib {
    *
    *  Casts a Vector<T,n> to a Point<T,n>
    *
-   *  \param[in] p The Vector to be casted to Point
+   *  \param[in] v The Vector to be casted to Point
    *  \return The casted point
    */
   template <typename T, int n>

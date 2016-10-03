@@ -902,11 +902,6 @@ namespace GMlib {
   }
 
 
-  /*! Matrix<T,n,n> const& SqMatrix<T, n>::transpose()
-   *  \brief
-   *
-   *
-   */
   template <typename T, int n>
   inline
   Matrix<T,n,n> const& SqMatrix<T, n>::transpose() {
@@ -942,22 +937,12 @@ namespace GMlib {
     return *this = r;
   }
 
-  /*! void SqMatrix<T, n>::setDiagonal(const APoint<T,n>& r)
-   *  \brief
-   *
-   *
-   */
   template <typename T, int n>
   inline
   void SqMatrix<T, n>::setDiagonal(const APoint<T,n>& r) {
     cpy_d(r);
   }
 
-  /*! APoint<T,n> const&  SqMatrix<T, n>::getDiagonal(int i) const
-   *  \brief
-   *
-   *
-   */
   template <typename T, int n>
   inline
   APoint<T,n> const&  SqMatrix<T, n>::getDiagonal(int i) const	{
@@ -1317,11 +1302,6 @@ HqMatrix_<T, n>::HqMatrix_(Angle a, const Vector<T,n>& u, const Vector<T,n>& v){
 
 
 
-  /*! Matrix<T,n+1,n+1>& HqMatrix_<T, n>::setTranspose(const Matrix<T,n+1,n+1>& v)
-   *  \brief
-   *
-   *
-   */
   template <typename T, int n>
   inline
   Matrix<T,n+1,n+1>& HqMatrix_<T, n>::setTranspose(const Matrix<T,n+1,n+1>& v) {

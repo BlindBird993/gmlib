@@ -342,14 +342,14 @@ namespace GMlib{
 
     // deprecated
     virtual void                        localDisplay( const DefaultRenderer* ) const {}
-      //! Lingering function convenient for Rapid Prototyping
-      //! (may be removed without further notice!!!)
-      //! \deprecated
+      //!< Lingering function convenient for Rapid Prototyping
+      //!< (may be removed without further notice!!!)
+      //!< \deprecated
 
     virtual void                        localSelect( const Renderer*, const Color& ) const {}
-      //! Lingering function convenient for Rapid Prototyping
-      //! (may be removed without further notice!!!)
-      //! \deprecated
+      //!< Lingering function convenient for Rapid Prototyping
+      //!< (may be removed without further notice!!!)
+      //!< \deprecated
 
   protected:
     HqMatrix<float,3>                   _matrix;                //!< The difference matrix from mother to this.

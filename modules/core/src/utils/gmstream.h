@@ -111,9 +111,7 @@ namespace GMlib {
   }
 
 
-  /*! void Separator::setBinary( bool b )
-   *  \brief  Set the value of binary
-   */
+  /*! \brief  Set the value of binary */
   inline
   void Separator::setBinary( bool b  ) {
 
@@ -121,8 +119,7 @@ namespace GMlib {
   }
 
 
-  /*! void Separator::setSeparator( char s )
-   *  \brief  Set the value of separator
+  /*! \brief  Set the value of separator
    */
   inline
   void Separator::setSeparator( char s ) {
@@ -142,9 +139,7 @@ namespace GMlib {
   // *****************************
   // IOSTREAM overloaded operators
 
-  /*! T_Stream& operator << ( T_Stream &out, const Separator &s)
-   *  \brief
-   *
+  /*!
    *  If Separator's flag for a binary stream has been set
    *  then nothing will be sendt to the stream. The stram
    *  will alsp be left untouch if the Separator is '' <- nothing.
@@ -160,9 +155,7 @@ namespace GMlib {
   }
 
 
-  /*! T_Stream& operator >> ( T_Stream &in, Separator &s )
-   *  \brief
-   *
+  /*!
    *  If Separator's flag for a binary stream has been set
    *  then nothing will be retrieved from the stream.
    *

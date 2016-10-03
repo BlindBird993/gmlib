@@ -39,11 +39,6 @@
 namespace GMlib {
 
 
-  /*! DMatrix<T>::DMatrix(int i, int j)
-   *  \brief Default constructor
-   *
-   *  Pending Documentation
-   */
   template<typename T>
   inline
   DMatrix<T>::DMatrix(int i, int j) {
@@ -52,11 +47,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>::DMatrix(int i, int j, T val)
-   *  \brief Standard initializing (all elements equal)
-   *
-   *  Pending Documentation
-   */
   template<typename T>
   inline
   DMatrix<T>::DMatrix(int i, int j, T val) {
@@ -65,11 +55,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>::DMatrix(int i, int j, const T p[])
-   *  \brief Standard initializing from c-array
-   *
-   *  Pending Documentation
-   */
   template<typename T>
   inline
   DMatrix<T>::DMatrix(int i, int j, const T p[]) {
@@ -81,11 +66,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>::DMatrix(const DMatrix<T>& v)
-   *  \brief Copy constructor
-   *
-   *  Pending Documentation
-   */
   template<typename T>
   inline
   DMatrix<T>::DMatrix(const DMatrix<T>& v) {
@@ -94,11 +74,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>::~DMatrix()
-   *  \brief Copy constructor
-   *
-   *  NB! According to invariant
-   */
   template<typename T>
   inline
   DMatrix<T>::~DMatrix() {
@@ -107,24 +82,11 @@ namespace GMlib {
 
 
 
-  /*! T DMatrix<T>::getDeterminant() const
-   *  \brief Dummy not implemented !!
-   *
-   *  Dummy not implemented !!
-   */
-  template <typename T>
-  inline
-  T DMatrix<T>::getDeterminant() const {
-    T r = T(0);
-    return r;
-  }
+//  template <typename T>
+//  inline
+//  T DMatrix<T>::getDeterminant() const {}
 
 
-  /*! int DMatrix<T>::getDim1() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   int DMatrix<T>::getDim1() const	{
@@ -132,11 +94,6 @@ namespace GMlib {
   }
 
 
-  /*! int DMatrix<T>::getDim2() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   int DMatrix<T>::getDim2() const	{
@@ -145,11 +102,6 @@ namespace GMlib {
   }
 
 
-  /*! void  DMatrix<T>::increaseDim(int i, int j, T val, bool h_end, bool v_end)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   void  DMatrix<T>::increaseDim(int i, int j, T val, bool h_end, bool v_end) {
@@ -191,8 +143,7 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>& DMatrix<T>::invert()
-   *  \brief Pending more documentation
+  /*! \brief Pending more documentation
    *
    *  Implementation of inverting using either lapack
    *  or local non optimal implementation.
@@ -345,11 +296,6 @@ namespace GMlib {
   }
 
 
-  /*! void  DMatrix<T>::resetDim(int i, int j)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   void  DMatrix<T>::resetDim(int i, int j) {
@@ -371,11 +317,6 @@ namespace GMlib {
   }
 
 
-  /*! void  DMatrix<T>::setDim(int i, int j)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   void  DMatrix<T>::setDim(int i, int j) {
@@ -389,11 +330,6 @@ namespace GMlib {
   }
 
 
-  /*! void  DMatrix<T>::setIdentity()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   void  DMatrix<T>::setIdentity() {
@@ -404,11 +340,6 @@ namespace GMlib {
   }
 
 
-  /*! DVector<T> DMatrix<T>::toDVector()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   DVector<T> DMatrix<T>::toDVector() const {
@@ -420,11 +351,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>&	DMatrix<T>::transpose()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   DMatrix<T>&	DMatrix<T>::transpose() {
@@ -449,11 +375,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>& DMatrix<T>::operator=(const DMatrix<T>& v)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   DMatrix<T>& DMatrix<T>::operator=(const DMatrix<T>& v)	{
@@ -462,11 +383,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>& DMatrix<T>::operator=(T p[])
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   DMatrix<T>& DMatrix<T>::operator=(T p[]) {
@@ -476,11 +392,7 @@ namespace GMlib {
   }
 
 
-  /*! DVector<T>&  DMatrix<T>::operator[](int i)
-   *  \brief Return given element.
-   *
-   *  Return given element.
-   */
+  /*! \brief Return given element. */
   template <typename T>
   inline
   DVector<T>&  DMatrix<T>::operator[](int i) {
@@ -491,11 +403,7 @@ namespace GMlib {
   }
 
 
-  /*! const DVector<T>&  DMatrix<T>::operator()(int i) const
-   *  \brief Return copy of given element.
-   *
-   *  Return copy of given element.
-   */
+  /*! \brief Return copy of given element. */
   template <typename T>
   inline
   const DVector<T>&  DMatrix<T>::operator()(int i) const {
@@ -506,22 +414,13 @@ namespace GMlib {
   }
 
 
-  /*! bool DMatrix<T>::operator<(const DMatrix<T>& v) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   bool DMatrix<T>::operator<(const DMatrix<T>& v) const {
     return getDeterminant() < v.getDeterminant();
   }
 
-  /*! DMatrix<T>& DMatrix<T>::operator+=(const DMatrix<T>& v)
-   *  \brief Pending Documentation
-   *
-   *  (+=) On all elements.
-   */
+  /*! \brief Element-wise += */
   template<typename T>
   inline
   DMatrix<T>& DMatrix<T>::operator+=(const DMatrix<T>& v) {
@@ -534,11 +433,7 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>& DMatrix<T>::operator-=(const DMatrix<T>& v)
-   *  \brief Pending Documentation
-   *
-   *  (-=) On all elements.
-   */
+  /*! \brief Element-wise -= */
   template<typename T>
   inline
   DMatrix<T>& DMatrix<T>::operator-=(const DMatrix<T>& v) {
@@ -551,11 +446,7 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T> DMatrix<T>::operator+(const DMatrix<T>& a) const
-   *  \brief Pending Documentation
-   *
-   *  (+)  On all elements.
-   */
+  /*! \brief Element-wise + */
   template<typename T>
   inline
   DMatrix<T> DMatrix<T>::operator+(const DMatrix<T>& a) const {
@@ -564,11 +455,7 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T> DMatrix<T>::operator-(const DMatrix<T>& a) const
-   *  \brief Pending Documentation
-   *
-   *  (-)  On all elements.
-   */
+  /*! \brief Element-wise - */
   template<typename T>
   inline
   DMatrix<T> DMatrix<T>::operator-(const DMatrix<T>& a) const {
@@ -577,11 +464,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>& DMatrix<T>::operator*=(double d)
-   *  \brief Pending Documentation
-   *
-   *  Scaling all elements on this matrix.
-   */
   template <typename T>
   inline
   DMatrix<T>& DMatrix<T>::operator*=(double d) {
@@ -590,11 +472,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T>& DMatrix<T>::operator/=(double d)
-   *  \brief Pending Documentation
-   *
-   *  Scaling all elements on the returned matrix.
-   */
   template <typename T>
   inline
   DMatrix<T>& DMatrix<T>::operator/=(double d) {
@@ -603,11 +480,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T> DMatrix<T>::operator*(double d) const
-   *  \brief Pending Documentation
-   *
-   *  Scaling all elements on this matrix.
-   */
   template <typename T>
   inline
   DMatrix<T> DMatrix<T>::operator*(double d) const {
@@ -616,11 +488,6 @@ namespace GMlib {
   }
 
 
-  /*! DMatrix<T> DMatrix<T>::operator/(double d) const
-   *  \brief Pending Documentation
-   *
-   *  Scaling all elements on the returned matrix.
-   */
   template <typename T>
   inline
   DMatrix<T> DMatrix<T>::operator/(double d) const {
@@ -629,11 +496,6 @@ namespace GMlib {
   }
 
 
-  /*! void  DMatrix<T>::_cpy(const DMatrix<T>& v)
-   *  \brief  Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   void  DMatrix<T>::_cpy(const DMatrix<T>& v) {
@@ -647,11 +509,6 @@ namespace GMlib {
   }
 
 
-  /*! void  DMatrix<T>::_cpy(const T p[])
-   *  \brief  Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   void  DMatrix<T>::_cpy(const T p[]) {

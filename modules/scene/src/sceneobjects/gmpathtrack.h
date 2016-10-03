@@ -32,7 +32,6 @@ namespace GMlib {
 
 
   /*! \class  PathTrack gmpathtrack.h <gmPathTrack>
-   *  \brief
    *
    * When this object is attached to another *SceneObject, it will keep track of
    * the path of the object. By setting the element size and the stride between
@@ -50,11 +49,11 @@ namespace GMlib {
 
   private:
     Array< Point<float,3> >   _recent_path;
-    int							          _element;
-    int							          _element_stride;
-    int							          _stride_current_element;
-    bool						          _path_full;
-    Color					            _color;
+    int                       _element;
+    int                       _element_stride;
+    int                       _stride_current_element;
+    bool                      _path_full;
+    Color                     _color;
 
   }; // END class
 

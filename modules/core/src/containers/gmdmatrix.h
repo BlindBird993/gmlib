@@ -97,11 +97,6 @@ namespace GMlib{
   //***************************************************
 
 
-  /*! DMatrix<T> operator*(const double d, DMatrix<T> p)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   DMatrix<T> operator*(const double d, DMatrix<T> p) {
@@ -115,11 +110,6 @@ namespace GMlib{
     //********************************************************
 
 
-    /*! T_Stream& operator<<(T_Stream& out, const DMatrix<T>& v)
-     *  \brief Pending Documentation
-     *
-     *  Pending Documentation
-     */
     template <typename T_Stream, typename T>
     T_Stream& operator<<(T_Stream& out, const DMatrix<T>& v)   {
       out << v.getDim1() << GMseparator::Element << v.getDim2() << GMseparator::Group;
@@ -132,11 +122,6 @@ namespace GMlib{
     }
 
 
-    /*! T_Stream& operator>>(T_Stream& in, DMatrix<T>& v)
-     *  \brief Pending Documentation
-     *
-     *  Pending Documentation
-     */
     template< typename T_Stream, typename T>
     T_Stream& operator>>(T_Stream& in, DMatrix<T>& v) {
       static Separator gs(GMseparator::Group);
@@ -158,11 +143,6 @@ namespace GMlib{
   // and multiplication operators between DMatrix and DMatrix
   //***********************************************************
 
-  /*! const DVector<T>&  operator*(const DMatrix<G>& m, const DVector<T>& b)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T, typename G>
   inline
   const DVector<T>&  operator*(const DMatrix<G>& m, const DVector<T>& b) {
@@ -181,11 +161,6 @@ namespace GMlib{
   }
 
 
-  /*! const DMatrix<T>&  operator*(const DMatrix<G>& m, const DMatrix<T>& b)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T, typename G>
   inline
   const DMatrix<T>&  operator*(const DMatrix<G>& m, const DMatrix<T>& b) {
@@ -205,11 +180,6 @@ namespace GMlib{
   }
 
 
-  /*! const DVector<G>&  operator^(const DMatrix<G>& m, const DVector<T>& b)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T, typename G>
   inline
   const DVector<G>&  operator^(const DMatrix<G>& m, const DVector<T>& b) {
@@ -228,11 +198,6 @@ namespace GMlib{
   }
 
 
-  /*! const DMatrix<G>&  operator^(const DMatrix<G>& m, const DMatrix<T>& b)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T, typename G>
   inline
   const DMatrix<G>&  operator^(const DMatrix<G>& m, const DMatrix<T>& b) {

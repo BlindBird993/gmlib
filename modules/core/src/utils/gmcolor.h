@@ -39,8 +39,7 @@ namespace GMlib {
 
 
 
-  /*! \class Color gmcolor.h <gmColor>
-   *  \brief A color class
+  /*! \brief A color class
    *
    *  A color class defining a color object and "color" operations
    */
@@ -570,11 +569,6 @@ namespace GMlib {
   }
 
 
-  /*! \brief Pending Documentation
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::toHSV() {
 

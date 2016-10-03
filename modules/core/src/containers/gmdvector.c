@@ -35,11 +35,6 @@
 namespace GMlib {
 
 
-  /*! DVector<T>::DVector(int i)
-   *  \brief
-   *
-   *  Pending Documentation
-   */
   template<typename T>
   inline
   DVector<T>::DVector(int i) {
@@ -49,10 +44,10 @@ namespace GMlib {
   }
 
 
-  /*! DVector<T>::DVector(int i, T val)
-   *  \brief Standard initializing (all elements equal)
+  /*! \brief Standard initialize all elements to val
    *
-   *  Pending Documentation
+   *  \param[in] i Number of elements
+   *  \param[in] val Initial value
    */
   template<typename T>
   inline
@@ -64,11 +59,7 @@ namespace GMlib {
   }
 
 
-  /*! DVector<T>::DVector(int i, const T p[])
-   *  \brief Standard initializing from c-array
-   *
-   *  Pending Documentation
-   */
+  /*! \brief Standard initializing from c-array */
   template<typename T>
   inline
   DVector<T>::DVector(int i, const T p[]) {
@@ -78,11 +69,6 @@ namespace GMlib {
   }
 
 
-  /*! DVector<T>::DVector(const DVector<T>& v)
-   *  \brief Copy constructor
-   *
-   *  Pending Documentation
-   */
   template<typename T>
   inline
   DVector<T>::DVector(const DVector<T>& v) {
@@ -91,11 +77,6 @@ namespace GMlib {
   }
 
 
-  /*! DVector<T>::~DVector()
-   *  \brief Destructor (Pending documentation)
-   *
-   *  NB! According to invariant
-   */
   template<typename T>
   inline
   DVector<T>::~DVector() {
@@ -103,10 +84,6 @@ namespace GMlib {
   }
 
 
-  /*! void  DVector<T>::_cpy(const DVector<T>& v)
-   *  \brief Pending Documentation
-   *
-   */
   template <typename T>
   inline
   void  DVector<T>::_cpy(const DVector<T>& v)
@@ -121,11 +98,6 @@ namespace GMlib {
   }
 
 
-  /*! void  DVector<T>::_cpy(const T p[])
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   void  DVector<T>::_cpy(const T p[]) {
@@ -134,11 +106,9 @@ namespace GMlib {
   }
 
 
-  /*! void DVector<T>::append(const DVector<T>& v)
+  /*! \brief Appends v to the end of the vector.
    *
-   *  Adds the data v to the end of the vector.
-   *
-   *  \param v Data to be added.
+   *  \param[in] v Data to be appended
    */
   template <typename T>
   inline
@@ -159,12 +129,10 @@ namespace GMlib {
   }
 
 
-  /*! void DVector<T>::append(T val, int i)
+  /*! \brief Adds i number of elements with value val to the end of the vector.
    *
-   *  Adds i number of elements with value val to the end of the vector.
-   *
-   *  \param val Value of data to be added.
-   *  \param i Number of data elements to be added.
+   *  \param[in] val Value of data to be added.
+   *  \param[in] i Number of data elements to be added.
    */
   template <typename T>
   inline
@@ -174,10 +142,7 @@ namespace GMlib {
   }
 
 
-  /*! void DVector<T>::clear(T v)
-   *
-   *  All elements set to "v", (dimension not changed).
-   */
+  /*! \brief All elements set to "v", (dimension not changed). */
   template <typename T>
   inline
   void DVector<T>::clear(T v) {
@@ -185,12 +150,7 @@ namespace GMlib {
   }
 
 
-  /*! int DVector<T>::getDim() const
-   *
-   *  Return the dimension of the vector.
-   *
-   *  \return Dimension of the vector.
-   */
+  /*! \brief Return dimension of vector. */
   template <typename T>
   inline
   int DVector<T>::getDim() const	{
@@ -198,12 +158,7 @@ namespace GMlib {
   }
 
 
-  /*! T DVector<T>::getLength() const
-   *
-   *  Get the length of the vector.
-   *
-   *  \return Length of the vector.
-   */
+  /*! \brief Get the length of the vector. */
   template <typename T>
   inline
   T DVector<T>::getLength() const {
@@ -213,11 +168,6 @@ namespace GMlib {
   }
 
 
-  /*! T* DVector<T>::getPtr() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   T* DVector<T>::getPtr() const {
@@ -225,11 +175,6 @@ namespace GMlib {
   }
 
 
-  /*! DVector<T>& DVector<T>::getReversed() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   const DVector<T>& DVector<T>::getReversed() const {
@@ -241,11 +186,6 @@ namespace GMlib {
   }
 
 
-  /*! DVector<T>& DVector<T>::getSubVector(int start, int end) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   const DVector<T>& DVector<T>::getSubVector(int start, int end) const {
@@ -265,11 +205,6 @@ namespace GMlib {
   }
 
 
-  /*! T& DVector<T>::getSum() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   const T& DVector<T>::getSum() const {
@@ -280,11 +215,6 @@ namespace GMlib {
   }
 
 
-  /*! T& DVector<T>::getSum(int start, int end) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   template <typename T>
   inline
   const T& DVector<T>::getSum(int start, int end) const {
@@ -297,8 +227,7 @@ namespace GMlib {
   }
 
 
-  /*! void  DVector<T>::increaseDim(int i, T val, bool at_end)
-   *  \brief Increasing the dimention of the vector.
+  /*! \brief Increasing the dimention of the vector.
    *
    *  Increasing the dimention of the vector.
    *  The previous contents is intact, but if "at_end=false"
@@ -329,11 +258,9 @@ namespace GMlib {
     }
   }
 
-  /*! void DVector<T>::prepend(const DVector<T>& v)
+  /*! \brief Adds the DVector v to the beginning of the DVector.
    *
-   *  Adds the DVector v to the beginning of the DVector.
-   *
-   *  \param v Data.
+   *  \param[in] v Data.
    */
   template <typename T>
   inline
@@ -356,12 +283,10 @@ namespace GMlib {
     }
   }
 
-  /*! void DVector<T>::prepend(T val, int i)
+  /*! \brief Adds i number of elements whith value val to the beginning of the vector.
    *
-   *  Adds i number of elements whith value val to the beginning of the vector.
-   *
-   *  \param val Value of data to be added.
-   *  \param i Number of data elements to be added.
+   *  \param[in] val Value of data to be added.
+   *  \param[in] i Number of data elements to be added.
    */
   template <typename T>
   inline

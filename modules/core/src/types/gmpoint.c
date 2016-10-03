@@ -49,7 +49,6 @@ namespace GMlib {
   /*! APoint::APoint()
    *  \brief  Default Constructor
    *
-   *  Default constructor
    *  Takes no paramters, and will not initalize any values.
    *  This has been done intentionaly, especially to speedup creation of matrices.
    *  If point should be used by itself, use one of the other constructors.
@@ -64,13 +63,6 @@ namespace GMlib {
   }
 
 
-  /*! APoint::APoint( const APoint<T, n> &p )
-   *  \brief  Default Copy Constructor
-   *
-   *  Default copy constructor
-   *
-   *  \param p The APoint object to be copied.
-   */
   template <typename T, int n>
   inline
   APoint<T, n>::APoint( const APoint<T, n> &p ) {
@@ -434,8 +426,6 @@ namespace GMlib {
   /*!
    *  Returns a point converted to dimension n where all point elements is casted to G type.
    *
-   *  \tparam T Type
-   *  \tparam n Dimension
    *  \tparam G Convert-to Type
    *  \tparam m Convert-to Dimension
    *
@@ -454,10 +444,7 @@ namespace GMlib {
   /*!
    *  Returns a point where all point elements is casted to G type.
    *
-   *  \tparam T Type
-   *  \tparam n Dimension
    *  \tparam G Convert-to Type
-   *  \tparam m Convert-to Dimension
    *
    *  \return A point where all point elemets is of G type
    */
@@ -622,24 +609,13 @@ namespace GMlib {
     return this->_pt[0]*v(1) - this->_pt[1]*v(0);
   }
 
-  /*! Point<T,2> Point2D<T>::getNormal()
-   *  \brief  Return a vector 90 deg. to this.
-   *
-   *  Detailed description of
-   *  the operator
-   */
+  /*! \brief  Return a vector 90 deg. to this. */
   template <typename T>
   inline
   APoint<T,2> Point<T,2>::getNormal() {
     return Point<T,2>(-this->_pt[1], this->_pt[0]);
   }
 
-  /*! int Point<T,2>::isInside(const Point<T,2>& v1,const Point<T,2>& v2,const Point<T,2>& v3) const
-   *  \brief
-   *
-   *  Detailed description of
-   *  the function
-   */
   template <typename T>
   inline
   int Point<T,2>::isInside(const APoint<T,2>& v1,const APoint<T,2>& v2,const APoint<T,2>& v3) const {
@@ -2129,14 +2105,10 @@ namespace GMlib {
     return this->getDir();
   }
 
-  /*! Point<T,n> PlaneArrow<T,n>::getClosestPoint(const Point<T,n>& p) const
-   *  \brief  getNormal
+  /*! \brief Computes closest point
    *
-   *  Detailed description of
-   *  the function
-   *
-   *	\param[in] 	p
-   *  \return 		closestPoint
+   *  \param[in] p The point one computes the closest point
+   *  \return The closest point
    */
   template <typename T, int n>
   inline

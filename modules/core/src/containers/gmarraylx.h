@@ -35,8 +35,7 @@
 namespace GMlib{
 
 
-  /*! \struct LX_ptr gmarraylx.h <gmArrayLX>
-   *  \brief LX Array (auto pointer)
+  /*! \brief LX Array (auto pointer)
    *
    *  LX Array (auto pointer)
    */
@@ -47,8 +46,7 @@ namespace GMlib{
   };
 
 
-  /*! \class  ArrayLX gmarraylx.h <gmArrayLX>
-   *  \brief  This is a gmArrayLX, Array Large eXpandable
+  /*! \brief  This is a gmArrayLX, Array Large eXpandable
    *
    *  This is a gmArrayLX, Array Large eXpandable.
    *  gmArrayLX is function-compatiple with STL containers.
