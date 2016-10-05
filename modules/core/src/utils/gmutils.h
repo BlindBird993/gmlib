@@ -26,6 +26,11 @@
 #include "../gmglobal.h"
 
 
+// stl
+#include <functional>
+#include <cassert>
+
+
 #ifndef GM_CORE_UTILS_UTILS_H
 #define GM_CORE_UTILS_UTILS_H
 
@@ -54,7 +59,23 @@ namespace GMlib {
            if( n < j )
              return T(0);
 
-           return fact <T> (n) / (double)( fact <T> (j) * fact <T> (n-j) );
+           return fact <T> (n) / static_cast<double>( fact <T> (j) * fact <T> (n-j) );
+    }
+
+
+    // Will/(might) be added in C++17
+    template<class T, class Compare>
+    constexpr const T& clamp( const T& v, const T& lo, const T& hi, Compare comp )
+    {
+        return assert( !comp(hi, lo) ),
+            comp(v, lo) ? lo : comp(hi, v) ? hi : v;
+    }
+
+    // Will/(might) be added in C++17
+    template<class T>
+    constexpr const T& clamp( const T& v, const T& lo, const T& hi )
+    {
+      return clamp(v, lo, hi, std::less<>() );
     }
 
 

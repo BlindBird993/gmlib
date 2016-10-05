@@ -28,6 +28,7 @@
 
 
 #include "gmstream.h"
+#include "gmutils.h"
 
 // stl
 #include <cmath>
@@ -40,8 +41,7 @@ namespace GMlib {
 
 
   /*! \brief A color class
-   *
-   *  A color class defining a color object and "color" operations
+   *  A color-type class defining a color object and "color" operations
    */
   class Color {
   public:
@@ -49,7 +49,8 @@ namespace GMlib {
     Color( unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255 );
     Color( int r, int g, int b, int a = 255 );
     Color( double r, double g, double b, double a = 1.0 );
-    Color( const Color& copy );
+    Color(const Color &copy) = default;
+
 
 
 
@@ -85,6 +86,7 @@ namespace GMlib {
     void            toRGB();
 
 
+    Color&          operator =  ( const Color& other );
     Color&          operator *= ( double d );
     Color           operator *  ( double d ) const;
     Color&          operator /= ( double d );
@@ -111,6 +113,19 @@ namespace GMlib {
       unsigned char rgba[4];
     } _color;
 
+
+  private:
+    constexpr unsigned char clampMult( const unsigned char& one, const double& d ) {
+      return static_cast<unsigned char>( double(one) * d > 255.0 ? 255 : double(one) * d );
+    }
+
+    constexpr unsigned char clampAdd( const unsigned char& one, const int& other ) {
+      return static_cast<unsigned char>( int(one) + other > 255 ? 255 : int(one) + other );
+    }
+
+    constexpr unsigned char clampSub( const unsigned char& one, const int& other ) {
+      return static_cast<unsigned char>( int(one) - other < 0 ? 0 : int(one) - other );
+    }
 
   public:
 
@@ -196,11 +211,6 @@ namespace GMlib {
 
 
 
-  /*! Color::Color(unsigned int n)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color::Color(unsigned int n) {
 
@@ -208,11 +218,6 @@ namespace GMlib {
   }
 
 
-  /*! Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a ) {
 
@@ -223,154 +228,80 @@ namespace GMlib {
   }
 
 
-  /*! Color::Color(int r, int g, int b, int a )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color::Color(int r, int g, int b, int a ) {
 
-    _color.rgba[0] = (unsigned char)r;
-    _color.rgba[1] = (unsigned char)g;
-    _color.rgba[2] = (unsigned char)b;
-    _color.rgba[3] = (unsigned char)a;
+    _color.rgba[0] = static_cast<unsigned char>(r);
+    _color.rgba[1] = static_cast<unsigned char>(g);
+    _color.rgba[2] = static_cast<unsigned char>(b);
+    _color.rgba[3] = static_cast<unsigned char>(a);
   }
 
 
-  /*! Color::Color(double r, double g, double b, double a )
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color::Color( double r, double g, double b, double a ) {
 
-    _color.rgba[0] = (unsigned char)(r*255);
-    _color.rgba[1] = (unsigned char)(g*255);
-    _color.rgba[2] = (unsigned char)(b*255);
-    _color.rgba[3] = (unsigned char)(a*255);
+    _color.rgba[0] = static_cast<unsigned char>(r*255);
+    _color.rgba[1] = static_cast<unsigned char>(g*255);
+    _color.rgba[2] = static_cast<unsigned char>(b*255);
+    _color.rgba[3] = static_cast<unsigned char>(a*255);
   }
 
 
-  /*! Color::Color(const Color& k)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
-  inline
-  Color::Color(const Color& copy) {
-
-    _color = copy._color;
-  }
-
-
-
-
-  /*! unsigned int Color::get() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   unsigned int Color::get() const {
     return _color.name;
   }
 
 
-  /*! unsigned char Color::get(int i)const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   unsigned char Color::get(int i)const	{
     return _color.rgba[i];
   }
 
 
-  /*! unsigned char Color::getAlpha()const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   unsigned char Color::getAlpha()const {
     return _color.rgba[3];
   }
 
 
-  /*! double Color::getAlphaC()const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   double Color::getAlphaC()const {
     return _color.rgba[3]/255.0;
   }
 
 
-  /*! unsigned char Color::getBlue()const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   unsigned char Color::getBlue()const {
     return _color.rgba[2];
   }
 
 
-  /*! double Color::getBlueC()const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   double Color::getBlueC()const {
     return _color.rgba[2]/255.0;
   }
 
 
-  /*! double Color::getClampd(int i)const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   double Color::getClampd(int i)const	{
     return _color.rgba[i]/255.0;
   }
 
 
-  /*! unsigned char Color::getGreen()const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   unsigned char Color::getGreen()const {
     return _color.rgba[1];
   }
 
 
-  /*! double Color::getGreenC()const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   double Color::getGreenC()const {
     return _color.rgba[1]/255.0;
   }
 
 
-  /*! Color Color::getInterpolatedHSV(double d, Color mx) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::getInterpolatedHSV(double d, Color mx) const {
 
@@ -383,11 +314,6 @@ namespace GMlib {
   }
 
 
-  /*! Color Color::getInverse() const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::getInverse() const {
 
@@ -395,22 +321,12 @@ namespace GMlib {
   }
 
 
-  /*! unsigned char Color::getRed()const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   unsigned char Color::getRed()const {
     return _color.rgba[0];
   }
 
 
-  /*! double Color::getRedC()const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   double Color::getRedC()const {
     return _color.rgba[0]/255.0;
@@ -424,133 +340,73 @@ namespace GMlib {
   }
 
 
-  /*! void Color::set(unsigned int n)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::set(unsigned int n) {
     _color.name = n;
   }
 
 
-  /*! void Color::set(unsigned char  rgba, int i)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::set(unsigned char  rgba, int i)	{
     _color.rgba[i] = rgba;
   }
 
 
-  /*! void Color::set(double rgba, int i)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::set(double rgba, int i)	{
-    _color.rgba[i] = (unsigned char)(rgba*255);
+    _color.rgba[i] = static_cast<unsigned char>(rgba*255);
   }
 
 
-  /*! void Color::set(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::set(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
     _color.rgba[0] = r; _color.rgba[1] = g; _color.rgba[2] = b; _color.rgba[3] = a;
   }
 
 
-  /*! void Color::set(double r, double g, double b, double a)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::set(double r, double g, double b, double a) {
-    _color.rgba[0] = (unsigned char)(r*255); _color.rgba[1] = (unsigned char)(g*255);
-    _color.rgba[2] = (unsigned char)(b*255); _color.rgba[3] = (unsigned char)(a*255);
+    _color.rgba[0] = static_cast<unsigned char>(r*255); _color.rgba[1] = static_cast<unsigned char>(g*255);
+    _color.rgba[2] = static_cast<unsigned char>(b*255); _color.rgba[3] = static_cast<unsigned char>(a*255);
   }
 
 
-  /*! void Color::setAlpha(unsigned char a)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::setAlpha(unsigned char a) {
     _color.rgba[3] = a;
   }
 
 
-  /*! void Color::setAlpha(double a)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::setAlpha(double a) {
-    _color.rgba[3] = (unsigned char)(a*255);
+    _color.rgba[3] = static_cast<unsigned char>(a*255);
   }
 
 
-  /*! void Color::setBlue(unsigned char b)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::setBlue(unsigned char b) {
     _color.rgba[2] = b;
   }
 
 
-  /*! void Color::setBlue(double b)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::setBlue(double b) {
-    _color.rgba[2] = (unsigned char)(b*255);
+    _color.rgba[2] = static_cast<unsigned char>(b*255);
   }
 
 
-  /*! void Color::setGreen(unsigned char g)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::setGreen(unsigned char g) {
     _color.rgba[1] = g;
   }
 
 
-  /*! void Color::setGreen(double g)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::setGreen(double g) {
-    _color.rgba[1] = (unsigned char)(g*255);
+    _color.rgba[1] = static_cast<unsigned char>(g*255);
   }
 
 
-  /*! void Color::setRed(unsigned char r)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::setRed( unsigned char r ) {
 
@@ -558,14 +414,9 @@ namespace GMlib {
   }
 
 
-  /*! void Color::setRed(double r)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::setRed(double r) {
-    _color.rgba[0] = (unsigned char)(r*255);
+    _color.rgba[0] = static_cast<unsigned char>(r*255);
   }
 
 
@@ -596,11 +447,6 @@ namespace GMlib {
   }
 
 
-  /*! void Color::toRGB()
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   void Color::toRGB() {
 
@@ -613,47 +459,43 @@ namespace GMlib {
     {
       if(h > 359.999999) h = 0.0;
       h /= 60.0;
-      int    i = h;
+      int    i = static_cast<int>(h);
       double f = h - double(i);
       double p = v*(1-s);
       double q = v*(1-s*f);
       double t = v*(1-s*(1-f));
       switch(i)
       {
-      case 0: r=v; g=t; b=p; break;
-      case 1: r=q; g=v; b=p; break;
-      case 2: r=p; g=v; b=t; break;
-      case 3: r=p; g=q; b=v; break;
-      case 4: r=t; g=p; b=v; break;
-      case 5: r=v; g=p; b=q; break;
+      case 0:  r=v; g=t; b=p; break;
+      case 1:  r=q; g=v; b=p; break;
+      case 2:  r=p; g=v; b=t; break;
+      case 3:  r=p; g=q; b=v; break;
+      case 4:  r=t; g=p; b=v; break;
+      default: r=v; g=p; b=q; break; // i == 5
       }
     }
     setRed( r ); setGreen( g ); setBlue( b );
   }
 
+  inline
+  Color&
+  Color::operator = (const Color& other) {
+    _color = other._color;
+    return *this;
+  }
 
-  /*! Color& Color::operator*=(double d)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
+
   inline
   Color& Color::operator*=(double d) {
 
-    double k;
-    k = _color.rgba[0]*d; if(k > 255.0) _color.rgba[0] = 255; else _color.rgba[0] = (unsigned char)k;
-    k = _color.rgba[1]*d; if(k > 255.0) _color.rgba[1] = 255; else _color.rgba[1] = (unsigned char)k;
-    k = _color.rgba[2]*d; if(k > 255.0) _color.rgba[2] = 255; else _color.rgba[2] = (unsigned char)k;
-    k = _color.rgba[3]*d; if(k > 255.0) _color.rgba[3] = 255; else _color.rgba[3] = (unsigned char)k;
+    _color.rgba[0] = clampMult(_color.rgba[0],d);
+    _color.rgba[1] = clampMult(_color.rgba[1],d);
+    _color.rgba[2] = clampMult(_color.rgba[2],d);
+    _color.rgba[3] = clampMult(_color.rgba[3],d);
     return * this;
   }
 
 
-  /*! Color Color::operator*(double d)const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::operator*(double d)const {
 
@@ -661,11 +503,6 @@ namespace GMlib {
   }
 
 
-  /*! Color& Color::operator/=(double d)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color& Color::operator/=(double d) {
 
@@ -674,11 +511,6 @@ namespace GMlib {
   }
 
 
-  /*! Color Color::operator/(double d) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::operator/(double d) const {
 
@@ -687,28 +519,17 @@ namespace GMlib {
   }
 
 
-  /*! Color& Color::operator+=(const Color& o)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color& Color::operator+=(const Color& o) {
 
-    int k;
-    k = _color.rgba[0]+o._color.rgba[0]; if(k > 255) _color.rgba[0] = 255; else _color.rgba[0] = k;
-    k = _color.rgba[1]+o._color.rgba[1]; if(k > 255) _color.rgba[1] = 255; else _color.rgba[1] = k;
-    k = _color.rgba[2]+o._color.rgba[2]; if(k > 255) _color.rgba[2] = 255; else _color.rgba[2] = k;
-    k = _color.rgba[3]+o._color.rgba[3]; if(k > 255) _color.rgba[3] = 255; else _color.rgba[3] = k;
+    _color.rgba[0] = clampAdd(_color.rgba[0],o._color.rgba[0]);
+    _color.rgba[1] = clampAdd(_color.rgba[1],o._color.rgba[1]);
+    _color.rgba[2] = clampAdd(_color.rgba[2],o._color.rgba[2]);
+    _color.rgba[3] = clampAdd(_color.rgba[3],o._color.rgba[3]);
     return * this;
   }
 
 
-  /*! Color Color::operator+(const Color& o) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::operator+(const Color& o) const {
 
@@ -717,28 +538,17 @@ namespace GMlib {
   }
 
 
-  /*! Color& Color::operator-=(const Color& o)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color& Color::operator-=(const Color& o) {
 
-    int k;
-    k = _color.rgba[0]-o._color.rgba[0]; if(k < 0) _color.rgba[0] = 0; else _color.rgba[0] = k;
-    k = _color.rgba[1]-o._color.rgba[1]; if(k < 0) _color.rgba[1] = 0; else _color.rgba[1] = k;
-    k = _color.rgba[2]-o._color.rgba[2]; if(k < 0) _color.rgba[2] = 0; else _color.rgba[2] = k;
-    k = _color.rgba[3]-o._color.rgba[3]; if(k < 0) _color.rgba[3] = 0; else _color.rgba[3] = k;
+    _color.rgba[0] = clampSub(_color.rgba[0],o._color.rgba[0]);
+    _color.rgba[1] = clampSub(_color.rgba[1],o._color.rgba[1]);
+    _color.rgba[2] = clampSub(_color.rgba[2],o._color.rgba[2]);
+    _color.rgba[3] = clampSub(_color.rgba[3],o._color.rgba[3]);
     return * this;
   }
 
 
-  /*! Color Color::operator-(const Color& o) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::operator-(const Color& o) const {
 
@@ -747,28 +557,17 @@ namespace GMlib {
   }
 
 
-  /*! Color& Color::operator+=(int o)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color& Color::operator+=(int o) {
 
-    int k;
-    k = _color.rgba[0]+o; if(k > 255) _color.rgba[0] = 255; else _color.rgba[0] = k;
-    k = _color.rgba[1]+o; if(k > 255) _color.rgba[1] = 255; else _color.rgba[1] = k;
-    k = _color.rgba[2]+o; if(k > 255) _color.rgba[2] = 255; else _color.rgba[2] = k;
-    k = _color.rgba[3]+o; if(k > 255) _color.rgba[3] = 255; else _color.rgba[3] = k;
+    _color.rgba[0] = clampAdd(_color.rgba[0],o);
+    _color.rgba[1] = clampAdd(_color.rgba[1],o);
+    _color.rgba[2] = clampAdd(_color.rgba[2],o);
+    _color.rgba[3] = clampAdd(_color.rgba[3],o);
     return *this;
   }
 
 
-  /*! Color Color::operator+(int o) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::operator+(int o) const {
 
@@ -777,28 +576,17 @@ namespace GMlib {
   }
 
 
-  /*! Color& Color::operator-=(int o)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color& Color::operator-=(int o) {
 
-    int k;
-    k = _color.rgba[0]-o; if(k < 0) _color.rgba[0] = 0; else _color.rgba[0] = k;
-    k = _color.rgba[1]-o; if(k < 0) _color.rgba[1] = 0; else _color.rgba[1] = k;
-    k = _color.rgba[2]-o; if(k < 0) _color.rgba[2] = 0; else _color.rgba[2] = k;
-    k = _color.rgba[3]-o; if(k < 0) _color.rgba[3] = 0; else _color.rgba[3] = k;
+    _color.rgba[0] = clampSub(_color.rgba[0],o);
+    _color.rgba[1] = clampSub(_color.rgba[1],o);
+    _color.rgba[2] = clampSub(_color.rgba[2],o);
+    _color.rgba[3] = clampSub(_color.rgba[3],o);
     return * this;
   }
 
 
-  /*! Color Color::operator-(int o) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::operator-(int o) const {
 
@@ -806,11 +594,6 @@ namespace GMlib {
   }
 
 
-  /*! Color& Color::operator+=(double o)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color& Color::operator+=(double o) {
 
@@ -819,11 +602,6 @@ namespace GMlib {
   }
 
 
-  /*! Color Color::operator+(double o)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::operator+(double o) {
 
@@ -831,11 +609,6 @@ namespace GMlib {
   }
 
 
-  /*! Color& Color::operator-=(double o)
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color& Color::operator-=(double o) {
 
@@ -844,11 +617,6 @@ namespace GMlib {
   }
 
 
-  /*! Color Color::operator-(double o) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   Color Color::operator-(double o) const {
 
@@ -856,11 +624,6 @@ namespace GMlib {
   }
 
 
-  /*! bool Color::operator==(const Color& co) const
-   *  \brief Pending Documentation
-   *
-   *  Pending Documentation
-   */
   inline
   bool Color::operator==(const Color& co) const {
 
