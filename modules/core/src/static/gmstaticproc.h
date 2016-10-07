@@ -49,26 +49,26 @@ namespace GMlib {
   template <typename T, int n>
   class GM_Static_ {
   public:
-    static T	  dpr(T *a, T *b);                                // a*b innerproduct
-    static T	  dprm(T *a, T *b);                               // -a*b innerproduct
+    static T	  dpr(const T *a, const T *b);                      // a*b innerproduct
+    static T	  dprm(const T *a, const T *b);                     // -a*b innerproduct
 
     static void   eq(T *a, const T& b);                           // a =  b  set equal
-    static void   eqm(T *a, T* b);	                              // a = -b
+    static void   eqm(T *a, const T* b);	                        // a = -b
 
     static void   sc(T *a, double b);                             // a *= b  scale
-    static void   sc_r(T *a, T *b, double c);                     // a = b*c scale
+    static void   sc_r(T *a, const T *b, double c);               // a = b*c scale
 
-    static void   peq(T *a, T *b);	                              // a += b
-    static void   meq(T *a, T *b);	                              // a -= b
-    static void   xeq(T *a, T* b);                                // a %= b
+    static void   peq(T *a, const T *b);	                        // a += b
+    static void   meq(T *a, const T *b);	                        // a -= b
+    static void   xeq(T *a, const T* b);                          // a %= b
 
-    static void   eq_p(T *a, T* b, T*c);                          // a = b + c
-    static void   eq_m(T *a, T* b, T*c);                          // a = b - c
-    static void   eq_x(T *a, T* b, T*c);                          // a = b % c
+    static void   eq_p(T *a, const T* b, const T*c);              // a = b + c
+    static void   eq_m(T *a, const T* b, const T*c);              // a = b - c
+    static void   eq_x(T *a, const T* b, const T*c);              // a = b % c
 
     static void   rot_xy(T *a, T *b, const T& sa, const T& ca);
 
-    static void   decomp(T *a, T *b, const T& c);                 // a -= c*b
+    static void   decomp(T *a, const T *b, const T& c);           // a -= c*b
     static void   normalizeHq(T *a, T *b, const T& c);
 
     static int    maxIndex(T *a);
@@ -80,26 +80,26 @@ namespace GMlib {
   template <typename T>
   class GM_Static_<T, 1> {
   public:
-    static T	    dpr(T *a, T *b);                                // a*b innerproduct
-    static T	    dprm(T *a, T *b);			                          // a*b innerproduct
+    static T	    dpr(const T *a, const T *b);                    // a*b innerproduct
+    static T	    dprm(const T *a, const T *b);			              // a*b innerproduct
 
     static void   eq(T *a, const T& b);                           // a =  b  set equal
-    static void   eqm(T *a, T* b);                                // a = -b
+    static void   eqm(T *a, const T* b);                          // a = -b
 
     static void   sc(T *a, double b);                             // a *= b  scale a with b
-    static void   sc_r(T *a, T *b, double c);                     // a = b*c scale b with c and put into a
+    static void   sc_r(T *a, const T *b, double c);               // a = b*c scale b with c and put into a
 
-    static void   peq(T *a, T *b);                                // a += b
-    static void   meq(T *a, T *b);                                // a -= b
-    static void   xeq(T *a, T* b);                                // a %= b
+    static void   peq(T *a, const T *b);                          // a += b
+    static void   meq(T *a, const T *b);                          // a -= b
+    static void   xeq(T *a, const T* b);                          // a %= b
 
-    static void   eq_p(T *a, T* b, T*c);                          // a = b + c
-    static void   eq_m(T *a, T* b, T*c);                          // a = b - c
-    static void   eq_x(T *a, T* b, T*c);                          // a = b % c
+    static void   eq_p(T *a, const T* b, const T*c);              // a = b + c
+    static void   eq_m(T *a, const T* b, const T*c);              // a = b - c
+    static void   eq_x(T *a, const T* b, const T*c);              // a = b % c
 
     static void   rot_xy(T *a, T *b, const T& sa, const T& ca);
 
-    static void   decomp(T *a, T *b, const T& c);                 // a -= c*b
+    static void   decomp(T *a, const T *b, const T& c);           // a -= c*b
 
     static void   maxIdx(T *a, int& i);
 
@@ -122,7 +122,7 @@ namespace GMlib {
   template <typename T, typename G, int n>
   class GM_Static1_ {
   public:
-    static void eq(T *a, G* b);   // a =  b  set equal
+    static void eq(T *a, const G* b);   // a =  b  set equal
 
   }; // END class GM_Static1_
 
@@ -131,7 +131,7 @@ namespace GMlib {
   template <typename T, typename G>
   class GM_Static1_<T,G,1> {
   public:
-    static void eq(T *a, G* b);    // a =  b  set equal
+    static void eq(T *a, const G* b);    // a =  b  set equal
 
   }; // END class GM_Static1_<T, G, 1> "Terminator"
 
@@ -155,16 +155,16 @@ namespace GMlib {
   template <typename T, int n, int m>
   class GM_Static2_ {
   public:
-    static T	    dpr(T *a, T *b);              // a*b innerproduct (row x column) (n x m)
-    static T	    dpc(T *a, T *b);              // a*b innerproduct (column x column) (n x m)
+    static T      dpr(const T *a, const T *b);      // a*b innerproduct (row x column) (n x m)
+    static T      dpc(const T *a, const T *b);      // a*b innerproduct (column x column) (n x m)
 
-    static void   eq1(T *a, T *b);              // a = b  a-vector in n x m  matrix, b-column in m x n matrix
-    static void   eq2(T *a, T *b);              // b = a  a-vector in n x m  matrix, b-column in m x n matrix
-    static void   eq3(T *a, T *b);              // a = b  a-column in n x m  matrix, b-column in n x m matrix
+    static void   eq1(T *a, const T *b);            // a = b  a-vector in n x m  matrix, b-column in m x n matrix
+    static void   eq2(const T *a, T *b);            // b = a  a-vector in n x m  matrix, b-column in m x n matrix
+    static void   eq3(T *a, const T *b);            // a = b  a-column in n x m  matrix, b-column in n x m matrix
 
-    static void   sc(T *a, double b);           // a *= b scale column vector
-    static void   decomp(T *a, T* b);
-    static void   decomp1(T *a, T* b, T& c);
+    static void   sc(T *a, double b);               // a *= b scale column vector
+    static void   decomp(const T *a, const T* b);
+    static void   decomp1(const T *a, const T* b, T& c);
 
   }; // END class GM_Static2_
 
@@ -173,16 +173,16 @@ namespace GMlib {
   template <typename T, int m>
   class GM_Static2_<T, 1, m> {
   public:
-    static T	dpr(T *a, T *b);	              // a*b innerproduct (row x column) (n x m)
-    static T	dpc(T *a, T *b);                // a*b innerproduct (column x column) (n x m)
+    static T	dpr(const T *a, const T *b);          // a*b innerproduct (row x column) (n x m)
+    static T	dpc(const T *a, const T *b);          // a*b innerproduct (column x column) (n x m)
 
-    static void eq1(T *a, T *b);		          // a = b  a-vector in n x m  matrix, b-column in transposed matrix
-    static void eq2(T *a, T *b);              // b = a  a-vector in n x m  matrix, b-column in transposed matrix
-    static void eq3(T *a, T *b);              // b = a  a-column in n x m  matrix, b-column in n x m matrix
+    static void eq1(T *a, const T *b);              // a = b  a-vector in n x m  matrix, b-column in transposed matrix
+    static void eq2(const T *a, T *b);              // b = a  a-vector in n x m  matrix, b-column in transposed matrix
+    static void eq3(T *a, const T *b);              // a = b  a-column in n x m  matrix, b-column in n x m matrix
 
-    static void sc(T *a, double b);           // a *= b scale column vector
+    static void sc(T *a, double b);                 // a *= b scale column vector
 
-    static void decomp1(T *a, T* b, T& c);
+    static void decomp1(const T *a, const T* b, T& c);
   }; // END class GM_Static2_<T, 1, m> "Terminator"
 
 
@@ -208,21 +208,21 @@ namespace GMlib {
   template <typename T, int n, int m>
   class GM_Static3_ {
   public:
-    static T	    dpr(T *a, T *b);              // a*b innerproduct (row x column) (n x m)
+    static T	    dpr(const T *a, const T *b);              // a*b innerproduct (row x column) (n x m)
 
-    static void   eq1(T *a, T *b);              // a = b  a-vector, b-diagonal in matrix
-    static void   eq2(T *a, T *b);              // b = a  a-vector, b-diagonal in matrix
-    static void   eq3(T *a, T *b);              // b = -a  a-vector, b-diagonal in matrix
+    static void   eq1(T *a, const T *b);              // a = b  a-vector, b-diagonal in matrix
+    static void   eq2(const T *a, T *b);              // b = a  a-vector, b-diagonal in matrix
+    static void   eq3(const T *a, T *b);              // b = -a  a-vector, b-diagonal in matrix
 
     static void   sc(T *a, double b);	          // a *= b scale column vector
 
     static void   swp(T* a, T* b);	            // swap colomn a and line b
     static void   trn(T* a, T* b);              // swap colomn a and line b
 
-    static void   cm_x(T *a, T* b, T* c);	      // col = -mat x vec
+    static void   cm_x(T *a, const T* b, const T* c);	      // col = -mat x vec
 
-    static void   decomp(T *a, T* b);
-    static void   decomp1(T *a, T* b, T& c);
+    static void   decomp(const T *a, const T* b);
+    static void   decomp1(const T *a, const T* b, T& c);
 
   }; // END class GM_Static3_
 
@@ -231,20 +231,20 @@ namespace GMlib {
   template <typename T, int m>
   class GM_Static3_<T, 1, m> {
   public:
-    static T	    dpr(T *a, T *b);	            // a*b innerproduct (row x column) (n x m)
+    static T	    dpr(const T *a, const T *b);	            // a*b innerproduct (row x column) (n x m)
 
-    static void   eq1(T *a, T *b);              // a = b  a-vector, b-diagonal in matrix
-    static void   eq2(T *a, T *b);              // b = a  a-vector, b-diagonal in matrix
-    static void   eq3(T *a, T *b);              // b = a  a-vector, b-diagonal in matrix
+    static void   eq1(T *a, const T *b);              // a = b  a-vector, b-diagonal in matrix
+    static void   eq2(const T *a, T *b);              // b = a  a-vector, b-diagonal in matrix
+    static void   eq3(const T *a, T *b);              // b = a  a-vector, b-diagonal in matrix
 
     static void   sc(T *a, double b);           // a *= b scale column vector
 
     static void   swp(T* a, T* b);              // swap colomn a and line b
     static void   trn(T* a, T* b);              // swap colomn a and line b
 
-    static void   cm_x(T *a, T* b, T* c);	      // col = -mat x vec
+    static void   cm_x(T *a, const T* b, const T* c);	      // col = -mat x vec
 
-    static void   decomp1(T *a, T* b, T& c);
+    static void   decomp1(const T *a, const T* b, T& c);
   }; // END class GM_Static3_<T, 1, m> "Terminator"
 
 
@@ -267,9 +267,9 @@ namespace GMlib {
   template <typename T, int n>
   class GM_Std_ {
   public:
-    static void b_min_d_c(T *a, T* b, T* c, const T& d);    // a = b - d*c,    a,b,c is n-dim vector, and d is scalar
-    static void orto(T *a, T* b, T* c);                     // a = b - <b,c> c , where |c| = 1, and all are n-dim vectors
-    static void ortoNormal(T *a, T* b, T* c);               // The same as abow, but normalizing the result 'a' after
+    static void b_min_d_c(T *a, const T* b, const T* c, const T& d);    // a = b - d*c,    a,b,c is n-dim vector, and d is scalar
+    static void orto(T *a, const T* b, const T* c);                     // a = b - <b,c> c , where |c| = 1, and all are n-dim vectors
+    static void ortoNormal(T *a, const T* b, const T* c);               // The same as abow, but normalizing the result 'a' after
   }; // END class GM_Std_
 
 
@@ -277,7 +277,7 @@ namespace GMlib {
   template <typename T>
   class GM_Std_<T,1> {
   public:
-    static void b_min_d_c(T *a, T* b, T* c, const T& d);
+    static void b_min_d_c(T *a, const T* b, const T* c, const T& d);
   }; // END class GM_Std_<T, 1> "Terminator"
 
 } // END namespace GMlib

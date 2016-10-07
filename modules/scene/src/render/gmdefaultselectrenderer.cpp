@@ -68,7 +68,7 @@ namespace GMlib {
 
     Color c;
     _fbo.bind();
-    GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
+    GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,reinterpret_cast<GLubyte*>(&c)));
     _fbo.unbind();
 
     const SceneObject *obj = getCamera()->getScene()->find(c.get());
@@ -82,7 +82,7 @@ namespace GMlib {
 
     Color c;
     _fbo.bind();
-    GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte*)(&c)));
+    GL_CHECK(::glReadPixels(x,y,1,1,GL_RGB,GL_UNSIGNED_BYTE,reinterpret_cast<GLubyte*>(&c)));
     _fbo.unbind();
 
     return getCamera()->getScene()->find(c.get());
@@ -97,7 +97,7 @@ namespace GMlib {
 
     Color* pixels = new Color[dx*dy];
     _fbo.bind();
-    GL_CHECK(::glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels));
+    GL_CHECK(::glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,reinterpret_cast<GLubyte*>(pixels)));
     _fbo.unbind();
 
     int ct = 0;
@@ -124,7 +124,7 @@ namespace GMlib {
 
     Color* pixels = new Color[dx*dy];
     _fbo.bind();
-    GL_CHECK(::glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,(GLubyte*)pixels));
+    GL_CHECK(::glReadPixels(xmin,ymin,dx-1,dy-1,GL_RGBA,GL_UNSIGNED_BYTE,reinterpret_cast<GLubyte*>(pixels)));
     _fbo.unbind();
 
     int ct = 0;

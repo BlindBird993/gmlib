@@ -100,7 +100,8 @@ namespace GMlib {
     T                       getLength() const;
     int                     getMaxIndex() const;
     int                     getMaxAbsIndex() const;
-    T*                      getPtr() const;
+    T*                      getPtr();
+    const T*                getPtr() const;
     void                    setTestType( int t, const APoint<T,n>& p, const Vector<T,n>& v = T(0) );
 
     const APoint<T, n>&     operator =  ( const T t );
@@ -809,7 +810,8 @@ namespace GMlib {
     ScalarPoint( const ScalarPoint<T, n>& s );
 
     const APoint<T, n>&   getPos() const;
-    T*                    getPtr() const;
+    T*                    getPtr();
+    const T*              getPtr() const;
     T                     getValue() const;
     void                  reset( const APoint<T, n>& p , T v = T(0) );
     void                  reset();
@@ -1202,7 +1204,7 @@ namespace GMlib {
   class M_I_ {
   public:
     M_I_();
-    T* getPtr() const;
+    const T* getPtr() const;
 
   private:
     T  _p[n*m];

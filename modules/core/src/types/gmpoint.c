@@ -183,17 +183,18 @@ namespace GMlib {
   }
 
 
-  /*! T* APoint<T, n>::getPtr() const
-   *  \brief Returns a pointer to the point element dataset.
-   *
-   *  Returns a pointer to the point element dataset.
-   *
-   *  \return The pointer to the point element dataset.
-   */
+  /*! \brief Returns a non-const pointer to the point element dataset. */
   template <typename T, int n>
   inline
-  T* APoint<T, n>::getPtr() const {
-    return (T*)this;
+  T* APoint<T, n>::getPtr() {
+    return reinterpret_cast<T*>(this);
+  }
+
+  /*! \brief Returns a const pointer to the point element dataset. */
+  template <typename T, int n>
+  inline
+  const T* APoint<T, n>::getPtr() const {
+    return reinterpret_cast<const T*>(this);
   }
 
 
@@ -1520,8 +1521,14 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T* ScalarPoint<T, n>::getPtr() const {
-    return (T*)this;
+  T* ScalarPoint<T, n>::getPtr() {
+    return reinterpret_cast<T*>(this);
+  }
+
+  template <typename T, int n>
+  inline
+  const T* ScalarPoint<T, n>::getPtr() const {
+    return reinterpret_cast<const T*>(this);
   }
 
   template <typename T, int n>
@@ -1540,8 +1547,8 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void ScalarPoint<T, n>::reset() {
-    _pos = (T)0;
-    _value = (T)0;
+    _pos = T(0);
+    _value = T(0);
   }
 
   template <typename T, int n>
@@ -1842,22 +1849,15 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Box<T, n>::Box() {
-    _min = _max = (T) 0;
-  }
+  Box<T, n>::Box() : _min{0}, _max{0} {}
 
   template <typename T, int n>
   inline
-  Box<T, n>::Box( const APoint<T, n>& p ) {
-    _min = _max = p;
-  }
+  Box<T, n>::Box( const APoint<T, n>& p ) : _min{p}, _max{p} {}
 
   template <typename T, int n>
   inline
-  Box<T, n>::Box( const Box<T, n>& b ) {
-    _min = b._min;
-    _max = b._max;
-  }
+  Box<T, n>::Box( const Box<T, n>& b ) : _min{b._min}, _max{b._max} {}
 
   template <typename T, int n>
   inline
@@ -1901,7 +1901,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   T* Box<T, n>::getPtr() const {
-    return (T*)this;
+    return static_cast<T*>(this);
   }
 
   template <typename T, int n>
@@ -1986,7 +1986,7 @@ namespace GMlib {
   template <typename T, int n>
   inline
   void Box<T, n>::reset() {
-    reset( APoint<T, n>( (T)0 ) );
+    reset( APoint<T, n>( T(0) ) );
   }
 
   template <typename T, int n>
@@ -2162,13 +2162,13 @@ namespace GMlib {
     for(int k=0,i=0; i<n; i++)
       for(int j=0; j<m; j++)
         if(i==j)	_p[k++] = T(1);
-        else		_p[k++] = T(0);
+        else _p[k++] = T(0);
   }
 
   template <typename T, int n, int m>
   inline
-  T* M_I_<T, n, m>::getPtr() const {
-    return (T*)this;
+  const T* M_I_<T, n, m>::getPtr() const {
+    return reinterpret_cast<const T*>(this);
   }
 
 } // END namespace GMlib

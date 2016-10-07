@@ -245,7 +245,7 @@ namespace GMlib {
 
   const Color& Texture::operator()(int i, int j) const {
 
-      Color* color = (Color*)_data;
+      Color* color = reinterpret_cast<Color*>(_data);
       return color[ (j * _width) + i];
   }
 

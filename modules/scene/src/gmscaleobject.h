@@ -74,7 +74,7 @@ namespace GMlib {
       template<class T_Stream>
       friend T_Stream& operator<<(T_Stream& out, const ScaleObject& v)
       {
-        out << (int)v._scaled << GMseparator::Element << v._s << GMseparator::Element << v._max ;
+        out << bool(v._scaled) << GMseparator::Element << v._s << GMseparator::Element << v._max ;
         return out;
       }
 
@@ -85,7 +85,7 @@ namespace GMlib {
         //		GLubyte r,g,b,a;
         int scaled;
         in >> scaled >> es >> v._s >> es >> v._max;
-        v._scaled = (bool)scaled;
+        v._scaled = bool(scaled);
         return in;
       }
 

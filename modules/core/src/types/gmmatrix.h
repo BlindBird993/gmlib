@@ -75,8 +75,10 @@ namespace GMlib {
 
     APoint<T,n> const&        getCol(int i) const;
     Matrix<T,n,n>             getMultTrans();
-    T*                        getPtr() const;
-    APoint<T,m>*              getPtrP() const;
+    T*                        getPtr();
+    const T*                  getPtr() const;
+    APoint<T,m>*              getPtrP();
+    const APoint<T,m>*              getPtrP() const;
     APoint<T,m> const&        getRow(int j) const;
     Matrix<T,m,m>             getTransMult();
     Matrix<T,m,n>             getTransposed() const;

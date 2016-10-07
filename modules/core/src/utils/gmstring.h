@@ -85,7 +85,7 @@ namespace GMlib {
     template <typename T_Stream>
     T_Stream& operator << ( T_Stream& out, const String& str ) {
 
-      out << (std::string)str;
+      out << std::string(str);
       return out;
     }
 
@@ -93,7 +93,7 @@ namespace GMlib {
     template <typename T_Stream>
     T_Stream& operator >> ( T_Stream& in, String& str ) {
 
-      in >> (std::string)str;
+      in >> std::string(str);
       return in;
     }
 

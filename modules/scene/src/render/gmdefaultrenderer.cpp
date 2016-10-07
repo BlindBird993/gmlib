@@ -541,8 +541,8 @@ namespace GMlib {
       _render_prog.bind();
 
       _render_prog.uniform( "u_mvpmat", _ortho_mat );
-      _render_prog.uniform( "u_tex", getRenderTexture(), (GLenum)GL_TEXTURE0, 0 );
-      _render_prog.uniform( "u_tex_selected", getSelectTexture(), (GLenum)GL_TEXTURE1, 1 );
+      _render_prog.uniform( "u_tex", getRenderTexture(), static_cast<GLenum>(GL_TEXTURE0), 0 );
+      _render_prog.uniform( "u_tex_selected", getSelectTexture(), static_cast<GLenum>(GL_TEXTURE1), 1 );
       _render_prog.uniform( "u_buf_w", static_cast<float>(_size(0)) );
       _render_prog.uniform( "u_buf_h", static_cast<float>(_size(1)) );
       _render_prog.uniform( "u_select_color", _select_color );

@@ -103,7 +103,7 @@ namespace GMlib {
       blend_color.setAlpha( 0.5 );
 
       _bo_cube.bind();
-      _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0x0 );
+      _bo_cube.enableVertexArrayPointer( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, static_cast<const GLvoid*>(0x0) );
 
       _bo_cube_frame_indices.bind(); {
 

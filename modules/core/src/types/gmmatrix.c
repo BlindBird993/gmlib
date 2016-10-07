@@ -130,7 +130,7 @@ namespace GMlib {
   inline
   void Matrix<T,n,m>::cpy_t(const Vector<Vector<T,n>,m>& v)	{
 
-    GM_Static_P_<T,n,m>::eq_t( getPtrP(), (T*)v.getPtr() );
+    GM_Static_P_<T,n,m>::eq_t( getPtrP(), static_cast<T*>(v.getPtr()) );
   }
 
 
@@ -285,30 +285,48 @@ namespace GMlib {
   }
 
 
-  /*! T* Matrix<T,n,m>::getPtr() const
-   *  \brief Gives a T* pointer
-   *
+  /*! \brief Gives a T* pointer
    *  The matrix can be treated as a classic n*m-dim array of T
    */
   template <typename T, int n, int m>
   inline
-  T* Matrix<T,n,m>::getPtr() const	{
+  T* Matrix<T,n,m>::getPtr() {
 
-    return (T*)this;
+    return reinterpret_cast<T*>(this);
   }
 
+  /*! \brief Gives a const T* pointer
+   *  The matrix can be treated as a classic n*m-dim array of T
+   */
+  template <typename T, int n, int m>
+  inline
+  const T* Matrix<T,n,m>::getPtr() const	{
 
-  /*! APoint<T,m>* Matrix<T,n,m>::getPtrP() const
-   *  \brief Gives a APoint<T,m>* pointer
+    return reinterpret_cast<const T*>(this);
+  }
+
+  /*! \brief Gives a APoint<T,m>* pointer into the matrix
    *
    *  The matrix can be treated as a classic n-dim of
    *  APoint<T,n> *
    */
   template <typename T, int n, int m>
   inline
-  APoint<T,m>* Matrix<T,n,m>::getPtrP() const	{
+  APoint<T,m>* Matrix<T,n,m>::getPtrP() {
 
-    return (APoint<T,m>*)this;
+    return reinterpret_cast<APoint<T,m>*>(this);
+  }
+
+  /*! \brief Gives a APoint<T,m>* const-pointer into the matrix
+   *
+   *  The matrix can be treated as a classic n-dim of
+   *  APoint<T,n> *
+   */
+  template <typename T, int n, int m>
+  inline
+  const APoint<T,m>* Matrix<T,n,m>::getPtrP() const	{
+
+    return reinterpret_cast<const APoint<T,m>*>(this);
   }
 
 

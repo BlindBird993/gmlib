@@ -565,7 +565,7 @@ namespace GMlib {
   inline
   bool MaterialObject::is(const Material& m) const {
 
-    return m == (Material)(*this);
+    return m == Material(*this);
   }
 
 
