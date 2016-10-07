@@ -1477,7 +1477,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool TSVertex<T>::operator < (const TSVertex<T> &t) const {
+  bool TSVertex<T>::operator < (const TSVertex<T> &/*t*/) const {
 
     return true;
   }
@@ -2760,7 +2760,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  bool TSVEdge<T>::operator<(const TSVEdge<T> &e) const {
+  bool TSVEdge<T>::operator<(const TSVEdge<T> &/*e*/) const {
     return false;
   }
 

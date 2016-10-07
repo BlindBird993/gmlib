@@ -61,9 +61,9 @@ namespace GMlib {
     double          deltaTranslate(SceneObject *) override;
 
 //    void             go(bool stereo=false);
-    void            lock(SceneObject* obj) override {}         //!< Disable locking
-    void            lock(const Point<float,3>& p) override {}  //!< Disable locking
-    void            lock(double d) override {}                 //!< Disable locking
+    void            lock(SceneObject* /*obj*/) override {}         //!< Disable locking
+    void            lock(const Point<float,3>& /*p*/) override {}  //!< Disable locking
+    void            lock(double /*d*/) override {}                 //!< Disable locking
     void            move(float d, bool propagate = true) override;
     void            move(const Vector<float,3>& t, bool propagate = true) override;
 

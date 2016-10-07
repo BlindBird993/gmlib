@@ -1198,7 +1198,7 @@ namespace GMlib {
 
 
 #define UV_ge(n) inline\
-  const APoint<T,n>& UnitVector<T, n>::operator *= ( const double d ) {\
+  const APoint<T,n>& UnitVector<T, n>::operator *= ( const double /*d*/ ) {\
     return *this;\
   }
 
@@ -1213,7 +1213,7 @@ namespace GMlib {
 
 
 #define UV_de(n) inline\
-  const APoint<T,n>& UnitVector<T, n>::operator /= ( double d ) {\
+  const APoint<T,n>& UnitVector<T, n>::operator /= ( double /*d*/ ) {\
     return *this;\
   }
 
@@ -1317,13 +1317,13 @@ namespace GMlib {
 
   template <typename T>
   inline
-  const APoint<T,4>& UnitQuaternion<T>::operator *= ( const double d ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator *= ( const double /*d*/ ) {
     return *this;
   }
 
   template <typename T>
   inline
-  const APoint<T,4>& UnitQuaternion<T>::operator /= ( double d ) {
+  const APoint<T,4>& UnitQuaternion<T>::operator /= ( double /*d*/ ) {
     return *this;
   }
 

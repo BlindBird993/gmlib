@@ -317,7 +317,7 @@ namespace GMlib {
      *
      *  Stream output operator, taking a APoint<T,n> pointer as a second parameter.
      *
-     *  \param[in, out] out The output stream
+     *  \param[in,out] out The output stream
      *  \param[in] p The APoint<T, n> pointer
      *  \return The output stream
      */
@@ -334,7 +334,7 @@ namespace GMlib {
      *
      *  Stream input operator, taking a APoint<T,n> as a second parameter.
      *
-     *  \param[in, out] in The input stream
+     *  \param[in,out] in The input stream
      *  \param[in] p The APoint<T, n>
      *  \return The input stream
      */
@@ -351,7 +351,7 @@ namespace GMlib {
      *
      *  Stream input operator, taking a APoint<T,n> pointer as a second parameter.
      *
-     *  \param[in, out] in The input stream
+     *  \param[in,out] in The input stream
      *  \param[in] p The APoint<T, n> pointer
      *  \return The input stream
      */

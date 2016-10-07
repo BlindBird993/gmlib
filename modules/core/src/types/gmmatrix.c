@@ -183,7 +183,7 @@ namespace GMlib {
    */
   template <typename T, int n, int m>
   inline
-  Matrix<T,n,m>::Matrix(bool i)	{
+  Matrix<T,n,m>::Matrix(bool /*i*/)	{
   }
 
 
@@ -1106,7 +1106,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  const APoint<T,n>& SqMatrix<T, n>::getStatDiagonal(int i) const {
+  const APoint<T,n>& SqMatrix<T, n>::getStatDiagonal(int /*i*/) const {
 
       GM_Static3_<T,n,n>::eq1( this->_c.getPtr(), this->getPtr() );
       return this->_c;
@@ -1224,7 +1224,7 @@ namespace GMlib {
    */
   template <typename T, int n>
   inline
-  HqMatrix_<T, n>::HqMatrix_( const Matrix<T,n,n>& v, bool trans) : SqMatrix<T,n+1>(trans)	{}
+  HqMatrix_<T, n>::HqMatrix_( const Matrix<T,n,n>& v, bool trans) : SqMatrix<T,n+1>(v,trans)	{}
 
 
   /*! HqMatrix_<T, n>::HqMatrix_(const Vector<T,n>& d)

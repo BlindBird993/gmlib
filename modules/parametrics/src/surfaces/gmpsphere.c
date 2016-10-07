@@ -40,7 +40,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PSphere<T>::PSphere( T radius, int s1, int s2 ) {
+  PSphere<T>::PSphere( T radius, int /*s1*/, int /*s2*/ ) {
 
     _radius = radius;
     this->_dm = GM_DERIVATION_EXPLICIT;

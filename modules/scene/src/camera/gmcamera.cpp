@@ -129,7 +129,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  double Camera::getDistanceToObject(int x, int y) {
+  double Camera::getDistanceToObject(int /*x*/, int /*y*/) {
 
     assert(false);
     return getDistanceToObject(0x0);
@@ -220,7 +220,7 @@ namespace GMlib {
    *
    *  Pending Documentation
    */
-  SceneObject* Camera::lockTargetAtPixel(int x, int y) {
+  SceneObject* Camera::lockTargetAtPixel(int /*x*/, int /*y*/) {
 
     assert(false);
     return 0x0;

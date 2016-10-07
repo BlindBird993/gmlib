@@ -96,7 +96,7 @@ namespace GMlib {
 
   template <typename T, int n, int m>
   inline
-  void v_eq_m_x_v(T *a, APoint<T,m>* b, const APoint<T,m>& c) {}
+  void v_eq_m_x_v(T* /*a*/, APoint<T,m>* /*b*/, const APoint<T,m>& /*c*/) {}
 
 
   /*! \class  GM_Static_P2_ gmstaticproc2.h <gmStaticProc2.h>

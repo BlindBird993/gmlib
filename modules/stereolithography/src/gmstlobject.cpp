@@ -172,7 +172,7 @@ namespace GMlib {
   }
 
 
-  void StlObject::_makeList( GLenum e ) {
+  void StlObject::_makeList( GLenum /*e*/ ) {
 
 
 
@@ -329,7 +329,7 @@ namespace GMlib {
   }
 
 
-  void StlObject::save( std::ofstream& stream, bool binary ) {
+  void StlObject::save( std::ofstream& /*stream*/, bool /*binary*/ ) {
 
     assert(false);
 //    typedef std::stringstream std_ss;

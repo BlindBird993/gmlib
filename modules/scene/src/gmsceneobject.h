@@ -427,7 +427,7 @@ namespace GMlib{
   public:
 
     template <typename T_Stream>
-    SceneObject( T_Stream& in, int st ) {
+    SceneObject( T_Stream& in, int /*st*/ ) {
 
       in >> *this;
 

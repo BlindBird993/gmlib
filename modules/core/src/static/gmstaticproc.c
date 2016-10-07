@@ -321,7 +321,7 @@ namespace GMlib {
   template <typename T, typename G, int n>
   inline
   void GM_Static1_<T, G, n>::eq(T *a, G* b) {
-    (*a) = (T)(*b);
+    (*a) = static_cast<T>(*b);
     GM_Static1_<T,G,n-1>::eq(a+1,b+1);
   }
 
@@ -335,7 +335,7 @@ namespace GMlib {
   /*! \brief a =  b  set equal b */
   template<typename T, typename G>
   void GM_Static1_<T, G, 1>::eq(T *a, G* b) {
-    (*a) = (T)(*b);
+    (*a) = static_cast<T>(*b);
   }
 
   ///////////////////////////////////////

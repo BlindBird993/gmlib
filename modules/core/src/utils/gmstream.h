@@ -63,7 +63,8 @@ namespace GMlib {
 
   private:
     bool            _binary;      // If true, don't send the Separator to the stream
-    unsigned int    _separator;
+    char            _separator;
+//    unsigned int    _separator;
 
 
   }; // END Separator
@@ -172,7 +173,7 @@ namespace GMlib {
       unsigned int tmp;
 
       in >> tmp;
-      s.setSeparator(tmp);
+      s.setSeparator(static_cast<char>(tmp));
     }
     return in;
   }

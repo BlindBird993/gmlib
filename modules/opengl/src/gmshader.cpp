@@ -104,7 +104,7 @@ namespace GMlib { namespace GL {
 
   GLuint Shader::getCurrentBoundId() const { return 0; }
 
-  void Shader::doBind(GLuint id) const {}
+  void Shader::doBind(GLuint /*id*/) const {}
 
   GLuint Shader::doGenerate() const {
 
