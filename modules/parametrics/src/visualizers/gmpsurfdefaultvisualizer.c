@@ -106,7 +106,7 @@ namespace GMlib {
       _prog.uniform( "u_mat_shi", m.getShininess() );
 
       // Normal map
-      _prog.uniform( "u_nmap", _nmap, (GLenum)GL_TEXTURE0, 0 );
+      _prog.uniform( "u_nmap", _nmap, GLenum(GL_TEXTURE0), 0 );
 
       // Get vertex and texture attrib locations
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );

@@ -186,7 +186,7 @@ void PSurfVisualizer<T,n>::fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< V
   glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
   glBufferData( GL_ARRAY_BUFFER, no_normals * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
 
-  float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+  float *ptr = static_cast<float*>(glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY ));
   if( ptr ) {
 
     for( int i = 0; i < normals.getDim1()-1; i++ ) {
@@ -222,7 +222,7 @@ void PSurfVisualizer<T,n>::fillTriangleStripTexVBO( GLuint vbo_id, int m1, int m
   glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
   glBufferData( GL_ARRAY_BUFFER, no_tex * 2 * 2 * sizeof(float), 0x0, GL_STATIC_DRAW );
 
-  float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+  float *ptr = static_cast<float*>(glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY ));
   if( ptr ) {
 
     for( int i = 0; i < m1-1; i++ ) {
@@ -256,7 +256,7 @@ void PSurfVisualizer<T,n>::fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix
   glBindBuffer( GL_ARRAY_BUFFER, vbo_id );
   glBufferData( GL_ARRAY_BUFFER, no_dp * 3 * sizeof(float), 0x0,  GL_DYNAMIC_DRAW );
 
-  float *ptr = (float*)glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY );
+  float *ptr = static_cast<float*>(glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY ));
   if( ptr ) {
 
     for( int i = 0; i < p.getDim1()-1; i++ ) {

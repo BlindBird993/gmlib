@@ -126,14 +126,14 @@ namespace GMlib {
 
   unsigned long StlObject::_getUli() {
 
-    unsigned char byte1 = (unsigned char)fgetc( _stl_file );
-    unsigned char byte2 = (unsigned char)fgetc( _stl_file );
-    unsigned char byte3 = (unsigned char)fgetc( _stl_file );
-    unsigned char byte4 = (unsigned char)fgetc( _stl_file );
-    unsigned long int number =  (unsigned long int)byte1
-                             + ((unsigned long int)byte2<<8)
-                             + ((unsigned long int)byte3<<16)
-                             + ((unsigned long int)byte4<<24);
+    unsigned char byte1 = static_cast<unsigned char>(fgetc( _stl_file ));
+    unsigned char byte2 = static_cast<unsigned char>(fgetc( _stl_file ));
+    unsigned char byte3 = static_cast<unsigned char>(fgetc( _stl_file ));
+    unsigned char byte4 = static_cast<unsigned char>(fgetc( _stl_file ));
+    unsigned long int number =  static_cast<unsigned long int>(byte1)
+                             + (static_cast<unsigned long int>(byte2<<8))
+                             + (static_cast<unsigned long int>(byte3<<16))
+                             + (static_cast<unsigned long int>(byte4<<24));
 
     return( number );
   }
@@ -144,10 +144,10 @@ namespace GMlib {
     float number;
     unsigned char stream[5];
     // used to be 3,2,1,0
-    stream[0]=(unsigned char)fgetc( _stl_file );
-    stream[1]=(unsigned char)fgetc( _stl_file );
-    stream[2]=(unsigned char)fgetc( _stl_file );
-    stream[3]=(unsigned char)fgetc( _stl_file );
+    stream[0]=static_cast<unsigned char>(fgetc( _stl_file ));
+    stream[1]=static_cast<unsigned char>(fgetc( _stl_file ));
+    stream[2]=static_cast<unsigned char>(fgetc( _stl_file ));
+    stream[3]=static_cast<unsigned char>(fgetc( _stl_file ));
     stream[4] = '\0';
 
     memcpy( &number, &stream, 4 );
@@ -158,9 +158,9 @@ namespace GMlib {
 
   unsigned int StlObject::_getUint() {
 
-    unsigned char byte1 = (unsigned char)fgetc( _stl_file );
-    unsigned char byte2 = (unsigned char)fgetc( _stl_file );
-    unsigned int number = (unsigned int)byte1 + ((unsigned int)byte2<<8);
+    unsigned char byte1 = static_cast<unsigned char>(fgetc( _stl_file ));
+    unsigned char byte2 = static_cast<unsigned char>(fgetc( _stl_file ));
+    unsigned int number = static_cast<unsigned int>(byte1) + (static_cast<unsigned int>(byte2<<8));
 
     return( number );
   }
@@ -305,7 +305,7 @@ namespace GMlib {
       _header = hbuff;
 
       unsigned int facets;
-      stream.read( (char*)&facets, sizeof( unsigned int ) );
+      stream.read( reinterpret_cast<char*>(&facets), sizeof( unsigned int ) );
 
 
       // Allocate memory
@@ -313,17 +313,17 @@ namespace GMlib {
       _vertices.setSize(_normals.getMaxSize()*3);
 
       // Read Normal and Vertices and Attribute bit of each face
-      for( int i = 0; i < (int)facets; i++ ) {
+      for( unsigned int i = 0; i < facets; i++ ) {
 
         // Normal
-        stream.read( (char*)&_normals[i], 3 * sizeof( unsigned int ) );
+        stream.read( reinterpret_cast<char*>(_normals[i].getPtr()), 3 * sizeof( unsigned int ) );
 
         // Vertices
-        stream.read( (char*)&_vertices[i*3], 9 * sizeof( unsigned int ) );
+        stream.read( reinterpret_cast<char*>(_vertices[i*3].getPtr()), 9 * sizeof( unsigned int ) );
 
         // Attribute
         unsigned short attrib = 0;
-        stream.read( (char*)&attrib, sizeof( unsigned short ) );
+        stream.read( reinterpret_cast<char*>(&attrib), sizeof( unsigned short ) );
       }
     }
   }

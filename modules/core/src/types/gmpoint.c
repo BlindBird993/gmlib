@@ -1849,7 +1849,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Box<T, n>::Box() : _min{0}, _max{0} {}
+  Box<T, n>::Box() : _min{T(0)}, _max{T(0)} {}
 
   template <typename T, int n>
   inline

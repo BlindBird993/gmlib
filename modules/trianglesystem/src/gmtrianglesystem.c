@@ -87,15 +87,15 @@ namespace GMlib {
        << _tri_order.getDim1()*_tri_order.getDim2() << std::endl;
 
     std::cout << "Total byte pr element i matrise  : "
-       << (4*r)/((double)_tri_order.getDim1()*_tri_order.getDim2()) << std::endl;
+       << (4*r)/double(_tri_order.getDim1()*_tri_order.getDim2()) << std::endl;
 
     std::cout << "Total kbyte bruk i matrise  : " << (4*r + ptbt)/1024 << std::endl;
     std::cout << "Minimum kbyte bruk i matrise: " << (4*s + ptbt)/1024 << std::endl;
     std::cout << "For mye kbyte bruk i matrise: " << (4*k)/1024  << std::endl;
 
-    std::cout << "Total byte pr pkt i matrise  : " << (4*r + ptbt)/((double)this->getSize()) << std::endl;
-    std::cout << "Minimum byte pr pkt i matrise: " << (4*s + ptbt)/((double)this->getSize()) << std::endl;
-    std::cout << "For mye byte pr pkt i matrise: " << (4*k)/((double)this->getSize()) << std::endl;
+    std::cout << "Total byte pr pkt i matrise  : " << (4*r + ptbt)/double(this->getSize()) << std::endl;
+    std::cout << "Minimum byte pr pkt i matrise: " << (4*s + ptbt)/double(this->getSize()) << std::endl;
+    std::cout << "For mye byte pr pkt i matrise: " << (4*k)/double(this->getSize()) << std::endl;
 
     for(k=i=0; i< this->getSize(); i++) k += 4+8+4*(*this)[i].getEdges().getMaxSize();
     for(i=0; i< _edges.getSize(); i++) k += 4*5;
@@ -110,8 +110,8 @@ namespace GMlib {
       k += (*this)[i].getEdges().getSize();
       r += (*this)[i].getEdges().getMaxSize();
     }
-    std::cout << "Antall edger i snitt i Verticene: " << ((double)k)/i << std::endl;
-    std::cout << "Max edger i snitt i Verticene   : " << ((double)r)/i << std::endl;
+    std::cout << "Antall edger i snitt i Verticene: " << double(k)/i << std::endl;
+    std::cout << "Max edger i snitt i Verticene   : " << double(r)/i << std::endl;
 
     clear();
 
@@ -418,7 +418,7 @@ namespace GMlib {
   _vorpnts.clear();
   _voredges.clear();
 
-    ((ArrayLX< TSVertex<T> >*)this)->clear();
+    ArrayLX<TSVertex<T>>::clear();
 
     if (d >= 0)
       _d = d;
@@ -447,9 +447,9 @@ namespace GMlib {
 
       Array<TSVertex<T> *> v = _triangles(i)->getVertices();
 
-      Point<T,2> p1 = (Point<T,2>)v(0)->getPosition();
-      Point<T,2> p2 = (Point<T,2>)v(1)->getPosition();
-      Point<T,2> p3 = (Point<T,2>)v(2)->getPosition();
+      Point<T,2> p1 = Point<T,2>(v(0)->getPosition());
+      Point<T,2> p2 = Point<T,2>(v(1)->getPosition());
+      Point<T,2> p3 = Point<T,2>(v(2)->getPosition());
 
       T b1 = p1*p1;
       T b2 = p2*p2;
@@ -2379,8 +2379,8 @@ namespace GMlib {
       k = j1 - s;
       if ( v[k] > b.getValueMax(1)) j1 = k;
     }
-    _box.reset(Point<unsigned char,2>((unsigned char)i0,(unsigned char)j0));
-    _box.insert(Point<unsigned char,2>((unsigned char)(i1-1),(unsigned char)(j1-1)));
+    _box.reset(Point<unsigned char,2>(static_cast<unsigned char>(i0),static_cast<unsigned char>(j0)));
+    _box.insert(Point<unsigned char,2>(static_cast<unsigned char>((i1-1)),static_cast<unsigned char>((j1-1))));
   }
 
 
@@ -2393,7 +2393,7 @@ namespace GMlib {
     a += this->_edges[1]->getVector().getAngle( this->_edges[2]->getVector() );
     a += this->_edges[2]->getVector().getAngle( this->_edges[0]->getVector() );
     a.sort();
-    return (T) a[2].getRad();
+    return a[2].getRad();
   }
 
 
@@ -2406,7 +2406,7 @@ namespace GMlib {
     a += this->_edges[1]->getVector().getAngle( this->_edges[2]->getVector() );
     a += this->_edges[2]->getVector().getAngle( this->_edges[0]->getVector() );
     a.sort();
-    return (T) a[0].getRad();
+    return a[0].getRad();
   }
 
 
@@ -2640,7 +2640,7 @@ namespace GMlib {
       if( edges(i)->getLength2D()*1.0 > _circumscribed )
         _circumscribed = ( edges(i)->getLength2D())*1.0; // largest
 ///////////////////////
-    setSurroundingSphere( Sphere<T,3>( (Point<T,3>)_vertex->getParameter(), _circumscribed ) );
+    setSurroundingSphere( Sphere<T,3>( Point<T,3>(_vertex->getParameter()), _circumscribed ) );
   }
 
 
@@ -2688,10 +2688,10 @@ namespace GMlib {
       //glBegin(GL_TRIANGLE_FAN);
       //glVertex((Point<T,3>)myvtx->parameter());
       for( int i = 0; i < _vorpts.getSize(); i++ )
-        glVertex( (Point<T,3>)_vorpts(i) );
+        glVertex( Point<T,3>(_vorpts(i)) );
 
       if( !_vertex->boundary() )
-        glVertex( (Point<T,3>)_vorpts(0) );
+        glVertex( Point<T,3>(_vorpts(0)) );
 
     } glEnd();
   }
@@ -2705,9 +2705,9 @@ namespace GMlib {
       glBegin(GL_LINE_STRIP); {
 
         for( int i=0; i<_vorpts.size(); i++ )
-          glVertex( (Point<T,3>)_vorpts(i) );
+          glVertex( Point<T,3>(_vorpts(i)) );
 
-        if(!_vertex->boundary())  glVertex((Point<T,3>)_vorpts(0));
+        if(!_vertex->boundary())  glVertex(Point<T,3>(_vorpts(0)));
 
       }glEnd();
     }glPopAttrib();
