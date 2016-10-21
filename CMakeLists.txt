@@ -39,7 +39,8 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
   set(CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} -Weverything -Winconsistent-missing-override -Wno-global-constructors -Wno-c++98-compat ")
+#    "${CMAKE_CXX_FLAGS} -Weverything -Winconsistent-missing-override -Wno-global-constructors -Wno-c++98-compat ")
+    "${CMAKE_CXX_FLAGS} -Wshadow -Wno-c++98-compat -Werror")
   # -Weverything equivalent to g++ -pedantic, -Werror and -Wall
 else()
   message(WARNING "Compiler <${CMAKE_CXX_COMPILER_ID}> is not a supported C++ compiler.")

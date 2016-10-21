@@ -258,38 +258,38 @@ namespace GMlib {
 #endif
     for(int cols=0; cols<a.getDim2(); cols++)
     {
-      int i,ii=0,ip,j;
-      for(i=0; i<getDim1(); i++) if(i==cols) b[i]=T(1.0); else b[i]=T(0.0);
-      T sum;
-      int n=a.getDim1();
+      int i2,ii=0,ip,j2;
+      for(i2=0; i2<getDim1(); i2++) if(i2==cols) b[i2]=T(1.0); else b[i2]=T(0.0);
+      T sum2;
+      int n2=a.getDim1();
 #ifdef _OPENMP
   #pragma omp parallel for
 #endif
-      for (i=0;i<n;i++)
+      for (i2=0;i2<n2;i2++)
       {
-        ip=indx[i];
-        sum=b[ip];
-        b[ip]=b[i];
+        ip=indx[i2];
+        sum2=b[ip];
+        b[ip]=b[i2];
         if (ii != 0)
-          for (j=ii-1;j<i;j++) sum -= a[i][j]*b[j];
-        else if (sum != 0.0) ii=i+1;
-        b[i]=sum;
+          for (j2=ii-1;j2<i2;j2++) sum2 -= a[i2][j2]*b[j2];
+        else if (sum2 != 0.0) ii=i2+1;
+        b[i2]=sum2;
       }
 #ifdef _OPENMP
   #pragma omp parallel for
 #endif
-      for (i=n-1;i>=0;i--)
+      for (i2=n2-1;i2>=0;i2--)
       {
-        sum=b[i];
-        for (j=i+1;j<n;j++) sum -= a[i][j]*b[j];
-        b[i]=sum/a[i][i];
+        sum2=b[i2];
+        for (j2=i2+1;j2<n2;j2++) sum2 -= a[i2][j2]*b[j2];
+        b[i2]=sum2/a[i2][i2];
       }
       // LU-back subst. finished,
 #ifdef _OPENMP
   #pragma omp parallel for
 #endif
-      for(i=0; i<getDim1(); i++)    // inverse stored in this, a and b is disappearing?
-        (*this)[i][cols]=b[i];
+      for(i2=0; i2<getDim1(); i2++)    // inverse stored in this, a and b is disappearing?
+        (*this)[i2][cols]=b[i2];
     }
   #endif
     return (*this);

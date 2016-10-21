@@ -1031,17 +1031,17 @@ namespace GMlib {
       for (i=0;i<n;i++)
       {
         ip = indx[i];
-        T sum = vv[ip];
+        T sum2 = vv[ip];
         vv[ip] = vv[i];
-        if (ii != 0)		 for (j=ii-1;j<i;j++) sum -= a[i][j]*vv[j];
-        else if (sum != 0.0) ii = i+1;
-        vv[i] = sum;
+        if (ii != 0)		 for (j=ii-1;j<i;j++) sum2 -= a[i][j]*vv[j];
+        else if (sum2 != 0.0) ii = i+1;
+        vv[i] = sum2;
       }
       for (i=n-1;i>=0;i--)
       {
-        T sum=vv[i];
-        for (j=i+1;j<n;j++)  sum -= a[i][j]*vv[j];
-        vv[i]=sum/a[i][i];
+        T sum2=vv[i];
+        for (j=i+1;j<n;j++)  sum2 -= a[i][j]*vv[j];
+        vv[i]=sum2/a[i][i];
       }
       this->setCol(vv,cols);		// inverse stored in this, a and vv is disappearing?
     }									// LU-back subst. finished,

@@ -123,11 +123,11 @@ namespace GMlib {
     _mid_strips = m1-2;
     _mid_strips_verts = (m2+1) * 2;
 
-    const unsigned int verts = _top_bot_verts * 2 + _mid_strips * _mid_strips_verts;
+    const unsigned int no_verts = _top_bot_verts * 2 + _mid_strips * _mid_strips_verts;
 
 
-    DVector<GL::GLVertexNormal> v(verts);
-    GL::GLVertexNormal *v_ptr = v.getPtr();
+    DVector<GL::GLVertexNormal> verts(no_verts);
+    GL::GLVertexNormal *verts_ptr = verts.getPtr();
 
     // Compute stride in the spheres u and v parametric direction.
     const float du = M_PI / m1;
@@ -140,13 +140,13 @@ namespace GMlib {
       float su, cu, ru;
 
       const Arrow<float,3> top = Arrow<float,3>(Point<float,3>(0,0,r), Vector<float,3>(0,0,1));
-      v_ptr->x = top.getPos()(0);
-      v_ptr->y = top.getPos()(1);
-      v_ptr->z = top.getPos()(2);
-      v_ptr->nx = top.getDir()(0);
-      v_ptr->ny = top.getDir()(1);
-      v_ptr->nz = top.getDir()(2);
-      v_ptr++;
+      verts_ptr->x = top.getPos()(0);
+      verts_ptr->y = top.getPos()(1);
+      verts_ptr->z = top.getPos()(2);
+      verts_ptr->nx = top.getDir()(0);
+      verts_ptr->ny = top.getDir()(1);
+      verts_ptr->nz = top.getDir()(2);
+      verts_ptr++;
 
       u = M_PI_2 - du;
 
@@ -160,24 +160,24 @@ namespace GMlib {
         const float sv = sin(v);
         const float cv = cos(v);
 
-        v_ptr->x  = ru*cv;
-        v_ptr->y  = ru*sv;
-        v_ptr->z  = r*su;
-        v_ptr->nx = cu*cv;
-        v_ptr->ny = cu*sv;
-        v_ptr->nz = su;
-        v_ptr++;
+        verts_ptr->x  = ru*cv;
+        verts_ptr->y  = ru*sv;
+        verts_ptr->z  = r*su;
+        verts_ptr->nx = cu*cv;
+        verts_ptr->ny = cu*sv;
+        verts_ptr->nz = su;
+        verts_ptr++;
       }
 
 
       const Arrow<float,3> bottom = Arrow<float,3>(Point<float,3>(0,0,-r),Vector<float,3>(0,0,-1));
-      v_ptr->x  = bottom.getPos()(0);
-      v_ptr->y  = bottom.getPos()(1);
-      v_ptr->z  = bottom.getPos()(2);
-      v_ptr->nx = bottom.getDir()(0);
-      v_ptr->ny = bottom.getDir()(1);
-      v_ptr->nz = bottom.getDir()(2);
-      v_ptr++;
+      verts_ptr->x  = bottom.getPos()(0);
+      verts_ptr->y  = bottom.getPos()(1);
+      verts_ptr->z  = bottom.getPos()(2);
+      verts_ptr->nx = bottom.getDir()(0);
+      verts_ptr->ny = bottom.getDir()(1);
+      verts_ptr->nz = bottom.getDir()(2);
+      verts_ptr++;
 
       u = M_PI_2 - du * (m1-1);
       su = sin(u);
@@ -190,13 +190,13 @@ namespace GMlib {
         const float sv = sin(v);
         const float cv = cos(v);
 
-        v_ptr->x = ru*cv;
-        v_ptr->y = ru*sv;
-        v_ptr->z = r*su;
-        v_ptr->nx = cu*cv;
-        v_ptr->ny = cu*sv;
-        v_ptr->nz = su;
-        v_ptr++;
+        verts_ptr->x = ru*cv;
+        verts_ptr->y = ru*sv;
+        verts_ptr->z = r*su;
+        verts_ptr->nx = cu*cv;
+        verts_ptr->ny = cu*sv;
+        verts_ptr->nz = su;
+        verts_ptr++;
       }
     }
 
@@ -221,25 +221,25 @@ namespace GMlib {
         const float sv = sin(v);
         const float cv = cos(v);
 
-        v_ptr->x = ru1*cv;
-        v_ptr->y = ru1*sv;
-        v_ptr->z = r*su1;
-        v_ptr->nx = cu1*cv;
-        v_ptr->ny = cu1*sv;
-        v_ptr->nz = su1;
-        v_ptr++;
+        verts_ptr->x = ru1*cv;
+        verts_ptr->y = ru1*sv;
+        verts_ptr->z = r*su1;
+        verts_ptr->nx = cu1*cv;
+        verts_ptr->ny = cu1*sv;
+        verts_ptr->nz = su1;
+        verts_ptr++;
 
-        v_ptr->x = ru2*cv;
-        v_ptr->y = ru2*sv;
-        v_ptr->z = r*su2;
-        v_ptr->nx = cu2*cv;
-        v_ptr->ny = cu2*sv;
-        v_ptr->nz = su2;
-        v_ptr++;
+        verts_ptr->x = ru2*cv;
+        verts_ptr->y = ru2*sv;
+        verts_ptr->z = r*su2;
+        verts_ptr->nx = cu2*cv;
+        verts_ptr->ny = cu2*sv;
+        verts_ptr->nz = su2;
+        verts_ptr++;
       }
     }
 
-    _vbo.bufferData( v.getDim() * sizeof(GL::GLVertexNormal), v.getPtr(), GL_STATIC_DRAW );
+    _vbo.bufferData( verts.getDim() * sizeof(GL::GLVertexNormal), verts.getPtr(), GL_STATIC_DRAW );
 
   }
 

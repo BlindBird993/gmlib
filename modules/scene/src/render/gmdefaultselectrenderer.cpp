@@ -174,8 +174,8 @@ namespace GMlib {
           else {
 
             const Array<Visualizer*>& visus = obj->getVisualizers();
-            for( int i = 0; i < visus.getSize(); ++i )
-              visus(i)->renderGeometry(obj,this,obj->getVirtualName());
+            for( int j = 0; j < visus.getSize(); ++j )
+              visus(j)->renderGeometry(obj,this,obj->getVirtualName());
 
             obj->localSelect(this,obj->getVirtualName());
           }
