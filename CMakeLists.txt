@@ -24,7 +24,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 # Nice name for the IDEs
-project(GMlib VERSION 0.6.0 LANGUAGES C CXX)
+project(GMlib VERSION 0.6.0 LANGUAGES CXX)
 
 # Specify compiler features
 set(CMAKE_C_STANDARD 11)
@@ -40,7 +40,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
   set(CMAKE_CXX_FLAGS
 #    "${CMAKE_CXX_FLAGS} -Weverything -Winconsistent-missing-override -Wno-global-constructors -Wno-c++98-compat ")
-    "${CMAKE_CXX_FLAGS} -Wshadow -Wno-c++98-compat -Werror")
+    "${CMAKE_CXX_FLAGS} -Wshadow -Wno-c++98-compat") # -Werror")
   # -Weverything equivalent to g++ -pedantic, -Werror and -Wall
 else()
   message(WARNING "Compiler <${CMAKE_CXX_COMPILER_ID}> is not a supported C++ compiler.")
