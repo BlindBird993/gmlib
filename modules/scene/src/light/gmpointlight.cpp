@@ -145,12 +145,12 @@ namespace GMlib {
   void PointLight::calculateRadius(float constant, float linear, float quadratic) {
 
     double aa, solution;
-    if ((linear == 0) && (quadratic == 0))
+    if (GMutils::compValueF(linear,0.0f) and GMutils::compValueF(quadratic,0.0f))
     {
       setCullable(false); // Disable culling
       solution = FLT_MAX;
     }
-    else if (quadratic == 0)
+    else if (GMutils::compValueF(quadratic,0.0f))
     {
       if(constant <= _min_light_contribution)
         solution = (_min_light_contribution-constant) / linear;

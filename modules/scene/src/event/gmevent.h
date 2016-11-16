@@ -23,6 +23,12 @@
 #ifndef GM_SCENE_EVENT_EVENT_H
 #define GM_SCENE_EVENT_EVENT_H
 
+
+// gmlib
+#include <core/utils/gmutils.h>
+
+
+
 namespace GMlib {
 
 /*! \class Event gmevent.h <gmEvent>
@@ -57,7 +63,7 @@ namespace GMlib {
 
   inline bool
   Event::operator ==(const Event &v) const {
-    return _x == v._x;
+    return GMutils::compValueF(_x,v._x);
   }
 
 }

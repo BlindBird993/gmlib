@@ -27,11 +27,15 @@
 // gmlib
 #include <core/types/gmpoint.h>
 #include <core/types/gmmatrix.h>
+#include <core/utils/gmutils.h>
 
 
 #ifndef GM_SCENE_SCALEOBJECT_H
 #define GM_SCENE_SCALEOBJECT_H
 
+// stl
+#include <cmath>
+#include <limits>
 
 namespace GMlib {
 
@@ -223,8 +227,22 @@ namespace GMlib {
    */
   inline
   void ScaleObject::reset(const Point<float,3>& sc) {
-    if(sc(0)!= 1 || sc(1)!= 1 || sc(2)!= 1) { _s=sc; _updateMax(); _scaled=true; }
-    else { _scaled=false; _s=sc; }
+    if (!GMutils::compValueF(sc(0), 1.0f) or !GMutils::compValueF(sc(0), 1.0f)
+        or !GMutils::compValueF(sc(2), 1.0f)) {
+      _s = sc;
+      _updateMax();
+      _scaled = true;
+    }
+
+//      if (sc (0) != 1 || sc (1) != 1 || sc (2) != 1) {
+//        _s = sc;
+//        _updateMax ();
+//        _scaled = true;
+//      }
+      else {
+        _scaled = false;
+        _s      = sc;
+      }
   }
 
 

@@ -29,6 +29,8 @@
 // stl
 #include <functional>
 #include <cassert>
+#include <limits>
+#include <cmath>
 
 
 #ifndef GM_CORE_UTILS_UTILS_H
@@ -38,6 +40,12 @@
 namespace GMlib {
 
   namespace GMutils {
+
+    template <typename T>
+    bool compValueF(const T& lhs, const T& rhs) {
+      static_assert(std::is_floating_point<T>::value, "Must be a float point value");
+      return std::fabs(lhs - rhs) < std::numeric_limits<T>::epsilon();
+    }
 
     template <typename T>
     T fact( int j )

@@ -18,8 +18,8 @@ public:
   void                              unbind() const;
 
   const Vector<int,2>&              getSize() const;
-  const float                       getWidth() const;
-  const float                       getHeight() const;
+  int                               getWidth() const;
+  int                               getHeight() const;
   void                              resize( const Vector<int,2>& size );
 
 private:
@@ -48,10 +48,10 @@ inline
 const Vector<int,2>&RenderTarget::getSize() const { return _size; }
 
 inline
-const float RenderTarget::getWidth() const { return _size(0); }
+int RenderTarget::getWidth() const { return _size(0); }
 
 inline
-const float RenderTarget::getHeight() const { return _size(1); }
+int RenderTarget::getHeight() const { return _size(1); }
 
 inline
 void RenderTarget::resize(const Vector<int,2>& size)  { _size = size; doResize(); }

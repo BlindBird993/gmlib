@@ -50,7 +50,8 @@ namespace GMlib {
    */
   class EventController {
   public:
-    EventController();
+    explicit EventController();
+    virtual ~EventController();
 
     double  getFirstEventX() const;
 

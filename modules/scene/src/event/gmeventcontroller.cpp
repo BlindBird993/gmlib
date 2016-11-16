@@ -4,6 +4,7 @@ using namespace GMlib;
 
 
 EventController::EventController() {}
+EventController::~EventController() {}
 
 double EventController::getFirstEventX() const {
 

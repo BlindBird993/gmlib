@@ -101,7 +101,7 @@ namespace GMlib {
   inline
   void PSurf<T,n>::_eval( T u, T v, int d1, int d2 ) {
 
-    if( !(d1 <= _d1 && d2 <=_d2 && u == _u && v == _v) ) {
+    if( !(d1 <= _d1 and d2 <=_d2 and GMutils::compValueF(u,_u) and GMutils::compValueF(v,_v) ) ) {
 
       _u  = u;
       _v  = v;
@@ -698,9 +698,7 @@ namespace GMlib {
         // should be defined in the eval( ... ) function enclosed by
         // if( this->_derivation_method == this->EXPLICIT ) { ... eval algorithms for derivatives ... }
         break;
-
       case GM_DERIVATION_DD:
-      default:
         DD::compute2D(p,du,dv,isClosedU(),isClosedV(),d1,d2);
         break;
     }

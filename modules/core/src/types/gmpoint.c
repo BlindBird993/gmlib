@@ -22,8 +22,10 @@
 
 
 
+// local
+#include "../utils/gmutils.h"
 
-
+// stl
 #include <cstring>
 #include <cmath>
 
@@ -761,7 +763,7 @@ namespace GMlib {
 
 #define V_getliniv(n) \
   Vector<T,n> Vector<T,n>::getLinIndVec() const {\
-    if(n==1|| APoint<T,n>::getLength()==0) return Vector<T,n>(T(0));\
+    if(n==1|| GMutils::compValueF(APoint<T,n>::getLength(),T(0))) return Vector<T,n>(T(0));\
     else\
     {\
       int i,j=0;\

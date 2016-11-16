@@ -86,7 +86,7 @@ namespace GL {
   inline
   T* BufferObject::mapBuffer(GLenum access ) const {
 
-    GLint id = safeBind();
+    auto id = safeBind();
     void *ptr;
     GL_CHECK(ptr = ::glMapBuffer( getTarget(), access ));
     safeUnbind(id);

@@ -26,6 +26,9 @@
 
 #include "gmscene.h"
 
+// gmlib
+#include <core/utils/gmutils.h>
+
 // local
 #include "gmsceneobject.h"
 #include "light/gmlight.h"
@@ -342,7 +345,7 @@ namespace GMlib {
 
     if( !_timer_active ) return;
 
-    if( _timer_time_elapsed == 0 ) prepare();
+    if( GMutils::compValueF(_timer_time_elapsed,0.0) ) prepare();
 
     double dt, timer_dt;
     timer_dt = _timer.getSec(true);

@@ -27,7 +27,6 @@ cmake_minimum_required(VERSION 3.4)
 project(GMlib VERSION 0.6.9 LANGUAGES CXX)
 
 # Specify compiler features
-#set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 14)
 
 # Compiler options
@@ -38,10 +37,12 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Werror -Wsuggest-override")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
-  set(CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} -Weverything -Wno-c++98-compat -pedantic -Werror")
-  #    "${CMAKE_CXX_FLAGS} -Wshadow -Wno-c++98-compat") # -Werror")
-  # -Weverything equivalent to g++ -pedantic, -Werror and -Wall
+
+  # Default compile flags (read: turn on all checks)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything -Wno-c++98-compat -pedantic -Werror")
+
+  # Extra compile flags to turn of stuff we don't want to handle at the moment
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-exit-time-destructors -Wno-conversion -Wno-padded -Wno-weak-vtables -Wno-global-constructors -Wno-undefined-var-template -Wno-double-promotion -Wno-deprecated")# -Wno-float-equal -Wno-ignored-qualifiers -Wno-non-virtual-dtor -Wno-covered-switch-default")
 else()
   message(WARNING "Compiler <${CMAKE_CXX_COMPILER_ID}> is not a supported C++ compiler.")
 endif()
