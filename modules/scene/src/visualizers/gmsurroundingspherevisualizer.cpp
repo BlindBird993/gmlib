@@ -38,8 +38,8 @@ namespace GMlib {
     _wireframe = true;
     _spheres = CLEAN_SPHERE;
 
-    _cs_color = GMcolor::White;
-    _ts_color = GMcolor::Yellow;
+    _cs_color = GMcolor::white();
+    _ts_color = GMcolor::yellow();
 
     _sphere = new Sphere3D( 1.0 );
   }

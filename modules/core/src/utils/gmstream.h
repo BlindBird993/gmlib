@@ -27,6 +27,10 @@
 #define GM_CORE_UTILS_STREAM_H
 
 
+//#ifndef GM_STREAM
+//#define GM_STREAM 1
+//#endif
+
 #ifdef GM_STREAM
 #include <iostream>
 
@@ -132,9 +136,9 @@ namespace GMlib {
   // Predefinitions of the basic separators used throughout the code
   namespace GMseparator {
 
-    extern Separator Element;
-    extern Separator Object;
-    extern Separator Group;
+    const Separator& element();
+    const Separator& object();
+    const Separator& group();
   }
 
   // *****************************

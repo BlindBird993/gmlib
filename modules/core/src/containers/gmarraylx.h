@@ -132,7 +132,7 @@ namespace GMlib{
       out << "Size: " << ar.size() << "\n";
       out << "Contains:\n";
       for( int i = 0; i < ar.size(); i++ )
-        out << ar(i) << GMseparator::Element;
+        out << ar(i) << GMseparator::element();
       return out;
     }
 

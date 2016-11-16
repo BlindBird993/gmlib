@@ -176,7 +176,7 @@ namespace GMlib {
 
 
       // Render light housing
-      _color_prog.uniform( "u_color", GMcolor::DarkGrey );
+      _color_prog.uniform( "u_color", GMcolor::darkGrey() );
 
       _light_box_geom_vbo.bind();
       _light_box_geom_vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexNormal), reinterpret_cast<const GLvoid*>(0x0) );

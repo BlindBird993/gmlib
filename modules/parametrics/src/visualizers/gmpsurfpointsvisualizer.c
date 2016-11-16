@@ -32,7 +32,7 @@
 namespace GMlib {
 
   template <typename T, int n>
-  PSurfPointsVisualizer<T,n>::PSurfPointsVisualizer() : _size(1.0f), _color(GMcolor::BlueViolet), _no_points(0) {
+  PSurfPointsVisualizer<T,n>::PSurfPointsVisualizer() : _size(1.0f), _color(GMcolor::blueViolet()), _no_points(0) {
 
     _prog.acquire("color");
     _vbo.create();
@@ -40,7 +40,7 @@ namespace GMlib {
 
   template <typename T, int n>
   PSurfPointsVisualizer<T,n>::PSurfPointsVisualizer(const PSurfPointsVisualizer<T,n>& copy)
-    : PSurfVisualizer<T,n>(copy), _size(1.0f), _color(GMcolor::BlueViolet), _no_points(0) {
+    : PSurfVisualizer<T,n>(copy), _size(1.0f), _color(GMcolor::blueViolet()), _no_points(0) {
 
     _prog.acquire("color");
     _vbo.create();

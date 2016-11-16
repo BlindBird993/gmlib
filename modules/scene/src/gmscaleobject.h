@@ -74,14 +74,14 @@ namespace GMlib {
       template<class T_Stream>
       friend T_Stream& operator<<(T_Stream& out, const ScaleObject& v)
       {
-        out << bool(v._scaled) << GMseparator::Element << v._s << GMseparator::Element << v._max ;
+        out << bool(v._scaled) << GMseparator::element() << v._s << GMseparator::element() << v._max ;
         return out;
       }
 
       template<class T_Stream>
       friend T_Stream& operator>>(T_Stream& in, ScaleObject& v)
       {
-        static Separator es(GMseparator::Element);
+        static Separator es(GMseparator::element());
         //		GLubyte r,g,b,a;
         int scaled;
         in >> scaled >> es >> v._s >> es >> v._max;

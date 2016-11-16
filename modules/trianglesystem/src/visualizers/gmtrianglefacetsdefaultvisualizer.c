@@ -44,8 +44,8 @@ namespace GMlib {
     _vbo.create();
     _ibo.create();
 
-    _colors.push_back(GMcolor::Blue);
-    _colors.push_back(GMcolor::Red);
+    _colors.push_back(GMcolor::blue());
+    _colors.push_back(GMcolor::red());
   }
 
   template <typename T>

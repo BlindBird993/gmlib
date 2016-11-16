@@ -152,11 +152,11 @@ namespace GMlib {
       T_Stream& operator << ( T_Stream& out, const Array<T>& ar ) {
 
         if(ar.getStreamMode()) {
-          out << ar.getSize() << GMseparator::Element;
+          out << ar.getSize() << GMseparator::element();
         }
 
         for(int i = 0; i < ar.size(); i++) {
-          out << ar(i) << GMseparator::Object;
+          out << ar(i) << GMseparator::object();
         }
         return out;
       }
@@ -168,9 +168,9 @@ namespace GMlib {
       T_Stream& operator >> ( T_Stream& in, Array<T>& ar) {
 
         int i;
-        static Separator es(GMseparator::Element);
-        static Separator os(GMseparator::Object);
-        static Separator gs(GMseparator::Group);
+        static Separator es(GMseparator::element());
+        static Separator os(GMseparator::object());
+        static Separator gs(GMseparator::group());
 
         if(ar.getStreamMode()) {
           in >> i >> es;

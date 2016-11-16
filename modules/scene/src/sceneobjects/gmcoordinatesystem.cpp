@@ -116,17 +116,17 @@ namespace GMlib {
 //        glBegin( GL_LINES ); {
 
 //          // X (red)
-//          glColor( GMcolor::Red );
+//          glColor( GMcolor::red() );
 //          glPoint( Point<float,3>( 0.0f, 0.0f, 0.0f ) );
 //          glPoint( Point<float,3>( 1.0f, 0.0f, 0.0f ) );
 
 //          // Y (green)
-//          glColor( GMcolor::Green );
+//          glColor( GMcolor::green() );
 //          glPoint( Point<float,3>( 0.0f, 0.0f, 0.0f ) );
 //          glPoint( Point<float,3>( 0.0f, 1.0f, 0.0f ) );
 
 //          // Z (blue)
-//          glColor( GMcolor::Blue );
+//          glColor( GMcolor::blue() );
 //          glPoint( Point<float,3>( 0.0f, 0.0f, 0.0f ) );
 //          glPoint( Point<float,3>( 0.0f, 0.0f, 1.0f ) );
 

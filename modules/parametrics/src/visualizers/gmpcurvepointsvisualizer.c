@@ -30,7 +30,7 @@ namespace GMlib {
 
   template <typename T, int n>
   PCurvePointsVisualizer<T,n>::PCurvePointsVisualizer()
-    : _no_vertices{0}, _size{T(1)}, _color{GMcolor::BlueViolet} {
+    : _no_vertices{0}, _size{T(1)}, _color{GMcolor::blueViolet()} {
 
     _prog.acquire("color");
     _vbo.create();

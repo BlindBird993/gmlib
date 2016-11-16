@@ -247,7 +247,7 @@ namespace GMlib {
     inline
     T_Stream &operator<<(T_Stream& out, const Matrix<T,n,m>& v) {
 
-      for(int i=0;i<n;i++) out << v(i) << GMseparator::Group;
+      for(int i=0;i<n;i++) out << v(i) << GMseparator::group();
       return out;
     }
 
@@ -255,7 +255,7 @@ namespace GMlib {
     inline
     T_Stream& operator<<(T_Stream& out, const Matrix<T,n,m>* v) {
 
-      for(int i=0;i<n;i++) out << (*v)(i) << GMseparator::Group;
+      for(int i=0;i<n;i++) out << (*v)(i) << GMseparator::group();
       return out;
     }
 
@@ -263,7 +263,7 @@ namespace GMlib {
     inline
     T_Stream& operator>>(T_Stream& in, Matrix<T,n,m>& v) {
 
-      Separator gs(GMseparator::Group);
+      Separator gs(GMseparator::group());
       for(int i=0;i<n;i++) in >> v[i] >> gs;
       return in;
     }
@@ -272,7 +272,7 @@ namespace GMlib {
     inline
     T_Stream& operator>>(T_Stream& in, Matrix<T,n,m>* v) {
 
-      Separator gs(GMseparator::Group);
+      Separator gs(GMseparator::group());
       for(int i=0;i<n;i++) in >> (*v)[i] >> gs;
       return in;
     }

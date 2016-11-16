@@ -107,10 +107,10 @@ namespace GMlib {
     template <class T_Stream>
     friend T_Stream& operator << ( T_Stream& out, const Material& m ) {
 
-      out << m._amb       << GMseparator::Element
-          << m._dif       << GMseparator::Element
-          << m._spc       << GMseparator::Element
-          << m._shininess << GMseparator::Element;
+      out << m._amb       << GMseparator::element()
+          << m._dif       << GMseparator::element()
+          << m._spc       << GMseparator::element()
+          << m._shininess << GMseparator::element();
 
       return out;
     }
@@ -118,8 +118,8 @@ namespace GMlib {
     template <class T_Stream>
     friend T_Stream& operator >> ( T_Stream& in, Material& m ) {
 
-      static Separator es(GMseparator::Element);
-      static Separator gs(GMseparator::Group);
+      static Separator es(GMseparator::element());
+      static Separator gs(GMseparator::group());
       char fn[255];  // think about this
 
       in  >> m._amb       >> es
@@ -143,30 +143,31 @@ namespace GMlib {
 
   namespace GMmaterial {
 
-    extern Material BlackPlastic;
-    extern Material BlackRubber;
-    extern Material Brass;
-    extern Material Bronze;
-    extern Material Chrome;
-    extern Material Copper;
-    extern Material Emerald;
-    extern Material Gold;
-    extern Material Jade;
-    extern Material Obsidian;
-    extern Material Pearl;
-    extern Material Pewter;
-    extern Material Plastic;
-    extern Material PolishedBronze;
-    extern Material PolishedCopper;
-    extern Material PolishedGold;
-    extern Material PolishedGreen;
-    extern Material PolishedRed;
-    extern Material PolishedSilver;
-    extern Material Ruby;
-    extern Material Sapphire;
-    extern Material Silver;
-    extern Material Snow;
-    extern Material Turquoise;
+
+    const Material& blackPlastic();
+    const Material& blackRubber();
+    const Material& brass();
+    const Material& bronze();
+    const Material& chrome();
+    const Material& copper();
+    const Material& emerald();
+    const Material& gold();
+    const Material& jade();
+    const Material& obsidian();
+    const Material& pearl();
+    const Material& pewter();
+    const Material& plastic();
+    const Material& polishedBronze();
+    const Material& polishedCopper();
+    const Material& polishedGold();
+    const Material& polishedGreen();
+    const Material& polishedRed();
+    const Material& polishedSilver();
+    const Material& ruby();
+    const Material& sapphire();
+    const Material& silver();
+    const Material& snow();
+    const Material& turquoise();
 
   } // END namespace GMlib::Material
 
@@ -186,7 +187,7 @@ namespace GMlib {
   class MaterialObject: public Material {
   public:
     MaterialObject(
-      const Material& mat = GMmaterial::Snow,
+      const Material& mat = GMmaterial::snow(),
       const char* name = "Snow"
     );
 

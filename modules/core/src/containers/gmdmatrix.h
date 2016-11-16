@@ -112,11 +112,11 @@ namespace GMlib{
 
     template <typename T_Stream, typename T>
     T_Stream& operator<<(T_Stream& out, const DMatrix<T>& v)   {
-      out << v.getDim1() << GMseparator::Element << v.getDim2() << GMseparator::Group;
+      out << v.getDim1() << GMseparator::element() << v.getDim2() << GMseparator::group();
       for (int i=0; i<v.getDim1(); i++)
       {
-        for(int j=0;j<v.getDim2(); j++) out << v(i)(j) << GMseparator::Element;
-        out << GMseparator::Group;
+        for(int j=0;j<v.getDim2(); j++) out << v(i)(j) << GMseparator::element();
+        out << GMseparator::group();
       }
       return out;
     }
@@ -124,8 +124,8 @@ namespace GMlib{
 
     template< typename T_Stream, typename T>
     T_Stream& operator>>(T_Stream& in, DMatrix<T>& v) {
-      static Separator gs(GMseparator::Group);
-      static Separator es(GMseparator::Element);
+      static Separator gs(GMseparator::group());
+      static Separator es(GMseparator::element());
       int a,b;
       in >> a >> es >> b >> gs;
       v.setDim(a,b);

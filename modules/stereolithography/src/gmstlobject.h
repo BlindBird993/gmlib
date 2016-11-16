@@ -54,7 +54,7 @@ namespace GMlib {
     GM_SCENEOBJECT(StlObject)
   public:
     StlObject( const std::string& filename, const Color& color = 5, int flip = 1 ); // From file, in given color
-    StlObject( std::ifstream& stream, bool binary = true, const Color& color = GMcolor::Aqua );
+    StlObject( std::ifstream& stream, bool binary = true, const Color& color = GMcolor::aqua() );
 
     StlObject( PSurf<float,3> *obj, int m1 = 20, int m2 = 20, GM_STL_VISUALIZATION gsv = GM_STL_TRIANGLE );
     StlObject( float r = 10 );       // Makes a Sphere, just for debugging

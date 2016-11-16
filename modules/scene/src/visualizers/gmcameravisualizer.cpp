@@ -83,7 +83,7 @@ namespace GMlib {
 
 
 
-      Material mat = GMmaterial::PolishedSilver;
+      Material mat = GMmaterial::polishedSilver();
       _prog.uniform( "u_mat_amb", mat.getAmb() );
       _prog.uniform( "u_mat_dif", mat.getDif() );
       _prog.uniform( "u_mat_spc", mat.getSpc() );
@@ -179,7 +179,7 @@ namespace GMlib {
       _color_prog.bind(); {
 
         GL::AttributeLocation vertex_loc = _color_prog.getAttributeLocation( "in_vertex" );
-        _color_prog.uniform( "u_color", GMcolor::White );
+        _color_prog.uniform( "u_color", GMcolor::white() );
         _color_prog.uniform( "u_mvpmat", pmat * mvmat );
 
         _vbo_frame.bind();

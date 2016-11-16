@@ -99,8 +99,8 @@ namespace GMlib {
 
     _lighted          = true;
     _opaque           = true;
-    _material         = GMmaterial::PolishedCopper;
-    _color            = GMcolor::Red;
+    _material         = GMmaterial::polishedCopper();
+    _color            = GMcolor::red();
     _collapsed        = false;
   }
 
@@ -124,8 +124,8 @@ namespace GMlib {
 
     _lighted          = true;
     _opaque           = true;
-    _material         = GMmaterial::PolishedCopper;
-    _color            = GMcolor::Red;
+    _material         = GMmaterial::polishedCopper();
+    _color            = GMcolor::red();
     _collapsed        = false;
   }
 
@@ -149,8 +149,8 @@ namespace GMlib {
 
     _lighted          = true;
     _opaque           = true;
-    _material         = GMmaterial::PolishedCopper;
-    _color            = GMcolor::Red;
+    _material         = GMmaterial::polishedCopper();
+    _color            = GMcolor::red();
     _collapsed        = false;
   }
 

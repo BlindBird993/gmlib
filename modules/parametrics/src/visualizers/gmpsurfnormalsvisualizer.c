@@ -33,7 +33,7 @@ namespace GMlib {
 
   template <typename T, int n>
   PSurfNormalsVisualizer<T,n>::PSurfNormalsVisualizer()
-    : _no_elements(0),_color( GMcolor::Black ),
+    : _no_elements(0),_color( GMcolor::black() ),
       _size(1.0), _mode(GM_SURF_NORMALSVISUALIZER_ALL) {
 
     _prog.acquire("color");

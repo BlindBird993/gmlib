@@ -308,7 +308,7 @@ namespace GMlib {
     inline
     T_Stream& operator << ( T_Stream &out, const APoint<T, n> &p ) {
       for(int i = 0; i < n; i++)
-        out << p(i) << GMseparator::Element;
+        out << p(i) << GMseparator::element();
       return out;
     }
 
@@ -325,7 +325,7 @@ namespace GMlib {
     template <typename T_Stream, typename T, int n>
     inline
     T_Stream& operator << ( T_Stream &out, const APoint<T, n> *p ) {
-      for(int i=0;i<n;i++) out << (*p)(i) << GMseparator::Element;
+      for(int i=0;i<n;i++) out << (*p)(i) << GMseparator::element();
       return out;
     }
 
@@ -342,7 +342,7 @@ namespace GMlib {
     template <typename T_Stream, typename T, int n>
     inline
     T_Stream& operator >> ( T_Stream &in, APoint<T, n> &p ) {
-      Separator es(GMseparator::Element);
+      Separator es(GMseparator::element());
       for(int i=0;i<n;i++) in >> p[i] >> es;
       return in;
     }
@@ -359,7 +359,7 @@ namespace GMlib {
     template <typename T_Stream, typename T, int n>
     inline
     T_Stream& operator >> ( T_Stream &in, APoint<T, n> *p ) {
-      Separator es(GMseparator::Element);
+      Separator es(GMseparator::element());
       for(int i=0;i<n;i++) in >> (*p)[i] >> es;
       return in;
     }
@@ -729,7 +729,7 @@ namespace GMlib {
   template <typename T_Stream,typename T, int n>
   T_Stream &operator << ( T_Stream &out, const Arrow<T,n> &a ) {
 
-    out << a.getPos() << GMseparator::Element << a.getDir();
+    out << a.getPos() << GMseparator::element() << a.getDir();
     return out;
   }
 
@@ -742,7 +742,7 @@ namespace GMlib {
   template <typename T_Stream,typename T, int n>
   T_Stream& operator << ( T_Stream &out, const Arrow<T,n> *a ) {
 
-    out << a->getPos() << GMseparator::Element << a->getDir();
+    out << a->getPos() << GMseparator::element() << a->getDir();
     return out;
   }
 
@@ -755,7 +755,7 @@ namespace GMlib {
   template <typename T_Stream,typename T, int n>
   T_Stream& operator >> ( T_Stream &in, Arrow<T,n> &a ) {
 
-    Separator es(GMseparator::Element);
+    Separator es(GMseparator::element());
     Point<T,n>  pt;
     Vector<T,n> dir;
 
@@ -775,7 +775,7 @@ namespace GMlib {
   template <typename T_Stream,typename T, int n>
   T_Stream& operator >> ( T_Stream &in, Arrow<T,n> *a ) {
 
-    Separator es(GMseparator::Element);
+    Separator es(GMseparator::element());
     Point<T,n>  pt;
     Vector<T,n> dir;
 
@@ -868,7 +868,7 @@ namespace GMlib {
     template <typename T_Stream, typename T, int n>
     inline
     T_Stream &operator<<(T_Stream& os, const ScalarPoint<T,n>& s) {
-      os << s.getPos() << GMseparator::Element << s.getValue();
+      os << s.getPos() << GMseparator::element() << s.getValue();
       return os;
     }
 
@@ -880,7 +880,7 @@ namespace GMlib {
     template <typename T_Stream, typename T, int n>
     inline
     T_Stream &operator<<(T_Stream& os, const ScalarPoint<T,n>* s) {
-      os << s->getPos() << GMseparator::Element << s->getValue();
+      os << s->getPos() << GMseparator::element() << s->getValue();
       return os;
     }
 
@@ -892,7 +892,7 @@ namespace GMlib {
     template <typename T_Stream, typename T, int n>
     inline
     T_Stream &operator >> ( T_Stream& is, ScalarPoint<T, n>& s ) {
-      Separator es(GMseparator::Element);
+      Separator es(GMseparator::element());
       Point<T,n> p1;
       T v;
       is >> p1 >> es >> v;
@@ -908,7 +908,7 @@ namespace GMlib {
     template <typename T_Stream, typename T, int n>
     inline
     T_Stream &operator>>(T_Stream& is, ScalarPoint<T,n>* s) {
-      Separator es(GMseparator::Element);
+      Separator es(GMseparator::element());
       Point<T,n> p1;
       T v;
       is >> p1 >> es >> v;
@@ -1110,7 +1110,7 @@ namespace GMlib {
      */
     template<typename T_Stream, typename T, int n>
     T_Stream &operator<<(T_Stream& os, const Box<T,n>& b) {
-      os << b.getPointMin() << GMseparator::Element << b.getPointMax();
+      os << b.getPointMin() << GMseparator::element() << b.getPointMax();
       return os;
     }
 
@@ -1121,7 +1121,7 @@ namespace GMlib {
      */
     template<typename T_Stream, typename T, int n>
     T_Stream &operator<<(T_Stream& os, const Box<T,n>* b) {
-      os << b->getPointMin() << GMseparator::Element << b->getPointMax();
+      os << b->getPointMin() << GMseparator::element() << b->getPointMax();
       return os;
     }
 
@@ -1132,7 +1132,7 @@ namespace GMlib {
      */
     template<typename T_Stream, typename T, int n>
     T_Stream &operator>>(T_Stream& is, Box<T,n>& b) {
-      Separator es(GMseparator::Element);
+      Separator es(GMseparator::element());
       Point<T,n> p1,p2;
       is >> p1 >> es >> p2;
       b.reset(p1);
@@ -1147,7 +1147,7 @@ namespace GMlib {
      */
     template<typename T_Stream, typename T, int n>
     T_Stream &operator>>(T_Stream& is, Box<T,n>* b) {
-      Separator es(GMseparator::Element);
+      Separator es(GMseparator::element());
       Point<T,n> p1,p2;
       is >> p1 >> es >> p2;
       b->reset(p1);

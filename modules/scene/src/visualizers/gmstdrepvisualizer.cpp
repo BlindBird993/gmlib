@@ -99,7 +99,7 @@ namespace GMlib {
 
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
 
-      Color blend_color = GMcolor::LightGrey;
+      Color blend_color = GMcolor::lightGrey();
       blend_color.setAlpha( 0.5 );
 
       _bo_cube.bind();
@@ -110,17 +110,17 @@ namespace GMlib {
         const GLsizei frame_stride = 2 * sizeof(GLushort);
 
         GL_CHECK(::glLineWidth( 2.0f ));
-        _prog.uniform( "u_color", GMcolor::Red );
+        _prog.uniform( "u_color", GMcolor::red() );
         GL_CHECK(::glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, static_cast<const GLvoid*>(0x0) ));
 
-        _prog.uniform( "u_color", GMcolor::Green );
+        _prog.uniform( "u_color", GMcolor::green() );
         GL_CHECK(::glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, reinterpret_cast<const GLvoid*>(frame_stride) ));
 
-        _prog.uniform( "u_color", GMcolor::Blue );
+        _prog.uniform( "u_color", GMcolor::blue() );
         GL_CHECK(::glDrawElements( GL_LINES, 2, GL_UNSIGNED_SHORT, reinterpret_cast<const GLvoid*>(2*frame_stride) ));
 
         glLineWidth( 1.0f );
-        _prog.uniform( "u_color", GMcolor::LightGrey );
+        _prog.uniform( "u_color", GMcolor::lightGrey() );
         GL_CHECK(::glDrawElements( GL_LINES, 18, GL_UNSIGNED_SHORT, reinterpret_cast<const GLvoid*>(3*frame_stride) ));
 
       } _bo_cube_frame_indices.unbind();

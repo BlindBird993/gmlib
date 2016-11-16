@@ -253,7 +253,7 @@ class Cube;
     inline
     T_Stream &operator<<( T_Stream& out, const SubSpace<T,n,m>& s ) {
 
-      out << (Point<T,n>)s << GMseparator::Group << s.getMat();
+      out << (Point<T,n>)s << GMseparator::group() << s.getMat();
       return out;
     }
 
@@ -265,7 +265,7 @@ class Cube;
     inline
     T_Stream& operator<<( T_Stream& out, const SubSpace<T,n,m>* s ) {
 
-      out << (Point<T,n>*)s << GMseparator::Group << s->getMat();
+      out << (Point<T,n>*)s << GMseparator::group() << s->getMat();
       return out;
     }
 

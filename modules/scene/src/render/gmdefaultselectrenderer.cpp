@@ -151,7 +151,7 @@ namespace GMlib {
 
     // Clear buffers
     _fbo.clear( GL_DEPTH_BUFFER_BIT );
-    _fbo.clearColorBuffer( GMcolor::Black );
+    _fbo.clearColorBuffer( GMcolor::black() );
 
     // Render selection
     GLboolean depth_test_state;

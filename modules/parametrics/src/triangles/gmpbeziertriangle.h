@@ -57,7 +57,7 @@ class SelectorGridVisualizer;
     virtual void                hideSelectors();
     bool                        isSelectorsVisible() const;
     void                        setControlPoints( const DVector< Vector<T,3> >& c );
-    virtual void                showSelectors( bool grid, Color selector_color = GMcolor::DarkBlue, Color grid_color = GMcolor::LightGreen );
+    virtual void                showSelectors( bool grid, Color selector_color = GMcolor::darkBlue(), Color grid_color = GMcolor::lightGreen() );
     void                        updateCoeffs( const Vector<T,3>& d ) override;
 
   protected:

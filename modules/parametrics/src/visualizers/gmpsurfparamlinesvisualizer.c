@@ -41,7 +41,7 @@ namespace GMlib {
 template <typename T, int n>
 PSurfParamLinesVisualizer<T,n>::PSurfParamLinesVisualizer()
   : _no_strips(0), _no_strip_indices(0), _strip_size(0),
-    _mat(GMmaterial::BlackRubber) {
+    _mat(GMmaterial::blackRubber()) {
 
   initShaderProgram();
 

@@ -281,7 +281,7 @@ namespace GMlib {
       for( int j = 0; j < _c.getDim2(); j++ ) {
 
         _c[i][j]->setLighted( true );
-        _c[i][j]->setMaterial( GMmaterial::Ruby );
+        _c[i][j]->setMaterial( GMmaterial::ruby() );
       }
     }
   }
@@ -378,7 +378,7 @@ namespace GMlib {
       for( int j = 0; j < _c.getDim2(); j++ ) {
 
         _c[i][j]->setLighted( true );
-        _c[i][j]->setMaterial( GMmaterial::Ruby );
+        _c[i][j]->setMaterial( GMmaterial::ruby() );
       }
     }
   }

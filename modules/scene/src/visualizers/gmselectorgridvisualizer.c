@@ -65,7 +65,7 @@ namespace GMlib {
 
       _prog.uniform( "u_mvpmat", mvpmat );
 
-      _prog.uniform( "u_color", GMcolor::LightGreen );
+      _prog.uniform( "u_color", GMcolor::lightGreen() );
       _prog.uniform( "u_selected", false );
 
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );

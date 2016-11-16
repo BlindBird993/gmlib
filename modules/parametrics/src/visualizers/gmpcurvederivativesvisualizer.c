@@ -36,7 +36,7 @@ namespace GMlib {
     _prog.acquire("color");
     _vbo.create();
 
-    _color = GMcolor::Green;
+    _color = GMcolor::green();
     _t = 1;
     _mode = GM_PCURVE_DERIVATIVESVISUALIZER_RELATIVE;
     _size = 1.0;

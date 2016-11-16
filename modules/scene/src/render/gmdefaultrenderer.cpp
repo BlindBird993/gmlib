@@ -46,7 +46,7 @@ namespace GMlib {
 
 
 
-  DefaultRenderer::DefaultRenderer() : _select_color(GMcolor::Beige) {
+  DefaultRenderer::DefaultRenderer() : _select_color(GMcolor::beige()) {
 
 
     // Acquire programs
@@ -56,7 +56,7 @@ namespace GMlib {
     // Create render targets
     _front_rt = new NativeRenderTarget;
     _back_rt = new NativeRenderTarget;
-    setClearColor(GMcolor::Grey);
+    setClearColor(GMcolor::grey());
 
     // Create buffers
     _fbo.create();
@@ -500,7 +500,7 @@ namespace GMlib {
 
   void DefaultRenderer::renderSelectedGeometry( const SceneObject* obj) const {
 
-    const Color sel_true_color = GMcolor::White;
+    const Color sel_true_color = GMcolor::white();
 
     if( obj != getCamera() && obj->isSelected() && obj->isVisible()  ) {
 
@@ -606,7 +606,7 @@ namespace GMlib {
     _fbo.clearColorBuffer( getClearColor() );
     _fbo.clear( GL_DEPTH_BUFFER_BIT );
 
-    _fbo_select.clearColorBuffer( GMcolor::Black );
+    _fbo_select.clearColorBuffer( GMcolor::black() );
     _fbo_select_depth.clear( GL_DEPTH_BUFFER_BIT );
 
     // Object rendering
@@ -707,7 +707,7 @@ namespace GMlib {
 
       GL::GLDirectionalLight dl;
       GL::OpenGLManager::fillGLDirectionalLight( dl,
-                                                 sun->getGlobalAmbient(), GMcolor::Black, GMcolor::Black,
+                                                 sun->getGlobalAmbient(), GMcolor::black(), GMcolor::black(),
                                                  cammat * sun->getMatrix() * sun->getDir()
                                                  );
       dirlights_data.push_back(dl);

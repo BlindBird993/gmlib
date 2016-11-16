@@ -141,10 +141,10 @@ namespace GMlib {
   template <typename T_Stream, typename T>
   T_Stream& operator << ( T_Stream& out, const DVector<T>& v ) {
 
-    out << v.getDim() << GMseparator::Group;
+    out << v.getDim() << GMseparator::group();
 
     for( int i = 0; i < v.getDim(); i++ )
-      out << v(i) << GMseparator::Element;
+      out << v(i) << GMseparator::element();
 
     return out;
   }
@@ -153,8 +153,8 @@ namespace GMlib {
   template<typename T_Stream, typename T>
   T_Stream& operator >> ( T_Stream& in, DVector<T>& v ) {
 
-    static Separator gs(GMseparator::Group);
-    static Separator es(GMseparator::Element);
+    static Separator gs(GMseparator::group());
+    static Separator es(GMseparator::element());
     int a;
 
     in >> a >> gs;
