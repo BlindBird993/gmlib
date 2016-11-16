@@ -23,8 +23,8 @@
 
 
 // Version definitions
-#define GM_VERSION 0x000600
-#define GM_VERSION_STR "0.6.0"
+#define GM_VERSION 0x000609
+#define GM_VERSION_STR "0.6.9"
 
 #define GM_VERSION_CHECK(major, minor, patch) ((major<<16)|(minor<<8)|(patch))
 

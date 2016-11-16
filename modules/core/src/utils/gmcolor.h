@@ -115,15 +115,15 @@ namespace GMlib {
 
 
   private:
-    constexpr unsigned char clampMult( const unsigned char& one, const double& d ) {
+    unsigned char clampMult( const unsigned char& one, const double& d ) {
       return static_cast<unsigned char>( double(one) * d > 255.0 ? 255 : double(one) * d );
     }
 
-    constexpr unsigned char clampAdd( const unsigned char& one, const int& other ) {
+    unsigned char clampAdd( const unsigned char& one, const int& other ) {
       return static_cast<unsigned char>( int(one) + other > 255 ? 255 : int(one) + other );
     }
 
-    constexpr unsigned char clampSub( const unsigned char& one, const int& other ) {
+    unsigned char clampSub( const unsigned char& one, const int& other ) {
       return static_cast<unsigned char>( int(one) - other < 0 ? 0 : int(one) - other );
     }
 
