@@ -39,8 +39,8 @@ namespace GMlib {
     _mapping = GM_PSURF_CONTOURSVISUALIZER_X;
 
     // Set default colors
-    _colors += GMcolor::Red;
-    _colors += GMcolor::Blue;
+    _colors += GMcolor::red();
+    _colors += GMcolor::blue();
 
     // Set default interpolation method
     _method = GM_PSURF_CONTOURSVISUALIZER_LINEAR;

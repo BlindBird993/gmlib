@@ -68,8 +68,8 @@ namespace GMlib {
     stop();
 
     _rt = new NativeRenderTarget;
-    _clear_color  = GMcolor::Grey;
-    _select_color = GMcolor::Beige;
+    _clear_color  = GMcolor::grey();
+    _select_color = GMcolor::beige();
 
 
 

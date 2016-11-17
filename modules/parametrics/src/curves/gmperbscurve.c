@@ -322,9 +322,9 @@ namespace GMlib {
   void PERBSCurve<T>::insertLocal( PCurve<T,3>* local ) {
 
     local->replot( 30 );
-    static Color cl= GMcolor::Blue;
+    static Color cl= GMcolor::blue();
     local->setColor( cl );
-    cl = cl.getInterpolatedHSV( 0.2, GMcolor::Yellow );
+    cl = cl.getInterpolatedHSV( 0.2, GMcolor::yellow() );
     local->setVisible( false );
     local->setCollapsed( true );
     this->insert( local );

@@ -39,8 +39,8 @@ namespace GMlib {
     _mapping = GM_PCURVE_CONTOURSVISUALIZER_X;
 
     // Set default colors
-    _colors += GMcolor::Red;
-    _colors += GMcolor::Blue;
+    _colors += GMcolor::red();
+    _colors += GMcolor::blue();
 
     glGenBuffers( 1, &_vbo_c );
   }

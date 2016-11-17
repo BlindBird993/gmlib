@@ -36,9 +36,9 @@ namespace GMlib {
     _color_mode = GM_PTRIANGLE_COLORVISUALIZER_RGB;
     glGenBuffers( 1, &_vbo_color );
 
-    _c1 = GMcolor::Red;
-    _c2 = GMcolor::Green;
-    _c3 = GMcolor::Blue;
+    _c1 = GMcolor::red();
+    _c2 = GMcolor::green();
+    _c3 = GMcolor::blue();
   }
 
   template <typename T>

@@ -34,12 +34,12 @@ if(MSVC)
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Werror -Wsuggest-override")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Werror")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
 
   # Default compile flags (read: turn on all checks)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything -Wno-c++98-compat -pedantic -Werror")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Weverything -Wno-c++98-compat -Wno-documentation -pedantic -Werror")
 
   # Extra compile flags to turn of stuff we don't want to handle at the moment
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-exit-time-destructors")

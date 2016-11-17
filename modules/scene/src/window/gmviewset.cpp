@@ -41,7 +41,7 @@ namespace GMlib {
     _vbo.create();
 
     if(cam) _cameras += cam;
-    _border_color = GMcolor::White;
+    _border_color = GMcolor::white();
   }
 
 

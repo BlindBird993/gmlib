@@ -157,7 +157,7 @@ namespace GMlib {
     for( int i = 0, k = 0; i < _s.getDim(); i++ ) {
       Selector<T,3> *sel;
       if( i == 0 )
-        sel = new Selector<T,3>( _c[i], k++, this, T(0.2), GMcolor::Red );
+        sel = new Selector<T,3>( _c[i], k++, this, T(0.2), GMcolor::red() );
       else
         sel = new Selector<T,3>( _c[i], k++, this, T(0.2), selector_color );
 
