@@ -95,6 +95,7 @@ namespace GMlib {
             const Vector<float,3>& up,
             float zoom=1);
 
+   Camera( const Camera& copy ) = default;
     virtual ~Camera();
 
     SceneObject*                findSelectObject(int, int, int type_id=0);

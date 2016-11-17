@@ -76,8 +76,8 @@ add_subdirectory(trianglesystem)  # Don't need dependecies as this is a pure tem
 #GM_ADD_MODULE_DEPENDENCIES(trianglesystem core opengl scene)
 
 # Stereolithography
-add_subdirectory(stereolithography)
-GM_ADD_MODULE_DEPENDENCIES(stereolithography core opengl scene)
+#add_subdirectory(stereolithography)
+#GM_ADD_MODULE_DEPENDENCIES(stereolithography core opengl scene)
 
 
 

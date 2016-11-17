@@ -809,6 +809,7 @@ namespace GMlib {
     ScalarPoint( const APoint<T, n>& p, T v = T(0) );
     ScalarPoint( const ScalarPoint<T, n>& s );
 
+
     const APoint<T, n>&   getPos() const;
     T*                    getPtr();
     const T*              getPtr() const;
@@ -818,6 +819,8 @@ namespace GMlib {
     void                  resetValue( T t );
     void                  resetPos( const APoint<T, n>& p );
 
+
+    ScalarPoint<T,n>&           operator =  ( const ScalarPoint<T,n>& ) = default;
     const ScalarPoint<T, n>&    operator += ( const APoint<T, n>& p );
     ScalarPoint<T, n>           operator +  ( const APoint<T, n>& p ) const;
     const ScalarPoint<T, n>&    operator += ( T p );
@@ -949,6 +952,7 @@ namespace GMlib {
     void                  resetRadius( T t );
     void                  reset();
 
+    Sphere<T,n>&          operator = ( const Sphere<T,n>& other ) = default;
     const Sphere<T, n>&   operator += ( const APoint<T, n>& p );
     Sphere<T, n>          operator +  ( const APoint<T, n>& p ) const;
     const Sphere<T, n>&   operator += ( const Sphere<T, n>& p );

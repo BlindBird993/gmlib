@@ -42,6 +42,7 @@ namespace GL {
   class BufferObject : public Private::GLObject<Private::BOInfo> {
   public:
     explicit BufferObject();
+    BufferObject(const BufferObject& copy ) = default;
     ~BufferObject();
 
 

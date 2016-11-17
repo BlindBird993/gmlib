@@ -47,6 +47,7 @@ namespace GL {
   class Program : public Private::GLObject<Private::ProgramInfo> {
   public:
     explicit Program();
+    Program( const Program& copy ) = default;
     ~Program();
 
     void                      create();

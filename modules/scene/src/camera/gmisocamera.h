@@ -56,6 +56,7 @@ namespace GMlib {
       const Vector<float,3>& up,
       float zoom=1
     );
+    IsoCamera( const IsoCamera& copy ) = default;
     ~IsoCamera();
 
     double          deltaTranslate(SceneObject *) override;
