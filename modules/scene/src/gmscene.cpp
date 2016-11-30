@@ -105,12 +105,17 @@ namespace GMlib {
 
     const bool is_culling = cam->isCulling();
 
-    if(is_culling)
+    if(is_culling) {
+
+      const_cast<Camera*>(cam)->computeFrustumBounds();
+
       for( int i = 0; i < _scene.getSize(); ++i )
         _scene(i)->getRenderList( objs, *cam );
-    else
+    }
+    else {
       for( int i = 0; i < _scene.getSize(); ++i )
         _scene(i)->getRenderList( objs );
+    }
   }
 
   void Scene::clear() {

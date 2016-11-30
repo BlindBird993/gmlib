@@ -281,8 +281,9 @@ namespace GMlib {
 
     int k = cam.isInsideFrustum(getSurroundingSphere());
 
-    if( k < 0 )
+    if( k < 0 ) {
       return;  // Outside
+    }
 
     // Inside
     if( k > 0 ) {
