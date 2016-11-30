@@ -27,9 +27,6 @@
 #define GM_CORE_UTILS_STREAM_H
 
 
-//#ifndef GM_STREAM
-//#define GM_STREAM 1
-//#endif
 
 #ifdef GM_STREAM
 #include <iostream>
