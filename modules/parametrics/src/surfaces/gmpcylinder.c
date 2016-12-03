@@ -44,7 +44,6 @@ namespace GMlib {
     _rx = copy._rx;
     _ry = copy._ry;
     _h  = copy._h;
-    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
