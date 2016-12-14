@@ -218,6 +218,15 @@ configure_package_config_file(
 
 
 
+###### Custom carget for "other files" -- IDE friendly
+set(GM_OTHER_FILES
+  COPYING
+  COPYING.LESSER
+  README
+  .gitignore
+#  .clang-format
+  )
+add_custom_target( CustomTargetForOtherFiles SOURCES ${GM_OTHER_FILES} )
 
 
 
