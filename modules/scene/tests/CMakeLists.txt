@@ -21,12 +21,4 @@
 # ###############################################################################
 
 
-# Set name of module
-project(scene)
-
-# Add source directory
-add_subdirectory(src)
-
-# Add unit test directory
-include_directories(src)
-add_subdirectory(tests)
+GM_ADD_TESTS(sceneobject_tests gmscene gmopengl gmcore)

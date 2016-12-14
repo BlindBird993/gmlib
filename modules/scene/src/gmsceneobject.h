@@ -516,15 +516,15 @@ namespace GMlib{
 
 
 
-  inline const Vector<float,3>& SceneObject::getDir() const {  return _dir; }
-  inline const Vector<float,3>& SceneObject::getSide() const {  return _side; }
-  inline const Vector<float,3>& SceneObject::getUp() const {  return _up; }
-  inline const Point<float,3>&  SceneObject::getPos() const {  return _pos; }
+  inline const Vector<float,3>& SceneObject::getDir()  const { return _dir; }
+  inline const Vector<float,3>& SceneObject::getSide() const { return _side; }
+  inline const Vector<float,3>& SceneObject::getUp()   const { return _up; }
+  inline const Point<float,3>&  SceneObject::getPos()  const { return _pos; }
 
-  inline Vector<float,3> SceneObject::getGlobalDir() const {  return _present*_dir; }
-  inline Vector<float,3> SceneObject::getGlobalSide() const {  return _present * _side; }
-  inline Vector<float,3> SceneObject::getGlobalUp() const {  return _present * _up; }
-  inline Point<float,3>  SceneObject::getGlobalPos() const {  return _present * _pos; }
+  inline Vector<float,3> SceneObject::getGlobalDir()  const { return _matrix_scene * _dir; }
+  inline Vector<float,3> SceneObject::getGlobalSide() const { return _matrix_scene * _side; }
+  inline Vector<float,3> SceneObject::getGlobalUp()   const { return _matrix_scene * _up; }
+  inline Point<float,3>  SceneObject::getGlobalPos()  const { return _matrix_scene * _pos; }
 
 
   inline
