@@ -174,7 +174,7 @@ namespace GMlib {
     int ddd = 1;
     for(int i=1; i<n; i++) ddd*=_dim_[i];
 
-    T result = (T)-1;
+    T result = T(-1);
     for( int j = 1; j <= _dim_[0]; j++ ) {
 
       if( (j*ddd) > idx_flat ) {
@@ -192,7 +192,7 @@ namespace GMlib {
 
     unsigned long int tmp=0;
       for(unsigned long int i=0; i<k.getDim(); i++)
-        tmp+=k[i]*std::pow((float)res,(float)(k.getDim()-1-i));
+        tmp+=k[i]*std::pow(float(res),float(k.getDim()-1-i));
     return tmp;
   }
 
@@ -200,9 +200,9 @@ namespace GMlib {
   DVector<unsigned long int> DVectorN<T,n,K>::makeIdx2D( unsigned long int k, int res ) {
 
     DVector<unsigned long int> r(2);
-    r[0]= (unsigned long int) k/res;
+    r[0]= static_cast<unsigned long int>(k/res);
     unsigned long int tmp=k-r[0]*res;
-    r[1]=(unsigned long int) (tmp);
+    r[1]= static_cast<unsigned long int>(tmp);
 
     return r;
   }
@@ -228,10 +228,10 @@ namespace GMlib {
     int m = dim -1;
 
 
-    float fact = std::pow( (float)res, m);
+    float fact = std::pow( float(res), m);
 
     DVector<unsigned long int> k(dim);
-    k[0] = (unsigned long int) v / fact; //std::pow( 2.0f, (float)res * ( m - 1) );
+    k[0] = static_cast<unsigned long int>(v / fact); //std::pow( 2.0f, (float)res * ( m - 1) );
 
 //    std::cout << "DVector<unsigned long int> DVectorN<T,n,K>::makeIdxND(unsigned long int idx, int res, int dim)" << std::endl;
 //    std::cout << " -- mu: " << mu << std::endl;
@@ -244,8 +244,8 @@ namespace GMlib {
     unsigned long int v_n = v - k[0] * fact;
     for( int i = 1; i < dim; i++ ) {
 
-      fact = std::pow( (float)res, m-i);
-      k[i] = (unsigned long int) v_n / fact;//std::pow( 2.0f, (float)res * ( m - i) );
+      fact = std::pow( float(res), m-i);
+      k[i] = static_cast<unsigned long int>( v_n / fact );//std::pow( 2.0f, (float)res * ( m - i) );
 
       v_n = v_n - k[i] * fact;//std::pow( 2.0f, (float)res * ( m - i) );
 
@@ -486,10 +486,9 @@ namespace GMlib {
   template <typename T, class K>
   void DVectorN<T,1,K>::_copy( const DVectorN<T,1>& v ) {
 
-    int i;
     if (this->_n == v._n) {
 
-      for(i=0;i<v._n;i++) this->_pt[i] = v._pt[i];
+      for(int i=0;i<v._n;i++) this->_pt[i] = v._pt[i];
     }
     else {
 
