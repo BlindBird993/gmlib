@@ -169,7 +169,7 @@ namespace GMlib {
 
   template <class T, int n>
   inline
-  Point<T,n> SubSpace<T,n,0>::getClosestPoint( const Point<T,n>& p ) const {
+  Point<T,n> SubSpace<T,n,0>::getClosestPoint( const Point<T,n>& ) const {
 
     return (*this);
   }
@@ -193,7 +193,7 @@ namespace GMlib {
 
   template <class T, int n>
   inline
-  Vector<T,n> SubSpace<T,n,0>::getDir( int i ) {
+  Vector<T,n> SubSpace<T,n,0>::getDir(int) {
 
     return Vector<T,n>(0.0);
   }
@@ -201,7 +201,7 @@ namespace GMlib {
 
   template <class T, int n>
   inline
-  Vector<T,n> const SubSpace<T,n,0>:: getDirC( int i ) const {
+  Vector<T,n> const SubSpace<T,n,0>:: getDirC(int) const {
 
     return Vector<T,n>(0.0);
   }
@@ -209,7 +209,7 @@ namespace GMlib {
 
   template <class T, int n>
   inline
-  T SubSpace<T,n,0>::getDistanceAlong(const Point<T,n>& p, int i ) {
+  T SubSpace<T,n,0>::getDistanceAlong(const Point<T,n>&, int) {
 
     return T(0);
   }

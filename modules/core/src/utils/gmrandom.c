@@ -50,7 +50,7 @@ namespace GMlib {
   T Random<T>::get() {
 
     T difference = _high - _low;
-    T value = T(difference * ((double)rand() / (double)RAND_MAX));
+    T value = T(difference * double(rand()) / double(RAND_MAX));
     return (_low + value);
 
     //return floor(((float)rand( ) /(float)RAND_MAX) * (_high - _low) + _low);
