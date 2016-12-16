@@ -43,8 +43,8 @@ namespace GMlib {
     const Vector<T,3>&        getU() const;
     const Vector<T,3>&        getV() const;
 
-    bool                      isClosedU() const;
-    bool                      isClosedV() const;
+    bool                      isClosedU() const override;
+    bool                      isClosedV() const override;
 
     void                      setP( const Point<T,3>& p );
     void                      setU( const Vector<T,3>& u );
@@ -56,11 +56,11 @@ namespace GMlib {
     Vector<T,3>               _v;
     UnitVector<T,3>           _n;
 
-    void                      eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
-    T                         getEndPU();
-    T                         getEndPV();
-    T                         getStartPU();
-    T                         getStartPV();
+    void                      eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T                         getEndPU() override;
+    T                         getEndPV() override;
+    T                         getStartPU() override;
+    T                         getStartPV() override;
 
   }; // END class PPlane
 
