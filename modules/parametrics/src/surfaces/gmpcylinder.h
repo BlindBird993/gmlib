@@ -44,8 +44,8 @@ namespace GMlib {
     T             getHeight() const;
     T             getRadiusX() const;
     T             getRadiusY() const;
-    bool          isClosedU() const;
-    bool          isClosedV() const;
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
     void          setConstants( T rx, T ry, T h );
 
   protected:
@@ -53,11 +53,11 @@ namespace GMlib {
     T             _ry;
     T             _h;
 
-    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
-    T             getEndPV();
-    T             getEndPU();
-    T             getStartPU();
-    T             getStartPV();
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getEndPV() override;
+    T             getEndPU() override;
+    T             getStartPU() override;
+    T             getStartPV() override;
 
   }; // END class PCylinder
 
