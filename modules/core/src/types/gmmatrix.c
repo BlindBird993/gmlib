@@ -993,6 +993,7 @@ namespace GMlib {
     //	if (big == 0.0)  nrerror("Singular matrix in routine ludcmp");
       vv[i] = 1.0/big;
     }
+    imax = 0;
     for (j=0;j<n;j++)
     {
       big=0.0;

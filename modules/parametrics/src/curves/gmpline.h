@@ -39,15 +39,15 @@ namespace GMlib {
     PLine( const PLine<T>& copy );
     virtual ~PLine();
 
-    bool            isClosed() const;
+    bool            isClosed() const override;
 
   protected:
     Point<T,3>      _pt;
     Vector<T,3>     _v;
 
-    void            eval(T t, int d, bool l);
-    T               getEndP();
-    T               getStartP();
+    void            eval(T t, int d, bool l) override;
+    T               getEndP() override;
+    T               getStartP() override;
 
   }; // END class PLine
 
