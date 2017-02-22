@@ -42,13 +42,13 @@ namespace GMlib {
     PSurfParamLinesVisualizer();
     PSurfParamLinesVisualizer( const PSurfParamLinesVisualizer<T,n>& copy );
 
-    void          render( const SceneObject* obj, const DefaultRenderer *cam ) const;
+    void          render( const SceneObject* obj, const DefaultRenderer *cam ) const override;
 
     virtual void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
                           const DMatrix< Vector<T, 3> >& normals,
                           int m1, int m2, int d1, int d2,
                           bool closed_u, bool closed_v
-    );
+    ) override;
 
   private:
     GL::Program                 _prog;
