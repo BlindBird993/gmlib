@@ -67,9 +67,9 @@ function(GM_ADD_LIBRARY)
   endif(GM_BUILD_SHARED)
 
   if( NOT GM_MODULE_TARGETS )
-    set( GM_MODULE_TARGETS -l${TARGET} CACHE INTERNAL "TMP module targets variable" )
+    set( GM_MODULE_TARGETS ${TARGET} CACHE INTERNAL "TMP module targets variable" )
   else()
-    set( GM_MODULE_TARGETS -l${TARGET} ${GM_MODULE_TARGETS} CACHE INTERNAL "TMP module targets variable" )
+    set( GM_MODULE_TARGETS ${TARGET} ${GM_MODULE_TARGETS} CACHE INTERNAL "TMP module targets variable" )
   endif()
 endfunction(GM_ADD_LIBRARY)
 
