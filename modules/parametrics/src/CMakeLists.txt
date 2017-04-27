@@ -28,6 +28,7 @@ list( APPEND HEADERS
   gmpcurve.h
   gmpsurf.h
   gmptriangle.h
+  gmppolygon.h
 )
 
 list( APPEND HEADER_SOURCES
@@ -35,6 +36,7 @@ list( APPEND HEADER_SOURCES
   gmpcurve.c
   gmpsurf.c
   gmptriangle.c
+  gmppolygon.c
 )
 
 
