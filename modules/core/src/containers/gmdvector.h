@@ -179,7 +179,7 @@ namespace GMlib {
   {
   #ifdef DEBUG
     if (m.dim() != v.getDim())
-      cerr << "Dimension error, dim1=" << m.getDim() << " ,dim2=" << v.getDim() << endl;
+      std::cerr << "Dimension error, dim1=" << m.getDim() << " ,dim2=" << v.getDim() << std::endl;
   #endif
     T r(0.0);
     for(int i=0;i<m.getDim();i++) r += m(i)*v(i);
@@ -192,7 +192,7 @@ namespace GMlib {
   {
   #ifdef DEBUG
     if (m.dim() != v.getDim())
-      cerr << "Dimension error, dim1=" << m.getDim() << " ,dim2=" << v.getDim() << endl;
+      std::cerr << "Dimension error, dim1=" << m.getDim() << " ,dim2=" << v.getDim() << std::endl;
   #endif
     K r(0.0);
     for(int i=0;i<m.getDim();i++) r += m(i)*v(i);

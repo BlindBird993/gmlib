@@ -414,7 +414,7 @@ namespace GMlib {
   inline
   T&  DVector<T>::operator[](int i) {
   #ifdef DEBUG
-    if (i<0 || i>=_n) cerr << "Error index " << i << " is outside(0," << _n << ")\n";
+    if (i<0 || i>=_n) std::cerr << "Error index " << i << " is outside(0," << _n << ")\n";
   #endif
     return _p[i];
   }
@@ -429,7 +429,7 @@ namespace GMlib {
   inline
   const T&  DVector<T>::operator()(int i) const {
   #ifdef DEBUG
-    if (i<0 || i>=_n) cerr << "Error index " << i << " is outside(0," << _n << ")\n";
+    if (i<0 || i>=_n) std::cerr << "Error index " << i << " is outside(0," << _n << ")\n";
   #endif
     return _p[i];
   }
@@ -457,7 +457,7 @@ namespace GMlib {
   DVector<T>& DVector<T>::operator+=(const DVector<T>& v) {
   #ifdef DEBUG
     if (_n != v.getDim())
-      cerr << "Vector dimension error, dim=" << _n << " ,dim=" << v._getDim() << endl;
+      std::cerr << "Vector dimension error, dim=" << _n << " ,dim=" << v._getDim() << std::endl;
   #endif
     if(_n==0)
     {//This ensures that an empty DVector stil can be += with another DVector.
@@ -483,7 +483,7 @@ namespace GMlib {
   DVector<T>& DVector<T>::operator-=(const DVector<T>& v) {
   #ifdef DEBUG
     if (_n != v.getDim())
-      cerr << "Vector dimension error, dim=" << _n << " ,dim=" << v.getDim() << endl;
+      std::cerr << "Vector dimension error, dim=" << _n << " ,dim=" << v.getDim() << std::endl;
   #endif
     for (int i=0; i <_n; i++) _p[i] -= v._p[i];
     return *this;

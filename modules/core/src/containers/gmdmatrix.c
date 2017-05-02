@@ -397,7 +397,7 @@ namespace GMlib {
   inline
   DVector<T>&  DMatrix<T>::operator[](int i) {
   #ifdef DEBUG
-    if (i<0 || i>=_n) cerr << "Error index m " << i << " is outside(0," << _n << ")\n";
+    if (i<0 || i>=_n) std::cerr << "Error index m " << i << " is outside(0," << _n << ")\n";
   #endif
     return _p[i];
   }
@@ -408,7 +408,7 @@ namespace GMlib {
   inline
   const DVector<T>&  DMatrix<T>::operator()(int i) const {
   #ifdef DEBUG
-    if (i<0 || i>=_n) cerr << "Error index m " << i << " is outside(0," << _n << ")\n";
+    if (i<0 || i>=_n) std::cerr << "Error index m " << i << " is outside(0," << _n << ")\n";
   #endif
     return _p[i];
   }
@@ -426,7 +426,7 @@ namespace GMlib {
   DMatrix<T>& DMatrix<T>::operator+=(const DMatrix<T>& v) {
   #ifdef DEBUG
     if (_n != v.getDim())
-      cerr << "Matrix dimension error, dim=" << _n << " ,dim=" << v.getDim() << endl;
+      std::cerr << "Matrix dimension error, dim=" << _n << " ,dim=" << v.getDim() << std::endl;
   #endif
     for (int i=0; i <_n; i++) _p[i] += v._p[i];
     return *this;
@@ -439,7 +439,7 @@ namespace GMlib {
   DMatrix<T>& DMatrix<T>::operator-=(const DMatrix<T>& v) {
   #ifdef DEBUG
     if (_n != v.getDim())
-      cerr << "Matrix dimension error, dim=" << _n << " ,dim=" << v.getDim() << endl;
+      std::cerr << "Matrix dimension error, dim=" << _n << " ,dim=" << v.getDim() << std::endl;
   #endif
     for (int i=0; i <_n; i++) _p[i] -= v._p[i];
     return *this;
