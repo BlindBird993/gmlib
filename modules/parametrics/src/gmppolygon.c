@@ -8,15 +8,12 @@ namespace GMlib {
         _d      = -1;
         _no_sam = 20;
 
-        _default_visualizer = 0x0;
     }
 
     template <typename T, int n>
     PPolygon<T,n>::~PPolygon()
     {
-//        enableDefaultVisualizer( false );
-//        if( _default_visualizer )
-//          delete _default_visualizer;
+
     }
 
     template <typename T, int n>
@@ -36,64 +33,9 @@ namespace GMlib {
     }
 
     template <typename T, int n>
-    void PPolygon<T,n>::enableDefaultVisualizer( bool enable ) {
+    void PPolygon<T,n>::toggleDefaultVisualizer() {
 
-      if( !enable )
-        removeVisualizer( _default_visualizer );
-      else {
-
-        if( !_default_visualizer )
-          _default_visualizer = new PTriangleDefaultVisualizer<T,n>();
-
-        insertVisualizer( _default_visualizer );
-      }
     }
-
-//    template <typename T, int n>
-//    inline
-//    const PTriangleVisualizer<T, n>* PPolygon<T,n>::getDefaultVisualizer() const {
-
-//      return _default_visualizer;
-//    }
-
-//    template <typename T, int n>
-//    inline
-//    void PPolygon<T,n>::insertVisualizer( Visualizer *visualizer ) {
-
-//      Parametrics<T,2,n>::insertVisualizer( visualizer );
-
-//      PTriangleVisualizer<T,n> *visu = dynamic_cast<PTriangleVisualizer<T,n>*>( visualizer );
-
-//      if( !visu )
-//        return;
-
-//      if( _ppolygon_visualizers.exist( visu ) )
-//        return;
-
-//      _ppolygon_visualizers += visu;
-
-
-//    }
-
-//    template <typename T, int n>
-//    inline
-//    void PPolygon<T,n>::removeVisualizer( Visualizer *visualizer ) {
-
-//      PTriangleVisualizer<T,n> *visu = dynamic_cast<PTriangleVisualizer<T,n>*>( visualizer );
-//      if( visu )
-//        _ppolygon_visualizers.remove( visu );
-
-//      Parametrics<T,2,n>::removeVisualizer( visualizer );
-//    }
-
-//    template <typename T, int n>
-//    void PPolygon<T,n>::toggleDefaultVisualizer() {
-
-//      if( !_ppolygon_visualizers.exist( _default_visualizer ) )
-//        enableDefaultVisualizer( true );
-//      else
-//        enableDefaultVisualizer( false );
-//    }
 
     template <typename T, int n>
     inline
@@ -103,7 +45,7 @@ namespace GMlib {
       else         _no_sam = m;
 
       // Sample Positions and related Derivatives
-      DVector< DVector< Vector<T,n> > > p;
+      DVector< DVector< DVector< Vector<T,n> > > > p;
       resample( p, m, d );
 
       setSurroundingSphere( p );
@@ -114,22 +56,94 @@ namespace GMlib {
     }
 
     template <typename T, int n>
-    void PPolygon<T,n>::resample( DVector< DVector < Vector<T,n> > >& p, int m, int d )
+    void PPolygon<T,n>::resample( DVector< DVector< DVector< Vector<T,n> > > >& p, int m, int d )
     {
+        int num = 5;
+        int sum_m = _sum(m);
+        DVector<DVector<T>> cornerAndCenter_p;
+        fillCornersAndCenter(num, cornerAndCenter_p);
+
+        p.setDim(num);
+
+        for(int l = 2, k = 1, i = 0; i < num; i++)
+        {
+            p[i].setDim(sum_m);
+            if(l == num+1)
+                l = 1;
+            p[i] = createTriangleSamples(m, num, cornerAndCenter_p[0],cornerAndCenter_p[k++],cornerAndCenter_p[l++], d);
+        }
+    }
+
+    template <typename T, int n>
+    void PPolygon<T,n>::fillCornersAndCenter( int num, DVector<DVector<T>> &cornerAndCenter_p)
+    {
+        cornerAndCenter_p.setDim(num+1);
+
+        cornerAndCenter_p[0].setDim(num);
+
+        for(int i = 1; i < num+1; i++)
+        {
+            cornerAndCenter_p[0][i-1]=T(1)/num;
+            cornerAndCenter_p[i].setDim(num);
+            for(int j = 0; j < num; j++)
+            {
+                if((i-1)==j)
+                    cornerAndCenter_p[i][j] = T(1);
+                else
+                    cornerAndCenter_p[i][j] = T(0);
+            }
+        }
+    }
+
+    template <typename T, int n>
+    DVector<DVector<Vector<T,n>>> PPolygon<T,n>::createTriangleSamples(int m, int num, DVector<T> corner_pw, DVector<T> corner_pu, DVector<T> corner_pv, int d)
+    {
+           DVector<DVector<Vector<T,n>>> tri_samples;
+           DVector<T> tri_p;
+           T u,v,w,du = T(1)/(m-1);
+           tri_samples.setDim(_sum(m));
+           tri_p.setDim(num);
+           int i,j,k;
+           for(k=0,i=0; i<m; i++) {
+             for( j=0; j<=i; j++ )
+             {
+               v = j*du;
+               u = (i-j)*du;
+               w = 1-u-v;
+               tri_p = corner_pw*w + corner_pu*u + corner_pv*v;
+               eval(tri_p,d);
+               tri_samples[k++] = _p;
+             }
+           }
+           return tri_samples;
 
     }
 
     template <typename T, int n>
+    int PPolygon<T,n>::_sum(int i)
+    {
+        int r = 0;
+        for(; i>0; i--) r += i;
+        return r;
+    }
+
+    template <typename T, int n>
+    void PPolygon<T,n>::eval(DVector<T> &corner_p, int d)
+    {
+        eval(corner_p[0], corner_p[1], corner_p[2], corner_p[3], corner_p[4], d);
+    }
+
+    template <typename T, int n>
     inline
-    void PPolygon<T,n>::setSurroundingSphere( const DVector<DVector<Vector<T,n> > >& p ) {
+    void PPolygon<T,n>::setSurroundingSphere( const DVector< DVector< DVector< Vector<T,n> > > >& p ) {
 
-      Sphere<float,3>  s( p(0)(0) );
+//      Sphere<float,3>  s( p(0)(0)(0) );
 
-      s += p( p.getDim()-1)(0);
-      for( int i = 1; i < p.getDim() - 1; i++ )
-        s += p(i)(0);
+//      for( int i = 1; i < p.getDim(); i++ )
+//          for(int j = 0; j < p(i).getDim(); j++)
+//            s += p(i)(j)(0);
 
-      Parametrics<T,2,n>::setSurroundingSphere(s.template toType<float>());
+//      Parametrics<T,2,n>::setSurroundingSphere(s.template toType<float>());
     }
 
 }
