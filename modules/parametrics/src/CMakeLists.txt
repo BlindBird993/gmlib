@@ -103,6 +103,15 @@ list( APPEND HEADER_SOURCES
   evaluators/gmhermite4evaluator.c
 )
 
+###
+# Polygon
+list ( APPEND HEADERS
+    polygon/gmpspatch.h
+)
+
+list ( APPEND HEADER_SOURCES
+    polygon/gmpspatch.c
+)
 
 
 ###
