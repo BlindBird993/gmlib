@@ -92,6 +92,7 @@ namespace GL {
     void                      programUniform( const std::string& name, int i ) const;
     void                      programUniform( const std::string& name, const Color& c ) const;
     void                      programUniform( const std::string& name, const APoint<int,2>& p ) const;
+    void                      programUniform( const std::string& name, const APoint<int,3>& p ) const;
     void                      programUniform( const std::string& name, const APoint<float,2>& p ) const;
     void                      programUniform( const std::string& name, const APoint<float,3>& p ) const;
     void                      programUniform( const std::string& name, const APoint<float,4>& p ) const;

@@ -317,6 +317,12 @@ namespace GMlib { namespace GL {
     GL_CHECK(::glProgramUniform2iv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
   }
 
+  void Program::programUniform(const std::string &name, const APoint<int, 3> &p) const {
+
+    GL_CHECK(::glProgramUniform3iv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
+  }
+
+
   void Program::programUniform(const std::string &name, const APoint<float, 2> &p) const {
 
     GL_CHECK(::glProgramUniform2fv( getId(), getUniformLocation(name)(), 1, p.getPtr() ));
