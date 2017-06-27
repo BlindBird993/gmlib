@@ -212,12 +212,14 @@ list( APPEND HEADERS
   triangles/gmpbeziertriangle.h
   triangles/gmperbstriangle.h
   triangles/gmpsubtriangle.h
+  triangles/gmpbeziertriangledecasteljau.h
 )
 
 list( APPEND HEADER_SOURCES
   triangles/gmpbeziertriangle.c
   triangles/gmperbstriangle.c
   triangles/gmpsubtriangle.c
+  triangles/gmpbeziertriangledecasteljau.c
 )
 
 

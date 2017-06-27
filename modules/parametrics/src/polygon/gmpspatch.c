@@ -60,17 +60,40 @@ namespace GMlib {
     DVector<T> PSPatch<T>::createPi(T p)
     {
         DVector<T> _alpha = createAlpha(p);
+        DVector<T> _pi;
+        _pi.setDim(_alpha.getDim());
+        for(int i = 0, k = 0; i < _pi.getDim(); i++)
+        {
+            if(i == 0)
+                k = _pi.getDim()-1;
+            else
+                k = i-1;
+            for(int j = 0; j < _alpha.getDim(); j++){
+                if(j != i && j != k)
+                    _pi[i] *= _alpha[j];
+            }
+        }
         
     }
     
     template <typename T>
     DVector<T> PSPatch<T>::createL(T p)
     {
+        DVector<T> _pi = createPi(p);
+        T _sumPi = 0;
+        for(int i = 0; i < _pi.getDim(); i++)
+            _sumPi += _pi[i];
 
+        DVector<T> _l;
+        _l.setDim(_pi.getDim());
+        for(int j = 0; j < _l.getDim(); j++)
+            _l[j] = _pi[j]/_sumPi;
+
+        return _l;
     }
 
     template <typename T>
-    DVector<T> PSPatch<T>::createW(T p)
+    DVector<T> PSPatch<T>::createW(T p, int d)
     {
 
     }
@@ -125,5 +148,76 @@ namespace GMlib {
       }
 
       _selectors = true;
+    }
+
+    template <typename T>
+    Point<T,3> PSPatch<T>::DeCasteljau(int n, int d, DVector<Point<T,3>> p, DVector<T> b)
+    {
+        if(p.getDim == n)
+            return cornerCutting(p, b);
+        else
+            {
+                DVector<Point<T,3>> q;
+                q.setDim(n);
+                DVector<DVector<Point<T,3>>> subs;
+                subs.setDim(n);
+
+                DVector<int> index = DVector<int>(n,0);
+                index[0] = d;
+                for(int i = 1, k=0; i <= n; i++)
+                {
+                    //Add to sub
+                    for(int l = 0; l < index.getDim(); l++)
+                    {
+                        if(index[l] > 0)
+                            subs[l].push_back(p[k]);
+                    }
+                    if(i == n)
+                    {
+                        if(index[i-1] == d)
+                            break;
+                        int j = n-2;
+                        for(; index[j] == 0 and j >= 0; j--);
+                        if(j < 0)
+                            break;
+                        i = j+1;
+                        index[i]=index[n-1];
+                        if(i != n-1)
+                            index[n-1]=0;
+
+                    }
+                    index[i]++;
+                    index[i-1]--;
+                    k++;
+                }
+
+                for(int i = 0; i < subs.getDim(); i++)
+                {
+                    q[i] = DeCasteljau(n,d-1,subs[i],b);
+                }
+                return cornerCutting(q, b);
+            }
+    }
+
+//    template <typename T>
+//    int PSPatch<T>::binom (int n, int d)
+//    {
+//        int m = n + d - 1;
+//        return factorial(m)/(factorial(d)*factorial(m-d));
+//    }
+
+//    template <typename T>
+//    int PSPatch<T>::factorial(int x)
+//    {
+//        if(x == 0)
+//            return 1;
+//        else
+//            return x*factorial(x-1);
+//    }
+
+    template <typename T>
+    Point<T,3> PSPatch<T>::cornerCutting(DVector<Point<T,3>> q, DVector<T> b)
+    {
+        //Use l(p)
     }
 }
