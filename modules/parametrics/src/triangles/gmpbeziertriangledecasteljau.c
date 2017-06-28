@@ -47,11 +47,10 @@ namespace GMlib {
     _sgv       = new SelectorGridVisualizer<T>;
 
 
-    DVector<T> _bary;
-    _bary.push_back(0.333333);
-    _bary.push_back(0.333333);
-    _bary.push_back(0.333333);
-    DeCasteljau(3,3,_c,_bary);
+
+    DeCasteljau(3,2,_c,Vector<T,3>(1,0,0),1,Vector<T,3>(1,0,0));
+    DeCasteljau(3,2,_c,Vector<T,3>(1,0,0),1,Vector<T,3>(0,1,0));
+    DeCasteljau(3,2,_c,Vector<T,3>(1,0,0),1,Vector<T,3>(0,0,1));
   }
 
   template <typename T>
@@ -207,62 +206,82 @@ namespace GMlib {
   }
 
   template <typename T>
-  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeCasteljau(int n, int d, DVector<Vector<T,3>> p, DVector<T> b)
+  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeCasteljau(int n, int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir)
   {
       if(p.getDim() == n)
-          return cornerCutting(p, b);
+     {
+        if(p.getDim() == _c.getDim() and numDer == 1)
+        {
+            return cornerCutting(p, dir);
+        }
+        else
+        {
+            return cornerCutting(p, b);
+        }
+     }
       else
+      {
+          DVector<Vector<T,3>> q;
+          q.setDim(n);
+          DVector<DVector<Vector<T,3>>> subs;
+          subs.setDim(n);
+
+          DVector<int> index = DVector<int>(n,0);
+          index[0] = d;
+          for(int i = 1, k=0; i <= n; i++)
           {
-              DVector<Vector<T,3>> q;
-              q.setDim(n);
-              DVector<DVector<Vector<T,3>>> subs;
-              subs.setDim(n);
-
-              DVector<int> index = DVector<int>(n,0);
-              index[0] = d;
-              for(int i = 1, k=0; i <= n; i++)
+              //Add to sub
+              for(int l = 0; l < index.getDim(); l++)
               {
-                  //Add to sub
-                  for(int l = 0; l < index.getDim(); l++)
-                  {
-                      if(index[l] > 0)
-                          subs[l].push_back(p[k]);
-                  }
-                  if(i == n)
-                  {
-                      if(index[i-1] == d)
-                          break;
-                      int j = n-2;
-                      for(; index[j] == 0 and j >= 0; j--);
-                      if(j < 0)
-                          break;
-                      i = j+1;
-                      index[i]=index[n-1];
-                      if(i != n-1)
-                          index[n-1]=0;
-
-                  }
-                  index[i]++;
-                  index[i-1]--;
-                  k++;
+                  if(index[l] > 0)
+                      subs[l].push_back(p[k]);
               }
-
-              for(int i = 0; i < subs.getDim(); i++)
+              if(i == n)
               {
-                  q[i] = DeCasteljau(n,d-1,subs[i],b);
+                  if(index[i-1] == d)
+                      break;
+                  int j = n-2;
+                  for(; index[j] == 0 and j >= 0; j--);
+                  if(j < 0)
+                      break;
+                  i = j+1;
+                  index[i]=index[n-1];
+                  if(i != n-1)
+                      index[n-1]=0;
+
               }
+              index[i]++;
+              index[i-1]--;
+              k++;
+          }
+
+          for(int i = 0; i < subs.getDim(); i++)
+          {
+              q[i] = DeCasteljau(n,d-1,subs[i],b,numDer, dir);
+          }
+
+          if(p.getDim() == _c.getDim() and numDer == 1)
+          {
+              std::cout<<"Her:"<<std::endl;
+              return cornerCutting(q, dir);
+          }
+          else
+          {
               return cornerCutting(q, b);
           }
+      }
   }
 
   template <typename T>
-  Vector<T,3> PBezierTriangleDeCasteljau<T>::cornerCutting(DVector<Vector<T,3>> q, DVector<T> b)
+  Vector<T,3> PBezierTriangleDeCasteljau<T>::cornerCutting(DVector<Vector<T,3>> q, Vector<T,3> b)
   {
       Vector<T,3> final = Vector<T,3>(0,0,0);
+
       for(int i = 0; i < q.getDim(); i++)
       {
          final +=  b[i]*q[i];
       }
+
       std::cout<< final[0]<<", "<<final[1]<<", "<<final[2]<<std::endl;
       return final;
   }
