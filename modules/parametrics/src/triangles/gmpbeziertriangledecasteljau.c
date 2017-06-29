@@ -89,7 +89,7 @@ namespace GMlib {
   void PBezierTriangleDeCasteljau<T>::eval( T u, T v, T w, int d )
   {
         //evalHardCoded(u,v,w,d);
-        evalDeCasteljau(u,v,w,3);
+        evalDeCasteljau(u,v,w);
 
   }
 
@@ -122,9 +122,16 @@ namespace GMlib {
   }
 
   template <typename T>
-  void PBezierTriangleDeCasteljau<T>::evalDeCasteljau(T u, T v, T w, int d)
+  void PBezierTriangleDeCasteljau<T>::evalDeCasteljau(T u, T v, T w)
   {
+      int d;
       this->_p.setDim(4);
+      if(_c.getDim() == 3)
+          d = 1;
+      else if( _c.getDim() == 6 )
+          d = 2;
+      else if( _c.getDim() == 10 )
+          d = 3;
 
       this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 0, Vector<T,3>(0,0,0));
       this->_p[1] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(1,0,0));
@@ -281,7 +288,6 @@ namespace GMlib {
 
           if(p.getDim() == _c.getDim() and numDer == 1)
           {
-              std::cout<<"Her:"<<std::endl;
               return cornerCutting(q, dir*d);
           }
           else
