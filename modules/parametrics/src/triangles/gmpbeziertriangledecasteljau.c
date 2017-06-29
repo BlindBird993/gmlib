@@ -48,9 +48,9 @@ namespace GMlib {
 
 
 
-    DeCasteljau(3,2,_c,Vector<T,3>(1,0,0),1,Vector<T,3>(1,0,0));
-    DeCasteljau(3,2,_c,Vector<T,3>(1,0,0),1,Vector<T,3>(0,1,0));
-    DeCasteljau(3,2,_c,Vector<T,3>(1,0,0),1,Vector<T,3>(0,0,1));
+//    DeCasteljau(3,_c,Vector<T,3>(0.5,0.5,0),1,Vector<T,3>(1,0,0));
+//    DeCasteljau(3,_c,Vector<T,3>(0.5,0.5,0),1,Vector<T,3>(0,1,0));
+//    DeCasteljau(3,_c,Vector<T,3>(0.5,0.5,0),1,Vector<T,3>(0,0,1));
   }
 
   template <typename T>
@@ -86,31 +86,50 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierTriangleDeCasteljau<T>::eval( T u, T v, T w, int d ) {
+  void PBezierTriangleDeCasteljau<T>::eval( T u, T v, T w, int d )
+  {
+        //evalHardCoded(u,v,w,d);
+        evalDeCasteljau(u,v,w,3);
 
-//    this->_p.setDim(4);
+  }
 
-//    if( _c.getDim() == 3 ) {
-//      this->_p[0]= _c[0]*u + _c[1]*v + _c[2]*w;
-//      this->_p[1] = _c[0];
-//      this->_p[2] = _c[1];
-//      this->_p[3] = _c[2];
-//    }
-//    else if( _c.getDim() == 6 ) {
-//      this->_p[0] = _c[0]*(u*u) + _c[1]*(2*u*v) + _c[2]*(2*u*w)
-//                    + _c[3]*(v*v) + _c[4]*(2*v*w) + _c[5]*(w*w);
-//      this->_p[1] = _c[0]*(2*u) + _c[1]*(2*v) + _c[2]*(2*w);
-//      this->_p[2] = _c[1]*(2*u) + _c[3]*(2*v) + _c[4]*(2*w);
-//      this->_p[3] = _c[2]*(2*u) + _c[4]*(2*v) + _c[5]*(2*w);
-//    }
-//    else if( _c.getDim() == 10 ) {
-//      this->_p[0] = _c[0]*(u*u*u) + _c[1]*(3*u*u*v) + _c[2]*(3*u*u*w) +
-//                    _c[3]*(3*u*v*v) + _c[4]*(6*u*v*w) + _c[5]*(3*u*w*w) +
-//                    _c[6]*(v*v*v) + _c[7]*(3*v*v*w) + _c[8]*(3*v*w*w) + _c[9]*(w*w*w);
-//      this->_p[1] = _c[0]*(3*u*u) + _c[1]*(6*u*v) + _c[2]*(6*u*w) + _c[3]*(3*v*v) + _c[4]*(6*v*w) + _c[5]*(3*w*w);
-//      this->_p[2] = _c[1]*(3*u*u) + _c[3]*(6*u*v) + _c[4]*(6*u*w) + _c[6]*(3*v*v) + _c[7]*(6*v*w) + _c[8]*(3*w*w);
-//      this->_p[3] = _c[2]*(3*u*u) + _c[4]*(6*u*v) + _c[5]*(6*u*w) + _c[7]*(3*v*v) + _c[8]*(6*v*w) + _c[9]*(3*w*w);
-//    }
+  template <typename T>
+  void PBezierTriangleDeCasteljau<T>::evalHardCoded(T u, T v, T w, int d)
+  {
+          this->_p.setDim(4);
+
+          if( _c.getDim() == 3 ) {
+            this->_p[0]= _c[0]*u + _c[1]*v + _c[2]*w;
+            this->_p[1] = _c[0];
+            this->_p[2] = _c[1];
+            this->_p[3] = _c[2];
+          }
+          else if( _c.getDim() == 6 ) {
+            this->_p[0] = _c[0]*(u*u) + _c[1]*(2*u*v) + _c[2]*(2*u*w)
+                          + _c[3]*(v*v) + _c[4]*(2*v*w) + _c[5]*(w*w);
+            this->_p[1] = _c[0]*(2*u) + _c[1]*(2*v) + _c[2]*(2*w);
+            this->_p[2] = _c[1]*(2*u) + _c[3]*(2*v) + _c[4]*(2*w);
+            this->_p[3] = _c[2]*(2*u) + _c[4]*(2*v) + _c[5]*(2*w);
+          }
+          else if( _c.getDim() == 10 ) {
+            this->_p[0] = _c[0]*(u*u*u) + _c[1]*(3*u*u*v) + _c[2]*(3*u*u*w) +
+                          _c[3]*(3*u*v*v) + _c[4]*(6*u*v*w) + _c[5]*(3*u*w*w) +
+                          _c[6]*(v*v*v) + _c[7]*(3*v*v*w) + _c[8]*(3*v*w*w) + _c[9]*(w*w*w);
+            this->_p[1] = _c[0]*(3*u*u) + _c[1]*(6*u*v) + _c[2]*(6*u*w) + _c[3]*(3*v*v) + _c[4]*(6*v*w) + _c[5]*(3*w*w);
+            this->_p[2] = _c[1]*(3*u*u) + _c[3]*(6*u*v) + _c[4]*(6*u*w) + _c[6]*(3*v*v) + _c[7]*(6*v*w) + _c[8]*(3*w*w);
+            this->_p[3] = _c[2]*(3*u*u) + _c[4]*(6*u*v) + _c[5]*(6*u*w) + _c[7]*(3*v*v) + _c[8]*(6*v*w) + _c[9]*(3*w*w);
+          }
+  }
+
+  template <typename T>
+  void PBezierTriangleDeCasteljau<T>::evalDeCasteljau(T u, T v, T w, int d)
+  {
+      this->_p.setDim(4);
+
+      this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 0, Vector<T,3>(0,0,0));
+      this->_p[1] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(1,0,0));
+      this->_p[2] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(0,1,0));
+      this->_p[3] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(0,0,1));
   }
 
   template <typename T>
@@ -206,13 +225,13 @@ namespace GMlib {
   }
 
   template <typename T>
-  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeCasteljau(int n, int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir)
+  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir)
   {
-      if(p.getDim() == n)
+      if(p.getDim() == 3)
      {
         if(p.getDim() == _c.getDim() and numDer == 1)
         {
-            return cornerCutting(p, dir);
+            return cornerCutting(p, dir*d);
         }
         else
         {
@@ -222,13 +241,13 @@ namespace GMlib {
       else
       {
           DVector<Vector<T,3>> q;
-          q.setDim(n);
+          q.setDim(3);
           DVector<DVector<Vector<T,3>>> subs;
-          subs.setDim(n);
+          subs.setDim(3);
 
-          DVector<int> index = DVector<int>(n,0);
+          DVector<int> index = DVector<int>(3,0);
           index[0] = d;
-          for(int i = 1, k=0; i <= n; i++)
+          for(int i = 1, k=0; i <= 3; i++)
           {
               //Add to sub
               for(int l = 0; l < index.getDim(); l++)
@@ -236,18 +255,18 @@ namespace GMlib {
                   if(index[l] > 0)
                       subs[l].push_back(p[k]);
               }
-              if(i == n)
+              if(i == 3)
               {
                   if(index[i-1] == d)
                       break;
-                  int j = n-2;
+                  int j = 1;//n-2
                   for(; index[j] == 0 and j >= 0; j--);
                   if(j < 0)
                       break;
                   i = j+1;
-                  index[i]=index[n-1];
-                  if(i != n-1)
-                      index[n-1]=0;
+                  index[i]=index[2];//index[n-1]
+                  if(i != 2)//n-1
+                      index[2]=0;//index[n-1]
 
               }
               index[i]++;
@@ -257,13 +276,13 @@ namespace GMlib {
 
           for(int i = 0; i < subs.getDim(); i++)
           {
-              q[i] = DeCasteljau(n,d-1,subs[i],b,numDer, dir);
+              q[i] = DeCasteljau(d-1,subs[i],b,numDer, dir);
           }
 
           if(p.getDim() == _c.getDim() and numDer == 1)
           {
               std::cout<<"Her:"<<std::endl;
-              return cornerCutting(q, dir);
+              return cornerCutting(q, dir*d);
           }
           else
           {
@@ -282,7 +301,6 @@ namespace GMlib {
          final +=  b[i]*q[i];
       }
 
-      std::cout<< final[0]<<", "<<final[1]<<", "<<final[2]<<std::endl;
       return final;
   }
 

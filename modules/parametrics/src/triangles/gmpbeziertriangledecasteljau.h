@@ -72,8 +72,10 @@ class SelectorGridVisualizer;
     void                        eval( T u, T v, T w, int d ) override;
 
   private:
-    Vector<T,3> DeCasteljau(int n, int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir);
+    Vector<T,3> DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir);
     Vector<T,3> cornerCutting(DVector<Vector<T,3>> q, Vector<T,3> b);
+    void evalDeCasteljau(T u, T v, T w, int d);
+    void evalHardCoded(T u, T v, T w, int d);
 
   }; // END class PBezierTriangleDeCasteljau
 
