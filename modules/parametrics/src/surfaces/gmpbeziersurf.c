@@ -372,9 +372,9 @@ namespace GMlib {
   template <typename T>
   void  PBezierSurf<T>::preSample( int dir, int m ) {
       if( dir==1 )
-          preSample( _ru, m, _c.getDim1()-1, _su, this->getParStartU(), this->getParEndU() );
+          internalPreSample( _ru, m, _c.getDim1()-1, _su, this->getParStartU(), this->getParEndU() );
       if( dir==2 )
-          preSample( _rv, m, _c.getDim2()-1, _sv, this->getParStartV(), this->getParEndV() );
+          internalPreSample( _rv, m, _c.getDim2()-1, _sv, this->getParStartV(), this->getParEndV() );
   }
 
 
@@ -386,7 +386,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierSurf<T>::preSample( DVector< DMatrix< T > >& p, int m, int d, T scale, T start, T end ) {
+  void PBezierSurf<T>::internalPreSample( DVector< DMatrix< T > >& p, int m, int d, T scale, T start, T end ) {
 
     // compute dt (step in parameter)
     const T dt = ( end - start ) / T(m-1);

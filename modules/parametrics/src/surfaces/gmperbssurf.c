@@ -642,9 +642,9 @@ namespace GMlib {
   template <typename T>
   void  PERBSSurf<T>::preSample( int dir, int m ) {
       if( dir==1 )
-          preSample( _ru, _u, m, _u[1], _u[_u.getDim()-2] );
+          internalPreSample( _ru, _u, m, _u[1], _u[_u.getDim()-2] );
       if( dir==2 )
-          preSample( _rv, _v, m, _v[1], _v[_v.getDim()-2] );
+          internalPreSample( _rv, _v, m, _v[1], _v[_v.getDim()-2] );
   }
 
 
@@ -655,7 +655,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSSurf<T>::preSample( DVector< PreVec > & p, const DVector<T>& t, int m, T start, T end ) {
+  void PERBSSurf<T>::internalPreSample( DVector< PreVec > & p, const DVector<T>& t, int m, T start, T end ) {
 
     // compute dt (step in parameter)
     const T dt = ( end - start ) / T(m-1);

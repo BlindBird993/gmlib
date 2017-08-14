@@ -115,7 +115,7 @@ namespace GMlib {
       void                       preSample( int dir, int m ) override;
 
       // Help functions
-      void                       preSample( DVector< DMatrix< T > >& p, int m, int d, T scale, T start, T end );
+      void                       internalPreSample( DVector< DMatrix< T > >& p, int m, int d, T scale, T start, T end );
       void                       multEval(const DMatrix<T>& bu, const DMatrix<T>& bv, int du, int dv);
 
 

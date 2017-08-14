@@ -170,7 +170,7 @@ namespace GMlib {
     // Help functions
     Point<T,2>                          mapToLocal( T u, T v, int uk, int vk ) const;
 
-    void                                preSample( DVector< PreVec >& p, const DVector<T>& t, int m, T start, T end );
+    void                                internalPreSample( DVector< PreVec >& p, const DVector<T>& t, int m, T start, T end );
 
 
   }; // END class PERBSSurf
