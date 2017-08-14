@@ -50,29 +50,32 @@ namespace GMlib {
 
     void                          render(const SceneObject *obj, const DefaultRenderer *renderer) const override;
     void                          reset();
+    void                          setColor( const Color& col );
     void                          setLineWidth( float line_width = 1.0f );
-    void                          setSelectors( DVector< Point<T,3> >& c, int tp=0 );
-    void                          setSelectors( DVector< Vector<T,3> >& c, int tp=0 );
-    void                          setSelectors( DMatrix< Point<T,3> >& c );
-    void                          setSelectors( DMatrix< Vector<T,3> >& c );
+    void                          setSelectors( DVector< Point<T,3> >& c, int tp=0, bool closed = false );
+    void                          setSelectors( DVector< Vector<T,3> >& c, int tp=0, bool closed = false );
+    void                          setSelectors( DMatrix< Point<T,3> >& c, bool closed_u = false, bool closed_v = false );
+    void                          setSelectors( DMatrix< Vector<T,3> >& c, bool closed_u = false, bool closed_v = false);
     void                          update();
 
   protected:
     int                           _no_indices;
     float                         _line_width;
-    DVector< Point<T,3>* >       _c;
+    DVector< Point<T,3>* >        _c;
 
     GL::Program                   _prog;
 
     GL::VertexBufferObject        _vbo;
     GL::IndexBufferObject         _ibo;
 
+    Color                         _color;
+
   private:
     void                          _fillVBO();
 
-    void                          _makeLines();
+    void                          _makeLines( bool closed );
     void                          _makeTriangs();
-    void                          _makeQuads( int m1, int m2);
+    void                          _makeQuads( int m1, int m2, bool closed_u, bool closed_v );
 
 
     void                          storeSelectorValuePointers( DVector<Point<T,3> >& c );

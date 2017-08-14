@@ -52,74 +52,76 @@ namespace GMlib {
     PCurve( const PCurve<T,n>& copy );
     ~PCurve();
 
-    DVector<Vector<T,n> >&    evaluate( T t, int d );
-    DVector<Vector<T,n> >&    evaluateGlobal( T t, int d );
-    DVector<Vector<T,n> >&    evaluateParent( T t, int d );
-    bool                      getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps = 10e-6, int max_iterations = 20);
-    T                         getCurvature( T t );
-    T                         getCurveLength( T a = 0, T b = -1 );
-    int                       getDerivatives() const;
-    Vector<T,n>               getDer1( T t );
-    Vector<T,n>               getDer2( T t );
-    Vector<T,n>               getDer3( T t );
-    T                         getParDelta();
-    T                         getParEnd();
-    T                         getParStart();
-    T                         getRadius( T t );
-    int                       getSamples() const;
-    T                         getSpeed( T t );
-    virtual bool              isClosed() const;
-    virtual void              preSample( int m, int d, T s = T(0), T e = T(0) );
-    virtual void              replot( int m = 0, int d = 2 );
-//    virtual void              resample( Array<Point<T,n> >& a, T eps );	// Always smooth, requires derivatives
-//    virtual void              resample( Array<Point<T,n> >& a, int m );					// Given sampling rate
-//    virtual void              resample( Array<Point<T,n> >& a, int m, T start, T end );	// Given sampling rate
-    void                      resample( DVector< DVector< Vector<T,n> > >& p, int m, int d );
-    virtual void              resample( DVector< DVector< Vector<T,n> > >& p, int m, int d, T start, T end );
-    void                      setDomain( T start, T end );
-    void                      setDomainScale( T sc );
-    void                      setDomainTrans( T tr );
-    void                      setNoDer( int d );
-    virtual void              setSurroundingSphere( const DVector< DVector< Vector<T,n> > >& p );
+    DVector<Vector<T,n> >&        evaluate( T t, int d );
+    DVector<Vector<T,n> >&        evaluateGlobal( T t, int d );
+    DVector<Vector<T,n> >&        evaluateParent( T t, int d );
 
-    void                      enableDefaultVisualizer( bool enable = true );
-    const PCurveVisualizer<T,n>*   getDefaultVisualizer() const;
-    void                      toggleDefaultVisualizer();
-    void                      insertVisualizer( Visualizer* visualizer );
-    void                      removeVisualizer( Visualizer* visualizer );
+    bool                          getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps = 10e-6, int max_iterations = 20);
+    T                             getCurvature( T t );
+    T                             getCurveLength( T a = 0, T b = -1 );
+    int                           getDerivatives() const;
+    Vector<T,n>                   getDer1( T t );
+    Vector<T,n>                   getDer2( T t );
+    Vector<T,n>                   getDer3( T t );
+
+    T                             getParStart() const;
+    T                             getParDelta() const;
+    T                             getParEnd()   const;
+    T                             getRadius( T t );
+    int                           getSamples() const;
+    T                             getSpeed( T t );
+    virtual bool                  isClosed() const;
+    virtual void                  preSample( int m, int d, T s = T(0), T e = T(0) );
+    virtual void                  replot( int m = 0, int d = 2 );
+//    virtual void              resample( Array<Point<T,n> >& a, T eps );	// Always smooth, requires derivatives
+    void                          resample( DVector< DVector< Vector<T,n> > >& p, int m, int d );
+    virtual void                  resample( DVector< DVector< Vector<T,n> > >& p, int m, int d, T start, T end );
+    void                          setDomain( T start, T end );
+    void                          setDomainScale( T sc );
+    void                          setDomainTrans( T tr );
+    void                          setNoDer( int d );
+    virtual void                  setSurroundingSphere( const DVector< DVector< Vector<T,n> > >& p );
+
+    void                          enableDefaultVisualizer( bool enable = true );
+    const PCurveVisualizer<T,n>*  getDefaultVisualizer() const;
+    void                          toggleDefaultVisualizer();
+    void                          insertVisualizer( Visualizer* visualizer );
+    void                          removeVisualizer( Visualizer* visualizer );
 
     Point<T,n>                operator()( T t );
 
   protected:
-    Array<PCurveVisualizer<T,n>*>   _pcurve_visualizers;
-    PCurveVisualizer<T,n>    *_default_visualizer;
+    Array<PCurveVisualizer<T,n>*> _pcurve_visualizers;
+    PCurveVisualizer<T,n>*        _default_visualizer;
 
-    int                       _no_sam;      // Number of samples for single sampling
-    int                       _no_der;      // Number of derivatives
+    int                           _no_sam;      // Number of samples for single sampling
+    int                           _no_der;      // Number of derivatives
 
 
-    DVector< Vector<T,2> >    _sam_p;       // Sampling partition (start/stop)
-    DVector< int >            _no_sam_p;    // Number of samples for each partition
-    int                       _defalt_d;    // used by operator() for number of derivative to evaluate.
+    DVector< Vector<T,2> >        _sam_p;       // Sampling partition (start/stop)
+    DVector< int >                _no_sam_p;    // Number of samples for each partition
+    int                           _defalt_d;    // used by operator() for number of derivative to evaluate.
 
 
     // The result of the previous evaluation
-    DVector<Vector<T,n> >     _p;           // Position and belonging derivatives
-    T                         _t;           // The parameter value used for last evaluation
-    int                       _d;           // Number of derivatives computed last time
+    DVector<Vector<T,n> >         _p;           // Position and belonging derivatives
+    DVector<Vector<T,n> >&        _q = _p;
+    T                             _t;           // The parameter value used for last evaluation
+    int                           _d;           // Number of derivatives computed last time
 
     // Shift of parameter.
-    T                         _tr;          // translate
-    T                         _sc;          // scale
+    T                             _tr;          // translate
+    T                             _sc;          // scale
+    T                             shift( T t );
 
-    virtual void              eval(T t, int d, bool l = true ) = 0;
-    virtual T                 getEndP() = 0;
-    virtual T                 getStartP() = 0;
-    T                         shift( T t );
+
+    virtual void                  eval(T t, int d, bool l = true ) = 0;
+    virtual T                     getEndP()     const = 0;
+    virtual T                     getStartP()   const = 0;
 
   private:
-    void                      _eval( T t, int d );
-    T                         _integral(T a, T b, double eps);
+    void                          _eval( T t, int d );
+    T                             _integral(T a, T b, double eps);
 
   }; // END class PCurve
 

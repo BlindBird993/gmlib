@@ -23,17 +23,20 @@
 
 
 
-
 #include "../evaluators/gmevaluatorstatic.h"
 
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PBezierCurveSurf<T>::PBezierCurveSurf( Array<PCurve<T,3>*> cu, bool swap_par)
   {
-      this->_dm = GM_DERIVATION_EXPLICIT;
+      init();
       _cu       = cu;
       _swap_par = swap_par;
   }
@@ -43,7 +46,7 @@ namespace GMlib {
    inline
    PBezierCurveSurf<T>::PBezierCurveSurf(PCurve<T,3>* c1, PCurve<T,3>* c2, bool swap_par) {
 
-       this->_dm = GM_DERIVATION_EXPLICIT;
+       init();
        _cu.setSize(2);
        _cu[0] = c1;
        _cu[1] = c2;
@@ -54,7 +57,7 @@ namespace GMlib {
   template <typename T>
   inline
   PBezierCurveSurf<T>::PBezierCurveSurf( const PBezierCurveSurf<T>& copy ) : PSurf<T,3>( copy ) {
-
+      init();
       _cu       = copy._cu;
       _swap_par = copy._swap_par;
   }
@@ -64,20 +67,72 @@ namespace GMlib {
   PBezierCurveSurf<T>::~PBezierCurveSurf() {}
 
 
+  //*********************************
+  //**   Public localfunctons      **
+  //*********************************
+
+  template <typename T>
+  inline
+  void PBezierCurveSurf<T>::showCurves() {
+
+      int m;
+      if(_swap_par)
+          m = this->_no_sam_u;
+      else
+          m = this->_no_sam_v;
+
+      for(int i=0; i<_cu.getSize(); i++) {
+          _cu[i]->toggleDefaultVisualizer();
+          _cu[i]->replot(m);
+          this->insert(_cu[i]);
+      }
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBezierCurveSurf<T>::hideCurves(  ) {
+
+      for(int i=0; i<_cu.getSize(); i++){
+          _cu[i]->toggleDefaultVisualizer();
+          this->remove(_cu[i]);
+      }
+  }
+
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+  template <typename T>
+  bool PBezierCurveSurf<T>::isClosedU() const {
+      return  false;
+  }
+
+
+  template <typename T>
+  bool PBezierCurveSurf<T>::isClosedV() const {
+      return false;
+  }
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PBezierCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) {
 
-      if(_swap_par)
-      {
+      if(_swap_par) {
           std::swap(u,v);
           std::swap(d1,d2);
       }
 
-      DMatrix<Vector<T,3> > c(_cu.getSize(),d2+1);
+      DMatrix<Vector<T,3> > c(_cu.getSize(), d2+1);
 
-      for(int i=0; i< _cu.getSize(); i++)
-          c[i] = _cu[i]->evaluateParent(v,d2);
+      for(int i=0; i < _cu.getSize(); i++)
+          c[i] = _cu[i]->evaluateParent(v, d2);
 
       // Compute the Bernstein-Hermite Polynomials
       DMatrix< T > bhp;
@@ -95,55 +150,44 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PBezierCurveSurf<T>::getStartPU()
-  {
-      if(_swap_par) return _cu[0]->getParStart();
+  T PBezierCurveSurf<T>::getStartPU() const {
+      if(_swap_par) return _cu(0)->getParStart();
       else          return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PBezierCurveSurf<T>::getStartPV()
-  {
-      if(_swap_par) return T(0);
-      else          return _cu[0]->getParStart();
-  }
-
-
-  template <typename T>
-  inline
-  T PBezierCurveSurf<T>::getEndPU()
-  {
-      if(_swap_par) return _cu[0]->getParEnd();
+  T PBezierCurveSurf<T>::getEndPU() const {
+      if(_swap_par) return _cu(0)->getParEnd();
       else          return T(1);
   }
 
 
   template <typename T>
-  inline
-  T PBezierCurveSurf<T>::getEndPV()
-  {
+  T PBezierCurveSurf<T>::getStartPV() const {
+      if(_swap_par) return T(0);
+      else          return _cu(0)->getParStart();
+  }
+
+
+  template <typename T>
+  T PBezierCurveSurf<T>::getEndPV() const {
       if(_swap_par) return T(1);
-      else          return _cu[0]->getParEnd();
+      else          return _cu(0)->getParEnd();
   }
 
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
-  inline
-  bool PBezierCurveSurf<T>::isClosedU() const
-  {
-      return  false;
+  void PBezierCurveSurf<T>::init() {
+
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
-  template <typename T>
-  inline
-  bool PBezierCurveSurf<T>::isClosedV() const
-  {
-      return false;
-  }
-
-}
+} // END namespace GMlib
 

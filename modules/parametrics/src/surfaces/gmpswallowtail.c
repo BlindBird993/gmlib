@@ -1,4 +1,3 @@
-
 /**********************************************************************************
 **
 ** Copyright (C) 1994 Narvik University College
@@ -28,6 +27,10 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PSwallowTail<T>::PSwallowTail() {
@@ -44,6 +47,28 @@ namespace GMlib {
 
   template <typename T>
   PSwallowTail<T>::~PSwallowTail() {}
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PSwallowTail<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PSwallowTail<T>::isClosedV() const {
+    return false;
+  }
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PSwallowTail<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -111,36 +136,33 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PSwallowTail<T>::getEndPU() {
-
-    return T(2);
-  }
-
-
-  template <typename T>
-  inline
-  T PSwallowTail<T>::getEndPV() {
-
-    return T(0.8);
-  }
-
-
-  template <typename T>
-  inline
-  T PSwallowTail<T>::getStartPU() {
-
+  T PSwallowTail<T>::getStartPU() const {
     return -T(2);
   }
 
 
   template <typename T>
-  inline
-  T PSwallowTail<T>::getStartPV() {
+  T PSwallowTail<T>::getEndPU() const {
+    return T(2);
+  }
 
+
+  template <typename T>
+  T PSwallowTail<T>::getStartPV() const {
     return -T(0.8);
   }
 
+
+  template <typename T>
+  T PSwallowTail<T>::getEndPV() const {
+    return T(0.8);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PSwallowTail<T>::init() {
@@ -148,20 +170,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-
-  template <typename T>
-  inline
-  bool PSwallowTail<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PSwallowTail<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

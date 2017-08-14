@@ -26,8 +26,6 @@
 #ifndef GM_PARAMETRICS_SURFACE_PCOONSPATCH_H
 #define GM_PARAMETRICS_SURFACE_PCOONSPATCH_H
 
-// STL
-#include <string>
 
 // GMlib
 #include "../gmpsurf.h"
@@ -45,17 +43,26 @@ namespace GMlib {
 
     virtual ~PCoonsPatch();
 
-    bool          isClosedU() const;
-    bool          isClosedV() const;
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
 
   protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
 
-    void          eval(T u, T v, int d1, int d2, bool lu, bool lv );
-    T             getEndPU();
-    T             getEndPV();
-    T             getStartPU();
-    T             getStartPV();
+    // Help function to ensure consistent initialization
+    virtual void      init();
 
+    // Protected data for the surface
     PSurf<T,3>*    _s1;
     PSurf<T,3>*    _s2;
     PSurf<T,3>*    _s3;

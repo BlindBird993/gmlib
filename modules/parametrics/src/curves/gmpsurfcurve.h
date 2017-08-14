@@ -41,21 +41,33 @@ namespace GMlib {
   public:
     PSurfCurve( PSurf<T,3>* s, const Point<T,2>& p1,  const Point<T,2>& p2);
     PSurfCurve( PSurf<T,3>* s, const Point<T,2>& p1,  const Point<T,2>& p2,
-                             const Vector<T,2>& v1, const Vector<T,2>& v2);
+                               const Vector<T,2>& v1, const Vector<T,2>& v2);
     PSurfCurve( const PSurfCurve<T>& copy );
 
     virtual ~PSurfCurve();
 
-    bool                isClosed() const;
 
     void                togglePlot();
-
     virtual void        resample( DVector< DVector< Vector<T, 3> > >& p,
                                       int m, int d, T start, T end );
 
-  protected:
 
-    PSurf<T,3>*           _s;
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
+
+    // from PCurve
+    bool                isClosed() const;
+
+
+  protected:
+    // Virtual function from PCurve that has to be implemented locally
+    void                eval(T t, int d, bool l) override;
+    T                   getStartP() const override;
+    T                   getEndP()   const override;
+
+    // Protected data for the curve
+    PSurf<T,3>*         _s;
     Point<T,2>          _p1;
     Point<T,2>          _p2;
 
@@ -67,12 +79,9 @@ namespace GMlib {
 
     bool                _plot;
 
+    // Protected help functions
     void	            eval1( T t, int d);
     void	            eval2( T t, int d);
-
-    void	            eval( T t, int d = 0, bool l = false );
-    T                   getEndP();
-    T                   getStartP();
 
   }; // END class PSurfCurve
 

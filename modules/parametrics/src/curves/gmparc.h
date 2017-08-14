@@ -40,27 +40,39 @@ namespace GMlib {
     PArc( T speed, T curvature, T start, T end );
     PArc( DVector< Vector<T,3> >& p, T s, T t, T e );
     PArc( const PArc<T>& copy );
+
     virtual ~PArc();
 
-    T                   getCurvature() const;
-    T                   getSpeed() const;
-    bool                isClosed() const override;
+    // Public local functions
     void                setCurvature( T curvature );
-    void                setEnd( T end );
+    T                   getCurvature() const;
     void                setSpeed( T speed );
-    void                setStart( T start );
+    T                   getSpeed() const;
 
+    void                setStart( T start );
+    void                setEnd( T end );
+
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
+
+    // from PCurve
+    bool                isClosed() const override;
 
   protected:
+    // Virtual function from PCurve that has to be implemented locally
+    void                eval(T t, int d, bool l) override;
+    T                   getStartP() const override;
+    T                   getEndP()   const override;
+
+    // Help function
+    T                   getCurvature( DVector< Vector<T,3> >& p );
+
+    // Protected data for the curve
     T                   _d;       // Delta
     T                   _k;       // Kappa
     T                   _start;   // Start
     T                   _end;     // End
-
-    void                eval(T t, int d, bool l) override;
-    T                   getCurvature( DVector< Vector<T,3> >& p );
-    T                   getEndP() override;
-    T                   getStartP() override;
 
   }; // END class PArc
 

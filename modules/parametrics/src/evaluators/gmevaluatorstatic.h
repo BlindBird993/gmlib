@@ -37,12 +37,17 @@ namespace GMlib {
   class EvaluatorStatic {
   public:
     static void evaluateBhp( DMatrix<T>& mat, int degree, T t, T scale = 1 );
-    static void evaluateHp( DMatrix<T>& mat, int d, T t);
-    static int  evaluateBSp( DMatrix<T>& mat, T t, const DVector<T>& tv, int d);
+    static int  evaluateBSp( DMatrix<T>& mat, T t, const DVector<T>& tv, int d, bool left = true, T scale = 1  );
+    static void evaluateBSp2( DMatrix<T>& mat, T t, const DVector<T>& tv, int d, int i, T scale = 1 );
+
+    static void evaluateH3d( DMatrix<T>& mat, int d, T t );
+    static void evaluateH5d( DMatrix<T>& mat, int d, T t );
+
+    static int  knotIndex( const DVector<T>& tv, T t, int d, bool left );
 
   private:
     static T getW( const DVector<T>& tv, T t, int i, int d );
-    static T getWder( const DVector<T>& tv, int i, int d);
+    static T delta( const DVector<T>& tv, int i, int d,  T scale = 1 );
   };
 }
 

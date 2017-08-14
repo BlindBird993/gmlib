@@ -1,4 +1,3 @@
-
 /**********************************************************************************
 **
 ** Copyright (C) 1994 Narvik University College
@@ -28,22 +27,46 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PWhitneyUmbrella<T>::PWhitneyUmbrella() {
-
     init();
   }
 
   template <typename T>
   inline
   PWhitneyUmbrella<T>::PWhitneyUmbrella( const PWhitneyUmbrella<T>& copy ) : PSurf<T,3>( copy ) {
-
     init();
   }
 
   template <typename T>
   PWhitneyUmbrella<T>::~PWhitneyUmbrella() {}
+
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+  template <typename T>
+  bool PWhitneyUmbrella<T>::isClosedU() const {
+    return false;
+  }
+
+  template <typename T>
+  bool PWhitneyUmbrella<T>::isClosedV() const {
+    return false;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PWhitneyUmbrella<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -57,84 +80,78 @@ namespace GMlib {
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d1) //u
-      {
+      if(d1) {                  //u
         this->_p[1][0][0] =	v;
-        this->_p[1][0][1] =  T(1);
-        this->_p[1][0][2] =	0.0;
+        this->_p[1][0][1] = T(1);
+        this->_p[1][0][2] =	T(0);
       }
-      if(d1>1)//uu
-      {
-        this->_p[2][0][0] =	0.0;
-        this->_p[2][0][1] =	0.0;
-        this->_p[2][0][2] =	0.0;
+      if(d1>1) {                //uu
+        this->_p[2][0][0] =	T(0);
+        this->_p[2][0][1] =	T(0);
+        this->_p[2][0][2] =	T(0);
       }
-      if(d2) //v
-      {
+      if(d2) {                  //v
         this->_p[0][1][0] =	u;
-        this->_p[0][1][1] =	0.0;
+        this->_p[0][1][1] =	T(0);
         this->_p[0][1][2] =	T(2)*v;
       }
-      if(d2>1) //vv
-      {
-        this->_p[0][2][0] =	0.0;
-        this->_p[0][2][1] =	0.0;
+      if(d2>1) {                //vv
+        this->_p[0][2][0] =	T(0);
+        this->_p[0][2][1] =	T(0);
         this->_p[0][2][2] =	T(2);
       }
-      if(d1 && d2) //uv
-      {
+      if(d1 && d2) {            //uv
         this->_p[1][1][0] =	T(1);
-        this->_p[1][1][1] =	0.0;
-        this->_p[1][1][2] =	0.0;
+        this->_p[1][1][1] =	T(0);
+        this->_p[1][1][2] =	T(0);
       }
-      if(d1>1 && d2)//uuv
-      {
-        this->_p[2][1][0] =	0.0;
-        this->_p[2][1][1] =	0.0;
-        this->_p[2][1][2] =	0.0;
+      if(d1>1 && d2) {          //uuv
+        this->_p[2][1][0] =	T(0);
+        this->_p[2][1][1] =	T(0);
+        this->_p[2][1][2] =	T(0);
       }
-      if(d1 && d2>1) //uvv
-      {
-        this->_p[1][2][0] =	0.0;
-        this->_p[1][2][1] =	0.0;
-        this->_p[1][2][2] =	0.0;
+      if(d1 && d2>1) {          //uvv
+        this->_p[1][2][0] =	T(0);
+        this->_p[1][2][1] =	T(0);
+        this->_p[1][2][2] =	T(0);
       }
-      if(d1>1 && d2>1) //uuvv
-      {
-        this->_p[2][2][0] =	0.0;
-        this->_p[2][2][1] =	0.0;
-        this->_p[2][2][2] =	0.0;
+      if(d1>1 && d2>1) {        //uuvv
+        this->_p[2][2][0] =	T(0);
+        this->_p[2][2][1] =	T(0);
+        this->_p[2][2][2] =	T(0);
       }
     }
   }
 
-  template <typename T>
-  inline
-  T PWhitneyUmbrella<T>::getEndPU() {
-
-    return T(M_PI);
-  }
 
   template <typename T>
-  inline
-  T PWhitneyUmbrella<T>::getEndPV() {
-
-    return T(M_PI);
-  }
-
-  template <typename T>
-  inline
-  T PWhitneyUmbrella<T>::getStartPU() {
-
+  T PWhitneyUmbrella<T>::getStartPU() const {
     return -T(M_PI);
   }
 
-  template <typename T>
-  inline
-  T PWhitneyUmbrella<T>::getStartPV() {
 
+  template <typename T>
+  T PWhitneyUmbrella<T>::getEndPU() const {
+    return T(M_PI);
+  }
+
+
+  template <typename T>
+  T PWhitneyUmbrella<T>::getStartPV() const {
     return -T(M_PI);
   }
+
+
+  template <typename T>
+  T PWhitneyUmbrella<T>::getEndPV() const {
+    return T(M_PI);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PWhitneyUmbrella<T>::init() {
@@ -142,18 +159,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-  template <typename T>
-  inline
-  bool PWhitneyUmbrella<T>::isClosedU() const {
-
-    return false;
-  }
-
-  template <typename T>
-  inline
-  bool PWhitneyUmbrella<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

@@ -23,8 +23,8 @@
 
 
 
-#ifndef GM_PARAMETRICS_SURFACE_PSUBSURF_H
-#define GM_PARAMETRICS_SURFACE_PSUBSURF_H
+#ifndef GM_PARAMETRICS_SURFACES_PSUBSURF_H
+#define GM_PARAMETRICS_SURFACES_PSUBSURF_H
 
 
 // GMlib includes+
@@ -43,48 +43,49 @@ namespace GMlib {
     PSubSurf( PSurf<T,3>* s, const Point<T,2>& p1, const Point<T,2>& p2,
                              const Point<T,2>& p3, const Point<T,2>& p4);
     PSubSurf( PSurf<T,3>* s, const Point<T,2>& p1, const Point<T,2>& p2,
-                             const Point<T,2>& p3, const Point<T,2>& p4,
-                             const Point<T,2>& p);
+                             const Point<T,2>& p3, const Point<T,2>& p4, const Point<T,2>& p);
     PSubSurf( const PSubSurf<T>& copy );
 
     virtual ~PSubSurf();
 
-    // virtual functions from PSurf
-    bool              isClosedU() const;
-    bool              isClosedV() const;
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
 
-    // Local functions
+    // from PSurf
+    bool          isClosedU()  const override;
+    bool          isClosedV()  const override;
 
   protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
 
-    PSurf<T,3>*       _s;
-    Vector<float,3>   _trans; // (x,y,z)
-    Vector<T,2>       _q;     // (u,v)
-    Vector<T,2>       _p1;
-    Vector<T,2>       _a;
-    Vector<T,2>       _b;
-    Vector<T,2>       _c;
+    // Help function to ensure consistent initialization
+    virtual void  init();
 
-    // virtual functions from PSurf
-    void              eval( T u, T v, int d1, int d2, bool lu=true, bool lv=true);
-
-    T                 getEndPU();
-    T                 getEndPV();
-    T                 getStartPU();
-    T                 getStartPV();
+    // Protected data for the surface
+    PSurf<T,3>*         _s;
+    Vector<float,3>     _trans; // (x,y,z)
+    Vector<T,2>         _q;     // (u,v)
+    Vector<T,2>         _p1;
+    Vector<T,2>         _a;
+    Vector<T,2>         _b;
+    Vector<T,2>         _c;
 
   private:
 
     // Local help functions
-    void set(PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v);
-    void set(PSurf<T,3>* s, const Point<T,2>& p1, const Point<T,2>& p2,
-                            const Point<T,2>& p3, const Point<T,2>& p4,
-                            const Point<T,2>& p);
-
-    Vector<T,2>  S(T u, T v);
-    Vector<T,2>  Su(T u, T v);
-    Vector<T,2>  Sv(T u, T v);
-    Vector<T,2>& Suv(T u, T v);
+    void    set(PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v);
+    void    set(PSurf<T,3>* s, const Point<T,2>& p1, const Point<T,2>& p2,
+                               const Point<T,2>& p3, const Point<T,2>& p4, const Point<T,2>& p);
+    Vector<T,2>     S(T u, T v)   const;
+    Vector<T,2>     Su(T u, T v)  const;
+    Vector<T,2>     Sv(T u, T v)  const;
+    Vector<T,2>&    Suv(T u, T v) const;
 
   }; // END class PSubSurf
 
@@ -95,5 +96,5 @@ namespace GMlib {
 #include "gmpsubsurf.c"
 
 
-#endif // GM_PARAMETRICS_SURFACE_PSUBSURF_H
+#endif // GM_PARAMETRICS_SURFACES_PSUBSURF_H
 

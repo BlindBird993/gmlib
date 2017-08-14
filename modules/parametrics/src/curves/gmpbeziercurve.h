@@ -66,6 +66,9 @@ namespace GMlib {
 
 
   protected:
+    void                            eval( T t, int d = 0, bool l = false ) override;
+    T                               getEndP()   const override;
+    T                               getStartP() const override;
 
     DVector< Vector<T, 3> >         _c;
     T                               _scale;
@@ -80,11 +83,8 @@ namespace GMlib {
     DVector< Selector<T,3>* >       _s;
     bool                            _c_moved;
 
-    void                            eval( T t, int d = 0, bool l = false ) override;
     void                            evalPre( T t, int d = 0, bool l = false );
     void                            findIndex( T t, int& it );
-    T                               getEndP() override;
-    T                               getStartP() override;
     virtual void                    init();
   }; // END class PBezierCurve
 

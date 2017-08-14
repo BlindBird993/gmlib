@@ -27,11 +27,15 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PSteinerSurf<T>::PSteinerSurf( T radius ) {
 
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
     _r = radius;
   }
 
@@ -40,7 +44,7 @@ namespace GMlib {
   inline
   PSteinerSurf<T>::PSteinerSurf( const PSteinerSurf<T>& copy ) : PSurf<T,3>( copy ) {
 
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
     _r = copy._r;
   }
 
@@ -48,6 +52,29 @@ namespace GMlib {
   template <typename T>
   PSteinerSurf<T>::~PSteinerSurf() {}
 
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PSteinerSurf<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PSteinerSurf<T>::isClosedV() const {
+    return true;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PSteinerSurf<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -112,50 +139,43 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  T PSteinerSurf<T>::getEndPU() {
-
-    return T(M_PI);
-  }
-
 
   template <typename T>
-  inline
-  T PSteinerSurf<T>::getEndPV() {
-
-    return T(M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PSteinerSurf<T>::getStartPU() {
-
+  T PSteinerSurf<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PSteinerSurf<T>::getStartPV() {
+  T PSteinerSurf<T>::getEndPU() const {
+    return T(M_PI);
+  }
 
+
+  template <typename T>
+  T PSteinerSurf<T>::getStartPV() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  bool PSteinerSurf<T>::isClosedU() const {
-
-    return false;
+  T PSteinerSurf<T>::getEndPV() const {
+    return T(M_PI);
   }
 
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
-  inline
-  bool PSteinerSurf<T>::isClosedV() const {
+  void PSteinerSurf<T>::init() {
 
-    return true;
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
+
+
+
 }

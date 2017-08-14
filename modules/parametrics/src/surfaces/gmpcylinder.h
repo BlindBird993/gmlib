@@ -37,27 +37,40 @@ namespace GMlib {
   class PCylinder : public PSurf<T,3> {
     GM_SCENEOBJECT(PCylinder)
   public:
-    PCylinder( T rx = 4, T ry = 4, T h = 2 );
+    PCylinder( T rx = 1, T ry = 2, T h = 2 );
     PCylinder( const PCylinder<T>& copy );
     virtual ~PCylinder();
 
+    // Public local functions
     T             getHeight() const;
     T             getRadiusX() const;
     T             getRadiusY() const;
-    bool          isClosedU() const override;
-    bool          isClosedV() const override;
     void          setConstants( T rx, T ry, T h );
 
+
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
+
   protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
+
+    // Help function to ensure consistent initialization
+    virtual void      init();
+
+    // Protected data for the surface
     T             _rx;
     T             _ry;
     T             _h;
-
-    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
-    T             getEndPV() override;
-    T             getEndPU() override;
-    T             getStartPU() override;
-    T             getStartPV() override;
 
   }; // END class PCylinder
 

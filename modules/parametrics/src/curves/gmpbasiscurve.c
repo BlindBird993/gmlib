@@ -21,14 +21,18 @@
 **********************************************************************************/
 
 
-
 #include "../evaluators/gmerbsevaluator.h"
 
 namespace GMlib {
 
+
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
+
   template <typename T, typename G>
   PBasisCurve<T,G>::PBasisCurve() {
-
     _B = new ERBSEvaluator<G>();
     _B->set( 0.0f, 1.0f );
     _d_no = 0;
@@ -36,9 +40,41 @@ namespace GMlib {
 
   template <typename T, typename G>
   PBasisCurve<T,G>::~PBasisCurve() {
-
     delete _B;
   }
+
+
+
+  //**************************************
+  //        Public local functons       **
+  //**************************************
+
+  template <typename T, typename G>
+  void PBasisCurve<T,G>::setDisplay( int display ) {
+    _d_no = display;
+  }
+
+  template <typename T, typename G>
+  void PBasisCurve<T,G>::setEvaluator( BasisEvaluator<G> *e ) {
+    if( !e ) return;
+    if( _B ) delete _B;
+    _B = e;
+  }
+
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
+  template <typename T, typename G>
+  bool PBasisCurve<T,G>::isClosed() const {
+    return false;
+  }
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
 
   template <typename T, typename G>
   void PBasisCurve<T,G>::eval( T t, int /*d*/, bool /*l*/ ) {
@@ -57,41 +93,17 @@ namespace GMlib {
     this->_p[0][2] = 0.0f;
   }
 
-  template <typename T, typename G>
-  T PBasisCurve<T,G>::getEndP() {
 
-    return 1.0f;
-  }
 
   template <typename T, typename G>
-  T PBasisCurve<T,G>::getStartP() {
-
+  T PBasisCurve<T,G>::getStartP() const {
     return 0.0f;
   }
 
-  template <typename T, typename G>
-  bool PBasisCurve<T,G>::isClosed() const {
-
-    return false;
-  }
 
   template <typename T, typename G>
-  void PBasisCurve<T,G>::setDisplay( int display ) {
-
-    _d_no = display;
+  T PBasisCurve<T,G>::getEndP() const {
+    return 1.0f;
   }
-
-  template <typename T, typename G>
-  void PBasisCurve<T,G>::setEvaluator( BasisEvaluator<G> *e ) {
-
-    if( !e )
-      return;
-
-    if( _B )
-      delete _B;
-
-    _B = e;
-  }
-
 
 } // END namespace GMlib

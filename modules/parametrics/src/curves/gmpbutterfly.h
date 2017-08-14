@@ -22,7 +22,6 @@
 
 
 
-
 #ifndef GM_PARAMETRICS_CURVE_PBUTTERFLY_H
 #define GM_PARAMETRICS_CURVE_PBUTTERFLY_H
 
@@ -39,17 +38,25 @@ namespace GMlib {
   public:
     PButterfly( T size = T(5) );
     PButterfly( const PButterfly<T>& copy );
+
     virtual ~PButterfly();
 
-    bool          isClosed() const;
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
 
+    // from PCurve
+    bool                isClosed() const override;
 
   protected:
-    T             _size;
+    // Virtual function from PCurve that has to be implemented locally
+    void                eval(T t, int d, bool l) override;
+    T                   getStartP() const override;
+    T                   getEndP()   const override;
 
-    void	        eval(T t, int d, bool l);
-    T             getEndP();
-    T             getStartP();
+
+    // Protected data for the curve
+    T             _size;
 
   }; // END class PButterfly
 

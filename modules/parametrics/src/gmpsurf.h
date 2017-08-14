@@ -50,11 +50,12 @@ namespace GMlib {
   class PSurf : public Parametrics<T,2,n> {
   public:
 
-    PSurf( int s1 = 20, int s2 = 20 );
+    PSurf( int s1 = 0, int s2 = 0 );
     PSurf( const PSurf<T,n>& copy );
     virtual ~PSurf();
 
     virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v );
+
     DMatrix<Vector<T,n> >&        evaluate( const APoint<T,2>& p, const APoint<int,2>& d );
     DMatrix<Vector<T,n> >&        evaluate( T u, T v, int d1, int d2 );
     DVector<Vector<T,n> >         evaluateD( const APoint<T,2>& p, const APoint<int,2>& d );
@@ -82,40 +83,47 @@ namespace GMlib {
     T                             getParEndU();
     T                             getParEndV();
     Vector<T,n>&                  getPosition( T u, T v );
+
+    int                           getNumSamIntPU() const;
+    int                           getNumSamIntPV() const;
     int                           getSamPU( int i = 0 ) const;
     int                           getSamPV( int i = 0 ) const;
     int                           getSamplesU() const;
     int                           getSamplesV() const;
+
     virtual bool                  isClosedU() const;
     virtual bool                  isClosedV() const;
     virtual bool                  getClosestPoint( const Point<T,n>& q, T& u, T& v );
     bool                          getClosestPoint( const Point<T,n>& q, Point<T,2>& uv );
-    virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
+
     virtual void                  replot( int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0 );
-    void                          resample(DMatrix<DMatrix <DMatrix <Vector<T,n> > > >	& a, int m1, int m2, int d1, int d2 );
-    virtual void                  resample(DMatrix<DMatrix <Vector<T,n> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
-    virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,3> > &normals ) const;
+
     void                          setDomainU( T start, T end );
     void                          setDomainUScale( T sc );
     void                          setDomainUTrans( T tr );
     void                          setDomainV( T start, T end );
     void                          setDomainVScale( T sc );
     void                          setDomainVTrans( T tr );
+
     void                          setNoDer( int d );
     virtual void                  setSurroundingSphere( const DMatrix< DMatrix< Vector<T,n> > >& p );
     virtual Parametrics<T,2,n>*   split( T t, int uv );
 
+    virtual void                  showSelectors(T rad = T(1), bool grid = false, const Color& _selector_color = GMcolor::darkBlue(), const Color& grid_color = GMcolor::lightGreen() ) {}
+    virtual void                  hideSelectors() {}
+
     void                          enableDefaultVisualizer( bool enable = true );
     PSurfVisualizer<T,n>*         getDefaultVisualizer() const;
     void                          toggleDefaultVisualizer();
-    void                          insertVisualizer( Visualizer *visualizer ) override;
-    void                          removeVisualizer( Visualizer *visualizer ) override;
+    void                          insertVisualizer( Visualizer *visualizer ) override; // Defined in ScenObject
+    void                          removeVisualizer( Visualizer *visualizer ) override; // Defined in ScenObject
 
     const Point<T,n>&             operator () ( T u, T v );
 
   protected:
-    Array< PSurfVisualizer<T,n>* >  _psurf_visualizers;
-    PSurfVisualizer<T,n>          *_default_visualizer;
+
+    Array< PSurfVisualizer<T,n>*> _psurf_visualizers;
+    PSurfVisualizer<T,n>*         _default_visualizer;
 
     int                           _no_sam_u;    // Number of samples u for single sampling
     int                           _no_sam_v;    // Number of samples v for single sampling
@@ -133,9 +141,14 @@ namespace GMlib {
     // Used by operator() for number of derivative to evaluate.
     int                           _default_d;
 
+    // Can be used by resample -- index in pre-eval
+    int                           _ind[2];
+    bool                          _resample;
+    int                           _pre_eval_kode;
+
 
     // The result of the previous evaluation
-    DMatrix< Vector<T,n> >        _p;           // Position and belonging partial derivatives
+    mutable DMatrix< Vector<T,n> > _p;           // Position and belonging partial derivatives
     Vector<T,n>                   _n;           // Surface normal, for display in 3D
     T                             _u;           // The parameter value in u-direction used for last evaluation
     T                             _v;           // The parameter value in v-direction used for last evaluation
@@ -166,38 +179,51 @@ namespace GMlib {
      *  Returns the parametric end value in u-direction. (Requires implementation in PSurf sub-classes.)
      *  \return Parametric end value in u.
      */
-    virtual T                     getEndPU() = 0;
+    virtual T                     getEndPU() const = 0;
 
     /*! virtual T PSurf<T,3>::getEndPV() = 0
      *  Returns the parametric end value in v-direction. (Requires implementation in PSurf sub-classes.)
      *  \return Parametric end value in v.
      */
-    virtual T                     getEndPV() = 0;
+    virtual T                     getEndPV() const = 0;
 
     /*! virtual T PSurf<T,3>::getStartPU() = 0
      *  Returns the parametric start value in u-direction. (Requires implementation in PSurf sub-classes.)
      *  \return Parametric start value in u.
      */
-    virtual T                     getStartPU() = 0;
+    virtual T                     getStartPU() const = 0;
 
 
     /*! virtual T PSurf<T,3>::getStartPV() = 0
      *  Returns the parametric start value in v-direction. (Requires implementation in PSurf sub-classes.)
      *  \return Parametric start value in v.
      */
-    virtual T                     getStartPV() = 0;
+    virtual T                     getStartPV() const = 0;
+
+
+    virtual void                  preSample( int dir, int m );
+    virtual void                  preSample( int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0) );
+
+    void                          resample(DMatrix<DMatrix <DMatrix <Vector<T,n> > > >	& a, int m1, int m2, int d1, int d2 );
+    virtual void                  resample(DMatrix<DMatrix <Vector<T,n> > >& a, int m1, int m2, int d1, int d2, T s_u = T(0), T s_v = T(0), T e_u = T(0), T e_v = T(0));
+
+    virtual void                  resampleNormals( const DMatrix<DMatrix<Vector<T,n> > > &sample, DMatrix<Vector<T,3> > &normals ) const;
+
+    void                          uppdateSurroundingSphere( Sphere<T,n>& s, const DMatrix< DMatrix< Vector<T,n> > >& p );
 
     T                             shiftU(T u);
     T                             shiftV(T v);
 
   private:
+
     void                          _eval( T u, T v, int d1, int d2 );
     void                          _evalNormal();
+    void                          _computeEFGefg( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g );
 //    void                          _setSam( int m1, int m2 );
     int                           _sum( int i, int j );
 
-
   }; // END class PSurf
+
 
 } // END namespace GMlib
 

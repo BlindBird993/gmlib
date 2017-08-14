@@ -1,4 +1,3 @@
-
 /**********************************************************************************
 **
 ** Copyright (C) 1994 Narvik University College
@@ -28,6 +27,10 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PSlippersSurface<T>::PSlippersSurface() {
@@ -48,6 +51,29 @@ namespace GMlib {
   template <typename T>
   PSlippersSurface<T>::~PSlippersSurface() {}
 
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PSlippersSurface<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PSlippersSurface<T>::isClosedV() const {
+    return false;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PSlippersSurface<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -133,37 +159,36 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  T PSlippersSurface<T>::getEndPU() {
-
-    return T(2*M_PI);
-  }
-
 
   template <typename T>
-  inline
-  T PSlippersSurface<T>::getEndPV() {
-
-    return T(2*M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PSlippersSurface<T>::getStartPU() {
-
+  T PSlippersSurface<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PSlippersSurface<T>::getStartPV() {
+  T PSlippersSurface<T>::getEndPU() const {
+    return T(2*M_PI);
+  }
 
+
+  template <typename T>
+  T PSlippersSurface<T>::getStartPV() const {
     return T(0);
   }
 
+
+  template <typename T>
+  T PSlippersSurface<T>::getEndPV() const {
+    return T(2*M_PI);
+  }
+
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PSlippersSurface<T>::init() {
@@ -171,20 +196,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-
-  template <typename T>
-  inline
-  bool PSlippersSurface<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PSlippersSurface<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

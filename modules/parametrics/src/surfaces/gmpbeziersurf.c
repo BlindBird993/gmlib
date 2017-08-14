@@ -31,6 +31,12 @@
 
 namespace GMlib {
 
+
+
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PBezierSurf<T>::PBezierSurf( const DMatrix< Vector<T, 3> >& cp ) {
@@ -59,7 +65,6 @@ namespace GMlib {
 
     _c = bu * (c^bv);
 
-
     for( int i = 0; i < c.getDim1(); i++ )
       for( int j = 0; j < c.getDim2(); j++ )
         _c[i][j] -= c(0)(0);
@@ -86,6 +91,110 @@ namespace GMlib {
   }
 
 
+  //*****************************************
+  //            Local functons             **
+  //*****************************************
+
+  template <typename T>
+  inline
+  DMatrix< Vector<T,3> >& PBezierSurf<T>::getControlPoints() {
+    return _c;
+  }
+
+  template <typename T>
+  inline
+  int PBezierSurf<T>::getDegreeU() const {
+    return _c.getDim1() - 1;
+  }
+
+
+  template <typename T>
+  inline
+  int PBezierSurf<T>::getDegreeV() const {
+    return _c.getDim2() - 1;
+  }
+
+
+  template <typename T>
+  inline
+  bool PBezierSurf<T>::isSelectorsVisible() const {
+    return _selectors;
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBezierSurf<T>::setClosed( bool closed_u, bool closed_v ) {
+
+    _cu = closed_u;
+    _cv = closed_v;
+  }
+
+
+  template <typename T>
+  inline
+  void PBezierSurf<T>::setControlPoints( const DMatrix< Vector<T,3> >& cp ) {
+
+    int n1 = _c.getDim1();
+    int n2 = _c.getDim2();
+
+    _c = cp;
+
+    if(n1 != _c.getDim1())
+          preSample( 1, this->getSamplesU());
+    if(n2 != _c.getDim2())
+          preSample( 2, this->getSamplesV());
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBezierSurf<T>::setScale( T su, T sv ) {
+
+      if( su != _su) {
+          _su = su;
+          preSample( 1, this->getSamplesU());
+      }
+
+      if( sv != _sv) {
+          _sv = sv;
+          preSample( 2, this->getSamplesV());
+      }
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBezierSurf<T>::updateCoeffs( const Vector<T,3>& d ) {
+
+    if( _c_moved ) {
+
+      HqMatrix<T,3> invmat = this->_matrix;
+      invmat.invertOrthoNormal();
+
+      Vector<T,3> diff = invmat*d;
+      for( int i = 0; i < _c.getDim1(); i++ ) {
+        for( int j = 0; j < _c.getDim2(); j++ ) {
+
+          _c[i][j] += diff;
+          _s[i][j]->translateParent( diff );
+        }
+      }
+      this->translateParent( -d, false );
+    }
+  }
+
+
+
+
+  //********************************************************
+  // Overrided (public) virtual functons from SceneObject **
+  //********************************************************
+
+
   template <typename T>
   void PBezierSurf<T>::edit( int /*selector_id*/ ) {
 
@@ -100,119 +209,53 @@ namespace GMlib {
   }
 
 
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
   template <typename T>
-  inline
-  void PBezierSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
-
-//    // Send the control to the pre-eval evaluator
-//    if( _resamp_mode == GM_RESAMPLE_PREEVAL ) {
-//
-//      evalPre( u, v, d1, d2, lu, lv );
-//      return;
-//    }
-
-    // Set Dimensions
-    this->_p.setDim( getDegreeU()+1, getDegreeV()+1 );
-
-    // Compute the Bernstein-Hermite Polynomials
-    DMatrix< T > bu, bv;
-    EvaluatorStatic<T>::evaluateBhp( bu, this->getDegreeU(), u, _su );
-    EvaluatorStatic<T>::evaluateBhp( bv, this->getDegreeV(), v, _sv );
-
-    bv.transpose();
-    this->_p = bu * (_c^bv);
-
-    // Add "0" derivatives if d1/d2 is bigger
-    this->_p.resetDim(d1+1,d2+1);
+  bool PBezierSurf<T>::isClosedU() const {
+    return _cu;
   }
 
 
   template <typename T>
-  inline
-  void PBezierSurf<T>::evalPre( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
-
-    // Find the u/v index for the preevaluated data.
-    int iu, iv;
-    iv = 0;
-    iu = 0;
-    findIndex( u, v, iu, iv );
-
-    // Set Dimensions
-    this->_p.setDim( getDegreeU()+1, getDegreeV()+1 );
-
-    DMatrix<T> bu = _u[iu][iv];
-    DMatrix<T> bv = _v[iu][iv];
-
-    bv.transpose();
-    this->_p = bu * (_c^bv);
-
-    // Add "0" derivatives if d1/d2 is bigger
-    this->_p.resetDim(d1+1,d2+1);
+  bool PBezierSurf<T>::isClosedV() const {
+    return _cv;
   }
+
 
 
   template <typename T>
-  inline
-  void PBezierSurf<T>::findIndex( T u, T v, int& iu, int& iv ) {
+  void PBezierSurf<T>::showSelectors( T rad, bool grid, const Color& _selector_color, const Color& grid_color ) {
 
-    iu = (this->_no_samp_u-1)*(u-this->getParStartU())/(this->getParDeltaU())+0.1;
-    iv = (this->_no_samp_v-1)*(v-this->getParStartV())/(this->getParDeltaV())+0.1;
+    if( _selectors )
+      return;
+
+    _s.setDim( _c.getDim1(), _c.getDim2() );
+    for( int i = 0, s_id = 0; i < _c.getDim1(); i++ ) {
+      for( int j = 0; j < _c.getDim2(); j++ ) {
+
+        Selector<T,3> *sel = new Selector<T,3>( _c[i][j], s_id++, this, rad, _selector_color );
+        this->insert( sel );
+        _s[i][j] = sel;
+      }
+    }
+
+    if( grid ) {
+      if(!_sgv) _sgv = new SelectorGridVisualizer<T>;
+
+      _sgv->setSelectors( _c );
+      _sgv->setColor( grid_color );
+      this->insertVisualizer( _sgv );
+    }
+
+    _selectors = true;
   }
 
-
-  template <typename T>
-  inline
-  DMatrix< Vector<T,3> >& PBezierSurf<T>::getControlPoints() {
-
-    return _c;
-  }
-
-  template <typename T>
-  inline
-  int PBezierSurf<T>::getDegreeU() const {
-
-    return _c.getDim1() - 1;
-  }
-
-
-  template <typename T>
-  inline
-  int PBezierSurf<T>::getDegreeV() const {
-
-    return _c.getDim2() - 1;
-  }
-
-
-  template <typename T>
-  inline
-  T PBezierSurf<T>::getEndPU() {
-
-    return T(1);
-  }
-
-
-  template <typename T>
-  inline
-  T PBezierSurf<T>::getEndPV() {
-
-    return T(1);
-  }
-
-
-  template <typename T>
-  inline
-  T PBezierSurf<T>::getStartPU() {
-
-    return T(0);
-  }
-
-
-  template <typename T>
-  inline
-  T PBezierSurf<T>::getStartPV() {
-
-    return T(0);
-  }
 
 
   template <typename T>
@@ -239,6 +282,55 @@ namespace GMlib {
   }
 
 
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
+
+  template <typename T>
+  void PBezierSurf<T>::eval( T u, T v, int du, int dv, bool /*lu*/, bool /*lv*/ ) {
+
+      // Set Dimensions
+      this->_p.setDim( du+1, dv+1 );
+
+      DMatrix<T> bu, bv;
+      EvaluatorStatic<T>::evaluateBhp( bu, this->getDegreeU(), u, _su );
+      EvaluatorStatic<T>::evaluateBhp( bv, this->getDegreeV(), v, _sv );
+
+      multEval( bu, bv, du, dv);
+  }
+
+
+  template <typename T>
+  T PBezierSurf<T>::getStartPU() const {
+    return T(0);
+  }
+
+
+  template <typename T>
+  T PBezierSurf<T>::getEndPU() const {
+    return T(1);
+  }
+
+
+  template <typename T>
+  T PBezierSurf<T>::getStartPV() const {
+    return T(0);
+  }
+
+
+  template <typename T>
+  T PBezierSurf<T>::getEndPV() const {
+    return T(1);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
+
   template <typename T>
   inline
   void PBezierSurf<T>::init() {
@@ -246,186 +338,97 @@ namespace GMlib {
     this->_type_id = GM_SO_TYPE_SURFACE_BEZIER;
 
     _selectors = false;
-    _c_moved = false;
+    _c_moved   = false;
 
     _cu = false;
     _cv = false;
     _su = T(1);
     _sv = T(1);
-    _pre_eval = true;
-    _resamp_mode = GM_RESAMPLE_PREEVAL;
 
     _sgv = 0x0;
   }
 
 
-  template <typename T>
-  inline
-  bool PBezierSurf<T>::isClosedU() const {
 
-    return _cu;
+  //******************************************
+  // Private Overrided  functons from PSurf **
+  //******************************************
+
+  template <typename T>
+  void PBezierSurf<T>::resample( DMatrix< DMatrix < Vector<T,3> > >& p,
+                                 int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v ) {
+      // Set Dimensions
+      this->_p.setDim(d1+1,d2+1);
+      p.setDim(m1, m2);
+
+      for(int i=0; i<m1; i++)
+          for(int j=0; j<m2; j++) {
+              multEval( _ru[i], _rv[j], d1, d2);
+              p[i][j] = this->_p;
+          }
   }
 
 
   template <typename T>
-  inline
-  bool PBezierSurf<T>::isClosedV() const {
-
-    return _cv;
+  void  PBezierSurf<T>::preSample( int dir, int m ) {
+      if( dir==1 )
+          preSample( _ru, m, _c.getDim1()-1, _su, this->getParStartU(), this->getParEndU() );
+      if( dir==2 )
+          preSample( _rv, m, _c.getDim2()-1, _sv, this->getParStartV(), this->getParEndV() );
   }
 
 
-  template <typename T>
-  bool PBezierSurf<T>::isSelectorsVisible() const {
 
-    return _selectors;
-  }
+
+  //*****************************
+  //  Private Local functons   **
+  //*****************************
 
   template <typename T>
   inline
-  void PBezierSurf<T>::preSample(
-    int m1, int m2, int /*d1*/, int /*d2*/,
-    T s_u, T s_v, T e_u, T e_v
-  ) {
+  void PBezierSurf<T>::preSample( DVector< DMatrix< T > >& p, int m, int d, T scale, T start, T end ) {
 
-    // break out of the preSample function if no preevalution is to be used
-    switch( _resamp_mode ) {
-    case GM_RESAMPLE_PREEVAL: break;
-    case GM_RESAMPLE_INLINE:
-    default:
-      return;
-    }
-
-    // break out and return if preevaluation isn't necessary.
-    if( !_pre_eval && m1 == _u.getDim1() && m2 == _u.getDim2() )
-      return;
-
-    // compute du and dv (step in parametric u and v direction)
-    const T du = ( e_u - s_u ) / T(m1-1);
-    const T dv = ( e_v - s_v ) / T(m2-1);
+    // compute dt (step in parameter)
+    const T dt = ( end - start ) / T(m-1);
 
     // Set the dimension of the Bernstein-Hermite Polynomial DVector
-    _u.setDim(m1,m2);
-    _v.setDim(m1,m2);
+    p.setDim(m);
 
-    // Compute the Bernstein-Hermite Polynomiale, for the Bezier Surface
-    for( int i = 0; i < m1; i++ ) {
-      for( int j = 0; j < m2; j++ ) {
-
-        EvaluatorStatic<T>::evaluateBhp( _u[i][j], getDegreeU(), i*du, _su );
-        EvaluatorStatic<T>::evaluateBhp( _v[i][j], getDegreeV(), j*dv, _sv );
-      }
-    }
-
-    // Disable the pre-evaluation step
-    _pre_eval = false;
+    // Compute the Bernstein-Hermite Polynomiale, for the B-spline Surface
+    for( int j = 0; j < m; j++ )
+       EvaluatorStatic<T>::evaluateBhp( p[j], d, j*dt, scale );
 
   }
+
 
 
   template <typename T>
   inline
-  void PBezierSurf<T>::setClosed( bool closed_u, bool closed_v ) {
+  void PBezierSurf<T>::multEval(const DMatrix<T>& bu, const DMatrix<T>& bv, int du, int dv) {
 
-    _cu = closed_u;
-    _cv = closed_v;
-  }
+      int ku = this->getDegreeU()+1;
+      int kv = this->getDegreeV()+1;
 
+      DMatrix<Vector<T,3>> c(ku, dv+1);
 
-  template <typename T>
-  inline
-  void PBezierSurf<T>::setControlPoints( const DMatrix< Vector<T,3> >& cp ) {
+      // We do these two operations manually here!
+      //    bv.transpose();
+      //    this->_p = bu * (c^bv);
 
-
-    if( _c.getDim1() == cp.getDim1() || _c.getDim2() == cp.getDim2() ) {
-
-      bool no_change = true;
-      for( int i = 0; i < cp.getDim1(); i++ )
-        for( int j = 0; j < cp.getDim2(); j++ )
-          if( _c[i][j] != cp(i)(j) )
-            no_change = false;
-
-      if( no_change )
-        return;
-    }
-    else {
-
-      _pre_eval = true;
-    }
-
-    _c = cp;
-  }
-
-
-  template <typename T>
-  inline
-  void PBezierSurf<T>::setResampleMode( GM_RESAMPLE_MODE mode ) {
-
-    _resamp_mode = mode;
-  }
-
-
-  template <typename T>
-  inline
-  void PBezierSurf<T>::setScale( T du, T dv ) {
-
-    if( du == _su || dv == _sv )
-      return;
-
-    _su = du;
-    _sv = dv;
-    _pre_eval = true;
-  }
-
-
-  template <typename T>
-  void PBezierSurf<T>::showSelectors( bool grid, const Color& _selector_color, const Color& grid_color ) {
-
-    if( _selectors )
-      return;
-
-    _s.setDim( _c.getDim1(), _c.getDim2() );
-    for( int i = 0, s_id = 0; i < _c.getDim1(); i++ ) {
-      for( int j = 0; j < _c.getDim2(); j++ ) {
-
-        Selector<T,3> *sel = new Selector<T,3>( _c[i][j], s_id++, this, T(1), _selector_color );
-        this->insert( sel );
-        _s[i][j] = sel;
-      }
-    }
-
-    if( grid ) {
-
-      if(!_sgv) _sgv = new SelectorGridVisualizer<T>;
-
-      _sgv->setSelectors( _c );
-      this->insertVisualizer( _sgv );
-    }
-
-    _selectors = true;
-  }
-
-
-  template <typename T>
-  inline
-  void PBezierSurf<T>::updateCoeffs( const Vector<T,3>& d ) {
-
-    if( _c_moved ) {
-
-      HqMatrix<T,3> invmat = this->_matrix;
-      invmat.invertOrthoNormal();
-
-      Vector<T,3> diff = invmat*d;
-      for( int i = 0; i < _c.getDim1(); i++ ) {
-        for( int j = 0; j < _c.getDim2(); j++ ) {
-
-          _c[i][j] += diff;
-          _s[i][j]->translateParent( diff );
-        }
-      }
-      this->translateParent( -d, false );
-      this->replot();
-    }
+      //    c= _c^bvT
+      for(int i=0; i< ku; i++)
+          for(int j=0; j<=dv; j++) {
+              c[i][j] = _c[i][0]*bv(j)(0);
+              for(int k=1; k<kv; k++)
+                  c[i][j] += _c[i][k]*bv(j)(k);
+          }
+      //    _p = bu * c
+      for(int i=0; i<=dv; i++)
+          for(int j=0; j<=du; j++) {
+              this->_p[i][j] = bu(i)(0)*c[0][j];
+              for(int k=1; k<ku; k++)
+                  this->_p[i][j] += bu(i)(k)*c[k][j];
+          }
   }
 
 } // END namespace GMlib

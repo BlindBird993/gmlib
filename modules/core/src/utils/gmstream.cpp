@@ -68,7 +68,7 @@ namespace GMlib {
      */
     const Separator& group() {
 
-      static const Separator sep_group= Separator('\n');
+      static const Separator sep_group = Separator('\n');
       return sep_group;
     }
 

@@ -237,6 +237,7 @@ list( APPEND HEADERS
   visualizers/gmpsurfnormalsvisualizer.h
   visualizers/gmpsurfpointsvisualizer.h
   visualizers/gmpsurfparamlinesvisualizer.h
+  visualizers/gmpsurfspherevisualizer.h
   visualizers/gmpsurftexvisualizer.h
   visualizers/gmpsurfvisualizer.h
 #  visualizers/gmptrianglecolorpointvisualizer.h
@@ -257,6 +258,7 @@ list( APPEND HEADER_SOURCES
   visualizers/gmpsurfnormalsvisualizer.c
   visualizers/gmpsurfpointsvisualizer.c
   visualizers/gmpsurfparamlinesvisualizer.c
+  visualizers/gmpsurfspherevisualizer.c
   visualizers/gmpsurftexvisualizer.c
   visualizers/gmpsurfvisualizer.c
 #  visualizers/gmptrianglecolorpointvisualizer.c

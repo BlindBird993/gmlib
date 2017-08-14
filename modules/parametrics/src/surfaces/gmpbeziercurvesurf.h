@@ -43,19 +43,32 @@ namespace GMlib {
     PBezierCurveSurf( const PBezierCurveSurf<T>& su );
     virtual ~PBezierCurveSurf();
 
-    bool          isClosedU() const;
-    bool          isClosedV() const;
+    // Public local functions
+    void showCurves();
+    void hideCurves();
+
+
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
 
   protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu, bool lv ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
 
-    void          eval(T u, T v, int d1, int d2, bool lu, bool lv );
-    T             getEndPU();
-    T             getEndPV();
-    T             getStartPU();
-    T             getStartPV();
+    // Help function to ensure consistent initialization
+    virtual void      init();
 
-    Array<PCurve<T,3>*>   _cu;
-
+    // Protected data for the surface
+    Array<PCurve<T,3>*> _cu;
     bool                _swap_par;
 
   }; // END class PBezierCurveSurf

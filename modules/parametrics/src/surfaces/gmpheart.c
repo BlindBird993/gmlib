@@ -28,6 +28,10 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PHeart<T>::PHeart() {
@@ -44,10 +48,31 @@ namespace GMlib {
   }
 
 
-
   template <typename T>
   PHeart<T>::~PHeart() {}
 
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PHeart<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PHeart<T>::isClosedV() const {
+    return false;
+  }
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PHeart<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -62,52 +87,44 @@ namespace GMlib {
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d1) //u
-      {
+      if(d1) {                      //u
         this->_p[1][0][0] =	-T(4)*pow(sin(abs(v)),abs(v))*sin(v)*u/(sqrt(T(1)-u*u));
-        this->_p[1][0][1] =	 -T(4)*pow(sin(abs(v)),abs(v))*cos(v)*u/(sqrt(T(1)-u*u));
+        this->_p[1][0][1] =	-T(4)*pow(sin(abs(v)),abs(v))*cos(v)*u/(sqrt(T(1)-u*u));
         this->_p[1][0][2] =	T(1);
       }
-      if(d1>1)//uu
-      {
+      if(d1>1) {                    //uu
         this->_p[2][0][0] =	T(0);
         this->_p[2][0][1] =	T(0);
         this->_p[2][0][2] =	T(0);
       }
-      if(d2) //v
-      {
+      if(d2) {                      //v
         this->_p[0][1][0] =	T(4)*sqrt(T(1)-u*u)*pow(sin(abs(v)),abs(v))*(/*abs(1,v)*/log(sin(abs(v)))+abs(v)*cos(abs(v))
                 /*abs(1,v)*//sin(abs(v)))*sin(v)+T(4)*sqrt(T(1)-u*u)*pow(sin(abs(v)),abs(v))*cos(v);
         this->_p[0][1][1] =	T(4)*sqrt(T(1)-u*u)*pow(sin(abs(v)),abs(v))*(/*abs(1,v)*/log(sin(abs(v)))+abs(v)*cos(abs(v))
                 /*abs(1,v)*//(abs(v)))*cos(v)-T(4)*sqrt(T(1)-u*u)*pow(sin(abs(v)),abs(v))*sin(v);
         this->_p[0][1][2] =	T(0);
       }
-      if(d2>1) //vv
-      {
+      if(d2>1) {                    //vv
         this->_p[0][2][0] =	T(0);
         this->_p[0][2][1] =	T(0);
         this->_p[0][2][2] =	T(0);
       }
-      if(d1 && d2) //uv
-      {
+      if(d1 && d2) {                //uv
         this->_p[1][1][0] =	T(0);
         this->_p[1][1][1] =	T(0);
         this->_p[1][1][2] =	T(0);
       }
-      if(d1>1 && d2)//uuv
-      {
+      if(d1>1 && d2) {              //uuv
         this->_p[2][1][0] =	T(0);
         this->_p[2][1][1] =	T(0);
         this->_p[2][1][2] =	T(0);
       }
-      if(d1 && d2>1) //uvv
-      {
+      if(d1 && d2>1) {              //uvv
         this->_p[1][2][0] =	T(0);
         this->_p[1][2][1] =	T(0);
         this->_p[1][2][2] =	T(0);
       }
-      if(d1>1 && d2>1) //uuvv
-      {
+      if(d1>1 && d2>1) {            //uuvv
         this->_p[2][2][0] =	T(0);
         this->_p[2][2][1] =	T(0);
         this->_p[2][2][2] =	T(0);
@@ -117,36 +134,33 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PHeart<T>::getEndPU() {
-
-    return T(0.98);
-  }
-
-
-  template <typename T>
-  inline
-  T PHeart<T>::getEndPV() {
-
-    return T(M_PI-0.0001);
-  }
-
-
-  template <typename T>
-  inline
-  T PHeart<T>::getStartPU() {
-
+  T PHeart<T>::getStartPU() const {
     return -T(0.98);
   }
 
 
   template <typename T>
-  inline
-  T PHeart<T>::getStartPV() {
+  T PHeart<T>::getEndPU() const {
+    return T(0.98);
+  }
 
+
+  template <typename T>
+  T PHeart<T>::getStartPV() const {
     return -T(M_PI+0.0001);
   }
 
+
+  template <typename T>
+  T PHeart<T>::getEndPV() const {
+    return T(M_PI-0.0001);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PHeart<T>::init() {
@@ -154,20 +168,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-
-  template <typename T>
-  inline
-  bool PHeart<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PHeart<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

@@ -41,15 +41,21 @@ namespace GMlib {
     PRoseCurve( const PRoseCurve<T>& copy );
     virtual ~PRoseCurve();
 
-    bool          isClosed() const;
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
 
+    // from PCurve
+    bool                isClosed() const override;
 
   protected:
-    T             _r;
+    // Virtual function from PCurve that has to be implemented locally
+    void                eval(T t, int d, bool l) override;
+    T                   getStartP() const override;
+    T                   getEndP()   const override;
 
-    void	        eval(T t, int d, bool l);
-    T             getEndP();
-    T             getStartP();
+    // Protected data for the curve
+    T             _r;
 
   }; // END PRoseCurve
 

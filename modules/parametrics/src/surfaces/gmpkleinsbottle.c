@@ -1,4 +1,3 @@
-
 /**********************************************************************************
 **
 ** Copyright (C) 1994 Narvik University College
@@ -28,6 +27,10 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PKleinsBottle<T>::PKleinsBottle( T radius, T scale_x, T scale_y ) {
@@ -56,6 +59,28 @@ namespace GMlib {
   template <typename T>
   PKleinsBottle<T>::~PKleinsBottle() {}
 
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PKleinsBottle<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PKleinsBottle<T>::isClosedV() const {
+    return false;
+  }
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PKleinsBottle<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -153,37 +178,35 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  T PKleinsBottle<T>::getEndPU() {
-
-    return T(2*M_PI);
-  }
-
 
   template <typename T>
-  inline
-  T PKleinsBottle<T>::getEndPV() {
-
-    return T(2*M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PKleinsBottle<T>::getStartPU() {
-
+  T PKleinsBottle<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PKleinsBottle<T>::getStartPV() {
+  T PKleinsBottle<T>::getEndPU() const {
+    return T(2*M_PI);
+  }
 
+
+  template <typename T>
+  T PKleinsBottle<T>::getStartPV() const {
     return T(0);
   }
 
+
+  template <typename T>
+  T PKleinsBottle<T>::getEndPV() const {
+    return T(2*M_PI);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PKleinsBottle<T>::init() {
@@ -191,20 +214,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-
-  template <typename T>
-  inline
-  bool PKleinsBottle<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PKleinsBottle<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

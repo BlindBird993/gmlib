@@ -40,20 +40,47 @@ namespace GMlib {
     PSphere( const PSphere<T>& copy );
     virtual ~PSphere();
 
-  public:
+    // Public local functions
     T             getRadius() const;
     void          setRadius( T radius );
 
-  protected:
-    T             _radius;
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
 
-    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
-    T             getEndPV() override;
-    T             getEndPU() override;
-    T             getStartPU() override;
-    T             getStartPV() override;
+    // from PSurf
+    void          replot( int m1 = 0, int m2 = 0, int d1 = 0, int d2 = 0 ) override;
     bool          isClosedU() const override;
     bool          isClosedV() const override;
+
+  protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
+    // Help function to ensure consistent initialization
+    virtual void  init();
+
+    // Protected data for the surface
+    T             _radius;
+
+  private:
+    // Virtual function from PSurf
+    void   resampleNormals( const DMatrix<DMatrix<Vector<T,3> > >& sample, DMatrix<Vector<T,3> >& normals ) const override;
+
+    // Help function to initiate
+    void   makeNmap( int s = 64, int t = 64) const;
+    void   makeNmap( DMatrix<Vector<T,3>>& nm, int m, int s = 64, int t = 64) const;
+    void   resample( DVector< DVector< Vector<T,3> > >& p, int m ) const;
+    void   init_mat1();
+
+    // static normal map for display
+    static DMatrix< Vector<T,3> >  _nmap;
+    static DVector<DVector<int> >  _mat1;
+    static DVector<Vector<int,2> > _mat1_size;
+
 
   }; // END class PSphere
 

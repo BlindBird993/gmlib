@@ -47,23 +47,36 @@ namespace GMlib {
     PHermiteSurface( const Array< PCurve<T,3>* >& c1, const Array<PCurve<T,3>* >& c2 );
     ~PHermiteSurface();
 
-    bool                    isValidCoonsPatch();
-    bool                    isValidHermiteSurface();
+    bool          isValidCoonsPatch();
+    bool          isValidHermiteSurface();
+
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU()  const override;
+    bool          isClosedV()  const override;
 
   protected:
-    Array< PCurve<T,3>* >     _c1, _c2;
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
+
+    // Help function to ensure consistent initialization
+    virtual void      init();
+
+    // Protected data for the surface
+    void          edit( SceneObject* obj );
+    T             getH(  int d, int k, T t );
+    T             getHder( int d, int k, T t );
+    void          insertPatch( PCurve<T,3>* patch );
+
+    Array< PCurve<T,3>* >   _c1, _c2;
     DMatrix< Point<T,3> >   _b;
-
-    void                    edit( SceneObject* obj );
-    void                    eval(T u, T v, int d1, int d2, bool lu, bool lv);
-    T                       getEndPU();
-    T                       getEndPV();
-    T                       getH(  int d, int k, T t );
-    T                       getHder( int d, int k, T t );
-    T                       getStartPU();
-    T                       getStartPV();
-
-    void                    insertPatch( PCurve<T,3>* patch );
 
   }; // END class PHermiteSurf
 

@@ -235,10 +235,8 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PERBSCurve<T>::getEndP() {
-
-    return _t[_t.getDim()-2];
+  T PERBSCurve<T>::getEndP() const {
+    return _t(_t.getDim()-2);
   }
 
 
@@ -267,10 +265,8 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PERBSCurve<T>::getStartP() {
-
-    return _t[1];
+  T PERBSCurve<T>::getStartP() const {
+    return _t(1);
   }
 
 

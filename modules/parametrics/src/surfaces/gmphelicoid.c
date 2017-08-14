@@ -28,6 +28,10 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PHelicoid<T>::PHelicoid( T scale_x, T scale_y, T scale_z ) {
@@ -38,7 +42,6 @@ namespace GMlib {
     _sy = scale_y;
     _sz = scale_z;
   }
-
 
   template <typename T>
   inline
@@ -51,11 +54,30 @@ namespace GMlib {
     _sz = copy._sz;
   }
 
-
-
   template <typename T>
   PHelicoid<T>::~PHelicoid() {}
 
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+  template <typename T>
+  bool PHelicoid<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PHelicoid<T>::isClosedV() const {
+    return false;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PHelicoid<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -70,50 +92,42 @@ namespace GMlib {
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d1) //u
-      {
+      if(d1) {              //u
         this->_p[1][0][0] =	_sx*v*cos(u);
         this->_p[1][0][1] =	-_sy*sin(u)*v;
         this->_p[1][0][2] =	_sz;
       }
-      if(d1>1)//uu
-      {
+      if(d1>1) {            //uu
         this->_p[2][0][0] =	-_sx*sin(u)*v;
         this->_p[2][0][1] =	-_sy*v*cos(u);
         this->_p[2][0][2] =	T(0);
       }
-      if(d2) //v
-      {
+      if(d2) {              //v
         this->_p[0][1][0] =	_sx*sin(u);
         this->_p[0][1][1] =	_sy*cos(u);
         this->_p[0][1][2] =	T(0);
       }
-      if(d2>1) //vv
-      {
+      if(d2>1) {            //vv
         this->_p[0][2][0] =	T(0);
         this->_p[0][2][1] =	T(0);
         this->_p[0][2][2] =	T(0);
       }
-      if(d1 && d2) //uv
-      {
+      if(d1 && d2) {        //uv
         this->_p[1][1][0] =	_sx*cos(u);
         this->_p[1][1][1] =	-_sy*sin(u);
         this->_p[1][1][2] =	T(0);
       }
-      if(d1>1 && d2)//uuv
-      {
+      if(d1>1 && d2) {      //uuv
         this->_p[2][1][0] =	-_sx*sin(u);
         this->_p[2][1][1] =	-_sy*cos(u);
         this->_p[2][1][2] =	T(0);
       }
-      if(d1 && d2>1) //uvv
-      {
+      if(d1 && d2>1) {      //uvv
         this->_p[1][2][0] =	T(0);
         this->_p[1][2][1] =	T(0);
         this->_p[1][2][2] =	T(0);
       }
-      if(d1>1 && d2>1) //uuvv
-      {
+      if(d1>1 && d2>1) {    //uuvv
         this->_p[2][2][0] =	T(0);
         this->_p[2][2][1] =	T(0);
         this->_p[2][2][2] =	T(0);
@@ -123,36 +137,34 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PHelicoid<T>::getEndPU() {
-
-    return T(15);
-  }
-
-
-  template <typename T>
-  inline
-  T PHelicoid<T>::getEndPV() {
-
-    return T(1);
-  }
-
-
-  template <typename T>
-  inline
-  T PHelicoid<T>::getStartPU() {
-
+  T PHelicoid<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PHelicoid<T>::getStartPV() {
+  T PHelicoid<T>::getEndPU() const {
+    return T(15);
+  }
 
+
+  template <typename T>
+  T PHelicoid<T>::getStartPV() const {
     return -T(1);
   }
 
+
+  template <typename T>
+  T PHelicoid<T>::getEndPV() const {
+    return T(1);
+  }
+
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PHelicoid<T>::init() {
@@ -161,19 +173,5 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  bool PHelicoid<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PHelicoid<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

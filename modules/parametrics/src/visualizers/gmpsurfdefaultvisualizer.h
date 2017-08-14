@@ -49,16 +49,13 @@ namespace GMlib {
     PSurfDefaultVisualizer();
     PSurfDefaultVisualizer( const PSurfDefaultVisualizer<T,n>& copy );
 
-    void          render( const SceneObject* obj, const DefaultRenderer* renderer ) const override;
-    void          renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const override;
+    void    render( const SceneObject* obj, const DefaultRenderer* renderer ) const override;
+    void    renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const override;
 
-    void  replot( const DMatrix< DMatrix< Vector<T, n> > >& p,
-                  const DMatrix< Vector<T, 3> >& normals,
-                  int m1, int m2, int d1, int d2,
-                  bool closed_u, bool closed_v
-    ) override;
+    void    replot( const DMatrix< DMatrix< Vector<T, n> > >& p, const DMatrix< Vector<T, 3> >& normals,
+                                            int m1, int m2, int d1, int d2, bool closed_u, bool closed_v ) override;
 
-  private:
+  protected:
     GL::Program                 _prog;
     GL::Program                 _color_prog;
 
@@ -70,9 +67,13 @@ namespace GMlib {
     GLuint                      _no_strip_indices;
     GLsizei                     _strip_size;
 
-    void                        draw() const;
+    GLenum                      _mode;
+
+    virtual void                draw() const;
 
     void                        initShaderProgram();
+
+    void                        _init();
 
   }; // END class PSurfDefaultVisualizer
 

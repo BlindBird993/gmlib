@@ -130,7 +130,6 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
   bool PTCurve<T>::isClosed() const {
 
     return false;

@@ -43,24 +43,34 @@ namespace GMlib {
     const Vector<T,3>&        getU() const;
     const Vector<T,3>&        getV() const;
 
-    bool                      isClosedU() const override;
-    bool                      isClosedV() const override;
-
     void                      setP( const Point<T,3>& p );
     void                      setU( const Vector<T,3>& u );
     void                      setV( const Vector<T,3>& v );
 
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU()  const override;
+    bool          isClosedV()  const override;
+
   protected:
-    Point<T,3>		            _pt;
-    Vector<T,3>		            _u;
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
+
+    // Help function to ensure consistent initialization
+    virtual void  init();
+
+    // Protected data for the surface
+    Point<T,3>		          _pt;
+    Vector<T,3>		          _u;
     Vector<T,3>               _v;
     UnitVector<T,3>           _n;
-
-    void                      eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
-    T                         getEndPU() override;
-    T                         getEndPV() override;
-    T                         getStartPU() override;
-    T                         getStartPV() override;
 
   }; // END class PPlane
 

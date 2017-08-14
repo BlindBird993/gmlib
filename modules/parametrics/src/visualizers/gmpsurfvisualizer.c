@@ -33,19 +33,21 @@
 #include <scene/utils/gmmaterial.h>
 #include <opengl/gmopengl.h>
 
-// stl
-#include <set>
-#include <string>
-#include <cstring>
+//// stl
+//#include <set>
+//#include <string>
+//#include <cstring>
 
 namespace GMlib {
 
 template <typename T, int n>
 PSurfVisualizer<T,n>::PSurfVisualizer() {}
 
+
 template <typename T, int n>
 PSurfVisualizer<T,n>::PSurfVisualizer(const PSurfVisualizer<T,n>& copy)
   : Visualizer(copy)  {}
+
 
 template <typename T, int n>
 inline
@@ -67,25 +69,31 @@ void PSurfVisualizer<T,n>::fillMap(GL::Texture& map, const DMatrix<DMatrix<Vecto
   map.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, tex_data.getPtr()->getPtr() );
   map.texParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
   map.texParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  if( closed_u )  map.texParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
+  if( closed_v )  map.texParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
   else            map.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
-  if( closed_v )  map.texParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
+  if( closed_u )  map.texParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
   else            map.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
+
 
 template <typename T, int n>
 inline
 void PSurfVisualizer<T,n>::fillNMap( GL::Texture& nmap, const DMatrix< Vector<T, 3> >& ns, bool closed_u, bool closed_v) {
 
-  int m1 = closed_u ? ns.getDim1()-1 : ns.getDim1();
-  int m2 = closed_v ? ns.getDim2()-1 : ns.getDim2();
+    int m1 = closed_u ? ns.getDim1()-1 : ns.getDim1();
+    int m2 = closed_v ? ns.getDim2()-1 : ns.getDim2();
+//  int m1 = ns.getDim1();
+//  int m2 = ns.getDim2();
 
-
-  // Fill data
+////   Fill data
 //  DVector< GL::GLNormal > tex_data(m1 * m2);
-//  for( int i = 0; i < m1; ++i )
-//    std::memcpy( &(tex_data[i*m2]), ns(i).getPtr(), m2*3*sizeof(float) );
+//  for( int i = 0, k=0; i < m1; ++i )
+//      for( int j = 0; j < m2; ++j )
+//      {
+
+//          tex_data[k++] = GL::GLNormal{ns(i)(j)(0), ns(i)(j)(1), ns(i)(j)(2)};;
+//      }
 
 //  // Create Normal map texture and set texture parameters
 //  nmap.texImage2D( 0, GL_RGB16F, m2, m1, 0, GL_RGB, GL_FLOAT, reinterpret_cast<float*>(tex_data.getPtr()) );
@@ -99,12 +107,14 @@ void PSurfVisualizer<T,n>::fillNMap( GL::Texture& nmap, const DMatrix< Vector<T,
   // set texture parameters for the nmap
   nmap.texParameteri( GL_TEXTURE_MIN_FILTER, GL_LINEAR );
   nmap.texParameteri( GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-  if( closed_u )  nmap.texParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
+
+  if( closed_v )  nmap.texParameterf(GL_TEXTURE_WRAP_S, GL_REPEAT);
   else            nmap.texParameterf(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
-  if( closed_v )  nmap.texParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
+  if( closed_u )  nmap.texParameterf(GL_TEXTURE_WRAP_T, GL_REPEAT);
   else            nmap.texParameterf(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
+
 
 template <typename T, int n>
 inline
@@ -124,6 +134,7 @@ void PSurfVisualizer<T,n>::fillStandardIBO( GLuint ibo_id, int m1, int m2 ) {
   glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0x0 );
 }
 
+
 template <typename T, int n>
 inline
 void PSurfVisualizer<T,n>::fillStandardVBO(GL::VertexBufferObject &vbo,
@@ -134,41 +145,67 @@ void PSurfVisualizer<T,n>::fillStandardVBO(GL::VertexBufferObject &vbo,
   vbo.bufferData( no_vertices, 0x0, GL_STATIC_DRAW );
   GL::GLVertexTex2D *ptr = vbo.mapBuffer<GL::GLVertexTex2D>();
   for( int i = 0; i < p.getDim1(); i++ ) {
-    for( int j = 0; j < p.getDim2(); j++ ) {
-
+    float s = i/float(p.getDim1()-1);
+    for( int j = 0; j < p.getDim2(); j++, ptr++ ) {
       // vertex position
       ptr->x = p(i)(j)(0)(0)(0);
       ptr->y = p(i)(j)(0)(0)(1);
       ptr->z = p(i)(j)(0)(0)(2);
-
       // tex coords
-      ptr->s = i/float(p.getDim1()-1);
+      ptr->s = s;
       ptr->t = j/float(p.getDim2()-1);
-
-      ptr++;
     }
   }
   vbo.unmapBuffer();
 }
 
+
+
+template <typename T, int n>
+inline
+void PSurfVisualizer<T,n>::fillStandardVBO(GL::VertexBufferObject &vbo,
+                                       const DVector<DVector<Vector<T,n> > >& p) {
+
+  int nv = p(0).getDim();
+  for(int i=1; i< p.getDim(); i++)  nv += p(i).getDim();
+  GLsizeiptr no_vertices = nv*sizeof(GL::GLVertexTex2D);
+
+  vbo.bufferData( no_vertices, 0x0, GL_STATIC_DRAW );
+  GL::GLVertexTex2D *ptr = vbo.mapBuffer<GL::GLVertexTex2D>();
+  for( int i = 0; i < p.getDim(); i++ ) {
+    float s = i/float(p.getDim()-1);
+    for( int j = 0; j < p(i).getDim(); j++, ptr++ ) {
+      // vertex position
+      ptr->x = p(i)(j)(0);
+      ptr->y = p(i)(j)(1);
+      ptr->z = p(i)(j)(2);
+      // tex coords
+      ptr->s = s;
+      ptr->t = j/float(p(i).getDim()-1);
+    }
+  }
+  vbo.unmapBuffer();
+}
+
+
+
 template <typename T, int n>
 inline
 void PSurfVisualizer<T,n>::fillTriangleStripIBO(GL::IndexBufferObject& ibo, int m1, int m2,
-                                                GLuint& no_strips, GLuint& no_strip_indices,
-                                                GLsizei& strip_size) {
-
+                                                GLuint& no_strips, GLuint& no_strip_indices, GLsizei& strip_size) {
 
   const int no_indices = (m1-1) * m2 * 2;
   DVector<GLuint> indices(no_indices);
 
   for( int i = 0; i < m1-1; i++ ) {
+    const int i0    = i*m2;
+    const int i1    = (i+1)*m2;
+    const int idx_i = i0 * 2;
 
-    const int idx_i = i * m2 * 2;
     for( int j = 0; j < m2; j++ ) {
-
-      const int idx_j = idx_i + (j*2);
-      indices[idx_j]   = i*m2 + j;
-      indices[idx_j+1] = (i+1)*m2 + j;
+      const int idx_j  = idx_i + (j*2);
+      indices[idx_j]   = i0 + j;
+      indices[idx_j+1] = i1 + j;
     }
   }
 
@@ -176,6 +213,8 @@ void PSurfVisualizer<T,n>::fillTriangleStripIBO(GL::IndexBufferObject& ibo, int 
 
   compTriangleStripProperties( m1, m2, no_strips, no_strip_indices, strip_size );
 }
+
+
 
 template <typename T, int n>
 inline
@@ -187,20 +226,16 @@ void PSurfVisualizer<T,n>::fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< V
   glBufferData( GL_ARRAY_BUFFER, no_normals * 3 * sizeof(float), 0x0, GL_DYNAMIC_DRAW );
 
   float *ptr = static_cast<float*>(glMapBuffer( GL_ARRAY_BUFFER, GL_WRITE_ONLY ));
+
   if( ptr ) {
-
     for( int i = 0; i < normals.getDim1()-1; i++ ) {
-
       const int idx_i = i * normals.getDim2() * 2;
       for( int j = 0; j < normals.getDim2(); j++ ) {
-
-
         // Normals
         const int idx_j = (idx_i + (j*2)) * 3;
-        const UnitVector<T,3> n1 = normals[ i   ][j];
-        const UnitVector<T,3> n2 = normals[ i+1 ][j];
+        const UnitVector<T,3> n1 = normals[i  ][j];
+        const UnitVector<T,3> n2 = normals[i+1][j];
         for( int k = 0; k < 3; k++ ) {
-
           const int idx_k = idx_j + k;
           ptr[idx_k]   = n1(k);
           ptr[idx_k+3] = n2(k);
@@ -212,6 +247,8 @@ void PSurfVisualizer<T,n>::fillTriangleStripNormalVBO( GLuint vbo_id, DMatrix< V
   glUnmapBuffer( GL_ARRAY_BUFFER );
   glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 }
+
+
 
 template <typename T, int n>
 inline
@@ -243,6 +280,8 @@ void PSurfVisualizer<T,n>::fillTriangleStripTexVBO( GLuint vbo_id, int m1, int m
   glUnmapBuffer( GL_ARRAY_BUFFER );
   glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 }
+
+
 
 template <typename T, int n>
 inline
@@ -280,6 +319,8 @@ void PSurfVisualizer<T,n>::fillTriangleStripVBO( GLuint vbo_id, DMatrix< DMatrix
   glBindBuffer( GL_ARRAY_BUFFER, 0x0 );
 }
 
+
+
 template <typename T, int n>
 inline
 void PSurfVisualizer<T,n>::compTriangleStripProperties(int m1, int m2, GLuint &no_strips, GLuint &no_strip_indices, GLsizei &strip_size) {
@@ -288,6 +329,8 @@ void PSurfVisualizer<T,n>::compTriangleStripProperties(int m1, int m2, GLuint &n
   no_strip_indices = m2 * 2;
   strip_size = no_strip_indices * sizeof(GLuint);
 }
+
+
 
 template <typename T, int n>
 inline
@@ -298,13 +341,23 @@ void PSurfVisualizer<T,n>::getTriangleStripDataInfo( const DMatrix< DMatrix< Vec
   no_verts_per_strips = p.getDim2()*2;
 }
 
+
+
 template <typename T, int n>
-inline
 void PSurfVisualizer<T,n>::replot(
   const DMatrix< DMatrix< Vector<T,n> > >& /*p*/,
   const DMatrix< Vector<T,3> >& /*normals*/,
   int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
   bool /*closed_u*/, bool /*closed_v*/
+) {}
+
+
+
+template <typename T, int n>
+void PSurfVisualizer<T,n>::replot(
+  const DVector< DVector< Vector<T, n> > >& /*p*/,
+  const DMatrix< Vector<T,3> >& /*normals*/,
+  int /*m*/, bool /*closed_u*/, bool /*closed_v*/
 ) {}
 
 

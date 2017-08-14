@@ -23,12 +23,13 @@
 
 
 
-
 namespace GMlib {
 
 
-  // Constructors and destructors
-  //******************************
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
 
   template <typename T>
   inline
@@ -72,8 +73,22 @@ namespace GMlib {
   PSubCurve<T>::~PSubCurve() {}
 
 
-  // Virtual functions from PSurf
-  //******************************
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
+  template <typename T>
+  bool PSubCurve<T>::isClosed() const {
+    return false;
+  }
+
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
 
   template <typename T>
   void PSubCurve<T>::eval( T t, int d, bool /*l*/ )
@@ -84,28 +99,20 @@ namespace GMlib {
 
 
   template <typename T>
-  T PSubCurve<T>::getStartP()
-  {
+  T PSubCurve<T>::getStartP() const {
     return _s;
   }
 
 
   template <typename T>
-  T PSubCurve<T>::getEndP()
-  {
+  T PSubCurve<T>::getEndP() const {
     return _e;
   }
 
 
-  template <typename T>
-  bool PSubCurve<T>::isClosed() const
-  {
-    return false;
-  }
-
-
-  // Private help functions
-  //*************************
+  //***************************
+  // Private help functions  **
+  //***************************
 
   template <typename T>
   inline

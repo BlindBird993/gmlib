@@ -23,15 +23,16 @@
 
 
 
-#include <gmParametricsModule>
-
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
-  PBSplineBasisCurve<T>::PBSplineBasisCurve( const DVector<T>& t )
-  {
+  PBSplineBasisCurve<T>::PBSplineBasisCurve( const DVector<T>& t ) {
     this->_dm = GM_DERIVATION_EXPLICIT;
 
     int k = t.getDim()-1;
@@ -47,8 +48,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PBSplineBasisCurve<T>::PBSplineBasisCurve( const PBSplineBasisCurve<T>& copy ) : PCurve<T,3>( copy )
-  {
+  PBSplineBasisCurve<T>::PBSplineBasisCurve( const PBSplineBasisCurve<T>& copy ) : PCurve<T,3>( copy ) {
       _t = copy._t;
   }
 
@@ -57,10 +57,23 @@ namespace GMlib {
   PBSplineBasisCurve<T>::~PBSplineBasisCurve() {}
 
 
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
   template <typename T>
-  inline
-  void PBSplineBasisCurve<T>::eval( T t, int d, bool /*l*/ )
-  {
+  bool PBSplineBasisCurve<T>::isClosed() const {
+    return false;
+  }
+
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
+  template <typename T>
+  void PBSplineBasisCurve<T>::eval( T t, int d, bool /*l*/ ) {
     this->_p.setDim( d + 1 );
 
     int k = (_t.getDim()+1)/3;
@@ -98,48 +111,42 @@ namespace GMlib {
 
 
   template <typename T>
-  T PBSplineBasisCurve<T>::getEndP() {
-
+  T PBSplineBasisCurve<T>::getStartP() const {
     int k = (_t.getDim()+1)/3;
-    return _t[_t.getDim()-k];
+    return _t(k-1);
   }
-
 
 
   template <typename T>
-  T PBSplineBasisCurve<T>::getStartP() {
-
+  T PBSplineBasisCurve<T>::getEndP() const {
     int k = (_t.getDim()+1)/3;
-    return _t[k-1];
+    return _t(_t.getDim()-k);
   }
+
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
 
   template <typename T>
   inline
-  bool PBSplineBasisCurve<T>::isClosed() const
-  {
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  T PBSplineBasisCurve<T>::W( T t, int d,  int i)
-  {
+  T PBSplineBasisCurve<T>::W( T t, int d,  int i) {
     return (t-_t(i))/(_t(i+d)-_t(i));
   }
 
+
   template <typename T>
   inline
-  T PBSplineBasisCurve<T>::delta(T s, int d,  int i)
-  {
+  T PBSplineBasisCurve<T>::delta(T s, int d,  int i) {
     return s/(_t(i+d)-_t(i));
   }
 
 
   template <typename T>
-  void PBSplineBasisCurve<T>::makeMat( DMatrix<T>& mat, int ii, int d, T t, T scale )
-  {
+  void PBSplineBasisCurve<T>::makeMat( DMatrix<T>& mat, int ii, int d, T t, T scale ) {
     mat.setDim( d+1, d+1 );
     DVector<T> w(d);
 
@@ -182,12 +189,14 @@ namespace GMlib {
   }
 
 
+
   template <typename T>
   inline
-  int PBSplineBasisCurve<T>::findIndex(T t, int i)
-  {
-    for( ; i<_t.getDim()-2;i++)
+  int PBSplineBasisCurve<T>::findIndex(T t, int j) {
+    int i=j;
+    for( ; i<_t.getDim()-j-1;i++)
       if(_t[i+1]>t) break;
+    if(i == _t.getDim()-j-1) i--;
     return i;
   }
 

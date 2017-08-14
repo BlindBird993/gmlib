@@ -114,8 +114,8 @@ namespace GMlib {
 
     // virual functions from PSurf
     void                            eval( T t, int d = 0, bool l = false ) override;
-    T                               getEndP() override;
-    T                               getStartP() override;
+    T                               getEndP()   const override;
+    T                               getStartP() const override;
 
     // Local help functions
     int                             findIndex( T t);// const;
@@ -123,7 +123,7 @@ namespace GMlib {
 
   private:
     Array<PCurveVisualizer<T,3>*>   _pv;
-    DVector<PCurveVisualizerSet<T> > _pvi;
+    DVector<PCurveVisualizerSet<T>> _pvi;
 
     int                             _no_sam;
     int                             _no_der;

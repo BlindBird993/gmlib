@@ -50,18 +50,27 @@ namespace GMlib {
     PBasisCurve();
     ~PBasisCurve();
 
-    void                            setDisplay( int display );
-    void                            setEvaluator( BasisEvaluator<G>* e );
+    // Public local functions
+    void                       setDisplay( int display );
+    void                       setEvaluator( BasisEvaluator<G>* e );
+
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
+
+    // from PCurve
+    bool                       isClosed() const override;
 
   protected:
-    void                            eval( T t, int d, bool l );
-    T                               getEndP();
-    T                               getStartP();
-    bool                            isClosed() const;
+    // Virtual function from PCurve that has to be implemented locally
+    void                       eval( T t, int d, bool l ) override;
+    T                          getEndP()   const override;
+    T                          getStartP() const override;
 
   private:
-    BasisEvaluator<G>     *_B;
-    int                             _d_no;
+    // Private data for the curve
+    BasisEvaluator<G>*         _B;
+    int                        _d_no;
 
   }; // class ERBSBasisCurve
 

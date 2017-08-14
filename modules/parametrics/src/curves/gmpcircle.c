@@ -27,12 +27,15 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PCircle<T>::PCircle( T radius ) {
-
     _r = radius;
-    this->_dm = GM_DERIVATION_EXPLICIT;
+//    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
@@ -45,8 +48,39 @@ namespace GMlib {
   PCircle<T>::~PCircle() {}
 
 
+  //**************************************
+  //        Public local functons       **
+  //**************************************
+
   template <typename T>
   inline
+  T PCircle<T>::getRadius() const {
+    return _r;
+  }
+
+
+  template <typename T>
+  inline
+  void PCircle<T>::setRadius( T radius ) {
+      _r = radius;
+  }
+
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
+  template <typename T>
+  bool PCircle<T>::isClosed() const {
+    return true;
+  }
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
+  template <typename T>
   void PCircle<T>::eval( T t, int d, bool /*l*/ ) {
 
     this->_p.setDim( d + 1 );
@@ -61,94 +95,29 @@ namespace GMlib {
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
       if( d > 0 ) {
-
         this->_p[1][0] = -st;
         this->_p[1][1] =  ct;
         this->_p[1][2] =  T(0);
       }
-
-      if( d > 1 ) {
-
-        this->_p[2][0] = -ct;
-        this->_p[2][1] = -st;
-        this->_p[2][2] =  T(0);
-      }
-
-      if( d > 2 ) {
-
-        this->_p[3][0] =  st;
-        this->_p[3][1] = -ct;
-        this->_p[3][2] =  T(0);
-      }
-
-      if( d > 3 ) {
-
-        this->_p[4][0] =  ct;
-        this->_p[4][1] =  st;
-        this->_p[4][2] =  T(0);
-      }
-
-      if( d > 4 ) {
-
-        this->_p[5][0] = -st;
-        this->_p[5][1] =  ct;
-        this->_p[5][2] =  T(0);
-      }
-
-      if( d > 5 ) {
-
-        this->_p[6][0] = -ct;
-        this->_p[6][1] = -st;
-        this->_p[6][2] =  T(0);
-      }
-
-      if( d > 6 ) {
-
-        this->_p[7][0] =  st;
-        this->_p[7][1] = -ct;
-        this->_p[7][2] =  T(0);
-      }
+      if( d > 1 ) this->_p[2] = -this->_p[0];
+      if( d > 2 ) this->_p[3] = -this->_p[1];
+      if( d > 3 ) this->_p[4] = this->_p[0];
+      if( d > 4 ) this->_p[5] = this->_p[1];
+      if( d > 5 ) this->_p[6] = this->_p[2];
+      if( d > 6 ) this->_p[7] = this->_p[3];
     }
   }
 
 
   template <typename T>
-  inline
-  T PCircle<T>::getEndP() {
-
-    return T( M_2PI );
-  }
-
-
-  template <typename T>
-  inline
-  T PCircle<T>::getStartP() {
-
+  T PCircle<T>::getStartP() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PCircle<T>::getRadius() {
-
-    return _r;
-  }
-
-
-  template <typename T>
-  inline
-  bool PCircle<T>::isClosed() const {
-
-    return true;
-  }
-
-
-  template <typename T>
-  inline
-  void PCircle<T>::setRadius( T radius ) {
-
-      _r = radius;
+  T PCircle<T>::getEndP()const {
+    return T( M_2PI );
   }
 
 

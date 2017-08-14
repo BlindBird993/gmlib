@@ -55,17 +55,28 @@ namespace GMlib {
 
     virtual ~PHermiteSurf();
 
-    bool                     isClosedU() const;
-    bool                     isClosedV() const;
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU()  const override;
+    bool          isClosedV()  const override;
 
   protected:
-    DMatrix< Vector< T,3 > > _m;
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
 
-    void                     eval( T u, T v, int d1=0, int d2=0, bool lu=false, bool lv=false );
-    T                        getEndPU();
-    T                        getEndPV();
-    T                        getStartPU();
-    T                        getStartPV();
+
+    // Help function to ensure consistent initialization
+    virtual void      init();
+
+    // Protected data for the surface
+    DMatrix< Vector< T,3 > > _m;
 
   }; // END class PHermiteSurf
 

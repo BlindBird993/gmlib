@@ -27,10 +27,15 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PTorus<T>::PTorus( T wheelrad, T tuberad1, T tuberad2 ) {
 
+    init();
     _a = wheelrad;
     _b = tuberad1;
     _c = tuberad2;
@@ -42,6 +47,7 @@ namespace GMlib {
   inline
   PTorus<T>::PTorus( const PTorus<T>& copy ) : PSurf<T,3>(copy) {
 
+    init();
     _a = copy._a;
     _b = copy._b;
     _c = copy._b;
@@ -51,6 +57,70 @@ namespace GMlib {
   template <typename T>
   PTorus<T>::~PTorus() {}
 
+
+  //*****************************************
+  //            Local functons             **
+  //*****************************************
+
+  template <typename T>
+  inline
+  const T& PTorus<T>::getTubeRadius1() const {
+    return _b;
+  }
+
+  template <typename T>
+  inline
+  const T& PTorus<T>::getTubeRadius2() const {
+    return _c;
+  }
+
+  template <typename T>
+  inline
+  const T& PTorus<T>::getWheelRadius() const {
+    return _a;
+  }
+
+  template <typename T>
+  inline
+  void PTorus<T>::setTubeRadius1( const T& radius ) {
+    _b = radius;
+  }
+
+  template <typename T>
+  inline
+  void PTorus<T>::setTubeRadius2( const T& radius ) {
+    _c = radius;
+  }
+
+  template <typename T>
+  inline
+  void PTorus<T>::setWheelRadius( const T& radius ) {
+    _a = radius;
+  }
+
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PTorus<T>::isClosedU() const {
+    return true;
+  }
+
+
+  template <typename T>
+  bool PTorus<T>::isClosedV() const {
+    return true;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PTorus<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -70,99 +140,85 @@ namespace GMlib {
     cv *= _c;
     cu *= bcva;
     su *= bcva;
-              //S
-    this->_p[0][0][0] =	     cu;
-    this->_p[0][0][1] =       su;
-    this->_p[0][0][2] =       sv;
+
+    //S
+    this->_p[0][0][0] =	   cu;
+    this->_p[0][0][1] =    su;
+    this->_p[0][0][2] =    sv;
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d1)				//Su
-      {
+      if(d1) {                  //Su
         this->_p[1][0][0] =	-su;
         this->_p[1][0][1] =	 cu;
         this->_p[1][0][2] =	 T(0);
       }
-      if(d1>1)			//Suu
-      {
+      if(d1>1) {                //Suu
         this->_p[2][0][0] =  -cu;
         this->_p[2][0][1] =  -su;
         this->_p[2][0][2] =   T(0);
       }
-      if(d2)				//Sv
-      {
+      if(d2) {                  //Sv
         this->_p[0][1][0] =  -cusv;
         this->_p[0][1][1] =  -susv;
         this->_p[0][1][2] =   cv;
       }
-      if(d2>1)			//Svv
-      {
+      if(d2>1) {                //Svv
         this->_p[0][2][0] =  -cucv;
         this->_p[0][2][1] =  -sucv;
         this->_p[0][2][2] =  -sv;
       }
-      if(d1 && d2)		//Suv
-      {
+      if(d1 && d2) {            //Suv
         this->_p[1][1][0] =   susv;
         this->_p[1][1][1] =  -cusv;
         this->_p[1][1][2] =   T(0);
       }
-      if(d1>1 && d2)		//Suuv
-      {
+      if(d1>1 && d2) {          //Suuv
         this->_p[2][1][0] =   cusv;
         this->_p[2][1][1] =   susv;
         this->_p[2][1][2] =   T(0);
       }
-      if(d1 && d2>1)		//Suvv
-      {
+      if(d1 && d2>1) {          //Suvv
         this->_p[1][2][0] =   sucv;
         this->_p[1][2][1] =  -cucv;
         this->_p[1][2][2] =   T(0);
       }
-      if(d1>1 && d2>1)	//Suuvv
-      {
+      if(d1>1 && d2>1) {        //Suuvv
         this->_p[2][2][0] =   cucv;
         this->_p[2][2][1] =   sucv;
         this->_p[2][2][2] =   T(0);
       }
-      if(d1>2 && d2)		//Suuuv
-      {
+      if(d1>2 && d2) {          //Suuuv
         this->_p[3][1][0] =  -susv;
         this->_p[3][1][1] =   cusv;
         this->_p[3][1][2] =   T(0);
       }
-      if(d1>2 && d2>1)	//Suuuvv
-      {
+      if(d1>2 && d2>1) {        //Suuuvv
         this->_p[3][2][0] =  -sucv;
         this->_p[3][2][1] =   cucv;
         this->_p[3][2][2] =   T(0);
       }
-      if(d1>2 && d2>1)	//Suuuvvv
-      {
+      if(d1>2 && d2>1) {        //Suuuvvv
         this->_p[3][3][0] =   susv;
         this->_p[3][3][1] =  -cusv;
         this->_p[3][3][2] =   T(0);
       }
-      if(d1 && d2>2)		//Suvvv
-      {
+      if(d1 && d2>2) {          //Suvvv
         this->_p[1][3][0] =  -susv;
         this->_p[1][3][1] =   cusv;
         this->_p[1][3][2] =   T(0);
       }
-      if(d1>1 && d2>2)	//Suuvvv
-      {
+      if(d1>1 && d2>2) {        //Suuvvv
         this->_p[2][3][0] =  -cusv;
         this->_p[2][3][1] =  -susv;
         this->_p[2][3][2] =   T(0);
       }
-      if(d1>2)			//Suuu
-      {
+      if(d1>2) {                //Suuu
         this->_p[3][0][0] =   su;
         this->_p[3][0][1] =  -cu;
         this->_p[3][0][2] =   T(0);
       }
-      if(d2>2)			//Svvv
-      {
+      if(d2>2) {                //Svvv
         this->_p[0][3][0] =   cusv;
         this->_p[0][3][1] =   susv;
         this->_p[0][3][2] =  -cv;
@@ -172,93 +228,39 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PTorus<T>::getEndPU() {
-
-    return T(2*M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PTorus<T>::getEndPV() {
-
-    return T(2*M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PTorus<T>::getStartPU() {
-
+  T PTorus<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PTorus<T>::getStartPV() {
+  T PTorus<T>::getEndPU() const {
+    return T(2*M_PI);
+  }
 
+
+  template <typename T>
+  T PTorus<T>::getStartPV() const {
     return T(0);
   }
 
   template <typename T>
-  inline
-  const T& PTorus<T>::getTubeRadius1() const {
-
-    return _b;
+  T PTorus<T>::getEndPV() const {
+    return T(2*M_PI);
   }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
-  inline
-  const T& PTorus<T>::getTubeRadius2() const {
+  void PTorus<T>::init() {
 
-    return _c;
-  }
-
-  template <typename T>
-  inline
-  const T& PTorus<T>::getWheelRadius() const {
-
-    return _a;
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
-  template <typename T>
-  inline
-  bool PTorus<T>::isClosedU() const {
-
-    return true;
-  }
-
-
-  template <typename T>
-  inline
-  bool PTorus<T>::isClosedV() const {
-
-    return true;
-  }
-
-  template <typename T>
-  inline
-  void PTorus<T>::setTubeRadius1( const T& radius ) {
-
-    _b = radius;
-  }
-
-  template <typename T>
-  inline
-  void PTorus<T>::setTubeRadius2( const T& radius ) {
-
-    _c = radius;
-  }
-
-  template <typename T>
-  inline
-  void PTorus<T>::setWheelRadius( const T& radius ) {
-
-    _a = radius;
-  }
-
-}
+} // END namespace GMlib
 

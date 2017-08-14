@@ -23,17 +23,20 @@
 
 
 
-
-
-
 namespace GMlib {
 
+
+
+
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
 
   template <typename T>
   inline
   PCoonsPatch<T>::PCoonsPatch( PSurf<T,3>* s1, PSurf<T,3>* s2, PSurf<T,3>* s3 ) {
 
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
     _s1 = s1;
     _s2 = s2;
     _s3 = s3;
@@ -44,6 +47,7 @@ namespace GMlib {
   inline
   PCoonsPatch<T>::PCoonsPatch( const PCoonsPatch<T>& copy ) : PSurf<T,3>( copy ) {
 
+      init();
       _s1 = copy._s1;
       _s2 = copy._s2;
       _s3 = copy._s3;
@@ -54,6 +58,26 @@ namespace GMlib {
   PCoonsPatch<T>::~PCoonsPatch() {}
 
 
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PCoonsPatch<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PCoonsPatch<T>::isClosedV() const {
+    return false;
+  }
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PCoonsPatch<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -64,51 +88,39 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PCoonsPatch<T>::getStartPU() {
-
+  T PCoonsPatch<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PCoonsPatch<T>::getStartPV() {
+  T PCoonsPatch<T>::getEndPU() const {
+    return T(1);
+  }
 
+
+  template <typename T>
+  T PCoonsPatch<T>::getStartPV() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PCoonsPatch<T>::getEndPU() {
-
+  T PCoonsPatch<T>::getEndPV() const {
     return T(1);
   }
 
 
-  template <typename T>
-  inline
-  T PCoonsPatch<T>::getEndPV() {
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
-    return T(1);
+  template <typename T>
+  void PCoonsPatch<T>::init() {
+
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
-  template <typename T>
-  inline
-  bool PCoonsPatch<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PCoonsPatch<T>::isClosedV() const {
-
-    return false;
-  }
-
-}
+} // END namespace GMlib
 

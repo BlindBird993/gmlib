@@ -51,19 +51,19 @@ namespace GMlib {
     switch( m ) {
 
       case GM_POINT:
-        _type_id = GM_SO_TYPE_POINT;
+        this->_type_id = GM_SO_TYPE_POINT;
         break;
       case GM_CURVE:
-        _type_id = GM_SO_TYPE_CURVE;
+        this->_type_id = GM_SO_TYPE_CURVE;
         break;
       case GM_SURFACE:
-        _type_id = GM_SO_TYPE_SURFACE;
+        this->_type_id = GM_SO_TYPE_SURFACE;
         break;
       case GM_VOLUME:
-        _type_id = GM_SO_TYPE_VOLUME;
+        this->_type_id = GM_SO_TYPE_VOLUME;
         break;
       case GM_FLOW:
-        _type_id = GM_SO_TYPE_FLOW;
+        this->_type_id = GM_SO_TYPE_FLOW;
         break;
     }
   }
@@ -74,6 +74,10 @@ namespace GMlib {
 
     _dm = method;
   }
+
+
+
+
 
 
 } // END namespace GMlib

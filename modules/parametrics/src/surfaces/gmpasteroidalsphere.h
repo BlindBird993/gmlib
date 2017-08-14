@@ -39,20 +39,31 @@ namespace GMlib {
     PAsteroidalSphere( T sx = T(1), T sy = T(1), T sz = T(1) );
     PAsteroidalSphere( const PAsteroidalSphere<T>& copy );
 
+    // Public local functions
     void          setConstants( T sx, T sy, T sz );
 
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU() const override;
+
   protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval( T u, T v, int d1, int d2, bool lu, bool lv ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
+
+    // Help function to ensure consistent initialization
+    virtual void  init();
+
+    // Protected data for the surface
     T             _a;
     T             _b;
     T             _c;
-
-    void          eval( T u, T v, int d1, int d2, bool lu, bool lv );
-    T             getEndPU();
-    T             getEndPV();
-    T             getStartPU();
-    T             getStartPV();
-    bool          isClosedU() const;
-    bool          isClosedV() const;
 
   }; // END class PAsteroidalSphere
 

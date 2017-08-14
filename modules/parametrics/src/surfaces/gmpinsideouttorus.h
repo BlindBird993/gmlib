@@ -39,20 +39,29 @@ namespace GMlib {
     PInsideOutTorus( const PInsideOutTorus<T>& copy );
     virtual ~PInsideOutTorus();
 
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU()  const override;
+    bool          isClosedV()  const override;
 
   protected:
-    T                 _a;		//Wheelradius
-    T                 _b;		//Tuberadius1
-    T                 _c;		//Tuberadius2
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
 
-    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
-    T                 getEndPU();
-    T                 getEndPV();
-    T                 getStartPU();
-    T                 getStartPV();
-    virtual void      init();
-    bool              isClosedU() const;
-    bool              isClosedV() const;
+    // Help function to ensure consistent initialization
+    virtual void  init();
+
+    // Protected data for the surface
+    T             _a;		// Wheel radius
+    T             _b;		// Tube radius1
+    T             _c;		// Tube radius2
 
   }; // END class PInsideOutTorus
 

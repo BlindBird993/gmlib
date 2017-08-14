@@ -22,17 +22,20 @@
 
 
 
-#include "../evaluators/gmevaluatorstatic.h"
+//#include "../evaluators/gmevaluatorstatic.h"
 
 namespace GMlib {
 
+
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
 
   template <typename T>
   inline
   PSurfCurve<T>::PSurfCurve(  PSurf<T,3>* s,  const Point<T,2>& p1,   const Point<T,2>& p2 )
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
-
+//    this->_dm = GM_DERIVATION_EXPLICIT;
     _der_curve = false;
     _plot = false;
     _s  = s;
@@ -47,8 +50,7 @@ namespace GMlib {
   PSurfCurve<T>::PSurfCurve(  PSurf<T,3>* s,  const Point<T,2>& p1,   const Point<T,2>& p2,
                                             const Vector<T,2>& v1,  const Vector<T,2>& v2 )
   {
-     this->_dm = GM_DERIVATION_EXPLICIT;
-
+//     this->_dm = GM_DERIVATION_EXPLICIT;
     _der_curve = true;
     _plot = false;
 
@@ -64,7 +66,6 @@ namespace GMlib {
   template <typename T>
   inline
   PSurfCurve<T>::PSurfCurve( const PSurfCurve<T>& copy ) : PCurve<T,3>( copy ) {
-
       _der_curve = copy._der_curve;
       _plot = false;
 
@@ -82,10 +83,81 @@ namespace GMlib {
 
 
 
+
+  //**************************************
+  //        Public local functons       **
+  //**************************************
+
+
   template <typename T>
   inline
-  void PSurfCurve<T>::eval( T t, int d, bool /*l*/ )
+  void PSurfCurve<T>::togglePlot() {
+     _plot = !_plot;
+  }
+
+
+  template <typename T>
+  void PSurfCurve<T>::resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end )
   {
+      if (_der_curve && _plot)
+      {
+        T du = (end-start)/(m-1);
+        p.setDim(m);
+
+        for( int i = 0; i < m - 1; i++ )
+        {
+          p[i].setDim(d+1);
+          eval1(start + i * du, 1);
+          p[i][0] = this->_p[0];
+          eval2(start + i * du, d-1);
+          for(int j=1; j<d;j++)
+             p[i][j] = this->_p[j-1];
+        }
+        p[m-1].setDim(d+1);
+        eval1(end, 1);
+        p[m-1][0] = this->_p[0];
+        eval2(end, d-1);
+        for(int j=1; j<d;j++)
+           p[m-1][j] = this->_p[j-1];
+
+        switch( this->_dm )
+        {
+          case GM_DERIVATION_EXPLICIT:
+            // Do nothing, evaluator algorithms for explicite calculation of derivatives
+            // should be defined in the eval( ... ) function enclosed by
+            // if( this->_derivation_method == this->EXPLICIT ) { ... eval algorithms for derivatives ... }
+            break;
+
+          case GM_DERIVATION_DD:
+          default:
+          //  _evalDerDD( p, d, du );
+            break;
+        };
+      }
+      else
+        PCurve<T,3>::resample(  p, m, d, start, end );
+  }
+
+
+
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
+  template <typename T>
+  bool PSurfCurve<T>::isClosed() const {
+    return false;
+  }
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
+  template <typename T>
+  inline
+  void PSurfCurve<T>::eval( T t, int d, bool /*l*/ ) {
       if (_der_curve)
           eval2(t,d);
       else
@@ -93,13 +165,27 @@ namespace GMlib {
   }
 
 
+  template <typename T>
+  T PSurfCurve<T>::getStartP() const {
+    return T(0);
+  }
 
+
+  template <typename T>
+  T PSurfCurve<T>::getEndP() const {
+    return T(1);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
 
   template <typename T>
   inline
-  void PSurfCurve<T>::eval1( T t, int d )
-  {
+  void PSurfCurve<T>::eval1( T t, int d ) {
     this->_p.setDim( d + 1 );
 
     DMatrix< Vector<T,3> > m = _s->evaluateParent(_p1 + t*_dv , d);
@@ -215,76 +301,6 @@ namespace GMlib {
   }
 
 
-
-  template <typename T>
-  T PSurfCurve<T>::getEndP() {
-
-    return T(1);
-  }
-
-  template <typename T>
-  T PSurfCurve<T>::getStartP() {
-
-    return T(0);
-  }
-
-  template <typename T>
-  inline
-  bool PSurfCurve<T>::isClosed() const
-  {
-    return false;
-  }
-
-  template <typename T>
-  inline
-  void PSurfCurve<T>::togglePlot()
-  {
-     _plot = !_plot;
-  }
-
-
-
-  template <typename T>
-  void PSurfCurve<T>::resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end )
-  {
-      if (_der_curve && _plot)
-      {
-        T du = (end-start)/(m-1);
-        p.setDim(m);
-
-        for( int i = 0; i < m - 1; i++ )
-        {
-          p[i].setDim(d+1);
-          eval1(start + i * du, 1);
-          p[i][0] = this->_p[0];
-          eval2(start + i * du, d-1);
-          for(int j=1; j<d;j++)
-             p[i][j] = this->_p[j-1];
-        }
-        p[m-1].setDim(d+1);
-        eval1(end, 1);
-        p[m-1][0] = this->_p[0];
-        eval2(end, d-1);
-        for(int j=1; j<d;j++)
-           p[m-1][j] = this->_p[j-1];
-
-        switch( this->_dm )
-        {
-          case GM_DERIVATION_EXPLICIT:
-            // Do nothing, evaluator algorithms for explicite calculation of derivatives
-            // should be defined in the eval( ... ) function enclosed by
-            // if( this->_derivation_method == this->EXPLICIT ) { ... eval algorithms for derivatives ... }
-            break;
-
-          case GM_DERIVATION_DD:
-          default:
-          //  _evalDerDD( p, d, du );
-            break;
-        };
-      }
-      else
-        PCurve<T,3>::resample(  p, m, d, start, end );
-  }
 
 
 } // END namespace GMlib

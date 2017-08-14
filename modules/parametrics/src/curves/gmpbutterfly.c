@@ -32,7 +32,7 @@ namespace GMlib {
   PButterfly<T>::PButterfly( T size ) {
 
     _size = size;
-    this->_dm = GM_DERIVATION_EXPLICIT;
+//    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
@@ -45,8 +45,23 @@ namespace GMlib {
   PButterfly<T>::~PButterfly() {}
 
 
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
   template <typename T>
-  inline
+  bool PButterfly<T>::isClosed() const {
+    return true;
+  }
+
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
+  template <typename T>
   void PButterfly<T>::eval( T t, int d, bool /*l*/ ) {
 
     this->_p.setDim( d + 1 );
@@ -81,25 +96,15 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PButterfly<T>::getEndP() {
-
-    return T( M_PI * 24.0 );
-  }
-
-
-  template <typename T>
-  inline
-  T PButterfly<T>::getStartP() {
-
+  T PButterfly<T>::getStartP() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  bool PButterfly<T>::isClosed() const {
-
-    return true;
+  T PButterfly<T>::getEndP() const {
+    return T( M_PI * 24.0 );
   }
-}
+
+
+} // END namespace GMlib

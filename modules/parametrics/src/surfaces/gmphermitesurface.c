@@ -21,6 +21,9 @@
 **********************************************************************************/
 
 
+
+
+
 namespace GMlib {
 
   /*! PHermiteSurface<T>::PHermiteSurface( const Array< PCurve<T>* >& c1, const Array<PCurve<T>* >& c2 )
@@ -43,8 +46,14 @@ namespace GMlib {
    *  \param[in] c1 Curves describing the boundary in u-direction
    *  \param[in] c2 Curves describing the boundary in v-direction
    */
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   PHermiteSurface<T>::PHermiteSurface( const Array< PCurve<T,3>* >& c1, const Array<PCurve<T,3>* >& c2 ) {
+
+    init();
 
     _c1 = c1;
     _c2 = c2;
@@ -77,6 +86,14 @@ namespace GMlib {
       SceneObject::remove( _c2[i] );
   }
 
+
+
+
+
+  //*****************************************
+  //            Local functons             **
+  //*****************************************
+
   template <typename T>
   inline
   void PHermiteSurface<T>::edit( SceneObject* /*obj*/ ) {
@@ -89,8 +106,33 @@ namespace GMlib {
     PSurf<T,3>::replot();
   }
 
+
+
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
   template <typename T>
-  inline
+  bool PHermiteSurface<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PHermiteSurface<T>::isClosedV() const {
+    return false;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
+
+  template <typename T>
   void PHermiteSurface<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/) {
 
     // set result set dim
@@ -191,33 +233,39 @@ namespace GMlib {
     }
   }
 
-  template <typename T>
-  inline
-  T PHermiteSurface<T>::getEndPU() {
 
-    return T(1);
-  }
+
+
 
   template <typename T>
-  inline
-  T PHermiteSurface<T>::getEndPV() {
-
-    return T(1);
-  }
-
-  template <typename T>
-  inline
-  T PHermiteSurface<T>::getStartPU() {
-
+  T PHermiteSurface<T>::getStartPU() const {
     return T(0);
   }
 
-  template <typename T>
-  inline
-  T PHermiteSurface<T>::getStartPV() {
 
+
+  template <typename T>
+  T PHermiteSurface<T>::getEndPU() const {
+    return T(1);
+  }
+
+
+
+  template <typename T>
+  T PHermiteSurface<T>::getStartPV() const {
     return T(0);
   }
+
+
+
+  template <typename T>
+  T PHermiteSurface<T>::getEndPV() const {
+    return T(1);
+  }
+
+
+
+
 
   /*! T PHermiteSurface<T>::getH( int d, int k, T t )
    *
@@ -391,5 +439,16 @@ namespace GMlib {
     // return true if all criterias is met
     return true;
   }
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
+
+  template <typename T>
+  void PHermiteSurface<T>::init() {
+
+    this->_dm = GM_DERIVATION_EXPLICIT;
+  }
+
 
 } // END namespace GMlib

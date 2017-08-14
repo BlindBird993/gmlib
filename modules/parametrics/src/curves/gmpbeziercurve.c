@@ -149,17 +149,15 @@ namespace GMlib {
 
 
   template <typename T>
-  T PBezierCurve<T>::getEndP() {
-
-    return T(1);
-  }
-
-  template <typename T>
-  T PBezierCurve<T>::getStartP() {
-
+  T PBezierCurve<T>::getStartP() const {
     return T(0);
   }
 
+
+  template <typename T>
+  T PBezierCurve<T>::getEndP() const {
+    return T(1);
+  }
 
   template <typename T>
   inline

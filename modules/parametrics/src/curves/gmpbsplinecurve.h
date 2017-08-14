@@ -37,48 +37,56 @@ namespace GMlib {
   class PBSplineCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PBSplineCurve)
   public:
-    PBSplineCurve( const DVector< Vector<T, 3> >& cv, int d  );
-    PBSplineCurve( const PBSplineCurve<T>& dpbsc );
+    PBSplineCurve( const DVector< Vector<T, 3> >& c, const DVector<T>& t, int d );
+    PBSplineCurve( const DVector< Vector<T, 3> >& c, int d );
+    PBSplineCurve( const PBSplineCurve<T>& curve );
     virtual ~PBSplineCurve();
 
-    int                       getDegree() const;
-    void                      generateKnotVector();
-    bool                      isClosed() const;
-    void                      resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
-    void                      setControlPoints( const DVector< Vector<T,3> >& cv, bool gen_kv = true );
     void                      setDegree( int d );
-    void                      setKnotVector( const DVector<T>& kv );
-    void                      setResampleMode( GM_RESAMPLE_MODE mode );
+    int                       getDegree() const;
     void                      setScale( T d );
+    void                      setControlPoints( const DVector< Vector<T,3> >& cv, bool gen_t = true );
+    void                      setKnotVector( const DVector<T>& t );
+    void                      setResampleMode( GM_RESAMPLE_MODE mode );
+    void                      generateKnotVector();
+    void                      resample( DVector< DVector< Vector<T,3> > >& p, int m, int d, T start, T end );
 
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
+
+    // from PCurve
+    bool                      isClosed() const override;
 
   protected:
-    DVector< Vector<T,3> >    _cp;
+    // Virtual function from PCurve that has to be implemented locally
+    void                      eval(T t, int d = 0, bool l = false) override;
+    T                         getStartP() const override;
+    T                         getEndP()   const override;
+
+    // Help function
+//    void                      evalBernsteinHermite( DMatrix<T>& bp_mat, T t, int idx ) const;
+//    T                         getW( T t, int idx, int d ) const;
+//    T                         getWder( T t, int idx, int d ) const;
+//    int                       getIndex( T t, int m ) const;
+    void                      resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
+    void                      resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
+    void                      multEval(DMatrix<Vector<T,3>>& p, const DMatrix<T>& bsh, const DVector<int>& ii, int d);
+
+    // Protected data for the curve
+    DVector< Vector<T,3> >    _c; // control points (controlpolygon)
+    int                       _d; // polynomial degree
+    DVector<T>                _t; // knot vector
+
     T                         _scale;
 
     DVector< DMatrix< T > >   _bhps;
     DVector< int >            _indices;
-    DVector<T>                _kv;
-    int                       _degree;
 
     GM_RESAMPLE_MODE          _resamp_mode;
     bool                      _pre_eval;
 
-    void                      eval( T t, int d = 0, bool l = false );
-    void                      evalBernsteinHermite( DMatrix<T>& bp_mat, T t, int idx ) const;
-    T                         getEndP();
-    int                       getIndex( T t, int m ) const;
-    T                         getStartP();
-    T                         getW( T t, int idx, int d ) const;
-    T                         getWder( T t, int idx, int d ) const;
-    void                      resampleInline( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
-    void                      resamplePreEval( DVector< DVector< Vector<T,3> > >& p, int m, T dt );
-
-
-
   }; // END class PBSplineCurve
-
-
 
 
 } // END namepace GMlib

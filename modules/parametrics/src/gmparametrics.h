@@ -86,13 +86,93 @@ namespace GMlib {
   private:
     void                                  _initSoType();
 
-
   }; // END class Parametrics
-}
+
+
+
+
+
+  /******************************************************************
+   ******************************************************************
+   ******************************************************************
+   ****** The following code is about preevaluation and partitioning
+   ******       It should be in a separate file "preeval.h"
+   ******************************************************************
+   ******************************************************************
+   ******************************************************************/
+
+
+
+
+  /************************************************************
+   ****** The partition vector
+   ****** Determines how to partition parameter interval -
+   ****** if a knot vector is present
+   ***********************************************************/
+    template <typename T>
+    class VisPart : public DVector<int> {
+        T tol;  // Can be static - and depending on the type T
+        bool eq(T a, T b) { return a-b < tol; }
+    public:
+        VisPart(const DVector<T>& t, int k, int dis) {
+            // t   - is the knot vector
+            // k   - is the order of the spline
+            // dis = 0 - split where we have a discontinue function
+            // dis = 1 - split where we have a discontinue 1. derivative
+            // dis = 2 - split where we have a discontinue 2. derivative ...
+            // dis must not be bigger than k-1 !!!
+            tol   = 1e-5;
+            int d = k-1;
+            int n = t.getDim()-k;
+            int i = d;
+            while(eq(t(i+1), t(i))) ++i;
+            this->append(i);
+            for(++i; i <= n; i++) {
+                int j=1;
+                while (eq(t(i+j), t(i))) ++j;
+                if(i+j-1 >= n) {
+                    this->append(i);
+                    break;
+                }
+                if(j > d-dis) {
+                    this->append(i);
+                    this->append(i+=j-1);
+                }
+            }
+        }
+    }; // end class VisPart
+
+
+
+  /********************************************************************
+   ****** The samling vector
+   ****** Determines how sampling is distributed over the partitioning
+   *******************************************************************/
+    template <typename T>
+    class SampNr : public DVector<int> {
+    public:
+        SampNr(const DVector<T>& t, const VisPart<T>& vp, int m) {
+            // t   - is the knot vector
+            // vp  - is the partition vector
+            // m   - is the total number of samples (at least)
+            T tot = t(vp(vp.getDim()-1))- t(vp(0));
+            int n = vp.getDim()/2;
+            this->setDim(n);
+
+            for(int i=0; i < n; i++) {
+                T tmp = T(m+n-1)*(t(vp(2*i+1)) - t(vp(2*i)))/tot + T(0.5);
+                (*this)[i] = int(tmp);
+            }
+        }
+    }; // end class VisPart
+
+
+} // END namespace GMlib
+
+
+
 
 // Include Paramterics class function implementations
 #include "gmparametrics.c"
-
-
 
 #endif // GM_PARAMETRICS_PARAMETRICS_H

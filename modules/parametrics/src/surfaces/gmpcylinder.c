@@ -28,19 +28,22 @@ namespace GMlib {
 
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PCylinder<T>::PCylinder( T rx, T ry, T h ) {
-
+    init();
     setConstants( rx, ry, h );
-    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
   template <typename T>
   inline
   PCylinder<T>::PCylinder( const PCylinder<T>& copy ) : PSurf<T,3>(copy) {
-
+    init();
     _rx = copy._rx;
     _ry = copy._ry;
     _h  = copy._h;
@@ -49,12 +52,69 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
   PCylinder<T>::~PCylinder() {}
+
+
+
+  //*****************************************
+  //            Local functons             **
+  //*****************************************
+
+  template <typename T>
+  inline
+  T PCylinder<T>::getHeight() const {
+    return _h;
+  }
 
 
   template <typename T>
   inline
+  T PCylinder<T>::getRadiusX() const {
+    return _rx;
+  }
+
+
+  template <typename T>
+  inline
+  T PCylinder<T>::getRadiusY() const {
+    return _ry;
+  }
+
+
+  template <typename T>
+  inline
+  void PCylinder<T>::setConstants( T rx, T ry, T h ) {
+    _rx = rx;
+    _ry = ry;
+    _h = h;
+  }
+
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PCylinder<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PCylinder<T>::isClosedV() const {
+    return true;
+  }
+
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
+
+  template <typename T>
   void PCylinder<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     this->_p.setDim( d1+1, d2+1 );
@@ -65,50 +125,42 @@ namespace GMlib {
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d1) //u
-      {
+      if(d1) {                  //u
         this->_p[1][0][0] =	T(0);
         this->_p[1][0][1] =	T(0);
         this->_p[1][0][2] =	_h;
       }
-      if(d1>1)//uu
-      {
+      if(d1>1) {                //uu
         this->_p[2][0][0] =	T(0);
         this->_p[2][0][1] =	T(0);
         this->_p[2][0][2] =	T(0);
       }
-      if(d2) //v
-      {
+      if(d2) {                  //v
         this->_p[0][1][0] = _ry * cos(v);
         this->_p[0][1][1] = -_rx *sin(v);
         this->_p[0][1][2] =	T(0);
       }
-      if(d2>1) //vv
-      {
+      if(d2>1) {                //vv
         this->_p[0][2][0] = -_ry * sin(v);
         this->_p[0][2][1] =	-_rx * cos(v);
         this->_p[0][2][2] =	T(0);
       }
-      if(d1 && d2) //uv
-      {
+      if(d1 && d2) {            //uv
         this->_p[1][1][0] =	T(0);
         this->_p[1][1][1] =	T(0);
         this->_p[1][1][2] =	T(0);
       }
-      if(d1>1 && d2)//uuv
-      {
+      if(d1>1 && d2) {          //uuv
         this->_p[2][1][0] = T(0);
         this->_p[2][1][1] = T(0);
         this->_p[2][1][2] = T(0);
       }
-      if(d1 && d2>1) //uvv
-      {
+      if(d1 && d2>1) {          //uvv
         this->_p[1][2][0] =	T(0);
         this->_p[1][2][1] =	T(0);
         this->_p[1][2][2] =	T(0);
       }
-      if(d1>1 && d2>1) //uuvv
-      {
+      if(d1>1 && d2>1) {        //uuvv
         this->_p[2][2][0] =	T(0);
         this->_p[2][2][1] =	T(0);
         this->_p[2][2][2] =	T(0);
@@ -118,85 +170,41 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PCylinder<T>::getEndPU() {
-
-    return T( 0.5 );
-  }
-
-
-  template <typename T>
-  inline
-  T PCylinder<T>::getEndPV() {
-
-    return T( 0.5 * M_PI );
-  }
-
-
-  template <typename T>
-  inline
-  T PCylinder<T>::getHeight() const {
-
-    return _h;
-  }
-
-
-  template <typename T>
-  inline
-  T PCylinder<T>::getRadiusX() const {
-
-    return _rx;
-  }
-
-
-  template <typename T>
-  inline
-  T PCylinder<T>::getRadiusY() const {
-
-    return _ry;
-  }
-
-
-  template <typename T>
-  inline
-  T PCylinder<T>::getStartPU() {
-
+  T PCylinder<T>::getStartPU() const {
     return T( -0.5 );
   }
 
 
   template <typename T>
-  inline
-  T PCylinder<T>::getStartPV() {
+  T PCylinder<T>::getEndPU() const {
+    return T( 0.5 );
+  }
 
+
+  template <typename T>
+  T PCylinder<T>::getStartPV() const {
     return T( -1.5 * M_PI );
   }
 
 
   template <typename T>
-  inline
-  bool PCylinder<T>::isClosedU() const {
-
-    return false;
+  T PCylinder<T>::getEndPV() const {
+    return T( 0.5 * M_PI );
   }
 
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
-  inline
-  bool PCylinder<T>::isClosedV() const {
+  void PCylinder<T>::init() {
 
-    return true;
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
-  template <typename T>
-  inline
-  void PCylinder<T>::setConstants( T rx, T ry, T h ) {
-
-    _rx = rx;
-    _ry = ry;
-    _h = h;
-  }
 
 } // END namespace GMlib
 

@@ -27,14 +27,15 @@
 namespace GMlib {
 
 
-  // Constructors and destructors
-  //******************************
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
 
   template <typename T>
   inline
   PSubSurf<T>::PSubSurf( PSurf<T,3>* s, T su, T eu, T sv, T ev )
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
     set(s, su, eu, (su+eu)/2, sv, ev, (sv+ev)/2);
     // Set local coordinate system
     DMatrix<Vector<T,3> > tr = _s->evaluateParent(_q, 0);
@@ -47,7 +48,7 @@ namespace GMlib {
   inline
   PSubSurf<T>::PSubSurf( PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v )
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
     set(s, su, eu, u, sv, ev, v);
     // Set local coordinate system
     DMatrix<Vector<T,3> > tr = _s->evaluateParent(_q, 0);
@@ -60,7 +61,7 @@ namespace GMlib {
   inline
   PSubSurf<T>::PSubSurf( PSurf<T,3>* s, const Point<T,2>& p1, const Point<T,2>& p2, const Point<T,2>& p3, const Point<T,2>& p4)
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
     set(s, p1, p2, p3, p4, (p1+p2+p3+p4)/4);
     // Set local coordinate system
     DMatrix<Vector<T,3> > tr = _s->evaluateParent(_q, 0);
@@ -73,7 +74,7 @@ namespace GMlib {
   inline
   PSubSurf<T>::PSubSurf( PSurf<T,3>* s, const Point<T,2>& p1, const Point<T,2>& p2, const Point<T,2>& p3, const Point<T,2>& p4, const Point<T,2>& p)
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
     set(s, p1, p2, p3, p4, p);
     // Set local coordinate system
     DMatrix<Vector<T,3> > tr = _s->evaluateParent(_q, 0);
@@ -86,6 +87,7 @@ namespace GMlib {
   inline
   PSubSurf<T>::PSubSurf( const PSubSurf<T>& copy ) : PSurf<T,3>( copy )
   {
+    init();
     set(copy._s, copy._p1, copy._a + copy._p1, copy._b + copy._p1,
         copy._a + copy._b + copy._c + copy._p1, copy._q);
     // Set local coordinate system
@@ -97,9 +99,28 @@ namespace GMlib {
   PSubSurf<T>::~PSubSurf() {}
 
 
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
 
-  // Virtual functions from PSurf
-  //******************************
+
+  template <typename T>
+  bool PSubSurf<T>::isClosedU() const
+  {
+    return false;
+  }
+
+  template <typename T>
+  bool PSubSurf<T>::isClosedV() const
+  {
+    return false;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PSubSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/) {
@@ -224,71 +245,68 @@ namespace GMlib {
 
   }
 
+
   template <typename T>
-  T PSubSurf<T>::getStartPU()
-  {
+  T PSubSurf<T>::getStartPU() const {
     return T(0);
   }
 
+
   template <typename T>
-  T PSubSurf<T>::getStartPV()
-  {
+  T PSubSurf<T>::getEndPU() const {
+    return T(1);
+  }
+
+
+  template <typename T>
+  T PSubSurf<T>::getStartPV() const {
     return T(0);
   }
 
+
   template <typename T>
-  T PSubSurf<T>::getEndPU()
-  {
+  T PSubSurf<T>::getEndPV() const {
     return T(1);
   }
 
-  template <typename T>
-  T PSubSurf<T>::getEndPV()
-  {
-    return T(1);
-  }
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
-  bool PSubSurf<T>::isClosedU() const
-  {
-    return false;
-  }
+  void PSubSurf<T>::init() {
 
-  template <typename T>
-  bool PSubSurf<T>::isClosedV() const
-  {
-    return false;
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
-  // Private help functions
-  //*************************
+  //*****************************************
+  //       Private help functions          **
+  //*****************************************
 
   template <typename T>
   inline
-  Vector<T,2> PSubSurf<T>::S(T u, T v)
-  {
+  Vector<T,2> PSubSurf<T>::S(T u, T v) const {
     return _p1 + u*_a + v*_b + (u*v)*_c;
   }
 
   template <typename T>
   inline
-  Vector<T,2> PSubSurf<T>::Su(T u, T v)
-  {
+  Vector<T,2> PSubSurf<T>::Su(T u, T v) const{
     return _a + v*_c;
   }
 
   template <typename T>
   inline
-  Vector<T,2> PSubSurf<T>::Sv(T u, T v)
-  {
+  Vector<T,2> PSubSurf<T>::Sv(T u, T v) const{
     return _b + u*_c;
   }
 
   template <typename T>
   inline
-  Vector<T,2>& PSubSurf<T>::Suv(T u, T v)
-  {
+  Vector<T,2>& PSubSurf<T>::Suv(T u, T v) const{
     return _c;
   }
 
@@ -296,8 +314,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSubSurf<T>::set(PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v)
-  {
+  void PSubSurf<T>::set(PSurf<T,3>* s, T su, T eu, T u, T sv, T ev, T v) {
     _s  = s;
     _p1 = Point<T,2>(su,sv);
     _a  = Point<T,2>(eu,sv)-_p1;
@@ -309,8 +326,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSubSurf<T>::set(PSurf<T,3>* s, const Point<T,2>& p1, const Point<T,2>& p2, const Point<T,2>& p3, const Point<T,2>& p4, const Point<T,2>& p)
-  {
+  void PSubSurf<T>::set(PSurf<T,3>* s, const Point<T,2>& p1, const Point<T,2>& p2, const Point<T,2>& p3, const Point<T,2>& p4, const Point<T,2>& p) {
     _s  = s;
     _p1 = p1;
     _a  = p2-p1;
@@ -318,6 +334,8 @@ namespace GMlib {
     _c  = p4-p3-p2+p1;
     _q  = p;
   }
+
+
 
 } // END namespace GMlib
 

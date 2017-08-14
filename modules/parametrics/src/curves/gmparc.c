@@ -26,10 +26,13 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PArc<T>::PArc( T speed, T curvature ) {
-
     _d = speed;
     _k = curvature;
 
@@ -41,7 +44,6 @@ namespace GMlib {
   template <typename T>
   inline
   PArc<T>::PArc( T speed, T curvature, T start, T end ) {
-
     _d = speed;
     _k = curvature;
 
@@ -53,7 +55,6 @@ namespace GMlib {
   template <typename T>
   inline
   PArc<T>::PArc( DVector< Vector<T,3> >& p, T s, T t, T e ) {
-
     Vector<T,3> x, y, z, y_;
 
     _d      = p[1].getLength();
@@ -75,7 +76,6 @@ namespace GMlib {
     else
       y = z = Vector<T,3>( T(0) );
 
-
     // Do basis change
     this->_side = y;
     this->_up   = z;
@@ -88,7 +88,6 @@ namespace GMlib {
   template <typename T>
   inline
   PArc<T>::PArc( const PArc<T>& copy ) : PCurve<T,3>(copy) {
-
     _d = copy._d;
     _k = copy._k;
 
@@ -98,78 +97,143 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
   PArc<T>::~PArc() {}
 
 
+
+
+  //**************************************
+  //        Public local functons       **
+  //**************************************
+
   template <typename T>
   inline
-  void PArc<T>::eval( T t, int d, bool /*l*/ ) {
-
-    this->_p.setDim( d + 1 );
-
-    if( _k < 1e-5 ) {
-
-
-      this->_p[0][0] = _d * t;
-      this->_p[0][1] = T(0);
-      this->_p[0][2] = T(0);
-
-      if( this->_dm == GM_DERIVATION_EXPLICIT ) {
-
-        if( d > 0 ) {
-
-          this->_p[1][0] = _d;
-          this->_p[1][1] = T(0);
-          this->_p[1][2] = T(0);
-        }
-
-        if( d > 1 ) {
-
-          this->_p[2][0] = T(0);
-          this->_p[2][1] = T(0);
-          this->_p[2][2] = T(0);
-        }
-      }
-    }
-    else { // if _k > 0
-
-
-      this->_p[0][0] = T( sin( _k * _d * t ) );
-      this->_p[0][1] = T( 1.0 - cos( _k * _d * t ) );
-      this->_p[0][2] = T(0);
-
-      this->_p *= T(1) / _k;
-
-      if( this->_dm == GM_DERIVATION_EXPLICIT ) {
-
-        const T g = _k * _d;
-
-        if( d > 0 ) {
-
-          this->_p[1][0] = g * T( cos( _k * _d * t ) );
-          this->_p[1][1] = g * T( sin( _k * _d * t ) );
-          this->_p[1][2] = T(0);
-        }
-
-        if( d > 1 ) {
-
-          this->_p[2][0] = g * T( -sin( _k * _d * t ) );
-          this->_p[2][1] = g * T(  cos( _k * _d * t ) );
-          this->_p[2][2] = T(0);
-        }
-      }
-    }
-
+  void PArc<T>::setCurvature( T curvature ) {
+      _k = curvature;
   }
 
 
   template <typename T>
   inline
   T PArc<T>::getCurvature() const {
-
     return _k;
   }
+
+
+  template <typename T>
+  inline
+  void PArc<T>::setSpeed( T speed ) {
+      _d = speed;
+  }
+
+
+  template <typename T>
+  inline
+  T PArc<T>::getSpeed() const {
+    return _d;
+  }
+
+
+  template <typename T>
+  inline
+  void PArc<T>::setStart( T start ) {
+      _start = start;
+  }
+
+
+  template <typename T>
+  inline
+  void PArc<T>::setEnd( T end ) {
+      _end = end;
+  }
+
+
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
+  template <typename T>
+  bool PArc<T>::isClosed() const {
+    return (_end - _start) < 1e-5;
+  }
+
+
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
+  template <typename T>
+  void PArc<T>::eval( T t, int d, bool /*l*/ ) {
+
+    this->_p.setDim( d + 1 );
+
+    if( _k < 1e-5 ) {
+      this->_p[0][0] = _d * t;
+      this->_p[0][1] = T(0);
+      this->_p[0][2] = T(0);
+
+      if( this->_dm == GM_DERIVATION_EXPLICIT ) {
+          if( d > 0 ) {
+              this->_p[1][0] = _d;
+              this->_p[1][1] = T(0);
+              this->_p[1][2] = T(0);
+
+              if( d > 1 ) {
+                  this->_p[2][0] = T(0);
+                  this->_p[2][1] = T(0);
+                  this->_p[2][2] = T(0);
+              }
+          }
+      }
+    }
+    else { // if _k > 0
+      T kdt = _k * _d * t;
+      this->_p[0][0] = T( sin(kdt));
+      this->_p[0][1] = T( 1.0 - cos(kdt));
+      this->_p[0][2] = T(0);
+
+      this->_p *= T(1) / _k;
+
+        if( this->_dm == GM_DERIVATION_EXPLICIT ) {
+            T g = _k * _d;
+            if( d > 0 ) {
+                this->_p[1][0] = g * T( cos(kdt));
+                this->_p[1][1] = g * T( sin(kdt));
+                this->_p[1][2] = T(0);
+                if( d > 1 ) {
+               //     g *= g;
+                    this->_p[2][0] = g * T(-sin(kdt));
+                    this->_p[2][1] = g * T( cos(kdt));
+                    this->_p[2][2] = T(0);
+                }
+            }
+        }
+    }
+
+  }
+
+
+
+  template <typename T>
+  T PArc<T>::getStartP() const {
+    return _start;
+  }
+
+
+  template <typename T>
+  T PArc<T>::getEndP() const {
+    return _end;
+  }
+
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
 
   template <typename T>
@@ -189,68 +253,6 @@ namespace GMlib {
     return d2.getLength();
   }
 
-
-  template <typename T>
-  inline
-  T PArc<T>::getEndP() {
-
-    return _end;
-  }
-
-  template <typename T>
-  inline
-  T PArc<T>::getSpeed() const {
-
-    return _d;
-  }
-
-
-  template <typename T>
-  inline
-  T PArc<T>::getStartP() {
-
-    return _start;
-  }
-
-
-  template <typename T>
-  inline
-  bool PArc<T>::isClosed() const {
-
-    return (_end - _start) < 1e-5;
-  }
-
-
-  template <typename T>
-  inline
-  void PArc<T>::setCurvature( T curvature ) {
-
-      _k = curvature;
-  }
-
-
-  template <typename T>
-  inline
-  void PArc<T>::setEnd( T end ) {
-
-      _end = end;
-  }
-
-
-  template <typename T>
-  inline
-  void PArc<T>::setSpeed( T speed ) {
-
-      _d = speed;
-  }
-
-
-  template <typename T>
-  inline
-  void PArc<T>::setStart( T start ) {
-
-      _start = start;
-  }
 
 } // END namespace GMlib
 

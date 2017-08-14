@@ -24,22 +24,22 @@
 
 
 
-
-
 namespace GMlib {
 
+
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
 
   template <typename T>
   inline
   PSweepSurf<T>::PSweepSurf( PCurve<T,3>* profile, PCurve<T,3>* spine, bool RMF) {
 
-    this->_dm = GM_DERIVATION_EXPLICIT;
-
+    init();
     _profile = profile;
     _spine   = spine;
     _RMF     = RMF;
     _spv     = spine->evaluate(T(0),0)[0];
-
     makeOmega(300,0);
   }
 
@@ -48,16 +48,87 @@ namespace GMlib {
   inline
   PSweepSurf<T>::PSweepSurf( const PSweepSurf<T>& copy ) : PSurf<T,3>( copy ) {
 
+      init();
       _profile = copy._profile;
       _spine   = copy._spine;
       _RMF     = copy._RMF;
-
   }
 
 
   template <typename T>
   PSweepSurf<T>::~PSweepSurf() {}
 
+
+  //*****************************************
+  //            Local functons             **
+  //*****************************************
+
+  template <typename T>
+  inline
+  void PSweepSurf<T>::makeOmega(int n, T omega_0) {
+      T start = _spine->getParStart();
+      T delta = _spine->getParDelta()/n;
+      T del_2 = delta/2;
+
+      DVector<Vector<T,3> > h     = _spine->evaluate(start,3);
+      Vector<T,3>           h12   = h[1]^h[2];
+      T                     h1_2  = h[1]*h[1];
+      T                     h12_2 = h12*h12;
+      T                     tau   = (h12*h[3])/h12_2;
+      T                     prv   = omega_0;
+
+      _omega.setDim(n);
+      _omega[0] = prv;
+
+      for(int i=1; i<=n; i++)
+      {
+          h         = _spine->evaluate(start + delta*i,3);
+          h12       = h[1]^h[2];
+          h1_2      = h[1]*h[1];
+          h12_2     = h12*h12;
+          tau       = (h12*h[3])/h12_2;
+          T k       = tau*sqrt(h1_2);
+          _omega[i] = _omega[i-1] - del_2*(k+prv);
+          prv       = k;
+      }
+  }
+
+
+  template <typename T>
+  inline
+  T PSweepSurf<T>::getOmega(T t) {
+      int   n  = _omega.getDim()-1;
+      T     d  = _spine->getParDelta();
+      T     u  = t - _spine->getParStart();
+      int   i  = n*u/d;
+      T     r  = (n*u/d) - T(i);
+
+      return _omega[i] + r*(_omega[i+1] - _omega[i]);
+  }
+
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PSweepSurf<T>::isClosedU() const {
+    return  _profile->isClosed();
+  }
+
+
+  template <typename T>
+  bool PSweepSurf<T>::isClosedV() const {
+    return _spine->isClosed();
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PSweepSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ )
@@ -130,96 +201,41 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  void PSweepSurf<T>::makeOmega(int n, T omega_0)
-  {
-      T start = _spine->getParStart();
-      T delta = _spine->getParDelta()/n;
-      T del_2 = delta/2;
-
-      DVector<Vector<T,3> > h     = _spine->evaluate(start,3);
-      Vector<T,3>           h12   = h[1]^h[2];
-      T                     h1_2  = h[1]*h[1];
-      T                     h12_2 = h12*h12;
-      T                     tau   = (h12*h[3])/h12_2;
-      T                     prv   = omega_0;
-
-      _omega.setDim(n);
-      _omega[0] = prv;
-
-      for(int i=1; i<=n; i++)
-      {
-          h         = _spine->evaluate(start + delta*i,3);
-          h12       = h[1]^h[2];
-          h1_2      = h[1]*h[1];
-          h12_2     = h12*h12;
-          tau       = (h12*h[3])/h12_2;
-          T k       = tau*sqrt(h1_2);
-          _omega[i] = _omega[i-1] - del_2*(k+prv);
-          prv       = k;
-      }
-  }
-
-  template <typename T>
-  inline
-  T PSweepSurf<T>::getOmega(T t)
-  {
-      int   n  = _omega.getDim()-1;
-      T     d  = _spine->getParDelta();
-      T     u  = t - _spine->getParStart();
-      int   i  = n*u/d;
-      T     r  = (n*u/d) - T(i);
-
-      return _omega[i] + r*(_omega[i+1] - _omega[i]);
-  }
-
-
-  template <typename T>
-  inline
-  T PSweepSurf<T>::getStartPU() {
-
+  T PSweepSurf<T>::getStartPU() const {
     return _profile->getParStart();
   }
 
 
   template <typename T>
-  inline
-  T PSweepSurf<T>::getStartPV() {
-
-    return _spine->getParStart();
-  }
-
-
-  template <typename T>
-  inline
-  T PSweepSurf<T>::getEndPU() {
-
+  T PSweepSurf<T>::getEndPU() const {
     return _profile->getParEnd();
   }
 
 
   template <typename T>
-  inline
-  T PSweepSurf<T>::getEndPV() {
+  T PSweepSurf<T>::getStartPV() const {
+    return _spine->getParStart();
+  }
 
+
+  template <typename T>
+  T PSweepSurf<T>::getEndPV() const {
     return _spine->getParEnd();
   }
 
 
-  template <typename T>
-  inline
-  bool PSweepSurf<T>::isClosedU() const {
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
-    return  _profile->isClosed();
+  template <typename T>
+  void PSweepSurf<T>::init() {
+
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
-  template <typename T>
-  inline
-  bool PSweepSurf<T>::isClosedV() const {
 
-    return _spine->isClosed();
-  }
 
 }
 

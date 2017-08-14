@@ -36,48 +36,41 @@
 #include <scene/render/gmdefaultrenderer.h>
 #include <scene/utils/gmmaterial.h>
 
-// stl
-#include <set>
-#include <string>
+//// stl
+//#include <set>
+//#include <string>
+
 
 namespace GMlib {
 
-  template <typename T, int n>
-  PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer()
-    : _no_strips(0), _no_strip_indices(0), _strip_size(0) {
 
-    initShaderProgram();
-
-    _color_prog.acquire("color");
-    assert(_color_prog.isValid());
-
-    _vbo.create();
-    _ibo.create();
-    _nmap.create(GL_TEXTURE_2D);
-  }
-
-  template <typename T, int n>
-  PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer(const PSurfDefaultVisualizer<T,n>& copy)
-    : PSurfVisualizer<T,n>(copy), _no_strips(0), _no_strip_indices(0), _strip_size(0) {
-
-    initShaderProgram();
-
-    _color_prog.acquire("color");
-    assert(_color_prog.isValid());
-
-
-    _vbo.create();
-    _ibo.create();
-    _nmap.create(GL_TEXTURE_2D);
-  }
 
   template <typename T, int n>
   inline
+  PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer()
+    : _no_strips(0), _no_strip_indices(0), _strip_size(0) {
+
+    _mode = GL_TRIANGLE_STRIP;
+    _init();
+  }
+
+
+  template <typename T, int n>
+  inline
+  PSurfDefaultVisualizer<T,n>::PSurfDefaultVisualizer(const PSurfDefaultVisualizer<T,n>& copy)
+    : PSurfVisualizer<T,n>(copy), _no_strips(0), _no_strip_indices(0), _strip_size(0) {
+
+    _mode = copy._mode;
+    _init();
+  }
+
+
+  template <typename T, int n>
   void PSurfDefaultVisualizer<T,n>::render( const SceneObject* obj, const DefaultRenderer* renderer ) const {
 
     const Camera* cam = renderer->getCamera();
     const HqMatrix<float,3> &mvmat = obj->getModelViewMatrix(cam);
-    const HqMatrix<float,3> &pmat = obj->getProjectionMatrix(cam);
+    const HqMatrix<float,3> &pmat  = obj->getProjectionMatrix(cam);
 //    const SqMatrix<float,3> &nmat = obj->getNormalMatrix(cam);
 
     SqMatrix<float,3>        nmat = mvmat.getRotationMatrix();
@@ -110,21 +103,51 @@ namespace GMlib {
 
       // Get vertex and texture attrib locations
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
-      GL::AttributeLocation tex_loc = _prog.getAttributeLocation( "in_tex" );
+      GL::AttributeLocation tex_loc  = _prog.getAttributeLocation( "in_tex" );
 
       // Bind and draw
       _vbo.bind();
-      _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
-      _vbo.enable( tex_loc,  2, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(3*sizeof(GLfloat)) );
-
-      draw();
-
-      _vbo.disable( vert_loc );
-      _vbo.disable( tex_loc );
+          _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
+          _vbo.enable( tex_loc,  2, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(3*sizeof(GLfloat)) );
+             draw();
+          _vbo.disable( vert_loc );
+          _vbo.disable( tex_loc );
       _vbo.unbind();
 
     } _prog.unbind();
   }
+
+
+
+  template <typename T, int n>
+  void PSurfDefaultVisualizer<T,n>::renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const {
+
+    _color_prog.bind();
+      _color_prog.uniform( "u_color", color );
+      _color_prog.uniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
+      GL::AttributeLocation vertice_loc = _color_prog.getAttributeLocation( "in_vertex" );
+
+      _vbo.bind();
+         _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
+            draw();
+         _vbo.disable( vertice_loc );
+      _vbo.unbind();
+
+    _color_prog.unbind();
+  }
+
+
+
+  template <typename T, int n>
+  void PSurfDefaultVisualizer<T,n>::replot( const DMatrix< DMatrix< Vector<T, n> > >& p, const DMatrix< Vector<T, 3> >& normals,
+                                            int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/, bool closed_u, bool closed_v ) {
+
+    PSurfVisualizer<T,n>::fillStandardVBO( _vbo, p );
+    PSurfVisualizer<T,n>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2(), _no_strips, _no_strip_indices, _strip_size );
+    PSurfVisualizer<T,n>::fillNMap( _nmap, normals, closed_u, closed_v );
+  }
+
+
 
   template <typename T, int n>
   inline
@@ -132,50 +155,17 @@ namespace GMlib {
 
     _ibo.bind();
     for( unsigned int i = 0; i < _no_strips; ++i )
-      _ibo.drawElements( GL_TRIANGLE_STRIP, _no_strip_indices, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid *>(i * _strip_size) );
+      _ibo.drawElements( _mode, _no_strip_indices, GL_UNSIGNED_INT, reinterpret_cast<const GLvoid *>(i * _strip_size) );
     _ibo.unbind();
   }
 
-  template <typename T, int n>
-  inline
-  void PSurfDefaultVisualizer<T,n>::replot(
-    const DMatrix< DMatrix< Vector<T, n> > >& p,
-    const DMatrix< Vector<T, 3> >& normals,
-    int /*m1*/, int /*m2*/, int /*d1*/, int /*d2*/,
-    bool closed_u, bool closed_v
-  ) {
 
-    PSurfVisualizer<T,n>::fillStandardVBO( _vbo, p );
-    PSurfVisualizer<T,n>::fillTriangleStripIBO( _ibo, p.getDim1(), p.getDim2(), _no_strips, _no_strip_indices, _strip_size );
-    PSurfVisualizer<T,n>::fillNMap( _nmap, normals, closed_u, closed_v );
-  }
-
-  template <typename T, int n>
-  inline
-  void PSurfDefaultVisualizer<T,n>::renderGeometry( const SceneObject* obj, const Renderer* renderer, const Color& color ) const {
-
-    _color_prog.bind(); {
-      _color_prog.uniform( "u_color", color );
-      _color_prog.uniform( "u_mvpmat", obj->getModelViewProjectionMatrix(renderer->getCamera()) );
-      GL::AttributeLocation vertice_loc = _color_prog.getAttributeLocation( "in_vertex" );
-
-      _vbo.bind();
-      _vbo.enable( vertice_loc, 3, GL_FLOAT, GL_FALSE, sizeof(GL::GLVertexTex2D), reinterpret_cast<const GLvoid *>(0x0) );
-
-      draw();
-
-      _vbo.disable( vertice_loc );
-      _vbo.unbind();
-
-    } _color_prog.unbind();
-  }
 
   template<typename T,int n>
   void PSurfDefaultVisualizer<T,n>::initShaderProgram() {
 
     const std::string prog_name    = "psurf_default_prog";
     if( _prog.acquire(prog_name) ) return;
-
 
 
     std::string vs_src =
@@ -269,6 +259,21 @@ namespace GMlib {
       std::cout << "Error: " << _prog.getLinkerLog() << std::endl;
     }
     assert(link_ok);
+  }
+
+
+  template <typename T, int n>
+  inline
+  void PSurfDefaultVisualizer<T,n>::_init() {
+
+      initShaderProgram();
+
+      _color_prog.acquire("color");
+      assert(_color_prog.isValid());
+
+      _vbo.create();
+      _ibo.create();
+      _nmap.create(GL_TEXTURE_2D);
   }
 
 } // END namespace GMlib

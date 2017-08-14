@@ -27,12 +27,14 @@
 namespace GMlib {
 
 
-  template <typename T>
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
+template <typename T>
   inline
   PApple2<T>::PApple2( T radius ) {
-
     init();
-
     _r = radius;
   }
 
@@ -40,113 +42,131 @@ namespace GMlib {
   template <typename T>
   inline
   PApple2<T>::PApple2( const PApple2<T>& copy ) : PSurf<T,3>( copy ) {
-
     init();
-
     _r = copy._r;
   }
-
 
 
   template <typename T>
   PApple2<T>::~PApple2() {}
 
 
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  inline
+  bool PApple2<T>::isClosedU() const {
+    return true;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
+
   template <typename T>
   void PApple2<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     this->_p.setDim( d1+1, d2+1 );
 
+    T cu = cos(u);
+    T su = sin(u);
+    T cv = cos(v);
+    T sv = sin(v);
 
-    this->_p[0][0][0] =	 2*_r*cos(u)*(1+cos(v))*sin(v);
-    this->_p[0][0][1] =	 2*_r*sin(u)*(1+cos(v))*sin(v);
-    this->_p[0][0][2] =	-2*_r*cos(v)*(1+cos(v));
-
+    this->_p[0][0][0] =	 2*_r*cu*(1+cv)*sv;
+    this->_p[0][0][1] =	 2*_r*su*(1+cv)*sv;
+    this->_p[0][0][2] =	-2*_r*cv*(1+cv);
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d1) //u
-      {
-        this->_p[1][0][0] = -2*_r*sin(u)*(1+cos(v))*sin(v);
-        this->_p[1][0][1] =  2*_r*cos(u)*(1+cos(v))*sin(v);
+      // To prevent singularities at top and bottom
+      if(GMutils::compValueF(sv,T(0))) {
+        if(GMutils::compValueF(cv,-T(1)))
+           cv += T(1e-4);
+        sv += T(1e-6);
+      }
+
+      if(d1) {                          //u
+        this->_p[1][0][0] = -2*_r*su*(1+cv)*sv;
+        this->_p[1][0][1] =  2*_r*cu*(1+cv)*sv;
         this->_p[1][0][2] =  T(0);
       }
-      if(d1>1)//uu
-      {
-        this->_p[2][0][0] =	-2*_r*cos(u)*(1+cos(v))*sin(v);
-        this->_p[2][0][1] =	-2*_r*sin(u)*(1+cos(v))*sin(v);
+      if(d1>1) {                        //uu
+        this->_p[2][0][0] =	-2*_r*cu*(1+cv)*sv;
+        this->_p[2][0][1] =	-2*_r*su*(1+cv)*sv;
         this->_p[2][0][2] =	 T(0);
       }
-      if(d2) //v
-      {
-        this->_p[0][1][0] =	 2*_r*cos(u)*(2*cos(v)*(cos(v)+1)-1);
-        this->_p[0][1][1] =	 2*_r*sin(u)*(2*cos(v)*(cos(v)+1)-1);
-        this->_p[0][1][2] =	 2*_r*sin(v)*(1+2*cos(v));
+      if(d2) {                          //v
+        this->_p[0][1][0] =	 2*_r*cu*(2*cv-1)*(cv+1);
+        this->_p[0][1][1] =	 2*_r*su*(2*cv-1)*(cv+1);
+        this->_p[0][1][2] =	 2*_r*sv*(1+2*cv);
       }
-      if(d2>1) //vv
-      {
-        this->_p[0][2][0] =	-2*_r*cos(u)*sin(v)*(1+4*cos(v));
-        this->_p[0][2][1] =	-2*_r*sin(u)*sin(v)*(1+4*cos(v));
-        this->_p[0][2][2] =	 2*_r*(cos(v)+2*(cos(v)*cos(v)-sin(v)*sin(v)));
+      if(d2>1) {                        //vv
+        this->_p[0][2][0] =	-2*_r*cu*sv*(1+4*cv);
+        this->_p[0][2][1] =	-2*_r*su*sv*(1+4*cv);
+        this->_p[0][2][2] =	 2*_r*(cv+2*(cv*cv-sv*sv));
       }
-      if(d1 && d2) //uv
-      {
-        this->_p[1][1][0] =	-2*_r*sin(u)*(2*cos(v)*(cos(v)+1)-1);
-        this->_p[1][1][1] =	 2*_r*cos(u)*(2*cos(v)*(cos(v)+1)-1);
+      if(d1 && d2) {                    //uv
+        this->_p[1][1][0] =	-2*_r*su*(2*cv*(cv+1)-1);
+        this->_p[1][1][1] =	 2*_r*cu*(2*cv*(cv+1)-1);
         this->_p[1][1][2] =	 T(0);
       }
-      if(d1>1 && d2)//uuv
-      {
-        this->_p[2][1][0] =	-2*_r*cos(u)*(2*cos(v)*(cos(v)+1)-1);
-        this->_p[2][1][1] =	-2*_r*sin(u)*(2*cos(v)*(cos(v)+1)-1);
+      if(d1>1 && d2) {                  //uuv
+        this->_p[2][1][0] =	-2*_r*cu*(2*cv*(cv+1)-1);
+        this->_p[2][1][1] =	-2*_r*su*(2*cv*(cv+1)-1);
         this->_p[2][1][2] =	 T(0);
       }
-      if(d1 && d2>1) //uvv
-      {
-        this->_p[1][2][0] =	 2*_r*sin(u)*sin(v)*(4*cos(v)+2);
-        this->_p[1][2][1] =	-2*_r*cos(u)*sin(v)*(4*cos(v)+2);
+      if(d1 && d2>1) {                  //uvv
+        this->_p[1][2][0] =	 2*_r*su*sv*(4*cv+2);
+        this->_p[1][2][1] =	-2*_r*cu*sv*(4*cv+2);
         this->_p[1][2][2] =	 T(0);
       }
-      if(d1>1 && d2>1) //uuvv
-      {
-        this->_p[2][2][0] =	 2*_r*cos(u)*sin(v)*(4*cos(v)+2);
-        this->_p[2][2][1] =	 2*_r*sin(u)*sin(v)*(4*cos(v)+2);
+      if(d1>1 && d2>1) {                //uuvv
+
+        this->_p[2][2][0] =	 2*_r*cu*sv*(4*cv+2);
+        this->_p[2][2][1] =	 2*_r*su*sv*(4*cv+2);
         this->_p[2][2][2] =	 T(0);
       }
     }
   }
 
 
-  template <typename T>
-  inline
-  T PApple2<T>::getEndPU() {
 
-    return T(0.5 * M_PI);
+  template <typename T>
+  T PApple2<T>::getStartPU() const {
+      return -T(M_PI);
   }
 
 
   template <typename T>
-  inline
-  T PApple2<T>::getEndPV() {
-
-    return T(M_PI);
+  T PApple2<T>::getEndPU() const {
+      return T(M_PI);
   }
 
 
   template <typename T>
-  inline
-  T PApple2<T>::getStartPU() {
-
-    return -T(0.5 * M_PI);
+  T PApple2<T>::getStartPV() const {
+      return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PApple2<T>::getStartPV() {
-
-    return -T(M_PI);
+  T PApple2<T>::getEndPV() const {
+      return T(M_PI);
   }
+
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
 
   template <typename T>
@@ -155,20 +175,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-
-  template <typename T>
-  inline
-  bool PApple2<T>::isClosedU() const {
-
-    return true;
-  }
-
-
-  template <typename T>
-  inline
-  bool PApple2<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

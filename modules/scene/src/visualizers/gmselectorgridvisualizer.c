@@ -36,6 +36,14 @@ namespace GMlib {
     _prog.acquire("color");
     _vbo.create();
     _ibo.create();
+    _color = GMcolor::lightGreen();
+  }
+
+
+  template <typename T>
+  inline
+  void SelectorGridVisualizer<T>::setColor( const Color& col ) {
+      _color = col;
   }
 
 
@@ -44,7 +52,7 @@ namespace GMlib {
 
     // Fill the vertice buffer
     DVector<GL::GLVertex> dp( _c.getDim() );
-    for( int i = 0; i < _c.getDim(); i++ ) {
+    for( int i = 0; i < dp.getDim(); i++ ) {
       dp[i].x = (*_c[i])(0);
       dp[i].y = (*_c[i])(1);
       dp[i].z = (*_c[i])(2);
@@ -65,7 +73,7 @@ namespace GMlib {
 
       _prog.uniform( "u_mvpmat", mvpmat );
 
-      _prog.uniform( "u_color", GMcolor::lightGreen() );
+      _prog.uniform( "u_color", _color) ;
       _prog.uniform( "u_selected", false );
 
       GL::AttributeLocation vert_loc = _prog.getAttributeLocation( "in_vertex" );
@@ -96,7 +104,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  void SelectorGridVisualizer<T>::setSelectors( DVector< Point<T,3> >& c, int tp) {
+  void SelectorGridVisualizer<T>::setSelectors( DVector< Point<T,3> >& c, int tp, bool cl) {
 
     storeSelectorValuePointers(c);
 
@@ -105,7 +113,7 @@ namespace GMlib {
 
     // Define grid lines
     switch(tp){
-      case 0: _makeLines();
+      case 0: _makeLines(cl);
               break;
       case 1: _makeTriangs();
               break;
@@ -114,7 +122,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  void SelectorGridVisualizer<T>::setSelectors( DVector< Vector<T,3> >& c, int tp) {
+  void SelectorGridVisualizer<T>::setSelectors( DVector< Vector<T,3> >& c, int tp, bool cl) {
 
     storeSelectorValuePointers(c);
 
@@ -123,7 +131,7 @@ namespace GMlib {
 
     // Define grid lines
     switch(tp){
-      case 0: _makeLines();
+      case 0: _makeLines(cl);
               break;
       case 1: _makeTriangs();
               break;
@@ -134,13 +142,19 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void SelectorGridVisualizer<T>::_makeLines()     // Fill IBO
+  void SelectorGridVisualizer<T>::_makeLines(bool cl)     // Fill IBO
   {
     // Create the indice buffer
-    DVector<GLushort> indices(_no_indices = 2*(_c.getDim()-1));
-    for(int i=0, j=0; i < _no_indices; i+=2, j++) {
+    int n = 2*(_c.getDim()-1);
+    _no_indices = n + (cl?2:0);
+    DVector<GLushort> indices(_no_indices);
+    for(int i=0, j=0; i < n; i+=2, j++) {
       indices[i]   = j;
       indices[i+1] = j + 1;
+    }
+    if(cl) {
+        indices[n]   = 0;
+        indices[n+1] = _c.getDim() - 1;
     }
 
     _ibo.bufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
@@ -168,54 +182,62 @@ namespace GMlib {
   }
 
   template <typename T>
-  void SelectorGridVisualizer<T>::_makeQuads(int m1, int m2) { // Fill IBO
+  void SelectorGridVisualizer<T>::_makeQuads(int m1, int m2, bool cu, bool cv) {
+      // Fill IBO
 
-    _no_indices = (m1 * (m2-1) + (m1-1) * m2) * 2;
-    DVector<GLushort> indices(_no_indices);     // Create the indice buffer
+      int n1 = m1 - (cu?0:1);
+      int n2 = m2 - (cv?0:1);
+      _no_indices = (m1 * n2 + n1 * m2) * 2;
+      DVector<GLushort> indices(_no_indices);     // Create the indice buffer
+      GLushort *iptr = indices.getPtr();
 
-
-    // "Lines" in i dir
-    GLushort *iptr = indices.getPtr();
-    for( int i = 0; i < m1; i++ ) {
-      for( int j = 0; j < m2-1; j++ ) {
-
-        *iptr++ = i * m2 + j;
-        *iptr++ = i * m2 + j + 1;
+      // "Lines" in v dir
+      for( int i = 0; i < m1; i++ ) {
+          for( int j = 0; j < m2-1; j++ ) {
+              *iptr++ = i * m2 + j;
+              *iptr++ = i * m2 + j + 1;
+          }
+          if(cv) {
+              *iptr++ = i * m2 + m2-1;
+              *iptr++ = i * m2;
+          }
       }
-    }
 
-    // "Lines" in j dir
-    for( int i = 0; i < m1-1; i++ ) {
+      // "Lines" in u dir
       for( int j = 0; j < m2; j++ ) {
-
-        *iptr++ = i * m2 + j;
-        *iptr++ = (i+1) * m2 + j;
+          for( int i = 0; i < m1-1; i++ ) {
+              *iptr++ = i * m2 + j;
+              *iptr++ = (i+1) * m2 + j;
+          }
+          if(cu) {
+              *iptr++ = (m1-1)*m2+j;
+              *iptr++ = j;
+          }
       }
-    }
 
-    _ibo.bufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
+      _ibo.bufferData( _no_indices * sizeof(GLushort), indices.getPtr(), GL_DYNAMIC_DRAW );
   }
 
   template <typename T>
-  void SelectorGridVisualizer<T>::setSelectors( DMatrix< Point<T,3> >& c ) {
+  void SelectorGridVisualizer<T>::setSelectors( DMatrix< Point<T,3> >& c, bool cu, bool cv ) {
 
     storeSelectorValuePointers(c);
 
     // Fill VBO
     _fillVBO();
 
-    _makeQuads(c.getDim1(), c.getDim2());
+    _makeQuads(c.getDim1(), c.getDim2(), cu, cv);
   }
 
   template <typename T>
-  void SelectorGridVisualizer<T>::setSelectors( DMatrix< Vector<T,3> >& c ) {
+  void SelectorGridVisualizer<T>::setSelectors( DMatrix< Vector<T,3> >& c, bool cu, bool cv ) {
 
     storeSelectorValuePointers(c);
 
     // Fill VBO
     _fillVBO();
 
-    _makeQuads(c.getDim1(), c.getDim2());
+    _makeQuads(c.getDim1(), c.getDim2(), cu, cv);
   }
 
   template <typename T>
@@ -255,9 +277,9 @@ namespace GMlib {
 
     // Order the selectors in a DVector structure
     _c.setDim( c.getDim1() * c.getDim2() );
-    for( int i = 0; i < c.getDim1(); i++ )
+    for( int k = 0, i = 0; i < c.getDim1(); i++ )
       for( int j = 0; j < c.getDim2(); j++ )
-        _c[i*c.getDim1()+j] = &c[i][j];
+        _c[k++] = &c[i][j];
   }
 
   template <typename T>
@@ -265,9 +287,9 @@ namespace GMlib {
 
     // Order the selectors in a DVector structure
     _c.setDim( c.getDim1() * c.getDim2() );
-    for( int i = 0; i < c.getDim1(); i++ )
+    for( int k = 0, i = 0; i < c.getDim1(); i++ )
       for( int j = 0; j < c.getDim2(); j++ )
-        _c[i*c.getDim1()+j] = reinterpret_cast<Point<T,3>*>(&c[i][j]);
+        _c[k++] = reinterpret_cast<Point<T,3>*>(&c[i][j]);
   }
 
 } // END namespace GMlib

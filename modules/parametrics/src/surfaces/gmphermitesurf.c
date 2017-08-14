@@ -31,11 +31,15 @@ namespace GMlib {
 
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PHermiteSurf<T>::PHermiteSurf(  const DMatrix<Vector<T,3> >& m )
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
 
     _m = m;
   }
@@ -46,7 +50,7 @@ namespace GMlib {
   PHermiteSurf<T>::PHermiteSurf( const DMatrix<Vector<T,3> >& c1, const DMatrix<Vector<T,3> >& c2,
                                  const DMatrix<Vector<T,3> >& c3, const DMatrix<Vector<T,3> >& c4 )
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
 
     _m.setDim(4,4);
 
@@ -61,15 +65,37 @@ namespace GMlib {
   inline
   PHermiteSurf<T>::PHermiteSurf( const PHermiteSurf<T>& copy ) : PSurf<T,3>( copy )
   {
+     init();
     _m = copy._m;
   }
 
 
   template <typename T>
-  inline
   PHermiteSurf<T>::~PHermiteSurf() {}
 
 
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+  template <typename T>
+  bool PHermiteSurf<T>::isClosedU() const {
+    return false; //_cu;
+  }
+
+
+  template <typename T>
+  bool PHermiteSurf<T>::isClosedV() const {
+    return false; //_cv;
+  }
+
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   inline
@@ -78,8 +104,8 @@ namespace GMlib {
     this->_p.setDim( d1+1, d2+1 );
 
     DMatrix<T> hu, hv;
-    EvaluatorStatic<T>::evaluateHp( hu, d1, u);
-    EvaluatorStatic<T>::evaluateHp( hv, d2, v);
+    EvaluatorStatic<T>::evaluateH3d( hu, d1, u);
+    EvaluatorStatic<T>::evaluateH3d( hv, d2, v);
 
     for( int i = 0; i < hu.getDim1(); i++ )
       for( int j = 0; j < hv.getDim1(); j++ )
@@ -89,51 +115,38 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PHermiteSurf<T>::getEndPU()
-  {
-    return T(1);
-  }
-
-
-  template <typename T>
-  inline
-  T PHermiteSurf<T>::getEndPV()
-  {
-    return T(1);
-  }
-
-
-
-  template <typename T>
-  inline
-  T PHermiteSurf<T>::getStartPU()
-  {
+  T PHermiteSurf<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PHermiteSurf<T>::getStartPV()
-  {
+  T PHermiteSurf<T>::getEndPU() const {
+    return T(1);
+  }
+
+
+  template <typename T>
+  T PHermiteSurf<T>::getStartPV() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  bool PHermiteSurf<T>::isClosedU() const
-  {
-    return false; //_cu;
+  T PHermiteSurf<T>::getEndPV() const {
+    return T(1);
   }
 
 
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
+
   template <typename T>
-  inline
-  bool PHermiteSurf<T>::isClosedV() const
-  {
-    return false; //_cv;
+  void PHermiteSurf<T>::init() {
+
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 

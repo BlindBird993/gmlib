@@ -1,4 +1,3 @@
-
 /**********************************************************************************
 **
 ** Copyright (C) 1994 Narvik University College
@@ -28,12 +27,15 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PKuenSurface<T>::PKuenSurface( T radius ) {
 
     init();
-
     _r = radius;
   }
 
@@ -43,7 +45,6 @@ namespace GMlib {
   PKuenSurface<T>::PKuenSurface( const PKuenSurface<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
-
     _r = copy._r;
   }
 
@@ -52,6 +53,29 @@ namespace GMlib {
   template <typename T>
   PKuenSurface<T>::~PKuenSurface() {}
 
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PKuenSurface<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PKuenSurface<T>::isClosedV() const {
+    return false;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PKuenSurface<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -326,37 +350,34 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  T PKuenSurface<T>::getEndPU() {
-
-    return T(4);
-  }
-
 
   template <typename T>
-  inline
-  T PKuenSurface<T>::getEndPV() {
-
-    return T(M_PI-0.05);
-  }
-
-
-  template <typename T>
-  inline
-  T PKuenSurface<T>::getStartPU() {
-
+  T PKuenSurface<T>::getStartPU() const {
     return -T(4);
   }
 
 
   template <typename T>
-  inline
-  T PKuenSurface<T>::getStartPV() {
+  T PKuenSurface<T>::getEndPU() const {
+    return T(4);
+  }
 
+
+  template <typename T>
+  T PKuenSurface<T>::getStartPV() const {
     return T(0.05);
   }
 
+
+  template <typename T>
+  T PKuenSurface<T>::getEndPV() const {
+    return T(M_PI-0.05);
+  }
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PKuenSurface<T>::init() {
@@ -364,20 +385,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-
-  template <typename T>
-  inline
-  bool PKuenSurface<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PKuenSurface<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

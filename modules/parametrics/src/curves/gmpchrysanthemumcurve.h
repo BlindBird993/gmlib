@@ -39,13 +39,21 @@ namespace GMlib {
     PChrysanthemumCurve( T radius = T(1) );
     PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy );
 
-  protected:
-    T             _r;
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
 
-    void          eval( T t, int d, bool l );
-    T             getEndP();
-    T             getStartP();
-    bool          isClosed() const;
+    // from PCurve
+    bool                isClosed() const override;
+
+  protected:
+    // Virtual function from PCurve that has to be implemented locally
+    void                eval(T t, int d, bool l) override;
+    T                   getStartP() const override;
+    T                   getEndP()   const override;
+
+    // Protected data for the curve
+    T             _r;
 
   }; // END class PChrysanthemumCurve
 

@@ -35,7 +35,7 @@ namespace GMlib {
 
 
 /*! \def  POS_TOLERANCE
- *  Tolerance of the position : 1e-6
+ *  Tolerance of the position
  */
 #ifndef POS_TOLERANCE
 #define POS_TOLERANCE     1e-6
@@ -43,7 +43,7 @@ namespace GMlib {
 
 
 /*! \def  ANGLE_TOLERANCE
- *  Tolerance of the angle : 1e-3
+ *  Tolerance of the angle
  */
 #ifndef ANGLE_TOLERANCE
 #define ANGLE_TOLERANCE		1e-3

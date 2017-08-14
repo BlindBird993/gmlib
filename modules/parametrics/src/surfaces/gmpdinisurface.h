@@ -39,19 +39,28 @@ namespace GMlib {
     PDiniSurface( const PDiniSurface<T>& copy );
     virtual ~PDiniSurface();
 
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
+
+    // from PSurf
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
 
   protected:
-    T                 _r1; // Radius
-    T                 _r2; // Distance between turns
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
 
-    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
-    T                 getEndPU();
-    T                 getEndPV();
-    T                 getStartPU();
-    T                 getStartPV();
-    virtual void      init();
-    bool              isClosedU() const;
-    bool              isClosedV() const;
+    // Help function to ensure consistent initialization
+    virtual void  init();
+
+    // Protected data for the surface
+    T             _r1; // Radius
+    T             _r2; // Distance between turns
 
   }; // END class PDiniSurface
 

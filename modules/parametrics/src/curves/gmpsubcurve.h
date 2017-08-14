@@ -43,27 +43,32 @@ namespace GMlib {
 
     virtual ~PSubCurve();
 
-    // virtual functions from PSurf
-    virtual bool            isClosed() const;
-    // Local functions
-    void                    togglePlot();
+    // Public local functions
+    void                    togglePlot() {} // Not implemented yet
+
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
+
+    // from PCurve
+    virtual bool        isClosed() const;
 
   protected:
+    // Virtual function from PCurve that has to be implemented locally
+    void                eval(T t, int d, bool l) override;
+    T                   getStartP() const override;
+    T                   getEndP()   const override;
 
-    PCurve<T,3>*          _c;
+    // Protected data for the curve
+    PCurve<T,3>*        _c;
     T                   _s;
     T                   _t;
     T                   _e;
     Vector<float,3>     _trans;
 
-    // virtual functions from PSurf
-    void                eval( T t, int d, bool l = false );
-    T                   getEndP();
-    T                   getStartP();
-
   private:
 
-    // Local help functions
+    // Private help functions
     void set(PCurve<T,3>* c, T s, T e, T t);
 
   }; // END class PSubCurve

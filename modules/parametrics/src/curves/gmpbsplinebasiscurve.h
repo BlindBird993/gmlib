@@ -16,25 +16,31 @@ namespace GMlib {
       GM_SCENEOBJECT(PBSplineBasisCurve)
   public:
     PBSplineBasisCurve( const DVector<T>& t );
-
     PBSplineBasisCurve( const PBSplineBasisCurve<T>& copy );
 
     virtual ~PBSplineBasisCurve();
 
-    bool            isClosed() const;
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
+
+    // from PCurve
+    bool            isClosed() const override;
 
   protected:
+    // Virtual function from PCurve that has to be implemented locally
+    void            eval( T t, int d = 0, bool l = false ) override;
+    T               getEndP()   const override;
+    T               getStartP() const override;
 
+    // Help function
+    T               W( T t, int d, int i );
+    T               delta( T s, int d, int i );
+    void            makeMat( DMatrix<T>& mat, int i, int d, T t, T scale );
+    int             findIndex( T t, int s );
+
+    // Protected data for the curve
     DVector<T>      _t;
-
-    void            eval( T t, int d = 0, bool l = false );
-    T               getEndP();
-    T               getStartP();
-
-    T               W(T t, int d, int i);
-    T               delta(T s, int d, int i);
-    void            makeMat(DMatrix<T>& mat, int i, int d, T t, T scale);
-    int             findIndex(T t, int s);
 
   }; // END class PBSplineBasisCurve
 

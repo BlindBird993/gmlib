@@ -21,8 +21,14 @@
 **********************************************************************************/
 
 
+
+
 namespace GMlib {
 
+
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
 
   template <typename T>
   PLine<T>::PLine( const Point<T,3>& p, const Vector<T,3>& v ) : _pt(p), _v(v) {
@@ -46,6 +52,23 @@ namespace GMlib {
   PLine<T>::~PLine() {}
 
 
+
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
+  template <typename T>
+  bool PLine<T>::isClosed() const {
+    return false;
+  }
+
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
   template <typename T>
   inline
   void PLine<T>::eval( T t, int d, bool /*l*/ ) {
@@ -55,7 +78,6 @@ namespace GMlib {
     this->_p[0] = _pt + t * _v;
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
-
       if( d )     this->_p[1] = _v;
       if( d > 1 ) this->_p[2] = Vector<T,3>(T(0));
       if( d > 2 ) this->_p[3] = Vector<T,3>(T(0));
@@ -68,26 +90,15 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PLine<T>::getEndP() {
-
-    return T(1);
-  }
-
-
-  template <typename T>
-  inline
-  T PLine<T>::getStartP() {
-
+  T PLine<T>::getStartP() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  bool PLine<T>::isClosed() const {
-
-    return false;
+  T PLine<T>::getEndP() const {
+    return T(1);
   }
+
 
 } // END namespace GMlib

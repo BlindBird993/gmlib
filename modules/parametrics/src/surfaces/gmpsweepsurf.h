@@ -42,28 +42,35 @@ namespace GMlib {
     PSweepSurf( const PSweepSurf<T>& su );
     virtual ~PSweepSurf();
 
-    bool          isClosedU() const;
-    bool          isClosedV() const;
-
-  protected:
-
-    void          eval(T u, T v, int d1, int d2, bool lu, bool lv );
-    T             getEndPU();
-    T             getEndPV();
-    T             getStartPU();
-    T             getStartPV();
-
-
-    PCurve<T,3>*    _profile;
-    PCurve<T,3>*    _spine;
-
-    Vector<T,3>   _spv;
-
-    bool          _RMF;
-    DVector<T>    _omega;
-
+    // Public local functions
     void          makeOmega(int n = 100, T omega_0 = T(0));
     T             getOmega(T t);
+
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU()  const override;
+    bool          isClosedV()  const override;
+
+  protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
+
+    // Help function to ensure consistent initialization
+    virtual void  init();
+
+    // Protected data for the surface
+    PCurve<T,3>*    _profile;
+    PCurve<T,3>*    _spine;
+    Vector<T,3>     _spv;
+    bool            _RMF;
+    DVector<T>      _omega;
 
   }; // END class PSweepSurf
 

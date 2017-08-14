@@ -28,12 +28,15 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PCrossCap<T>::PCrossCap( T radius ) {
 
     init();
-
     _r = radius;
   }
 
@@ -43,110 +46,138 @@ namespace GMlib {
   PCrossCap<T>::PCrossCap( const PCrossCap<T>& copy ) : PSurf<T,3>( copy ) {
 
     init();
-
     _r = copy._r;
   }
-
 
 
   template <typename T>
   PCrossCap<T>::~PCrossCap() {}
 
 
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PCrossCap<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PCrossCap<T>::isClosedV() const {
+    return false;
+  }
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
+
   template <typename T>
   void PCrossCap<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     this->_p.setDim( d1+1, d2+1 );
 
-    this->_p[0][0][0] =	_r*_r*cos(u)*sin(v)*sin(u);
-    this->_p[0][0][1] =	_r*_r*cos(u)*cos(u)*sin(2*v);
-    this->_p[0][0][2] =	_r*_r*cos(2*v)*cos(u)*cos(u);
+    T a = _r*_r*cos(u)*sin(u)*sin(v);
+    T b = _r*_r*sin(2*v)*cos(u)*cos(u);
+    T c = _r*_r*cos(2*v)*cos(u)*cos(u);
+
+    this->_p[0][0][0] =	a;
+    this->_p[0][0][1] =	b;
+    this->_p[0][0][2] =	c;
+
+    T d, e, f, g;
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
       if(d1) //u
       {
-        this->_p[1][0][0] =	-_r*_r*sin(u)*sin(u)*sin(v)+_r*_r*cos(u)*cos(u)*sin(v);
-        this->_p[1][0][1] =	-2.0*_r*_r*cos(u)*sin(2*v)*sin(u);
-        this->_p[1][0][2] =	-2.0*_r*_r*cos(u)*cos(2*v)*sin(u);
+        d = 2*_r*_r*sin(2*v)*cos(u)*sin(u);
+        e = 2*_r*_r*cos(2*v)*cos(u)*sin(u);
+        this->_p[1][0][0] =	-_r*_r*sin(u)*sin(u)*sin(v) + _r*_r*cos(u)*cos(u)*sin(v);
+        this->_p[1][0][1] =	-d;
+        this->_p[1][0][2] =	-e;
       }
       if(d1>1)//uu
       {
-        this->_p[2][0][0] =	 -4.0*_r*_r*cos(u)*sin(v)*sin(u);
-        this->_p[2][0][1] =	2.0*_r*_r*sin(u)*sin(u)*sin(2.0*v)-2.0*_r*_r*cos(u)*cos(u)*sin(2.0*v);
-        this->_p[2][0][2] =	2.0*_r*_r*cos(2.0*v)*sin(u)*sin(u)-2.0*_r*_r*cos(2.0*v)*cos(u)*cos(u);
+        f = 2*_r*_r*sin(2*v)*sin(u)*sin(u);
+        g = 2*_r*_r*cos(2*v)*sin(u)*sin(u);
+        this->_p[2][0][0] =	-4*a;
+        this->_p[2][0][1] =	 f - 2*b;
+        this->_p[2][0][2] =	 g - 2*c;
       }
       if(d2) //v
       {
-        this->_p[0][1][0] =	_r*_r*cos(u)*cos(v)*sin(u);
-        this->_p[0][1][1] =	2.0*_r*_r*cos(u)*cos(u)*cos(2*v);
-        this->_p[0][1][2] =	-2.0*_r*_r*cos(u)*cos(u)*sin(2*v);
+        this->_p[0][1][0] =	 _r*_r*cos(u)*sin(u)*cos(v);
+        this->_p[0][1][1] =	 2*c;
+        this->_p[0][1][2] =	-2*b;
       }
       if(d2>1) //vv
       {
-        this->_p[0][2][0] =	 -_r*_r*cos(u)*sin(v)*sin(u);
-        this->_p[0][2][1] =	 -4.0*_r*_r*cos(u)*cos(u)*sin(2.0*v);
-        this->_p[0][2][2] =	-4.0*_r*_r*cos(2.0*v)*cos(u)*cos(u);
+        this->_p[0][2][0] =	  -a;
+        this->_p[0][2][1] =	-4*b;
+        this->_p[0][2][2] =	-4*c;
       }
       if(d1 && d2) //uv
       {
-        this->_p[1][1][0] =	-_r*_r*sin(u)*sin(u)*cos(v)+_r*_r*cos(u)*cos(u)*cos(v);
-        this->_p[1][1][1] =	 -4.0*_r*_r*cos(2.0*v)*cos(u)*sin(u);
-        this->_p[1][1][2] =	 4.0*_r*_r*cos(u)*sin(2.0*v)*sin(u);
+        this->_p[1][1][0] =	 -_r*_r*sin(u)*sin(u)*cos(v) + _r*_r*cos(u)*cos(u)*cos(v);
+        this->_p[1][1][1] =	 -2*e;
+        this->_p[1][1][2] =	  2*d;
       }
       if(d1>1 && d2)//uuv
       {
-        this->_p[2][1][0] =	-4.0*_r*_r*cos(u)*cos(v)*sin(u);
-        this->_p[2][1][1] =	 4.0*_r*_r*cos(2.0*v)*sin(u)*sin(u)-4.0*_r*_r*cos(2.0*v)*cos(u)*cos(u);
-        this->_p[2][1][2] =	-4.0*_r*_r*sin(u)*sin(u)*sin(2.0*v)+4.0*_r*_r*cos(u)*cos(u)*sin(2.0*v);
+        this->_p[2][1][0] =	-4*this->_p[0][1][0];
+        this->_p[2][1][1] =	 2*g - 4*c;
+        this->_p[2][1][2] =	-2*f + 4*b;
       }
       if(d1 && d2>1) //uvv
       {
-        this->_p[1][2][0] =	 _r*_r*sin(u)*sin(u)*sin(v)-_r*_r*cos(u)*cos(u)*sin(v);
-        this->_p[1][2][1] =	  8.0*_r*_r*cos(u)*sin(2.0*v)*sin(u);
-        this->_p[1][2][2] =	 8.0*_r*_r*cos(2.0*v)*cos(u)*sin(u);
+        this->_p[1][2][0] =	 -this->_p[1][0][0];
+        this->_p[1][2][1] =	 4*d;
+        this->_p[1][2][2] =	 4*e;
       }
       if(d1>1 && d2>1) //uuvv
       {
-        this->_p[2][2][0] =	 4.0*_r*_r*cos(u)*sin(v)*sin(u);
-        this->_p[2][2][1] =	 -8.0*_r*_r*sin(u)*sin(u)*sin(2.0*v)+8.0*_r*_r*cos(u)*cos(u)*sin(2.0*v);
-        this->_p[2][2][2] =	 -8.0*_r*_r*cos(2.0*v)*sin(u)*sin(u)+8.0*_r*_r*cos(2.0*v)*cos(u)*cos(u);
+        this->_p[2][2][0] =	 4*a;
+        this->_p[2][2][1] =	-4*f + 8*b;
+        this->_p[2][2][2] =	-4*g + 8*c;
       }
     }
   }
 
 
-  template <typename T>
-  inline
-  T PCrossCap<T>::getEndPU() {
-
-    return T(/*2 */ M_PI);
-  }
-
 
   template <typename T>
-  inline
-  T PCrossCap<T>::getEndPV() {
-
-    return T(/*2 */ M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PCrossCap<T>::getStartPU() {
-
+  T PCrossCap<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PCrossCap<T>::getStartPV() {
+  T PCrossCap<T>::getEndPU() const {
+    return T(/*2 */ M_PI);
+  }
 
+
+  template <typename T>
+  T PCrossCap<T>::getStartPV() const {
     return T(0);
   }
 
+
+  template <typename T>
+  T PCrossCap<T>::getEndPV() const {
+    return T(/*2 */ M_PI);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PCrossCap<T>::init() {
@@ -154,20 +185,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-
-  template <typename T>
-  inline
-  bool PCrossCap<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PCrossCap<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

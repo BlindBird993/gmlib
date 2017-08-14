@@ -39,7 +39,7 @@ template <typename T>
 inline
 PHermiteCurveSurf<T>::PHermiteCurveSurf( PCurve<T,3>* c1, PCurve<T,3>* c2, PCurve<T,3>* c3, PCurve<T,3>* c4, bool swap_par)
 {
-  this->_dm = GM_DERIVATION_EXPLICIT;
+  init();
 
   _cu.setSize(4);
   _cu[0] = c1;
@@ -47,8 +47,6 @@ PHermiteCurveSurf<T>::PHermiteCurveSurf( PCurve<T,3>* c1, PCurve<T,3>* c2, PCurv
   _cu[2] = c3;
   _cu[3] = c4;
   _swap_par = swap_par;
-
-  _H  = &HCu;
 }
 
 
@@ -56,12 +54,10 @@ template <typename T>
 inline
 PHermiteCurveSurf<T>::PHermiteCurveSurf( Array<PCurve<T,3>*> cu, bool swap_par)
 {
-  this->_dm = GM_DERIVATION_EXPLICIT;
+    init();
 
   _cu = cu;
   _swap_par = swap_par;
-
-  _H  = &HCu;
 }
 
 
@@ -69,6 +65,8 @@ template <typename T>
 inline
 PHermiteCurveSurf<T>::PHermiteCurveSurf( const PHermiteCurveSurf<T>& copy ) : PSurf<T,3>( copy )
 {
+    init();
+
   _cu = copy._cu;
   _swap_par = copy._swap_par;
 }
@@ -79,33 +77,9 @@ PHermiteCurveSurf<T>::~PHermiteCurveSurf() {}
 
 
 
-template <typename T>
-void PHermiteCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ )
-{
-  if(_swap_par)
-  {
-    std::swap(u,v);
-    std::swap(d1,d2);
-  }
-
-  DMatrix<Vector<T,3> > c(_cu.getSize(),d2+1);
-
-  for(int i=0; i< _cu.getSize(); i++)
-  {
-    c[i] = _cu[i]->evaluateParent(v,d2);
-
-//    cout << "c["<< i << "]=" << c[i] << endl;
-  }
-
-  DMatrix< T > hp; // Storing the Hermite Polynomials
-  EvaluatorStatic<T>::evaluateHp( hp, d1, u);
-
-  DMatrix< Vector<T,3> >   p = hp * c;
-
-  if(_swap_par) this->_p = p.transpose();
-  else          this->_p = p;
-}
-
+//*********************************
+//**   Public local functons     **
+//*********************************
 
 
 template <typename T>
@@ -165,56 +139,98 @@ void PHermiteCurveSurf<T>::makeSample(DMatrix<DMatrix<Vector<T,3> > >& m, int m1
 
 
 
+//**************************************************
+// Overrided (public) virtual functons from PSurf **
+//**************************************************
+
+
 template <typename T>
-inline
-T PHermiteCurveSurf<T>::getStartPU()
+bool PHermiteCurveSurf<T>::isClosedU() const {
+  return  false;
+}
+
+
+template <typename T>
+bool PHermiteCurveSurf<T>::isClosedV() const {
+  return false;
+}
+
+
+
+
+//*****************************************************
+// Overrided (protected) virtual functons from PSurf **
+//*****************************************************
+
+template <typename T>
+void PHermiteCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ )
 {
+  if(_swap_par)
+  {
+    std::swap(u,v);
+    std::swap(d1,d2);
+  }
+
+  DMatrix<Vector<T,3> > c(_cu.getSize(),d2+1);
+
+  for(int i=0; i< _cu.getSize(); i++)
+  {
+    c[i] = _cu[i]->evaluateParent(v,d2);
+
+//    cout << "c["<< i << "]=" << c[i] << endl;
+  }
+
+  DMatrix< T > hp; // Storing the Hermite Polynomials
+  EvaluatorStatic<T>::evaluateH3d( hp, d1, u);
+
+  DMatrix< Vector<T,3> >   p = hp * c;
+
+  if(_swap_par) this->_p = p.transpose();
+  else          this->_p = p;
+}
+
+
+
+template <typename T>
+T PHermiteCurveSurf<T>::getStartPU() const {
   if(_swap_par)   return _cu[0]->getParStart();
   else            return T(0);
 }
 
 
 template <typename T>
-inline
-T PHermiteCurveSurf<T>::getStartPV()
-{
-  if(_swap_par)   return T(0);
-  else            return _cu[0]->getParStart();
-}
-
-
-template <typename T>
-inline
-T PHermiteCurveSurf<T>::getEndPU()
-{
+T PHermiteCurveSurf<T>::getEndPU() const {
   if(_swap_par)   return _cu[0]->getParEnd();
   else            return T(1);
 }
 
 
 template <typename T>
-inline
-T PHermiteCurveSurf<T>::getEndPV()
-{
+T PHermiteCurveSurf<T>::getStartPV() const {
+  if(_swap_par)   return T(0);
+  else            return _cu[0]->getParStart();
+}
+
+
+template <typename T>
+T PHermiteCurveSurf<T>::getEndPV() const {
   if(_swap_par)   return T(1);
   else            return _cu[0]->getParEnd();
 }
 
 
-template <typename T>
-inline
-bool PHermiteCurveSurf<T>::isClosedU() const
-{
-  return  false;
-}
-
+//*****************************************
+//     Local (protected) functons        **
+//*****************************************
 
 template <typename T>
-inline
-bool PHermiteCurveSurf<T>::isClosedV() const
-{
-  return false;
+void PHermiteCurveSurf<T>::init() {
+
+  this->_dm = GM_DERIVATION_EXPLICIT;
+
+  _H  = &HCu;
 }
+
 
 } // END namespace GMlib
 

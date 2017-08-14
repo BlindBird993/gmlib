@@ -41,16 +41,24 @@ namespace GMlib {
     PBoysSurface( const PBoysSurface<T>& copy );
     virtual ~PBoysSurface();
 
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
 
   protected:
-    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
-    T                 getEndPU();
-    T                 getEndPV();
-    T                 getStartPU();
-    T                 getStartPV();
-    virtual void      init();
-    bool              isClosedU() const;
-    bool              isClosedV() const;
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
+
+    // Help function to ensure consistent initialization
+    virtual void  init();
 
   }; // END class PBoysSurface
 

@@ -23,16 +23,19 @@
 
 
 
-
 namespace GMlib {
 
+
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
 
   template <typename T>
   inline
   PRoseCurve<T>::PRoseCurve( T radius ) {
 
-    this->_dm = GM_DERIVATION_EXPLICIT;
     _r = radius;
+//    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
@@ -45,56 +48,56 @@ namespace GMlib {
   PRoseCurve<T>::~PRoseCurve() {}
 
 
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
+
   template <typename T>
-  inline
+  bool PRoseCurve<T>::isClosed() const {
+    return true;
+  }
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
+  template <typename T>
   void PRoseCurve<T>::eval( T t, int d, bool /*l*/ ) {
 
-    this->_p.setDim( d + 1 );
+      this->_p.setDim(d + 1);
 
-    this->_p[0][0] = _r * T( cos( 1.75 * t) * cos(t) );
-    this->_p[0][1] = _r * T( sin( t )*cos( 1.75 * t ) );
-    this->_p[0][2] = T(0);
+      this->_p[0][0] = _r * T(cos(t)*cos(1.75*t));
+      this->_p[0][1] = _r * T(sin(t)*cos(1.75*t));
+      this->_p[0][2] = T(0);
 
-    if( this->_dm == GM_DERIVATION_EXPLICIT ) {
-
-      if(d > 0) {
-
-        this->_p[1][0] = _r * T( -1.75 * sin( 1.75 * t ) * cos(t) - sin(t) * cos( 1.75 * t ) );
-        this->_p[1][1] = _r * T( -1.75 * sin(t) * sin( 1.75 * t ) + cos( 1.75 * t ) * cos(t) );
-        this->_p[1][2] = T(0);
+      if( this->_dm == GM_DERIVATION_EXPLICIT ) {
+          if(d > 0) {
+              this->_p[1][0] = _r * T(-1.75*cos(t) * sin(1.75*t) - sin(t)*cos(1.75*t));
+              this->_p[1][1] = _r * T(-1.75*sin(t) * sin(1.75*t) + cos(t)*cos(1.75*t));
+              this->_p[1][2] = T(0);
+              if(d > 1) {
+                  this->_p[2][0]= _r * T( 3.5*sin(t)*sin(1.75*t) - 4.0625*cos(t)*cos(1.75*t));
+                  this->_p[2][1]= _r * T(-3.5*cos(t)*sin(1.75*t) - 4.0625*sin(t)*cos(1.75*t));
+                  this->_p[2][2]= T(0);
+              }
+          }
       }
-
-      if(d > 1) {
-
-        this->_p[2][0]= _r * T( 3.5 * sin(t) * sin( 1.75 * t ) - 4.0625 * cos( 1.75 * t ) * cos(t) );
-        this->_p[2][1]= _r * T( -3.5 * sin( 1.75 * t ) * cos(t) - 4.0625 * sin(t) * cos( 1.75 * t ) );
-        this->_p[2][2]= T(0);
-      }
-    }
   }
 
 
   template <typename T>
-  inline
-  T PRoseCurve<T>::getEndP() {
-
-    return T( 8 * M_PI );
-  }
-
-
-  template <typename T>
-  inline
-  T PRoseCurve<T>::getStartP() {
-
+  T PRoseCurve<T>::getStartP() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  bool PRoseCurve<T>::isClosed() const {
-
-    return true;
+  T PRoseCurve<T>::getEndP() const {
+    return T( 8 * M_PI );
   }
+
+
 }
 

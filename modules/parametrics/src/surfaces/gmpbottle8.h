@@ -30,7 +30,6 @@
 #include "../gmpsurf.h"
 
 
-
 namespace GMlib {
 
   template <typename T>
@@ -41,18 +40,27 @@ namespace GMlib {
     PBottle8( const PBottle8<T>& copy );
     virtual ~PBottle8();
 
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU() const override;
+    bool          isClosedV() const override;
 
   protected:
-    T                 _r;
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
 
-    void              eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true );
-    T                 getEndPU();
-    T                 getEndPV();
-    T                 getStartPU();
-    T                 getStartPV();
+    // Help function to ensure consistent initialization
     virtual void      init();
-    bool              isClosedU() const;
-    bool              isClosedV() const;
+
+    // Protected data for the surface
+    T                 _r;
 
   }; // END class PBottle8
 

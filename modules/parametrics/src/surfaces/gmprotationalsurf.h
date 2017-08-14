@@ -40,23 +40,35 @@ namespace GMlib {
   class PRotationalSurf : public PSurf<T,3> {
     GM_SCENEOBJECT(PRotationalSurf)
   public:
-    PRotationalSurf( PCurve<T,3>* cu, T start_par, T end_par );
+    PRotationalSurf( PCurve<T,3>* cu, T start_par = T(0), T end_par = T(M_2PI) );
     PRotationalSurf( const PRotationalSurf<T>& su );
     virtual ~PRotationalSurf();
 
-    bool          isClosedU() const;
-    bool          isClosedV() const;
+    // Public local functions
+    T             getRadius() const;
+    void          setRadius( T radius );
+
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU()  const override;
+    bool          isClosedV()  const override;
 
   protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
 
-    void          eval(T u, T v, int d1, int d2, bool lu, bool lv );
-    T             getEndPU();
-    T             getEndPV();
-    T             getStartPU();
-    T             getStartPV();
+    // Help function to ensure consistent initialization
+    virtual void  init();
 
-
-    PCurve<T,3>*    _cu;
+    // Protected data for the surface
+    PCurve<T,3>*  _cu;
     T             _start_par;
     T             _end_par;
 

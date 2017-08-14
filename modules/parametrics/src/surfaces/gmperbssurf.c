@@ -398,8 +398,8 @@ namespace GMlib {
     _closed_u = copy._closed_u;
     _closed_v = copy._closed_v;
 
-    _Bu = copy._Bu;
-    _Bv = copy._Bv;
+    _ru = copy._ru;
+    _rv = copy._rv;
     _Bc = copy._Bc;
 
     _c0 = copy._c0;
@@ -480,56 +480,198 @@ namespace GMlib {
   }
 
 
+//  template <typename T>
+//  inline
+//  void PERBSSurf<T>::multEval(const DMatrix<T>& bu, const DMatrix<T>& bv, const DVector<int>& ii, const DVector<int>& ij, int du, int dv) {
+
+//      DMatrix<Vector<T,3>> c(_ku, dv+1);
+
+//      // We do these two operations manually here!
+//      //    bv.transpose();
+//      //    this->_p = bu * (c^bv);
+
+//      //    c= _c^bvT
+//      for(int i=0; i< _ku; i++)
+//          for(int j=0; j<=dv; j++) {
+//              c[i][j] = _c[ii(i)][ij(0)]*bv(j)(0);
+//              for(int k=1; k<_kv; k++)
+//                  c[i][j] += _c[ii(i)][ij(k)]*bv(j)(k);
+//          }
+//      //    _p = bu * c
+//      for(int i=0; i<=dv; i++)
+//          for(int j=0; j<=du; j++) {
+//              this->_p[i][j] = bu(i)(0)*c[0][j];
+//              for(int k=1; k<_ku; k++)
+//                  this->_p[i][j] += bu(i)(k)*c[k][j];
+//          }
+
+//      // Get result of inner loop for second patch in v
+//      DMatrix< Vector<T,3> > s1 = getC( u, v, uk, vk+1, d1, d2 );
+
+//      // Evaluate ERBS-basis in v direction
+//      DVector<T> B;
+//      getB( B, _v, vk, v, d2 );
+
+//      // Compute "Pascals triangle"-numbers and correct patch matrix
+//      DVector<T> a( B.getDim() );
+//      s0 -= s1;
+//      s0.transpose(); s1.transpose();
+//      for( int i = 0; i < B.getDim(); i++ ) {
+
+//        a[i] = 1;
+//        for( int j = i-1; j > 0; j-- )
+//          a[j] += a[j-1];                           // Compute "Pascals triangle"-numbers
+
+//        for( int j = 0; j <= i; j++ )
+//          s1[i] += (a[j]*B[j]) * s0[i-j];       // "column += scalar x column"
+//      }
+//      s1.transpose();
+
+//      this->_p = s1;
+//  }
+
+
+
   template <typename T>
   inline
   void PERBSSurf<T>::eval( T u, T v, int d1, int d2, bool lu, bool lv ) {
 
-    // Find Knot Indices u_k and v_k
-    int uk, vk;
-    for( uk = 1; uk < _u.getDim()-2; ++uk ) if( u < _u[uk+1] ) break;
-    for( vk = 1; vk < _v.getDim()-2; ++vk ) if( v < _v[vk+1] ) break;
 
-    // If right-evaluation, find first knot
-    if(!lu) while( std::abs( _u[uk] - _u[uk-1] ) < 1e-5 ) --uk;
-    if(!lv) while( std::abs( _v[vk] - _v[vk-1] ) < 1e-5 ) --vk;
+      if(this->_resample) {
+          int i = this->_ind[0];
+          int j = this->_ind[1];
 
 
-    // Get result of inner loop for first patch in v
-    DMatrix< Vector<T,3> > s0 = getC( u, v, uk, vk, d1, d2 );
+          // Find Knot Indices u_k and v_k
+          int uk = _ru[i].ind;
+          int vk = _rv[j].ind;
 
-    // If placed on a knot, return only first patch result
-    if( std::abs(v - _v[vk]) < 1e-5 ) {
-      this->_p = s0;
-//      std::cout << "_p[0][0]: " << this->_p[0][0] << "  (knot)" << std::endl;
-      return;
-    }
-    // Blend Patches
-    else {
+          // Get result of inner loop for first patch in v
+          DMatrix< Vector<T,3> > s0 = getC( u, v, uk, vk, d1, d2 );
 
-      // Get result of inner loop for second patch in v
-      DMatrix< Vector<T,3> > s1 = getC( u, v, uk, vk+1, d1, d2 );
+          // If placed on a knot, return only first patch result
+          if( std::abs(v - _v[vk]) < 1e-5 ) {
+              this->_p = s0;
+              //      std::cout << "_p[0][0]: " << this->_p[0][0] << "  (knot)" << std::endl;
+              return;
+          }
+          else {    // Blend Patches
 
-      // Evaluate ERBS-basis in v direction
-      DVector<T> B;
-      getB( B, _v, vk, v, d2 );
+              // Get result of inner loop for second patch in v
+              DMatrix< Vector<T,3> > s1 = getC( u, v, uk, vk+1, d1, d2 );
 
-      // Compute "Pascals triangle"-numbers and correct patch matrix
-      DVector<T> a( B.getDim() );
-      s0 -= s1;
-      s0.transpose(); s1.transpose();
-      for( int i = 0; i < B.getDim(); i++ ) {
+              // Evaluate ERBS-basis in v direction
+              DVector<T>& B = _rv[j].m;
 
-        a[i] = 1;
-        for( int j = i-1; j > 0; j-- )
-          a[j] += a[j-1];                           // Compute "Pascals triangle"-numbers
+              // Compute "Pascals triangle"-numbers and correct patch matrix
+              DVector<T> a( B.getDim() );
+              s0 -= s1;
+              s0.transpose(); s1.transpose();
+              for( int i = 0; i <= d2; i++ ) {
 
-        for( int j = 0; j <= i; j++ )
-          s1[i] += (a[j]*B[j]) * s0[i-j];       // "column += scalar x column"
+                  a[i] = 1;
+                  for( int j = i-1; j > 0; j-- )
+                      a[j] += a[j-1];                           // Compute "Pascals triangle"-numbers
+
+                  for( int j = 0; j <= i; j++ )
+                      s1[i] += (a[j]*B[j]) * s0[i-j];       // "column += scalar x column"
+              }
+              s1.transpose();
+
+              this->_p = s1;
+              //      std::cout << "_p[0][0]: " << this->_p[0][0] << std::endl;
+          }
       }
-      s1.transpose();
 
-      this->_p = s1;
-//      std::cout << "_p[0][0]: " << this->_p[0][0] << std::endl;
+
+
+//    // Find Knot Indices u_k and v_k
+//    int uk, vk;
+//    for( uk = 1; uk < _u.getDim()-2; ++uk ) if( u < _u[uk+1] ) break;
+//    for( vk = 1; vk < _v.getDim()-2; ++vk ) if( v < _v[vk+1] ) break;
+
+//    // If right-evaluation, find first knot
+//    if(!lu) while( std::abs( _u[uk] - _u[uk-1] ) < 1e-5 ) --uk;
+//    if(!lv) while( std::abs( _v[vk] - _v[vk-1] ) < 1e-5 ) --vk;
+
+//    // Get result of inner loop for first patch in v
+//    DMatrix< Vector<T,3> > s0 = getC( u, v, uk, vk, d1, d2 );
+
+//    // If placed on a knot, return only first patch result
+//    if( std::abs(v - _v[vk]) < 1e-5 ) {
+//      this->_p = s0;
+////      std::cout << "_p[0][0]: " << this->_p[0][0] << "  (knot)" << std::endl;
+//      return;
+//    }
+//    else {    // Blend Patches
+
+//      // Get result of inner loop for second patch in v
+//      DMatrix< Vector<T,3> > s1 = getC( u, v, uk, vk+1, d1, d2 );
+
+//      // Evaluate ERBS-basis in v direction
+//      DVector<T> B;
+//      getB( B, _v, vk, v, d2 );
+
+//      // Compute "Pascals triangle"-numbers and correct patch matrix
+//      DVector<T> a( B.getDim() );
+//      s0 -= s1;
+//      s0.transpose(); s1.transpose();
+//      for( int i = 0; i < B.getDim(); i++ ) {
+
+//        a[i] = 1;
+//        for( int j = i-1; j > 0; j-- )
+//          a[j] += a[j-1];                           // Compute "Pascals triangle"-numbers
+
+//        for( int j = 0; j <= i; j++ )
+//          s1[i] += (a[j]*B[j]) * s0[i-j];       // "column += scalar x column"
+//      }
+//      s1.transpose();
+
+//      this->_p = s1;
+////      std::cout << "_p[0][0]: " << this->_p[0][0] << std::endl;
+//    }
+
+  }
+
+
+
+  //*****************************************
+  // Overrided virtual functons from PSurf **
+  //*****************************************
+
+  template <typename T>
+  void  PERBSSurf<T>::preSample( int dir, int m ) {
+      if( dir==1 )
+          preSample( _ru, _u, m, _u[1], _u[_u.getDim()-2] );
+      if( dir==2 )
+          preSample( _rv, _v, m, _v[1], _v[_v.getDim()-2] );
+  }
+
+
+
+  //*****************************
+  // Localfunctons             **
+  //*****************************
+
+  template <typename T>
+  inline
+  void PERBSSurf<T>::preSample( DVector< PreVec > & p, const DVector<T>& t, int m, T start, T end ) {
+
+    // compute dt (step in parameter)
+    const T dt = ( end - start ) / T(m-1);
+
+    // Set the dimension of the Bernstein-Hermite Polynomial DVector
+    p.setDim(m);
+
+    // Compute the Bernstein-Hermite Polynomiale, for the B-spline Surface
+    for( int j = 0, i=1; j < m; j++ ) {
+        T s = start+dt*j;
+
+        for(; i < t.getDim()-2; ++i ) if( s < t(i+1) ) break;
+        if( i== t.getDim()-2) while( std::abs( t(i) - t(i-1) ) < 1e-5 ) --i;
+
+        p[j].ind = i;
+        getB( p[j].m, t, i, start+dt*j, 2 );
     }
   }
 
@@ -565,7 +707,7 @@ namespace GMlib {
       DMatrix< Vector<T,3> > s1 = getCPre( u, v, uk, vk+1, d1, d2, iu, iv );
 
       // Evaluate ERBS-basis in v direction
-      const DVector<T> &B = _Bv[iu][iv];
+      const DVector<T> &B = _rv[iu][iv];
 
       // Compute "Pascals triangle"-numbers and correct patch matrix
       DVector<T> a( B.getDim() );
@@ -720,47 +862,43 @@ namespace GMlib {
   inline
   DMatrix< Vector<T,3> > PERBSSurf<T>::getC( T u, T v, int uk, int vk, T du, T dv ) {
 
-    // Init Indexes and get local u/v values
-    const int cu = uk-1;
-    const int cv = vk-1;
+      if(this->_resample) {
+          // Init Indexes and get local u/v values
+          const int cu = uk-1;
+          const int cv = vk-1;
 
-    // Evaluate First local patch
-    DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>( du, dv ) );
+          // Evaluate First local patch
+          DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>( du, dv ) );
 
-    // If on a interpolation point return only first patch evaluation
-    if( std::abs(u - _u[uk]) < 1e-5 )
-      return c0;
+          // If on a interpolation point return only first patch evaluation
+          if( std::abs(u - _u[uk]) < 1e-5 )
+              return c0;
 
-    // Select next local patch in u direction
-    uk++;
+          // Select next local patch in u direction
 
-    // Init Indexes and get local u/v values
-    const int cu2 = uk-1;
-    const int cv2 = vk-1;
+          // Evaluate Second local patch
+          DMatrix< Vector<T,3> > c1 = _c[cu+1][cv]->evaluateParent( mapToLocal(u,v,uk+1,vk), Point<T,2>( du, dv) );
 
-    // Evaluate Second local patch
-    DMatrix< Vector<T,3> > c1 = _c[cu2][cv2]->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>( du, dv) );
+          DVector<T> a(du+1);
 
-    DVector<T> a(du+1);
+          // Evaluate ERBS-basis in u direction
+          DVector<T>& B = _ru[uk].m;
 
+          // Compute "Pascals triangle"-numbers and correct patch matrix
+          c0 -= c1;
+          for( int i = 0; i < B.getDim(); i++ ) {
 
-      // Evaluate ERBS-basis in u direction
-    DVector<T> B;
-    getB( B, _u, uk-1, u, du );
+              a[i] = 1;
+              for( int j = i-1; j > 0; j-- )
+                  a[j] += a[j-1];
 
-
-      // Compute "Pascals triangle"-numbers and correct patch matrix
-    c0 -= c1;
-    for( int i = 0; i < B.getDim(); i++ ) {
-
-      a[i] = 1;
-      for( int j = i-1; j > 0; j-- )
-        a[j] += a[j-1];
-
-      for( int j = 0; j <= i; j++ )
-        c1[i] += (a[j] * B[j]) * c0[i-j];
-    }
-    return c1 ;
+              for( int j = 0; j <= i; j++ )
+                  c1[i] += (a[j] * B[j]) * c0[i-j];
+          }
+          return c1 ;
+      }
+      else
+      return DMatrix< Vector<T,3> >();
   }
 
   template <typename T>
@@ -828,7 +966,7 @@ namespace GMlib {
     DVector<T> a(du+1);
 
       // Evaluate ERBS-basis in u direction
-    const DVector<T> &B = _Bu[iu][iv];
+    const DVector<T> &B = _ru[iu][iv];
 
       // Compute "Pascals triangle"-numbers and correct patch matrix
     c0 -= c1;
@@ -846,17 +984,13 @@ namespace GMlib {
   }
 
   template <typename T>
-  inline
-  T PERBSSurf<T>::getEndPU() {
-
-    return _u[_u.getDim()-2];
+  T PERBSSurf<T>::getEndPU() const {
+    return _u(_u.getDim()-2);
   }
 
   template <typename T>
-  inline
-  T PERBSSurf<T>::getEndPV() {
-
-    return _v[_v.getDim()-2];
+  T PERBSSurf<T>::getEndPV() const {
+    return _v(_v.getDim()-2);
   }
 
   /*! DVector<T>& PERBSSurf<T>::getKnotsU()
@@ -926,17 +1060,13 @@ namespace GMlib {
   }
 
   template <typename T>
-  inline
-  T PERBSSurf<T>::getStartPU() {
-
-    return _u[1];
+  T PERBSSurf<T>::getStartPU() const {
+    return _u(1);
   }
 
   template <typename T>
-  inline
-  T PERBSSurf<T>::getStartPV() {
-
-    return _v[1];
+  T PERBSSurf<T>::getStartPV() const {
+    return _v(1);
   }
 
   /*! void PERBSSurf<T>::hideLocalPatches()
@@ -1044,67 +1174,67 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  void PERBSSurf<T>::preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v ) {
+//  template <typename T>
+//  inline
+//  void PERBSSurf<T>::preSample( int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v ) {
 
-    // break out of the preSample function if no preevalution is to be used
-    switch( _resamp_mode ) {
-    case GM_RESAMPLE_PREEVAL: break;
-    case GM_RESAMPLE_INLINE:
-    default:
-      return;
-    }
+//    // break out of the preSample function if no preevalution is to be used
+//    switch( _resamp_mode ) {
+//    case GM_RESAMPLE_PREEVAL: break;
+//    case GM_RESAMPLE_INLINE:
+//    default:
+//      return;
+//    }
 
-    // break out and return if preevaluation isn't necessary.
-    if( !_pre_eval && m1 == _uk.getDim1() && m2 == _uk.getDim2() )
-      return;
+//    // break out and return if preevaluation isn't necessary.
+//    if( !_pre_eval && m1 == _uk.getDim1() && m2 == _uk.getDim2() )
+//      return;
 
-    int uk, vk;
-    uk = vk = 1;
+//    int uk, vk;
+//    uk = vk = 1;
 
-    // compute du and dv (step in parametric u and v direction)
-    const T du = ( e_u - s_u ) / T(m1-1);
-    const T dv = ( e_v - s_v ) / T(m2-1);
+//    // compute du and dv (step in parametric u and v direction)
+//    const T du = ( e_u - s_u ) / T(m1-1);
+//    const T dv = ( e_v - s_v ) / T(m2-1);
 
-    // Set dimension for B and index value tables.
-    _Bu.setDim( m1, m2 );
-    _Bv.setDim( m1, m2 );
-    _uk.setDim( m1, m2 );
-    _vk.setDim( m1, m2 );
+//    // Set dimension for B and index value tables.
+//    _Bu.setDim( m1, m2 );
+//    _Bv.setDim( m1, m2 );
+//    _uk.setDim( m1, m2 );
+//    _vk.setDim( m1, m2 );
 
-    // Outer loop: u dir
-    for( int i = 0; i < m1; i++ ) {
+//    // Outer loop: u dir
+//    for( int i = 0; i < m1; i++ ) {
 
-      // Find u
-      const T u = getStartPU() + T(i) * du;
+//      // Find u
+//      const T u = getStartPU() + T(i) * du;
 
-      // Inner loop: v dir
-      for( int j = 0; j < m2; j++ ) {
+//      // Inner loop: v dir
+//      for( int j = 0; j < m2; j++ ) {
 
-        // Find v
-        const T v = getStartPV() + T(j) * dv;
+//        // Find v
+//        const T v = getStartPV() + T(j) * dv;
 
-        // Find indices for uk and vk
-        for( uk = 1; uk < _u.getDim()-2; uk++ ) if( u < _u[uk+1] ) break;
-        for( vk = 1; vk < _v.getDim()-2; vk++ ) if( v < _v[vk+1] ) break;
+//        // Find indices for uk and vk
+//        for( uk = 1; uk < _u.getDim()-2; uk++ ) if( u < _u[uk+1] ) break;
+//        for( vk = 1; vk < _v.getDim()-2; vk++ ) if( v < _v[vk+1] ) break;
 
-        // Save indices
-        _uk[i][j] = uk;
-        _vk[i][j] = vk;
+//        // Save indices
+//        _uk[i][j] = uk;
+//        _vk[i][j] = vk;
 
-        // Evaluate ERBS basis in u direction
-        if( !(std::abs(u - _u[uk]) < 1e-5) )
-          getB( _Bu[i][j], _u, uk, u, d1 );
+//        // Evaluate ERBS basis in u direction
+//        if( !(std::abs(u - _u[uk]) < 1e-5) )
+//          getB( _Bu[i][j], _u, uk, u, d1 );
 
-        // Evaluate ERBS basis in v direction
-        if( !(std::abs(v - _v[vk]) < 1e-5) )
-          getB( _Bv[i][j], _v, vk, v, d2 );
-      }
-    }
+//        // Evaluate ERBS basis in v direction
+//        if( !(std::abs(v - _v[vk]) < 1e-5) )
+//          getB( _Bv[i][j], _v, vk, v, d2 );
+//      }
+//    }
 
-    _pre_eval = false;
-  }
+//    _pre_eval = false;
+//  }
 
 
   template <typename T>
@@ -1207,13 +1337,13 @@ namespace GMlib {
 
 
     // pre-sampel / pre evaluate data for a given parametric surface, if wanted/needed
-    preSample(
-      m1, m2, d1, d2,
-      getStartPU(),
-      getStartPV(),
-      getEndPU(),
-      getEndPV()
-    );
+//    preSample(
+//      m1, m2, d1, d2,
+//      getStartPU(),
+//      getStartPV(),
+//      getEndPU(),
+//      getEndPV()
+//    );
 
 
     // Predict number of "visualizer"-segments u/v

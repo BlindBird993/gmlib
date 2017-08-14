@@ -1,4 +1,3 @@
-
 /**********************************************************************************
 **
 ** Copyright (C) 1994 Narvik University College
@@ -28,10 +27,13 @@
 namespace GMlib {
 
 
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
   template <typename T>
   inline
   PTrianguloidTrefoil<T>::PTrianguloidTrefoil() {
-
     init();
   }
 
@@ -39,15 +41,35 @@ namespace GMlib {
   template <typename T>
   inline
   PTrianguloidTrefoil<T>::PTrianguloidTrefoil( const PTrianguloidTrefoil<T>& copy ) : PSurf<T,3>( copy ) {
-
     init();
   }
-
 
 
   template <typename T>
   PTrianguloidTrefoil<T>::~PTrianguloidTrefoil() {}
 
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PTrianguloidTrefoil<T>::isClosedU() const {
+    return true;
+  }
+
+
+  template <typename T>
+  bool PTrianguloidTrefoil<T>::isClosedV() const {
+    return true;
+  }
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PTrianguloidTrefoil<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -105,41 +127,40 @@ namespace GMlib {
 
     for(int i=0; i<fu.getDim();i++)
       for(int j=0; j<fv.getDim(); j++)
-        this->_p[i][j] =	   fu[i]%fv[j];
+        this->_p[i][j] = fu[i]%fv[j];
   }
 
 
-  template <typename T>
-  inline
-  T PTrianguloidTrefoil<T>::getEndPU() {
-
-    return T(M_PI);
-  }
-
 
   template <typename T>
-  inline
-  T PTrianguloidTrefoil<T>::getEndPV() {
-
-    return T(M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PTrianguloidTrefoil<T>::getStartPU() {
-
+  T PTrianguloidTrefoil<T>::getStartPU() const {
     return -T(M_PI);
   }
 
 
   template <typename T>
-  inline
-  T PTrianguloidTrefoil<T>::getStartPV() {
+  T PTrianguloidTrefoil<T>::getEndPU() const {
+    return T(M_PI);
+  }
 
+
+  template <typename T>
+  T PTrianguloidTrefoil<T>::getStartPV() const {
     return -T(M_PI);
   }
 
+
+  template <typename T>
+  T PTrianguloidTrefoil<T>::getEndPV() const {
+    return T(M_PI);
+  }
+
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PTrianguloidTrefoil<T>::init() {
@@ -147,20 +168,5 @@ namespace GMlib {
     this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
-
-  template <typename T>
-  inline
-  bool PTrianguloidTrefoil<T>::isClosedU() const {
-
-    return true;
-  }
-
-
-  template <typename T>
-  inline
-  bool PTrianguloidTrefoil<T>::isClosedV() const {
-
-    return true;
-  }
 
 } // END namespace GMlib

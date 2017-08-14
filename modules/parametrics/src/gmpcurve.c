@@ -45,9 +45,7 @@ namespace GMlib {
     _sc               = T(1);
 
     setNoDer(2);
-
-    this->_lighted    = false;
-
+    this->_lighted      = false;
     _default_visualizer = 0x0;
   }
 
@@ -56,19 +54,15 @@ namespace GMlib {
   inline
   PCurve<T,n>::PCurve( const PCurve<T,n>& copy ) : Parametrics<T,1,n>( copy ) {
 
-
     _no_sam       = copy._no_sam;
     _no_der       = copy._no_der;
-
     _p            = copy._p;
     _t            = copy._t;
     _d            = copy._d;
     _tr           = copy._tr;
     _sc           = copy._sc;
 
-
     setNoDer(2);
-
     _default_visualizer = 0x0;
   }
 
@@ -126,7 +120,6 @@ namespace GMlib {
     if( !enable )
       removeVisualizer( _default_visualizer );
     else {
-
       if( !_default_visualizer )
         _default_visualizer = new PCurveDefaultVisualizer<T,n>();
 
@@ -262,7 +255,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::getParDelta()	{
+  T PCurve<T,n>::getParDelta() const {
 
     return _sc*( getEndP() - getStartP() );
   }
@@ -270,7 +263,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::getParEnd() {
+  T PCurve<T,n>::getParEnd() const {
 
     return getParStart() + getParDelta();
   }
@@ -278,7 +271,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::getParStart()	{
+  T PCurve<T,n>::getParStart() const {
 
     return getStartP() + _tr;
   }
@@ -459,23 +452,20 @@ namespace GMlib {
     resample( p, m, d, getStartP(), getEndP() );
   }
 
+
   template <typename T, int n>
   inline
   void PCurve<T,n>::resample( DVector< DVector< Vector<T,n> > >& p, int m, int d, T start, T end ) {
-
-    p.setDim(m);
 
     T du = (end-start)/(m-1);
     p.setDim(m);
 
     for( int i = 0; i < m - 1; i++ ) {
-
       eval( start + i * du, d, true);
       p[i] = _p;
     }
     eval( end, d, false );
     p[m-1] = _p;
-
 
     switch( this->_dm ) {
       case GM_DERIVATION_EXPLICIT:
@@ -483,12 +473,11 @@ namespace GMlib {
         // should be defined in the eval( ... ) function enclosed by
         // if( this->_derivation_method == this->EXPLICIT ) { ... eval algorithms for derivatives ... }
         break;
-
       case GM_DERIVATION_DD:
       default:
         DD::compute1D(p, du, isClosed(), d );
         break;
-    };
+    }
   }
 
 
@@ -541,7 +530,6 @@ namespace GMlib {
   template <typename T, int n>
   inline
   T PCurve<T,n>::shift( T t ) {
-
     return t;
 //    return _tr + _sc * ( t - getStartP() );
   }

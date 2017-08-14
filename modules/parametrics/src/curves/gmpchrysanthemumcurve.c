@@ -37,47 +37,48 @@ namespace GMlib {
 
 
   template <typename T>
-  PChrysanthemumCurve<T>::PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy ) : PCurve<T,3>( copy ) {}
+  PChrysanthemumCurve<T>::PChrysanthemumCurve( const PChrysanthemumCurve<T>& copy ) : PCurve<T,3>( copy ) {
+  }
 
+
+  //***************************************************
+  // Overrided (public) virtual functons from PCurve **
+  //***************************************************
 
   template <typename T>
-  inline
+  bool PChrysanthemumCurve<T>::isClosed() const {
+    return true;
+  }
+
+
+  //******************************************************
+  // Overrided (protected) virtual functons from PCurve **
+  //******************************************************
+
+  template <typename T>
   void PChrysanthemumCurve<T>::eval( T t, int d, bool l ) {
 
     this->_p.setDim( d+1 );
 
-    const double p4 = sin( 17.0 * t / 3.0 );
-    const double p8 = sin( 2.0 * cos( 3.0 * t ) - 28.0 * t );
-    const double r = 5.0 * ( 1.0 + sin( 11.0 * t / 5.0 ) ) - 4 * pow( p4, 4 ) * pow( p8, 8 );
+    const double p4 = sin(17.0 * t/3.0);
+    const double p8 = sin(2.0 * cos(3.0 * t) - 28.0 * t);
+    const double r = 5.0 * (1.0 + sin(11.0 * t/5.0)) - 4 * pow(p4, 4) * pow(p8, 8);
 
-    this->_p[0][0] = _r * T( r * cos( t ) );
-    this->_p[0][1] = _r * T( r * sin( t ) );
+    this->_p[0][0] = _r * T(r * cos(t));
+    this->_p[0][1] = _r * T(r * sin(t));
     this->_p[0][2] = T(0);
-
   }
 
 
   template <typename T>
-  inline
-  T PChrysanthemumCurve<T>::getEndP() {
-
-    return T( 21 * M_PI );
-  }
-
-
-  template <typename T>
-  inline
-  T PChrysanthemumCurve<T>::getStartP() {
-
+  T PChrysanthemumCurve<T>::getStartP() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  bool PChrysanthemumCurve<T>::isClosed() const {
-
-    return true;
+  T PChrysanthemumCurve<T>::getEndP() const {
+    return T( 21 * M_PI );
   }
 
 

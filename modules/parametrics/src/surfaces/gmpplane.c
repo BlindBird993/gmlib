@@ -24,23 +24,23 @@
 
 
 
-// for syntaxhighlighting
-#include "gmpplane.h"
-
 namespace GMlib {
 
+
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
 
   template <typename T>
   inline
   PPlane<T>::PPlane( const Point<T,3>& p, const Vector<T,3>& u, const Vector<T,3>& v ) {
 
+    init();
     _pt = p;
     _u  = u;
     _v  = v;
 
     _n  = u^v;
-
-    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
@@ -48,6 +48,7 @@ namespace GMlib {
   inline
   PPlane<T>::PPlane( const PPlane<T>& copy ) : PSurf<T,3>( copy ) {
 
+    init();
     _pt   = copy._pt;
     _u    = copy._u;
     _v    = copy._v;
@@ -59,12 +60,74 @@ namespace GMlib {
   PPlane<T>::~PPlane() {}
 
 
+  //*****************************************
+  //            Local functons             **
+  //*****************************************
+
   template <typename T>
   inline
   const UnitVector<T,3>& PPlane<T>::getNormal() const {
 
     return _n;
   }
+
+
+  template <typename T>
+  inline
+  const Vector<T,3>& PPlane<T>::getU() const {
+    return _u;
+  }
+
+
+  template <typename T>
+  inline
+  const Vector<T,3>& PPlane<T>::getV() const {
+    return _v;
+  }
+
+
+  template <typename T>
+  inline
+  void PPlane<T>::setP( const Point<T,3>& p ) {
+    _pt = p;
+  }
+
+  template <typename T>
+  inline
+  void PPlane<T>::setU( const Vector<T,3>& u ) {
+    _u = u;
+  }
+
+
+  template <typename T>
+  inline
+  void PPlane<T>::setV( const Vector<T,3>& v ) {
+    _v = v;
+  }
+
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PPlane<T>::isClosedU() const {
+    return false;
+  }
+
+
+  template <typename T>
+  bool PPlane<T>::isClosedV() const {
+    return false;
+  }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
 
   template <typename T>
   void PPlane<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
@@ -100,86 +163,38 @@ namespace GMlib {
 
 
   template <typename T>
-  inline
-  T PPlane<T>::getEndPU()	{
-
-    return T(1);
-  }
-
-  template <typename T>
-  inline
-  T PPlane<T>::getEndPV()	{
-
-    return T(1);
-  }
-
-
-  template <typename T>
-  inline
-  T PPlane<T>::getStartPU() {
-
+  T PPlane<T>::getStartPU() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  T PPlane<T>::getStartPV() {
+  T PPlane<T>::getEndPU() const	{
+    return T(1);
+  }
 
+  template <typename T>
+  T PPlane<T>::getStartPV() const {
     return T(0);
   }
 
 
   template <typename T>
-  inline
-  const Vector<T,3>& PPlane<T>::getU() const {
-
-    return _u;
+  T PPlane<T>::getEndPV() const	{
+    return T(1);
   }
 
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
-  inline
-  const Vector<T,3>& PPlane<T>::getV() const {
+  void PPlane<T>::init() {
 
-    return _v;
+    this->_dm = GM_DERIVATION_EXPLICIT;
   }
 
 
-  template <typename T>
-  inline
-  bool PPlane<T>::isClosedU() const {
-
-    return false;
-  }
-
-
-  template <typename T>
-  inline
-  bool PPlane<T>::isClosedV() const {
-
-    return false;
-  }
-
-  template <typename T>
-  inline
-  void PPlane<T>::setP( const Point<T,3>& p ) {
-
-    _pt = p;
-  }
-
-  template <typename T>
-  inline
-  void PPlane<T>::setU( const Vector<T,3>& u ) {
-
-    _u = u;
-  }
-
-
-  template <typename T>
-  inline
-  void PPlane<T>::setV( const Vector<T,3>& v ) {
-
-    _v = v;
-  }
 }

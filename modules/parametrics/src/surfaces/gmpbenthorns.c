@@ -1,4 +1,3 @@
-
 /**********************************************************************************
 **
 ** Copyright (C) 1994 Narvik University College
@@ -28,10 +27,13 @@
 namespace GMlib {
 
 
-  template <typename T>
+//*****************************************
+// Constructors and destructor           **
+//*****************************************
+
+template <typename T>
   inline
   PBentHorns<T>::PBentHorns() {
-
     init();
   }
 
@@ -39,7 +41,6 @@ namespace GMlib {
   template <typename T>
   inline
   PBentHorns<T>::PBentHorns( const PBentHorns<T>& copy ) : PSurf<T,3>( copy ) {
-
     init();
   }
 
@@ -49,11 +50,26 @@ namespace GMlib {
   PBentHorns<T>::~PBentHorns() {}
 
 
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
+  template <typename T>
+  bool PBentHorns<T>::isClosedU() const {
+    return true;
+  }
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
+
   template <typename T>
   void PBentHorns<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
 
     this->_p.setDim( d1+1, d2+1 );
-
 
     T cu	 = cos(u);
     T cv	 = cos(v);
@@ -74,131 +90,113 @@ namespace GMlib {
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
-      if(d1)				//Su
-      {
+      if(d1) {				//Su
         this->_p[1][0][0] = -su*v3s;
         this->_p[1][0][1] = -su2pm3*cv1;
         this->_p[1][0][2] = -su2pp3*cv1;
       }
-      if(d1>1)			//Suu
-      {
+      if(d1>1) {			//Suu
         this->_p[2][0][0] = -cu*v3s;
         this->_p[2][0][1] = -cu2pm3*cv1;
         this->_p[2][0][2] = -cu2pp3*cv1;
       }
-      if(d2)				//Sv
-      {
+      if(d2) {				//Sv
         this->_p[0][1][0] = -(2+cu)*v3c;
         this->_p[0][1][1] = -(2+cu2pm3)*sv;
         this->_p[0][1][2] = -(2+cu2pp3)*sv;
       }
-      if(d2>1)			//Svv
-      {
+      if(d2>1) {			//Svv
         this->_p[0][2][0] =	(2+cu)*sv;
         this->_p[0][2][1] = -(2+cu2pm3)*cv;
         this->_p[0][2][2] = -(2+cu2pp3)*cv;
       }
-      if(d1 && d2)		//Suv
-      {
+      if(d1 && d2) {		//Suv
         this->_p[1][1][0] =	su*v3c;
         this->_p[1][1][1] =	su2pm3*sv;
         this->_p[1][1][2] =	su2pp3*sv;
       }
-      if(d1>1 && d2)		//Suuv
-      {
+      if(d1>1 && d2) {		//Suuv
         this->_p[2][1][0] =	cu*v3c;
         this->_p[2][1][1] =	cu2pm3*sv;
         this->_p[2][1][2] =	cu2pp3*sv;
       }
-      if(d1 && d2>1)		//Suvv
-      {
+      if(d1 && d2>1) {		//Suvv
         this->_p[1][2][0] = -su*sv;
         this->_p[1][2][1] =	su2pm3*cv;
         this->_p[1][2][2] =	su2pp3*cv;
       }
-      if(d1>1 && d2>1)	//Suuvv
-      {
+      if(d1>1 && d2>1) {	//Suuvv
         this->_p[2][2][0] = -cu*sv;
         this->_p[2][2][1] =	cu2pm3*cv;
         this->_p[2][2][2] =	cu2pp3*cv;
       }
-      if(d1>2 && d2)		//Suuuv
-      {
+      if(d1>2 && d2) {		//Suuuv
         this->_p[3][1][0] = -su*v3c;
         this->_p[3][1][1] = -su2pm3*sv;
         this->_p[3][1][2] = -su2pp3*sv;
       }
-      if(d1>2 && d2>1)	//Suuuvv
-      {
+      if(d1>2 && d2>1) {	//Suuuvv
         this->_p[3][2][0] =  su*sv;
         this->_p[3][2][1] = -su2pm3*cv;
         this->_p[3][2][2] = -su2pp3*cv;
       }
-      if(d1>2 && d2>2)	//Suuuvvv
-      {
+      if(d1>2 && d2>2) {	//Suuuvvv
         this->_p[3][3][0] =  su*cv;
         this->_p[3][3][1] =  su2pm3*sv;
         this->_p[3][3][2] =  su2pp3*sv;
       }
-      if(d1 && d2>2)		//Suvvv
-      {
+      if(d1 && d2>2) {		//Suvvv
         this->_p[1][3][0] = -su*cv;
         this->_p[1][3][1] = -su2pm3*sv;
         this->_p[1][3][2] = -su2pp3*sv;
       }
-      if(d1>1 && d2>2)	//Suuvvv
-      {
+      if(d1>1 && d2>2) {	//Suuvvv
         this->_p[2][3][0] = -cu*cv;
         this->_p[2][3][1] = -cu2pm3*sv;
         this->_p[2][3][2] = -cu2pp3*sv;
       }
-      if(d1>2)			//Suuu
-      {
+      if(d1>2) {			//Suuu
         this->_p[3][0][0] =  su*v3s;
         this->_p[3][0][1] =  su2pm3*cv1;
         this->_p[3][0][2] =  su2pp3*cv1;
       }
-      if(d2>2)			//Svvv
-      {
+      if(d2>2) {			//Svvv
         this->_p[0][3][0] =	(2+cu)*cv;
-        this->_p[0][3][1] =  (2+cu2pm3)*sv;
-        this->_p[0][3][2] =  (2+cu2pp3)*sv;
+        this->_p[0][3][1] = (2+cu2pm3)*sv;
+        this->_p[0][3][2] = (2+cu2pp3)*sv;
       }
     }
   }
 
 
   template <typename T>
-  inline
-  T PBentHorns<T>::getEndPU() {
-
-    return T(M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PBentHorns<T>::getEndPV() {
-
-    return T(2*M_PI);
-  }
-
-
-  template <typename T>
-  inline
-  T PBentHorns<T>::getStartPU() {
-
+  T PBentHorns<T>::getStartPU() const {
     return -T(M_PI);
   }
 
 
   template <typename T>
-  inline
-  T PBentHorns<T>::getStartPV() {
+  T PBentHorns<T>::getEndPU() const {
+    return T(M_PI);
+  }
 
+
+  template <typename T>
+  T PBentHorns<T>::getStartPV() const {
     return -T(2*M_PI);
   }
 
+
+  template <typename T>
+  T PBentHorns<T>::getEndPV() const {
+    return T(2*M_PI);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
   template <typename T>
   void PBentHorns<T>::init() {
@@ -207,19 +205,5 @@ namespace GMlib {
   }
 
 
-  template <typename T>
-  inline
-  bool PBentHorns<T>::isClosedU() const {
-
-    return true;
-  }
-
-
-  template <typename T>
-  inline
-  bool PBentHorns<T>::isClosedV() const {
-
-    return false;
-  }
 
 } // END namespace GMlib

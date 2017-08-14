@@ -34,20 +34,27 @@ namespace GMlib {
   class PLine : public PCurve<T,3> {
     GM_SCENEOBJECT(PLine)
   public:
-    explicit PLine( const Point<T,3>& p, const Vector<T,3>& v );
-    explicit PLine( const Point<T,3>& p1, const Point<T,3>& p2 );
+    PLine( const Point<T,3>& p, const Vector<T,3>& v);
+    PLine( const Point<T,3>& p1, const Point<T,3>& p2);
     PLine( const PLine<T>& copy );
     virtual ~PLine();
 
-    bool            isClosed() const override;
+    //****************************************
+    //****** Virtual public functions   ******
+    //****************************************
+
+    // from PCurve
+    bool                isClosed() const override;
 
   protected:
+    // Virtual function from PCurve that has to be implemented locally
+    void                eval(T t, int d, bool l) override;
+    T                   getStartP() const override;
+    T                   getEndP()   const override;
+
+    // Protected data for the curve
     Point<T,3>      _pt;
     Vector<T,3>     _v;
-
-    void            eval(T t, int d, bool l) override;
-    T               getEndP() override;
-    T               getStartP() override;
 
   }; // END class PLine
 

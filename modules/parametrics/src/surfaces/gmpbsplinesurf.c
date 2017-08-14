@@ -23,7 +23,6 @@
 
 
 
-
 #include "../evaluators/gmevaluatorstatic.h"
 
 // gmlib
@@ -32,24 +31,46 @@
 
 namespace GMlib {
 
+
+  //*****************************************
+  // Constructors and destructor           **
+  //*****************************************
+
   template <typename T>
   inline
-  PBSplineSurf<T>::PBSplineSurf( const DMatrix< Vector<T,3> >& c, const DVector<T>& u,  const DVector<T>& v) {
+  PBSplineSurf<T>::PBSplineSurf( const DMatrix< Vector<T,3> >& c, const DVector<T>& u,  const DVector<T>& v, int du, int dv) {
 
-    init();
+      init();
 
-    // Set Control Points and knot-vectors
-    _c = c;
-    _u = u;
-    _v = v;
+      // Set Control Points
+      _c = c;
 
-     // Set order
-    _ku = _u.getDim()-_c.getDim1();
-    _kv = _v.getDim()-_c.getDim2();
+      // Set order
+      _ku = u.getDim()-_c.getDim1();
+      _kv = v.getDim()-_c.getDim2();
 
-     // Set degree
-    _du = _ku-1;
-    _dv = _kv-1;
+      // Set knot-vector in u-direction
+      if(_ku == 1) {  // closed in u-direction
+          _du = du;
+          initKnot( _u, _cu, _ku, u, _c.getDim1(), _du);
+      }
+      else {
+          _u = u;
+          _du = _ku-1;
+          _cu = false;
+      }
+
+      // Set knot-vector in v-direction
+      if(_kv == 1) {  // closed in v-direction
+          if(dv==0)   _dv = du;
+          else        _dv = dv;
+          initKnot( _v, _cv, _kv, v, _c.getDim2(), _dv);
+      }
+      else {
+          _v = v;
+          _dv = _kv-1;
+          _cv = false;
+      }
   }
 
 
@@ -57,27 +78,146 @@ namespace GMlib {
   inline
   PBSplineSurf<T>::PBSplineSurf( const PBSplineSurf<T>& copy ) : PSurf<T,3>( copy ) {
 
-    init();
+      init();
 
-    _c = copy._c;
-    _u = copy._u;
-    _v = copy._v;
+      _c = copy._c;
+      _u = copy._u;
+      _v = copy._v;
+      _ku = copy._ku;
+      _kv = copy._kv;
+      _du = copy._du;
+      _dv = copy._dv;
+      _cu = copy._cu;
+      _cv = copy._cv;
+  }
 
-    _ku = copy._ku;
-    _kv = copy._kv;
 
-    _du = copy._du;
-    _dv = copy._dv;
+  template <typename T>
+  PBSplineSurf<T>::~PBSplineSurf() {
+
+      if(_sgv) delete _sgv;
+  }
+
+
+  //*********************************
+  //**   Public local functons     **
+  //*********************************
+
+  template <typename T>
+  inline
+  DMatrix< Vector<T,3> >& PBSplineSurf<T>::getControlPoints() {
+      return _c;
   }
 
 
   template <typename T>
   inline
-  PBSplineSurf<T>::~PBSplineSurf() {
-
-    if(_sgv) delete _sgv;
+  int PBSplineSurf<T>::getDegreeU() const {
+      return _du;
   }
 
+
+  template <typename T>
+  inline
+  int PBSplineSurf<T>::getDegreeV() const {
+      return _dv;
+  }
+
+
+  template <typename T>
+  bool PBSplineSurf<T>::isSelectorsVisible() const {
+      return _selectors;
+  }
+
+
+
+  template <typename T>
+  void PBSplineSurf<T>::setClosed( bool closed_u, bool closed_v, T du, T dv ) {
+
+      bool changed = false;
+
+      if(_cu != closed_u) {
+          DVector<T> nu = _u;
+          if(closed_u) {
+              if(du==T(0)) du = (_u[_u.getDim()-_ku]-_u[_du])/(_u.getDim() - 2*_ku + 1);
+              initKnot( _u, _cu, _ku, nu, _c.getDim1(), _du, du);
+          } else
+              initKnot2(_u, _cu, nu, _c.getDim1(), _du);
+          changed = true;
+      }
+
+      if(_cv != closed_v){
+          DVector<T> nv = _v;
+          if(closed_v) {
+              if(dv==T(0)) dv = (_v[_v.getDim()-_kv]-_v[_dv])/(_v.getDim() - 2*_kv + 1);
+              initKnot( _v, _cv, _kv, nv, _c.getDim2(), _dv, dv);
+          } else
+              initKnot2(_v, _cv, nv, _c.getDim2(), _dv);
+          changed = true;
+      }
+
+      if(changed && _selectors) {
+          hideSelectors();
+          showSelectors(_selector_radius, _grid, _selector_color, _grid_color);
+      }
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBSplineSurf<T>::setPartitionCritere(int pcu, int pcv) {
+      _pcu = pcu;
+      _pcv = pcv;
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBSplineSurf<T>::setControlPoints( const DMatrix< Vector<T,3> >& cp ) {
+
+      if( _c.getDim1() == cp.getDim1() && _c.getDim2() == cp.getDim2() )
+          _c = cp;
+      else
+          std::cerr << "Can not change the control point because the dimentions are wrong!";
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBSplineSurf<T>::updateCoeffs( const Vector<T,3>& d ) {
+
+      if( _c_moved ) {
+          HqMatrix<T,3> invmat = this->_matrix;
+          invmat.invertOrthoNormal();
+
+          Vector<T,3> diff = invmat*d;
+          for( int i = 0; i < _c.getDim1(); i++ ) {
+              for( int j = 0; j < _c.getDim2(); j++ ) {
+                  _c[i][j] += diff;
+                  _s[i][j]->translateParent( diff );
+              }
+          }
+          this->translateParent( -d );
+      }
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBSplineSurf<T>::enablePartitionVisualizer(int u, int v) {
+      _part_viz = true;
+      setPartitionCritere(u, v);
+}
+
+
+
+  //********************************************************
+  // Overrided (public) virtual functons from SceneObject **
+  //********************************************************
 
   template <typename T>
   void PBSplineSurf<T>::edit( int /*selector_id*/ ) {
@@ -93,328 +233,391 @@ namespace GMlib {
   }
 
 
+
+
+  //**************************************************
+  // Overrided (public) virtual functons from PSurf **
+  //**************************************************
+
+
   template <typename T>
-  inline
-  void PBSplineSurf<T>::eval( T u, T v, int du, int dv, bool /*lu*/, bool /*lv*/ ) {
+  void PBSplineSurf<T>::replot( int m1, int m2, int d1, int d2 ) {
 
-//    // Send the control to the pre-eval evaluator
-//    if( _resamp_mode == GM_RESAMPLE_PREEVAL ) {
-//
-//      evalPre( u, v, d1, d2, lu, lv );
-//      return;
-//    }
+      if(_part_viz) {
+          // Make new pre-samples if necessary
+          if( m1 != this->_no_sam_u && m1 > 1) {
+              this->_no_sam_u = m1;
+              preSample(1, m1);
+          }
+          if( m2 != this->_no_sam_v && m2 > 1){
+              this->_no_sam_v = m2;
+              preSample(2, m2);
+          }
+          // Correct derivatives ?
+          if( d1 < 1 )    d1 = this->_no_der_u;
+          else            this->_no_der_u = d1;
+          if( d2 < 1 )    d2 = this->_no_der_v;
+          else            this->_no_der_v = d2;
 
-    // Set Dimensions
-    this->_p.setDim( _du+1, _dv+1 );
+          DMatrix< DMatrix< Vector<T,3> > >   p;
+          DMatrix< Vector<T,3> >              normals;
+          Sphere<T,3>                         s;
 
-    // Compute the Bernstein-Hermite Polynomials
-    DMatrix<T> bu, bv;
-    int ii = EvaluatorStatic<T>::evaluateBSp( bu, u, _u, _du);
-    int jj = EvaluatorStatic<T>::evaluateBSp( bv, v, _v, _dv);
+          for(int i=0; i<_vpu.getDim(); i++)
+              for(int j=0; j<_vpv.getDim(); j++) {
 
-    DMatrix<Vector<T,3> > c(_du+1,_dv+1);
-    for(int i=0; i<_ku; i++)
-        for(int j=0; j<_kv; j++)
-            c[i][j] = _c[i+ii-_du][j+jj-_dv];
+                  // Sample Positions and related Derivatives
+                  resample(p, _ru[i], _rv[j], _vpu[i].m, _vpv[j].m, d1, d2 );
 
-    bv.transpose();
-    this->_p = bu * (c^bv);
+                  // Compute normals at the sample points
+                  this->resampleNormals( p, normals );
 
-    // Add "0" derivatives if d1/d2 is bigger
-    this->_p.resetDim(du+1,dv+1);
+                  this->uppdateSurroundingSphere(s, p);
+
+                  // Replot Visaulizers
+                  for( int k = 0; k < _visu[i][j].vis.getSize(); k++ )
+                      _visu[i][j].vis[k]->replot( p, normals, _vpu[i].m, _vpv[j].m, d1, d2, false, false );
+              }
+          Parametrics<T,2,3>::setSurroundingSphere(s);
+      } else
+          PSurf<T,3>::replot( m1, m2, d1, d2 );
   }
 
 
   template <typename T>
-  inline
-  void PBSplineSurf<T>::evalPre( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
-
-    // Find the u/v index for the preevaluated data.
-    int iu, iv;
-    findIndex( u, v, iu, iv );
-
-    // Set Dimensions
-    this->_p.setDim( getDegreeU()+1, getDegreeV()+1 );
-
-    DMatrix<T> bu = _ru[iu][iv];
-    DMatrix<T> bv = _rv[iu][iv];
-
-    bv.transpose();
-    this->_p = bu * (_c^bv);
-
-    // Add "0" derivatives if d1/d2 is bigger
-    this->_p.resetDim(d1+1,d2+1);
+  bool PBSplineSurf<T>::isClosedU() const {
+      return _cu;
   }
 
 
   template <typename T>
-  inline
-  void PBSplineSurf<T>::findIndex( T u, T v, int& iu, int& iv ) {
-
-    iu = (this->_no_samp_u-1)*(u-this->getParStartU())/(this->getParDeltaU())+0.1;
-    iv = (this->_no_samp_v-1)*(v-this->getParStartV())/(this->getParDeltaV())+0.1;
+  bool PBSplineSurf<T>::isClosedV() const {
+      return _cv;
   }
 
 
   template <typename T>
-  inline
-  DMatrix< Vector<T,3> >& PBSplineSurf<T>::getControlPoints() {
+  void PBSplineSurf<T>::showSelectors( T rad, bool grid, const Color& selector_color, const Color& grid_color ) {
 
-    return _c;
-  }
+      if( _selectors ) return;
 
-  template <typename T>
-  inline
-  int PBSplineSurf<T>::getDegreeU() const {
+      _s.setDim( _c.getDim1(), _c.getDim2() );
 
-    return _du;
-  }
+      for( int i = 0, s_id = 0; i < _c.getDim1(); i++ )
+          for( int j = 0; j < _c.getDim2(); j++ ) {
+              Selector<T,3> *sel = new Selector<T,3>( _c[i][j], s_id++, this, rad, selector_color );
+              this->insert( sel );
+              _s[i][j] = sel;
+          }
 
+      if( grid ) {
+          if(!_sgv) _sgv = new SelectorGridVisualizer<T>;
+          _sgv->setSelectors( _c, _cu, _cv );
+          _sgv->setColor( grid_color );
+          this->insertVisualizer( _sgv );
+      }
 
-  template <typename T>
-  inline
-  int PBSplineSurf<T>::getDegreeV() const {
-
-    return _dv;
-  }
-
-
-  template <typename T>
-  inline
-  T PBSplineSurf<T>::getEndPU() {
-
-    return _u[_c.getDim1()+1];
-  }
-
-
-  template <typename T>
-  inline
-  T PBSplineSurf<T>::getEndPV() {
-
-    return _v[_c.getDim2()+1];
-  }
-
-
-  template <typename T>
-  inline
-  T PBSplineSurf<T>::getStartPU() {
-
-    return _u[_du];
-  }
-
-
-  template <typename T>
-  inline
-  T PBSplineSurf<T>::getStartPV() {
-
-    return _v[_dv];
+      _selector_radius = rad;
+      _selector_color  = selector_color;
+      _grid_color      = grid_color;
+      _grid            = grid;
+      _selectors       = true;
   }
 
 
   template <typename T>
   void PBSplineSurf<T>::hideSelectors() {
 
-    if( !_selectors )
-      return;
+      if( !_selectors ) return;
 
-    // Remove Selector Grid Visualizer
-    this->removeVisualizer( _sgv );
-    _sgv->reset();
+      // Remove Selector Grid Visualizer
+      this->removeVisualizer( _sgv );
+      _sgv->reset();
 
-    // Remove Selectors
-    for( int i = 0; i < _s.getDim1(); i++ ) {
-      for( int j = 0; j < _s.getDim2(); j++ ) {
-        this->remove( _s[i][j] );
-        delete _s[i][j];
+      // Remove Selectors
+      for( int i = 0; i < _s.getDim1(); i++ ) {
+          for( int j = 0; j < _s.getDim2(); j++ ) {
+              this->remove( _s[i][j] );
+              delete _s[i][j];
+          }
       }
-    }
-
-    _selectors = false;
+      _selectors = false;
   }
+
+
+
+  //*****************************************************
+  // Overrided (protected) virtual functons from PSurf **
+  //*****************************************************
+
+
+  template <typename T>
+  void PBSplineSurf<T>::eval( T u, T v, int du, int dv, bool lu, bool lv ) {
+
+      DMatrix<T>   bu, bv;
+      DVector<int> ind_i(_ku), ind_j(_kv);
+
+      int i = EvaluatorStatic<T>::evaluateBSp( bu, u, _u, _du, lu) - _du;
+      int j = EvaluatorStatic<T>::evaluateBSp( bv, v, _v, _dv, lv) - _dv;
+
+      makeIndex(ind_i, i, _ku, _c.getDim1());
+      makeIndex(ind_j, j, _kv, _c.getDim2());
+
+      multEval( this->_p, bu, bv, ind_i, ind_j, du, dv);
+  }
+
+
+  template <typename T>
+  T PBSplineSurf<T>::getEndPU() const {
+      return _u(_u.getDim()-_ku);
+  }
+
+
+  template <typename T>
+  T PBSplineSurf<T>::getEndPV() const {
+      return _v(_v.getDim()-_kv);
+  }
+
+
+  template <typename T>
+  T PBSplineSurf<T>::getStartPU() const {
+      return _u(_du);
+  }
+
+
+  template <typename T>
+  inline
+  T PBSplineSurf<T>::getStartPV() const {
+      return _v(_dv);
+  }
+
+
+
+  //*****************************************
+  //     Local (protected) functons        **
+  //*****************************************
 
 
   template <typename T>
   inline
   void PBSplineSurf<T>::init() {
 
-    this->_type_id = GM_SO_TYPE_SURFACE_BEZIER;
+      this->_type_id = GM_SO_TYPE_SURFACE_BSPLINE;
 
-    _selectors = false;
-    _c_moved = false;
+      _selectors    = false;
+      _c_moved      = false;
 
-    _cu = false;
-    _cv = false;
-    _su = T(1);
-    _sv = T(1);
-    _pre_eval = true;
-    _resamp_mode = GM_RESAMPLE_PREEVAL;
+      _part_viz       = false;
+      _partitioned[0] = false;
+      _partitioned[1] = false;
+      _pcu = 1;
+      _pcv = 1;
 
-    _sgv = new SelectorGridVisualizer<T>;
+      _ru.setDim(1);
+      _ru.setDim(1);
+
+      _sgv =  0x0;
   }
 
 
+
+
+  //***************************************************
+  // Overrided (private) virtual functons from PSurf **
+  //***************************************************
+
+
+  // Sampling for pre-evaluation, chose direction
+  //**********************************************
   template <typename T>
-  inline
-  bool PBSplineSurf<T>::isClosedU() const {
-
-    return _cu;
-  }
-
-
-  template <typename T>
-  inline
-  bool PBSplineSurf<T>::isClosedV() const {
-
-    return _cv;
-  }
-
-
-  template <typename T>
-  bool PBSplineSurf<T>::isSelectorsVisible() const {
-
-    return _selectors;
-  }
-
-  template <typename T>
-  inline
-  void PBSplineSurf<T>::preSample( int m1, int m2, int /*d1*/, int /*d2*/,
-                                   T s_u, T s_v, T e_u, T e_v ) {
-
-    // break out of the preSample function if no preevalution is to be used
-    switch( _resamp_mode ) {
-    case GM_RESAMPLE_PREEVAL: break;
-    case GM_RESAMPLE_INLINE:
-    default:
-      return;
-    }
-
-    // break out and return if preevaluation isn't necessary.
-    if( !_pre_eval && m1 == _ru.getDim1() && m2 == _ru.getDim2() )
-      return;
-
-    // compute du and dv (step in parametric u and v direction)
-    const T du = ( e_u - s_u ) / T(m1-1);
-    const T dv = ( e_v - s_v ) / T(m2-1);
-
-    // Set the dimension of the Bernstein-Hermite Polynomial DVector
-    _ru.setDim(m1,m2);
-    _rv.setDim(m1,m2);
-
-    // Compute the Bernstein-Hermite Polynomiale, for the Bezier Surface
-    for( int i = 0; i < m1; i++ ) {
-      for( int j = 0; j < m2; j++ ) {
-        EvaluatorStatic<T>::evaluateBhp( _ru[i][j], getDegreeU(), i*du, _su );
-        EvaluatorStatic<T>::evaluateBhp( _rv[i][j], getDegreeV(), j*dv, _sv );
+  void  PBSplineSurf<T>::preSample( int dir, int m ) {
+      if(_part_viz) {
+          if( dir==1 ) {
+              if(!_partitioned[0]) {
+                  _partitioned[0] = true;
+                  makePartition( _vpu, _u, _ku, _pcu, m );
+              }
+              _ru.setDim(_vpu.getDim());
+              for(int i=0; i<_ru.getDim(); i++)
+                  preSample( _ru[i], _u, _vpu[i].m, _du, _c.getDim1(), _u[_vpu[i].is], _u[_vpu[i].ie] );
+          }
+          if( dir==2 ) {
+              if(!_partitioned[1]) {
+                  _partitioned[1] = true;
+                  makePartition( _vpv, _v, _kv, _pcv, m );
+              }
+              _rv.setDim(_vpv.getDim());
+              for(int i=0; i<_rv.getDim(); i++)
+                  preSample( _rv[i], _v, _vpv[i].m, _dv, _c.getDim2(), _v[_vpv[i].is], _v[_vpv[i].ie] );
+          }
       }
-    }
-
-    // Disable the pre-evaluation step
-    _pre_eval = false;
-
-  }
-
-
-  template <typename T>
-  inline
-  void PBSplineSurf<T>::setClosed( bool closed_u, bool closed_v ) {
-
-    _cu = closed_u;
-    _cv = closed_v;
-  }
-
-
-  template <typename T>
-  inline
-  void PBSplineSurf<T>::setControlPoints( const DMatrix< Vector<T,3> >& cp ) {
-
-
-    if( _c.getDim1() == cp.getDim1() || _c.getDim2() == cp.getDim2() ) {
-
-      bool no_change = true;
-      for( int i = 0; i < cp.getDim1(); i++ )
-        for( int j = 0; j < cp.getDim2(); j++ )
-          if( _c[i][j] != cp(i)(j) )
-            no_change = false;
-
-      if( no_change )
-        return;
-    }
-    else {
-
-      _pre_eval = true;
-    }
-
-    _c = cp;
-  }
-
-
-  template <typename T>
-  inline
-  void PBSplineSurf<T>::setResampleMode( GM_RESAMPLE_MODE mode ) {
-
-    _resamp_mode = mode;
-  }
-
-
-  template <typename T>
-  inline
-  void PBSplineSurf<T>::setScale( T du, T dv ) {
-
-    if( du == _su || dv == _sv )
-      return;
-
-    _su = du;
-    _sv = dv;
-    _pre_eval = true;
-  }
-
-
-  template <typename T>
-  void PBSplineSurf<T>::showSelectors( bool grid, const Color& _selector_color, const Color& grid_color ) {
-
-    if( _selectors )
-      return;
-
-    _s.setDim( _c.getDim1(), _c.getDim2() );
-    for( int i = 0, s_id = 0; i < _c.getDim1(); i++ ) {
-      for( int j = 0; j < _c.getDim2(); j++ ) {
-
-        Selector<T,3> *sel = new Selector<T,3>( _c[i][j], s_id++, this, T(1), _selector_color );
-        this->insert( sel );
-        _s[i][j] = sel;
+      else {
+          if( dir==1 )
+              preSample( _ru[0], _u, m, _du, _c.getDim1(), _u[_du], _u[_u.getDim()-_ku] );
+          if( dir==2 )
+              preSample( _rv[0], _v, m, _dv, _c.getDim2(), _v[_dv], _v[_v.getDim()-_kv] );
       }
-    }
+  }
 
-    if( grid ) {
 
-      _sgv->setSelectors( _c );
-      this->insertVisualizer( _sgv );
-    }
 
-    _selectors = true;
+  template <typename T>
+  void PBSplineSurf<T>::resample( DMatrix< DMatrix< Vector<T,3> > >& p, int m1, int m2, int d1, int d2, T s_u, T s_v, T e_u, T e_v ) {
+
+      p.setDim(m1, m2);
+
+      for(int i=0; i<m1; i++)
+          for(int j=0; j<m2; j++)
+              multEval( p[i][j], _ru[0][i].m, _rv[0][j].m, _ru[0][i].ind, _rv[0][j].ind, d1, d2 );
+  }
+
+
+
+  template <typename T>
+  void PBSplineSurf<T>::resample( DMatrix< DMatrix< Vector<T,3> > >& p, const DVector<PreMat>& bu, const DVector<PreMat>& bv, int m1, int m2, int d1, int d2 ) {
+
+      p.setDim(m1, m2);
+
+      for(int i=0; i<m1; i++)
+          for(int j=0; j<m2; j++)
+              multEval( p[i][j], bu(i).m, bv(j).m, bu(i).ind, bv(j).ind, d1, d2);
+  }
+
+
+
+  //***************************************
+  //**   Local (private) help functons   **
+  //***************************************
+
+  template <typename T>
+  inline
+  void PBSplineSurf<T>::makeIndex( DVector<int>& ind, int i, int k, int n) {
+
+      if(i+k > n){
+          int j, s = n-i;
+          for (j=0; j < s; j++)
+              ind[j] = i++;
+          for ( ; j < k; j++)
+              ind[j] = j-s;
+      }
+      else
+          for(int j=0; j<k; j++)
+              ind[j]= i+j;
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBSplineSurf<T>::multEval(DMatrix<Vector<T,3>>& p, const DMatrix<T>& bu, const DMatrix<T>& bv, const DVector<int>& ii, const DVector<int>& ij, int du, int dv) {
+
+      // Set Dimensions
+      p.setDim(du+1,dv+1);
+
+      // We manually do these two operations!
+      //    bv.transpose();
+      //    p = bu * (c^bv);
+      // The reason why we do it manually is that we only copmpute the du first lines of bu and the dv first lines of bv
+
+      //    c = _c^bvT
+      DMatrix<Vector<T,3>> c(_ku, dv+1);
+
+      for(int i=0; i< _ku; i++)
+          for(int j=0; j<=dv; j++) {
+              c[i][j] = _c[ii(i)][ij(0)]*bv(j)(0);
+              for(int k=1; k<_kv; k++)
+                  c[i][j] += _c[ii(i)][ij(k)]*bv(j)(k);
+          }
+      //    p = bu * c
+      for(int i=0; i<=dv; i++)
+          for(int j=0; j<=du; j++) {
+              p[i][j] = bu(i)(0)*c[0][j];
+              for(int k=1; k<_ku; k++)
+                  p[i][j] += bu(i)(k)*c[k][j];
+          }
+  }
+
+
+
+  template <typename T>
+  inline
+  void PBSplineSurf<T>::initKnot( DVector<T>& t, bool& c, int& k, const DVector<T>& g, int n, int d, T dt) {
+
+      k = d+1;
+      t.setDim(n+d+k);
+      if(dt > T(0)) {
+          for(int i = d; i < n+1; i++)                  t[i] = g(i);
+          for(int i = n+1; i < n+k; i++)                t[i] = t[i-1] + dt;
+      } else
+          for(int i = d; i < n+k; i++)                  t[i] = g(i-d);
+      for(int i = d-1, j = n+d; i >= 0; i--,j--)        t[i] = t[i+1] - (t[j]-t[j-1]);
+      for(int i = n+k, j = k; i < t.getDim(); i++,j++)  t[i] = t[i-1] + (t[j]-t[j-1]);
+      c = true;
   }
 
 
   template <typename T>
   inline
-  void PBSplineSurf<T>::updateCoeffs( const Vector<T,3>& d ) {
+  void PBSplineSurf<T>::initKnot2( DVector<T>& t, bool& c, const DVector<T>& g, int n, int d) {
 
-    if( _c_moved ) {
+      t.setDim(g.getDim()-d);
+      for(int i = d; i <= n; i++)            t[i] = g(i-d);
+      for(int i = d-1; i >= 0; i--)          t[i] = t[i+1];
+      for(int i = n+1; i < t.getDim(); i++)  t[i] = t[i-1];
+      c = false;
+  }
 
-      HqMatrix<T,3> invmat = this->_matrix;
-      invmat.invertOrthoNormal();
 
-      Vector<T,3> diff = invmat*d;
-      for( int i = 0; i < _c.getDim1(); i++ ) {
-        for( int j = 0; j < _c.getDim2(); j++ ) {
+  // Sampling for pre-evaluation, independent of direction
+  //*******************************************************
+  template <typename T>
+  inline
+  void PBSplineSurf<T>::preSample( DVector< PreMat >& p, const DVector<T>& t, int m, int d, int n, T start, T end ) {
 
-          _c[i][j] += diff;
-          _s[i][j]->translateParent( diff );
-        }
+      // compute dt (step in parameter)
+      const T dt = ( end - start ) / T(m-1);
+
+      // Set the dimension of the Bernstein-Hermite Polynomial DVector
+      p.setDim(m);
+
+      // Compute the Bernstein-Hermite Polynomiale, for the B-spline Surface
+      for( int j = 0; j < m-1; j++ ) {
+          int i = EvaluatorStatic<T>::evaluateBSp( p[j].m, start+j*dt, t, d, false ) - d;
+          p[j].ind.setDim(d+1);
+          makeIndex(p[j].ind, i, d+1, n);
       }
-      this->translateParent( -d );
-      this->replot();
-    }
+      int i = EvaluatorStatic<T>::evaluateBSp( p[m-1].m, end, t, d, true ) - d;
+      p[m-1].ind.setDim(d+1);
+      makeIndex(p[m-1].ind, i, d+1, n);
+  }
+
+
+
+  template <typename T>
+  inline
+  void  PBSplineSurf<T>::makePartition( DVector<VisuPar>& vp, const DVector<T>& t, int k, int dis, int m ) {
+
+      VisPart<T> pu( t, k, dis );
+      SampNr<T>  su( t, pu, m );
+      vp.setDim(su.getDim());
+      for(int i=0; i<vp.getDim(); i++) {
+          vp[i].m  = su[i];
+          vp[i].is = pu[2*i];
+          vp[i].ie = pu[2*i+1];
+      }
+
+      // Ready for final initialization
+      if(_partitioned[0] && _partitioned[1]) {
+          _visu.setDim(_vpu.getDim(), _vpv.getDim());
+          for(int i=0; i<_visu.getDim1(); i++)
+              for(int j=0; j<_visu.getDim2(); j++) {
+                  PSurfVisualizer<T,3>* vis = new PSurfDefaultVisualizer<T,3>();
+                  _visu[i][j].vis += vis;
+                  this->insertVisualizer(vis);
+                  _visu[i][j].s_u = Vector<T,2>(_u[_vpu[i].is], _u[_vpu[i].ie]);
+                  _visu[i][j].s_v = Vector<T,2>(_v[_vpv[j].is], _v[_vpv[j].ie]);
+              }
+      }
   }
 
 } // END namespace GMlib

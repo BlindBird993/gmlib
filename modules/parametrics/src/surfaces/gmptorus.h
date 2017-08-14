@@ -36,28 +36,40 @@ namespace GMlib {
     GM_SCENEOBJECT(PTorus)
   public:
     PTorus( T wheelrad=T(3), T tuberad1=T(1), T tuberad2=T(1) );
-    PTorus( const PTorus<T>& pshere );
+    PTorus( const PTorus<T>& copy );
     virtual ~PTorus();
 
+    // Public local functions
     const T&      getTubeRadius1() const;
     const T&      getTubeRadius2() const;
     const T&      getWheelRadius() const;
-    bool          isClosedU() const override;
-    bool          isClosedV() const override;
     void          setTubeRadius1( const T& radius );
     void          setTubeRadius2( const T& radius );
     void          setWheelRadius( const T& radius );
 
+    //***************************************
+    //****** Virtual public functions  ******
+    //***************************************
+
+    // from PSurf
+    bool          isClosedU()  const override;
+    bool          isClosedV()  const override;
+
   protected:
+    // Virtual function from PSurf that has to be implemented locally
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    T             getStartPU() const override;
+    T             getEndPU()   const override;
+    T             getStartPV() const override;
+    T             getEndPV()   const override;
+
+    // Help function to ensure consistent initialization
+    virtual void  init();
+
+    // Protected data for the surface
     T             _a;		//Wheelradius
     T             _b;		//Tuberadius1
     T             _c;		//Tuberadius2
-
-    void          eval(T u, T v, int d1, int d2, bool lu, bool lv ) override;
-    T             getEndPU() override;
-    T             getEndPV() override;
-    T             getStartPU() override;
-    T             getStartPV() override;
 
   }; // END class PTorus
 
