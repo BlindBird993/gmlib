@@ -419,7 +419,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::getParDeltaU() {
+  T PSurf<T,n>::getParDeltaU() const {
 
     return _sc_u * (getEndPU() - getStartPU());
   }
@@ -427,7 +427,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::getParDeltaV() {
+  T PSurf<T,n>::getParDeltaV() const {
 
     return _sc_v * (getEndPV() - getStartPV());
   }
@@ -435,7 +435,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::getParEndU() {
+  T PSurf<T,n>::getParEndU() const {
 
     return getParStartU() + getParDeltaU();
   }
@@ -443,7 +443,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::getParEndV() {
+  T PSurf<T,n>::getParEndV() const {
 
     return getParStartV() + getParDeltaV();
   }
@@ -451,7 +451,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::getParStartU() {
+  T PSurf<T,n>::getParStartU() const {
 
     return getStartPU() + _tr_u;
   }
@@ -459,7 +459,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::getParStartV() {
+  T PSurf<T,n>::getParStartV() const {
 
     return getStartPV() + _tr_v;
   }

@@ -76,12 +76,12 @@ namespace GMlib {
     Vector<T,n>&                  getDerVV( T u, T v );
     Vector<T,n>&                  getDerUV( T u, T v );
     Vector<T,n>&                  getNormal();
-    T                             getParDeltaU();
-    T                             getParDeltaV();
-    T                             getParStartU();
-    T                             getParStartV();
-    T                             getParEndU();
-    T                             getParEndV();
+    T                             getParDeltaU() const;
+    T                             getParDeltaV() const;
+    T                             getParStartU() const;
+    T                             getParStartV() const;
+    T                             getParEndU()   const;
+    T                             getParEndV()   const;
     Vector<T,n>&                  getPosition( T u, T v );
 
     int                           getNumSamIntPU() const;
@@ -149,19 +149,19 @@ namespace GMlib {
 
     // The result of the previous evaluation
     mutable DMatrix< Vector<T,n> > _p;           // Position and belonging partial derivatives
-    Vector<T,n>                   _n;           // Surface normal, for display in 3D
-    T                             _u;           // The parameter value in u-direction used for last evaluation
-    T                             _v;           // The parameter value in v-direction used for last evaluation
-    int                           _d1;          // Number of derivatives in u-direction computed last time
-    int                           _d2;          // Number of derivatives in v-direction computed last time
-    bool                          _diagonal;    // True if only upper left half of matrix is evaluated.
+    mutable Vector<T,n>            _n;           // Surface normal, for display in 3D
+    mutable T                      _u;           // The parameter value in u-direction used for last evaluation
+    mutable T                      _v;           // The parameter value in v-direction used for last evaluation
+    mutable int                    _d1;          // Number of derivatives in u-direction computed last time
+    mutable int                    _d2;          // Number of derivatives in v-direction computed last time
+    mutable bool                   _diagonal;    // True if only upper left half of matrix is evaluated.
 
     // Shift of parameter
-    T                             _tr_u;        // Translate u-parametre
-    T                             _sc_u;        // Scale u-parametre
+    mutable T                      _tr_u;        // Translate u-parametre
+    mutable T                      _sc_u;        // Scale u-parametre
 
-    T                             _tr_v;        // Translate v-parametre
-    T                             _sc_v;        // Scale v-parametre
+    mutable T                      _tr_v;        // Translate v-parametre
+    mutable T                      _sc_v;        // Scale v-parametre
 
 
     /*! virtual void PSurf<T,3>::eval( T u, T v, int d1, int d2, bool lu , bool lv ) = 0
