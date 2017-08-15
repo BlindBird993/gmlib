@@ -42,14 +42,6 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PCircularSurface<T>::PCircularSurface( T radius, int s1, int s2 ) {
-    init();
-    _radius = radius;
-  }
-
-
-  template <typename T>
-  inline
   PCircularSurface<T>::PCircularSurface( const PCircularSurface<T>& copy ) : PSurf<T,3>( copy ) {
     init();
   }
