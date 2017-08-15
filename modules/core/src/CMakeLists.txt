@@ -63,7 +63,6 @@ list( APPEND HEADERS
 )
 
 list( APPEND HEADER_SOURCES
-  static/gmstaticproc.c
   static/gmstaticproc2.c
 )
 

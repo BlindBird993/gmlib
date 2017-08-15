@@ -22,3 +22,4 @@
 
 
 GM_ADD_TESTS(dvectorn_tests)
+GM_ADD_TESTS(staticproc_tests)
