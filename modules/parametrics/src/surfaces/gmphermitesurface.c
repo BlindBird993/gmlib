@@ -133,7 +133,7 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PHermiteSurface<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/) {
+  void PHermiteSurface<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/) const {
 
     // set result set dim
     this->_p.setDim( d1+1, d2+1 );
@@ -143,18 +143,18 @@ namespace GMlib {
 
     // interpolate u in v direction
     for( int i = 0; i < _c1.getSize(); i++ )
-      p += getH( _c2.getSize()/2, i, v ) * (_c1[i]->evaluateParent(u, 1))[0];
+      p += getH( _c2.getSize()/2, i, v ) * (_c1(i)->evaluateParent(u, 1))(0);
 
     // interpolate v in u direction
     for( int i = 0; i < _c2.getSize(); i++ )
-      p += getH( _c1.getSize()/2, i, u ) * (_c2[i]->evaluateParent(v, 1))[0];
+      p += getH( _c1.getSize()/2, i, u ) * (_c2(i)->evaluateParent(v, 1))(0);
 
     // bi-linear interpolation
     p -=
-        _b[0][0] * (1.0f - u) * (1.0f - v) +
-        _b[0][1] * (1.0f - u) * v +
-        _b[1][0] * u * (1.0f - v) +
-        _b[1][1] * u * v;
+        _b(0)(0) * (1.0f - u) * (1.0f - v) +
+        _b(0)(1) * (1.0f - u) * v +
+        _b(1)(0) * u * (1.0f - v) +
+        _b(1)(1) * u * v;
 
     this->_p[0][0] = p;
 
@@ -167,18 +167,18 @@ namespace GMlib {
 
         // interpolate u in v direction
         for( int i = 0; i < _c1.getSize(); i++ )
-          p += getH( _c2.getSize()/2, i, v ) * (_c1[i]->evaluateParent(u, 1))[1];
+          p += getH( _c2.getSize()/2, i, v ) * (_c1(i)->evaluateParent(u, 1))(1);
 
         // interpolate v in u direction
         for( int i = 0; i < _c2.getSize(); i++ )
-          p += getHder( _c1.getSize()/2, i, u ) * (_c2[i]->evaluateParent(v, 1))[0];
+          p += getHder( _c1.getSize()/2, i, u ) * (_c2(i)->evaluateParent(v, 1))(0);
 
         // bi-linear interpolation
         p -=
-            _b[0][0] * ( v - 1.0f ) +
-            _b[0][1] * ( -v ) +
-            _b[1][0] * (1.0f - v) +
-            _b[1][1] * v;
+            _b(0)(0) * ( v - 1.0f ) +
+            _b(0)(1) * ( -v ) +
+            _b(1)(0) * (1.0f - v) +
+            _b(1)(1) * v;
 
         this->_p[1][0] = p;
       }
@@ -191,18 +191,18 @@ namespace GMlib {
 
         // interpolate u in v direction
         for( int i = 0; i < _c1.getSize(); i++ )
-          p += getHder( _c2.getSize()/2, i, v ) * (_c1[i]->evaluateParent(u, 1))[0];
+          p += getHder( _c2.getSize()/2, i, v ) * (_c1(i)->evaluateParent(u, 1))(0);
 
         // interpolate v in u direction
         for( int i = 0; i < _c2.getSize(); i++ )
-          p += getH( _c1.getSize()/2, i, u ) * (_c2[i]->evaluateParent(v, 1))[1];
+          p += getH( _c1.getSize()/2, i, u ) * (_c2(i)->evaluateParent(v, 1))(1);
 
         // bi-linear interpolation
         p -=
-            _b[0][0] * (u - 1.0f) +
-            _b[0][1] * (1.0f - u) +
-            _b[1][0] * ( -u ) +
-            _b[1][1] * u;
+            _b(0)(0) * (u - 1.0f) +
+            _b(0)(1) * (1.0f - u) +
+            _b(1)(0) * ( -u ) +
+            _b(1)(1) * u;
 
         this->_p[0][1] = p;
       }
@@ -215,18 +215,18 @@ namespace GMlib {
 
         // interpolate u in v direction
         for( int i = 0; i < _c1.getSize(); i++ )
-          p += getHder( _c2.getSize()/2, i, v ) * (_c1[i]->evaluateParent(u, 1))[1];
+          p += getHder( _c2.getSize()/2, i, v ) * (_c1(i)->evaluateParent(u, 1))(1);
 
         // interpolate v in u direction
         for( int i = 0; i < _c2.getSize(); i++ )
-          p += getHder( _c1.getSize()/2, i, u ) * (_c2[i]->evaluateParent(v, 1))[1];
+          p += getHder( _c1.getSize()/2, i, u ) * (_c2(i)->evaluateParent(v, 1))(1);
 
         // bi-linear interpolation
         p -=
-            _b[0][0] * (1.0f - u) * (1.0f - v) +
-            _b[0][1] * (1.0f - u) * v +
-            _b[1][0] * u * (1.0f - v) +
-            _b[1][1] * u * v;
+            _b(0)(0) * (1.0f - u) * (1.0f - v) +
+            _b(0)(1) * (1.0f - u) * v +
+            _b(1)(0) * u * (1.0f - v) +
+            _b(1)(1) * u * v;
 
         this->_p[1][1] = p;
       }
@@ -278,7 +278,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  T PHermiteSurface<T>::getH(  int d, int k, T t ) {
+  T PHermiteSurface<T>::getH(  int d, int k, T t ) const {
 
     if(d==2)
     {
@@ -307,7 +307,7 @@ namespace GMlib {
    */
   template <typename T>
   inline
-  T PHermiteSurface<T>::getHder( int d, int k, T t ) {
+  T PHermiteSurface<T>::getHder( int d, int k, T t ) const {
 
     if(d==2)
     {

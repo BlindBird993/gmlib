@@ -44,7 +44,7 @@ namespace GMlib {
 
     // Public local functions
     void          makeOmega(int n = 100, T omega_0 = T(0));
-    T             getOmega(T t);
+    T             getOmega(T t) const;
 
     //***************************************
     //****** Virtual public functions  ******
@@ -56,7 +56,7 @@ namespace GMlib {
 
   protected:
     // Virtual function from PSurf that has to be implemented locally
-    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) const override;
     T             getStartPU() const override;
     T             getEndPU()   const override;
     T             getStartPV() const override;

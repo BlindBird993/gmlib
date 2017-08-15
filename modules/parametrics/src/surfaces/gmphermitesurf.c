@@ -99,8 +99,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PHermiteSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ )
-  {
+  void PHermiteSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) const {
     this->_p.setDim( d1+1, d2+1 );
 
     DMatrix<T> hu, hv;
@@ -109,7 +108,7 @@ namespace GMlib {
 
     for( int i = 0; i < hu.getDim1(); i++ )
       for( int j = 0; j < hv.getDim1(); j++ )
-        this->_p[i][j] = hu[i] * ( _m^hv[j] );
+        this->_p[i][j] = hu(i) * ( _m^hv(j) );
   }
 
 

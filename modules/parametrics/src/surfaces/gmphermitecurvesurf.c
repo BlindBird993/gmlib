@@ -163,8 +163,7 @@ bool PHermiteCurveSurf<T>::isClosedV() const {
 //*****************************************************
 
 template <typename T>
-void PHermiteCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ )
-{
+void PHermiteCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) const {
   if(_swap_par)
   {
     std::swap(u,v);
@@ -175,7 +174,7 @@ void PHermiteCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*
 
   for(int i=0; i< _cu.getSize(); i++)
   {
-    c[i] = _cu[i]->evaluateParent(v,d2);
+    c[i] = _cu(i)->evaluateParent(v,d2);
 
 //    cout << "c["<< i << "]=" << c[i] << endl;
   }
@@ -193,14 +192,14 @@ void PHermiteCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*
 
 template <typename T>
 T PHermiteCurveSurf<T>::getStartPU() const {
-  if(_swap_par)   return _cu[0]->getParStart();
+  if(_swap_par)   return _cu(0)->getParStart();
   else            return T(0);
 }
 
 
 template <typename T>
 T PHermiteCurveSurf<T>::getEndPU() const {
-  if(_swap_par)   return _cu[0]->getParEnd();
+  if(_swap_par)   return _cu(0)->getParEnd();
   else            return T(1);
 }
 
@@ -208,14 +207,14 @@ T PHermiteCurveSurf<T>::getEndPU() const {
 template <typename T>
 T PHermiteCurveSurf<T>::getStartPV() const {
   if(_swap_par)   return T(0);
-  else            return _cu[0]->getParStart();
+  else            return _cu(0)->getParStart();
 }
 
 
 template <typename T>
 T PHermiteCurveSurf<T>::getEndPV() const {
   if(_swap_par)   return T(1);
-  else            return _cu[0]->getParEnd();
+  else            return _cu(0)->getParEnd();
 }
 
 

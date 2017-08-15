@@ -105,7 +105,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurf<T,n>::_eval( T u, T v, int d1, int d2 ) {
+  void PSurf<T,n>::_eval( T u, T v, int d1, int d2 ) const {
 
     if( !(d1 <= _d1 and d2 <=_d2 and GMutils::compValueF(u,_u) and GMutils::compValueF(v,_v) ) ) {
 
@@ -466,7 +466,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Vector<T,n>& PSurf<T,n>::getPosition( T u, T v ) {
+  Vector<T,n>& PSurf<T,n>::getPosition( T u, T v ) const {
 
     _eval(u, v, 0, 0);
     return _p[0][0];
@@ -821,7 +821,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::shiftU( T u ) {
+  T PSurf<T,n>::shiftU( T u ) const {
 
     return getStartPU() + _sc_u * ( u - getParStartU() );
   }
@@ -829,7 +829,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PSurf<T,n>::shiftV( T v ) {
+  T PSurf<T,n>::shiftV( T v ) const {
 
     return getStartPV() + _sc_v * ( v - getParStartV() );
   }

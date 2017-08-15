@@ -99,7 +99,7 @@ namespace GMlib {
       bool                       _c_moved; // Mark that we are editing, moving controll points
 
       // Virtual function from PSurf that has to be implemented locally
-      void                       eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false ) override;
+      void                       eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false ) const override;
       T                          getStartPU() const override;
       T                          getEndPU()   const override;
       T                          getStartPV() const override;
@@ -116,7 +116,7 @@ namespace GMlib {
 
       // Help functions
       void                       internalPreSample( DVector< DMatrix< T > >& p, int m, int d, T scale, T start, T end );
-      void                       multEval(const DMatrix<T>& bu, const DMatrix<T>& bv, int du, int dv);
+      void                       multEval(const DMatrix<T>& bu, const DMatrix<T>& bv, int du, int dv) const;
 
 
 #ifdef GM_STREAM

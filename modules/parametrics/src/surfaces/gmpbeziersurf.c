@@ -289,7 +289,7 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PBezierSurf<T>::eval( T u, T v, int du, int dv, bool /*lu*/, bool /*lv*/ ) {
+  void PBezierSurf<T>::eval( T u, T v, int du, int dv, bool /*lu*/, bool /*lv*/ ) const {
 
       // Set Dimensions
       this->_p.setDim( du+1, dv+1 );
@@ -404,7 +404,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierSurf<T>::multEval(const DMatrix<T>& bu, const DMatrix<T>& bv, int du, int dv) {
+  void PBezierSurf<T>::multEval(const DMatrix<T>& bu, const DMatrix<T>& bv, int du, int dv) const {
 
       int ku = this->getDegreeU()+1;
       int kv = this->getDegreeV()+1;
@@ -418,9 +418,9 @@ namespace GMlib {
       //    c= _c^bvT
       for(int i=0; i< ku; i++)
           for(int j=0; j<=dv; j++) {
-              c[i][j] = _c[i][0]*bv(j)(0);
+              c[i][j] = _c(i)(0)*bv(j)(0);
               for(int k=1; k<kv; k++)
-                  c[i][j] += _c[i][k]*bv(j)(k);
+                  c[i][j] += _c(i)(k)*bv(j)(k);
           }
       //    _p = bu * c
       for(int i=0; i<=dv; i++)

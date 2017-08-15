@@ -66,7 +66,7 @@ namespace GMlib {
 
 
   protected:
-    void                            eval( T t, int d = 0, bool l = false ) override;
+    void                            eval( T t, int d = 0, bool l = false ) const override;
     T                               getEndP()   const override;
     T                               getStartP() const override;
 

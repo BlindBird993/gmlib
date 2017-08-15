@@ -130,7 +130,7 @@ namespace GMlib {
       bool                       _c_moved; // Mark that we are editing, moving controll points
 
       // Virtual function from PSurf that has to be implemented locally
-      void                       eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false ) override; // Abstract in PSurf
+      void                       eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false ) const override; // Abstract in PSurf
       T                          getStartPU() const override;
       T                          getEndPU()   const override;
       T                          getStartPV() const override;
@@ -148,8 +148,8 @@ namespace GMlib {
       void                       resample( DMatrix<DMatrix <Vector<T,3> > >& p, const DVector<PreMat>& bu, const DVector<PreMat>& bv, int m1, int m2, int d1, int d2 );
 
       // Help functions
-      void                       makeIndex( DVector<int>& ind, int i, int k, int n);
-      void                       multEval( DMatrix<Vector<T,3>>& p, const DMatrix<T>& bu, const DMatrix<T>& bv, const DVector<int>& i, const DVector<int>&  j, int du, int dv);
+      void                       makeIndex( DVector<int>& ind, int i, int k, int n) const;
+      void                       multEval( DMatrix<Vector<T,3>>& p, const DMatrix<T>& bu, const DMatrix<T>& bv, const DVector<int>& i, const DVector<int>&  j, int du, int dv) const;
       void                       initKnot( DVector<T>& t, bool& c, int& k, const DVector<T>& g, int n, int d, T dt = T(0) );
       void                       initKnot2( DVector<T>& t, bool& c, const DVector<T>& g, int n, int d );
 

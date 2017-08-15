@@ -151,7 +151,7 @@ namespace GMlib {
 
 
   template <typename T>
-  void PERBSCurve<T>::eval( T t, int d, bool l )
+  void PERBSCurve<T>::eval( T t, int d, bool l ) const
   {
 
     int k;

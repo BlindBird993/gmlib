@@ -51,7 +51,7 @@ namespace GMlib {
 
   protected:
     // Virtual function from PSurf that has to be implemented locally
-    void          eval( T u, T v, int d1, int d2, bool lu, bool lv ) override;
+    void          eval( T u, T v, int d1, int d2, bool lu, bool lv ) const override;
     T             getStartPU() const override;
     T             getEndPU()   const override;
     T             getStartPV() const override;

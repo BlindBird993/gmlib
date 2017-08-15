@@ -52,9 +52,9 @@ namespace GMlib {
     PCurve( const PCurve<T,n>& copy );
     ~PCurve();
 
-    DVector<Vector<T,n> >&        evaluate( T t, int d );
-    DVector<Vector<T,n> >&        evaluateGlobal( T t, int d );
-    DVector<Vector<T,n> >&        evaluateParent( T t, int d );
+    DVector<Vector<T,n> >&        evaluate( T t, int d ) const;
+    DVector<Vector<T,n> >&        evaluateGlobal( T t, int d ) const;
+    DVector<Vector<T,n> >&        evaluateParent( T t, int d ) const;
 
     bool                          getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps = 10e-6, int max_iterations = 20);
     T                             getCurvature( T t );
@@ -104,23 +104,23 @@ namespace GMlib {
 
 
     // The result of the previous evaluation
-    DVector<Vector<T,n> >         _p;           // Position and belonging derivatives
-    DVector<Vector<T,n> >&        _q = _p;
-    T                             _t;           // The parameter value used for last evaluation
-    int                           _d;           // Number of derivatives computed last time
+    mutable DVector<Vector<T,n> >  _p;           // Position and belonging derivatives
+    DVector<Vector<T,n> >&         _q = _p;
+    mutable T                      _t;           // The parameter value used for last evaluation
+    mutable int                    _d;           // Number of derivatives computed last time
 
     // Shift of parameter.
     T                             _tr;          // translate
     T                             _sc;          // scale
-    T                             shift( T t );
+    T                             shift( T t ) const;
 
 
-    virtual void                  eval(T t, int d, bool l = true ) = 0;
+    virtual void                  eval(T t, int d, bool l = true ) const = 0;
     virtual T                     getEndP()     const = 0;
     virtual T                     getStartP()   const = 0;
 
   private:
-    void                          _eval( T t, int d );
+    void                          _eval( T t, int d ) const;
     T                             _integral(T a, T b, double eps);
 
   }; // END class PCurve

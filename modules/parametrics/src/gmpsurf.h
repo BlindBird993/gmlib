@@ -82,7 +82,7 @@ namespace GMlib {
     T                             getParStartV() const;
     T                             getParEndU()   const;
     T                             getParEndV()   const;
-    Vector<T,n>&                  getPosition( T u, T v );
+    Vector<T,n>&                  getPosition( T u, T v ) const;
 
     int                           getNumSamIntPU() const;
     int                           getNumSamIntPV() const;
@@ -173,7 +173,7 @@ namespace GMlib {
      *  \param[in]  lu  Whether to evaluate from left in u.
      *  \param[in]  lv  Whether to evaluate from left in v.
      */
-    virtual void                  eval( T u, T v, int d1, int d2, bool lu = true, bool lv = true ) = 0;
+    virtual void                  eval( T u, T v, int d1, int d2, bool lu = true, bool lv = true ) const = 0;
 
     /*! virtual T PSurf<T,3>::getEndPU() = 0
      *  Returns the parametric end value in u-direction. (Requires implementation in PSurf sub-classes.)
@@ -211,12 +211,12 @@ namespace GMlib {
 
     void                          uppdateSurroundingSphere( Sphere<T,n>& s, const DMatrix< DMatrix< Vector<T,n> > >& p );
 
-    T                             shiftU(T u);
-    T                             shiftV(T v);
+    T                             shiftU(T u) const;
+    T                             shiftV(T v) const;
 
   private:
 
-    void                          _eval( T u, T v, int d1, int d2 );
+    void                          _eval( T u, T v, int d1, int d2 ) const;
     void                          _evalNormal();
     void                          _computeEFGefg( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g );
 //    void                          _setSam( int m1, int m2 );

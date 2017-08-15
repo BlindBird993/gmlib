@@ -77,8 +77,8 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PRotationalSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ )
-  {
+  void PRotationalSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) const {
+
     this->_p.setDim(d1+1,d2+1);
     DVector<Vector<T,3> > uu =  _cu->evaluate( u, d1 );
     T sv = sin(v);

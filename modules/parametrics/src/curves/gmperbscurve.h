@@ -113,7 +113,7 @@ namespace GMlib {
     DVector< DVector<T> >           _B;        // Storing sample values - GERBS
 
     // virual functions from PSurf
-    void                            eval( T t, int d = 0, bool l = false ) override;
+    void                            eval( T t, int d = 0, bool l = false ) const override;
     T                               getEndP()   const override;
     T                               getStartP() const override;
 

@@ -137,12 +137,12 @@ namespace GMlib {
 
     DMatrix< PSurf<T,3>* >              _c;
 
-    void	                            eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false ) override;
+    void	                              eval( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false ) const override;
     void                                evalPre( T u, T v, int d1 = 0, int d2 = 0, bool lu = false, bool lv = false );
     void                                findIndex( T u, T v, int& iu, int& iv );
     void                                generateKnotVector( DVector<T>& kv, const T s, const T d, int kvd, bool closed );
     void                                getB( DVector<T>& B, const DVector<T>& kv, int tk, T t, int d );
-    DMatrix< Vector<T,3> >              getC( T u, T v, int uk, int vk, T du, T dv );
+    DMatrix< Vector<T,3> >              getC( T u, T v, int uk, int vk, T du, T dv ) const;
     DMatrix< Vector<T,3> >              getCPre( T u, T v, int uk, int vk, T du, T dv, int iu, int iv );
     T                                   getStartPU() const override;
     T                                   getEndPU()   const override;

@@ -78,7 +78,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void	PCurve<T,n>::_eval( T t, int d ) {
+  void	PCurve<T,n>::_eval( T t, int d ) const {
 
     if( d <= _d && t == _t ) return;
 
@@ -129,7 +129,7 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  DVector<Vector<T,n> >& PCurve<T,n>::evaluate( T t, int d ) {
+  DVector<Vector<T,n> >& PCurve<T,n>::evaluate( T t, int d ) const {
 
     _eval(t,d);
     return _p;
@@ -137,7 +137,7 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  DVector<Vector<T,n> >& PCurve<T,n>::evaluateGlobal( T t, int d ) {
+  DVector<Vector<T,n> >& PCurve<T,n>::evaluateGlobal( T t, int d ) const {
 
     static DVector< Vector<T,n> > p;
 
@@ -154,7 +154,7 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  DVector<Vector<T,n> >& PCurve<T,n>::evaluateParent( T t, int d ) {
+  DVector<Vector<T,n> >& PCurve<T,n>::evaluateParent( T t, int d ) const {
 
     static DVector< Vector<T,n> > p;
 
@@ -529,7 +529,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::shift( T t ) {
+  T PCurve<T,n>::shift( T t ) const {
     return t;
 //    return _tr + _sc * ( t - getStartP() );
   }

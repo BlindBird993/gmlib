@@ -80,7 +80,7 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PCoonsPatch<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) {
+  void PCoonsPatch<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) const {
 
     this->_p=_s1->evaluate(u, v, d1, d2) + _s2->evaluate(u, v, d1, d2) - _s3->evaluate(u, v, d1, d2);
   }

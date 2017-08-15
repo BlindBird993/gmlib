@@ -123,7 +123,7 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PSubSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/) {
+  void PSubSurf<T>::eval( T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/) const {
 
     this->_p.setDim(3,3);
 
@@ -198,7 +198,7 @@ namespace GMlib {
         S3.setCol(a2, 1);
         this->_p[2][1] = S3*bv + s2buv;    // Q_uuv
 
-        Vector<T,3> s3buv = 2*(S3*buv);
+        //Vector<T,3> s3buv = 2*(S3*buv);
 
         S3.setCol(b1, 0);
         S3.setCol(b2, 1);
@@ -306,7 +306,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  Vector<T,2>& PSubSurf<T>::Suv(T u, T v) const{
+  Vector<T,2> PSubSurf<T>::Suv(T u, T v) const{
     return _c;
   }
 

@@ -40,6 +40,7 @@ namespace GMlib {
     _r = radius;
     _sx = scale_x;
     _sy = scale_y;
+
   }
 
 
@@ -83,7 +84,7 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PKleinsBottle<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
+  void PKleinsBottle<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) const {
 
     this->_p.setDim( d1+1, d2+1 );
 

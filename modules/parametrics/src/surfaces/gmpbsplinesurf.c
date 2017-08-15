@@ -352,7 +352,7 @@ namespace GMlib {
 
 
   template <typename T>
-  void PBSplineSurf<T>::eval( T u, T v, int du, int dv, bool lu, bool lv ) {
+  void PBSplineSurf<T>::eval( T u, T v, int du, int dv, bool lu, bool lv ) const {
 
       DMatrix<T>   bu, bv;
       DVector<int> ind_i(_ku), ind_j(_kv);
@@ -491,7 +491,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBSplineSurf<T>::makeIndex( DVector<int>& ind, int i, int k, int n) {
+  void PBSplineSurf<T>::makeIndex( DVector<int>& ind, int i, int k, int n) const{
 
       if(i+k > n){
           int j, s = n-i;
@@ -509,7 +509,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBSplineSurf<T>::multEval(DMatrix<Vector<T,3>>& p, const DMatrix<T>& bu, const DMatrix<T>& bv, const DVector<int>& ii, const DVector<int>& ij, int du, int dv) {
+  void PBSplineSurf<T>::multEval(DMatrix<Vector<T,3>>& p, const DMatrix<T>& bu, const DMatrix<T>& bv, const DVector<int>& ii, const DVector<int>& ij, int du, int dv) const {
 
       // Set Dimensions
       p.setDim(du+1,dv+1);
@@ -524,9 +524,9 @@ namespace GMlib {
 
       for(int i=0; i< _ku; i++)
           for(int j=0; j<=dv; j++) {
-              c[i][j] = _c[ii(i)][ij(0)]*bv(j)(0);
+              c[i][j] = _c(ii(i))(ij(0))*bv(j)(0);
               for(int k=1; k<_kv; k++)
-                  c[i][j] += _c[ii(i)][ij(k)]*bv(j)(k);
+                  c[i][j] += _c(ii(i))(ij(k))*bv(j)(k);
           }
       //    p = bu * c
       for(int i=0; i<=dv; i++)

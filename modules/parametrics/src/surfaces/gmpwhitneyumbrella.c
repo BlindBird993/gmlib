@@ -69,7 +69,7 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PWhitneyUmbrella<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) {
+  void PWhitneyUmbrella<T>::eval(T u, T v, int d1, int d2, bool /*lu*/, bool /*lv*/ ) const {
 
     this->_p.setDim( d1+1, d2+1 );
 

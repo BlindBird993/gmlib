@@ -58,7 +58,7 @@ namespace GMlib {
 
   protected:
     // Virtual function from PSurf that has to be implemented locally
-    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) const override;
     T             getStartPU() const override;
     T             getEndPU()   const override;
     T             getStartPV() const override;
@@ -85,7 +85,7 @@ namespace GMlib {
     Vector<T,2>     S(T u, T v)   const;
     Vector<T,2>     Su(T u, T v)  const;
     Vector<T,2>     Sv(T u, T v)  const;
-    Vector<T,2>&    Suv(T u, T v) const;
+    Vector<T,2>     Suv(T u, T v) const;
 
   }; // END class PSubSurf
 

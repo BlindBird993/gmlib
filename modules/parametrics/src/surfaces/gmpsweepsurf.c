@@ -96,14 +96,14 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T PSweepSurf<T>::getOmega(T t) {
+  T PSweepSurf<T>::getOmega(T t) const {
       int   n  = _omega.getDim()-1;
       T     d  = _spine->getParDelta();
       T     u  = t - _spine->getParStart();
       int   i  = n*u/d;
       T     r  = (n*u/d) - T(i);
 
-      return _omega[i] + r*(_omega[i+1] - _omega[i]);
+      return _omega(i) + r*(_omega(i+1) - _omega(i));
   }
 
 
@@ -131,8 +131,7 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PSweepSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ )
-  {
+  void PSweepSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) const {
 
     this->_p.setDim(d1+1,d2+1);
     int i;

@@ -80,7 +80,7 @@ namespace GMlib {
   //******************************************************
 
   template <typename T>
-  void PCircle<T>::eval( T t, int d, bool /*l*/ ) {
+  void PCircle<T>::eval( T t, int d, bool /*l*/ ) const {
 
     this->_p.setDim( d + 1 );
 

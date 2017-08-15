@@ -122,7 +122,7 @@ namespace GMlib {
   //*****************************************************
 
   template <typename T>
-  void PBezierCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) {
+  void PBezierCurveSurf<T>::eval(T u, T v, int d1,int d2, bool /*lu*/, bool /*lv*/ ) const {
 
       if(_swap_par) {
           std::swap(u,v);
@@ -132,7 +132,7 @@ namespace GMlib {
       DMatrix<Vector<T,3> > c(_cu.getSize(), d2+1);
 
       for(int i=0; i < _cu.getSize(); i++)
-          c[i] = _cu[i]->evaluateParent(v, d2);
+          c[i] = _cu(i)->evaluateParent(v, d2);
 
       // Compute the Bernstein-Hermite Polynomials
       DMatrix< T > bhp;

@@ -60,7 +60,7 @@ namespace GMlib {
 
   protected:
     // Virtual function from PSurf that has to be implemented locally
-    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) override;
+    void          eval(T u, T v, int d1, int d2, bool lu = true, bool lv = true ) const override;
     T             getStartPU() const override;
     T             getEndPU()   const override;
     T             getStartPV() const override;
@@ -71,8 +71,8 @@ namespace GMlib {
 
     // Protected data for the surface
     void          edit( SceneObject* obj );
-    T             getH(  int d, int k, T t );
-    T             getHder( int d, int k, T t );
+    T             getH(  int d, int k, T t ) const;
+    T             getHder( int d, int k, T t ) const;
     void          insertPatch( PCurve<T,3>* patch );
 
     Array< PCurve<T,3>* >   _c1, _c2;

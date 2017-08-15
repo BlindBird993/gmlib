@@ -109,7 +109,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierCurve<T>::eval( T t, int /*d*/, bool /*l*/ ) {
+  void PBezierCurve<T>::eval( T t, int /*d*/, bool /*l*/ ) const {
 
     // Send the control to the pre-eval evaluator
 //    if( _resamp_mode == GM_RESAMPLE_PREEVAL ) {

@@ -534,7 +534,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSSurf<T>::eval( T u, T v, int d1, int d2, bool lu, bool lv ) {
+  void PERBSSurf<T>::eval( T u, T v, int d1, int d2, bool lu, bool lv ) const {
 
 
       if(this->_resample) {
@@ -543,14 +543,14 @@ namespace GMlib {
 
 
           // Find Knot Indices u_k and v_k
-          int uk = _ru[i].ind;
-          int vk = _rv[j].ind;
+          int uk = _ru(i).ind;
+          int vk = _rv(j).ind;
 
           // Get result of inner loop for first patch in v
           DMatrix< Vector<T,3> > s0 = getC( u, v, uk, vk, d1, d2 );
 
           // If placed on a knot, return only first patch result
-          if( std::abs(v - _v[vk]) < 1e-5 ) {
+          if( std::abs(v - _v(vk)) < 1e-5 ) {
               this->_p = s0;
               //      std::cout << "_p[0][0]: " << this->_p[0][0] << "  (knot)" << std::endl;
               return;
@@ -561,7 +561,7 @@ namespace GMlib {
               DMatrix< Vector<T,3> > s1 = getC( u, v, uk, vk+1, d1, d2 );
 
               // Evaluate ERBS-basis in v direction
-              DVector<T>& B = _rv[j].m;
+              const DVector<T>& B = _rv(j).m;
 
               // Compute "Pascals triangle"-numbers and correct patch matrix
               DVector<T> a( B.getDim() );
@@ -571,10 +571,10 @@ namespace GMlib {
 
                   a[i] = 1;
                   for( int j = i-1; j > 0; j-- )
-                      a[j] += a[j-1];                           // Compute "Pascals triangle"-numbers
+                      a[j] += a(j-1);                           // Compute "Pascals triangle"-numbers
 
                   for( int j = 0; j <= i; j++ )
-                      s1[i] += (a[j]*B[j]) * s0[i-j];       // "column += scalar x column"
+                      s1[i] += (a(j)*B(j)) * s0(i-j);       // "column += scalar x column"
               }
               s1.transpose();
 
@@ -860,7 +860,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  DMatrix< Vector<T,3> > PERBSSurf<T>::getC( T u, T v, int uk, int vk, T du, T dv ) {
+  DMatrix< Vector<T,3> > PERBSSurf<T>::getC( T u, T v, int uk, int vk, T du, T dv ) const {
 
       if(this->_resample) {
           // Init Indexes and get local u/v values
@@ -868,21 +868,21 @@ namespace GMlib {
           const int cv = vk-1;
 
           // Evaluate First local patch
-          DMatrix< Vector<T,3> > c0 = _c[cu][cv]->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>( du, dv ) );
+          DMatrix< Vector<T,3> > c0 = _c(cu)(cv)->evaluateParent( mapToLocal(u,v,uk,vk), Point<T,2>( du, dv ) );
 
           // If on a interpolation point return only first patch evaluation
-          if( std::abs(u - _u[uk]) < 1e-5 )
+          if( std::abs(u - _u(uk)) < 1e-5 )
               return c0;
 
           // Select next local patch in u direction
 
           // Evaluate Second local patch
-          DMatrix< Vector<T,3> > c1 = _c[cu+1][cv]->evaluateParent( mapToLocal(u,v,uk+1,vk), Point<T,2>( du, dv) );
+          DMatrix< Vector<T,3> > c1 = _c(cu+1)(cv)->evaluateParent( mapToLocal(u,v,uk+1,vk), Point<T,2>( du, dv) );
 
           DVector<T> a(du+1);
 
           // Evaluate ERBS-basis in u direction
-          DVector<T>& B = _ru[uk].m;
+          const DVector<T>& B = _ru(uk).m;
 
           // Compute "Pascals triangle"-numbers and correct patch matrix
           c0 -= c1;
@@ -893,7 +893,7 @@ namespace GMlib {
                   a[j] += a[j-1];
 
               for( int j = 0; j <= i; j++ )
-                  c1[i] += (a[j] * B[j]) * c0[i-j];
+                  c1[i] += (a(j) * B(j)) * c0(i-j);
           }
           return c1 ;
       }
