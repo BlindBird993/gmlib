@@ -21,4 +21,4 @@
 # ###############################################################################
 
 
-GM_ADD_TESTS(sceneobject_tests gmscene gmopengl gmcore)
+GM_ADD_TESTS(sceneobject gmscene gmopengl gmcore)

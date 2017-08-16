@@ -225,23 +225,23 @@ endfunction(GM_ADD_HEADER_SOURCES)
 
 
 
-function(GM_ADD_TEST TEST_NAME)
+function(GM_ADD_TEST FILENAME)
   if(GM_TESTING)
-    add_executable(${TEST_NAME} ${TEST_NAME}.cpp)
+    set(TEST_NAME "gmtest_${FILENAME}")
+    add_executable(${TEST_NAME} ${FILENAME}.cpp)
     target_link_libraries(${TEST_NAME} ${ARGN} ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} pthread)
     add_test( NAME ${TEST_NAME} COMMAND ${TEST_NAME})
   endif(GM_TESTING)
 endfunction(GM_ADD_TEST)
 
-function(GM_ADD_TESTS TEST_SET_NAME)
+function(GM_ADD_TESTS FILENAME)
   if(GM_TESTING)
-    add_executable( ${TEST_SET_NAME} ${TEST_SET_NAME}.cc )
+    set(TEST_SET_NAME "gmtest_${FILENAME}")
+    add_executable( ${TEST_SET_NAME} ${FILENAME}.cc )
     target_link_libraries(${TEST_SET_NAME} ${ARGN} ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} pthread )
-    gtest_add_tests( ${TEST_SET_NAME} "" ${TEST_SET_NAME}.cc )
+    gtest_add_tests( ${TEST_SET_NAME} "" ${FILENAME}.cc )
   endif(GM_TESTING)
 endfunction(GM_ADD_TESTS)
-
-
 
 
 
