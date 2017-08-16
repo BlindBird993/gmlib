@@ -128,7 +128,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurf<T,n>::estimateClpPar( const Point<T,n>& p, T& u, T& v ) {
+  void PSurf<T,n>::estimateClpPar( const Point<T,n>& p, T& u, T& v ) const {
 
     T su = getParStartU();
     T sv = getParStartV();
@@ -179,7 +179,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( const APoint<T,2>& p, const APoint<int,2>& d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( const APoint<T,2>& p, const APoint<int,2>& d ) const {
 
     return evaluate( p(0), p(1), d(0), d(1) );
   }
@@ -187,7 +187,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( T u, T v, int d1, int d2 ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluate( T u, T v, int d1, int d2 ) const {
 
     _eval(u, v, d1, d2);
     return _p;
@@ -196,7 +196,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( const APoint<T,2>& p, const APoint<int,2>& d ) {
+  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( const APoint<T,2>& p, const APoint<int,2>& d ) const {
 
     return evaluateD( p(0), p(1), d(0), d(1) );
   }
@@ -204,7 +204,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( T u, T v, int d1, int d2 ) {
+  DVector<Vector<T,n> > PSurf<T,n>::evaluateD( T u, T v, int d1, int d2 ) const {
 
     // Here we are coopying diagonal wise the matrix into an vector
     // One problem is if d1 is not equal d2.
@@ -231,7 +231,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( const APoint<T,2>& p, const APoint<int,2>& d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( const APoint<T,2>& p, const APoint<int,2>& d ) const {
 
     return evaluateGlobal( p(0), p(1), d(0), d(1) );
   }
@@ -239,7 +239,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( T u, T v, int d1, int d2 ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateGlobal( T u, T v, int d1, int d2 ) const {
 
     static DMatrix<Vector<T,n> > p;
 
@@ -261,7 +261,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( const APoint<T,2>& p, const APoint<int,2>& d ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( const APoint<T,2>& p, const APoint<int,2>& d ) const {
 
     return evaluateParent( p(0), p(1), d(0), d(1) );
   }
@@ -269,7 +269,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( T u, T v, int d1, int d2 ) {
+  DMatrix<Vector<T,n> >& PSurf<T,n>::evaluateParent( T u, T v, int d1, int d2 ) const {
 
     static DMatrix<Vector<T,n> > p;
 
@@ -290,7 +290,7 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  T PSurf<T,n>::getCurvatureGauss( T u, T v ) {
+  T PSurf<T,n>::getCurvatureGauss( T u, T v ) const {
 
     T E, F, G, e, f, g;
     _computeEFGefg( u, v, E, F, G, e, f, g );
@@ -300,7 +300,7 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  T PSurf<T,n>::getCurvatureMean( T u, T v ) {
+  T PSurf<T,n>::getCurvatureMean( T u, T v ) const {
 
       T E, F, G, e, f, g;
       _computeEFGefg( u, v, E, F, G, e, f, g );
@@ -310,7 +310,7 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  T PSurf<T,n>::getCurvaturePrincipalMax( T u, T v ) {
+  T PSurf<T,n>::getCurvaturePrincipalMax( T u, T v ) const {
 
     T K = getCurvatureGauss( u, v );
     T H = getCurvatureMean( u, v );
@@ -320,7 +320,7 @@ namespace GMlib {
 
 
   template <typename T, int n>
-  T PSurf<T,n>::getCurvaturePrincipalMin( T u, T v ) {
+  T PSurf<T,n>::getCurvaturePrincipalMin( T u, T v ) const {
 
     T K = getCurvatureGauss( u, v );
     T H = getCurvatureMean( u, v );
@@ -331,7 +331,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  void PSurf<T,n>::_computeEFGefg( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g ) {
+  void PSurf<T,n>::_computeEFGefg( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g ) const {
       _eval(u,v,2,2);
       UnitVector<T,n>  N   = _p[1][0]^_p[0][1];
       Vector<T,n>      du  = _p[1][0];
@@ -366,52 +366,52 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Vector<T,n>& PSurf<T,n>::getDerU( T u, T v ) {
+  const Vector<T,n>& PSurf<T,n>::getDerU( T u, T v ) const {
 
     _eval(u, v, 1, 0);
-    return _p[1][0];
+    return _p(1)(0);
   }
 
 
   template <typename T, int n>
   inline
-  Vector<T,n>& PSurf<T,n>::getDerUU( T u, T v ) {
+  const Vector<T,n>& PSurf<T,n>::getDerUU( T u, T v ) const {
 
     _eval(u, v, 2, 0);
-    return _p[2][0];
+    return _p(2)(0);
   }
 
 
   template <typename T, int n>
   inline
-  Vector<T,n>& PSurf<T,n>::getDerUV( T u, T v ) {
+  const Vector<T,n>& PSurf<T,n>::getDerUV( T u, T v ) const {
 
     _eval(u, v, 2, 2);
-    return _p[1][1];
+    return _p(1)(1);
   }
 
 
   template <typename T, int n>
   inline
-  Vector<T,n>& PSurf<T,n>::getDerV( T u, T v ) {
+  const Vector<T,n>& PSurf<T,n>::getDerV( T u, T v ) const {
 
     _eval(u, v, 0, 1);
-    return _p[0][1];
+    return _p(0)(1);
   }
 
 
   template <typename T, int n>
   inline
-  Vector<T,n>& PSurf<T,n>::getDerVV( T u, T v ) {
+  const Vector<T,n>& PSurf<T,n>::getDerVV( T u, T v ) const {
 
     _eval(u, v, 0, 2);
-    return _p[0][2];
+    return _p(0)(2);
   }
 
 
   template <typename T, int n>
   inline
-  Vector<T,n>& PSurf<T,n>::getNormal() {
+  const Vector<T,n>& PSurf<T,n>::getNormal() const {
 
     return _n;
   }

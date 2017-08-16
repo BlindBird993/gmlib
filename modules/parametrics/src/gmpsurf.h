@@ -54,28 +54,28 @@ namespace GMlib {
     PSurf( const PSurf<T,n>& copy );
     virtual ~PSurf();
 
-    virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v );
+    virtual void                  estimateClpPar( const Point<T,n>& p, T& u, T& v ) const;
 
-    DMatrix<Vector<T,n> >&        evaluate( const APoint<T,2>& p, const APoint<int,2>& d );
-    DMatrix<Vector<T,n> >&        evaluate( T u, T v, int d1, int d2 );
-    DVector<Vector<T,n> >         evaluateD( const APoint<T,2>& p, const APoint<int,2>& d );
-    DVector<Vector<T,n> >         evaluateD( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,n> >&        evaluateGlobal( const APoint<T,2>& p, const APoint<int,2>& d );
-    DMatrix<Vector<T,n> >&        evaluateGlobal( T u, T v, int d1, int d2 );
-    DMatrix<Vector<T,n> >&        evaluateParent( const APoint<T,2>& p, const APoint<int,2>& d );
-    DMatrix<Vector<T,n> >&        evaluateParent( T u, T v, int d1, int d2 );
-    virtual T                     getCurvatureGauss( T u, T v );
-    virtual T                     getCurvatureMean( T u, T v );
-    virtual T                     getCurvaturePrincipalMax( T u, T v );
-    virtual T                     getCurvaturePrincipalMin( T u, T v );
+    DMatrix<Vector<T,n> >&        evaluate( const APoint<T,2>& p, const APoint<int,2>& d ) const;
+    DMatrix<Vector<T,n> >&        evaluate( T u, T v, int d1, int d2 ) const;
+    DVector<Vector<T,n> >         evaluateD( const APoint<T,2>& p, const APoint<int,2>& d ) const;
+    DVector<Vector<T,n> >         evaluateD( T u, T v, int d1, int d2 ) const;
+    DMatrix<Vector<T,n> >&        evaluateGlobal( const APoint<T,2>& p, const APoint<int,2>& d ) const;
+    DMatrix<Vector<T,n> >&        evaluateGlobal( T u, T v, int d1, int d2 ) const;
+    DMatrix<Vector<T,n> >&        evaluateParent( const APoint<T,2>& p, const APoint<int,2>& d ) const;
+    DMatrix<Vector<T,n> >&        evaluateParent( T u, T v, int d1, int d2 ) const;
+    virtual T                     getCurvatureGauss( T u, T v ) const;
+    virtual T                     getCurvatureMean( T u, T v ) const;
+    virtual T                     getCurvaturePrincipalMax( T u, T v ) const;
+    virtual T                     getCurvaturePrincipalMin( T u, T v ) const;
     int                           getDerivativesU() const;
     int                           getDerivativesV() const;
-    Vector<T,n>&                  getDerU( T u, T v );
-    Vector<T,n>&                  getDerV( T u, T v );
-    Vector<T,n>&                  getDerUU( T u, T v );
-    Vector<T,n>&                  getDerVV( T u, T v );
-    Vector<T,n>&                  getDerUV( T u, T v );
-    Vector<T,n>&                  getNormal();
+    const Vector<T,n>&            getDerU( T u, T v ) const;
+    const Vector<T,n>&            getDerV( T u, T v ) const;
+    const Vector<T,n>&            getDerUU( T u, T v ) const;
+    const Vector<T,n>&            getDerVV( T u, T v ) const;
+    const Vector<T,n>&            getDerUV( T u, T v ) const;
+    const Vector<T,n>&            getNormal() const;
     T                             getParDeltaU() const;
     T                             getParDeltaV() const;
     T                             getParStartU() const;
@@ -218,7 +218,7 @@ namespace GMlib {
 
     void                          _eval( T u, T v, int d1, int d2 ) const;
     void                          _evalNormal();
-    void                          _computeEFGefg( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g );
+    void                          _computeEFGefg( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g ) const;
 //    void                          _setSam( int m1, int m2 );
     int                           _sum( int i, int j );
 
