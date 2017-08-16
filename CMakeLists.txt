@@ -88,6 +88,7 @@ option( GM_DEVELOPER_MODE "Set gmlib in developer mode" ON )
 #option( GM_DEBUG "Enable internal debugging, assertions, etc." FALSE )
 option( GM_DEBUG_OPENGL "Enable opengl debug. OpenGL function calls are safe called." ON )
 option( GM_TESTING "Create unit tests." OFF )
+option( GM_BENCHMARKING "Create benchmarks." OFF )
 
 # API documentation options
 #option( GM_DOXYGEN "Create build target for doxygen documentation." FALSE )
@@ -114,6 +115,18 @@ if(GM_DEVELOPER_MODE)
     endif(GTEST_FOUND)
 
   endif(GM_TESTING)
+
+  if(GM_BENCHMARKING)
+    message("Finding Google Benchmark:")
+    find_package(benchmark)
+    if(benchmark_FOUND)
+      message(WARNING "Google benchmark found: Benchmarking enabled!")
+      enable_testing()
+    else(benchmark_FOUND)
+      message(WARNING "Google benchmark NOT fould: benchmarks disabled!")
+      set(GM_TESTING FALSE)
+    endif(benchmark_FOUND)
+  endif(GM_BENCHMARKING)
 
   if(GM_DEBUG_OPENGL)
     GM_ADD_DEFINITION( GM_GL_DEBUG )

@@ -228,9 +228,9 @@ endfunction(GM_ADD_HEADER_SOURCES)
 function(GM_ADD_TEST FILENAME)
   if(GM_TESTING)
     set(TEST_NAME "gmtest_${FILENAME}")
-    add_executable(${TEST_NAME} ${FILENAME}.cpp)
+    add_executable(${TEST_NAME} ${FILENAME}.cc)
     target_link_libraries(${TEST_NAME} ${ARGN} ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} pthread)
-    add_test( NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
   endif(GM_TESTING)
 endfunction(GM_ADD_TEST)
 
@@ -242,6 +242,25 @@ function(GM_ADD_TESTS FILENAME)
     gtest_add_tests( ${TEST_SET_NAME} "" ${FILENAME}.cc )
   endif(GM_TESTING)
 endfunction(GM_ADD_TESTS)
+
+
+
+
+
+
+
+function(GM_ADD_BENCHMARK FILENAME)
+  if(GM_BENCHMARKING)
+
+    set(BENCH_NAME "gmbench_${FILENAME}")
+    add_executable(${BENCH_NAME} ${FILENAME}.cc)
+    target_link_libraries(${BENCH_NAME} ${ARGN} benchmark::benchmark pthread)
+    add_test(NAME ${BENCH_NAME} COMMAND ${BENCH_NAME})
+
+  endif(GM_BENCHMARKING)
+endfunction(GM_ADD_BENCHMARK)
+
+
 
 
 
