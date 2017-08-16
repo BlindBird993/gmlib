@@ -54,7 +54,7 @@ namespace GMlib {
       virtual ~PBezierSurf();
 
       // Public local functions
-      DMatrix< Vector<T,3> >&    getControlPoints();
+      DMatrix< Vector<T,3> >&    getControlPoints() const;
       int                        getDegreeU() const;
       int                        getDegreeV() const;
       bool                       isSelectorsVisible() const;
@@ -80,7 +80,8 @@ namespace GMlib {
 
   protected:
       // Protected data for the surface
-      DMatrix< Vector<T,3> >     _c;       // controll polygon
+      mutable
+      DMatrix< Vector<T,3> >     _c;       // control polygon
       bool                       _cu;      // closed in u-direction
       bool                       _cv;      // closed in v-direction
 

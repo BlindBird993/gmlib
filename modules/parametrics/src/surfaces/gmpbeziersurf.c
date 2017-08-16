@@ -97,7 +97,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  DMatrix< Vector<T,3> >& PBezierSurf<T>::getControlPoints() {
+  DMatrix< Vector<T,3> >& PBezierSurf<T>::getControlPoints() const {
     return _c;
   }
 
