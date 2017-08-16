@@ -105,7 +105,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  DMatrix< Vector<T,3> >& PBSplineSurf<T>::getControlPoints() {
+  DMatrix< Vector<T,3> >& PBSplineSurf<T>::getControlPoints() const {
       return _c;
   }
 

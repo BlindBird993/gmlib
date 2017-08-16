@@ -59,7 +59,7 @@ namespace GMlib {
 
       virtual ~PBSplineSurf();
 
-      DMatrix< Vector<T,3> >&    getControlPoints();
+      DMatrix< Vector<T,3> >&    getControlPoints() const;
       int                        getDegreeU() const;
       int                        getDegreeV() const;
       bool                       isSelectorsVisible() const;
@@ -93,7 +93,8 @@ namespace GMlib {
 
   protected:
       // Protected data for the surface
-      DMatrix< Vector<T,3> >     _c;       // controll polygon
+      mutable
+      DMatrix< Vector<T,3> >     _c;       // control polygon
 
       DVector<T>                 _u;       // knot vector in u-direction
       int                        _du;      // degree in u-direction
