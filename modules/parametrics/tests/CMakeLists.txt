@@ -21,13 +21,4 @@
 # ###############################################################################
 
 
-# Set name of module
-project(parametrics)
-
-# Add source directory
-add_subdirectory(src)
-
-# Add unit test directory
-include_directories(src)
-add_subdirectory(benchmarks)
-add_subdirectory(tests)
+GM_ADD_TESTS(curves_compiletest gmscene gmcore)
