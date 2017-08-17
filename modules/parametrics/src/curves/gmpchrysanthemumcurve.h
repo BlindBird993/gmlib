@@ -23,8 +23,8 @@
 
 
 
-#ifndef GM_PARAMETRICS_CURVE_PCHRYSANTHEMUMCURVE_H
-#define GM_PARAMETRICS_CURVE_PCHRYSANTHEMUMCURVE_H
+#ifndef GM_PARAMETRICS_CURVES_PCHRYSANTHEMUMCURVE_H
+#define GM_PARAMETRICS_CURVES_PCHRYSANTHEMUMCURVE_H
 
 
 #include "../gmpcurve.h"
@@ -63,4 +63,4 @@ namespace GMlib {
 // Include PChrysanthemumCurve class function implementations
 #include "gmpchrysanthemumcurve.c"
 
-#endif // GM_PARAMETRICS_CURVE_PCHRYSANTHEMUMCURVE_H
+#endif // GM_PARAMETRICS_CURVES_PCHRYSANTHEMUMCURVE_H

@@ -23,8 +23,8 @@
 
 
 
-#ifndef GM_PARAMETRICS_CURVE_PERBSCURVE_H
-#define GM_PARAMETRICS_CURVE_PERBSCURVE_H
+#ifndef GM_PARAMETRICS_CURVES_PERBSCURVE_H
+#define GM_PARAMETRICS_CURVES_PERBSCURVE_H
 
 
 #include "../gmpcurve.h"
@@ -146,6 +146,6 @@ namespace GMlib {
 #include "gmperbscurve.c"
 
 
-#endif // GM_PARAMETRICS_CURVE_PERBSCURVE_H
+#endif // GM_PARAMETRICS_CURVES_PERBSCURVE_H
 
 

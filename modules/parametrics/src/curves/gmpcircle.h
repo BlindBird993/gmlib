@@ -23,8 +23,8 @@
 
 
 
-#ifndef GM_PARAMETRICS_CURVE_PCIRCLE_H
-#define GM_PARAMETRICS_CURVE_PCIRCLE_H
+#ifndef GM_PARAMETRICS_CURVES_PCIRCLE_H
+#define GM_PARAMETRICS_CURVES_PCIRCLE_H
 
 
 #include "../gmpcurve.h"
@@ -70,4 +70,4 @@ namespace GMlib {
 #include "gmpcircle.c"
 
 
-#endif // GM_PARAMETRICS_CURVE_PCIRCLE_H
+#endif // GM_PARAMETRICS_CURVES_PCIRCLE_H

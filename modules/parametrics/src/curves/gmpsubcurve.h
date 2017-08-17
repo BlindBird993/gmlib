@@ -23,8 +23,8 @@
 
 
 
-#ifndef GM_PARAMETRICS_CURVE_PSUBCURVE_H
-#define GM_PARAMETRICS_CURVE_PSUBCURVE_H
+#ifndef GM_PARAMETRICS_CURVES_PSUBCURVE_H
+#define GM_PARAMETRICS_CURVES_PSUBCURVE_H
 
 
 #include "../gmpcurve.h"
@@ -80,5 +80,5 @@ namespace GMlib {
 #include "gmpsubcurve.c"
 
 
-#endif // GM_PARAMETRICS_CURVE_PSUBCURVE_H
+#endif // GM_PARAMETRICS_CURVES_PSUBCURVE_H
 

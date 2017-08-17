@@ -22,8 +22,8 @@
 
 
 
-#ifndef GM_PARAMETRICS_CURVE_PBUTTERFLY_H
-#define GM_PARAMETRICS_CURVE_PBUTTERFLY_H
+#ifndef GM_PARAMETRICS_CURVES_PBUTTERFLY_H
+#define GM_PARAMETRICS_CURVES_PBUTTERFLY_H
 
 
 #include "../gmpcurve.h"
@@ -66,5 +66,5 @@ namespace GMlib {
 #include "gmpbutterfly.c"
 
 
-#endif // GM_PARAMETRICS_CURVE_PBUTTERFLY_H
+#endif // GM_PARAMETRICS_CURVES_PBUTTERFLY_H
 

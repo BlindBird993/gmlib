@@ -23,8 +23,8 @@
 
 
 
-#ifndef GM_PARAMETRICS_CURVE_PROSECURVE_H
-#define GM_PARAMETRICS_CURVE_PROSECURVE_H
+#ifndef GM_PARAMETRICS_CURVES_PROSECURVE_H
+#define GM_PARAMETRICS_CURVES_PROSECURVE_H
 
 
 #include "../gmpcurve.h"
@@ -65,6 +65,6 @@ namespace GMlib {
 #include "gmprosecurve.c"
 
 
-#endif // GM_PARAMETRICS_CURVE_PROSECURVE_H
+#endif // GM_PARAMETRICS_CURVES_PROSECURVE_H
 
 

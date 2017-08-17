@@ -23,8 +23,8 @@
 
 
 
-#ifndef GM_PARAMETRICS_CURVE_PTCURVE_H
-#define GM_PARAMETRICS_CURVE_PTCURVE_H
+#ifndef GM_PARAMETRICS_CURVES_PTCURVE_H
+#define GM_PARAMETRICS_CURVES_PTCURVE_H
 
 #include "../gmpcurve.h"
 
@@ -82,5 +82,5 @@ namespace GMlib {
 // Include PTCurve class function implementations
 #include "gmptcurve.c"
 
-#endif // GM_PARAMETRICS_CURVE_PTCURVE_H
+#endif // GM_PARAMETRICS_CURVES_PTCURVE_H
 
