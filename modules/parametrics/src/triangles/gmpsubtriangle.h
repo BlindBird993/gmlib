@@ -53,14 +53,14 @@ public:
   Vector<Point<T,2>,3>  getParPoints();
 
 protected:
-  void                  eval( T u, T v, T w, int d );
+  void                  eval( T u, T v, T w, int d ) const override;
 
 private:
   PSurf<T,3>*             _s;
   Vector<Point<T,2>,3>  _q;
 
-  Vector<T,3> dS (const Vector<T,3>& Su, const Vector<T,3>& Sv, const Point<T,2>& p);
-  Vector<T,3> dS2(const Vector<T,3>& Suu, const Vector<T,3>& Suv, const Vector<T,3>& Svv, const Point<T,2>& p);
+  Vector<T,3> dS (const Vector<T,3>& Su, const Vector<T,3>& Sv, const Point<T,2>& p) const;
+  Vector<T,3> dS2(const Vector<T,3>& Suu, const Vector<T,3>& Suv, const Vector<T,3>& Svv, const Point<T,2>& p) const;
 
 }; // END class PSubTriangle
 

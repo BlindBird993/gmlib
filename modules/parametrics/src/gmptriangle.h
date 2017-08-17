@@ -49,48 +49,48 @@ namespace GMlib {
     ~PTriangle();
 
 
-    const DVector<Vector<T,n> >&      evaluate(const Point<T,3> & p, int d);
-    const DVector<Vector<T,n> >&      evaluate( T u, T v, int d);
-    const DVector<Vector<T,n> >&      evaluateGlobal(const Point<T,3> & p, int d);
-    const DVector<Vector<T,n> >&      evaluateGlobal( T u, T v, int d);
-    const DVector<Vector<T,n> >&      evaluateParent(const Point<T,3> & p, int d);
-    const DVector<Vector<T,n> >&      evaluateParent( T u, T v, int d);
+    const DVector<Vector<T,n> >&      evaluate(const Point<T,3> & p, int d) const;
+    const DVector<Vector<T,n> >&      evaluate( T u, T v, int d) const;
+    const DVector<Vector<T,n> >&      evaluateGlobal(const Point<T,3> & p, int d) const;
+    const DVector<Vector<T,n> >&      evaluateGlobal( T u, T v, int d) const;
+    const DVector<Vector<T,n> >&      evaluateParent(const Point<T,3> & p, int d) const;
+    const DVector<Vector<T,n> >&      evaluateParent( T u, T v, int d) const;
 
     const Point<T,n>&                 operator()( T u, T v ); // w = 1-u-v
-    const Vector<T,n>&                getDerU( T u, T v );
-    const Vector<T,n>&                getDerV( T u, T v );
-    const Vector<T,n>&                getDerW( T u, T v );
-    const Vector<T,n>&                getDerUU( T u, T v );
-    const Vector<T,n>&                getDerUV( T u, T v );
-    const Vector<T,n>&                getDerUW( T u, T v );
-    const Vector<T,n>&                getDerVV( T u, T v );
-    const Vector<T,n>&                getDerVW( T u, T v );
-    const Vector<T,n>&                getDerWW( T u, T v );
-    const Vector<T,n>&                getNormal( T u, T v );
-    UnitVector<T,n>                   getUnitNormal( T u, T v );
+    const Vector<T,n>&                getDerU( T u, T v ) const;
+    const Vector<T,n>&                getDerV( T u, T v ) const;
+    const Vector<T,n>&                getDerW( T u, T v ) const;
+    const Vector<T,n>&                getDerUU( T u, T v ) const;
+    const Vector<T,n>&                getDerUV( T u, T v ) const;
+    const Vector<T,n>&                getDerUW( T u, T v ) const;
+    const Vector<T,n>&                getDerVV( T u, T v ) const;
+    const Vector<T,n>&                getDerVW( T u, T v ) const;
+    const Vector<T,n>&                getDerWW( T u, T v ) const;
+    const Vector<T,n>&                getNormal( T u, T v ) const;
+    UnitVector<T,n>                   getUnitNormal( T u, T v ) const;
 
-    virtual T                         getCurvatureGauss( T u, T v );
-    virtual T                         getCurvatureMean( T u, T v );
+    virtual T                         getCurvatureGauss( T u, T v ) const;
+    virtual T                         getCurvatureMean( T u, T v ) const;
 
 
 
     const Point<T,n>&                 operator()(const Point<T,3> & p);
-    const Vector<T,n>&                getDerU(const Point<T,3> & p);
-    const Vector<T,n>&                getDerV(const Point<T,3> & p);
-    const Vector<T,n>&                getDerW(const Point<T,3> & p);
-    const Vector<T,n>&                getDerUU(const Point<T,3> & p);
-    const Vector<T,n>&                getDerUV(const Point<T,3> & p);
-    const Vector<T,n>&                getDerUW(const Point<T,3> & p);
-    const Vector<T,n>&                getDerVV(const Point<T,3> & p);
-    const Vector<T,n>&                getDerVW(const Point<T,3> & p);
-    const Vector<T,n>&                getDerWW(const Point<T,3> & p);
-    const Vector<T,n>&                getNormal(const Point<T,3> & p);
-    UnitVector<T,n>                   getUnitNormal(const Point<T,3> & p);
+    const Vector<T,n>&                getDerU(const Point<T,3> & p) const;
+    const Vector<T,n>&                getDerV(const Point<T,3> & p) const;
+    const Vector<T,n>&                getDerW(const Point<T,3> & p) const;
+    const Vector<T,n>&                getDerUU(const Point<T,3> & p) const;
+    const Vector<T,n>&                getDerUV(const Point<T,3> & p) const;
+    const Vector<T,n>&                getDerUW(const Point<T,3> & p) const;
+    const Vector<T,n>&                getDerVV(const Point<T,3> & p) const;
+    const Vector<T,n>&                getDerVW(const Point<T,3> & p) const;
+    const Vector<T,n>&                getDerWW(const Point<T,3> & p) const;
+    const Vector<T,n>&                getNormal(const Point<T,3> & p) const;
+    UnitVector<T,n>                   getUnitNormal(const Point<T,3> & p) const;
 
-    T                                 getCurvatureGauss(const Point<T,3> & p);
-    T                                 getCurvatureMean(const Point<T,3> & p);
+    T                                 getCurvatureGauss(const Point<T,3> & p) const;
+    T                                 getCurvatureMean(const Point<T,3> & p) const;
 
-    const Vector<T,n>&                getDer_d(const Point<T,3> & p, const Vector<T,3> & d);
+    const Vector<T,n>&                getDer_d(const Point<T,3> & p, const Vector<T,3> & d) const;
 
 
     void                              enableDefaultVisualizer( bool enable = true );
@@ -109,42 +109,42 @@ namespace GMlib {
     Parametrics<T,2,n>*               split( T t, int uv );
 
     virtual void                      updateCoeffs( const Vector<T,n>& d );
-    virtual bool                      isClosestPoint( const Point<T,n>& p, T& u, T& v );
+    virtual bool                      isClosestPoint( const Point<T,n>& p, T& u, T& v ) const;
 //    virtual void                      estimateClpPar(const Point<T,n>& p, T& u, T& v) {}
 //    virtual void                      setBp( Array<Point<T,n> >bp ) {}
 
     void                              setTriangNr(bool all = true, int nr = 0);
 
-    virtual Vector<Point<T,n>,3>      getPoints();
+    virtual Vector<Point<T,n>,3>      getPoints() const;
 
   protected:
     Array< PTriangleVisualizer<T,n>* >  _ptriangle_visualizers;
     PTriangleVisualizer<T,n>            *_default_visualizer;
 
-    int                               _no_sam;      //  int		__sam;
-    DVector< Vector<T,n> >            _p;           //  DMatrix<Vector<T,n> >	__p;
-    Vector<T,n>                       _n;           //  Vector<T,n>		__n; // For display in 3D
-    T                                 _u;           //  T	__u;
-    T                                 _v;           //  T	__v;
-    int                               _d;           //  int	__d;
-    bool                              _diagonal;    //  bool	__diagonal; // True if only upper left half is evaluated.
-    int                               _default_d;   //  int	__defalt_d; // used by operator() for number of derivative to evaluate.
+    mutable int                       _no_sam;      //  int		__sam;
+    mutable DVector< Vector<T,n> >    _p;           //  DMatrix<Vector<T,n> >	__p;
+    mutable Vector<T,n>               _n;           //  Vector<T,n>		__n; // For display in 3D
+    mutable T                         _u;           //  T	__u;
+    mutable T                         _v;           //  T	__v;
+    mutable int                       _d;           //  int	__d;
+    mutable bool                      _diagonal;    //  bool	__diagonal; // True if only upper left half is evaluated.
+    mutable int                       _default_d;   //  int	__defalt_d; // used by operator() for number of derivative to evaluate.
 
     bool                              _all;
     int                               _t_nr;
     Point<T,n>                        _pt[4];
 
-    virtual void                      eval( T u, T v, T w, int d ) = 0;
-    void                              eval( const Point<T,3>& p, int d );
+    virtual void                      eval( T u, T v, T w, int d ) const = 0;
+    void                              eval( const Point<T,3>& p, int d ) const;
 
     virtual void                      setSurroundingSphere( const DVector<DVector<Vector<T,n> > > &p );
 
   private:
-    void                              _eval( T u, T v, int d );
-    int                               _sum(int i);
+    void                              _eval( T u, T v, int d ) const;
+    int                               _sum(int i) const;
     void                              _init();
 
-    void _fuForm( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g);
+    void                              _fuForm( T u, T v, T& E, T& F, T& G, T& e, T& f, T& g) const;
 
     void                              resample1( DVector<DVector<Vector<T,n> > > &p, int m, int d );
     void                              resample2( DVector<DVector<Vector<T,n> > > &p, int m, int a, int b );

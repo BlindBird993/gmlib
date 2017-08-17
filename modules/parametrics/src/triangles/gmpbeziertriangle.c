@@ -78,12 +78,12 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierTriangle<T>::eval( T u, T v, T w, int d ) {
+  void PBezierTriangle<T>::eval( T u, T v, T w, int d ) const {
 
     this->_p.setDim(4);
 
     if( _c.getDim() == 3 ) {
-      this->_p[0]= _c[0]*u + _c[1]*v + _c[2]*w;
+      this->_p[0] = _c[0]*u + _c[1]*v + _c[2]*w;
       this->_p[1] = _c[0];
       this->_p[2] = _c[1];
       this->_p[3] = _c[2];

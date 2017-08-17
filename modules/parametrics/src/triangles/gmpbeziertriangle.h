@@ -69,7 +69,7 @@ class SelectorGridVisualizer;
     bool                        _c_moved;
 
     /* implemented from PTriangle */
-    void                        eval( T u, T v, T w, int d ) override;
+    void                        eval( T u, T v, T w, int d ) const override;
 
   }; // END class PBezierTriangle
 

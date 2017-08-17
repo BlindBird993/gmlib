@@ -68,7 +68,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSTriangle<T>::eval( T u, T v, T w, int d ) // d can be: 0,1,2,3
+  void PERBSTriangle<T>::eval( T u, T v, T w, int d ) const // d can be: 0,1,2,3
   {
      if(d==0)        this->_p.setDim(1);
      else if(d==1)   this->_p.setDim(4);
@@ -181,7 +181,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  Vector<Point<T,3>,3> PERBSTriangle<T>::getPoints() {
+  Vector<Point<T,3>,3> PERBSTriangle<T>::getPoints() const {
 
     Vector<Point<T,3>,3>  a;
     DVector<Vector<T,3> > m = this->evaluateGlobal(Point<T,3>(1,0,0) , 0);

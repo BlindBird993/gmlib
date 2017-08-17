@@ -67,7 +67,7 @@ void PSubTriangle<T>::edit( int selector ) {
 
 template <typename T>
 inline
-void PSubTriangle<T>::eval( T u, T v, T w, int d ) {
+void PSubTriangle<T>::eval( T u, T v, T w, int d ) const {
 
   if(d==0)         this->_p.setDim(1);
   else if(d==1)    this->_p.setDim(4);
@@ -180,14 +180,14 @@ Vector<Point<T,2>,3>  PSubTriangle<T>::getParPoints(){
 
 template <typename T>
 inline
-Vector<T,3> PSubTriangle<T>::dS(const Vector<T,3>& Su, const Vector<T,3>& Sv, const Point<T,2>& p)
+Vector<T,3> PSubTriangle<T>::dS(const Vector<T,3>& Su, const Vector<T,3>& Sv, const Point<T,2>& p) const
 {
     return Su*p(0) + Sv*p(1);
 }
 
 template <typename T>
 inline
-Vector<T,3> PSubTriangle<T>::dS2(const Vector<T,3>& suu, const Vector<T,3>& suv, const Vector<T,3>& svv, const Point<T,2>& p)
+Vector<T,3> PSubTriangle<T>::dS2(const Vector<T,3>& suu, const Vector<T,3>& suv, const Vector<T,3>& svv, const Point<T,2>& p) const
 {
     return suu*(p(0)*p(0))+ suv*(2*p(0)*p(1)) + svv*(p(1)*p(1));
 }

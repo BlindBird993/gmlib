@@ -50,14 +50,14 @@ namespace GMlib {
     void                            resetBasis( BasisTriangleType type );
 
     /* virtual from PTriangle */
-    Vector<Point<T,3>,3>            getPoints() override;
+    Vector<Point<T,3>,3>            getPoints() const override;
 
 
   protected:
     BasisTriangleERBS<T>            *_B;
     DVector< PTriangle<T,3>* >        _c;
 
-    void                            eval( T u, T v, T w, int d ) override;
+    void                            eval( T u, T v, T w, int d ) const override;
 
     void                            insertPatch( PTriangle<T,3> *patch );
 
