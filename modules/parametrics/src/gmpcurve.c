@@ -549,7 +549,7 @@ namespace GMlib {
   Point<T,n> PCurve<T,n>::operator()( T t )	{
 
     eval( t, _defalt_d );
-    return ( Point<T,n> ) _p[0];
+    return Point<T,n>(_p[0]);
   }
 
   template <typename T, int n>
