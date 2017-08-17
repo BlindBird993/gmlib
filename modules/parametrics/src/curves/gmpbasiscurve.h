@@ -35,14 +35,6 @@
 namespace GMlib {
 
 
-  enum GM_BASIS_CURVE_DISPLAY {
-    GM_BASIS_CURVE_F      = 0,
-    GM_BASIS_CURVE_D      = 1,
-    GM_BASIS_CURVE_DD     = 2,
-    GM_BASIS_CURVE_DDD    = 3
-  };
-
-
   template <typename T, typename G = long double>
   class PBasisCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PBasisCurve)
