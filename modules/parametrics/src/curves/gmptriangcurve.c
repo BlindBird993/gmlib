@@ -32,8 +32,6 @@ template <typename T>
 inline
 PTriangCurve<T>::PTriangCurve(  PTriangle<T,3>* s,  const Point<T,3>& p1,   const Point<T,3>& p2 )
 {
-  this->_dm = GM_DERIVATION_EXPLICIT;
-
   _der_curve = false;
   _plot = false;
   _s  = s;
@@ -47,8 +45,6 @@ inline
 PTriangCurve<T>::PTriangCurve(  PTriangle<T,3>* s,  const Point<T,3>& p1,   const Point<T,3>& p2,
                                 const Vector<T,3>& v1,  const Vector<T,3>& v2 )
 {
-  this->_dm = GM_DERIVATION_EXPLICIT;
-
   _der_curve = true;
   _plot = false;
 

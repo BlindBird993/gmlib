@@ -31,16 +31,10 @@ namespace GMlib {
 //*****************************************
 
   template <typename T>
-  PLine<T>::PLine( const Point<T,3>& p, const Vector<T,3>& v ) : _pt(p), _v(v) {
-
-    this->_dm = GM_DERIVATION_EXPLICIT;
-  }
+  PLine<T>::PLine( const Point<T,3>& p, const Vector<T,3>& v ) : _pt(p), _v(v) {}
 
   template <typename T>
-  PLine<T>::PLine( const Point<T,3>& p1, const Point<T,3>& p2 ) : _pt(p1), _v(p2-p1) {
-
-    this->_dm = GM_DERIVATION_EXPLICIT;
-  }
+  PLine<T>::PLine( const Point<T,3>& p1, const Point<T,3>& p2 ) : _pt(p1), _v(p2-p1) {}
 
 
   template <typename T>

@@ -33,8 +33,6 @@ namespace GMlib {
   template <typename T>
   inline
   PBSplineBasisCurve<T>::PBSplineBasisCurve( const DVector<T>& t ) {
-    this->_dm = GM_DERIVATION_EXPLICIT;
-
     int k = t.getDim()-1;
     _t.setDim(3*k-1);
     for(int i=0; i<k-1; i++)

@@ -35,8 +35,6 @@ namespace GMlib {
   inline
   PSubCurve<T>::PSubCurve( PCurve<T,3>* c, T s, T e )
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
-
     set(c, s, e, (e+s)/2);
 
     DVector<Vector<T,3> > tr = _c->evaluateParent(_t, 0);
@@ -49,8 +47,6 @@ namespace GMlib {
   inline
   PSubCurve<T>::PSubCurve( PCurve<T,3>* c, T s, T e, T t )
   {
-    this->_dm = GM_DERIVATION_EXPLICIT;
-
     set(c, s, e, t);
 
     DVector<Vector<T,3> > tr = _c->evaluateParent(_t, 0);

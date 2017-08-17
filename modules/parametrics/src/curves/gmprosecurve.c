@@ -35,7 +35,7 @@ namespace GMlib {
   PRoseCurve<T>::PRoseCurve( T radius ) {
 
     _r = radius;
-//    this->_dm = GM_DERIVATION_EXPLICIT;
+
   }
 
 

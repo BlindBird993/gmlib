@@ -32,7 +32,7 @@ namespace GMlib {
   PButterfly<T>::PButterfly( T size ) {
 
     _size = size;
-//    this->_dm = GM_DERIVATION_EXPLICIT;
+
   }
 
 
