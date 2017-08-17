@@ -44,10 +44,10 @@ namespace GMlib {
   public:
     PTriangleDefaultVisualizer();
 
-    void            render(const SceneObject *obj, const DefaultRenderer *renderer) const;
-    void            renderGeometry(const SceneObject* obj, const Renderer* renderer, const Color& color) const;
+    void            render(const SceneObject *obj, const DefaultRenderer *renderer) const override;
+    void            renderGeometry(const SceneObject* obj, const Renderer* renderer, const Color& color) const override;
 
-    virtual void    replot(const DVector< DVector< Vector<T,3> > >& p,int m);
+    virtual void    replot(const DVector< DVector< Vector<T,3> > >& p,int m) override;
 
   private:
     GL::Program               _prog;

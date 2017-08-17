@@ -47,11 +47,11 @@ namespace GMlib {
 
     virtual ~PTriangCurve();
 
-    bool          isClosed() const;
+    bool          isClosed() const override;
 
     void          togglePlot();
 
-    virtual void  resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end );
+    virtual void  resample( DVector< DVector< Vector<T, 3> > >& p, int m, int d, T start, T end ) override;
 
     DVector<DVector<Vector<T,3> > >& getSample3(int m);
 

@@ -186,7 +186,7 @@ namespace GMlib {
     _m    = m;
     _dt   = T(1) / m;
     _scale   = T(1);
-    _b[0] = p0 = f0 = T(0);
+    _b[0] = p0 = p1 = f0 = T(0);
 
     T t;
     for( i = 1; i < m; i++ ) {
