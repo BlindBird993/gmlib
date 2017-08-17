@@ -4,8 +4,7 @@
 
 
 // GMlib includes+
-#include <gmParametricsModule>
-
+#include "../gmpcurve.h"
 
 
 namespace GMlib {
