@@ -21,7 +21,7 @@
 **
 **********************************************************************************/
 
-
+#include <cmath>
 
 
 
@@ -80,16 +80,16 @@ namespace GMlib {
     this->_p.setDim( d1+1, d2+1 );
 
 
-    this->_p[0][0][0] =	(T(4)*sqrt((T)(T(1) - u*u))*pow( (T)sin((T)abs(v)) , (T)abs(v)))*sin(v);
-    this->_p[0][0][1] =	(T(4)*sqrt((T)(T(1) - u*u))*pow( (T)sin((T)abs(v)) , (T)abs(v)))*cos(v);
+    this->_p[0][0][0] =	(T(4)*std::sqrt((T)(T(1) - u*u))*std::pow( (T)std::sin((T)std::abs(v)) , (T)std::abs(v)))*std::sin(v);
+    this->_p[0][0][1] =	(T(4)*std::sqrt((T)(T(1) - u*u))*std::pow( (T)std::sin((T)std::abs(v)) , (T)std::abs(v)))*std::cos(v);
     this->_p[0][0][2] =	u;
 
 
     if( this->_dm == GM_DERIVATION_EXPLICIT ) {
 
       if(d1) {                      //u
-        this->_p[1][0][0] =	-T(4)*pow(sin(abs(v)),abs(v))*sin(v)*u/(sqrt(T(1)-u*u));
-        this->_p[1][0][1] =	-T(4)*pow(sin(abs(v)),abs(v))*cos(v)*u/(sqrt(T(1)-u*u));
+        this->_p[1][0][0] =	-T(4)*std::pow(std::sin(std::abs(v)),std::abs(v))*std::sin(v)*u/(std::sqrt(T(1)-u*u));
+        this->_p[1][0][1] =	-T(4)*std::pow(std::sin(std::abs(v)),std::abs(v))*std::cos(v)*u/(std::sqrt(T(1)-u*u));
         this->_p[1][0][2] =	T(1);
       }
       if(d1>1) {                    //uu
@@ -98,10 +98,10 @@ namespace GMlib {
         this->_p[2][0][2] =	T(0);
       }
       if(d2) {                      //v
-        this->_p[0][1][0] =	T(4)*sqrt(T(1)-u*u)*pow(sin(abs(v)),abs(v))*(/*abs(1,v)*/log(sin(abs(v)))+abs(v)*cos(abs(v))
-                /*abs(1,v)*//sin(abs(v)))*sin(v)+T(4)*sqrt(T(1)-u*u)*pow(sin(abs(v)),abs(v))*cos(v);
-        this->_p[0][1][1] =	T(4)*sqrt(T(1)-u*u)*pow(sin(abs(v)),abs(v))*(/*abs(1,v)*/log(sin(abs(v)))+abs(v)*cos(abs(v))
-                /*abs(1,v)*//(abs(v)))*cos(v)-T(4)*sqrt(T(1)-u*u)*pow(sin(abs(v)),abs(v))*sin(v);
+        this->_p[0][1][0] =	T(4)*std::sqrt(T(1)-u*u)*std::pow(std::sin(std::abs(v)),std::abs(v))*(/*abs(1,v)*/log(std::sin(std::abs(v)))+std::abs(v)*std::cos(std::abs(v))
+                /*abs(1,v)*//std::sin(std::abs(v)))*std::sin(v)+T(4)*std::sqrt(T(1)-u*u)*std::pow(std::sin(std::abs(v)),std::abs(v))*std::cos(v);
+        this->_p[0][1][1] =	T(4)*std::sqrt(T(1)-u*u)*std::pow(std::sin(std::abs(v)),std::abs(v))*(/*abs(1,v)*/log(std::sin(std::abs(v)))+std::abs(v)*std::cos(std::abs(v))
+                /*abs(1,v)*//(std::abs(v)))*std::cos(v)-T(4)*std::sqrt(T(1)-u*u)*std::pow(std::sin(std::abs(v)),std::abs(v))*std::sin(v);
         this->_p[0][1][2] =	T(0);
       }
       if(d2>1) {                    //vv

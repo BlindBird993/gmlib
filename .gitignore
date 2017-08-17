@@ -19,6 +19,8 @@
 *.user*
 *.cbp
 *.autosave
+# Clang temp files QtCreator wintendo
+*.c.*
 
 #
 ########
