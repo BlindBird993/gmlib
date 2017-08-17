@@ -71,7 +71,7 @@ namespace GMlib {
   //******************************************************
 
   template <typename T>
-  void PBSplineBasisCurve<T>::eval( T t, int d, bool /*l*/ ) {
+  void PBSplineBasisCurve<T>::eval( T t, int d, bool /*l*/ ) const {
     this->_p.setDim( d + 1 );
 
     int k = (_t.getDim()+1)/3;
@@ -131,20 +131,20 @@ namespace GMlib {
 
   template <typename T>
   inline
-  T PBSplineBasisCurve<T>::W( T t, int d,  int i) {
+  T PBSplineBasisCurve<T>::W( T t, int d,  int i) const {
     return (t-_t(i))/(_t(i+d)-_t(i));
   }
 
 
   template <typename T>
   inline
-  T PBSplineBasisCurve<T>::delta(T s, int d,  int i) {
+  T PBSplineBasisCurve<T>::delta(T s, int d,  int i) const {
     return s/(_t(i+d)-_t(i));
   }
 
 
   template <typename T>
-  void PBSplineBasisCurve<T>::makeMat( DMatrix<T>& mat, int ii, int d, T t, T scale ) {
+  void PBSplineBasisCurve<T>::makeMat( DMatrix<T>& mat, int ii, int d, T t, T scale ) const {
     mat.setDim( d+1, d+1 );
     DVector<T> w(d);
 
@@ -190,7 +190,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  int PBSplineBasisCurve<T>::findIndex(T t, int j) {
+  int PBSplineBasisCurve<T>::findIndex(T t, int j) const {
     int i=j;
     for( ; i<_t.getDim()-j-1;i++)
       if(_t[i+1]>t) break;

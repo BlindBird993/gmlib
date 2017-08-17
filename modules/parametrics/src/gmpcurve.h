@@ -56,20 +56,20 @@ namespace GMlib {
     DVector<Vector<T,n> >&        evaluateGlobal( T t, int d ) const;
     DVector<Vector<T,n> >&        evaluateParent( T t, int d ) const;
 
-    bool                          getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps = 10e-6, int max_iterations = 20);
-    T                             getCurvature( T t );
-    T                             getCurveLength( T a = 0, T b = -1 );
+    bool                          getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps = 10e-6, int max_iterations = 20) const;
+    T                             getCurvature( T t ) const;
+    T                             getCurveLength( T a = 0, T b = -1 ) const;
     int                           getDerivatives() const;
-    Vector<T,n>                   getDer1( T t );
-    Vector<T,n>                   getDer2( T t );
-    Vector<T,n>                   getDer3( T t );
+    Vector<T,n>                   getDer1( T t ) const;
+    Vector<T,n>                   getDer2( T t ) const;
+    Vector<T,n>                   getDer3( T t ) const;
 
     T                             getParStart() const;
     T                             getParDelta() const;
     T                             getParEnd()   const;
-    T                             getRadius( T t );
+    T                             getRadius( T t ) const;
     int                           getSamples() const;
-    T                             getSpeed( T t );
+    T                             getSpeed( T t ) const;
     virtual bool                  isClosed() const;
     virtual void                  preSample( int m, int d, T s = T(0), T e = T(0) );
     virtual void                  replot( int m = 0, int d = 2 );
@@ -121,7 +121,7 @@ namespace GMlib {
 
   private:
     void                          _eval( T t, int d ) const;
-    T                             _integral(T a, T b, double eps);
+    T                             _integral(T a, T b, double eps) const;
 
   }; // END class PCurve
 

@@ -77,7 +77,7 @@ namespace GMlib {
   //******************************************************
 
   template <typename T, typename G>
-  void PBasisCurve<T,G>::eval( T t, int /*d*/, bool /*l*/ ) {
+  void PBasisCurve<T,G>::eval( T t, int /*d*/, bool /*l*/ ) const {
 
     this->_p.setDim(1);
     float value = (float)_B->operator()(t);

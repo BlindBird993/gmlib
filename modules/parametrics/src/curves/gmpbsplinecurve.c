@@ -58,7 +58,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBSplineCurve<T>::eval( T t, int d_not_used, bool l ) {
+  void PBSplineCurve<T>::eval( T t, int d_not_used, bool l ) const {
 
     int d = getDegree();
     int idx;

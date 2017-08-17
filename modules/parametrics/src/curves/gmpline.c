@@ -65,7 +65,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PLine<T>::eval( T t, int d, bool /*l*/ ) {
+  void PLine<T>::eval( T t, int d, bool /*l*/ ) const {
 
     this->_p.setDim( d + 1 );
 

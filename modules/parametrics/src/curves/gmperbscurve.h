@@ -118,8 +118,8 @@ namespace GMlib {
     T                               getStartP() const override;
 
     // Local help functions
-    int                             findIndex( T t);// const;
-    void                            getB( DVector<T>& B, int tk, T t, int d );
+    int                             findIndex( T t) const;
+    void                            getB( DVector<T>& B, int tk, T t, int d ) const;
 
   private:
     Array<PCurveVisualizer<T,3>*>   _pv;
@@ -130,7 +130,7 @@ namespace GMlib {
 
     // Local help functions
     void                            compBlend( int d, const DVector<T>& B,
-                                               DVector< Vector<T,3> >& c0, DVector< Vector<T,3> >& c1);
+                                               DVector< Vector<T,3> >& c0, DVector< Vector<T,3> >& c1) const;
     void                            generateKnotVector( PCurve<T,3>* g, int n );
     virtual void                    init();
     void                            insertLocal( PCurve<T,3> *patch );

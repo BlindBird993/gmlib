@@ -56,7 +56,7 @@ namespace GMlib {
   //******************************************************
 
   template <typename T>
-  void PChrysanthemumCurve<T>::eval( T t, int d, bool l ) {
+  void PChrysanthemumCurve<T>::eval( T t, int d, bool l ) const {
 
     this->_p.setDim( d+1 );
 

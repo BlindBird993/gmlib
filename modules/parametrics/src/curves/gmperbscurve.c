@@ -192,7 +192,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  void PERBSCurve<T>::compBlend(int d, const DVector<T>& B, DVector<Vector<T,3> >& c0, DVector<Vector<T,3> >& c1) {
+  void PERBSCurve<T>::compBlend(int d, const DVector<T>& B, DVector<Vector<T,3> >& c0, DVector<Vector<T,3> >& c1) const {
 
     c0 -= c1;
 
@@ -213,7 +213,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  int PERBSCurve<T>::findIndex( T t) // const
+  int PERBSCurve<T>::findIndex( T t) const
   {
     return (this->_no_sam-1)*(t-this->getParStart())/(this->getParDelta())+0.1;
   }
@@ -221,7 +221,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PERBSCurve<T>::getB( DVector<T>& B, int k, T t, int d ) {
+  void PERBSCurve<T>::getB( DVector<T>& B, int k, T t, int d ) const {
 
     B.setDim(d+1);
     _evaluator->set( _t[k], _t[k+1] - _t[k] );

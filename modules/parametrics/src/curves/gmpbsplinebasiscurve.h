@@ -28,15 +28,15 @@ namespace GMlib {
 
   protected:
     // Virtual function from PCurve that has to be implemented locally
-    void            eval( T t, int d = 0, bool l = false ) override;
+    void            eval( T t, int d = 0, bool l = false ) const override;
     T               getEndP()   const override;
     T               getStartP() const override;
 
     // Help function
-    T               W( T t, int d, int i );
-    T               delta( T s, int d, int i );
-    void            makeMat( DMatrix<T>& mat, int i, int d, T t, T scale );
-    int             findIndex( T t, int s );
+    T               W( T t, int d, int i ) const;
+    T               delta( T s, int d, int i ) const;
+    void            makeMat( DMatrix<T>& mat, int i, int d, T t, T scale ) const;
+    int             findIndex( T t, int s ) const;
 
     // Protected data for the curve
     DVector<T>      _t;

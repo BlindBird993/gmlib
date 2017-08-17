@@ -70,7 +70,7 @@ namespace GMlib {
 
     ERBSEvaluator<long double>  _basis;
 
-    void	     eval( T t, int d = 0, bool l = false );
+    void	     eval( T t, int d = 0, bool l = false ) const override;
     T          getEndP();
     T          getStartP();
 

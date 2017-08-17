@@ -155,7 +155,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfCurve<T>::eval( T t, int d, bool /*l*/ ) {
+  void PSurfCurve<T>::eval( T t, int d, bool /*l*/ ) const {
       if (_der_curve)
           eval2(t,d);
       else
@@ -183,7 +183,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfCurve<T>::eval1( T t, int d ) {
+  void PSurfCurve<T>::eval1( T t, int d ) const {
     this->_p.setDim( d + 1 );
 
     DMatrix< Vector<T,3> > m = _s->evaluateParent(_p1 + t*_dv , d);
@@ -240,7 +240,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PSurfCurve<T>::eval2( T t, int d )
+  void PSurfCurve<T>::eval2( T t, int d ) const
   {
     this->_p.setDim( d + 1 );
 
@@ -250,7 +250,7 @@ namespace GMlib {
     DMatrix<Vector<T,3> > m = _s->evaluateParent(h, d+1);
 
     Vector<T,2> v  = (1-t)*_v1 + t*_v2;
-    Vector<T,2> dv = _v2 - _v1;
+//    Vector<T,2> dv = _v2 - _v1;
 
 //    Matrix<T,3,2> d1, d2, d3;
 //    d1.setCol(m[1][0], 0);

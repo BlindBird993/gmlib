@@ -88,7 +88,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::_integral(T a, T b, double eps) {
+  T PCurve<T,n>::_integral(T a, T b, double eps) const {
 
     T t = b - a;
     T sum = (getSpeed(a)+getSpeed(b))/2;
@@ -174,7 +174,7 @@ namespace GMlib {
    * <c-p + dt*c' + .5dt^2*c'' , c' + dt*c''> = 0
    */
   template<typename T, int n>
-  bool PCurve<T,n>::getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps, int max_iterations) {
+  bool PCurve<T,n>::getClosestPoint(const Point<T,n>& q, T& t, Point<T,n>& p, double eps, int max_iterations) const {
 
     DVector<Vector<T,n> > c;
     for (int i=0; i < max_iterations; i++) {
@@ -192,7 +192,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::getCurvature( T t ) {
+  T PCurve<T,n>::getCurvature( T t ) const {
 
     _eval( t, 2 );
     Vector<T,n> d1 = _p[1];
@@ -206,7 +206,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::getCurveLength( T a , T b ) {
+  T PCurve<T,n>::getCurveLength( T a , T b ) const {
 
     if(b<a)	{
 
@@ -228,7 +228,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Vector<T,n> PCurve<T,n>::getDer1( T t ) {
+  Vector<T,n> PCurve<T,n>::getDer1( T t ) const {
 
     _eval( t, 1 );
     return _p[1];
@@ -237,7 +237,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Vector<T,n> PCurve<T,n>::getDer2( T t ) {
+  Vector<T,n> PCurve<T,n>::getDer2( T t ) const {
 
     _eval(t,2);
     return _p[2];
@@ -246,7 +246,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Vector<T,n> PCurve<T,n>::getDer3( T t ) {
+  Vector<T,n> PCurve<T,n>::getDer3( T t ) const {
 
     _eval(t,3);
     return _p[3];
@@ -279,7 +279,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::getRadius( T t ) {
+  T PCurve<T,n>::getRadius( T t ) const {
 
     return T(1) / getCurvature( t );
   }
@@ -295,7 +295,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  T PCurve<T,n>::getSpeed( T t ) {
+  T PCurve<T,n>::getSpeed( T t ) const {
 
     return getDer1( t ).getLength();
   }

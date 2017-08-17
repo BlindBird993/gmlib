@@ -62,7 +62,7 @@ namespace GMlib {
 
   protected:
     // Virtual function from PCurve that has to be implemented locally
-    void                eval(T t, int d, bool l) override;
+    void                eval(T t, int d, bool l) const override;
     T                   getStartP() const override;
     T                   getEndP()   const override;
 
@@ -80,8 +80,8 @@ namespace GMlib {
     bool                _plot;
 
     // Protected help functions
-    void	            eval1( T t, int d);
-    void	            eval2( T t, int d);
+    void	            eval1( T t, int d) const;
+    void	            eval2( T t, int d) const;
 
   }; // END class PSurfCurve
 

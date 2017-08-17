@@ -87,7 +87,7 @@ namespace GMlib {
 
 
   template <typename T>
-  void PSubCurve<T>::eval( T t, int d, bool /*l*/ )
+  void PSubCurve<T>::eval( T t, int d, bool /*l*/ ) const
   {
     this->_p     = _c->evaluateParent(t , d);
     this->_p[0] -= _trans;

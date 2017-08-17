@@ -55,7 +55,7 @@ namespace GMlib {
 
   protected:
     // Virtual function from PCurve that has to be implemented locally
-    void                eval(T t, int d, bool l) override;
+    void                eval(T t, int d, bool l) const override;
     T                   getStartP() const override;
     T                   getEndP()   const override;
 

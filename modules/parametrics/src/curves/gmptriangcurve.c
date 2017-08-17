@@ -78,7 +78,7 @@ PTriangCurve<T>::~PTriangCurve() {}
 
 template <typename T>
 inline
-void PTriangCurve<T>::eval( T t, int d, bool /*l*/ )
+void PTriangCurve<T>::eval( T t, int d, bool /*l*/ ) const
 {
   if (_der_curve)
     eval2(t,d);
