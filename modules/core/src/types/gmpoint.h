@@ -114,6 +114,7 @@ namespace GMlib {
     APoint<T, n>            operator -  ( const APoint<T, n> &p ) const;
     T                       operator *  ( const APoint<T,n>& p) const;
     T&                      operator [] ( int i);
+    T const&                operator [] ( int i) const;
     T const&                operator () ( int i) const;
 
     // Scaling

@@ -107,6 +107,7 @@ namespace GMlib {
     DVector<T>       operator/(double d) const;
 
     T&               operator[](int i);
+    const T&         operator[](int i) const;
     const T&         operator()(int i) const;
 
   private:

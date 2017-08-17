@@ -794,6 +794,18 @@ namespace GMlib {
 
   template <typename T>
   inline
+  const T& Array<T>::operator [] ( int i ) const {
+
+    #ifdef DEBUG
+      if(i < 0 ||  i >= _no_elements) {
+        printf("Index %d is outside (0, %d)\n", i, _no_elements);
+      }
+    #endif
+    return _data_ptr[i];
+  }
+
+  template <typename T>
+  inline
   const T& Array<T>::operator () ( int i ) const {
 
     #ifdef DEBUG

@@ -312,6 +312,12 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
+  T const& APoint<T, n>::operator [] ( int i) const {
+    return _pt[i]; //return copy.
+  }
+
+  template <typename T, int n>
+  inline
   T const& APoint<T, n>::operator () ( int i) const {
     return _pt[i]; //return copy.
   }

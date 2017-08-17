@@ -112,6 +112,7 @@ namespace GMlib {
     void            swap( int i, int j );
 
 
+    const T&        operator  [] ( int i ) const;
     T&              operator  [] ( int i );
     const T&        operator  () ( int i ) const;
 

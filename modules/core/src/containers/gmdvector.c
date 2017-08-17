@@ -420,6 +420,15 @@ namespace GMlib {
   }
 
 
+  template <typename T>
+  inline
+  const T&  DVector<T>::operator[](int i) const {
+  #ifdef DEBUG
+    if (i<0 || i>=_n) std::cerr << "Error index " << i << " is outside(0," << _n << ")\n";
+  #endif
+    return _p[i];
+  }
+
   /*! const T&  DVector<T>::operator()(int i) const
    *  \brief Pending Documentation
    *
