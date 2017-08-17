@@ -68,20 +68,21 @@ namespace GMlib {
 
     bool                        _plot;
 
+    mutable
     ERBSEvaluator<long double>  _basis;
 
     void	     eval( T t, int d = 0, bool l = false ) const override;
-    T          getEndP();
-    T          getStartP();
+    T          getEndP() const override;
+    T          getStartP() const override;
 
     private:
 
-    void	     eval1( T t, int d);
-    void	     eval2( T t, int d);
+    void	     eval1( T t, int d) const;
+    void	     eval2( T t, int d) const;
     void	     eval12( T t);  // d=1
     void	     eval123( T t); // d=2
 
-    Vector<T,3>  dS(Vector<T,3>& Su, Vector<T,3>& Sv, Vector<T,3>& Sw, Vector<T,3>& h);
+    Vector<T,3>  dS(Vector<T,3>& Su, Vector<T,3>& Sv, Vector<T,3>& Sw, Vector<T,3>& h) const;
 
   }; // END class PTriangCurve
 

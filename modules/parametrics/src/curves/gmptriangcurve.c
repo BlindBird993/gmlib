@@ -91,7 +91,7 @@ void PTriangCurve<T>::eval( T t, int d, bool /*l*/ ) const
 
 template <typename T>
 inline
-void PTriangCurve<T>::eval1( T t, int d )
+void PTriangCurve<T>::eval1( T t, int d ) const
 {
   this->_p.setDim( d + 1 );
 
@@ -119,7 +119,7 @@ void PTriangCurve<T>::eval1( T t, int d )
 
 template <typename T>
 inline
-void PTriangCurve<T>::eval2( T t, int d )
+void PTriangCurve<T>::eval2( T t, int d ) const
 {
   this->_p.setDim( d + 1 );
   double tt = _basis(t);
@@ -248,14 +248,14 @@ void PTriangCurve<T>::eval12( T t)
 
 
 template <typename T>
-T PTriangCurve<T>::getStartP()
+T PTriangCurve<T>::getStartP() const
 {
   return T(0);
 }
 
 
 template <typename T>
-T PTriangCurve<T>::getEndP()
+T PTriangCurve<T>::getEndP() const
 {
   return T(1);
 }
@@ -342,7 +342,7 @@ DVector<DVector<Vector<T,3> > >& PTriangCurve<T>::getSample3(int m)
 
 template <typename T>
 inline
-Vector<T,3> PTriangCurve<T>::dS(Vector<T,3>& Su, Vector<T,3>& Sv, Vector<T,3>& Sw, Vector<T,3>& h)
+Vector<T,3> PTriangCurve<T>::dS(Vector<T,3>& Su, Vector<T,3>& Sv, Vector<T,3>& Sw, Vector<T,3>& h) const
 {
   return Su*h[0] + Sv*h[1] + Sw*h[2];
 }
