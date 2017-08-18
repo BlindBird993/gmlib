@@ -22,3 +22,4 @@
 
 
 GM_ADD_TESTS(curves_compiletest gmscene gmcore)
+GM_ADD_TESTS(surfaces_compiletest gmscene gmcore)
