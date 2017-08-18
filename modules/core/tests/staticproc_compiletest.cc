@@ -10,7 +10,7 @@ using namespace GMlib;
 namespace {
 
 
-TEST(Core_Static, StaticProc_GM_Static__CompileTorture) {
+TEST(Core_Static, StaticProc_GM_Static__CompileTest) {
 
   using T = float;
   std::array<T,3> a { {0.0f,0.0f,0.0f} }, b { {0.0f,0.0f,0.0f} };
@@ -40,7 +40,7 @@ TEST(Core_Static, StaticProc_GM_Static__CompileTorture) {
   GM_Static_<T,3>::maxIdx(a.data(),e);
 }
 
-TEST(Core_Static, StaticProc_GM_Static1__CompileTorture) {
+TEST(Core_Static, StaticProc_GM_Static1__CompileTest) {
 
   using T = float;
   using G = float;
@@ -51,7 +51,7 @@ TEST(Core_Static, StaticProc_GM_Static1__CompileTorture) {
 }
 
 
-TEST(Core_Static, StaticProc_GM_Static2__CompileTorture) {
+TEST(Core_Static, StaticProc_GM_Static2__CompileTest) {
 
   using T = float;
   std::array<std::array<T, 3>, 3> a{
@@ -76,7 +76,7 @@ TEST(Core_Static, StaticProc_GM_Static2__CompileTorture) {
   GM_Static2_<T,3,3>::decomp1(a.data()->data(),b.data()->data(),c);
 }
 
-TEST(Core_Static, StaticProc_GM_Static3__CompileTorture) {
+TEST(Core_Static, StaticProc_GM_Static3__CompileTest) {
 
   using T = float;
 
@@ -108,7 +108,7 @@ TEST(Core_Static, StaticProc_GM_Static3__CompileTorture) {
   GM_Static3_<T,3,3>::decomp1(a.data()->data(),b.data()->data(),d);
 }
 
-TEST(Core_Static, StaticProc_GM_Std__CompileTorture) {
+TEST(Core_Static, StaticProc_GM_Std__CompileTest) {
 
   using T = float;
 
