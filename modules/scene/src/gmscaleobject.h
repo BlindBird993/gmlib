@@ -271,7 +271,7 @@ namespace GMlib {
 
     if(_scaled)
     {
-      if(sp.isValid()) return Sphere<float,3>(_max*sp.getPos(),_max*sp.getRadius());
+      if(sp.isValid()) return Sphere<float,3>(double(_max)*sp.getPos(),_max*sp.getRadius());
       else return sp;
     }
     else return sp;

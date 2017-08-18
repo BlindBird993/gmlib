@@ -246,9 +246,9 @@ namespace GMlib {
 
     if(_scale.isActive()) {
 
-      _global_sphere *= _scale.getMax();
+      _global_sphere *= double(_scale.getMax());
       _global_sphere %= _scale.getScale();
-      _global_total_sphere *= _scale.getMax();
+      _global_total_sphere *= double(_scale.getMax());
       _global_total_sphere %= _scale.getScale();
     }
     for( int i = 0; i < _children.getSize(); i++ ) {
@@ -441,7 +441,7 @@ namespace GMlib {
 
   void SceneObject::move( float d, bool propagate ) {
 
-    _pos += d*_dir;
+    _pos += double(d)*_dir;
     basisChange(_side, _up, _dir, _pos);
 
     if(propagate && _parent )
@@ -473,7 +473,7 @@ namespace GMlib {
     if(_locked)
     {
       lock_pos  = getSceneLockPos();
-      dir_length = ( lock_pos - _pos ).getLength();
+      dir_length = double(( lock_pos - _pos ).getLength());
     }
 
     switch (c) {
@@ -513,15 +513,15 @@ namespace GMlib {
     if(_locked)
     {
       lock_pos  = getSceneLockPos();
-      dir_length = (lock_pos - _pos).getLength();
+      dir_length = double((lock_pos - _pos).getLength());
 
-      _pos += t(0)*_side + t(1)*_up;
+      _pos += double(t(0))*_side + double(t(1))*_up;
 
       updateOrientation(lock_pos);
       _pos  = lock_pos - dir_length*_dir;
     }
     else {
-      _pos += _side*t(0) + _up*t(1);
+      _pos += _side*double(t(0)) + _up*double(t(1));
     }
     basisChange(_side, _up, _dir, _pos);
 
@@ -604,7 +604,7 @@ namespace GMlib {
     if(_locked)
     {
       Point<float,3> lock_pos = getSceneLockPos();
-      double       dir_length = (lock_pos - _pos).getLength();
+      double       dir_length = double((lock_pos - _pos).getLength());
       Vector<float,3> t,ra = rot_axel;
       double dd= a.getRad()/M_PI_4;
       while(dd > 1.0)
@@ -713,7 +713,7 @@ namespace GMlib {
 
     _pos          = pos;
     _dir          = dir;
-    _up           = up - (up*_dir)*_dir;
+    _up           = up - double(up*_dir)*_dir;
     _side         = _up^_dir;
     _locked       = false;
     _lock_object  = 0;

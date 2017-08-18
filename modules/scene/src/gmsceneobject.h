@@ -556,7 +556,7 @@ namespace GMlib{
   double SceneObject::getLockDist() const {
 
     if(_locked)
-      return  ( getLockPos()-getPos() ).getLength();
+      return  double(( getLockPos()-getPos() ).getLength());
     else
       return  0.0;
   }
@@ -584,7 +584,7 @@ namespace GMlib{
   void SceneObject::updateOrientation(const Point<float,3>& lock_pos ) {
 
     _dir    = lock_pos - _pos;
-    _up     = _up - (_up * _dir) * _dir;
+    _up     = _up - double(_up * _dir) * _dir;
     _side   = _up ^ _dir;
   }
 
