@@ -32,10 +32,18 @@ namespace GMlib {
 
   template <typename T>
   inline
-  PRoseCurve<T>::PRoseCurve( T radius ) {
+  PRoseCurve<T>::PRoseCurve( int n, int m, T radius ) {
 
     _r = radius;
+    _n = n;
+    _m = m;
+    _k = T(_n)/T(_m);
+    _k2 = T((_n*_n)+(_m*_m))/T(_m*_m);
 
+    if((_n*_m) % 2 == 0)
+        _l = 2;
+    else
+        _l = 1;
   }
 
 
@@ -68,18 +76,18 @@ namespace GMlib {
 
       this->_p.setDim(d + 1);
 
-      this->_p[0][0] = _r * T(cos(t)*cos(1.75*t));
-      this->_p[0][1] = _r * T(sin(t)*cos(1.75*t));
+      this->_p[0][0] = _r * T(cos(t)*cos(_k*t));
+      this->_p[0][1] = _r * T(sin(t)*cos(_k*t));
       this->_p[0][2] = T(0);
 
       if( this->_dm == GM_DERIVATION_EXPLICIT ) {
           if(d > 0) {
-              this->_p[1][0] = _r * T(-1.75*cos(t) * sin(1.75*t) - sin(t)*cos(1.75*t));
-              this->_p[1][1] = _r * T(-1.75*sin(t) * sin(1.75*t) + cos(t)*cos(1.75*t));
+              this->_p[1][0] = _r * T(-_k*cos(t) * sin(_k*t) - sin(t)*cos(_k*t));
+              this->_p[1][1] = _r * T(-_k*sin(t) * sin(_k*t) + cos(t)*cos(_k*t));
               this->_p[1][2] = T(0);
               if(d > 1) {
-                  this->_p[2][0]= _r * T( 3.5*sin(t)*sin(1.75*t) - 4.0625*cos(t)*cos(1.75*t));
-                  this->_p[2][1]= _r * T(-3.5*cos(t)*sin(1.75*t) - 4.0625*sin(t)*cos(1.75*t));
+                  this->_p[2][0]= _r * T( 2*_k*sin(t)*sin(_k*t) - _k2*cos(t)*cos(_k*t));
+                  this->_p[2][1]= _r * T(-2*_k*cos(t)*sin(_k*t) - _k2*sin(t)*cos(_k*t));
                   this->_p[2][2]= T(0);
               }
           }
@@ -95,7 +103,7 @@ namespace GMlib {
 
   template <typename T>
   T PRoseCurve<T>::getEndP() const {
-    return T( 8 * M_PI );
+    return T( _m * _l * M_PI );
   }
 
 

@@ -37,7 +37,7 @@ namespace GMlib {
   class PRoseCurve : public PCurve<T,3> {
     GM_SCENEOBJECT(PRoseCurve)
   public:
-    PRoseCurve( T radius = T(5) );
+    PRoseCurve( int n = 7, int m = 4, T radius = T(5) );
     PRoseCurve( const PRoseCurve<T>& copy );
     virtual ~PRoseCurve();
 
@@ -55,7 +55,12 @@ namespace GMlib {
     T                   getEndP()   const override;
 
     // Protected data for the curve
-    T             _r;
+    T               _r;
+    int             _n;
+    int             _m;
+    int             _l;
+    T               _k;
+    T               _k2;
 
   }; // END PRoseCurve
 
