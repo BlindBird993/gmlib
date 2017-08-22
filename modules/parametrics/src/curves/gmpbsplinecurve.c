@@ -74,7 +74,7 @@ namespace GMlib {
         idx++;
 
       // Evaluate the Bernstine Polynomial of sampl i of m
-      EvaluatorStatic<float>::evaluateBSp2( bhp, t, _t, 0, idx);
+      EvaluatorStatic<float>::evaluateBSp2( bhp, t, _t, d, idx);
 //      evalBernsteinHermite( bhp, t, idx );
     }
     std::cout << "HEI!!!!" << bhp << std::endl;
