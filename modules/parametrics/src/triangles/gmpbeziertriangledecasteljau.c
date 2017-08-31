@@ -44,7 +44,7 @@ namespace GMlib {
 
     _selectors = false;
     _c_moved   = false;
-    _sgv       = new SelectorGridVisualizer<T>;
+    //_sgv       = new SelectorGridVisualizer<T>;
 
 
 
@@ -60,13 +60,13 @@ namespace GMlib {
 
     _selectors = false;
     _c_moved   = false;
-    _sgv       = new SelectorGridVisualizer<T>;
+    //_sgv       = new SelectorGridVisualizer<T>;
   }
 
   template <typename T>
   PBezierTriangleDeCasteljau<T>::~PBezierTriangleDeCasteljau() {
 
-    delete _sgv;
+    //delete _sgv;
   }
 
   template <typename T>
@@ -86,7 +86,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBezierTriangleDeCasteljau<T>::eval( T u, T v, T w, int d )
+  void PBezierTriangleDeCasteljau<T>::eval( T u, T v, T w, int d ) const
   {
         //evalHardCoded(u,v,w,d);
         evalDeCasteljau(u,v,w);
@@ -94,7 +94,7 @@ namespace GMlib {
   }
 
   template <typename T>
-  void PBezierTriangleDeCasteljau<T>::evalHardCoded(T u, T v, T w, int d)
+  void PBezierTriangleDeCasteljau<T>::evalHardCoded(T u, T v, T w, int d) const
   {
           this->_p.setDim(4);
 
@@ -122,9 +122,9 @@ namespace GMlib {
   }
 
   template <typename T>
-  void PBezierTriangleDeCasteljau<T>::evalDeCasteljau(T u, T v, T w)
+  void PBezierTriangleDeCasteljau<T>::evalDeCasteljau(T u, T v, T w) const
   {
-      int d;
+      int d = 1;
       this->_p.setDim(4);
       if(_c.getDim() == 3)
           d = 1;
@@ -133,10 +133,12 @@ namespace GMlib {
       else if( _c.getDim() == 10 )
           d = 3;
 
-      this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 0, Vector<T,3>(0,0,0));
-      this->_p[1] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(1,0,0));
-      this->_p[2] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(0,1,0));
-      this->_p[3] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(0,0,1));
+      this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w));
+
+//      this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 0, Vector<T,3>(0,0,0));
+//      this->_p[1] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(1,0,0));
+//      this->_p[2] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(0,1,0));
+//      this->_p[3] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(0,0,1));
   }
 
   template <typename T>
@@ -232,18 +234,12 @@ namespace GMlib {
   }
 
   template <typename T>
-  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir)
+  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b) const
   {
+
       if(p.getDim() == 3)
      {
-        if(p.getDim() == _c.getDim() and numDer == 1)
-        {
-            return cornerCutting(p, dir*d);
-        }
-        else
-        {
-            return cornerCutting(p, b);
-        }
+          return cornerCutting(p, b);
      }
       else
       {
@@ -283,22 +279,15 @@ namespace GMlib {
 
           for(int i = 0; i < subs.getDim(); i++)
           {
-              q[i] = DeCasteljau(d-1,subs[i],b,numDer, dir);
+              q[i] = DeCasteljau(d-1,subs[i],b);
           }
 
-          if(p.getDim() == _c.getDim() and numDer == 1)
-          {
-              return cornerCutting(q, dir*d);
-          }
-          else
-          {
-              return cornerCutting(q, b);
-          }
+          return cornerCutting(q, b);
       }
   }
 
   template <typename T>
-  Vector<T,3> PBezierTriangleDeCasteljau<T>::cornerCutting(DVector<Vector<T,3>> q, Vector<T,3> b)
+  Vector<T,3> PBezierTriangleDeCasteljau<T>::cornerCutting(DVector<Vector<T,3>> q, Vector<T,3> b) const
   {
       Vector<T,3> final = Vector<T,3>(0,0,0);
 
@@ -309,6 +298,86 @@ namespace GMlib {
 
       return final;
   }
+
+//  template <typename T>
+//  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir) const
+//  {
+//      if(p.getDim() == 3)
+//     {
+//        if(p.getDim() == _c.getDim() and numDer == 1)
+//        {
+//            return cornerCutting(p, dir*d);
+//        }
+//        else
+//        {
+//            return cornerCutting(p, b);
+//        }
+//     }
+//      else
+//      {
+//          DVector<Vector<T,3>> q;
+//          q.setDim(3);
+//          DVector<DVector<Vector<T,3>>> subs;
+//          subs.setDim(3);
+
+//          DVector<int> index = DVector<int>(3,0);
+//          index[0] = d;
+//          for(int i = 1, k=0; i <= 3; i++)
+//          {
+//              //Add to sub
+//              for(int l = 0; l < index.getDim(); l++)
+//              {
+//                  if(index[l] > 0)
+//                      subs[l].push_back(p[k]);
+//              }
+//              if(i == 3)
+//              {
+//                  if(index[i-1] == d)
+//                      break;
+//                  int j = 1;//n-2
+//                  for(; index[j] == 0 and j >= 0; j--);
+//                  if(j < 0)
+//                      break;
+//                  i = j+1;
+//                  index[i]=index[2];//index[n-1]
+//                  if(i != 2)//n-1
+//                      index[2]=0;//index[n-1]
+
+//              }
+//              index[i]++;
+//              index[i-1]--;
+//              k++;
+//          }
+
+//          for(int i = 0; i < subs.getDim(); i++)
+//          {
+//              q[i] = DeCasteljau(d-1,subs[i],b,numDer, dir);
+//          }
+
+
+//          if(p.getDim() == _c.getDim() and numDer == 1)
+//          {
+//              return cornerCutting(q, dir*d);
+//          }
+//          else
+//          {
+//              return cornerCutting(q, b);
+//          }
+//      }
+//  }
+
+//  template <typename T>
+//  Vector<T,3> PBezierTriangleDeCasteljau<T>::cornerCutting(DVector<Vector<T,3>> q, Vector<T,3> b) const
+//  {
+//      Vector<T,3> final = Vector<T,3>(0,0,0);
+
+//      for(int i = 0; i < q.getDim(); i++)
+//      {
+//         final +=  b[i]*q[i];
+//      }
+
+//      return final;
+//  }
 
 
 

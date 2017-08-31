@@ -22,3 +22,4 @@
 
 
 GM_ADD_BENCHMARK(pcurve_evaluate gmscene gmopengl gmcore)
+GM_ADD_BENCHMARK(deCasteljau gmscene gmopengl gmcore)

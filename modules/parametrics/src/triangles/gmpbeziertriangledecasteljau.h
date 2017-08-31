@@ -59,6 +59,7 @@ class SelectorGridVisualizer;
     void                        setControlPoints( const DVector< Vector<T,3> >& c );
     virtual void                showSelectors( bool grid, Color selector_color = GMcolor::darkBlue(), Color grid_color = GMcolor::lightGreen() );
     void                        updateCoeffs( const Vector<T,3>& d ) override;
+    Vector<T,3> DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b) const;
 
   protected:
     DVector< Vector<T,3> >      _c;
@@ -69,13 +70,13 @@ class SelectorGridVisualizer;
     bool                        _c_moved;
 
     /* implemented from PTriangle */
-    void                        eval( T u, T v, T w, int d ) override;
+    void                        eval( T u, T v, T w, int d ) const override;
 
   private:
-    Vector<T,3> DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir);
-    Vector<T,3> cornerCutting(DVector<Vector<T,3>> q, Vector<T,3> b);
-    void evalDeCasteljau(T u, T v, T w);
-    void evalHardCoded(T u, T v, T w, int d);
+    //Vector<T,3> DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b, int numDer, Vector<T,3> dir) const;
+    Vector<T,3> cornerCutting(DVector<Vector<T,3>> q, Vector<T,3> b) const;
+    void evalDeCasteljau(T u, T v, T w) const;
+    void evalHardCoded(T u, T v, T w, int d) const;
 
   }; // END class PBezierTriangleDeCasteljau
 
