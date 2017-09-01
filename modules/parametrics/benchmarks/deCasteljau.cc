@@ -1255,4 +1255,196 @@ static void BM_BezierTriangle_hardCoded_d8(benchmark::State& state)
 BENCHMARK(BM_BezierTriangle_hardCoded_d8);
 
 
+static void BM_BezierTriangle_hardCoded_d9(benchmark::State& state)
+{
+    float u = 1, v = 0, w = 0;
+    DVector<Vector<float,3>> c;
+    c.push_back(GMlib::Vector<float,3>(0.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(0.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.0f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+
+    Vector<float,3> test;
+
+  // The test loop
+  while (state.KeepRunning()) {
+    test = c[0]*(u*u*u*u*u*u*u*u*u) + c[1]*(9*u*u*u*u*u*u*u*u*v) + c[2]*(9*u*u*u*u*u*u*u*u*w)
+         + c[3]*(36*u*u*u*u*u*u*u*v*v) + c[4]*(72*u*u*u*u*u*u*u*v*w) + c[5]*(36*u*u*u*u*u*u*u*w*w)
+         + c[6]*(84*u*u*u*u*u*u*v*v*v) + c[7]*(252*u*u*u*u*u*u*v*v*w) + c[8]*(252*u*u*u*u*u*u*v*w*w)
+         + c[9]*(84*u*u*u*u*u*u*w*w*w) + c[10]*(126*u*u*u*u*u*v*v*v*v) + c[11]*(504*u*u*u*u*u*v*v*v*w)
+         + c[12]*(756*u*u*u*u*u*v*v*w*w) + c[13]*(504*u*u*u*u*u*v*w*w*w) + c[14]*(126*u*u*u*u*u*w*w*w*w)
+         + c[15]*(126*u*u*u*u*v*v*v*v*v) + c[16]*(630*u*u*u*u*v*v*v*v*w) + c[17]*(1260*u*u*u*u*v*v*v*w*w)
+         + c[18]*(1260*u*u*u*u*v*v*w*w*w) + c[19]*(630*u*u*u*u*v*w*w*w*w) + c[20]*(126*u*u*u*u*w*w*w*w*w)
+         + c[21]*(84*u*u*u*v*v*v*v*v*v) + c[22]*(504*u*u*u*v*v*v*v*v*w) + c[23]*(1260*u*u*u*v*v*v*v*w*w)
+         + c[24]*(1680*u*u*u*v*v*v*w*w*w) + c[25]*(1260*u*u*u*v*v*w*w*w*w) + c[26]*(504*u*u*u*v*w*w*w*w*w)
+         + c[27]*(84*u*u*u*w*w*w*w*w*w) + c[28]*(36*u*u*v*v*v*v*v*v*v) + c[29]*(252*u*u*v*v*v*v*v*v*w)
+         + c[30]*(756*u*u*v*v*v*v*v*w*w) + c[31]*(1260*u*u*v*v*v*v*w*w*w) + c[32]*(1260*u*u*v*v*v*w*w*w*w)
+         + c[33]*(756*u*u*v*v*w*w*w*w*w) + c[34]*(252*u*u*v*w*w*w*w*w*w) + c[35]*(36*u*u*w*w*w*w*w*w*w)
+         + c[36]*(9*u*v*v*v*v*v*v*v*v) + c[37]*(72*u*v*v*v*v*v*v*v*w) + c[38]*(252*u*v*v*v*v*v*v*w*w)
+         + c[39]*(504*u*v*v*v*v*v*w*w*w) + c[40]*(630*u*v*v*v*v*w*w*w*w) + c[41]*(504*u*v*v*v*w*w*w*w*w)
+         + c[42]*(252*u*v*v*w*w*w*w*w*w) + c[43]*(72*u*v*w*w*w*w*w*w*w) + c[44]*(9*u*w*w*w*w*w*w*w*w)
+         + c[45]*(v*v*v*v*v*v*v*v*v) + c[46]*(9*v*v*v*v*v*v*v*v*w) + c[47]*(36*v*v*v*v*v*v*v*w*w)
+         + c[48]*(84*v*v*v*v*v*v*w*w*w) + c[49]*(126*v*v*v*v*v*w*w*w*w) + c[50]*(126*v*v*v*v*w*w*w*w*w)
+         + c[51]*(84*v*v*v*w*w*w*w*w*w) + c[52]*(36*v*v*w*w*w*w*w*w*w) + c[53]*(9*v*w*w*w*w*w*w*w*w)
+         + c[54]*(w*w*w*w*w*w*w*w*w);
+  }
+
+}
+BENCHMARK(BM_BezierTriangle_hardCoded_d9);
+
+
+static void BM_BezierTriangle_hardCoded_d10(benchmark::State& state)
+{
+    float u = 1, v = 0, w = 0;
+    DVector<Vector<float,3>> c;
+    c.push_back(GMlib::Vector<float,3>(0.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(0.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.0f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(1.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(4.f,0.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.5f,1.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(3.f,2.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.5f,3.f,0.f));
+    c.push_back(GMlib::Vector<float,3>(2.f,4.f,0.f));
+
+    Vector<float,3> test;
+
+  // The test loop
+  while (state.KeepRunning()) {
+    test = c[0]*(u*u*u*u*u*u*u*u*u*u) + c[1]*(10*u*u*u*u*u*u*u*u*u*v) + c[2]*(10*u*u*u*u*u*u*u*u*u*w)
+         + c[3]*(45*u*u*u*u*u*u*u*u*v*v) + c[4]*(90*u*u*u*u*u*u*u*u*v*w) + c[5]*(45*u*u*u*u*u*u*u*u*w*w)
+         + c[6]*(120*u*u*u*u*u*u*u*v*v*v) + c[7]*(360*u*u*u*u*u*u*u*v*v*w) + c[8]*(360*u*u*u*u*u*u*u*v*w*w)
+         + c[9]*(120*u*u*u*u*u*u*u*w*w*w) + c[10]*(210*u*u*u*u*u*u*v*v*v*v) + c[11]*(840*u*u*u*u*u*u*v*v*v*w)
+         + c[12]*(1260*u*u*u*u*u*u*v*v*w*w) + c[13]*(840*u*u*u*u*u*u*v*w*w*w) + c[14]*(210*u*u*u*u*u*u*w*w*w*w)
+         + c[15]*(252*u*u*u*u*u*v*v*v*v*v) + c[16]*(1260*u*u*u*u*u*v*v*v*v*w) + c[17]*(2520*u*u*u*u*u*v*v*v*w*w)
+         + c[18]*(2520*u*u*u*u*u*v*v*w*w*w) + c[19]*(1260*u*u*u*u*u*v*w*w*w*w) + c[20]*(252*u*u*u*u*u*w*w*w*w*w)
+         + c[21]*(210*u*u*u*u*v*v*v*v*v*v) + c[22]*(1260*u*u*u*u*v*v*v*v*v*w) + c[23]*(3150*u*u*u*u*v*v*v*v*w*w)
+         + c[24]*(4200*u*u*u*u*v*v*v*w*w*w) + c[25]*(3150*u*u*u*u*v*v*w*w*w*w) + c[26]*(1260*u*u*u*u*v*w*w*w*w*w)
+         + c[27]*(210*u*u*u*u*w*w*w*w*w*w) + c[28]*(120*u*u*u*v*v*v*v*v*v*v) + c[29]*(840*u*u*u*v*v*v*v*v*v*w)
+         + c[30]*(2520*u*u*u*v*v*v*v*v*w*w) + c[31]*(4200*u*u*u*v*v*v*v*w*w*w) + c[32]*(4200*u*u*u*v*v*v*w*w*w*w)
+         + c[33]*(2520*u*u*u*v*v*w*w*w*w*w) + c[34]*(840*u*u*u*v*w*w*w*w*w*w) + c[35]*(120*u*u*u*w*w*w*w*w*w*w)
+         + c[36]*(45*u*u*v*v*v*v*v*v*v*v) + c[37]*(360*u*u*v*v*v*v*v*v*v*w) + c[38]*(1260*u*u*v*v*v*v*v*v*w*w)
+         + c[39]*(2520*u*u*v*v*v*v*v*w*w*w) + c[40]*(3150*u*u*v*v*v*v*w*w*w*w) + c[41]*(2520*u*u*v*v*v*w*w*w*w*w)
+         + c[42]*(1260*u*u*v*v*w*w*w*w*w*w) + c[43]*(360*u*u*v*w*w*w*w*w*w*w) + c[44]*(45*u*u*w*w*w*w*w*w*w*w)
+         + c[45]*(10*u*v*v*v*v*v*v*v*v*v) + c[46]*(90*u*v*v*v*v*v*v*v*v*w) + c[47]*(360*u*v*v*v*v*v*v*v*w*w)
+         + c[48]*(840*u*v*v*v*v*v*v*w*w*w) + c[49]*(1260*u*v*v*v*v*v*w*w*w*w) + c[50]*(1260*u*v*v*v*v*w*w*w*w*w)
+         + c[51]*(840*u*v*v*v*w*w*w*w*w*w) + c[52]*(360*u*v*v*w*w*w*w*w*w*w) + c[53]*(90*u*v*w*w*w*w*w*w*w*w)
+         + c[54]*(10*u*w*w*w*w*w*w*w*w*w) + c[55]*(v*v*v*v*v*v*v*v*v*v) + c[56]*(10*v*v*v*v*v*v*v*v*v*w)
+         + c[57]*(45*v*v*v*v*v*v*v*v*w*w) + c[58]*(120*v*v*v*v*v*v*v*w*w*w) + c[59]*(210*v*v*v*v*v*v*w*w*w*w)
+         + c[60]*(252*v*v*v*v*v*w*w*w*w*w) + c[61]*(210*v*v*v*v*w*w*w*w*w*w) + c[62]*(120*v*v*v*w*w*w*w*w*w*w)
+         + c[63]*(45*v*v*w*w*w*w*w*w*w*w) + c[64]*(10*v*w*w*w*w*w*w*w*w*w) + c[65]*(w*w*w*w*w*w*w*w*w*w);
+  }
+
+}
+BENCHMARK(BM_BezierTriangle_hardCoded_d10);
+
+
 BENCHMARK_MAIN()
