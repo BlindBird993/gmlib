@@ -2,6 +2,8 @@
 
 #include "../src/curves/gmpcircle.h"
 #include "../src/triangles/gmpbeziertriangledecasteljau.h"
+#include "../../core/src/utils/gmutils.h"
+
 using namespace GMlib;
 
 
@@ -23,9 +25,10 @@ using namespace GMlib;
 //  ->RangeMultiplier(2)
 //  ->Ranges({{2, 2 << 15}, {1,2}});
 
-Vector<float,3> cornerCutting(DVector<Vector<float,3>> q, DVector<float> b)
+template <typename T>
+Vector<T,3> cornerCutting(DVector<Vector<T,3>> q, DVector<T> b)
 {
-    Vector<float,3> final = Vector<float,3>(0,0,0);
+    Vector<T,3> final = Vector<T,3>(0,0,0);
 
     for(int i = 0; i < q.getDim(); i++)
     {
@@ -35,8 +38,8 @@ Vector<float,3> cornerCutting(DVector<Vector<float,3>> q, DVector<float> b)
     return final;
 }
 
-
-Vector<float,3> DeCasteljau(int d, DVector<Vector<float,3>> p, DVector<float> b, int n)
+template <typename T>
+Vector<T,3> DeCasteljau(int d, DVector<Vector<T,3>> p, DVector<T> b, int n)
 {
 
     if(p.getDim() == n)
@@ -45,9 +48,9 @@ Vector<float,3> DeCasteljau(int d, DVector<Vector<float,3>> p, DVector<float> b,
    }
     else
     {
-        DVector<Vector<float,3>> q;
+        DVector<Vector<T,3>> q;
         q.setDim(n);
-        DVector<DVector<Vector<float,3>>> subs;
+        DVector<DVector<Vector<T,3>>> subs;
         subs.setDim(n);
 
         DVector<int> index = DVector<int>(n,0);
@@ -122,6 +125,53 @@ void index(int d,DVector<Vector<float,3>> p)
         k++;
     }
 }
+
+void testVector(Vector<float,3> p)
+{
+    for(int i = 0; i<200; i++){
+    DVector<DVector<Vector<float,3>>> subs;
+    subs.setDim(4);
+    for(int i = 0; i<4; i++)
+        subs[i].push_back(p);
+    }
+}
+
+void testVector2(Vector<float,3> p)
+{
+    for(int i = 0; i<200; i++){
+    DVector<DVector<Vector<float,3>>> subs;
+    subs.setDim(4);
+    for(int i = 0; i<4; i++)
+    {
+        subs[i].setDim(4);
+        subs[i][0] = p;
+    }
+    }
+}
+
+
+//static void BM_Vector_test1(benchmark::State& state)
+//{
+//    Vector<float,3> p = Vector<float,3>(1.5,2,3);
+//  // The test loop
+//  while (state.KeepRunning()) {
+//    testVector(p);
+//  }
+
+//}
+//BENCHMARK(BM_Vector_test1);
+
+//static void BM_Vector_test2(benchmark::State& state)
+//{
+//    Vector<float,3> p = Vector<float,3>(1.5,2,3);
+//  // The test loop
+//  while (state.KeepRunning()) {
+//    testVector2(p);
+//  }
+
+//}
+//BENCHMARK(BM_Vector_test2);
+
 
 static void BM_pentagon_deCasteljau_d1(benchmark::State& state)
 {
@@ -327,11 +377,11 @@ static void BM_pentagon_deCasteljau_d4(benchmark::State& state)
     c.push_back(GMlib::Vector<float,3>(0.f,4.f,0.f));
 
     DVector<float> b;
-    b.push_back(0.0);
-    b.push_back(0.0);
-    b.push_back(1.0);
-    b.push_back(0.0);
-    b.push_back(0.0);
+    b.push_back(0.0f);
+    b.push_back(0.0f);
+    b.push_back(1.0f);
+    b.push_back(0.0f);
+    b.push_back(0.0f);
 
     Vector<float,3> test;
 
@@ -343,6 +393,99 @@ static void BM_pentagon_deCasteljau_d4(benchmark::State& state)
 }
 BENCHMARK(BM_pentagon_deCasteljau_d4);
 
+
+static void BM_pentagon_deCasteljau_d4_double(benchmark::State& state)
+{
+    DVector<Vector<double,3>> c;
+    int d = 4;
+    int n = 5;
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(GMlib::Vector<double,3>(0.0,4.0,0.0));
+
+    DVector<double> b;
+    b.push_back(0.0);
+    b.push_back(0.0);
+    b.push_back(1.0);
+    b.push_back(0.0);
+    b.push_back(0.0);
+
+    Vector<double,3> test;
+
+    // The test loop
+    while (state.KeepRunning()) {
+      test = DeCasteljau(d,c,b,n);
+    }
+
+}
+BENCHMARK(BM_pentagon_deCasteljau_d4_double);
 
 static void BM_pentagon_hardCoded_d1(benchmark::State& state)
 {
