@@ -2649,5 +2649,55 @@ BENCHMARK(BM_pentagon_VSalgo_d4);
 //}
 //BENCHMARK(BM_BezierTriangle_hardCoded_d10);
 
+static void BM_BezierTriangle_deCasteljau_matrix_d3(benchmark::State& state)
+{
+  int d = 3;
+  DVector<Vector<float,3>> c(10);
+  c[0] = GMlib::Vector<float,3>(0.f,0.f,1.f);
+  c[1] = GMlib::Vector<float,3>(1.f,0.f,0.f);
+  c[2] = GMlib::Vector<float,3>(0.5f,1.f,0.f);
+  c[3] = GMlib::Vector<float,3>(2.f,0.f,0.f);
+  c[4] = GMlib::Vector<float,3>(1.5f,1.f,0.f);
+  c[5] = GMlib::Vector<float,3>(1.f,2.f,0.f);
+  c[6] = GMlib::Vector<float,3>(3.0f,0.f,1.f);
+  c[7] = GMlib::Vector<float,3>(2.5f,1.f,0.f);
+  c[8] = GMlib::Vector<float,3>(2.f,2.f,0.f);
+  c[9] = GMlib::Vector<float,3>(1.5f,3.f,1.f);
+
+  auto pbezierTri = PBezierTriangleDeCasteljau<float>(c);
+
+
+  DVector<float> up(3);
+  up[0] = 0.5f;
+  up[1] = 0.3f;
+  up[2] = 0.2f;
+  auto T1 = pbezierTri.computeM(d-1,1, up);
+  auto T2 = pbezierTri.computeM(d-1,2, up);
+  auto T3 = pbezierTri.computeM(d-1,3, up);
+
+//  std::cout << "T1: " << T1 << std::endl;
+//  std::cout << "T2: " << T2 << std::endl;
+//  std::cout << "T3: " << T3 << std::endl;
+//  std::cout << "c: " << c << std::endl;
+
+  DVector<Vector<float,3>> V;// = T1 * (T2 * (T3 * c));
+  //auto V = /*T1 * */ (T2 * (T3 * c));
+
+  // The test loop
+  while (state.KeepRunning()) {
+    //V = T1 * (T2 * (T3 * c));
+    //V = (((T1 * T2) * T3) * c);
+    auto a = T3 * c;
+    auto b = T2 * a;
+    V = T1 * b;
+  }
+
+  Vector<float,3> res;
+  for (int i=0; i < 3; ++i)
+    res[i] = V(0)(i);
+  std::cout << "Res2: " << res << std::endl;
+
+}
+BENCHMARK(BM_BezierTriangle_deCasteljau_matrix_d3);
 
 BENCHMARK_MAIN()
