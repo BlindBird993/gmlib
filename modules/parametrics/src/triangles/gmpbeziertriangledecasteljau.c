@@ -22,12 +22,14 @@
 
 
 
-
+#include "gmpbeziertriangledecasteljau.h"
 
 #include "../evaluators/gmevaluatorstatic.h"
 
 // gmlib
 #include <scene/visualizers/gmselectorgridvisualizer.h>
+
+#include <gmCoreModule>
 
 #include <iostream>
 
@@ -90,7 +92,6 @@ namespace GMlib {
   {
         //evalHardCoded(u,v,w,d);
         evalDeCasteljau(u,v,w);
-
   }
 
   template <typename T>
@@ -133,7 +134,8 @@ namespace GMlib {
       else if( _c.getDim() == 10 )
           d = 3;
 
-      this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w));
+      //this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w));
+      this->_p[0] = DeCasteljauMatrix(d, Vector<T,3>(u,v,w));
 
 //      this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 0, Vector<T,3>(0,0,0));
 //      this->_p[1] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(1,0,0));
@@ -379,9 +381,97 @@ namespace GMlib {
 //      return final;
 //  }
 
+  template <typename T>
+  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeCasteljauMatrix(int n, const Vector<T,3>& u) const
+  {
+    assert(n>0);
 
+    DVector<T> up(3); {
+      up[0] = u(0);
+      up[1] = u(1);
+      up[2] = u(2);
+    }
+
+    DVector<DMatrix<T>> Ts(n);
+    for (auto i = 0; i < n; ++i)
+      Ts[i] = computeM(2,i+1, up);
+
+    // intermediate points
+    auto ci = Ts(Ts.getDim()-1) * _c;
+    for(auto i = Ts.getDim()-1; i>0; --i)
+      ci = Ts(i-1) * ci;
+
+    assert (ci.getDim() == 1);
+
+    Vector<T,3> res;
+    for (auto i=0; i < 3; ++i)
+      res[i] = ci(0)(i);
+    return res;
+  }
+
+  /**
+   * Computes a Bernstein factor matrix.
+   *
+   * d: dimension of the simplex (ex. 2 = triangle, 3 = tetrahedron, etc.)
+   * n: degree of the factorial matrix
+   * u: parameter values to be inserted into the factor matrix
+   *
+   */
+  template<typename T>
+  DMatrix<T> PBezierTriangleDeCasteljau<T>::computeM(int d, int n, DVector<T> u) const {
+    // Size of matrix
+    const auto m_dn = GMutils::binomial<int>(d+n-1,d);
+    const auto n_dn = GMutils::binomial<int>(d+n,d);
+
+    auto M = DMatrix<T>(m_dn, n_dn, T(0));
+
+    if (d == 0) {
+      assert(u.getDim() == 1);
+      for (auto i=0; i < n; ++i) {
+        M[0][i] = u(0);
+      }
+      // Terminate recursion
+      return M;
+    }
+
+    if (n == 1) {
+      for (auto p=0; p<=d; ++p)
+        M[0][p] = u(p);
+      // Terminate recursion
+      return M;
+    }
+
+    // Shortened u vector
+    DVector<T> up(u.getDim()-1);
+    for (auto i=1; i < u.getDim(); ++i)
+      up[i-1] = u(i);
+
+    // Compute sub-matrices recursively
+    auto M_dn1 = computeM(d,n-1, u);
+    auto M_d1n = computeM(d-1,n, up);
+
+    // Copy UL sub-matrix
+    for (auto i=0; i < M_dn1.getDim1(); ++i)
+      for (auto j=0; j < M_dn1.getDim2(); ++j)
+        M[i][j] = M_dn1(i)(j);
+
+    // Copy LR sub-matrix
+    for (auto i=0; i < M_d1n.getDim1(); ++i)
+      for (auto j=0; j< M_d1n.getDim2(); ++j)
+        M[i+M_dn1.getDim1()][j+M_dn1.getDim2()] = M_d1n(i)(j);
+
+    // Fill in LL (R-diag) sub-matrix
+    for (auto i=M_dn1.getDim1(); i < M_dn1.getDim2(); ++i)
+      M[i][i] = u(0);
+
+    //std::cout << "M: " <<  M << std::endl;
+
+    return M;
+  }
 
 } // END namespace GMlib
+
+
 
 
 
