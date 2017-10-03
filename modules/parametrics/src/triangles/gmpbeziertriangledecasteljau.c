@@ -135,7 +135,8 @@ namespace GMlib {
           d = 3;
 
       //this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w));
-      this->_p[0] = DeCasteljauMatrix(d, Vector<T,3>(u,v,w));
+      //this->_p[0] = DeCasteljauMatrix(d, Vector<T,3>(u,v,w));
+      this->_p[0] = DeBoorCoxMatrix(d, Vector<T,3>(u,v,w));
 
 //      this->_p[0] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 0, Vector<T,3>(0,0,0));
 //      this->_p[1] = DeCasteljau(d, _c, Vector<T,3>(u,v,w), 1, Vector<T,3>(1,0,0));
@@ -400,6 +401,38 @@ namespace GMlib {
     auto ci = Ts(Ts.getDim()-1) * _c;
     for(auto i = Ts.getDim()-1; i>0; --i)
       ci = Ts(i-1) * ci;
+
+    assert (ci.getDim() == 1);
+
+    Vector<T,3> res;
+    for (auto i=0; i < 3; ++i)
+      res[i] = ci(0)(i);
+    return res;
+  }
+
+  template <typename T>
+  Vector<T,3> PBezierTriangleDeCasteljau<T>::DeBoorCoxMatrix(int n, const Vector<T,3>& u) const
+  {
+    assert(n>0);
+
+    DVector<T> up(3); {
+      up[0] = u(0);
+      up[1] = u(1);
+      up[2] = u(2);
+    }
+
+    DVector<DMatrix<T>> Ts(n);
+    for (auto i = 0; i < n; ++i)
+      Ts[i] = computeM(2,i+1, up);
+
+    // Compute Bernstein basis polynomials by multiplying together
+    // the factor matrices from left to right
+    auto ts = Ts(0);
+    for(auto i = 1; i < Ts.getDim(); ++i)
+      ts = ts * Ts(i);
+
+    // Multiply the Bernstein bases with the vector of coefficients
+    auto ci = ts * _c;
 
     assert (ci.getDim() == 1);
 

@@ -61,6 +61,7 @@ class SelectorGridVisualizer;
     void                        updateCoeffs( const Vector<T,3>& d ) override;
     Vector<T,3> DeCasteljau(int d, DVector<Vector<T,3>> p, Vector<T,3> b) const;
     Vector<T,3> DeCasteljauMatrix(int n, const Vector<T,3>& u) const;
+    Vector<T,3> DeBoorCoxMatrix(int n, const Vector<T,3>& u) const;
 
   protected:
     DVector< Vector<T,3> >      _c;
