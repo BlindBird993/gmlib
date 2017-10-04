@@ -31,6 +31,8 @@ namespace GMlib {
 
   //- Forward declarations
   template <typename T, int n> class PCurve;
+  template <typename T> class DMatrix;
+  template <typename T> class DVector;
 
   namespace GMPutils {
 
@@ -64,7 +66,8 @@ namespace GMlib {
     template <typename T, int n>
     T getIntegralDiffSqr(PCurve<T, n>& f, PCurve<T, n>& g, T a, T b, double eps);
 
-
+    template<typename T>
+    DMatrix<T> computeT(int d, int n, const DVector<T>& u);
   } // END namespace GMPutils
 
 } // END namespace GMlib

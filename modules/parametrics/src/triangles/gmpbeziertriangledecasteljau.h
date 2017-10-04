@@ -79,9 +79,6 @@ class SelectorGridVisualizer;
     Vector<T,3> cornerCutting(DVector<Vector<T,3>> q, Vector<T,3> b) const;
     void evalDeCasteljau(T u, T v, T w) const;
     void evalHardCoded(T u, T v, T w, int d) const;
-  public:
-    // Should not be public. Only for testing purpose.
-    DMatrix<T> computeM(int d, int n, DVector<T> u) const;
 
   }; // END class PBezierTriangleDeCasteljau
 
