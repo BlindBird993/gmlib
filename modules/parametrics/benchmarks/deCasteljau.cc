@@ -2652,26 +2652,26 @@ BENCHMARK(BM_pentagon_VSalgo_d4);
 static void BM_BezierTriangle_deCasteljau_matrix_d1(benchmark::State& state)
 {
   int d = 3;
-  DVector<Vector<float,3>> c(10);
-  c[0] = GMlib::Vector<float,3>(0.f,0.f,1.f);
-  c[1] = GMlib::Vector<float,3>(1.f,0.f,0.f);
-  c[2] = GMlib::Vector<float,3>(0.5f,1.f,0.f);
+  DVector<Vector<double,3>> c(10);
+  c[0] = GMlib::Vector<double,3>(0.f,0.f,1.f);
+  c[1] = GMlib::Vector<double,3>(1.f,0.f,0.f);
+  c[2] = GMlib::Vector<double,3>(0.5f,1.f,0.f);
 
 
-  DVector<float> up(3);
+  DVector<double> up(3);
   up[0] = 0.5f;
   up[1] = 0.3f;
   up[2] = 0.2f;
   auto T1 = GMPutils::computeT(d-1,1, up);
 
-  DVector<Vector<float,3>> V;
+  DVector<Vector<double,3>> V;
 
   // The test loop
   while (state.KeepRunning()) {
     V = T1 * c;
   }
 
-  Vector<float,3> res;
+  Vector<double,3> res;
   for (int i=0; i < 3; ++i)
     res[i] = V(0)(i);
 
@@ -2681,23 +2681,23 @@ BENCHMARK(BM_BezierTriangle_deCasteljau_matrix_d1);
 static void BM_BezierTriangle_deCasteljau_matrix_d2(benchmark::State& state)
 {
   int d = 3;
-  DVector<Vector<float,3>> c(10);
-  c[0] = GMlib::Vector<float,3>(0.f,0.f,1.f);
-  c[1] = GMlib::Vector<float,3>(1.f,0.f,0.f);
-  c[2] = GMlib::Vector<float,3>(0.5f,1.f,0.f);
-  c[3] = GMlib::Vector<float,3>(2.f,0.f,0.f);
-  c[4] = GMlib::Vector<float,3>(1.5f,1.f,0.f);
-  c[5] = GMlib::Vector<float,3>(1.f,2.f,0.f);
+  DVector<Vector<double,3>> c(10);
+  c[0] = GMlib::Vector<double,3>(0.f,0.f,1.f);
+  c[1] = GMlib::Vector<double,3>(1.f,0.f,0.f);
+  c[2] = GMlib::Vector<double,3>(0.5f,1.f,0.f);
+  c[3] = GMlib::Vector<double,3>(2.f,0.f,0.f);
+  c[4] = GMlib::Vector<double,3>(1.5f,1.f,0.f);
+  c[5] = GMlib::Vector<double,3>(1.f,2.f,0.f);
 
 
-  DVector<float> up(3);
+  DVector<double> up(3);
   up[0] = 0.5f;
   up[1] = 0.3f;
   up[2] = 0.2f;
   auto T1 = GMPutils::computeT(d-1,1, up);
   auto T2 = GMPutils::computeT(d-1,2, up);
 
-  DVector<Vector<float,3>> V;
+  DVector<Vector<double,3>> V;
 
   // The test loop
   while (state.KeepRunning()) {
@@ -2705,7 +2705,7 @@ static void BM_BezierTriangle_deCasteljau_matrix_d2(benchmark::State& state)
     V = T1 * a;
   }
 
-  Vector<float,3> res;
+  Vector<double,3> res;
   for (int i=0; i < 3; ++i)
     res[i] = V(0)(i);
 
@@ -2715,20 +2715,20 @@ BENCHMARK(BM_BezierTriangle_deCasteljau_matrix_d2);
 static void BM_BezierTriangle_deCasteljau_matrix_d3(benchmark::State& state)
 {
   int d = 3;
-  DVector<Vector<float,3>> c(10);
-  c[0] = GMlib::Vector<float,3>(0.f,0.f,1.f);
-  c[1] = GMlib::Vector<float,3>(1.f,0.f,0.f);
-  c[2] = GMlib::Vector<float,3>(0.5f,1.f,0.f);
-  c[3] = GMlib::Vector<float,3>(2.f,0.f,0.f);
-  c[4] = GMlib::Vector<float,3>(1.5f,1.f,0.f);
-  c[5] = GMlib::Vector<float,3>(1.f,2.f,0.f);
-  c[6] = GMlib::Vector<float,3>(3.0f,0.f,1.f);
-  c[7] = GMlib::Vector<float,3>(2.5f,1.f,0.f);
-  c[8] = GMlib::Vector<float,3>(2.f,2.f,0.f);
-  c[9] = GMlib::Vector<float,3>(1.5f,3.f,1.f);
+  DVector<Vector<double,3>> c(10);
+  c[0] = GMlib::Vector<double,3>(0.f,0.f,1.f);
+  c[1] = GMlib::Vector<double,3>(1.f,0.f,0.f);
+  c[2] = GMlib::Vector<double,3>(0.5f,1.f,0.f);
+  c[3] = GMlib::Vector<double,3>(2.f,0.f,0.f);
+  c[4] = GMlib::Vector<double,3>(1.5f,1.f,0.f);
+  c[5] = GMlib::Vector<double,3>(1.f,2.f,0.f);
+  c[6] = GMlib::Vector<double,3>(3.0f,0.f,1.f);
+  c[7] = GMlib::Vector<double,3>(2.5f,1.f,0.f);
+  c[8] = GMlib::Vector<double,3>(2.f,2.f,0.f);
+  c[9] = GMlib::Vector<double,3>(1.5f,3.f,1.f);
 
 
-  DVector<float> up(3);
+  DVector<double> up(3);
   up[0] = 0.5f;
   up[1] = 0.3f;
   up[2] = 0.2f;
@@ -2736,7 +2736,7 @@ static void BM_BezierTriangle_deCasteljau_matrix_d3(benchmark::State& state)
   auto T2 = GMPutils::computeT(d-1,2, up);
   auto T3 = GMPutils::computeT(d-1,3, up);
 
-  DVector<Vector<float,3>> V;
+  DVector<Vector<double,3>> V;
 
   // The test loop
   while (state.KeepRunning()) {
@@ -2745,7 +2745,7 @@ static void BM_BezierTriangle_deCasteljau_matrix_d3(benchmark::State& state)
     V = T1 * b;
   }
 
-  Vector<float,3> res;
+  Vector<double,3> res;
   for (int i=0; i < 3; ++i)
     res[i] = V(0)(i);
 
@@ -2754,25 +2754,25 @@ BENCHMARK(BM_BezierTriangle_deCasteljau_matrix_d3);
 
 static void BM_BezierTriangle_deCasteljau_matrix_d4(benchmark::State& state)
 {
-    DVector<Vector<float,3>> c;
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(5.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
+    DVector<Vector<double,3>> c;
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
 
 
-    DVector<float> b;
+    DVector<double> b;
     b.push_back(0.0);
     b.push_back(0.0);
     b.push_back(1.0);
@@ -2782,7 +2782,7 @@ static void BM_BezierTriangle_deCasteljau_matrix_d4(benchmark::State& state)
     auto T3 = GMPutils::computeT(2,3, b);
     auto T4 = GMPutils::computeT(2,4, b);
 
-    DVector<Vector<float,3>> test;
+    DVector<Vector<double,3>> test;
 
     // The test loop
     while (state.KeepRunning()) {
@@ -2797,31 +2797,31 @@ BENCHMARK(BM_BezierTriangle_deCasteljau_matrix_d4);
 
 static void BM_BezierTriangle_deCasteljau_matrix_d5(benchmark::State& state)
 {
-    DVector<Vector<float,3>> c;
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(5.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
+    DVector<Vector<double,3>> c;
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
 
 
-    DVector<float> b;
+    DVector<double> b;
     b.push_back(0.0);
     b.push_back(0.0);
     b.push_back(1.0);
@@ -2833,7 +2833,7 @@ static void BM_BezierTriangle_deCasteljau_matrix_d5(benchmark::State& state)
     auto T4 = GMPutils::computeT(2,4, b);
     auto T5 = GMPutils::computeT(2,5, b);
 
-    DVector<Vector<float,3>> test;
+    DVector<Vector<double,3>> test;
 
     // The test loop
     while (state.KeepRunning()) {
@@ -2850,27 +2850,27 @@ BENCHMARK(BM_BezierTriangle_deCasteljau_matrix_d5);
 static void BM_BezierTriangle_deBoorCox_matrix_d1(benchmark::State& state)
 {
   int d = 3;
-  DVector<Vector<float,3>> c(10);
-  c[0] = GMlib::Vector<float,3>(0.f,0.f,1.f);
-  c[1] = GMlib::Vector<float,3>(1.f,0.f,0.f);
-  c[2] = GMlib::Vector<float,3>(0.5f,1.f,0.f);
+  DVector<Vector<double,3>> c(10);
+  c[0] = GMlib::Vector<double,3>(0.f,0.f,1.f);
+  c[1] = GMlib::Vector<double,3>(1.f,0.f,0.f);
+  c[2] = GMlib::Vector<double,3>(0.5f,1.f,0.f);
 
 
 
-  DVector<float> up(3);
+  DVector<double> up(3);
   up[0] = 0.5f;
   up[1] = 0.3f;
   up[2] = 0.2f;
   auto T1 = GMPutils::computeT(d-1,1, up);
 
-  DVector<Vector<float,3>> V;
+  DVector<Vector<double,3>> V;
 
   // The test loop
   while (state.KeepRunning()) {
     V = T1 * c;
   }
 
-  Vector<float,3> res;
+  Vector<double,3> res;
   for (int i=0; i < 3; ++i)
     res[i] = V(0)(i);
 
@@ -2880,23 +2880,23 @@ BENCHMARK(BM_BezierTriangle_deBoorCox_matrix_d1);
 static void BM_BezierTriangle_deBoorCox_matrix_d2(benchmark::State& state)
 {
   int d = 3;
-  DVector<Vector<float,3>> c(10);
-  c[0] = GMlib::Vector<float,3>(0.f,0.f,1.f);
-  c[1] = GMlib::Vector<float,3>(1.f,0.f,0.f);
-  c[2] = GMlib::Vector<float,3>(0.5f,1.f,0.f);
-  c[3] = GMlib::Vector<float,3>(2.f,0.f,0.f);
-  c[4] = GMlib::Vector<float,3>(1.5f,1.f,0.f);
-  c[5] = GMlib::Vector<float,3>(1.f,2.f,0.f);
+  DVector<Vector<double,3>> c(10);
+  c[0] = GMlib::Vector<double,3>(0.f,0.f,1.f);
+  c[1] = GMlib::Vector<double,3>(1.f,0.f,0.f);
+  c[2] = GMlib::Vector<double,3>(0.5f,1.f,0.f);
+  c[3] = GMlib::Vector<double,3>(2.f,0.f,0.f);
+  c[4] = GMlib::Vector<double,3>(1.5f,1.f,0.f);
+  c[5] = GMlib::Vector<double,3>(1.f,2.f,0.f);
 
 
-  DVector<float> up(3);
+  DVector<double> up(3);
   up[0] = 0.5f;
   up[1] = 0.3f;
   up[2] = 0.2f;
   auto T1 = GMPutils::computeT(d-1,1, up);
   auto T2 = GMPutils::computeT(d-1,2, up);
 
-  DVector<Vector<float,3>> V;
+  DVector<Vector<double,3>> V;
 
   // The test loop
   while (state.KeepRunning()) {
@@ -2904,7 +2904,7 @@ static void BM_BezierTriangle_deBoorCox_matrix_d2(benchmark::State& state)
     V = a * c;
   }
 
-  Vector<float,3> res;
+  Vector<double,3> res;
   for (int i=0; i < 3; ++i)
     res[i] = V(0)(i);
 
@@ -2914,20 +2914,20 @@ BENCHMARK(BM_BezierTriangle_deBoorCox_matrix_d2);
 static void BM_BezierTriangle_deBoorCox_matrix_d3(benchmark::State& state)
 {
   int d = 3;
-  DVector<Vector<float,3>> c(10);
-  c[0] = GMlib::Vector<float,3>(0.f,0.f,1.f);
-  c[1] = GMlib::Vector<float,3>(1.f,0.f,0.f);
-  c[2] = GMlib::Vector<float,3>(0.5f,1.f,0.f);
-  c[3] = GMlib::Vector<float,3>(2.f,0.f,0.f);
-  c[4] = GMlib::Vector<float,3>(1.5f,1.f,0.f);
-  c[5] = GMlib::Vector<float,3>(1.f,2.f,0.f);
-  c[6] = GMlib::Vector<float,3>(3.0f,0.f,1.f);
-  c[7] = GMlib::Vector<float,3>(2.5f,1.f,0.f);
-  c[8] = GMlib::Vector<float,3>(2.f,2.f,0.f);
-  c[9] = GMlib::Vector<float,3>(1.5f,3.f,1.f);
+  DVector<Vector<double,3>> c(10);
+  c[0] = GMlib::Vector<double,3>(0.f,0.f,1.f);
+  c[1] = GMlib::Vector<double,3>(1.f,0.f,0.f);
+  c[2] = GMlib::Vector<double,3>(0.5f,1.f,0.f);
+  c[3] = GMlib::Vector<double,3>(2.f,0.f,0.f);
+  c[4] = GMlib::Vector<double,3>(1.5f,1.f,0.f);
+  c[5] = GMlib::Vector<double,3>(1.f,2.f,0.f);
+  c[6] = GMlib::Vector<double,3>(3.0f,0.f,1.f);
+  c[7] = GMlib::Vector<double,3>(2.5f,1.f,0.f);
+  c[8] = GMlib::Vector<double,3>(2.f,2.f,0.f);
+  c[9] = GMlib::Vector<double,3>(1.5f,3.f,1.f);
 
 
-  DVector<float> up(3);
+  DVector<double> up(3);
   up[0] = 0.5f;
   up[1] = 0.3f;
   up[2] = 0.2f;
@@ -2935,7 +2935,7 @@ static void BM_BezierTriangle_deBoorCox_matrix_d3(benchmark::State& state)
   auto T2 = GMPutils::computeT(d-1,2, up);
   auto T3 = GMPutils::computeT(d-1,3, up);
 
-  DVector<Vector<float,3>> V;
+  DVector<Vector<double,3>> V;
 
   // The test loop
   while (state.KeepRunning()) {
@@ -2944,7 +2944,7 @@ static void BM_BezierTriangle_deBoorCox_matrix_d3(benchmark::State& state)
     V = b * c;
   }
 
-  Vector<float,3> res;
+  Vector<double,3> res;
   for (int i=0; i < 3; ++i)
     res[i] = V(0)(i);
 
@@ -2953,25 +2953,25 @@ BENCHMARK(BM_BezierTriangle_deBoorCox_matrix_d3);
 
 static void BM_BezierTriangle_deBoorCox_matrix_d4(benchmark::State& state)
 {
-    DVector<Vector<float,3>> c;
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(5.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
+    DVector<Vector<double,3>> c;
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
 
 
-    DVector<float> b;
+    DVector<double> b;
     b.push_back(0.0);
     b.push_back(0.0);
     b.push_back(1.0);
@@ -2982,7 +2982,7 @@ static void BM_BezierTriangle_deBoorCox_matrix_d4(benchmark::State& state)
     auto T3 = GMPutils::computeT(2,3, b);
     auto T4 = GMPutils::computeT(2,4, b);
 
-    DVector<Vector<float,3>> test;
+    DVector<Vector<double,3>> test;
 
     // The test loop
     while (state.KeepRunning()) {
@@ -2997,31 +2997,31 @@ BENCHMARK(BM_BezierTriangle_deBoorCox_matrix_d4);
 
 static void BM_BezierTriangle_deBoorCox_matrix_d5(benchmark::State& state)
 {
-    DVector<Vector<float,3>> c;
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(5.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
-    c.push_back(Vector<float,3>(6.0,4.0,0.0));
-    c.push_back(Vector<float,3>(3.0,6.0,0.0));
-    c.push_back(Vector<float,3>(0.0,4.0,0.0));
-    c.push_back(Vector<float,3>(1.0,1.0,0.0));
+    DVector<Vector<double,3>> c;
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(5.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
+    c.push_back(Vector<double,3>(6.0,4.0,0.0));
+    c.push_back(Vector<double,3>(3.0,6.0,0.0));
+    c.push_back(Vector<double,3>(0.0,4.0,0.0));
+    c.push_back(Vector<double,3>(1.0,1.0,0.0));
 
 
-    DVector<float> b;
+    DVector<double> b;
     b.push_back(0.0);
     b.push_back(0.0);
     b.push_back(1.0);
@@ -3033,7 +3033,7 @@ static void BM_BezierTriangle_deBoorCox_matrix_d5(benchmark::State& state)
     auto T4 = GMPutils::computeT(2,4, b);
     auto T5 = GMPutils::computeT(2,5, b);
 
-    DVector<Vector<float,3>> test;
+    DVector<Vector<double,3>> test;
 
     // The test loop
     while (state.KeepRunning()) {
