@@ -82,7 +82,7 @@ namespace GMlib {
       _vbo.enable( vert_loc, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<const GLvoid*>(0x0) );
 
       _ibo.bind();
-      glDrawElements( GL_LINES, _no_indices, GL_UNSIGNED_SHORT, (const GLvoid*)0x0 );
+      glDrawElements( GL_LINES, _no_indices, GL_UNSIGNED_SHORT, reinterpret_cast<const GLvoid*>(0x0) );
       _ibo.unbind();
 
       _vbo.disable( vert_loc );

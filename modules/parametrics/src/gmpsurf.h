@@ -109,7 +109,7 @@ namespace GMlib {
     virtual void                  setSurroundingSphere( const DMatrix< DMatrix< Vector<T,n> > >& p );
     virtual Parametrics<T,2,n>*   split( T t, int uv );
 
-    virtual void                  showSelectors(T rad = T(1), bool grid = false, const Color& _selector_color = GMcolor::darkBlue(), const Color& grid_color = GMcolor::lightGreen() ) {}
+    virtual void                  showSelectors(T /*rad*/, bool /*grid*/, const Color& /*selector_color*/, const Color& /*grid_color*/) {}
     virtual void                  hideSelectors() {}
 
     void                          enableDefaultVisualizer( bool enable = true );

@@ -58,26 +58,19 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBSplineCurve<T>::eval( T t, int d_not_used, bool l ) const {
+  void PBSplineCurve<T>::eval( T t, int /*d_not_used*/, bool /*l*/ ) const {
 
     int d = getDegree();
     int idx;
     DMatrix<T> bhp;
 
-    if( _pre_eval ) {
+    // Calculate index
+    idx = d;
+    if( t > _t[idx+1] )
+      idx++;
 
-      // Fill the Bernstein Polynomial Matrices
-      idx = d;
-
-      // Calculate index
-      if( t > _t[idx+1] )
-        idx++;
-
-      // Evaluate the Bernstine Polynomial of sampl i of m
-      EvaluatorStatic<float>::evaluateBSp2( bhp, t, _t, d, idx);
-//      evalBernsteinHermite( bhp, t, idx );
-    }
-    std::cout << "HEI!!!!" << bhp << std::endl;
+    // Evaluate the Bernstine Polynomial of sampl i of m
+    EvaluatorStatic<float>::evaluateBSp2( bhp, t, _t, d, idx);
 
     // Compute the BSpline using the pre evalued Bernstein Polynomials and the Control Points.
     DVector< Vector<T,3> > c;
@@ -225,7 +218,7 @@ namespace GMlib {
 
   template <typename T>
   inline
-  void PBSplineCurve<T>::resample( DVector< DVector< Vector<T,3> > >& p, int m, int not_used, T start, T end ) {
+  void PBSplineCurve<T>::resample( DVector< DVector< Vector<T,3> > >& p, int m, int /*not_used*/, T start, T end ) {
 
     // dt; sample step value
     const T dt = (end-start) / T(m-1);

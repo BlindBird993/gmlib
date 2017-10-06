@@ -80,7 +80,7 @@ namespace GMlib {
   void PBasisCurve<T,G>::eval( T t, int /*d*/, bool /*l*/ ) const {
 
     this->_p.setDim(1);
-    float value = (float)_B->operator()(t);
+    float value = _B->operator()(t);
 
     switch( _d_no ) {
     case 1: value = _B->getDer1();  break;

@@ -482,7 +482,7 @@ namespace GMlib {
 
   template <typename T, int n>
   inline
-  Parametrics<T,2,n>* PTriangle<T,n>::split( T t, int uv ) {
+  Parametrics<T,2,n>* PTriangle<T,n>::split( T /*t*/, int /*uv*/ ) {
 
     return 0x0;
   }
