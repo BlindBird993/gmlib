@@ -145,7 +145,7 @@ namespace GMlib {
   void PointLight::calculateRadius(float constant, float linear, float quadratic) {
 
     double aa, solution;
-    if (GMutils::compValueF(linear,0.0f) and GMutils::compValueF(quadratic,0.0f))
+    if (GMutils::compValueF(linear,0.0f) && GMutils::compValueF(quadratic,0.0f))
     {
       setCullable(false); // Disable culling
       solution = double(FLT_MAX);

@@ -31,6 +31,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 # Compiler options
 if(MSVC)
+  find_package(Threads REQUIRED)
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")
 elseif (CMAKE_CXX_COMPILER_ID MATCHES GNU)
   message("Compiler: ${CMAKE_CXX_COMPILER_ID}")

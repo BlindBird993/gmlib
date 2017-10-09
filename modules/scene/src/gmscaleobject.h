@@ -227,8 +227,8 @@ namespace GMlib {
    */
   inline
   void ScaleObject::reset(const Point<float,3>& sc) {
-    if (!GMutils::compValueF(sc(0), 1.0f) or !GMutils::compValueF(sc(0), 1.0f)
-        or !GMutils::compValueF(sc(2), 1.0f)) {
+    if (!GMutils::compValueF(sc(0), 1.0f) || !GMutils::compValueF(sc(0), 1.0f)
+        || !GMutils::compValueF(sc(2), 1.0f)) {
       _s = sc;
       _updateMax();
       _scaled = true;

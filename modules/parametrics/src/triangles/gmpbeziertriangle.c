@@ -22,7 +22,7 @@
 
 
 
-
+#include "gmpbeziertriangle.h"
 
 #include "../evaluators/gmevaluatorstatic.h"
 

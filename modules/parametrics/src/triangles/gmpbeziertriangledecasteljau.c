@@ -267,7 +267,7 @@ namespace GMlib {
                   if(index[i-1] == d)
                       break;
                   int j = 1;//n-2
-                  for(; index[j] == 0 and j >= 0; j--);
+                  for(; index[j] == 0 && j >= 0; j--);
                   if(j < 0)
                       break;
                   i = j+1;

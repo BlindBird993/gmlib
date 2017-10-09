@@ -254,7 +254,7 @@ function(GM_ADD_BENCHMARK FILENAME)
 
     set(BENCH_NAME "gmbench_${FILENAME}")
     add_executable(${BENCH_NAME} ${FILENAME}.cc)
-    target_link_libraries(${BENCH_NAME} ${ARGN} benchmark::benchmark pthread)
+    target_link_libraries(${BENCH_NAME} ${ARGN} benchmark::benchmark)
     add_test(NAME ${BENCH_NAME} COMMAND ${BENCH_NAME})
 
   endif(GM_BENCHMARKING)
